@@ -1,8 +1,11 @@
+import Link from 'next/link'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <Link href="/Admin/ListOfCustomer">Lsit Of Customer</Link>
+    </div>
   )
 }
 
