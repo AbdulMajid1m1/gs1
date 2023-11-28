@@ -28,7 +28,7 @@ export const getStateByCountryId = async (req, res, next) => {
 
         const states = await prisma.states.findMany({
             where: {
-                country_id: id,
+                country_id: +id,
             },
         });
 
@@ -53,7 +53,7 @@ export const getCityByStateId = async (req, res, next) => {
 
         const cities = await prisma.cities.findMany({
             where: {
-                state_id: id,
+                state_id: +id,
             },
         });
 

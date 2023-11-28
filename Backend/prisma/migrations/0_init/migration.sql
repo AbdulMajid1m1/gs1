@@ -390,12 +390,12 @@ CREATE TABLE [dbo].[country_of_sales] (
 
 -- CreateTable
 CREATE TABLE [dbo].[cr_documents] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_cr_documents] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [cr_documents_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -1990,6 +1990,13 @@ CREATE TABLE [dbo].[subscribes] (
 );
 
 -- CreateTable
+CREATE TABLE [dbo].[TagTest] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [name] NVARCHAR(1000) NOT NULL,
+    CONSTRAINT [TagTest_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
 CREATE TABLE [dbo].[tblSysNo] (
     [TblSysCtrNo] NCHAR(10) NOT NULL,
     [SysNoID] INT NOT NULL IDENTITY(1,1),
@@ -2150,7 +2157,7 @@ CREATE TABLE [dbo].[user_guide_videos] (
 
 -- CreateTable
 CREATE TABLE [dbo].[users] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(1000) NOT NULL,
     [user_type] VARCHAR(20),
     [slug] NVARCHAR(max),
     [location_uk] NVARCHAR(max),
@@ -2224,7 +2231,7 @@ CREATE TABLE [dbo].[users] (
     [membership_otherCategory] NVARCHAR(50),
     [activityID] INT CONSTRAINT [DF_users_activityID] DEFAULT 0,
     [registration_type] NCHAR(10),
-    CONSTRAINT [PK_users] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [users_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable

@@ -285,7 +285,7 @@ model chats {
 }
 
 model cities {
-  id         String    @id @default(uuid())
+  id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   state_id   Int?
   created_at DateTime? @db.DateTime
@@ -325,7 +325,7 @@ model cookie_consents {
 }
 
 model countries {
-  id                BigInt    @id(map: "PK_countries") @default(autoincrement())
+  id                String    @id @default(cuid())
   name_en           String?   @db.NVarChar(Max)
   name_ar           String?   @db.NVarChar(Max)
   country_code      String?   @db.NVarChar(Max)
@@ -346,7 +346,7 @@ model country_of_sales {
 }
 
 model cr_documents {
-  id         String    @id @default(uuid())
+  id         String    @id
   name       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
@@ -1736,7 +1736,7 @@ model staff_help_desks {
 }
 
 model states {
-  id         BigInt    @id(map: "PK_states") @default(autoincrement())
+  id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   country_id Int?
   created_at DateTime? @db.DateTime
@@ -1748,6 +1748,11 @@ model subscribes {
   email      String?   @db.NVarChar(Max)
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
+}
+
+model TagTest {
+  id   Int    @id @default(autoincrement())
+  name String
 }
 
 model tblSysNo {
@@ -1890,7 +1895,7 @@ model user_guide_videos {
 }
 
 model users {
-  id                       String    @id @default(cuid())
+  id                       String    @id
   user_type                String?   @db.VarChar(20)
   slug                     String?   @db.NVarChar(Max)
   location_uk              String?   @db.NVarChar(Max)
@@ -1994,9 +1999,4 @@ model withdraw_logs {
   created_at          DateTime? @db.DateTime
   updated_at          DateTime? @db.DateTime
   WithdrawLogID       Int       @id(map: "PK__withdraw__AD995F8BC87A4506") @default(autoincrement())
-}
-
-model TagTest {
-  id   Int    @id @default(autoincrement())
-  name String
 }
