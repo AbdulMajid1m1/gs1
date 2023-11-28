@@ -346,7 +346,7 @@ model country_of_sales {
 }
 
 model cr_documents {
-  id         BigInt    @id(map: "PK_cr_documents") @default(autoincrement())
+  id         String @id @default(uuid())
   name       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
@@ -1890,7 +1890,7 @@ model user_guide_videos {
 }
 
 model users {
-  id                       BigInt    @id(map: "PK_users") @default(autoincrement())
+  id                       String    @id @default(cuid())
   user_type                String?   @db.VarChar(20)
   slug                     String?   @db.NVarChar(Max)
   location_uk              String?   @db.NVarChar(Max)
