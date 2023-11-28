@@ -91,7 +91,7 @@ const SideBar = () => {
             <div className='flex justify-end items-center px-0 mr-4'>
               <span 
                 //  onClick={() => router.back()} className='cursor-pointer'
-                 >
+                 > 
                 <img 
                   src='/images/backarrow.png' 
                     className='h-8 w-8 text-secondary mr-3' 

@@ -1,0 +1,2002 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model add_member_gln_products {
+  id                             BigInt    @id(map: "PK_add_member_gln_products") @default(autoincrement())
+  product_id                     Int?
+  reference_id                   Int?
+  locationNameEn                 String?   @db.NVarChar(Max)
+  locationNameAr                 String?   @db.NVarChar(Max)
+  AddressEn                      String?   @db.NVarChar(Max)
+  AddressAr                      String?   @db.NVarChar(Max)
+  pobox                          String?   @db.NVarChar(Max)
+  postal_code                    String?   @db.NVarChar(Max)
+  country_id                     Int?
+  state_id                       Int?
+  city_id                        Int?
+  licence_no                     String?   @db.NVarChar(Max)
+  locationCRNumber               String?   @db.NVarChar(Max)
+  office_tel                     String?   @db.NVarChar(Max)
+  tel_extension                  String?   @db.NVarChar(Max)
+  office_fax                     String?   @db.NVarChar(Max)
+  fax_extension                  String?   @db.NVarChar(Max)
+  contact1Name                   String?   @db.NVarChar(Max)
+  contact1Email                  String?   @db.NVarChar(Max)
+  contact1Mobile                 String?   @db.NVarChar(Max)
+  contact2Name                   String?   @db.NVarChar(Max)
+  contact2Email                  String?   @db.NVarChar(Max)
+  contact2Mobile                 String?   @db.NVarChar(Max)
+  longitude                      String?   @db.NVarChar(Max)
+  latitude                       String?   @db.NVarChar(Max)
+  image                          String?   @db.NVarChar(Max)
+  GLNBarcodeNumber               String?   @db.NVarChar(Max)
+  GLNBarcodeNumber_without_check String?   @db.NVarChar(Max)
+  status                         Int?
+  user_id                        Int?
+  created_at                     DateTime? @db.DateTime
+  updated_at                     DateTime? @db.DateTime
+  gcpGLNID                       String?   @db.NChar(20)
+  deleted_at                     DateTime? @db.DateTime
+  admin_id                       Int?      @default(0, map: "DF_add_member_gln_products_admin_id")
+}
+
+model add_member_sscc_products {
+  id                              BigInt    @id(map: "PK_add_member_sscc_products") @default(autoincrement())
+  sscc_type                       String?   @db.NVarChar(Max)
+  product_id                      Int?
+  reference_id                    Int?
+  VendorID                        String?   @db.NVarChar(Max)
+  VendorName                      String?   @db.NVarChar(Max)
+  productID                       String?   @db.NVarChar(Max)
+  description                     String?   @db.NVarChar(Max)
+  SerialNumber                    String?   @db.NVarChar(Max)
+  ItemCode                        String?   @db.NVarChar(Max)
+  Qty                             String?   @db.NVarChar(Max)
+  UseBy                           String?   @db.NVarChar(Max)
+  BatchNo                         String?   @db.NVarChar(Max)
+  Boxof                           String?   @db.NVarChar(Max)
+  hsn_sku                         String?   @db.NVarChar(Max)
+  po_no                           String?   @db.NVarChar(Max)
+  expiraton_date                  String?   @db.NVarChar(Max)
+  ship_to                         String?   @db.NVarChar(Max)
+  ship_date                       String?   @db.NVarChar(Max)
+  vendor_item_no                  String?   @db.NVarChar(Max)
+  short_qty_code                  String?   @db.NVarChar(Max)
+  country_id                      String?   @db.NVarChar(Max)
+  carton                          String?   @db.NVarChar(Max)
+  SSCCBarcodeNumber               String?   @db.NVarChar(Max)
+  SSCCBarcodeNumber_without_check String?   @db.NVarChar(Max)
+  user_id                         Int?
+  created_at                      DateTime? @db.DateTime
+  updated_at                      DateTime? @db.DateTime
+  gcpGLNID                        String?   @db.Char(20)
+  deleted_at                      DateTime? @db.DateTime
+}
+
+model admin_test {
+  id         Int       @id @default(autoincrement())
+  name       String?
+  created_at DateTime? @default(now())
+  updated_at DateTime?
+}
+
+model admins {
+  id                Int       @id(map: "PK_admins") @default(autoincrement())
+  username          String?   @db.NVarChar(Max)
+  group_id          Int?
+  email             String?   @db.NVarChar(Max)
+  password          String?   @db.NVarChar(Max)
+  image             String?   @db.NVarChar(Max)
+  mobile            String?   @db.NVarChar(Max)
+  status            Int?
+  verification_code String?   @db.NVarChar(Max)
+  remember_token    String?   @db.NVarChar(Max)
+  created_at        DateTime? @db.DateTime
+  updated_at        DateTime? @db.DateTime
+}
+
+model attribute_values {
+  id                          Float?
+  attributes_value_code       String?   @db.NVarChar(Max)
+  attributes_value_title      String?   @db.NVarChar(Max)
+  attributes_value_definition String?   @db.NVarChar(Max)
+  created_at                  DateTime? @db.DateTime
+  updated_at                  DateTime? @db.DateTime
+  AttributeValueID            Int       @id(map: "PK__attribut__335E22569F6BC69D") @default(autoincrement())
+}
+
+model attributes {
+  id                    Float?
+  attributes_code       String?   @db.NVarChar(Max)
+  attributes_title      String?   @db.NVarChar(Max)
+  attributes_definition String?   @db.NVarChar(Max)
+  created_at            DateTime? @db.DateTime
+  updated_at            DateTime? @db.DateTime
+  AttributeID           Int       @id(map: "PK__attribut__C189298AD25B931E") @default(autoincrement())
+}
+
+model auto_generated_documents {
+  id         BigInt    @id(map: "PK__auto_gen__3213E83FB3233DD8") @default(autoincrement())
+  type       String    @db.NVarChar(255)
+  document   String    @db.NVarChar(255)
+  date       DateTime  @db.DateTime
+  user_id    Int       @default(0, map: "DF__auto_gene__user___7DEDA633")
+  admin_id   Int       @default(0, map: "DF__auto_gene__admin__7EE1CA6C")
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+  doc_type   String?   @default("auto_document", map: "DF__auto_gene__doc_t__5887175A") @db.VarChar(20)
+}
+
+model bank_slips {
+  id             Int       @id(map: "PK_bank_slips") @default(autoincrement())
+  transaction_id Int?
+  details        String?   @db.NVarChar(Max)
+  documents      String?   @db.NVarChar(Max)
+  status         String?   @default("pending", map: "DF_bank_slips_status") @db.VarChar(10)
+  user_id        Int?      @default(0, map: "DF_bank_slips_user_id")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  admin_id       String?   @default("0", map: "DF_bank_slips_admin_id") @db.VarChar(10)
+  reject_reason  String?   @db.Text
+}
+
+model blog_categories {
+  id             BigInt?
+  name           String?   @db.NVarChar(Max)
+  slug           String?   @db.NVarChar(Max)
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  BlogCategoryID Int       @id(map: "PK__blog_cat__6BD2DA61FF59A720") @default(autoincrement())
+}
+
+model blog_comments {
+  id            BigInt?
+  blog_id       Float?
+  name          String?   @db.NVarChar(Max)
+  email         String?   @db.NVarChar(Max)
+  phone         String?   @db.NVarChar(Max)
+  comment       String?   @db.NVarChar(Max)
+  disabled      Int?
+  created_at    DateTime? @db.DateTime
+  updated_at    DateTime? @db.DateTime
+  BlogCommentID Int       @id(map: "PK__blog_com__5F60E1F1D7D1BF0B") @default(autoincrement())
+}
+
+model board_members {
+  id          BigInt    @id(map: "PK__board_me__3213E83FCC16072D") @default(autoincrement())
+  name        String    @db.NVarChar(255)
+  job_title   String    @db.NVarChar(255)
+  description String?   @db.NVarChar(Max)
+  image       String    @db.NVarChar(255)
+  addedBy     Int       @db.TinyInt
+  status      Int       @default(1, map: "DF__board_mem__statu__3726238F") @db.TinyInt
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model bookings {
+  id                Float?
+  trx               String?   @db.NVarChar(Max)
+  user_id           Float?
+  service_id        Float?
+  service_date      DateTime? @db.DateTime
+  hours             Float?
+  end_date          String?   @db.NVarChar(255)
+  start_time        String?   @db.NVarChar(255)
+  end_time          String?   @db.NVarChar(255)
+  amount            Float?
+  charge            Float?
+  message           String?   @db.NVarChar(Max)
+  location          String?   @db.NVarChar(Max)
+  is_accepted       Float?
+  payment_confirmed Float?
+  payment_type      Float?
+  payment_proof     String?   @db.NVarChar(Max)
+  is_completed      Float?
+  job_end           Float?
+  created_at        DateTime? @db.DateTime
+  updated_at        DateTime? @db.DateTime
+  BookingID         Int       @id(map: "PK__bookings__73951ACDE903ED32") @default(autoincrement())
+}
+
+model brands {
+  id         BigInt    @id(map: "PK__brands__3213E83F8E9220FB") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  name_ar    String    @db.NVarChar(255)
+  status     String    @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
+  user_id    Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model brandsForApproval {
+  id         BigInt    @id(map: "PK__brandsFo__3213E83F4A503AE0") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  name_ar    String    @db.NVarChar(255)
+  status     String    @db.NVarChar(255)
+  user_id    Int
+  companyID  Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model bricks {
+  id                         Float?
+  bricks_code                String?   @db.NVarChar(Max)
+  bricks_title               String?   @db.NVarChar(Max)
+  bricks_definition_includes String?   @db.NVarChar(Max)
+  bricks_definition_excludes String?   @db.NVarChar(Max)
+  created_at                 DateTime? @db.DateTime
+  updated_at                 DateTime? @db.DateTime
+  BrickID                    Int       @id(map: "PK__bricks__D0B87DC087EC0CFA") @default(autoincrement())
+}
+
+model carts {
+  id             BigInt    @id(map: "PK_carts") @default(autoincrement())
+  transaction_id Int?
+  date           String?   @db.NVarChar(255)
+  cart_items     String?   @db.NVarChar(Max)
+  total          Float?
+  documents      String?   @db.NVarChar(Max)
+  file_path      String?   @db.NVarChar(Max)
+  request_type   String?   @db.NVarChar(Max)
+  payment_type   String?   @db.NVarChar(Max)
+  payment_status String?   @db.NVarChar(Max)
+  user_id        Int?      @default(0, map: "DF_carts_user_id")
+  status         String?   @default("pending", map: "DF_carts_status") @db.VarChar(10)
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  reject_reason  String?   @db.Text
+  reject_by      Int?
+  receipt        String?   @db.Text
+  receipt_path   String?   @db.NVarChar(Max)
+  admin_id       Int?      @default(0, map: "DF_carts_admin_id")
+  assign_to      Int?      @default(0, map: "DF_carts_assign_to")
+  discount       Float?    @default(0, map: "DF_carts_discount")
+}
+
+model categories {
+  id         BigInt    @id(map: "PK_categories") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  image      String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model chats {
+  id          Float?
+  user_id     Float?
+  provider_id Float?
+  booking_id  Float?
+  message     String?   @db.NVarChar(Max)
+  sender      String?   @db.NVarChar(Max)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  ChatID      Int       @id(map: "PK__chats__A9FBE6267888992D") @default(autoincrement())
+}
+
+model cities {
+  id         BigInt    @id(map: "PK_cities") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  state_id   Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model classes {
+  id               BigInt    @id(map: "PK_classes") @default(autoincrement())
+  class_code       String?   @db.NVarChar(Max)
+  class_title      String?   @db.NVarChar(Max)
+  class_definition String?   @db.NVarChar(Max)
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+}
+
+model company_details {
+  id              BigInt    @id(map: "PK_company_details") @default(autoincrement())
+  title           String?   @db.NVarChar(Max)
+  account_no      String?   @db.NVarChar(Max)
+  iban_no         String?   @db.NVarChar(Max)
+  bank_name       String?   @db.NVarChar(Max)
+  bank_swift_code String?   @db.NVarChar(Max)
+  email           String?   @db.NVarChar(Max)
+  mobile          String?   @db.NVarChar(Max)
+  fax             String?   @db.NVarChar(Max)
+  created_at      DateTime? @db.DateTime
+  updated_at      DateTime? @db.DateTime
+}
+
+model cookie_consents {
+  id          BigInt    @id(map: "PK_cookie_consents") @default(autoincrement())
+  allow_modal Int?
+  button_text String?   @db.NVarChar(Max)
+  cookie_text String?   @db.NVarChar(Max)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model countries {
+  id                BigInt    @id(map: "PK_countries") @default(autoincrement())
+  name_en           String?   @db.NVarChar(Max)
+  name_ar           String?   @db.NVarChar(Max)
+  country_code      String?   @db.NVarChar(Max)
+  country_shortName String?   @db.NVarChar(Max)
+  status            Int?
+  created_at        DateTime? @db.DateTime
+  updated_at        DateTime? @db.DateTime
+}
+
+model country_of_sales {
+  id                    BigInt    @id(map: "PK__country___3213E83F52C909D1") @default(autoincrement())
+  Alpha2                String    @db.NVarChar(255)
+  Alpha3                String    @db.NVarChar(255)
+  country_code_numeric3 String    @db.NVarChar(255)
+  country_name          String    @db.NVarChar(255)
+  created_at            DateTime? @db.DateTime
+  updated_at            DateTime? @db.DateTime
+}
+
+model cr_documents {
+  id         BigInt    @id(map: "PK_cr_documents") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model crs {
+  id         BigInt    @id(map: "PK_crs") @default(autoincrement())
+  cr         String?   @db.NVarChar(Max)
+  activity   String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model email_reminders {
+  id             BigInt    @id(map: "PK_email_reminders") @default(autoincrement())
+  transaction_id Int?
+  subject        String?   @db.NVarChar(Max)
+  message        String?   @db.NVarChar(Max)
+  images         String?   @db.NVarChar(Max)
+  sendBy         Int?
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+}
+
+model email_templates {
+  id         BigInt    @id(map: "PK_email_templates") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  subject    String?   @db.NVarChar(Max)
+  template   String?   @db.NVarChar(Max)
+  meaning    String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model failed_jobs {
+  id             Float?
+  uuid           String?   @db.NVarChar(Max)
+  connection     String?   @db.NVarChar(Max)
+  queue          String?   @db.NVarChar(Max)
+  payload        String?   @db.NVarChar(Max)
+  exception      String?   @db.NVarChar(Max)
+  failed_at      DateTime? @db.DateTime
+  failed_jobs_id Int       @id(map: "PK__failed_j__BB09620F734B2573") @default(autoincrement())
+}
+
+model families {
+  id                Float?
+  family_code       String?   @db.NVarChar(Max)
+  family_title      String?   @db.NVarChar(Max)
+  family_definition String?   @db.NVarChar(Max)
+  created_at        DateTime? @db.DateTime
+  updated_at        DateTime? @db.DateTime
+  FamilyID          Int       @id(map: "PK__families__41D82F4B3DCAE285") @default(autoincrement())
+}
+
+model faq_categories {
+  id         BigInt    @id(map: "PK_faq_categories") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model featured_articales {
+  id         BigInt    @id(map: "PK_featured_articales") @default(autoincrement())
+  title      String?   @db.NVarChar(Max)
+  title_ar   String?   @db.NVarChar(Max)
+  image      String?   @db.NVarChar(Max)
+  date       String?   @db.NVarChar(255)
+  link       String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model featured_services {
+  id         BigInt    @id(map: "PK_featured_services") @default(autoincrement())
+  image      String?   @db.NVarChar(Max)
+  link       String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model footer_menus {
+  id               BigInt    @id(map: "PK_footer_menus") @default(autoincrement())
+  parent_id        Int?
+  category_name_en String?   @db.NVarChar(Max)
+  category_name_ar String?   @db.NVarChar(Max)
+  url              String?   @db.NVarChar(Max)
+  status           Int?
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+}
+
+model foreign_barcodes_downloads {
+  id         BigInt    @id(map: "PK__foreign___3213E83FE54D487A") @default(autoincrement())
+  date       DateTime  @db.Date
+  document   String    @db.NVarChar(Max)
+  user_id    Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model foreign_gtins {
+  id                 BigInt    @id(map: "PK__foreign___3213E83F3120CA0A") @default(autoincrement())
+  BrandName          String    @db.VarChar(255)
+  productnameenglish String    @db.VarChar(255)
+  moName             String?   @db.VarChar(255)
+  barcode            String    @db.VarChar(50)
+  details_page       String?   @db.VarChar(255)
+  unit               String?   @db.VarChar(50)
+  front_image        String?   @db.NVarChar(255)
+  gpc                String?   @db.NVarChar(255)
+  gpc_code           String?   @db.NVarChar(255)
+  size               String?   @db.NVarChar(255)
+  countrySale        String?   @db.NVarChar(255)
+  user_id            Int       @default(0, map: "DF__foreign_g__user___75C27486")
+  admin_id           Int       @default(0, map: "DF__foreign_g__admin__76B698BF")
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+}
+
+model g_c_p_information {
+  id             BigInt    @id(map: "PK_g_c_p_information") @default(autoincrement())
+  gtin_order     String?   @db.VarChar(50)
+  company_gcp    String?   @db.VarChar(50)
+  gcp_type       String?   @db.NVarChar(Max)
+  status         String?   @default("active", map: "DF_g_c_p_information_status") @db.VarChar(10)
+  company_name   String?   @db.NVarChar(Max)
+  issuer_gln     String?   @db.VarChar(255)
+  licensee_gln   String?   @db.NVarChar(Max)
+  type_pk        String?   @db.NVarChar(Max)
+  key_pk         String?   @db.NVarChar(Max)
+  cgs1_prefix    String?   @db.NVarChar(Max)
+  user_id        Int?
+  certificate    String?   @db.NVarChar(Max)
+  certificate_ar String?   @db.NVarChar(Max)
+  receipt        String?   @db.NVarChar(Max)
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  gepirPosted    String?   @default("0", map: "DF_g_c_p_information_gepirPosted") @db.NChar(10)
+  updateable     String?   @default("0", map: "DF_g_c_p_information_updateable") @db.NChar(1)
+}
+
+model gateways {
+  id                 BigInt    @id(map: "PK_gateways") @default(autoincrement())
+  gateway_name       String?   @db.NVarChar(Max)
+  gateway_image      String?   @db.NVarChar(Max)
+  gateway_parameters String?   @db.NVarChar(Max)
+  gateway_type       Float?
+  user_proof_param   String?   @db.NVarChar(Max)
+  rate               Float?
+  charge             Float?
+  status             Float?
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+}
+
+model gcp_histories {
+  id           BigInt    @id(map: "PK_gcp_histories") @default(autoincrement())
+  date         String?   @db.NVarChar(255)
+  company_gpc  String?   @db.NVarChar(Max)
+  gtin_order   String?   @db.VarChar(50)
+  reference_id Int?
+  certificate  String?   @db.NVarChar(Max)
+  receipt      String?   @db.NVarChar(Max)
+  user_id      Int?
+  status       Int?
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
+  deleted_at   DateTime? @db.DateTime
+}
+
+model gcp_types {
+  id              BigInt    @id(map: "PK__gcp_type__3213E83FD86DB395") @default(autoincrement())
+  gcp_code        String    @db.NVarChar(255)
+  gcp_description String?   @db.NVarChar(Max)
+  created_at      DateTime? @db.DateTime
+  updated_at      DateTime? @db.DateTime
+}
+
+model general_settings {
+  id                         BigInt    @id(map: "PK_general_settings") @default(autoincrement())
+  sitename                   String?   @db.NVarChar(Max)
+  sitename_ar                String?   @db.NVarChar(Max)
+  title                      String?   @db.NVarChar(Max)
+  title_ar                   String?   @db.NVarChar(Max)
+  commission                 Int?
+  email_method               String?   @db.NVarChar(Max)
+  smtp_config                String?   @db.NVarChar(Max)
+  site_currency              String?   @db.NVarChar(Max)
+  currency_icon              String?   @db.NVarChar(Max)
+  user_reg                   Int?
+  blog_comment               Int?
+  login_page                 String?   @db.NVarChar(Max)
+  logo                       String?   @db.NVarChar(Max)
+  default_image              String?   @db.NVarChar(Max)
+  service_default_image      String?   @db.NVarChar(Max)
+  icon                       String?   @db.NVarChar(Max)
+  color                      String?   @db.NVarChar(Max)
+  secondary_color            String?   @db.NVarChar(Max)
+  email_from                 String?   @db.NVarChar(Max)
+  allow_recaptcha            Int?
+  recaptcha_key              String?   @db.NVarChar(Max)
+  recaptcha_secret           String?   @db.NVarChar(Max)
+  twak_allow                 Int?
+  twak_key                   String?   @db.NVarChar(Max)
+  seo_description            String?   @db.NVarChar(Max)
+  preloader_status           Int?
+  preloader_image            String?   @db.NVarChar(Max)
+  analytics_key              String?   @db.NVarChar(Max)
+  analytics_status           Int?
+  fb_app_key                 String?   @db.NVarChar(Max)
+  api_token                  String?   @db.NVarChar(Max)
+  talk_to_gs1                String?   @db.NVarChar(Max)
+  font_family                String?   @db.NVarChar(Max)
+  cr_activity                String?   @db.NVarChar(Max)
+  issuer_gln                 String?   @db.NVarChar(Max)
+  created_at                 DateTime? @db.DateTime
+  updated_at                 DateTime? @db.DateTime
+  video_link                 String?   @db.Text
+  pdf_link                   String?   @db.Text
+  gcp_certificate_detail1    String?   @db.Text
+  gcp_certificate_detail2    String?   @db.Text
+  gcp_legal_detail           String?   @db.Text
+  gcp_certificate_detail_ar1 String?   @db.NVarChar(Max)
+  gcp_certificate_detail_ar2 String?   @db.NVarChar(Max)
+  gcp_legal_detail_ar        String?   @db.NVarChar(Max)
+  terms_conditions           String?   @db.VarChar(50)
+  chat_id                    String?   @db.NVarChar(50)
+}
+
+model gepir_items {
+  id           BigInt    @id(map: "PK__gepir_it__3213E83F4C68B859") @default(autoincrement())
+  barcode      Int
+  gcpGLNID     Int
+  dateTimePost DateTime  @db.DateTime
+  addedBy      Int       @default(0, map: "DF__gepir_ite__added__76177A41")
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
+}
+
+model gpc_classes {
+  id               Float?
+  class_code       String?   @db.NVarChar(Max)
+  class_title      String?   @db.NVarChar(Max)
+  class_definition String?   @db.NVarChar(Max)
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+  GpcClassID       Int       @id(map: "PK__gpc_clas__E140D1DA7E572618") @default(autoincrement())
+}
+
+model group_modules {
+  id          BigInt    @id(map: "PK_group_modules") @default(autoincrement())
+  module_name String?   @db.VarChar(50)
+  module_page String?   @db.VarChar(50)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model group_permissions {
+  id          BigInt    @id(map: "PK_group_permissions") @default(autoincrement())
+  group_id    Int?
+  module_id   Int?
+  module_name String?   @db.NVarChar(Max)
+  module_page String?   @db.NVarChar(Max)
+  access      String?   @db.VarChar(1)
+  view        Int?
+  add         Int?
+  edit        Int?
+  delete      Int?
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model groups {
+  id         BigInt    @id(map: "PK_groups") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model gtin_compliants {
+  id                 BigInt    @id(map: "PK__gtin_com__3213E83FA58E192E") @default(autoincrement())
+  user_id            Int
+  gcpGLNID           String    @db.NVarChar(255)
+  type               String    @default("compliant", map: "DF__gtin_compl__type__30441BD6") @db.NVarChar(255)
+  productnameenglish String?   @db.NVarChar(255)
+  productnamearabic  String?   @db.NVarChar(255)
+  BrandName          String?   @db.NVarChar(255)
+  BrandNameAr        String?   @db.NVarChar(255)
+  ProductType        String?   @db.NVarChar(255)
+  Origin             String?   @db.NVarChar(255)
+  countrySale        String?   @db.NVarChar(255)
+  PackagingType      String?   @db.NVarChar(255)
+  ProvGLN            String?   @db.NVarChar(255)
+  unit               String    @db.NVarChar(255)
+  size               String    @db.NVarChar(255)
+  front_image        String?   @db.NVarChar(255)
+  back_image         String?   @db.NVarChar(255)
+  childProduct       String?   @db.NVarChar(255)
+  quantity           String?   @db.NVarChar(255)
+  barcode            String?   @db.NVarChar(255)
+  gpc                String?   @db.NVarChar(255)
+  gpc_code           String?   @db.NVarChar(255)
+  gcp_type           String?   @db.NVarChar(255)
+  HSCODES            String?   @db.NVarChar(255)
+  HsDescription      String?   @db.NVarChar(Max)
+  prod_lang          String?   @db.NVarChar(255)
+  details_page       String?   @db.NVarChar(Max)
+  details_page_ar    String?   @db.NVarChar(Max)
+  status             Int       @default(1, map: "DF__gtin_comp__statu__3138400F") @db.TinyInt
+  save_as            String?   @db.NVarChar(255)
+  gtin_type          String?   @db.NVarChar(255)
+  product_url        String?   @db.NVarChar(255)
+  product_link_url   String?   @db.NVarChar(255)
+  added_by           Int       @default(0, map: "DF__gtin_comp__added__322C6448")
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+  companyID          String?   @db.NVarChar(50)
+}
+
+model gtin_helper_reports {
+  id             BigInt    @id(map: "PK__gtin_hel__3213E83FEEB618AB") @default(autoincrement())
+  report_barcode String    @db.NVarChar(255)
+  report_comment String    @db.NVarChar(255)
+  report_action  String    @db.NVarChar(255)
+  report_images  String    @db.NVarChar(Max)
+  report_status  Int       @default(0, map: "DF_gtin_helper_reports_report_status")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  reporter_email String?   @db.VarChar(50)
+}
+
+model gtin_non_compliants {
+  id                 BigInt    @id(map: "PK__gtin_non__3213E83FF5E27840") @default(autoincrement())
+  user_id            Int
+  gcpGLNID           String    @db.NVarChar(255)
+  type               String    @default("non_compliant", map: "DF__gtin_non_c__type__3508D0F3") @db.NVarChar(255)
+  productnameenglish String?   @db.NVarChar(255)
+  productnamearabic  String?   @db.NVarChar(255)
+  BrandName          String?   @db.NVarChar(255)
+  BrandNameAr        String?   @db.NVarChar(255)
+  ProductType        String?   @db.NVarChar(255)
+  Origin             String?   @db.NVarChar(255)
+  countrySale        String?   @db.NVarChar(255)
+  PackagingType      String?   @db.NVarChar(255)
+  ProvGLN            String?   @db.NVarChar(255)
+  unit               String    @db.NVarChar(255)
+  size               String    @db.NVarChar(255)
+  front_image        String?   @db.NVarChar(255)
+  back_image         String?   @db.NVarChar(255)
+  childProduct       String?   @db.NVarChar(255)
+  quantity           String?   @db.NVarChar(255)
+  barcode            String?   @db.NVarChar(255)
+  gpc                String?   @db.NVarChar(255)
+  gpc_code           String?   @db.NVarChar(255)
+  gcp_type           String?   @db.NVarChar(255)
+  HSCODES            String?   @db.NVarChar(255)
+  HsDescription      String?   @db.NVarChar(Max)
+  prod_lang          String?   @db.NVarChar(255)
+  details_page       String?   @db.NVarChar(Max)
+  details_page_ar    String?   @db.NVarChar(Max)
+  status             Int       @default(1, map: "DF__gtin_non___statu__35FCF52C") @db.TinyInt
+  save_as            String?   @db.NVarChar(255)
+  gtin_type          String?   @db.NVarChar(255)
+  product_url        String?   @db.NVarChar(255)
+  product_link_url   String?   @db.NVarChar(255)
+  added_by           Int       @default(0, map: "DF__gtin_non___added__36F11965")
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+  companyID          String?   @db.NVarChar(50)
+}
+
+model gtin_products {
+  id                             BigInt    @id(map: "PK_gtin_products") @default(autoincrement())
+  member_category_description    String?   @db.NVarChar(Max)
+  total_no_of_barcodes           Int?
+  member_registration_fee        Int?
+  gtin_yearly_subscription_fee   Int?
+  type                           String?   @db.NVarChar(Max)
+  status                         Int?
+  gcp_start_range                String?   @db.VarChar(50)
+  quotation                      String?   @db.NVarChar(Max)
+  allow_otherProducts            String?   @db.NVarChar(Max)
+  gcp_type                       String?   @db.VarChar(50)
+  gtin_order                     String?   @db.NVarChar(50)
+  created_at                     DateTime? @db.DateTime
+  updated_at                     DateTime? @db.DateTime
+  member_category_description_ar String?   @db.NVarChar(Max)
+  med_registration_fee           Float?
+  med_yearly_subscription_fee    Float?
+}
+
+model gtin_subcriptions {
+  id             BigInt    @id(map: "PK_gtin_subcriptions") @default(autoincrement())
+  react_no       Int?
+  transaction_id Int?
+  pkg_id         Int?
+  pkg_date       DateTime? @db.DateTime
+  price          Float?
+  request_type   String?   @db.NVarChar(Max)
+  status         String?   @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
+  user_id        Int?      @default(0, map: "DF_gtin_subcriptions_user_id")
+  createdBy      Int?      @default(0, map: "DF_gtin_subcriptions_createdBy")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  expiry_date    DateTime? @db.DateTime
+}
+
+model gtin_subscription_histories {
+  id             BigInt    @id(map: "PK_gtin_subscription_histories") @default(autoincrement())
+  react_no       Int?
+  transaction_id Int?
+  pkg_id         Int?
+  pkg_date       DateTime? @db.DateTime
+  user_id        Int?      @default(0, map: "DF_gtin_subscription_histories_user_id")
+  price          Float?
+  request_type   String?   @db.NVarChar(Max)
+  document       String?   @db.NVarChar(Max)
+  payment_type   String?   @db.NVarChar(Max)
+  status         String?   @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
+  createdBy      Int?      @default(0, map: "DF_gtin_subscription_histories_createdBy")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  expiry_date    DateTime? @db.DateTime
+}
+
+model help_desk_comments {
+  id             BigInt    @id(map: "PK_help_desk_comments") @default(autoincrement())
+  helpDeskID     Int?
+  comment        String?   @db.NVarChar(Max)
+  document       String?   @db.NVarChar(Max)
+  commentByAdmin Int?
+  commentByUser  Int?
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+}
+
+model help_desks {
+  id          BigInt    @id(map: "PK_help_desks") @default(autoincrement())
+  title       String?   @db.NVarChar(Max)
+  email       String?   @db.NVarChar(Max)
+  ticket_no   String?   @db.NVarChar(Max)
+  description String?   @db.NVarChar(Max)
+  document    String?   @db.NVarChar(Max)
+  user_id     Int?
+  assignedTo  Int?
+  status      Int?
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  deleted_at  DateTime? @db.DateTime
+}
+
+model hs_codes {
+  id            BigInt    @id(map: "PK__hs_codes__3213E83F1BC26C90") @default(autoincrement())
+  CNKEY         String    @db.NVarChar(255)
+  HSCODES       String    @db.NVarChar(255)
+  DescriptionEN String    @db.NVarChar(Max)
+  addBy         Int
+  created_at    DateTime? @db.DateTime
+  updated_at    DateTime? @db.DateTime
+}
+
+model issuing_agencies {
+  id         BigInt    @id(map: "PK__issuing___3213E83FA1EEA59D") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model languages {
+  id         Float?
+  type       String?   @db.NVarChar(Max)
+  key        String?   @db.NVarChar(Max)
+  value      String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+  LanguageID Int       @id(map: "PK__language__B938558B03AB874B") @default(autoincrement())
+}
+
+model locations {
+  id         Float?
+  user_id    Float?
+  service_id Float?
+  location   String?   @db.NVarChar(Max)
+  status     Float?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+  LocationID Int       @id(map: "PK__location__E7FEA477E5758800") @default(autoincrement())
+}
+
+model log_activities {
+  id          BigInt    @id(map: "PK_log_activities") @default(autoincrement())
+  subject     String?   @db.NVarChar(Max)
+  url         String?   @db.NVarChar(Max)
+  method      String?   @db.NVarChar(Max)
+  ip          String?   @db.NVarChar(Max)
+  agent       String?   @db.NVarChar(Max)
+  admin_id    Int?
+  date        String?   @db.NVarChar(255)
+  read_status String?   @default("0", map: "DF_log_activities_read_status") @db.Char(1)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  deleted_at  DateTime? @db.DateTime
+  admin       String?   @db.NVarChar(50)
+}
+
+model markeing_emails {
+  id          BigInt    @id(map: "PK_markeing_emails") @default(autoincrement())
+  emails      String?   @db.NVarChar(Max)
+  otherEmails String?   @db.NVarChar(Max)
+  subject     String?   @db.NVarChar(Max)
+  message     String?   @db.NVarChar(Max)
+  sendBy      Int?
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model mega_menu_categories {
+  id               BigInt    @id(map: "PK_mega_menu_categories") @default(autoincrement())
+  parent_id        Int?
+  megamenu_id      Int?
+  category_name_en String?   @db.NVarChar(Max)
+  category_name_ar String?   @db.NVarChar(Max)
+  description      String?   @db.NVarChar(Max)
+  url              String?   @db.NVarChar(Max)
+  meta_title       String?   @db.NVarChar(Max)
+  meta_description String?   @db.NVarChar(Max)
+  meta_keywords    String?   @db.NVarChar(Max)
+  status           Int?
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+}
+
+model mega_menus {
+  id         BigInt    @id(map: "PK_mega_menus") @default(autoincrement())
+  name_en    String?   @db.NVarChar(Max)
+  name_ar    String?   @db.NVarChar(Max)
+  status     Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model mema_descriptions {
+  id               BigInt    @id(map: "PK__mema_des__3213E83F163AC458") @default(autoincrement())
+  title            String    @db.NVarChar(255)
+  header           String?   @db.NVarChar(Max)
+  points           String    @db.NVarChar(Max)
+  footer           String    @db.NVarChar(255)
+  video_link       String    @db.NVarChar(255)
+  video_background String    @db.NVarChar(255)
+  created_by       Int
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+  title_ar         String?   @db.NVarChar(255)
+  header_ar        String?   @db.NVarChar(255)
+  points_ar        String?   @db.NVarChar(Max)
+  footer_ar        String?   @db.NVarChar(255)
+}
+
+model mema_galleries {
+  id         BigInt    @id(map: "PK__mema_gal__3213E83F333FDA2E") @default(autoincrement())
+  title      String    @db.NVarChar(255)
+  images     String    @db.NVarChar(Max)
+  status     String    @db.NVarChar(255)
+  created_by Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+  link       String?   @db.Text
+}
+
+model mema_hotels {
+  id         BigInt    @id(map: "PK__mema_hot__3213E83FA25533FE") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  status     String    @db.NVarChar(255)
+  added_by   Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model mema_pages {
+  id           BigInt    @id(map: "PK__mema_pag__3213E83FCEB61ED0") @default(autoincrement())
+  mema_page    String    @db.NVarChar(255)
+  linked_page  String    @db.NVarChar(255)
+  image        String    @db.NVarChar(255)
+  status       String    @db.NVarChar(255)
+  created_by   Int
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
+  mema_page_ar String?   @db.NVarChar(255)
+}
+
+model mema_registrations {
+  id                BigInt    @id(map: "PK__mema_reg__3213E83FABE71AB3") @default(autoincrement())
+  registration_type String    @db.NVarChar(Max)
+  fname             String    @db.NVarChar(255)
+  lname             String    @db.NVarChar(255)
+  company           String    @db.NVarChar(255)
+  job_title         String    @db.NVarChar(255)
+  email             String    @db.NVarChar(255)
+  mobile            String    @db.NVarChar(255)
+  visa_invitation   String?   @db.NVarChar(255)
+  hotel             String?   @db.NVarChar(255)
+  arrival_date      DateTime? @db.DateTime
+  departure_date    DateTime? @db.DateTime
+  status            String    @default("pending", map: "DF__mema_regi__statu__1F198FD4") @db.NVarChar(255)
+  approved_by       Int       @default(0, map: "DF__mema_regi__appro__200DB40D")
+  created_at        DateTime? @db.DateTime
+  updated_at        DateTime? @db.DateTime
+  nationality       String?   @db.NVarChar(50)
+  date_of_birth     DateTime? @db.DateTime
+  place_of_country  String?   @db.NVarChar(50)
+  place_of_city     String?   @db.NVarChar(50)
+  document_number   String?   @db.NVarChar(50)
+  date_of_expiry    DateTime? @db.DateTime
+  gs1_mo            String?   @db.VarChar(5)
+  registration_date DateTime? @db.DateTime
+}
+
+model mema_sessions {
+  id          BigInt    @id(map: "PK__mema_ses__3213E83F9CA4875A") @default(autoincrement())
+  dateTime    DateTime  @db.Date
+  time        String    @db.NVarChar(255)
+  title       String    @db.NVarChar(255)
+  description String    @db.NVarChar(Max)
+  speakers    String    @db.NVarChar(255)
+  link        String    @db.NVarChar(255)
+  is_featured String    @db.NVarChar(255)
+  added_by    Int
+  status      String    @db.NVarChar(255)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  meet_link   String?   @db.Text
+}
+
+model mema_sliders {
+  id         BigInt    @id(map: "PK__mema_sli__3213E83F01F64AB1") @default(autoincrement())
+  slider     String    @db.NVarChar(255)
+  status     String    @db.NVarChar(255)
+  created_by Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model mema_speakers {
+  id          BigInt    @id(map: "PK__mema_spe__3213E83FC051F9BE") @default(autoincrement())
+  avatar      String    @db.NVarChar(255)
+  name        String    @db.NVarChar(255)
+  designation String    @db.NVarChar(255)
+  added_by    Int
+  status      String    @db.NVarChar(255)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model mema_travel_advice {
+  id          BigInt    @id(map: "PK__mema_tra__3213E83F06F658D6") @default(autoincrement())
+  thumbnail   String    @db.NVarChar(255)
+  title       String    @db.NVarChar(255)
+  description String    @db.NVarChar(Max)
+  gallery     String    @db.NVarChar(Max)
+  status      String    @db.NVarChar(255)
+  added_by    Int
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  link        String?   @db.NVarChar(Max)
+}
+
+model mema_visas {
+  id         BigInt    @id(map: "PK__mema_vis__3213E83FF4D676D4") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  title      String    @db.NVarChar(255)
+  image      String    @db.NVarChar(255)
+  status     String    @db.NVarChar(255)
+  created_by Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model member_documents {
+  id             BigInt    @id(map: "PK__member_d__3213E83F21EDA6EA") @default(autoincrement())
+  type           String    @db.NVarChar(255)
+  document       String    @db.NVarChar(Max)
+  transaction_id String    @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
+  date           DateTime  @db.DateTime
+  user_id        Int       @default(0, map: "DF__member_do__user___02B25B50")
+  admin_id       Int       @default(0, map: "DF__member_do__admin__03A67F89")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  doc_type       String?   @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
+}
+
+model member_history_logs {
+  id         BigInt    @id(map: "PK__member_h__3213E83FE53CC71F") @default(autoincrement())
+  subject    String    @db.NVarChar(255)
+  member_id  Int?
+  date       DateTime? @db.DateTime
+  admin_id   Int       @default(0, map: "DF__member_hi__admin__78F3E6EC")
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model member_important_notifications {
+  id          BigInt    @id(map: "PK_member_important_notifications") @default(autoincrement())
+  subject     String?   @db.NVarChar(Max)
+  url         String?   @db.NVarChar(Max)
+  method      String?   @db.NVarChar(Max)
+  ip          String?   @db.NVarChar(Max)
+  agent       String?   @db.NVarChar(Max)
+  user_id     String?   @db.NVarChar(Max)
+  date        String?   @db.NVarChar(255)
+  read_status String?   @default("0", map: "DF_member_important_notifications_read_status") @db.Char(1)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  deleted_at  DateTime? @db.DateTime
+  user        String?   @db.NVarChar(Max)
+}
+
+model member_log_activities {
+  id          BigInt    @id(map: "PK_member_log_activities") @default(autoincrement())
+  subject     String?   @db.NVarChar(Max)
+  url         String?   @db.NVarChar(Max)
+  method      String?   @db.NVarChar(Max)
+  ip          String?   @db.NVarChar(Max)
+  agent       String?   @db.NVarChar(Max)
+  user_id     String?   @db.NVarChar(Max)
+  date        String?   @db.NVarChar(255)
+  read_status Int?
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+  deleted_at  DateTime? @db.DateTime
+  user        String?   @db.NVarChar(Max)
+}
+
+model member_migration_temp {
+  id                       BigInt    @id(map: "PK__member_m__3213E83FFA6653A6") @default(autoincrement())
+  memberID                 Int
+  MemberNameE              String    @db.NVarChar(255)
+  MemberNameA              String    @db.NVarChar(255)
+  Email                    String    @db.NVarChar(255)
+  mobile                   String    @db.NVarChar(255)
+  Product                  String    @db.NVarChar(Max)
+  Status                   String    @db.NVarChar(255)
+  attachments              String    @db.NVarChar(Max)
+  migrate_status           Int       @default(0, map: "DF__member_mi__migra__63F8CA06")
+  created_at               DateTime? @db.DateTime
+  updated_at               DateTime? @db.DateTime
+  membership_category      String?   @db.NVarChar(50)
+  membership_otherCategory String?   @db.NVarChar(50)
+  address                  String?   @db.NVarChar(Max)
+  MainMobile               String?   @db.NVarChar(50)
+  CompanyID                String?   @db.NVarChar(Max)
+}
+
+model member_other_products {
+  id                BigInt    @id(map: "PK_member_other_products") @default(autoincrement())
+  product_id        String?   @db.NVarChar(Max)
+  prodcutName       String?   @db.NVarChar(Max)
+  location_name_en  String?   @db.NVarChar(Max)
+  location_name_ar  String?   @db.NVarChar(Max)
+  Longitude         String?   @db.NVarChar(Max)
+  Latitude          String?   @db.NVarChar(Max)
+  GLNStatus         String?   @db.NVarChar(Max)
+  GLNBarcodeNumber  String?   @db.NVarChar(Max)
+  PalletID          String?   @db.NVarChar(Max)
+  PONumber          String?   @db.NVarChar(Max)
+  OrderNumber       String?   @db.NVarChar(Max)
+  VendorName        String?   @db.NVarChar(Max)
+  OrderQty          String?   @db.NVarChar(Max)
+  SSCCBarcodeNumber String?   @db.NVarChar(Max)
+  total             Float?
+  user_id           Int?
+  created_at        DateTime? @db.DateTime
+  updated_at        DateTime? @db.DateTime
+}
+
+model MemberDocumentOld {
+  MemberDocumentID    Decimal   @default(0, map: "DF__MemberDoc__Membe__6D2D2E85") @db.Decimal(10, 0)
+  MemberID            Decimal?  @db.Decimal(10, 0)
+  UserPathName        String?   @db.NVarChar(250)
+  SystemPathName      String?   @db.NVarChar(100)
+  IsActive            Int       @default(0, map: "DF__MemberDoc__IsAct__70FDBF69") @db.TinyInt
+  CreatedBy           Decimal   @default(0, map: "DF__MemberDoc__Creat__71F1E3A2") @db.Decimal(10, 0)
+  CreatedDate         DateTime
+  UpdatedBy           Decimal?  @db.Decimal(10, 0)
+  UpdatedDate         DateTime?
+  MemberDocumentOldID Int       @id(map: "PK__MemberDo__E039ACA69EF86A22") @default(autoincrement())
+}
+
+model membership_range_increases {
+  id                        Float?
+  member_category_id        Float?
+  range_start               Float?
+  range_end                 Float?
+  created_at                DateTime? @db.DateTime
+  updated_at                DateTime? @db.DateTime
+  MembershipRangeIncreaseID Int       @id(map: "PK__membersh__9E0FEC6F62A68910") @default(autoincrement())
+}
+
+model membership_ranges {
+  id                 Float?
+  member_category_id Float?
+  range_start        Float?
+  range_end          Float?
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+  MembershipRangeID  Int       @id(map: "PK__membersh__41FFC3EC023AEE6F") @default(autoincrement())
+}
+
+model membership_type_fees {
+  id                  Float?
+  membershipType_id   Float?
+  product             String?   @db.NVarChar(Max)
+  parent_id           Float?
+  total_barcode       Float?
+  annual_fee          Float?
+  registration_fee    Float?
+  status              Float?
+  created_at          DateTime? @db.DateTime
+  updated_at          DateTime? @db.DateTime
+  MembershipTypeFeeID Int       @id(map: "PK__membersh__AF30BFD6DBA5A115") @default(autoincrement())
+}
+
+model membership_types {
+  id               Float?
+  name_en          String?   @db.NVarChar(Max)
+  name_ar          String?   @db.NVarChar(Max)
+  description      String?   @db.NVarChar(Max)
+  max_length       String?   @db.NVarChar(Max)
+  status           String?   @db.NVarChar(Max)
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+  MembershipTypeID Int       @id(map: "PK__membersh__F35A3E595FBDD5D8") @default(autoincrement())
+}
+
+model migrated_users {
+  loginid        String? @db.VarChar(100)
+  loginpass      String? @db.VarChar(50)
+  status         String? @default("0", map: "DF_migrated_users_status") @db.VarChar(1)
+  MigratedUserID Int     @id(map: "PK__migrated__3BAC2519CAF02728") @default(autoincrement())
+}
+
+model migration_activities {
+  id          BigInt    @id(map: "PK__migratio__3213E83FF2F92D3F") @default(autoincrement())
+  subject     String    @db.NVarChar(255)
+  url         String    @db.NVarChar(255)
+  email       String    @db.NVarChar(255)
+  ip          String    @db.NVarChar(255)
+  agent       String?   @db.NVarChar(255)
+  member_id   Int?
+  date        DateTime? @db.DateTime
+  read_status Int       @default(0, map: "DF__migration__read___705EA0EB")
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model migration_data_policies {
+  id                  BigInt    @id(map: "PK__migratio__3213E83F308F849F") @default(autoincrement())
+  terms_conditions_en String?   @db.NVarChar(Max)
+  terms_conditions_ar String?   @db.NVarChar(Max)
+  addedBy             Int?
+  created_at          DateTime? @db.DateTime
+  updated_at          DateTime? @db.DateTime
+}
+
+model migrations {
+  id        Int     @id(map: "PK_migrations") @default(autoincrement())
+  migration String? @db.NVarChar(Max)
+  batch     Float?
+}
+
+model mri_statuses {
+  id         BigInt    @id(map: "PK__mri_stat__3213E83F3B6F635C") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model my_downloads {
+  id         BigInt    @id(map: "PK_my_downloads") @default(autoincrement())
+  date       String?   @db.NVarChar(255)
+  document   String?   @db.NVarChar(Max)
+  user_id    Int?
+  admin_id   Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model oauth_access_tokens {
+  id         String    @id(map: "oauth_access_tokens_id_primary") @db.NVarChar(100)
+  user_id    BigInt?
+  client_id  BigInt
+  name       String?   @db.NVarChar(255)
+  scopes     String?   @db.NVarChar(Max)
+  revoked    Boolean
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+  expires_at DateTime? @db.DateTime
+
+  @@index([user_id], map: "oauth_access_tokens_user_id_index")
+}
+
+model oauth_auth_codes {
+  id         String    @id(map: "oauth_auth_codes_id_primary") @db.NVarChar(100)
+  user_id    BigInt
+  client_id  BigInt
+  scopes     String?   @db.NVarChar(Max)
+  revoked    Boolean
+  expires_at DateTime? @db.DateTime
+
+  @@index([user_id], map: "oauth_auth_codes_user_id_index")
+}
+
+model oauth_clients {
+  id                     BigInt    @id(map: "PK__oauth_cl__3213E83FE02DD474") @default(autoincrement())
+  user_id                BigInt?
+  name                   String    @db.NVarChar(255)
+  secret                 String?   @db.NVarChar(100)
+  provider               String?   @db.NVarChar(255)
+  redirect               String    @db.NVarChar(Max)
+  personal_access_client Boolean
+  password_client        Boolean
+  revoked                Boolean
+  created_at             DateTime? @db.DateTime
+  updated_at             DateTime? @db.DateTime
+
+  @@index([user_id], map: "oauth_clients_user_id_index")
+}
+
+model oauth_personal_access_clients {
+  id         BigInt    @id(map: "PK__oauth_pe__3213E83F8FE34030") @default(autoincrement())
+  client_id  BigInt
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model oauth_refresh_tokens {
+  id              String    @id(map: "oauth_refresh_tokens_id_primary") @db.NVarChar(100)
+  access_token_id String    @db.NVarChar(100)
+  revoked         Boolean
+  expires_at      DateTime? @db.DateTime
+
+  @@index([access_token_id], map: "oauth_refresh_tokens_access_token_id_index")
+}
+
+model old_inactive_members {
+  id               BigInt    @id(map: "PK__old_inac__3213E83F5B1147E8") @default(autoincrement())
+  date             DateTime  @db.DateTime
+  companyID        String    @db.NVarChar(255)
+  companyName      String    @db.NVarChar(255)
+  Email            String    @db.NVarChar(255)
+  MainMobile       String    @db.NVarChar(255)
+  discount         Float     @default(0, map: "DF__old_inact__disco__0DEF03D2")
+  amount           Float     @default(0, map: "DF__old_inact__amoun__0EE3280B")
+  attachments      String?   @db.NVarChar(Max)
+  reject_reason    String?   @db.NVarChar(Max)
+  status           String    @default("pending", map: "DF__old_inact__statu__0FD74C44") @db.NVarChar(255)
+  req_by_admin     Int       @default(0, map: "DF__old_inact__req_b__10CB707D") @db.TinyInt
+  approve_by_admin Int       @default(0, map: "DF__old_inact__appro__11BF94B6") @db.TinyInt
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+  bankslip         String?   @default("0", map: "DF_old_inactive_members_bankslip") @db.NChar(10)
+  bankslipDoc      String?   @db.NVarChar(Max)
+}
+
+model old_member_email_reminders {
+  id          BigInt    @id(map: "PK__old_memb__3213E83F23F13EE4") @default(autoincrement())
+  date        DateTime  @db.DateTime
+  IntID       String    @db.NVarChar(255)
+  subject     String    @db.NVarChar(255)
+  message     String    @db.NVarChar(Max)
+  attachments String    @db.NVarChar(Max)
+  sendBy      String    @db.NVarChar(255)
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model old_member_reneweds {
+  id               BigInt    @id(map: "PK__old_memb__3213E83FFFFAF184") @default(autoincrement())
+  MemberID         String?   @db.NVarChar(255)
+  UserID           String?   @db.NVarChar(255)
+  MemberNameE      String?   @db.NVarChar(255)
+  MemberNameA      String?   @db.NVarChar(255)
+  MemberType       String?   @db.NVarChar(255)
+  Address1         String?   @db.NVarChar(Max)
+  Address2         String?   @db.NVarChar(Max)
+  POBox            String?   @db.NVarChar(255)
+  CityID           String?   @db.NVarChar(255)
+  Phone1           String?   @db.NVarChar(255)
+  Phone2           String?   @db.NVarChar(255)
+  Fax              String?   @db.NVarChar(255)
+  Staff            String?   @db.NVarChar(255)
+  Email            String?   @db.NVarChar(255)
+  Website          String?   @db.NVarChar(255)
+  IndustryTypeID   String?   @db.NVarChar(255)
+  FieldOfWorkID    String?   @db.NVarChar(255)
+  OtherFieldOfWork String?   @db.NVarChar(255)
+  Products         String?   @db.NVarChar(255)
+  GS1Prefix        String?   @db.NVarChar(255)
+  MOCRegNo         String?   @db.NVarChar(255)
+  MOCRegDate       String?   @db.NVarChar(255)
+  MOCRegCert       String?   @db.NVarChar(255)
+  GLNID            String?   @db.NVarChar(255)
+  GLN              String?   @db.NVarChar(255)
+  Is14             String?   @db.NVarChar(255)
+  Status           String?   @db.NVarChar(255)
+  Parent           String?   @db.NVarChar(255)
+  CreatedBy        String?   @db.NVarChar(255)
+  CreatedDate      String?   @db.NVarChar(255)
+  UpdatedBy        String?   @db.NVarChar(255)
+  UpdatedDate      String?   @db.NVarChar(255)
+  MembershipTypeID String?   @db.NVarChar(255)
+  OtherIndustry    String?   @db.NVarChar(255)
+  IntID            String?   @db.NVarChar(255)
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+}
+
+model old_users {
+  loginid   String? @db.VarChar(50)
+  loginpass String? @db.VarChar(50)
+  status    String? @default("0", map: "DF_old_users_status") @db.VarChar(1)
+  UserId    String? @db.VarChar(10)
+  OldUserID Int     @id(map: "PK__old_user__F3D5F2C3EAE92EB8") @default(autoincrement())
+}
+
+model other_products {
+  id                       BigInt    @id(map: "PK_other_products") @default(autoincrement())
+  product_name             String?   @db.NVarChar(Max)
+  total_no_of_barcodes     Float?
+  product_subscription_fee Float?
+  code                     String?   @db.NVarChar(Max)
+  status                   Int?
+  created_at               DateTime? @db.DateTime
+  updated_at               DateTime? @db.DateTime
+  med_subscription_fee     Float?
+  variant                  String?   @db.NVarChar(10)
+}
+
+model other_products_subcriptions {
+  id             BigInt    @id(map: "PK_other_products_subcriptions") @default(autoincrement())
+  react_no       Int?
+  transaction_id Int?
+  product_id     Int?
+  other_date     String?   @db.NVarChar(255)
+  price          Float?
+  status         String?   @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
+  user_id        Int?      @default(0, map: "DF_other_products_subcriptions_user_id")
+  createdBy      Int?      @default(0, map: "DF_other_products_subcriptions_createdBy")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  expiry_date    DateTime? @db.DateTime
+}
+
+model other_products_subscription_histories {
+  id             BigInt    @id(map: "PK_other_products_subscription_histories") @default(autoincrement())
+  react_no       Int?
+  transaction_id Int?
+  product_id     Int?
+  other_date     DateTime? @db.DateTime
+  user_id        Int?      @default(0, map: "DF_other_products_subscription_histories_user_id")
+  price          Float?
+  request_type   String?   @db.NVarChar(Max)
+  document       String?   @db.NVarChar(Max)
+  payment_type   String?   @db.NVarChar(Max)
+  status         String?   @default("pending", map: "DF_other_products_subscription_histories_status") @db.VarChar(255)
+  createdBy      Int?      @default(0, map: "DF_other_products_subscription_histories_createdBy")
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  expiry_date    DateTime? @db.DateTime
+  admin_id       Int?      @default(0, map: "DF_other_products_subscription_histories_admin_id")
+}
+
+model our_teams {
+  id          BigInt    @id(map: "PK__our_team__3213E83F204B810D") @default(autoincrement())
+  name        String    @db.NVarChar(255)
+  job_title   String    @db.NVarChar(255)
+  description String?   @db.NVarChar(Max)
+  image       String    @db.NVarChar(255)
+  addedBy     Int       @db.TinyInt
+  status      Int       @default(1, map: "DF__our_teams__statu__25A691D2") @db.TinyInt
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model pages {
+  id                     BigInt    @id(map: "PK_pages") @default(autoincrement())
+  name                   String?   @db.NVarChar(Max)
+  name_ar                String?   @db.NVarChar(Max)
+  slug                   String?   @db.NVarChar(Max)
+  page_order             Int?
+  sections               String?   @db.NVarChar(Max)
+  custom_section_data    String?   @db.NVarChar(Max)
+  custom_section_data_ar String?   @db.NVarChar(Max)
+  seo_description        String?   @db.NVarChar(Max)
+  is_dropdown            Int?
+  status                 Int?
+  created_at             DateTime? @db.DateTime
+  updated_at             DateTime? @db.DateTime
+}
+
+model partners {
+  id         BigInt    @id(map: "PK_partners") @default(autoincrement())
+  image      String?   @db.NVarChar(Max)
+  link       String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model password_resets {
+  email           String?   @db.NVarChar(Max)
+  token           String?   @db.NVarChar(Max)
+  created_at      DateTime? @db.DateTime
+  PasswordResetID Int       @id(map: "PK__password__2CA0AE7C0D4E1ECB") @default(autoincrement())
+}
+
+model prod_desc_languages {
+  id            BigInt    @id(map: "PK__prod_des__3213E83FBCC24090") @default(autoincrement())
+  language_code String    @db.NVarChar(255)
+  alpha3        String    @db.NVarChar(255)
+  iso639_2B     String    @db.NVarChar(255)
+  language_name String    @db.NVarChar(255)
+  created_at    DateTime? @db.DateTime
+  updated_at    DateTime? @db.DateTime
+}
+
+model product_consents {
+  id                 BigInt    @id(map: "PK__product___3213E83FA6B0C886") @default(autoincrement())
+  user_id            Int
+  barcode            String    @db.NVarChar(255)
+  date_time          DateTime  @db.DateTime
+  added_by_admin     Int       @default(0, map: "DF__product_c__added__2C738AF2")
+  added_by_user      Int       @default(0, map: "DF__product_c__added__2D67AF2B")
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+  productnameenglish String?   @db.NVarChar(Max)
+  productnamearabic  String?   @db.NVarChar(Max)
+}
+
+model product_images {
+  id         BigInt    @id(map: "PK_product_images") @default(autoincrement())
+  product_id Int?
+  image      String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model product_packagings {
+  id         BigInt    @id(map: "PK_product_packagings") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model product_types {
+  id         BigInt    @id(map: "PK_product_types") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model production_identifires {
+  id         BigInt    @id(map: "PK__producti__3213E83FE6A0F8C4") @default(autoincrement())
+  name       String    @db.NVarChar(255)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model products {
+  id                 BigInt    @id(map: "PK__products__3213E83F47013034") @default(autoincrement())
+  user_id            Int       @default(0, map: "DF_products_user_id")
+  gcpGLNID           String    @db.VarChar(50)
+  import_code        String?   @db.VarChar(50)
+  productnameenglish String?   @db.NVarChar(Max)
+  productnamearabic  String    @db.NVarChar(Max)
+  BrandName          String?   @db.NVarChar(255)
+  ProductType        String?   @db.VarChar(50)
+  Origin             String?   @db.VarChar(50)
+  PackagingType      String?   @db.VarChar(50)
+  MnfCode            String?   @db.NVarChar(50)
+  MnfGLN             String?   @db.NVarChar(50)
+  ProvGLN            String?   @db.NVarChar(50)
+  unit               String?   @db.VarChar(50)
+  size               String?   @db.VarChar(50)
+  front_image        String?   @db.VarChar(50)
+  back_image         String?   @db.VarChar(50)
+  childProduct       String?   @db.VarChar(255)
+  quantity           String?   @db.NVarChar(10)
+  barcode            String?   @db.NVarChar(50)
+  gpc                String?   @db.VarChar(255)
+  gpc_code           String?   @db.VarChar(50)
+  countrySale        String?   @db.VarChar(50)
+  HSCODES            String?   @db.Text
+  HsDescription      String?   @db.Text
+  gcp_type           String?   @db.VarChar(50)
+  prod_lang          String    @db.VarChar(50)
+  details_page       String?   @db.NVarChar(Max)
+  details_page_ar    String?   @db.NVarChar(Max)
+  status             Int       @default(1, map: "DF__products__status__54968AE5") @db.TinyInt
+  deleted_at         DateTime? @db.DateTime
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime  @db.DateTime
+  memberID           String?   @db.NVarChar(Max)
+  admin_id           Int?      @default(0, map: "DF_products_admin_id")
+  save_as            String?   @default("final", map: "DF_products_save_as") @db.VarChar(20)
+  gtin_type          String?   @default("gtin", map: "DF_products_gtin_type") @db.VarChar(4)
+  product_url        String?   @db.VarChar(255)
+  product_link_url   String?   @db.VarChar(255)
+  BrandNameAr        String?   @db.NVarChar(Max)
+  digitalInfoType    Int?
+  readyForGepir      String?   @default("0", map: "DF_products_readyForGepir") @db.NChar(10)
+  gepirPosted        String?   @default("0", map: "DF_products_gepirPosted") @db.NChar(10)
+}
+
+model products_udis {
+  id                 BigInt    @id(map: "PK__products__3213E83F21F6E851") @default(autoincrement())
+  user_id            Int
+  gcpGLNID           String    @db.NVarChar(255)
+  productnameenglish String    @db.NVarChar(255)
+  productnamearabic  String    @db.NVarChar(255)
+  BrandName          String    @db.NVarChar(255)
+  unit               String    @db.NVarChar(255)
+  size               String    @db.NVarChar(255)
+  Origin             String?   @db.NVarChar(255)
+  countrySale        String    @db.NVarChar(255)
+  prod_lang          String    @db.NVarChar(255)
+  ProductType        String    @db.NVarChar(255)
+  PackagingType      String    @db.NVarChar(255)
+  gpc                String    @db.NVarChar(255)
+  gpc_code           String    @db.NVarChar(255)
+  HSCODES            String    @db.NVarChar(255)
+  HsDescription      String    @db.NVarChar(Max)
+  details_page       String?   @db.NVarChar(Max)
+  details_page_ar    String?   @db.NVarChar(Max)
+  front_image        String?   @db.NVarChar(255)
+  back_image         String?   @db.NVarChar(255)
+  barcode            String    @db.NVarChar(255)
+  lotNo              String    @db.NVarChar(255)
+  serialNo           String    @db.NVarChar(255)
+  manufactureDate    DateTime? @db.Date
+  expiryDate         DateTime? @db.Date
+  softwareVersion    String?   @db.NVarChar(255)
+  is_software        String?   @db.NVarChar(50)
+  save_as            String    @default("1", map: "DF__products___is_dr__69279377") @db.VarChar(50)
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+}
+
+model reviews {
+  id             Float?
+  service_id     Float?
+  user_id        Float?
+  review         Float?
+  review_message String?   @db.NVarChar(Max)
+  status         Float?
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  ReviewID       Int       @id(map: "PK__reviews__74BC79AE5D2369AC") @default(autoincrement())
+}
+
+model schedules {
+  id         Float?
+  user_id    Float?
+  week_name  String?   @db.NVarChar(Max)
+  start_time String?   @db.NVarChar(Max)
+  end_time   String?   @db.NVarChar(Max)
+  status     Float?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+  ScheduleID Int       @id(map: "PK__schedule__9C8A5B694792F6C4") @default(autoincrement())
+}
+
+model section_data {
+  id         BigInt    @id(map: "PK_section_data") @default(autoincrement())
+  key        String?   @db.NVarChar(Max)
+  data       String?   @db.NVarChar(Max)
+  category   String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model segments {
+  id                 Float?
+  segment_code       String?   @db.NVarChar(Max)
+  segment_title      String?   @db.NVarChar(Max)
+  segment_definition String?   @db.NVarChar(Max)
+  created_at         DateTime? @db.DateTime
+  updated_at         DateTime? @db.DateTime
+  SegmentID          Int       @id(map: "PK__segments__C680609BC4E3853D") @default(autoincrement())
+}
+
+model services {
+  id               BigInt    @id(map: "PK_services") @default(autoincrement())
+  category_id      Int?
+  user_id          Int?
+  name             String?   @db.NVarChar(Max)
+  service_image    String?   @db.NVarChar(Max)
+  rate             Float?
+  duration         Float?
+  details          String?   @db.NVarChar(Max)
+  faq              String?   @db.NVarChar(Max)
+  video            String?   @db.NVarChar(Max)
+  gallery          String?   @db.NVarChar(Max)
+  location         String?   @db.NVarChar(Max)
+  reason_of_reject String?   @db.NVarChar(Max)
+  status           Float?
+  admin_approval   Float?
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+}
+
+model sliders {
+  id          BigInt    @id(map: "PK_sliders") @default(autoincrement())
+  title       String?   @db.NVarChar(Max)
+  link        String?   @db.NVarChar(Max)
+  description String?   @db.NVarChar(Max)
+  caption     String?   @db.VarChar(150)
+  image       String?   @db.NVarChar(Max)
+  status      Int?
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model sms_api_sets {
+  id         BigInt    @id(map: "PK_sms_api_sets") @default(autoincrement())
+  api_key    String?   @db.NVarChar(Max)
+  sender_id  String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model sms_marketings {
+  id           BigInt    @id(map: "PK_sms_marketings") @default(autoincrement())
+  numbers      String?   @db.NVarChar(Max)
+  otherNumbers String?   @db.NVarChar(Max)
+  title        String?   @db.NVarChar(Max)
+  message      String?   @db.NVarChar(Max)
+  sendBy       Int?
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
+}
+
+model sms_reminders {
+  id             BigInt    @id(map: "PK_sms_reminders") @default(autoincrement())
+  transaction_id Int?
+  message        String?   @db.NVarChar(Max)
+  sendBy         Int?
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+}
+
+model social_media_links {
+  id          BigInt    @id(map: "PK_social_media_links") @default(autoincrement())
+  socialID    String?   @db.NVarChar(Max)
+  social_icon String?   @db.NVarChar(Max)
+  social_link String?   @db.NVarChar(Max)
+  status      Int?
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
+}
+
+model staff_help_desks {
+  id               BigInt    @id(map: "PK__staff_he__3213E83F09AD095C") @default(autoincrement())
+  assigned_for     String?   @db.NVarChar(255)
+  assigned_adminID Int?
+  assigned_date    DateTime? @db.DateTime
+  start_date       DateTime? @db.DateTime
+  assigned_userID  Int?
+  end_date         DateTime? @db.DateTime
+  note             String?   @db.NVarChar(Max)
+  assignedBy       Int?
+  status           String?   @db.NVarChar(255)
+  created_at       DateTime? @db.DateTime
+  updated_at       DateTime? @db.DateTime
+  cart_id          Int?      @default(0, map: "DF_staff_help_desks_cart_id")
+}
+
+model states {
+  id         BigInt    @id(map: "PK_states") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
+  country_id Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model subscribes {
+  id         String    @id(map: "PK_subscribes") @db.VarChar(50)
+  email      String?   @db.NVarChar(Max)
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model tblSysNo {
+  TblSysCtrNo String @db.NChar(10)
+  SysNoID     Int    @id(map: "PK__tblSysNo__68661321043D2983") @default(autoincrement())
+}
+
+model transactions {
+  id             String    @id(map: "PK_transactions") @db.VarChar(255)
+  user_id        Int?
+  checkout_id    String?   @db.NVarChar(Max)
+  status         String?   @db.VarChar(255)
+  amount         Float?    @db.Real
+  currency       String?   @db.VarChar(255)
+  data           String?   @db.NVarChar(Max)
+  trackable_data String?   @db.VarChar(4000)
+  brand          String?   @db.VarChar(255)
+  created_at     DateTime? @db.DateTime
+  updated_at     DateTime? @db.DateTime
+  deleted_at     DateTime? @db.DateTime
+  request_type   String?   @db.NVarChar(50)
+}
+
+model travel_galleries {
+  id         BigInt    @id(map: "PK__travel_g__3213E83FD953AA24") @default(autoincrement())
+  travel_id  Int
+  title      String    @db.NVarChar(255)
+  link       String    @db.NVarChar(255)
+  image      String    @db.NVarChar(255)
+  status     String    @db.NVarChar(255)
+  added_by   Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model udi_device_dispatch_movements {
+  id           BigInt    @id(map: "PK__udi_devi__3213E83F94922AAF") @default(autoincrement())
+  dispatchFrom String    @db.NVarChar(255)
+  scan_by      String    @db.NVarChar(255)
+  dispatchTo   String    @db.NVarChar(255)
+  GLNID        String    @db.NVarChar(255)
+  GTIN         String    @db.NVarChar(255)
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
+}
+
+model udi_regulation_data {
+  id                                BigInt    @id(map: "PK__udi_regu__3213E83F47DE9E30") @default(autoincrement())
+  udi_productID                     Int?
+  listingNoForAccessory             String?   @db.NVarChar(255)
+  accessoryBrand                    String?   @db.NVarChar(255)
+  modelNo                           String?   @db.NVarChar(255)
+  specifyModel                      String?   @db.NVarChar(255)
+  udi_di_labled                     String?   @db.NVarChar(255)
+  udi_di_issuingAgency              String?   @db.NVarChar(255)
+  quantity                          String?   @db.NVarChar(255)
+  use_udi_di                        String?   @db.NVarChar(255)
+  device_considered_as              String?   @db.NVarChar(255)
+  componentsDis                     String?   @db.NVarChar(Max)
+  hve_equivalentDis                 String?   @db.NVarChar(255)
+  hve_equivalentDis_data            String?   @db.NVarChar(Max)
+  hve_previousDis                   String?   @db.NVarChar(255)
+  hve_previousDis_data              String?   @db.NVarChar(Max)
+  is_directMarking                  String?   @db.NVarChar(255)
+  is_directMarking_options          String?   @db.NVarChar(255)
+  directMarking_diffThan_primaryUDI String?   @db.NVarChar(255)
+  diffDirectMarking                 String?   @db.NVarChar(255)
+  indentifiers_in_directMarking     String?   @db.NVarChar(255)
+  DI_highestLevel                   String?   @db.NVarChar(255)
+  packageType                       String?   @db.NVarChar(255)
+  qty_per_package                   String?   @db.NVarChar(255)
+  nextLevelPackage                  String?   @db.NVarChar(255)
+  nextLevelPackage_Data             String?   @db.NVarChar(Max)
+  catalogNo_equalTo_modelNo         String?   @db.NVarChar(255)
+  catalogNo                         String?   @db.NVarChar(255)
+  clinicallySize                    String?   @db.NVarChar(Max)
+  is_naturalDry_rubber              String?   @db.NVarChar(255)
+  mri_status                        String?   @db.NVarChar(255)
+  created_at                        DateTime? @db.DateTime
+  updated_at                        DateTime? @db.DateTime
+  lotNo                             String?   @db.VarChar(50)
+  serialNo                          String?   @db.VarChar(50)
+  manufactureDate                   DateTime? @db.Date
+  expiryDate                        DateTime? @db.Date
+  softwareVersion                   String?   @db.VarChar(50)
+  is_software                       String?   @db.VarChar(50)
+}
+
+model units {
+  id         BigInt    @id(map: "PK_units") @default(autoincrement())
+  unit_code  String?   @db.VarChar(50)
+  unit_name  String?   @db.NVarChar(50)
+  status     Int?
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model unspscs {
+  id         BigInt    @id(map: "PK__unspscs__3213E83FD855EFCA") @default(autoincrement())
+  commodity  Int
+  title      String    @db.NVarChar(255)
+  definition String    @db.NVarChar(Max)
+  addedBy    Int       @db.TinyInt
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model upcoming_events {
+  id           BigInt    @id(map: "PK_upcoming_events") @default(autoincrement())
+  title        String?   @db.NVarChar(Max)
+  title_ar     String?   @db.NVarChar(Max)
+  image        String?   @db.NVarChar(Max)
+  date         String?   @db.NVarChar(255)
+  link         String?   @db.NVarChar(Max)
+  status       Int?
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
+  video        String?   @db.NVarChar(Max)
+  display_type String?   @db.NVarChar(Max)
+}
+
+model user_guide_pdfs {
+  id         BigInt    @id(map: "PK__user_gui__3213E83F876ADCF1") @default(autoincrement())
+  title      String    @db.NVarChar(255)
+  pdf        String    @db.NVarChar(255)
+  status     Int       @default(1, map: "DF__user_guid__statu__51851410")
+  addedBy    Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model user_guide_videos {
+  id         BigInt    @id(map: "PK__user_gui__3213E83FFCD40DEC") @default(autoincrement())
+  title      String    @db.NVarChar(255)
+  video      String    @db.NVarChar(255)
+  status     Int       @default(1, map: "DF__user_guid__statu__546180BB")
+  addedBy    Int
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
+}
+
+model users {
+  id                       BigInt    @id(map: "PK_users") @default(autoincrement())
+  user_type                String?   @db.VarChar(20)
+  slug                     String?   @db.NVarChar(Max)
+  location_uk              String?   @db.NVarChar(Max)
+  have_cr                  String?   @db.NVarChar(Max)
+  cr_documentID            Int?
+  document_number          String?   @db.NVarChar(Max)
+  fname                    String?   @db.NVarChar(Max)
+  lname                    String?   @db.NVarChar(Max)
+  email                    String?   @db.NVarChar(Max)
+  mobile                   String?   @db.NVarChar(Max)
+  image                    String?   @db.NVarChar(Max)
+  address                  String?   @db.NVarChar(Max)
+  address1                 String?   @db.NVarChar(Max)
+  address2                 String?   @db.NVarChar(Max)
+  po_box                   String?   @db.NVarChar(Max)
+  mbl_extension            String?   @db.NVarChar(Max)
+  website                  String?   @db.NVarChar(Max)
+  no_of_staff              String?   @db.NVarChar(Max)
+  companyID                String?   @db.NVarChar(Max)
+  district                 String?   @db.NVarChar(Max)
+  building_no              String?   @db.NVarChar(Max)
+  additional_number        String?   @db.NVarChar(Max)
+  other_landline           String?   @db.NVarChar(Max)
+  unit_number              String?   @db.NVarChar(Max)
+  qr_corde                 String?   @db.NVarChar(Max)
+  email_verified_at        DateTime? @db.DateTime
+  password                 String?   @db.NVarChar(Max)
+  code                     String?   @db.VarChar(50)
+  verification_code        Int?
+  cr_number                String?   @db.NVarChar(Max)
+  cr_activity              String?   @db.NVarChar(Max)
+  company_name_eng         String?   @db.NVarChar(Max)
+  company_name_arabic      String?   @db.NVarChar(Max)
+  bussiness_activity       String?   @db.NVarChar(Max)
+  membership_type          String?   @db.NVarChar(Max)
+  member_category          String?   @db.NVarChar(50)
+  other_products           String?   @db.NVarChar(Max)
+  gpc                      String?   @db.NVarChar(Max)
+  product_addons           String?   @db.NVarChar(Max)
+  total                    Float?
+  contactPerson            String?   @db.NVarChar(Max)
+  companyLandLine          String?   @db.NVarChar(Max)
+  documents                String?   @db.NVarChar(Max)
+  address_image            String?   @db.NVarChar(Max)
+  status                   String?   @default("inactive", map: "DF_users_status") @db.VarChar(10)
+  payment_type             String?   @db.NVarChar(Max)
+  payment_status           Int?
+  online_payment           String?   @db.NVarChar(Max)
+  remember_token           String?   @db.NVarChar(Max)
+  parent_memberID          Int?
+  member_type              String?   @db.VarChar(50)
+  invoice_file             String?   @db.NVarChar(Max)
+  otp_status               Int?
+  transaction_id           Int?
+  created_at               DateTime? @db.DateTime
+  updated_at               DateTime? @db.DateTime
+  gcpGLNID                 String?   @db.VarChar(50)
+  gln                      String?   @db.NVarChar(50)
+  gcp_type                 String?   @db.VarChar(50)
+  deleted_at               DateTime? @db.DateTime
+  gcp_expiry               DateTime? @db.DateTime
+  memberID                 String?   @db.NVarChar(Max)
+  user_id                  String?   @db.NVarChar(Max)
+  remarks                  String?   @db.NVarChar(Max)
+  assign_to                Int?      @default(0, map: "DF_users_assign_to")
+  membership_category      String?   @db.NVarChar(50)
+  upgradation_disc         Int?      @default(0, map: "DF_users_upgradation_disc")
+  upgradation_disc_amount  Float?    @default(0, map: "DF_users_upgradation_disc_amount")
+  renewal_disc             Int?      @default(0, map: "DF_users_renewal_disc")
+  renewal_disc_amount      Float?    @default(0, map: "DF_users_renewal_disc_amount")
+  membership_otherCategory String?   @db.NVarChar(50)
+  activityID               Int?      @default(0, map: "DF_users_activityID")
+  registration_type        String?   @db.NChar(10)
+}
+
+model withdraw_gateways {
+  id                   Float?
+  name                 String?   @db.NVarChar(Max)
+  charge               Float?
+  charge_type          String?   @db.NVarChar(Max)
+  min_withdraw         Float?
+  max_withdraw         Float?
+  withdraw_instruction String?   @db.NVarChar(Max)
+  status               Float?
+  created_at           DateTime? @db.DateTime
+  updated_at           DateTime? @db.DateTime
+  WithdrawGatewayID    Int       @id(map: "PK__withdraw__12283BF1B95F4402") @default(autoincrement())
+}
+
+model withdraw_logs {
+  id                  Float?
+  user_id             Float?
+  withdraw_gateway_id Float?
+  trx                 String?   @db.NVarChar(Max)
+  user_data           String?   @db.NVarChar(Max)
+  charge              Float?
+  balance_remains     Float?
+  amount              Float?
+  reason_of_reject    String?   @db.NVarChar(Max)
+  status              Float?
+  created_at          DateTime? @db.DateTime
+  updated_at          DateTime? @db.DateTime
+  WithdrawLogID       Int       @id(map: "PK__withdraw__AD995F8BC87A4506") @default(autoincrement())
+}
+
+model TagTest {
+  id   Int    @id @default(autoincrement())
+  name String
+}
