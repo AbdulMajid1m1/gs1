@@ -92,7 +92,7 @@ const SideBar = () => {
               <span 
                 //  onClick={() => router.back()} className='cursor-pointer'
                  >
-                <img 
+                <img  
                   src='/images/backarrow.png' 
                     className='h-8 w-8 text-secondary mr-3' 
                       alt='' 
