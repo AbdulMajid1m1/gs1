@@ -5,13 +5,14 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import Link from 'next/link';
 
 const HomePage = () => {
   return (
     <div>
 
         {/* Nav */}
-        <div className='p-2'>
+        <div className='sticky top-0 z-50 bg-white p-2'>
           <div className='h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4'>
             {/* Logo and Text */}
             <div className='flex items-center flex-wrap mb-4 sm:mb-0'>
@@ -31,7 +32,13 @@ const HomePage = () => {
               </div>
             <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2'>
               <button className='bg-secondary text-white px-2 py-1 rounded-md'>Get a Barcode</button>
-              <button className='bg-primary text-white px-2 py-1 rounded-md'>GS1 Member Login</button>
+              <Link href='/Member/MemberRegistration'>
+                <button 
+                  className='bg-primary text-white px-2 py-1 rounded-md'
+                >
+                  GS1 Member Login
+                </button>
+              </Link>
             </div>
             </div>
           </div>

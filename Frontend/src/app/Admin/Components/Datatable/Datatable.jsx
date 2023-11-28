@@ -7,13 +7,13 @@ import { useEffect, useState, useContext } from "react";
 // import "jspdf-autotable";
 
 import { GridToolbar } from "@mui/x-data-grid";
-import { MuiCustomTable } from "../utils/MuiCustomTable";
-import ActionDropdown from "../utils/ActionDropdown";
+import { MuiCustomTable } from "../../utils/MuiCustomTable";
+import ActionDropdown from "../../utils/ActionDropdown";
 // import newRequest from "../../../utils/userRequest";
 // import NewUserPopup from "../../NewUserPopup/NewUserPopup";
-import { DataTableContext } from "../Contexts/DataTableContext";
-import CustomSnakebar from "../utils/CustomSnackbar";
-import { SnackbarContext } from "../Contexts/SnackbarContext";
+import { DataTableContext } from "../../Contexts/DataTableContext";
+import CustomSnakebar from "../../utils/CustomSnackbar";
+import { SnackbarContext } from "../../Contexts/SnackbarContext";
 import Swal from "sweetalert2";
 // import * as XLSX from 'xlsx';
 

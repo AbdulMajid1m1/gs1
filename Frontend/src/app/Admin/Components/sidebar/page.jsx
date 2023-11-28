@@ -92,9 +92,10 @@ const SideBar = () => {
               <span 
                 //  onClick={() => router.back()} className='cursor-pointer'
                  >
-                <img 
+                <img  
                   src='/images/backarrow.png' 
                     className='h-8 w-8 text-secondary mr-3' 
+                    style={{ filter: 'invert(1)' }}
                       alt='' 
                   />
               </span>
@@ -117,47 +118,53 @@ const SideBar = () => {
         ref={sidebarRef}
       >
         <div className="h-full px-3 py-2 overflow-y-auto bg-[#1E3B8B]">
-          <div
-            className="flex justify-center items-center mb-3 cursor-pointer"
-            onClick={handleLogoClick}
-          >
-            <img
-              src="/images/gs1logowhite.png"
-              className="h-auto w-44 rounded-md "
-              alt=""
-            />
-          </div>
+          <Link href="/Home/pages/mainPage">
+            <div
+              className="flex justify-center items-center mb-3 cursor-pointer"
+              onClick={handleLogoClick}
+            >
+              <img
+                src="/images/gs1logowhite.png"
+                className="h-auto w-44 rounded-md "
+                alt=""
+              />
+            </div>
+          </Link>
           <hr />
 
-          <div
-            className={`main-images-container ${selectedItem === '/dashboard' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/dashboard')}
-            onContextMenu={(event) =>
-              handleContextMenu(event, '/dashboard')
-            }
-          >
-            <img
-              src='/images/dashboard.png'
-              className="main-inside-image bg-white rounded-full"
-              alt=""
-            />
-            <p className="sidebar-text">Dashboard</p>
-          </div>
+          <Link href="/admin/pages/Dashboard">
+            <div
+              className={`main-images-container ${selectedItem === '/dashboard' ? 'selected-item' : ''}`}
+               onClick={() => handleItemClick('/dashboard')}
+                onContextMenu={(event) =>
+                 handleContextMenu(event, '/dashboard')
+              }
+            >
+              <img
+                src='/images/dashboard.png'
+                className="main-inside-image bg-white rounded-full"
+                alt=""
+              />
+              <p className="sidebar-text">Dashboard</p>
+            </div>
+          </Link>
 
-          <div
-            className={`main-images-container ${selectedItem === '/customer-list' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/customer-list')}
-            onContextMenu={(event) =>
-              handleContextMenu(event, '/customer-list')
-            }
-          >
-            <img
-              src='/images/identify.png'
-              className="main-inside-image bg-white rounded-full"
-              alt=""
-            />
-            <p className="sidebar-text">List of Customers</p>
-          </div>
+          <Link href="/admin/pages/ListOfCustomer">
+            <div
+              className={`main-images-container ${selectedItem === '/customer-list' ? 'selected-item' : ''}`}
+                onClick={() => handleItemClick('/customer-list')}
+                 onContextMenu={(event) =>
+                  handleContextMenu(event, '/customer-list')
+                }
+              >
+              <img
+                src='/images/identify.png'
+                 className="main-inside-image bg-white rounded-full"
+                  alt=""
+              />
+                <p className="sidebar-text">GS1 Data</p>
+            </div>
+          </Link>
 
           {/* Implement Any Icon above the Hide Icons */}
           <div className="main-images-container-hide">
