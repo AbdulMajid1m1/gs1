@@ -177,31 +177,31 @@ export const purchaseOrderColumns = [
   {
     field: "po_header_id",
     headerName: "PO HEADER ID",
-    width: 100,
+    width: 180,
     editable: true,
   },
   {
     field: "purchase_order",
     headerName: "PURCHASE ORDER",
-    width: 150,
+    width: 180,
     editable: true,
   },
   {
     field: "member_id",
     headerName: "MEMEBER ID",
-    width: 100,
+    width: 180,
     editable: true,
   },
   {
     field: "create_date",
     headerName: "CREATE DATE",
-    width: 120,
+    width: 180,
     editable: true,
   },
   {
     field: "supplier_id",
     headerName: "SUPPLIER ID",
-    width: 100,
+    width: 180,
     editable: true,
   },
 

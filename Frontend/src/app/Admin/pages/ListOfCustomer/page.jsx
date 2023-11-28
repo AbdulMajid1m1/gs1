@@ -181,7 +181,7 @@ const ListOfCustomer = () => {
                 <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-25px' }}>
                     <DataTable
                         data={alldata}
-                        title="LIST OF CUSTOMERS"
+                        title="GS1 DATA"
                         secondaryColor="secondary"
                         columnsName={purchaseOrderColumns}
                         backButton={true}

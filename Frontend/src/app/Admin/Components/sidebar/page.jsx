@@ -95,6 +95,7 @@ const SideBar = () => {
                 <img  
                   src='/images/backarrow.png' 
                     className='h-8 w-8 text-secondary mr-3' 
+                    style={{ filter: 'invert(1)' }}
                       alt='' 
                   />
               </span>
@@ -117,7 +118,7 @@ const SideBar = () => {
         ref={sidebarRef}
       >
         <div className="h-full px-3 py-2 overflow-y-auto bg-[#1E3B8B]">
-          <Link href="/Home/page/mainPage">
+          <Link href="/Home/pages/mainPage">
             <div
               className="flex justify-center items-center mb-3 cursor-pointer"
               onClick={handleLogoClick}
@@ -161,7 +162,7 @@ const SideBar = () => {
                  className="main-inside-image bg-white rounded-full"
                   alt=""
               />
-                <p className="sidebar-text">List of Customers</p>
+                <p className="sidebar-text">GS1 Data</p>
             </div>
           </Link>
 

@@ -4,7 +4,7 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-      <Link href="/admin/Dashboard">Dashboard</Link>
+      <Link href="/admin/pages/Dashboard">Dashboard</Link>
     </div>
   )
 }
