@@ -26,7 +26,7 @@ export const sendOTPEmail = async (email, otp, subject, footerMessage) => {
             };
 
             const info = await transporter.sendMail(mailOptions);
-            resolve({ success: true, message: 'OTP sent successfully' });
+            resolve({ success: true, message: 'OTP sent successfully!' });
         } catch (error) {
             reject({ success: false, message: 'Something went wrong', error: error });
         }
