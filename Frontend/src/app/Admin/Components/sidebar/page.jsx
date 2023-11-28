@@ -117,7 +117,7 @@ const SideBar = () => {
         ref={sidebarRef}
       >
         <div className="h-full px-3 py-2 overflow-y-auto bg-[#1E3B8B]">
-          <Link href="/Home/mainPage">
+          <Link href="/Home/page/mainPage">
             <div
               className="flex justify-center items-center mb-3 cursor-pointer"
               onClick={handleLogoClick}
@@ -131,7 +131,7 @@ const SideBar = () => {
           </Link>
           <hr />
 
-          <Link href="/admin/Dashboard">
+          <Link href="/admin/pages/Dashboard">
             <div
               className={`main-images-container ${selectedItem === '/dashboard' ? 'selected-item' : ''}`}
                onClick={() => handleItemClick('/dashboard')}
@@ -148,7 +148,7 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/admin/ListOfCustomer">
+          <Link href="/admin/pages/ListOfCustomer">
             <div
               className={`main-images-container ${selectedItem === '/customer-list' ? 'selected-item' : ''}`}
                 onClick={() => handleItemClick('/customer-list')}

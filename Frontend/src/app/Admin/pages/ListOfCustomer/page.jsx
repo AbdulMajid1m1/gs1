@@ -1,8 +1,8 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react'
-import DataTable from '../Datatable/Datatable';
-import { ListOfCustomersColumn } from '../utils/datatablesource'
-import SideBar from '../sidebar/page';
+import DataTable from '../../Components/Datatable/Datatable';
+import { purchaseOrderColumns } from '../../utils/datatablesource'
+import SideBar from '../../Components/sidebar/page';
 // import newRequest from '../../utils/userRequest';
 // import CustomSnakebar from '../../utils/CustomSnackbar';
 // import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -183,7 +183,7 @@ const ListOfCustomer = () => {
                         data={alldata}
                         title="LIST OF CUSTOMERS"
                         secondaryColor="secondary"
-                        columnsName={ListOfCustomersColumn}
+                        columnsName={purchaseOrderColumns}
                         backButton={true}
                         uniqueId="customerListId"
                         // handleRowClickInParent={handleRowClickInParent}
