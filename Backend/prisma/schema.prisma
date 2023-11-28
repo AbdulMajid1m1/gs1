@@ -285,7 +285,7 @@ model chats {
 }
 
 model cities {
-  id         BigInt    @id(map: "PK_cities") @default(autoincrement())
+  id         String    @id @default(uuid())
   name       String?   @db.NVarChar(Max)
   state_id   Int?
   created_at DateTime? @db.DateTime
@@ -346,7 +346,7 @@ model country_of_sales {
 }
 
 model cr_documents {
-  id         String @id @default(uuid())
+  id         String    @id @default(uuid())
   name       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime

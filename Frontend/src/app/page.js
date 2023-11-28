@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import React from 'react'
 
-const page = () => {
+const MainPage = () => {
   return (
     <div>
-      <Link href="/admin/pages/Dashboard">Dashboard</Link>
+      <Link href="/admin/pages/dashboard"
+        style={{ color: "red" }}
+      >Dashboard</Link>
     </div>
   )
 }
 
-export default page
+export default MainPage

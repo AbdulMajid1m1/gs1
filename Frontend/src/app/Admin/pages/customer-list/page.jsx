@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react'
-import DataTable from '../../Components/Datatable/Datatable';
+import DataTable from '../../components/Datatable/Datatable';
 import { purchaseOrderColumns } from '../../utils/datatablesource'
 import SideBar from '../../Components/sidebar/page';
 // import newRequest from '../../utils/userRequest';
