@@ -99,7 +99,7 @@ const SideBar = () => {
                       alt='' 
                   />
               </span>
-            </div>
+            </div>   
             <img
               // onClick={() => router.push("/update-vendor")}
               src='/images/profile.png'
