@@ -49,7 +49,7 @@ export const getCrsById = async (req, res, next) => {
         // const { id } = req.params;
         // use JOi to validate the id
         const schema = Joi.object({
-            id: Joi.number().integer().required(),
+            id: Joi.string().required(),
         });
         const { error } = schema.validate(req.params);
         if (error) {
@@ -59,20 +59,55 @@ export const getCrsById = async (req, res, next) => {
         const { id } = req.params;
 
         const cr = await prisma.crs.findUnique({
-            where: { id: parseInt(id) },
+            where: { id: id },
         });
-        if (cr) {
-            // Serialize BigInt values in the response
-            const serializedCrs = serializeBigInt(cr);
-            res.json(serializedCrs);
-        } else {
+        if (!cr) {
             return next(createError(404, 'CR not found'));
         }
+        return res.json(cr);
     } catch (error) {
         next(error);
     }
 };
 
+
+export const getCrsByKeyword = async (req, res, next) => {
+    try {
+        // const { id } = req.params;
+        // use JOi to validate the id
+        const schema = Joi.object({
+            keyword: Joi.string().required(),
+        });
+        const { error } = schema.validate(req.query);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
+
+        const { keyword } = req.query;
+
+        const cr = await prisma.crs.findMany({
+            where: {
+                cr: {
+                    contains: keyword,
+                },
+            }
+
+        });
+
+        if (!cr || cr.length === 0) {
+            return next(createError(404, 'CR not found'));
+        }
+
+        return res.json(cr);
+    }
+
+    catch (error) {
+
+        next(error);
+
+    }
+
+};
 export const updateCrs = async (req, res, next) => {
     try {
 
