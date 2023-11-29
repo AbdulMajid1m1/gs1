@@ -346,7 +346,7 @@ model country_of_sales {
 }
 
 model cr_documents {
-  id         String    @id
+  id         String    @id 
   name       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
@@ -354,7 +354,7 @@ model cr_documents {
 }
 
 model crs {
-  id         BigInt    @id(map: "PK_crs") @default(autoincrement())
+  id         String    @id @default(cuid())
   cr         String?   @db.NVarChar(Max)
   activity   String?   @db.NVarChar(Max)
   status     Int?
