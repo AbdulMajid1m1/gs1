@@ -15,11 +15,11 @@ const GetBarcode = () => {
     setHasCR(value === 'yes');
   };
 
-  const handleSelectChange = (event) => {
-    setSelectedDocument(event.target.value);
-    console.log(selectedDocument);
-  };
 
+const handleSelectChange = (event, value) => {
+    console.log(value);
+    setSelectedDocument(value);
+};
 
   useEffect(() => {
     newRequest.get('/crDocuments')
@@ -191,7 +191,7 @@ const GetBarcode = () => {
                     <div className='flex flex-col gap-2'>
                     {hasCR ? (
                       <>
-                        <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>CR Number <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal'>(About CR Number)</span></label>
+                        <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>CR Number <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal text-lg'>(About CR Number)</span></label>
                         {/* <input 
                             type="text" 
                                 name="companyName" id="companyName" 
@@ -254,7 +254,7 @@ const GetBarcode = () => {
                                 />
                         )}
 
-                                            />
+                        />
 
                             <p className='font-normal text-secondary font-sans'>Click here if you want to add your CR!</p>
                        
@@ -265,7 +265,7 @@ const GetBarcode = () => {
                             <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>
                                 Documents <span className='text-[#FF3E01]'>* </span>
                             </label>
-                            <select
+                            {/* <select
                               name="companyName"
                                id="companyName"
                                 className='h-12 w-full border border-[#8E9CAB] font-sans rounded-md px-2'
@@ -279,7 +279,47 @@ const GetBarcode = () => {
                                     {name}
                                 </option>
                                 ))}
-                            </select>
+                            </select> */}
+                             <Autocomplete
+                                id="countryName"
+                                options={allDocuments}
+                                getOptionLabel={(option) => option}
+                                onChange={handleSelectChange}
+                                value={selectedDocument}
+
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                // perform operation when input is cleared
+                                    console.log("Input cleared");
+
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Documents"
+                                    required
+                                />
+                            )}
+                                classes={{
+                                    endAdornment: "text-white",
+                                }}
+                                sx={{
+                                '& .MuiAutocomplete-endAdornment': {
+                                    color: 'white',
+                                },
+                                }}
+                            />
                             </div>
                         </>
                      )}
