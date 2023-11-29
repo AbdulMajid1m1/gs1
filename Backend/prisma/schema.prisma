@@ -1895,7 +1895,7 @@ model user_guide_videos {
 }
 
 model users {
-  id                       String    @id
+  id                       String    @id @default(cuid())
   user_type                String?   @db.VarChar(20)
   slug                     String?   @db.NVarChar(Max)
   location_uk              String?   @db.NVarChar(Max)
