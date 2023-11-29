@@ -27,7 +27,7 @@ const HomePage = () => {
     <div>
 
         {/* Nav */}
-        <div className='sticky top-0 z-50 bg-white p-2'>
+        <div className='sticky top-0 z-50 bg-white'>
           <Header />
         </div>
 
