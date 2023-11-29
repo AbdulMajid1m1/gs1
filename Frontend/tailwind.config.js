@@ -25,12 +25,11 @@ module.exports = {
         // => @media (min-width: 1280px) { ... }
     },
     fontFamily: {
-      'sans': ['Roboto', 'sans-serif'],
+      'sans': ['Roboto', 'Inter', 'sans-serif'],
       'serif': ['Merriweather', 'serif'],
       'mono': ['ui-monospace', 'SFMono-Regular'],
       'display': ['Oswald', 'sans-serif'],
       'body': ['Open Sans', 'sans-serif'],
-      
     },
     colors: {
       'primary': '#FF693A',    // Main Color

@@ -1,0 +1,153 @@
+.main-sidebar{
+    width: 100%;
+    max-width: 365px;
+    height: 100vh;
+    background: #1E3B8B;
+    border: 2px solid #0E0E71;
+    box-shadow: 5px 5px 10px 5px #ABACAE;
+    border-bottom-right-radius: 10px;
+    overflow-y: auto; /* add this line to enable scrolling */
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dbdbdb;
+  border-bottom-right-radius: 10px;
+}
+
+.main-images-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 15px;
+    margin-top: 3%;
+    margin-left: 3%;
+    height: 50px;
+}
+
+.main-images-container-hide {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 15px;
+  margin-top: 3%;
+  margin-left: 3%;
+  height: 50px;
+  visibility: hidden;
+}
+
+.main-inside-image {
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.main-inside-image-gs1logo {
+  width: auto;
+  height: 45px;
+  margin-top: -20px;
+  cursor: pointer;
+}
+
+.main-inside-sidebar {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.sidebar-text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 19px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 667px) {
+    .main-sidebar {
+      width: 63px;
+      height: 100vh;
+      background: #1E3B8B;
+    }
+    .main-images-container {
+      margin: 0;
+      height: 50px;
+    }
+  
+    .main-inside-image {
+      width: 40px;
+      height: 40px;
+    }
+    .sidebar-text {
+      display: none;
+    }
+    
+    .main-images-container {
+        display: flex;
+     
+    }
+
+    .sidebar-text {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      /* margin-top: -5px; */
+    }
+  }
+
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.animated-bounce {
+    animation-name: bounce;
+    animation-duration: 1.5s; /* Adjust the duration as needed */
+    animation-timing-function: ease-in-out; /* Adjust the timing function as needed */
+    animation-iteration-count: infinite;
+}
+
+
+.context-menu {
+  position: fixed;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.context-menu-option {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.context-menu-option:hover {
+  background: #f0f0f0;
+}
+
+
+.selected-item {
+  background-color: #3b68e4; /* Replace with your desired background color */
+  /* margin-left: 0;  */
+  border-right: 4px solid #0FB5DA;
+}
+
+
+.selected-item-capture {
+  background-color: #3b68e4; /* Replace with your desired background color */
+  /* margin-left: 0;  */
+  border-right: 4px solid #E02266;
+}
