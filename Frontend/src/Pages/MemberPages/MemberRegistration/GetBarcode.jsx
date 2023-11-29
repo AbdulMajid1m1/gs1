@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Footer from '../../../components/Footer/Footer'
 import Header from '../../../components/Header/Header'
 import { useNavigate } from 'react-router-dom'
@@ -36,7 +36,8 @@ const GetBarcode = () => {
       });
   }, []);
 
-
+  
+  const abortControllerRef = useRef(null);
   const [gpc, setGpc] = useState(null);
   const [gpcCode, setGpcCode] = useState('');
   const [gpcList, setGpcList] = useState([]); // gpc list
@@ -84,13 +85,12 @@ const GetBarcode = () => {
 
         // Create a new AbortController
         abortControllerRef.current = new AbortController();
-        const res = await newRequest.get("/crs/seachByKeyword?keyword=123", {
-
-            "term": newInputValue
-        }, {
+        const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`, {
 
             signal: abortControllerRef.current.signal
         })
+
+        // const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`)
 
         console.log(res);
         setGpcList(res?.data?.gpc ?? []);
