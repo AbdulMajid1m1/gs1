@@ -87,7 +87,7 @@ const handleSelectChange = (event, value) => {
         abortControllerRef.current = new AbortController();
         const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`, {
 
-            signal: abortControllerRef.current.signal
+            // signal: abortControllerRef.current.signal
         })
 
         // const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`)
