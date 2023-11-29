@@ -84,7 +84,7 @@ const GetBarcode = () => {
 
         // Create a new AbortController
         abortControllerRef.current = new AbortController();
-        const res = await phpRequest.post("/search/gpc", {
+        const res = await newRequest.get("/crs/seachByKeyword?keyword=123", {
 
             "term": newInputValue
         }, {
