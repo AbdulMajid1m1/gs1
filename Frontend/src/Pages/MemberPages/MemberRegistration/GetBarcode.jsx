@@ -1,21 +1,125 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../../../components/Footer/Footer'
 import Header from '../../../components/Header/Header'
 import { useNavigate } from 'react-router-dom'
+import newRequest from '../../../utils/userRequest'
+import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 
 const GetBarcode = () => {
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
+  const [allDocuments, setAllDocuments] = useState([]); // Default to 'Yes'
+  const [selectedDocument, setSelectedDocument] = useState('');
+  const navigate = useNavigate();
 
   const handleRadioChange = (value) => {
     setHasCR(value === 'yes');
   };
 
-  const navigate = useNavigate();
+  const handleSelectChange = (event) => {
+    setSelectedDocument(event.target.value);
+    console.log(selectedDocument);
+  };
+
+
+  useEffect(() => {
+    newRequest.get('/crDocuments')
+      .then((response) => {
+        console.log(response.data);
+        const data = response.data;
+        const names = data.map((document) => document.name);
+        // Set the names in state or use them as needed
+        setAllDocuments(names);
+        console.log(names);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+
+  const [gpc, setGpc] = useState(null);
+  const [gpcCode, setGpcCode] = useState('');
+  const [gpcList, setGpcList] = useState([]); // gpc list
+  const [autocompleteLoading, setAutocompleteLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+        
+
+  const handleGPCAutoCompleteChange = (event, value) => {
+    console.log(value);
+    setGpc(value);
+    setGpcCode(value?.gpcCode);
+  }
+
+
+  const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
+    console.log(reason)
+    if (reason === 'reset' || reason === 'clear') {
+        setGpcList([]); // Clear the data list if there is no input
+        return; // Do not perform search if the input is cleared or an option is selected
+    }
+    if (reason === 'option') {
+        return // Do not perform search if the option is selected
+    }
+
+    if (!newInputValue || newInputValue.trim() === '') {
+        // perform operation when input is cleared
+        setGpcList([]);
+        return;
+    }
+
+
+    setAutocompleteLoading(true);
+    setOpen(true);
+
+
+    console.log(newInputValue);
+    // setSearchText(newInputValue);
+    console.log("querying...")
+    try {
+
+        // Cancel any pending requests
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+
+        // Create a new AbortController
+        abortControllerRef.current = new AbortController();
+        const res = await newRequest.get("/crs/seachByKeyword?keyword=123", {
+
+            "term": newInputValue
+        }, {
+
+            signal: abortControllerRef.current.signal
+        })
+
+        console.log(res);
+        setGpcList(res?.data?.gpc ?? []);
+        setOpen(true);
+        setAutocompleteLoading(false);
+    }
+    catch (error) {
+        if (error?.name === 'CanceledError') {
+            // Ignore abort errors
+            setGpcList([]); // Clear the data list if there is no input
+            setAutocompleteLoading(true);
+            console.log(error)
+            return;
+        }
+        console.error(error);
+        console.log(error)
+        setGpcList([]); // Clear the data list if an error occurs
+        setOpen(false);
+        setAutocompleteLoading(false);
+    }
+
+}
+
+
 
   return (
     <div>
         {/* Nav */}
-          <div className='sticky top-0 z-50 bg-white p-2'>
+          <div className='sticky top-0 z-50 bg-white'>
              <Header />
           </div>
         {/* End Nav */}
@@ -88,28 +192,95 @@ const GetBarcode = () => {
                     {hasCR ? (
                       <>
                         <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>CR Number <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal'>(About CR Number)</span></label>
-                        <input 
+                        {/* <input 
                             type="text" 
                                 name="companyName" id="companyName" 
                                 className='h-12 w-full border border-[#8E9CAB] font-sans rounded-md px-2'
                                 placeholder='Search CR Number'
+                                /> */}
+                        <Autocomplete
+                            id="companyName"
+                            required
+                            options={gpcList}
+                            getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
+                            onChange={handleGPCAutoCompleteChange}
+                            value={gpc}
+                            onInputChange={(event, newInputValue, params) => handleAutoCompleteInputChange(event, newInputValue, params)}
+                            loading={autocompleteLoading}
+                            sx={{ marginTop: '10px' }}
+                            open={open}
+                            onOpen={() => {
+                                // setOpen(true);
+                            }}
+                            onClose={() => {
+                                setOpen(false);
+                            }}
+                            renderOption={(props, option) => (
+                                <li {...props}>
+                                    {option ? `${option?.value}` : 'No options'}
+                                </li>
+                            )}
+
+                            renderInput={(params) => (
+                                <TextField
+                                    // required
+                                    {...params}
+                                    label="Search CR Number"
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <React.Fragment>
+                                            {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                            {params.InputProps.endAdornment}
+                                        </React.Fragment>
+                                        ),
+                                    }}
+                                    sx={{
+                                        '& label.Mui-focused': {
+                                            color: '#00006A',
+                                        },
+                                        '& .MuiInput-underline:after': {
+                                            borderBottomColor: '#00006A',
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                        '&:hover fieldset': {
+                                            borderColor: '#000000',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#000000',
+                                        },
+                                        },
+                                    }}
                                 />
+                        )}
+
+                                            />
+
                             <p className='font-normal text-secondary font-sans'>Click here if you want to add your CR!</p>
                        
                         </>
                         ) : (
                         <>
                         <div className=''>
-                          <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>Documents <span className='text-[#FF3E01]'>* </span></label>
-                            <select 
-                                type="text" 
-                                    name="companyName" id="companyName" 
-                                    className='h-12 w-full border border-[#8E9CAB] font-sans rounded-md px-2'
-                                    placeholder='Search CR Number'
-                                    >
+                            <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>
+                                Documents <span className='text-[#FF3E01]'>* </span>
+                            </label>
+                            <select
+                              name="companyName"
+                               id="companyName"
+                                className='h-12 w-full border border-[#8E9CAB] font-sans rounded-md px-2'
+                                 placeholder='Search CR Number'
+                                 value={selectedDocument}
+                                 onChange={handleSelectChange}                         
+                            >
                                 <option value="Select CR Number">Select CR Number</option>
+                                {allDocuments.map((name) => (
+                                <option key={name} value={name}>
+                                    {name}
+                                </option>
+                                ))}
                             </select>
-                        </div>
+                            </div>
                         </>
                      )}
                         <button 
