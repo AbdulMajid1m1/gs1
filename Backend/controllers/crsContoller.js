@@ -25,8 +25,7 @@ export const createCrs = async (req, res, next) => {
                 status,
             },
         });
-        const serializedCrs = serializeBigInt(createdCrs);
-        res.status(201).json(serializedCrs);
+        res.status(201).json(createdCrs);
     } catch (error) {
         next(error);
     }
@@ -35,10 +34,9 @@ export const createCrs = async (req, res, next) => {
 export const getAllCrs = async (req, res, next) => {
     try {
         const crs = await prisma.crs.findMany();
-        // Serialize BigInt values in the response
-        const serializedCrs = serializeBigInt(crs);
 
-        res.json(serializedCrs);
+
+        res.json(crs);
     } catch (error) {
         next(error);
     }
@@ -98,6 +96,8 @@ export const getCrsByKeyword = async (req, res, next) => {
             return next(createError(404, 'CR not found'));
         }
 
+        // this is json data.
+
         return res.json(cr);
     }
 
@@ -136,8 +136,8 @@ export const updateCrs = async (req, res, next) => {
             },
         });
         // Serialize BigInt values in the responses
-        const serializedCrs = serializeBigInt(updatedCrs);
-        res.json(serializedCrs);
+
+        res.json(updatedCrs);
     } catch (error) {
         next(error);
     }
