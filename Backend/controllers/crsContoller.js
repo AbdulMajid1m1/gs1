@@ -135,7 +135,7 @@ export const updateCrs = async (req, res, next) => {
                 status,
             },
         });
-        // Serialize BigInt values in the response
+        // Serialize BigInt values in the responses
         const serializedCrs = serializeBigInt(updatedCrs);
         res.json(serializedCrs);
     } catch (error) {
