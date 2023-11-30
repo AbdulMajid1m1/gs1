@@ -725,7 +725,7 @@ model gtin_non_compliants {
 }
 
 model gtin_products {
-  id                             String    @id @default(cuid())
+  id                            String   @id @default(cuid())
   member_category_description    String?   @db.NVarChar(Max)
   total_no_of_barcodes           Int?
   member_registration_fee        Int?
@@ -745,7 +745,7 @@ model gtin_products {
 }
 
 model gtin_subcriptions {
-  id             String    @id @default(cuid())
+  id             BigInt    @id(map: "PK_gtin_subcriptions") @default(autoincrement())
   react_no       Int?
   transaction_id Int?
   pkg_id         Int?

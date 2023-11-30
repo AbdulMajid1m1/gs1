@@ -317,12 +317,12 @@ CREATE TABLE [dbo].[chats] (
 
 -- CreateTable
 CREATE TABLE [dbo].[cities] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
     [state_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_cities] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [cities_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -365,7 +365,7 @@ CREATE TABLE [dbo].[cookie_consents] (
 
 -- CreateTable
 CREATE TABLE [dbo].[countries] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(1000) NOT NULL,
     [name_en] NVARCHAR(max),
     [name_ar] NVARCHAR(max),
     [country_code] NVARCHAR(max),
@@ -373,7 +373,7 @@ CREATE TABLE [dbo].[countries] (
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_countries] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [countries_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -400,13 +400,13 @@ CREATE TABLE [dbo].[cr_documents] (
 
 -- CreateTable
 CREATE TABLE [dbo].[crs] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(1000) NOT NULL,
     [cr] NVARCHAR(max),
     [activity] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_crs] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [crs_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -1972,12 +1972,12 @@ CREATE TABLE [dbo].[staff_help_desks] (
 
 -- CreateTable
 CREATE TABLE [dbo].[states] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
     [country_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_states] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [states_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
