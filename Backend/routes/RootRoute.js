@@ -4,7 +4,8 @@ import userRoutes from './subRoutes/usersRoutes.js';
 import crDocumentsRoutes from './subRoutes/crDocumentsRoutes.js';
 import attributesRoutes from './subRoutes/attributesRoutes.js';
 import countryStateCityRoutes from './subRoutes/countryStateCityRoutes.js';
-
+import gtinProductsRoutes from './subRoutes/gtinProductsRoutes.js';
+import otherProuductRoutes from './subRoutes/otherProuductRoutes.js';
 const router = express.Router();
 
 
@@ -18,5 +19,10 @@ router.use('/crDocuments', crDocumentsRoutes);
 router.use('/attributes', attributesRoutes);
 
 router.use('/address', countryStateCityRoutes);
+
+router.use('/gtinProducts', gtinProductsRoutes);
+
+router.use('/otherProducts', otherProuductRoutes);
+
 
 export default router;

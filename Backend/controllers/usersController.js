@@ -1,7 +1,9 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
-
+import { generateStrongPassword } from '../utils/functions/commonFunction.js';
+import { sendOTPEmail } from '../services/emailTemplates.js';
+import bcrypt from 'bcryptjs';
 
 
 const userSchema = Joi.object({
@@ -31,7 +33,7 @@ const userSchema = Joi.object({
     unit_number: Joi.string(),
     qr_corde: Joi.string(),
     email_verified_at: Joi.date(),
-    password: Joi.string(),
+
     code: Joi.string().max(50),
     verification_code: Joi.number().integer(),
     cr_number: Joi.string(),
@@ -88,15 +90,31 @@ export const createUser = async (req, res, next) => {
             return next(createError(400, error.details[0].message));
         }
 
+        // create 6 digit random number. use method to increase randomness
+        const password = generateStrongPassword(6);
+
+        // Send the password to the user's email
+
+        await sendOTPEmail(req.body.email, password)
+
+        // Hash the password using bcrypt
+        // use hash sync  
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        req.body.password = hashedPassword;
+
+
         const newUser = await prisma.users.create({
             data: req.body,
         });
 
         res.status(201).json(newUser);
     } catch (error) {
+        console.log(error)
         next(error);
     }
 };
+
+
 
 export const getUserDetails = async (req, res, next) => {
     try {
