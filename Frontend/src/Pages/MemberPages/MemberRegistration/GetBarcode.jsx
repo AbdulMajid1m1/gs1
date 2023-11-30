@@ -4,6 +4,7 @@ import Header from '../../../components/Header/Header'
 import { useNavigate } from 'react-router-dom'
 import newRequest from '../../../utils/userRequest'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
+import Swal from 'sweetalert2';
 
 const GetBarcode = () => {
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
@@ -48,72 +49,103 @@ const handleSelectChange = (event, value) => {
   const handleGPCAutoCompleteChange = (event, value) => {
     console.log(value);
     setGpc(value);
-    setGpcCode(value?.gpcCode);
+    setGpcCode(value?.value);
+
+
+    console.log("gpc" + gpcCode);
   }
 
 
   const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-    console.log(reason)
+    console.log(reason);
     if (reason === 'reset' || reason === 'clear') {
-        setGpcList([]); // Clear the data list if there is no input
-        return; // Do not perform search if the input is cleared or an option is selected
+      setGpcList([]); // Clear the data list if there is no input
+      return; // Do not perform search if the input is cleared or an option is selected
     }
     if (reason === 'option') {
-        return // Do not perform search if the option is selected
+      return; // Do not perform search if the option is selected
     }
-
+  
     if (!newInputValue || newInputValue.trim() === '') {
-        // perform operation when input is cleared
-        setGpcList([]);
-        return;
+      // perform operation when input is cleared
+      setGpcList([]);
+      return;
     }
-
-
+  
     setAutocompleteLoading(true);
     setOpen(true);
-
-
+  
     console.log(newInputValue);
-    // setSearchText(newInputValue);
-    console.log("querying...")
+    console.log("querying...");
     try {
-
-        // Cancel any pending requests
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
-
-        // Create a new AbortController
-        abortControllerRef.current = new AbortController();
-        const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`, {
-
-            // signal: abortControllerRef.current.signal
-        })
-
-        // const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`)
-
-        console.log(res);
-        setGpcList(res?.data?.gpc ?? []);
-        setOpen(true);
-        setAutocompleteLoading(false);
+      const res = await newRequest.get(`/crs/seachByKeyword?keyword=${newInputValue}`);
+      console.log(res);
+  
+      const crs = res?.data?.map(item => ({ value: item.cr }));
+      setGpcList(crs);
+  
+      setOpen(true);
+      setAutocompleteLoading(false);
+    } catch (error) {
+      console.error(error);
+      setGpcList([]); // Clear the data list if an error occurs
+      setOpen(false);
+      setAutocompleteLoading(false);
     }
-    catch (error) {
-        if (error?.name === 'CanceledError') {
-            // Ignore abort errors
-            setGpcList([]); // Clear the data list if there is no input
-            setAutocompleteLoading(true);
-            console.log(error)
-            return;
+  };
+  
+
+
+  const handleAddCR = async () => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Add CR',
+      html:
+        '<input id="crNumber" class="swal2-input" placeholder="CR Number">' +
+        '<input id="crActivity" class="swal2-input" placeholder="CR Activity">',
+      showCancelButton: true,
+      focusConfirm: false,
+      preConfirm: () => {
+        return {
+          crNumber: document.getElementById('crNumber').value,
+          crActivity: document.getElementById('crActivity').value,
+        };
+      },
+      inputValidator: (form) => {
+        if (!form.crNumber || !form.crActivity) {
+          return 'CR Number and Activity are required';
         }
-        console.error(error);
-        console.log(error)
-        setGpcList([]); // Clear the data list if an error occurs
-        setOpen(false);
-        setAutocompleteLoading(false);
+      },
+    });
+  
+    if (!formValues) {
+      return; // Cancelled or invalid input
     }
-
-}
-
+  
+    const { crNumber, crActivity } = formValues;
+  
+    try {
+      // Send a request to your API to add the CR number and activity
+      const response = await newRequest.post('/crs', {
+        cr: crNumber,
+        activity: crActivity,
+        status: 1, // You can customize this value
+      });
+  
+      // Handle success, e.g., show a success message
+      Swal.fire({
+        icon: 'success',
+        title: 'CR Number Added!',
+        text: `CR Number ${crNumber} with activity "${crActivity}" has been added successfully.`,
+      });
+    } catch (error) {
+      // Handle error, e.g., show an error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to add CR Number. Please try again.',
+      });
+    }
+  };
 
 
   return (
@@ -192,13 +224,7 @@ const handleSelectChange = (event, value) => {
                     {hasCR ? (
                       <>
                         <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>CR Number <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal text-lg'>(About CR Number)</span></label>
-                        {/* <input 
-                            type="text" 
-                                name="companyName" id="companyName" 
-                                className='h-12 w-full border border-[#8E9CAB] font-sans rounded-md px-2'
-                                placeholder='Search CR Number'
-                                /> */}
-                        <Autocomplete
+                           <Autocomplete
                             id="companyName"
                             required
                             options={gpcList}
@@ -216,7 +242,7 @@ const handleSelectChange = (event, value) => {
                                 setOpen(false);
                             }}
                             renderOption={(props, option) => (
-                                <li {...props}>
+                                <li  key={option.cr} {...props}>
                                     {option ? `${option?.value}` : 'No options'}
                                 </li>
                             )}
@@ -256,7 +282,7 @@ const handleSelectChange = (event, value) => {
 
                         />
 
-                            <p className='font-normal text-secondary font-sans'>Click here if you want to add your CR!</p>
+                            <p onClick={handleAddCR} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
                        
                         </>
                         ) : (
