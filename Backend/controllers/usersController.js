@@ -114,6 +114,8 @@ export const createUser = async (req, res, next) => {
     }
 };
 
+
+
 export const getUserDetails = async (req, res, next) => {
     try {
         // Define allowable columns for filtering

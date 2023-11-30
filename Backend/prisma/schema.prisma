@@ -346,7 +346,7 @@ model country_of_sales {
 }
 
 model cr_documents {
-  id         String    @id 
+  id         String    @id
   name       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
@@ -725,7 +725,7 @@ model gtin_non_compliants {
 }
 
 model gtin_products {
-  id                             BigInt    @id(map: "PK_gtin_products") @default(autoincrement())
+  id                             String    @id @default(cuid())
   member_category_description    String?   @db.NVarChar(Max)
   total_no_of_barcodes           Int?
   member_registration_fee        Int?
@@ -745,7 +745,7 @@ model gtin_products {
 }
 
 model gtin_subcriptions {
-  id             BigInt    @id(map: "PK_gtin_subcriptions") @default(autoincrement())
+  id             String    @id @default(cuid())
   react_no       Int?
   transaction_id Int?
   pkg_id         Int?
