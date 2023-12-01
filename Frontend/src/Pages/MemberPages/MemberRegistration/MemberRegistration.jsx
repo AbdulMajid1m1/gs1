@@ -5,18 +5,36 @@ import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../utils/userRequest';
 import './MemberRegistration.css';
 import Header from '../../../components/Header/Header';
+import Swal from 'sweetalert2';
+
 
 const MemmberRegisteration = () => {
     const [country, setCountry] = React.useState([])
     const [state, setState] = React.useState([])
     const [city, setCity] = useState([]);
+    const [gtinNumber, setGtinNumber] = useState('')
     const [getAllActivities, setGetAllActivities] = React.useState([])
     const [companyLandLine, setCompanyLandLine] = React.useState('')
     const [mobileNumber, setMobileNumber] = React.useState('')
     const [selectedCity, setSelectedCity] = useState("");
     const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedState, setSelectedState] = useState("");
+    const [selectedGtinNumber, setSelectedGtinNumber] = useState("");
     const [selectedActivity, setSelectedActivity] = React.useState('')
+
+    const [email, setEmail] = useState('')
+    const [companyEnglish, setCompanyEnglish] = useState('')
+    const [companyArabic, setCompanyArabic] = useState('')
+    const [contactPerson, setContactPerson] = useState('')
+    const [extension, setExtension] = useState('')
+    const [zipCode, setZipCode] = useState('')
+    const [website, setWebsite] = useState('')
+    const [searchGPC, setSearchGPC] = useState('')
+    const [upload, setUpload] = useState('')
+    const [uploadNationalAddress, setUploadNationalAddress] = useState('')
+    const [otherProducts, setOtherProducts] = useState('')
+    const [uploadCompanyDocuments, setUploadCompanyDocuments] = useState('')
+
 
     // multple select 
     const [selectedAttributes, setSelectedAttributes] = useState([]);
@@ -25,43 +43,85 @@ const MemmberRegisteration = () => {
     const [otherProductsOptions, setOtherProductsOptions] = useState([]);
     const [selectedGLNOption, setSelectedGLNOption] = useState(null);
 
+
+
     useEffect(() => {
+        //All Activities Api
+        const handleGetAllActivities = async () => {
+            try {
+                const response = await newRequest.get('/crs/getCrsById/452819');
+               
+                const activity = response.data;
+                //   const Activities = data.map((activity) => ({
+                //     id: activity.id,
+                //     name: activity.activity,
+                //   }));
+                console.log(activity);
+                setGetAllActivities(activity);
 
-    //All Activities Api
-    newRequest.get('/crs/getCrsById/452819')
-    .then((response) => {
-      const data = response.data;
-      const Activities = data.map((activity) => ({
-        id: activity.id,
-        name: activity.activity,
-      }));
-      setGetAllActivities(Activities);
-    })
-    .catch((error) => {
-      console.log(error);
-    }); 
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
 
-    // Search GPC Api
-     newRequest.get('/attributes/113')
-        .then((response) => {
-          setAttributeOptions(response.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
+        };
 
-        
+        // Search GPC Api
+        const handleSearchGPC = async () => {
+            try {
+                const response = await newRequest.get('/attributes/113');
+                setAttributeOptions(response.data);
+            } 
+            catch (error) {
+                console.error('Error fetching on Search GPC Api:', error);
+            }
+        };
+
+
+        const handleGtinNumber = async () => {
+            try {
+                const response = await newRequest.get('/gtinProducts');
+                setGtinNumber(response.data);
+                console.log(response.data);
+            }
+            catch (error) {
+                console.error('Error fetching on Gtin Product Api:', error);
+            }
+        };
+
+
         // Other Products Api (GLN, SSCC, UDI)
         const handleOtherProductsData = async () => {
             try {
                 const response = await newRequest.get('/otherProducts');
                 setOtherProductsOptions(response.data);
-            } catch (error) {
+            } 
+            catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        // handleActivityData();
+
+        // all Countries Api
+        const handleGetAllCountries = async () => {
+            try {
+                const response = await newRequest.get('/address/getAllCountries');
+                const data = response.data;
+                const countries = data.map((country) => ({
+                    id: country.id,
+                    name: country.name_en,
+                }));
+                setCountry(countries);
+            } 
+            catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+       
+
+        handleGetAllActivities();
+        handleSearchGPC();
+        handleGetAllCountries();
+        handleGtinNumber();
         handleOtherProductsData();
   
     }, []);
@@ -102,33 +162,12 @@ const MemmberRegisteration = () => {
         );
       };
 
-    // multiple select end 
-
-
-    useEffect(() => {
-        
-        // all Countries Api
-        newRequest.get('/address/getAllCountries')
-          .then((response) => {
-            const data = response.data;
-            const countries = data.map((country) => ({
-              id: country.id,
-              name: country.name_en,
-            }));
-            setCountry(countries);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
-    
-
+     // Handle Country Code   
       const handleCountryName = (event, value) => {
         setSelectedCountry(value);
         // console.log(value?.id);
     
         if (value) {
-          // Fetch states based on the selected country, States Api
           newRequest.get(`/address/getStateByCountryId/${value.id}`)
             .then((response) => {
               const data = response.data;
@@ -149,10 +188,10 @@ const MemmberRegisteration = () => {
       const handleState = (event, value) => {
         setSelectedState(value);
         console.log(value?.id);
+
       };
 
-
-        // City Api   
+     // City Api   
       const handleCity = (event, value) => {
         setSelectedCity(value);
        
@@ -170,18 +209,140 @@ const MemmberRegisteration = () => {
                 console.log(error);
             });
             } else {
-          // If no state is selected, clear the cities
           setCity([]);
         }
       };
 
 
-      const handleSelectedActivityData = (event, value) => {
+    const handleSelectedActivityData = (event, value) => {
         setSelectedActivity(value);
     }
 
+    const handleGtinNumber = (event, value) => {
+        setSelectedGtinNumber(value);
+    }
+
     
-    
+
+    // Submit All Data    
+     const handleSubmit = (e) => {
+        e.preventDefault();
+        // setIsLoading(true);
+      
+        const formData = new FormData();
+        formData.append('user_type', 'admin');
+        formData.append('slug', 'user-slug');
+        formData.append('location_uk', 'London');
+        formData.append('have_cr', 'yes');
+        formData.append('cr_documentID', '12345');
+        formData.append('document_number', 'doc-67890');
+        formData.append('fname', 'John');
+        formData.append('lname', 'Doe');
+        formData.append('email', 'abdulmajid1m2@gmail.com');
+        formData.append('mobile', '1234567890');
+        formData.append('image', 'https://example.com/user-image.jpg');
+        formData.append('address', '123 Street, City');
+        formData.append('address1', 'Address Line 1');
+        formData.append('address2', 'Address Line 2');
+        formData.append('po_box', 'PO Box 1001');
+        formData.append('mbl_extension', '101');
+        formData.append('website', 'https://example.com');
+        formData.append('no_of_staff', '50');
+        formData.append('companyID', 'company-001');
+        formData.append('district', 'Central');
+        formData.append('building_no', '12A');
+        formData.append('additional_number', '202');
+        formData.append('other_landline', '0987654321');
+        formData.append('unit_number', 'Unit 5');
+        formData.append('qr_corde', 'QRCode123');
+        formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
+        formData.append('code', 'Code12345');
+        formData.append('verification_code', '123456');
+        formData.append('cr_number', 'CR123456');
+        formData.append('cr_activity', 'Business');
+        formData.append('company_name_eng', 'Company Inc');
+        formData.append('company_name_arabic', 'شركة');
+        formData.append('bussiness_activity', 'Trading');
+        formData.append('membership_type', 'Premium');
+        formData.append('member_category', 'Category A');
+        formData.append('other_products', 'Product XYZ');
+        formData.append('gpc', 'GPC123');
+        formData.append('product_addons', 'Addon ABC');
+        formData.append('total', '1500.50');
+        formData.append('contactPerson', 'Jane Smith');
+        formData.append('companyLandLine', '123456789');
+        formData.append('documents', 'https://example.com/documents.pdf');
+        formData.append('address_image', 'https://example.com/address-image.jpg');
+        formData.append('status', 'active');
+        formData.append('payment_type', 'Credit Card');
+        formData.append('payment_status', '1');
+        formData.append('online_payment', 'Enabled');
+        formData.append('remember_token', 'TokenXYZ');
+        formData.append('parent_memberID', '100');
+        formData.append('member_type', 'Type A');
+        formData.append('invoice_file', 'https://example.com/invoice.pdf');
+        formData.append('otp_status', '1');
+        formData.append('transaction_id', '2001');
+        formData.append('created_at', '2023-03-15T00:00:00.000Z');
+        formData.append('updated_at', '2023-03-15T00:00:00.000Z');
+        formData.append('gcpGLNID', 'GLN123');
+        formData.append('gln', '123456');
+        formData.append('gcp_type', 'Type 1');
+        formData.append('deleted_at', '2023-03-20T00:00:00.000Z');
+        formData.append('gcp_expiry', '2024-03-15T00:00:00.000Z');
+        formData.append('memberID', 'MID123');
+        formData.append('user_id', 'UID123');
+        formData.append('remarks', 'Sample remarks');
+        formData.append('assign_to', '5');
+        formData.append('membership_category', 'Category B');
+        formData.append('upgradation_disc', '10');
+        formData.append('upgradation_disc_amount', '100.00');
+        formData.append('renewal_disc', '5');
+        formData.append('renewal_disc_amount', '50.00');
+        formData.append('membership_otherCategory', 'Other Category');
+        formData.append('activityID', '123');
+        formData.append('registration_type', 'Online');
+        formData.append('document', '/C:/Users/CT/Downloads/gtrack5.pdf');
+        formData.append('image', '/C:/Users/CT/Downloads/Vite-React (5).png');
+
+      
+        newRequest
+          .post("/users", formData)
+          .then((response) => {
+            console.log(response.data);
+            // openSnackbar("The Data has been inserted Successfully");
+      
+            // setIsLoading(false);
+            // setTimeout(() => {
+            //   navigate(-1);
+            // }, 1500);
+
+            // Add Swal message
+            Swal.fire({
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+            })
+      
+            e.target.reset();
+          })
+          .catch((err) => {
+            console.log(err);
+            // openSnackbar('Error Add GLN', 'error');
+            // setIsLoading(false);
+
+            // Add Swal message
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<a href="#">Why do I have this issue?</a>'
+            })
+
+          });
+      };
+   
 
     return (
         <div>
@@ -190,21 +351,22 @@ const MemmberRegisteration = () => {
               <Header />
             </div>
             <div className="flex flex-col justify-center items-center">
-                <div className='h-auto w-[90%] border-l border-r border-primary'>
+                <div className='h-auto w-[85%] border-l border-r border-primary'>
                     <div className='h-5 w-full bg-primary'></div>
                     <div className='h-16 w-full flex justify-between items-center px-5'>
                         <p className='sm:text-2xl font-semibold text-sm text-secondary'>Member Registration</p>
                     </div>
                 </div>
 
-                <div className='h-auto sm:w-[90%] w-full p-6 shadow-xl border-l border-r border-primary'>
+                <div className='h-auto sm:w-[85%] w-full p-6 shadow-xl border-l border-r border-primary'>
                     <form>
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label> 
                                 <Autocomplete
                                     id="activty"
-                                    options={getAllActivities}
+                                    // options={getAllActivities}
+                                    options={[getAllActivities]}
                                     value={selectedActivity}
                                     getOptionLabel={(option) => option?.activity || ""}
                                     onChange={handleSelectedActivityData}
@@ -244,54 +406,69 @@ const MemmberRegisteration = () => {
 
                         {/* Add Five Radio Buttons  */}
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6 mb-6'>
-                             <div className='w-full font-sans sm:text-base text-sm flex flex-col gap-1'>
+                            <div className='w-full font-sans sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
-                                        // onChange={(e) => setLocationArabic(e.target.value)}
-                                        id='radio'
-                                        placeholder='radio'
-                                        type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold text-sm'>Non-Medical Category</p>
+                                        id='nonMedical'
+                                        name='category'
+                                        type='radio'
+                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
+                                    />
+                                    <label htmlFor='nonMedical' className='text-secondary font-semibold text-sm'>
+                                        Non-Medical Category
+                                    </label>
                                 </div>
                             </div>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
-                                        // onChange={(e) => setLocationArabic(e.target.value)}
-                                        id='radio'
-                                        placeholder='radio'
-                                        type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold text-sm'>Medical Category</p>
+                                        id='medical'
+                                        name='category'
+                                        type='radio'
+                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
+                                    />
+                                    <label htmlFor='medical' className='text-secondary font-semibold text-sm'>
+                                        Medical Category
+                                    </label>
                                 </div>
                             </div>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
-                                        // onChange={(e) => setLocationArabic(e.target.value)}
-                                        id='radio'
-                                        placeholder='radio'
-                                        type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold text-sm'>Tobacco Category</p>
+                                        id='tobacco'
+                                        name='category'
+                                        type='radio'
+                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
+                                    />
+                                    <label htmlFor='tobacco' className='text-secondary font-semibold text-sm'>
+                                        Tobacco Category
+                                    </label>
                                 </div>
                             </div>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
-                                        // onChange={(e) => setLocationArabic(e.target.value)}
-                                        id='radio'
-                                        placeholder='radio'
-                                        type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold text-sm'>Cosmetics Category</p>
+                                        id='cosmetics'
+                                        name='category'
+                                        type='radio'
+                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
+                                    />
+                                    <label htmlFor='cosmetics' className='text-secondary font-semibold text-sm'>
+                                        Cosmetics Category
+                                    </label>
                                 </div>
                             </div>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
-                                        // onChange={(e) => setLocationArabic(e.target.value)}
-                                        id='radio'
-                                        placeholder='radio'
-                                        type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold text-sm'>Pharma Category</p>
+                                        id='pharma'
+                                        name='category'
+                                        type='radio'
+                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
+                                    />
+                                    <label htmlFor='pharma' className='text-secondary font-semibold text-sm'>
+                                        Pharma Category
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -300,7 +477,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='email'>Email<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationEnglish(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     id='email'
                                     placeholder='Email'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -310,20 +487,20 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='locationEnglish'>Company Name [English]<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='companyEnglish'>Company Name [English]<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationEnglish(e.target.value)}
-                                    id='locationEnglish'
+                                    onChange={(e) => setCompanyEnglish(e.target.value)}
+                                    id='companyEnglish'
                                     placeholder='Company Name English'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='locationArabic'>Company Name [Arabic]<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='companyArabic'>Company Name [Arabic]<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationArabic(e.target.value)}
-                                    id='locationArabic'
+                                    onChange={(e) => setCompanyArabic(e.target.value)}
+                                    id='companyArabic'
                                     placeholder='Company Name Arabic'
                                     type='text' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
@@ -332,7 +509,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='contactperson'>Contact Person<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setContactPerson(e.target.value)}
+                                    onChange={(e) => setContactPerson(e.target.value)}
                                     id='contactperson'
                                     placeholder='Contact Person'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -403,7 +580,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='extension'>Extension no.<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationEnglish(e.target.value)}
+                                    onChange={(e) => setExtension(e.target.value)}
                                     id='extension'
                                     placeholder='Extension no.'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -416,7 +593,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationEnglish(e.target.value)}
+                                    onChange={(e) => setZipCode(e.target.value)}
                                     id='zipcode'
                                     placeholder='Zip Code*'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -426,7 +603,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='website'>Website<span className='text-red-600 font-normal'>* Please enter a valid URL</span></label>
                                 <input
-                                    // onChange={(e) => setLocationArabic(e.target.value)}
+                                    onChange={(e) => setWebsite(e.target.value)}
                                     id='website'
                                     placeholder='Website'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -599,12 +776,12 @@ const MemmberRegisteration = () => {
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2'>
                                 <label className='text-secondary font-semibold' htmlFor='GTIN'>GTIN<span className='text-red-600'>*</span></label>
-                                {/* <Autocomplete
+                                <Autocomplete
                                     id="GTIN"
-                                    options={country}
-                                    value={selectedCountry}
-                                    getOptionLabel={(option) => option}
-                                    onChange={handleCountryName}
+                                    options={gtinNumber}
+                                    value={selectedGtinNumber}
+                                    getOptionLabel={(option) => option?.member_category_description || ""}
+                                    onChange={handleGtinNumber}
                                     onInputChange={(event, value) => {
                                         if (!value) {
                                             console.log("Input cleared");
@@ -634,7 +811,7 @@ const MemmberRegisteration = () => {
                                             color: "white",
                                         },
                                     }}
-                                /> */}
+                                />
                             </div>
 
 
@@ -667,7 +844,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='upload'>Upload Company Documents<span className='text-red-600'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationEnglish(e.target.value)}
+                                    onChange={(e) => setUpload(e.target.value)}
                                     id='upload'
                                     placeholder='Upload Company Documents'
                                     type='file' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -675,11 +852,10 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='website'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
                                 <input
-                                    // onChange={(e) => setLocationArabic(e.target.value)}
-                                    id='website'
-                                    placeholder='Website'
+                                    onChange={(e) => setUploadNationalAddress(e.target.value)}
+                                    id='uploadNational'
                                     type='file' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
                         </div>
@@ -751,7 +927,7 @@ const MemmberRegisteration = () => {
                             </div>
                          </div>
                         
-                        <button type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
+                        <button onClick={handleSubmit} type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
                                 <i className="fas fa-check-circle mr-1"></i> Submit
                         </button>
 

@@ -55,13 +55,13 @@
   .table-Bintobin-Axapta table thead tr th {
     padding: 10px;
     color: white;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 700;
+    font-size: 14px;
     border: 1px solid #ccc;
   }
   
   .table-Bintobin-Axapta table tbody tr td {
-    font-size: 12px; /* adjust font size as desired */
+    font-size: 14px; /* adjust font size as desired */
     padding: 10px;
     border: 1px solid black;
     /* min height should be 30 */
