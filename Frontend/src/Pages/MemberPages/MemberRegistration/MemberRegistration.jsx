@@ -6,9 +6,11 @@ import newRequest from '../../../utils/userRequest';
 import './MemberRegistration.css';
 import Header from '../../../components/Header/Header';
 import Swal from 'sweetalert2';
-
+import Footer from '../../../components/Footer/Footer';
 
 const MemmberRegisteration = () => {
+    const sessionData = sessionStorage.getItem('saveCrNumberData');
+    console.log("Get the Cr Number", sessionData);
     const [country, setCountry] = React.useState([])
     const [state, setState] = React.useState([])
     const [city, setCity] = useState([]);
@@ -240,7 +242,6 @@ const MemmberRegisteration = () => {
         setSelectedGtinNumber(value);
     }
 
-    
 
     // Submit All Data    
      const handleSubmit = (e) => {
@@ -954,6 +955,13 @@ const MemmberRegisteration = () => {
                 </div>
                 {/* </div> */}
             </div>
+
+            
+             {/* Footer */}
+             <div className='mt-6'>
+                <Footer />
+             </div>
+            {/* End Footer */}
         </div>
     )
 }

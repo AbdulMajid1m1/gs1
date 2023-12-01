@@ -47,9 +47,13 @@ const handleSelectChange = (event, value) => {
         
 
   const handleGPCAutoCompleteChange = (event, value) => {
-    console.log(value);
+    console.log(value?.value);
     setGpc(value);
     setGpcCode(value?.value);
+
+    // save this value in sesstion storage
+    const saveCrNumberData = value?.value;
+    sessionStorage.setItem('saveCrNumberData', saveCrNumberData);
 
 
     console.log("gpc" + gpcCode);
@@ -146,6 +150,8 @@ const handleSelectChange = (event, value) => {
       });
     }
   };
+
+
 
 
   return (
