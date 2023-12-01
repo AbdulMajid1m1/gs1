@@ -125,7 +125,7 @@ const MemmberRegisteration = () => {
         handleOtherProductsData();
   
     }, []);
-  
+
 
     const handleAttributeChange = (event, value) => {
       setSelectedAttributes(value);
@@ -162,56 +162,74 @@ const MemmberRegisteration = () => {
         );
       };
 
-     // Handle Country Code   
       const handleCountryName = (event, value) => {
         setSelectedCountry(value);
-        // console.log(value?.id);
-    
-        if (value) {
-          newRequest.get(`/address/getStateByCountryId/${value.id}`)
-            .then((response) => {
-              const data = response.data;
-              const states = data.map((state) => ({
-                id: state.id,
-                name: state.name,
-              }));
-              setState(states);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        console.log(value?.id);
+    }
+  
+
+     // state Api   
+    useEffect(() => {
+        if (selectedCountry) {
+           const handleGetAllStates = async () => {
+              try {
+                const response = await newRequest.get(`/address/getStateByCountryId/${selectedCountry.id}`);
+                const data = response.data;
+                const states = data.map((state) => ({
+                    id: state.id,
+                    name: state.name,
+                }));
+                setState(states);
+            }
+            catch (error) {
+                console.error('Error fetching states:', error);
+            }
+        };
+            handleGetAllStates();
+
         } else {
-          setState([]);
+            setState([]);
         }
-      };
-    
+      }, [selectedCountry]);
+
       const handleState = (event, value) => {
         setSelectedState(value);
-        console.log(value?.id);
-
+        console.log('Selected Country ID:', value.id);
       };
+    
 
      // City Api   
+      useEffect(() => {
+        if (selectedState) {
+            const handleGetAllCities = async () => {
+                try {
+                    const response = await newRequest.get(`/address/getCityByStateId/${selectedState.id}`);
+                    const data = response.data;
+                    const states = data.map((state) => ({
+                        id: state.id,
+                        name: state.name,
+                    }));
+                    setCity(states);
+                }
+                catch (error) {
+                    console.error('Error fetching states:', error);
+                }
+            };
+            handleGetAllCities();
+        } else {
+            setState([]);
+        }
+      }, [selectedState]);
+      
       const handleCity = (event, value) => {
         setSelectedCity(value);
-       
-        if (value) {
-          newRequest.get(`/address/getCityByStateId/${value?.id}`)
-            .then((response) => {
-                const data = response.data;
-                const cities = data.map((city) => ({
-                    id: city.id,
-                    name: city.name,
-                }));
-                setCity(cities);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-            } else {
-          setCity([]);
-        }
+        console.log('Selected State ID:', value.id);
       };
+
+
+    //   console.log('Selected Country:', selectedCountry?.name);
+    //     console.log('Selected State:', selectedState?.name);
+    //     console.log('Selected City:', selectedCity?.name);
 
 
     const handleSelectedActivityData = (event, value) => {
