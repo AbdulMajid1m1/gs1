@@ -1900,7 +1900,7 @@ model users {
   slug                     String?   @db.NVarChar(Max)
   location_uk              String?   @db.NVarChar(Max)
   have_cr                  String?   @db.NVarChar(Max)
-  cr_documentID            Int?
+  cr_documentID            Int?      @default(0)
   document_number          String?   @db.NVarChar(Max)
   fname                    String?   @db.NVarChar(Max)
   lname                    String?   @db.NVarChar(Max)

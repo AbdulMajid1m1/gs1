@@ -4,6 +4,7 @@ import { createError } from '../utils/createError.js';
 import { generateStrongPassword } from '../utils/functions/commonFunction.js';
 import { sendOTPEmail } from '../services/emailTemplates.js';
 import bcrypt from 'bcryptjs';
+import path from 'path';
 
 
 const userSchema = Joi.object({
@@ -84,18 +85,45 @@ const userSchema = Joi.object({
 
 
 export const createUser = async (req, res, next) => {
+    console.log(req.files)
     try {
-        const { error } = userSchema.validate(req.body);
+        const { error, value } = userSchema.validate(req.body);
         if (error) {
             return next(createError(400, error.details[0].message));
         }
+
+        // Access the uploaded file and image
+        const uploadedDocument = req.files.document; // Assuming 'document' is the field name for the uploaded document
+        const uploadedImage = req.files.image; // Assuming 'image' is the field name for the uploaded image
+        console.log(uploadedDocument, uploadedImage)
+        // Handle file and image uploads as needed
+        let documentPath = '';
+        let imagePath = '';
+
+        if (uploadedDocument) {
+            // Handle the uploaded document (e.g., save it to a specific location)
+            const documentFile = uploadedDocument[0]; // Access the first (and only) file
+            documentPath = path.join(documentFile.destination, documentFile.filename);
+
+            value.documents = documentPath;
+        }
+
+        if (uploadedImage) {
+            // Handle the uploaded image (e.g., save it to a specific location)
+            const imageFile = uploadedImage[0]; // Access the first (and only) file
+            imagePath = path.join(imageFile.destination, imageFile.filename);
+
+            value.address_image = imagePath;
+        }
+
+        console.log(documentPath, imagePath)
 
         // create 6 digit random number. use method to increase randomness
         const password = generateStrongPassword(6);
 
         // Send the password to the user's email
 
-        await sendOTPEmail(req.body.email, password)
+        await sendOTPEmail(req.body.email, password, 'Login Credentials for GS1', null);
 
         // Hash the password using bcrypt
         // use hash sync  
@@ -104,7 +132,7 @@ export const createUser = async (req, res, next) => {
 
 
         const newUser = await prisma.users.create({
-            data: req.body,
+            data: value
         });
 
         res.status(201).json(newUser);
