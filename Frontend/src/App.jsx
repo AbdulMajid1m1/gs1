@@ -10,6 +10,10 @@ import DataTableProvider2 from "./Contexts/DataTableContext2";
 import HomePage from "./Pages/UserPages/HomePage/HomePage";
 import MemmberRegisteration from "./Pages/MemberPages/MemberRegistration/MemberRegistration";
 import GetBarcode from "./Pages/MemberPages/MemberRegistration/GetBarcode"
+import GTIN from "./Pages/AdminPages/Gtin/Gtin";
+import GTINAddProducts from "./Pages/AdminPages/GTINAddProducts/GTINAddProducts";
+import GTINUpdateProducts from "./Pages/AdminPages/GTINAddProducts/GTINUpdateProducts";
+import GTINViewProduct from "./Pages/AdminPages/GTINAddProducts/GTINViewProduct";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -42,7 +46,17 @@ const App = () => {
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/update-vendor" element={<UpdateVendor />} />
                             <Route path="/customer-list" element={<ListOfCustomer />} />
-                          
+                            <Route path="/gtin" element={<GTIN />} />
+                            <Route path="addproducts" element={<GTINAddProducts />} />
+                            <Route
+                              path="upate-gtin-product/:productId"
+                              element={<GTINUpdateProducts />}
+                            />
+                            <Route
+                              path="view-gtin-product/:productId"
+                              element={<GTINViewProduct />}
+                            />
+
                             
                         </Routes>
                       </MainLayout>

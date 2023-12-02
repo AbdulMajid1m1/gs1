@@ -1,4 +1,21 @@
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import QRCode from "qrcode.react";
+const QRCodeCell = (props) => {
+  const url = `https://gs1ksa.org/?gtin=${props.value}`;
+  return <QRCode value={url} size={40} />;
+};
+
+const GTINCell = (params) => {
+  const style = {
+    backgroundColor: "rgb(21 128 61)",
+    color: "white",
+    borderRadius: "30px",
+    padding: "2px 5px",
+  };
+  return <div style={style}>{params.value}</div>;
+};
+
+
 export const InventorySuppliersDataColumn = [
   {
     field: "id",
@@ -938,3 +955,73 @@ export const inventoryColumn = [
 
 
 
+export const GtinColumn = [
+  {
+    field: "product_id",
+    headerName: "Product ID",
+    width: 100,
+  },
+  {
+    field: "productnameenglish",
+    headerName: "Product Name English",
+    width: 180,
+  },
+  {
+    field: "BrandName",
+    headerName: "Brand Name",
+    width: 180,
+  },
+
+  {
+    field: "qrcode",
+    headerName: "QRCode",
+    renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
+    // width: 50, // Adjust this width as needed
+  },
+  {
+    field: "barcode",
+    headerName: "Barcode",
+    renderCell: GTINCell,
+    width: 150,
+  },
+
+  {
+    field: "product_url",
+    headerName: "Product URL",
+    width: 180,
+    renderCell: (params) => {
+      let url = params.value;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'http://' + url;
+      }
+      return (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {params.value}
+        </a>
+      );
+    },
+  },
+  {
+    field: "product_link_url",
+    headerName: "Product Link URL",
+    width: 200,
+    renderCell: (params) => {
+      let url = params.value;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'http://' + url;
+      }
+      return (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {params.value}
+        </a>
+      );
+    },
+  },
+
+
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+  },
+];

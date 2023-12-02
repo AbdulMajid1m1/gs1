@@ -16,6 +16,10 @@
     "@mui/material": "^5.14.10",
     "@mui/x-data-grid": "^6.15.0",
     "axios": "^1.5.0",
+    "bwip-js": "^4.1.2",
+    "file-saver": "^2.0.5",
+    "jspdf": "^2.5.1",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
@@ -25,7 +29,8 @@
     "react-spinners": "^0.13.8",
     "sweetalert2": "^11.7.28",
     "swiper": "^11.0.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

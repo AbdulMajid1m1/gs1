@@ -177,12 +177,12 @@ const handleSelectChange = (event, value) => {
                         </div>
                         <div className='flex flex-col sm:flex-row gap-4'>
                             <div className='flex items-center gap-2'>
-                                <input type="radio" name="yes" id="yes" />
-                                <label htmlFor="yes" className='text-secondary font-medium'>Yes</label>
+                                <input type="radio" name="yes" id="company-yes" />
+                                <label htmlFor="company-yes" className='text-secondary font-medium'>Yes</label>
                             </div>
                             <div className='flex items-center gap-2'>
-                                <input type="radio" name="no" id="no" />
-                                <label htmlFor="no" className='text-secondary font-medium'>No</label>
+                                <input type="radio" name="no" id="company-no" />
+                                <label htmlFor="company-no" className='text-secondary font-medium'>No</label>
                             </div>
                         </div>
                     </div>

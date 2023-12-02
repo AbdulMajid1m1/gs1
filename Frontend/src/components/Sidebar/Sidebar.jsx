@@ -3,12 +3,12 @@ import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
 import dashboard from '../../Images/dashboard.png'
 import internal from '../../Images/internal.png'
-import gtrackicons from '../../Images/gtrackicons.png'
 import isoicon from '../../Images/isoicon.png'
 import gs1logowhite from '../../Images/gs1logowhite.png'
 import profile from '../../Images/profile.png'
 import customers from '../../Images/customer.png'
 import backarrow from '../../Images/backarrow.png';
+import barcodescanner from '../../Images/barcodescanner.png';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -164,6 +164,23 @@ const SideBar = () => {
               alt=""
             />
             <p className="sidebar-text">Dashboard</p>
+          </div>
+
+
+          <div
+            className={`main-images-container ${selectedItem === '/gtin' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/gtin')}
+            onContextMenu={(event) =>
+              handleContextMenu(event, '/gtin')
+            }
+
+          >
+            <img
+              src={barcodescanner}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">GTIN</p>
           </div>
 
           <div

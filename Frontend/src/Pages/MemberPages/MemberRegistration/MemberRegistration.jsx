@@ -79,16 +79,16 @@ const MemmberRegisteration = () => {
         };
 
 
-        const handleGtinNumber = async () => {
-            try {
-                const response = await newRequest.get('/gtinProducts');
-                setGtinNumber(response.data);
-                console.log(response.data);
-            }
-            catch (error) {
-                console.error('Error fetching on Gtin Product Api:', error);
-            }
-        };
+        // const handleGtinNumber = async () => {
+        //     try {
+        //         const response = await newRequest.get('/gtinProducts');
+        //         setGtinNumber(response.data);
+        //         console.log(response.data);
+        //     }
+        //     catch (error) {
+        //         console.error('Error fetching on Gtin Product Api:', error);
+        //     }
+        // };
 
 
         // Other Products Api (GLN, SSCC, UDI)
@@ -123,7 +123,7 @@ const MemmberRegisteration = () => {
         handleGetAllActivities();
         handleSearchGPC();
         handleGetAllCountries();
-        handleGtinNumber();
+        // handleGtinNumber();
         handleOtherProductsData();
   
     }, []);
@@ -361,7 +361,48 @@ const MemmberRegisteration = () => {
 
           });
       };
-   
+
+
+    const [selectedCategory, setSelectedCategory] = useState('nonMedical');
+    const [subscriptionData, setSubscriptionData] = useState([]);
+    
+
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.id);
+        // Reset selectedGtinNumber when category changes
+        setSelectedGtinNumber(null);
+    };
+
+    const handleGtinNumberChange = (event, value) => {
+        setSelectedGtinNumber(value);
+        if (value) {
+        const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
+        const newItem = {
+            product: selectedGtinData.member_category_description,
+            registrationFee: selectedGtinData.member_registration_fee || 0,
+            yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
+            price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
+        };
+        setSubscriptionData(prevData => [...prevData, newItem]);
+        }
+    };
+
+
+    useEffect(() => {
+        const handleGtinNumber = async () => {
+          try {
+            const response = await newRequest.get(`/gtinProducts?category=${selectedCategory}`);
+            setGtinNumber(response.data);
+          } catch (error) {
+            console.error('Error fetching GTIN products:', error);
+          }
+        };
+    
+        handleGtinNumber();
+      }, [selectedCategory]);
+
+
+      
 
     return (
         <div>
@@ -427,13 +468,15 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6 mb-6'>
                             <div className='w-full font-sans sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
-                                    <input
+                                      <input
                                         id='nonMedical'
                                         name='category'
                                         type='radio'
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
+                                        checked={selectedCategory === 'nonMedical'}
+                                        onChange={handleCategoryChange}
                                     />
-                                    <label htmlFor='nonMedical' className='text-secondary font-semibold text-sm'>
+                                    <label htmlFor='nonMedical' className='text-secondary font-semibold text-xs'>
                                         Non-Medical Category
                                     </label>
                                 </div>
@@ -446,7 +489,7 @@ const MemmberRegisteration = () => {
                                         type='radio'
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
-                                    <label htmlFor='medical' className='text-secondary font-semibold text-sm'>
+                                    <label htmlFor='medical' className='text-secondary font-semibold text-xs'>
                                         Medical Category
                                     </label>
                                 </div>
@@ -459,7 +502,7 @@ const MemmberRegisteration = () => {
                                         type='radio'
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
-                                    <label htmlFor='tobacco' className='text-secondary font-semibold text-sm'>
+                                    <label htmlFor='tobacco' className='text-secondary font-semibold text-xs'>
                                         Tobacco Category
                                     </label>
                                 </div>
@@ -472,7 +515,7 @@ const MemmberRegisteration = () => {
                                         type='radio'
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
-                                    <label htmlFor='cosmetics' className='text-secondary font-semibold text-sm'>
+                                    <label htmlFor='cosmetics' className='text-secondary font-semibold text-xs'>
                                         Cosmetics Category
                                     </label>
                                 </div>
@@ -485,7 +528,7 @@ const MemmberRegisteration = () => {
                                         type='radio'
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
-                                    <label htmlFor='pharma' className='text-secondary font-semibold text-sm'>
+                                    <label htmlFor='pharma' className='text-secondary font-semibold text-xs'>
                                         Pharma Category
                                     </label>
                                 </div>
@@ -795,7 +838,7 @@ const MemmberRegisteration = () => {
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2'>
                                 <label className='text-secondary font-semibold' htmlFor='GTIN'>GTIN<span className='text-red-600'>*</span></label>
-                                <Autocomplete
+                                {/* <Autocomplete
                                     id="GTIN"
                                     options={gtinNumber}
                                     value={selectedGtinNumber}
@@ -829,6 +872,41 @@ const MemmberRegisteration = () => {
                                         "& .MuiAutocomplete-endAdornment": {
                                             color: "white",
                                         },
+                                    }}
+                                /> */}
+                                <Autocomplete
+                                    id='GTIN'
+                                    options={gtinNumber}
+                                    value={selectedGtinNumber}
+                                    getOptionLabel={(option) => option?.member_category_description || ''}
+                                    onChange={handleGtinNumberChange}
+                                    onInputChange={(event, value) => {
+                                    if (!value) {
+                                        console.log('Input cleared');
+                                    }
+                                    }}
+                                    renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        InputProps={{
+                                        ...params.InputProps,
+                                        className: 'text-white',
+                                        }}
+                                        InputLabelProps={{
+                                        ...params.InputLabelProps,
+                                        style: { color: 'white' },
+                                        }}
+                                        className='bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full'
+                                        placeholder='GTIN'
+                                    />
+                                    )}
+                                    classes={{
+                                    endAdornment: 'text-white',
+                                    }}
+                                    sx={{
+                                    '& .MuiAutocomplete-endAdornment': {
+                                        color: 'white',
+                                    },
                                     }}
                                 />
                             </div>
@@ -895,37 +973,24 @@ const MemmberRegisteration = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* {data.map((item, index) => (
-                                    <tr key={index} onClick={() => handleRowClick(item, index)}>
-                                        <td>{item.transferId}</td>
-                                        <td>{item.transferStatus}</td>
-                                        <td>{item.inventLocationIdFrom}</td>
-                                        <td>{item.inventLocationIdTo}</td>
-                                        <td>{item.itemId}</td>
-                                        <td>{item.qtyTransfer}</td>
-                                        <td>{item.qtyReceived}</td>
-                                        <td>{item.createdDateTime}</td>
+                                {subscriptionData.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.product}</td>
+                                        <td>{item.registrationFee}</td>
+                                        <td>{item.yearlyFee}</td>
+                                        <td>{item.price}</td>
                                     </tr>
-                                    ))} */}
-                                    <tr>
-                                        <td>GTIN</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>GLN</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SSCC</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                    </tr>
+                                    ))}
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                    <td colSpan="3" className="text-right font-bold">Total:</td>
+                                    <td>
+                                        {/* Calculate the total price for all selected rows */}
+                                        {subscriptionData.reduce((total, item) => total + item.price, 0)}
+                                    </td>
+                                    </tr>
+                                </tfoot>
                                 </table>
                               </div>
                             </div>

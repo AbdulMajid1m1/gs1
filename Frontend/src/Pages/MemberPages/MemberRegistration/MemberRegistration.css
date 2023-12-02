@@ -106,3 +106,16 @@
     background-color: rgb(242, 242, 221);
   }
   
+
+  .table-Bintobin-Axapta table tfoot {
+    background-color: white;
+    color: #00006A;
+  }
+  
+  .table-Bintobin-Axapta table tfoot tr td {
+    padding: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
