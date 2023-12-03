@@ -108,6 +108,47 @@ export const getCrsByKeyword = async (req, res, next) => {
     }
 
 };
+
+export const getCrsByCrNo = async (req, res, next) => {
+    try {
+        // const { id } = req.params;
+        // use JOi to validate the id
+        const schema = Joi.object({
+            cr: Joi.string().required(),
+        });
+        const { error, value } = schema.validate(req.params);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
+
+        
+
+        const crs = await prisma.crs.findMany({
+            where: {
+                cr: {
+                    contains: value.cr,
+                },
+            }
+
+        });
+
+        if (!crs || crs.length === 0) {
+            return next(createError(404, 'CR not found'));
+        }
+
+        // this is json data.
+
+        return res.json(crs);
+    }
+
+    catch (error) {
+
+        next(error);
+
+    }
+
+};
+
 export const updateCrs = async (req, res, next) => {
     try {
 

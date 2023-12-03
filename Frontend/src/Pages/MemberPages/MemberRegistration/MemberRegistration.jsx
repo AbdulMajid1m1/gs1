@@ -297,8 +297,8 @@ const MemmberRegisteration = () => {
         formData.append('total', '1500.50');
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
-        formData.append('documents', 'https://example.com/documents.pdf');
-        formData.append('address_image', 'https://example.com/address-image.jpg');
+        // formData.append('documents', 'https://example.com/documents.pdf');
+        // formData.append('address_image', 'https://example.com/address-image.jpg');
         formData.append('status', 'active');
         formData.append('payment_type', 'Credit Card');
         formData.append('payment_status', '1');

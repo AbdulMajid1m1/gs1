@@ -14,6 +14,29 @@ export const getAllCountries = async (req, res, next) => {
     }
 };
 
+export const getAllStates = async (req, res, next) => {
+    try {
+        const states = await prisma.states.findMany();
+        if (states.length === 0) {
+            return next(createError(404, 'No states found'));
+        }
+        res.json(states);
+    } catch (error) {
+        next(error);
+    }
+};
+export const getAllCities = async (req, res, next) => {
+    try {
+        const cities = await prisma.cities.findMany();
+        if (cities.length === 0) {
+            return next(createError(404, 'No Cities found'));
+        }
+        res.json(cities);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const getStateByCountryId = async (req, res, next) => {
     try {
         const schema = Joi.object({
