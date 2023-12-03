@@ -375,19 +375,37 @@ const MemmberRegisteration = () => {
         setSelectedGtinNumber(null);
     };
 
+    // const handleGtinNumberChange = (event, value) => {
+    //     setSelectedGtinNumber(value);
+    //     if (value) {
+    //     const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
+    //     const newItem = {
+    //         product: selectedGtinData.member_category_description,
+    //         registrationFee: selectedGtinData.member_registration_fee || 0,
+    //         yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
+    //         price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
+    //     };
+    //     setSubscriptionData(prevData => [...prevData, newItem]);
+    //     }
+    // };
     const handleGtinNumberChange = (event, value) => {
-        setSelectedGtinNumber(value);
         if (value) {
-        const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
-        const newItem = {
+          const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
+          const newItem = {
             product: selectedGtinData.member_category_description,
             registrationFee: selectedGtinData.member_registration_fee || 0,
             yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
             price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
-        };
-        setSubscriptionData(prevData => [...prevData, newItem]);
+          };
+          // Replace the existing selection with the new item
+          setSubscriptionData([newItem]);
+          setSelectedGtinNumber(value);
+        } else {
+          // Handle the case when the selection is cleared
+          setSubscriptionData([]);
+          setSelectedGtinNumber(null);
         }
-    };
+      };
 
 
     useEffect(() => {
@@ -999,6 +1017,14 @@ const MemmberRegisteration = () => {
                                         <td>{item.registrationFee}</td>
                                         <td>{item.yearlyFee}</td>
                                         <td>{item.price}</td>
+                                    </tr>
+                                    ))}
+                                {selectedOtherProducts.map((otherProduct, index) => (
+                                    <tr key={`other_${index}`}>
+                                        <td>{otherProduct.product_name}</td>
+                                        <td>{otherProduct.registration_fee || 0}</td>
+                                        <td>{otherProduct.yearly_fee || 0}</td>
+                                        <td>{otherProduct.price || 0}</td>
                                     </tr>
                                     ))}
                                 </tbody>

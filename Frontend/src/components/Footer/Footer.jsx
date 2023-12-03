@@ -4,6 +4,7 @@ import facebook from "../../Images/facebook.png"
 import twitter from "../../Images/twitter.png"
 import instagram from "../../Images/instagram.png"
 import youtube from "../../Images/youtube.png"
+import linkedIn from "../../Images/linkedin.png"
 
 const Footer = () => {
   return (
@@ -57,7 +58,7 @@ const Footer = () => {
                  className='h-12 w-12 p-2 object-contain'
                />
                <img
-                 src={facebook}
+                 src={linkedIn}
                  alt=""
                  className='h-12 w-12 p-2 object-contain'
                />

@@ -15,6 +15,8 @@ import GTINAddProducts from "./Pages/AdminPages/GTINAddProducts/GTINAddProducts"
 import GTINUpdateProducts from "./Pages/AdminPages/GTINAddProducts/GTINUpdateProducts";
 import GTINViewProduct from "./Pages/AdminPages/GTINAddProducts/GTINViewProduct";
 import EmailAddress from "./Pages/MemberPages/MemberLogin/EmailAddress/EmailAddress";
+import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/SelectActivity";
+import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -38,6 +40,8 @@ const App = () => {
                   <Route path="/get-barcode" element={<GetBarcode />} />
                   <Route path="/member-registration" element={<MemmberRegisteration />} />
                   <Route path="/email-address" element={<EmailAddress />} />
+                  <Route path="/select-activity" element={<SelectActivity />} />
+                  <Route path="/verify-code" element={<VerifyCode />} />
 
                   
                   <Route

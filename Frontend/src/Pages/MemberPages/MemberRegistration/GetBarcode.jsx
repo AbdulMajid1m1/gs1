@@ -10,6 +10,18 @@ const GetBarcode = () => {
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
   const [allDocuments, setAllDocuments] = useState([]); // Default to 'Yes'
   const [selectedDocument, setSelectedDocument] = useState('');
+  const [gpc, setGpc] = useState(null);
+  const [gpcCode, setGpcCode] = useState('');
+  const [gpcList, setGpcList] = useState([]); // gpc list
+  const [autocompleteLoading, setAutocompleteLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
+  const [isDocumentAutocompleteFilled, setIsDocumentAutocompleteFilled] = useState(false);
+  const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+
+  const abortControllerRef = useRef(null);
+        
+
   const navigate = useNavigate();
 
   const handleRadioChange = (value) => {
@@ -24,6 +36,9 @@ const handleSelectChange = (event, value) => {
     // save this value in sesstion storage
     const saveSelectedDucmentData = value;
     sessionStorage.setItem('saveDocumentData', saveSelectedDucmentData);
+
+    // Update the state variable when Documents Autocomplete field is filled
+    setIsDocumentAutocompleteFilled(value !== null && value !== '');
 
 };
 
@@ -42,14 +57,6 @@ const handleSelectChange = (event, value) => {
       });
   }, []);
 
-  
-  const abortControllerRef = useRef(null);
-  const [gpc, setGpc] = useState(null);
-  const [gpcCode, setGpcCode] = useState('');
-  const [gpcList, setGpcList] = useState([]); // gpc list
-  const [autocompleteLoading, setAutocompleteLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-        
 
   const handleGPCAutoCompleteChange = (event, value) => {
     console.log(value?.value);
@@ -60,6 +67,8 @@ const handleSelectChange = (event, value) => {
     const saveCrNumberData = value?.value;
     sessionStorage.setItem('saveCrNumberData', saveCrNumberData);
 
+    // Update the state variable when Autocomplete field is filled
+    setIsAutocompleteFilled(value !== null && value !== '');
 
     console.log("gpc" + gpcCode);
   }
@@ -137,17 +146,17 @@ const handleSelectChange = (event, value) => {
       const response = await newRequest.post('/crs', {
         cr: crNumber,
         activity: crActivity,
-        status: 1, // You can customize this value
+        status: 1, // i pass this status in hardcoded
       });
   
-      // Handle success, e.g., show a success message
+      // Handle success,
       Swal.fire({
         icon: 'success',
         title: 'CR Number Added!',
         text: `CR Number ${crNumber} with activity "${crActivity}" has been added successfully.`,
       });
     } catch (error) {
-      // Handle error, e.g., show an error message
+      // Handle error,
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -182,11 +191,11 @@ const handleSelectChange = (event, value) => {
                         </div>
                         <div className='flex flex-col sm:flex-row gap-4'>
                             <div className='flex items-center gap-2'>
-                                <input type="radio" name="yes" id="company-yes" />
+                                <input type="radio" name="company" id="company-yes" />
                                 <label htmlFor="company-yes" className='text-secondary font-medium'>Yes</label>
                             </div>
                             <div className='flex items-center gap-2'>
-                                <input type="radio" name="no" id="company-no" />
+                                <input type="radio" name="company" id="company-no" />
                                 <label htmlFor="company-no" className='text-secondary font-medium'>No</label>
                             </div>
                         </div>
@@ -292,6 +301,10 @@ const handleSelectChange = (event, value) => {
                         )}
 
                         />
+                        {/* If nothing is select i show that error */}
+                        {isSubmitClicked && !isAutocompleteFilled && (
+                          <p className="text-red-500 font-sans text-sm">CR Number Autocomplete field is required.</p>
+                        )}
 
                             <p onClick={handleAddCR} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
                        
@@ -302,21 +315,6 @@ const handleSelectChange = (event, value) => {
                             <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>
                                 Documents <span className='text-[#FF3E01]'>* </span>
                             </label>
-                            {/* <select
-                              name="companyName"
-                               id="companyName"
-                                className='h-12 w-full border border-[#8E9CAB] font-sans rounded-md px-2'
-                                 placeholder='Search CR Number'
-                                 value={selectedDocument}
-                                 onChange={handleSelectChange}                         
-                            >
-                                <option value="Select CR Number">Select CR Number</option>
-                                {allDocuments.map((name) => (
-                                <option key={name} value={name}>
-                                    {name}
-                                </option>
-                                ))}
-                            </select> */}
                              <Autocomplete
                                 id="countryName"
                                 options={allDocuments}
@@ -357,11 +355,23 @@ const handleSelectChange = (event, value) => {
                                 },
                                 }}
                             />
+                            {isSubmitClicked && !isDocumentAutocompleteFilled && (
+                              <p className="text-red-500 font-sans text-sm">Documents field is required.</p>
+                            )}
                             </div>
                         </>
                      )}
                         <button 
-                          onClick={() => navigate('/member-registration')}
+                          onClick={() => {
+                            setIsSubmitClicked(true);
+
+                            if (isAutocompleteFilled || isDocumentAutocompleteFilled) {
+                              navigate('/member-registration');
+                            } else {
+                              console.log('Autocomplete field is required');
+                            }
+                          }}
+                          // onClick={() => navigate('/member-registration')}
                             className='bg-secondary font-bold font-sans text-white rounded w-full py-3 hover:bg-primary'>
                                 Continue
                         </button>
