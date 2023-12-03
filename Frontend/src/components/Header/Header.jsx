@@ -34,6 +34,7 @@ const Header = () => {
               </button>
               
                 <button 
+                  onClick={() => navigate('/email-address')}
                   className='bg-primary text-white px-2 py-1 rounded-md'
                 >
                   GS1 Member Login

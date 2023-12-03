@@ -20,6 +20,11 @@ const GetBarcode = () => {
 const handleSelectChange = (event, value) => {
     console.log(value);
     setSelectedDocument(value);
+
+    // save this value in sesstion storage
+    const saveSelectedDucmentData = value;
+    sessionStorage.setItem('saveDocumentData', saveSelectedDucmentData);
+
 };
 
   useEffect(() => {

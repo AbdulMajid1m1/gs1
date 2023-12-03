@@ -14,6 +14,7 @@ import GTIN from "./Pages/AdminPages/Gtin/Gtin";
 import GTINAddProducts from "./Pages/AdminPages/GTINAddProducts/GTINAddProducts";
 import GTINUpdateProducts from "./Pages/AdminPages/GTINAddProducts/GTINUpdateProducts";
 import GTINViewProduct from "./Pages/AdminPages/GTINAddProducts/GTINViewProduct";
+import EmailAddress from "./Pages/MemberPages/MemberLogin/EmailAddress/EmailAddress";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -36,8 +37,9 @@ const App = () => {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/get-barcode" element={<GetBarcode />} />
                   <Route path="/member-registration" element={<MemmberRegisteration />} />
-                  
+                  <Route path="/email-address" element={<EmailAddress />} />
 
+                  
                   <Route
                     path="/*"
                     element={
@@ -56,6 +58,7 @@ const App = () => {
                               path="view-gtin-product/:productId"
                               element={<GTINViewProduct />}
                             />
+
 
                             
                         </Routes>

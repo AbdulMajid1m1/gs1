@@ -7,10 +7,14 @@ import './MemberRegistration.css';
 import Header from '../../../components/Header/Header';
 import Swal from 'sweetalert2';
 import Footer from '../../../components/Footer/Footer';
+import { DotLoader } from 'react-spinners'
+
 
 const MemmberRegisteration = () => {
     const sessionData = sessionStorage.getItem('saveCrNumberData');
+    const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
     console.log("Get the Cr Number", sessionData);
+    console.log("Get the Document Data", sesstionDocumentData);
     const [country, setCountry] = React.useState([])
     const [state, setState] = React.useState([])
     const [city, setCity] = useState([]);
@@ -23,6 +27,7 @@ const MemmberRegisteration = () => {
     const [selectedState, setSelectedState] = useState("");
     const [selectedGtinNumber, setSelectedGtinNumber] = useState("");
     const [selectedActivity, setSelectedActivity] = React.useState('')
+    const [isLoading, setIsLoading] = useState(false);
 
     const [email, setEmail] = useState('')
     const [companyEnglish, setCompanyEnglish] = useState('')
@@ -31,12 +36,10 @@ const MemmberRegisteration = () => {
     const [extension, setExtension] = useState('')
     const [zipCode, setZipCode] = useState('')
     const [website, setWebsite] = useState('')
-    const [searchGPC, setSearchGPC] = useState('')
     const [upload, setUpload] = useState('')
-    const [uploadNationalAddress, setUploadNationalAddress] = useState('')
-    const [otherProducts, setOtherProducts] = useState('')
     const [uploadCompanyDocuments, setUploadCompanyDocuments] = useState('')
-
+    const [selectedImage, setSelectedImage] = useState(null);
+   
 
     // multple select 
     const [selectedAttributes, setSelectedAttributes] = useState([]);
@@ -44,6 +47,8 @@ const MemmberRegisteration = () => {
     const [selectedOtherProducts, setSelectedOtherProducts] = useState([]);
     const [otherProductsOptions, setOtherProductsOptions] = useState([]);
     const [selectedGLNOption, setSelectedGLNOption] = useState(null);
+    const [selectProducts, setSelectProducts] = useState('');
+    const [gpcSelected, setGpcSelected] = useState('');
 
 
 
@@ -51,6 +56,7 @@ const MemmberRegisteration = () => {
         //All Activities Api
         const handleGetAllActivities = async () => {
             try {
+                // const response = await newRequest.get(`/crs/getCrsById/${sessionData}`);
                 const response = await newRequest.get('/crs/getCrsById/452819');
                
                 const activity = response.data;
@@ -77,18 +83,6 @@ const MemmberRegisteration = () => {
                 console.error('Error fetching on Search GPC Api:', error);
             }
         };
-
-
-        // const handleGtinNumber = async () => {
-        //     try {
-        //         const response = await newRequest.get('/gtinProducts');
-        //         setGtinNumber(response.data);
-        //         console.log(response.data);
-        //     }
-        //     catch (error) {
-        //         console.error('Error fetching on Gtin Product Api:', error);
-        //     }
-        // };
 
 
         // Other Products Api (GLN, SSCC, UDI)
@@ -129,21 +123,26 @@ const MemmberRegisteration = () => {
     }, []);
 
 
+
     const handleAttributeChange = (event, value) => {
-      setSelectedAttributes(value);
-    //   console.log(newValue);
-    const attributesValue = value.map((option) => option.attributes_title);
-    console.log(attributesValue);
-    
+        setSelectedAttributes(value);
+        const attributesValue = value.map((option) => option.attributes_title);
+        
+        // Join the array elements into a single string
+        const joinedAttributes = attributesValue.join(', ');
+        console.log(joinedAttributes);
+        setGpcSelected(joinedAttributes);
     };
 
-
+    
     const handleOtherProductsChange = (event, value) => {
         setSelectedOtherProducts(value);
-        // console.log(value);
-
-        const name = value.map((option) => option.product_name);
-        console.log(name);
+     
+        const names = value.map((option) => option.product_name);
+        // Join the array elements into a single string
+        const joinedNames = names.join(', ');
+        console.log(joinedNames);
+        setSelectProducts(joinedNames);
 
         // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
         const selectedGLN = value.find(
@@ -242,11 +241,19 @@ const MemmberRegisteration = () => {
         setSelectedGtinNumber(value);
     }
 
+      // Image section
+    const handleImageChange = (event) => {
+      const imageFile = event.target.files[0];
+      const imageUrl = URL.createObjectURL(imageFile);
+        setSelectedImage(imageUrl);
+    };
+
+
 
     // Submit All Data    
      const handleSubmit = (e) => {
         e.preventDefault();
-        // setIsLoading(true);
+        setIsLoading(true);
       
         const formData = new FormData();
         formData.append('user_type', 'admin');
@@ -257,15 +264,15 @@ const MemmberRegisteration = () => {
         formData.append('document_number', 'doc-67890');
         formData.append('fname', 'John');
         formData.append('lname', 'Doe');
-        formData.append('email', 'abdulmajid1m2@gmail.com');
-        formData.append('mobile', '1234567890');
-        formData.append('image', 'https://example.com/user-image.jpg');
+        formData.append('email', email);
+        formData.append('mobile', mobileNumber);
+        // formData.append('image', 'https://example.com/user-image.jpg');
         formData.append('address', '123 Street, City');
         formData.append('address1', 'Address Line 1');
         formData.append('address2', 'Address Line 2');
         formData.append('po_box', 'PO Box 1001');
-        formData.append('mbl_extension', '101');
-        formData.append('website', 'https://example.com');
+        formData.append('mbl_extension', extension);
+        formData.append('website', website);
         formData.append('no_of_staff', '50');
         formData.append('companyID', 'company-001');
         formData.append('district', 'Central');
@@ -277,19 +284,19 @@ const MemmberRegisteration = () => {
         formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
         formData.append('code', 'Code12345');
         formData.append('verification_code', '123456');
-        formData.append('cr_number', 'CR123456');
-        formData.append('cr_activity', 'Business');
-        formData.append('company_name_eng', 'Company Inc');
-        formData.append('company_name_arabic', 'شركة');
+        formData.append('cr_number', sessionData);
+        formData.append('cr_activity', selectedActivity);
+        formData.append('company_name_eng', companyEnglish);
+        formData.append('company_name_arabic', companyArabic);
         formData.append('bussiness_activity', 'Trading');
         formData.append('membership_type', 'Premium');
         formData.append('member_category', 'Category A');
-        formData.append('other_products', 'Product XYZ');
-        formData.append('gpc', 'GPC123');
+        formData.append('other_products', selectProducts);
+        formData.append('gpc', gpcSelected);
         formData.append('product_addons', 'Addon ABC');
         formData.append('total', '1500.50');
-        formData.append('contactPerson', 'Jane Smith');
-        formData.append('companyLandLine', '123456789');
+        formData.append('contactPerson', contactPerson);
+        formData.append('companyLandLine', companyLandLine);
         formData.append('documents', 'https://example.com/documents.pdf');
         formData.append('address_image', 'https://example.com/address-image.jpg');
         formData.append('status', 'active');
@@ -321,41 +328,36 @@ const MemmberRegisteration = () => {
         formData.append('membership_otherCategory', 'Other Category');
         formData.append('activityID', '123');
         formData.append('registration_type', 'Online');
-        formData.append('document', '/C:/Users/CT/Downloads/gtrack5.pdf');
-        formData.append('image', '/C:/Users/CT/Downloads/Vite-React (5).png');
+        // formData.append('document', sesstionDocumentData);
+        formData.append('image', selectedImage);
 
       
         newRequest
           .post("/users", formData)
           .then((response) => {
             console.log(response.data);
-            // openSnackbar("The Data has been inserted Successfully");
-      
-            // setIsLoading(false);
-            // setTimeout(() => {
-            //   navigate(-1);
-            // }, 1500);
+            setIsLoading(false);
+            setTimeout(() => {
+              navigate(-1);
+            }, 1500);
 
             // Add Swal message
             Swal.fire({
                 icon: 'success',
-                title: 'Your work has been saved',
-                showConfirmButton: false,
-                timer: 1500
+                title: 'Success',
+                text: 'Member Registered Successfully',
+                footer: '<a href="#">Why do I have this issue?</a>'
             })
+
       
-            e.target.reset();
           })
           .catch((err) => {
             console.log(err);
-            // openSnackbar('Error Add GLN', 'error');
-            // setIsLoading(false);
-
-            // Add Swal message
+            setIsLoading(false);
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Something went wrong!',
+                text: err?.response?.data?.error || "Something went wrong!",
                 footer: '<a href="#">Why do I have this issue?</a>'
             })
 
@@ -402,10 +404,27 @@ const MemmberRegisteration = () => {
       }, [selectedCategory]);
 
 
-      
-
     return (
         <div>
+             {isLoading &&
+
+                <div className='loading-spinner-background'
+                style={{
+                    zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
+
+
+                }}
+                >
+                <DotLoader
+                    size={45}
+                    color={"#FF693A"}
+                    // height={4}
+                    loading={isLoading}
+                />
+                </div>
+                }
+
            <div className='sticky top-0 z-50 bg-white'>
               {/* Headers */}
               <Header />
@@ -951,7 +970,8 @@ const MemmberRegisteration = () => {
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
                                 <input
-                                    onChange={(e) => setUploadNationalAddress(e.target.value)}
+                                    onChange={handleImageChange}
+                                    // onChange={(e) => setUploadNationalAddress(e.target.value)}
                                     id='uploadNational'
                                     type='file' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
@@ -998,7 +1018,7 @@ const MemmberRegisteration = () => {
 
                         {/* add one radio button */}
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
-                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
+                            <div className='w-full sm:w-[15%] font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
                                         // onChange={(e) => setLocationArabic(e.target.value)}
