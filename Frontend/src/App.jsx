@@ -17,6 +17,8 @@ import GTINViewProduct from "./Pages/AdminPages/GTINAddProducts/GTINViewProduct"
 import EmailAddress from "./Pages/MemberPages/MemberLogin/EmailAddress/EmailAddress";
 import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/SelectActivity";
 import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
+import GLN from "./Pages/AdminPages/GLN/GLN";
+import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -62,6 +64,9 @@ const App = () => {
                               path="view-gtin-product/:productId"
                               element={<GTINViewProduct />}
                             />
+                            <Route path="/gln" element={<GLN />} />
+                            <Route path="/gs1-members" element={<Gs1Members />} />
+
 
 
                             

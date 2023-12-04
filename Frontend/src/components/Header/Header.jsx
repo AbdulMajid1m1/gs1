@@ -23,7 +23,7 @@ const Header = () => {
               <div className='flex justify-end items-end px-1'>
                 <p className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Verified By GS1</p>
                  | 
-                <span className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Staff Login</span>
+                <span onClick={() => navigate('/dashboard')} className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Staff Login</span>
               </div>
             <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2'>
               <button 

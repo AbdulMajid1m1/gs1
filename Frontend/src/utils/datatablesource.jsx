@@ -1025,3 +1025,99 @@ export const GtinColumn = [
     width: 120,
   },
 ];
+
+
+
+
+export const GlnColumn = [
+  {
+    field: "gln_id",
+    headerName: "GLN ID",
+    width: 180,
+  },
+  {
+    field: "gcpGLNID",
+    headerName: "GCP GLN ID",
+    width: 180,
+  },
+  {
+    field: "locationNameEn",
+    headerName: "LOCATION NAME EN",
+    width: 180,
+  },
+  {
+    field: "locationNameAr",
+    headerName: "LOCATION NAME AR",
+    width: 150,
+  },
+
+  {
+    field: "GLNBarcodeNumber",
+    headerName: "GLN Barcode Number",
+    width: 180,
+  },
+  {
+    field: "status",
+    headerName: "STATUS",
+    width: 180,
+  },
+];
+
+
+
+
+export const ViewSsccColumn = [
+  {
+    field: "sscc_id",
+    headerName: "SSCC ID",
+    width: 180,
+  },
+  {
+    field: "Type",
+    headerName: "Type",
+    width: 180,
+  },
+  {
+    field: "SSCCBarcodeNumber",
+    headerName: "SSCC Barcode Number",
+    width: 280,
+  },
+];
+
+
+
+
+export const Gs1AllMembers = [
+  {
+    field: "gs1_id",
+    headerName: "GS1 ID",
+    width: 180,
+  },
+  {
+    field: "company_name",
+    headerName: "COMPANY NAME",
+    width: 180,
+  },
+  {
+    field: "status",
+    headerName: "STATUS",
+    width: 180,
+    renderCell: (params) => (
+      <div
+        style={{
+          padding: '5px',
+          borderRadius: '4px',
+          color: '#fff',
+          backgroundColor: params.row.status === 'Activated' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+
+
+
+
+];
+
