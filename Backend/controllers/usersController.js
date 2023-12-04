@@ -34,7 +34,6 @@ const userSchema = Joi.object({
     unit_number: Joi.string(),
     qr_corde: Joi.string(),
     email_verified_at: Joi.date(),
-
     code: Joi.string().max(50),
     verification_code: Joi.number().integer(),
     cr_number: Joi.string(),
@@ -52,18 +51,13 @@ const userSchema = Joi.object({
     companyLandLine: Joi.string(),
     documents: Joi.string(),
     address_image: Joi.string(),
-    status: Joi.string().valid('active', 'inactive'),
     payment_type: Joi.string(),
-    payment_status: Joi.number().integer(),
     online_payment: Joi.string(),
     remember_token: Joi.string(),
     parent_memberID: Joi.number().integer(),
     member_type: Joi.string().max(50),
     invoice_file: Joi.string(),
     otp_status: Joi.number().integer(),
-    transaction_id: Joi.number().integer(),
-    created_at: Joi.date(),
-    updated_at: Joi.date(),
     gcpGLNID: Joi.string().max(50),
     gln: Joi.string().max(50),
     gcp_type: Joi.string().max(50),
@@ -80,68 +74,109 @@ const userSchema = Joi.object({
     renewal_disc_amount: Joi.number(),
     membership_otherCategory: Joi.string().max(50),
     activityID: Joi.number().integer(),
-    registration_type: Joi.string().max(10)
-}).options({ abortEarly: false });
+    registration_type: Joi.string().max(10),
+
+    // Nested cart schema
+    cart: Joi.object({
+        transaction_id: Joi.number().integer(),
+        cart_items: Joi.array().items(Joi.object({
+            productID: Joi.string(),
+            productName: Joi.string(),
+            registration_fee: Joi.string(),
+            yearly_fee: Joi.string(),
+            price: Joi.string(),
+            product_type: Joi.string(),
+            quotation: Joi.string()
+        })),
+        total: Joi.number(),
+        documents: Joi.string(),
+        file_path: Joi.string(),
+        request_type: Joi.string(),
+        payment_type: Joi.string(),
+        payment_status: Joi.string(),
+        user_id: Joi.string(),
+        status: Joi.string(),
+        created_at: Joi.date(),
+        updated_at: Joi.date(),
+        deleted_at: Joi.date().allow(null),
+        reject_reason: Joi.string().allow(null),
+        reject_by: Joi.number().integer().allow(null),
+        receipt: Joi.string(),
+        receipt_path: Joi.string(),
+        admin_id: Joi.number().integer(),
+        assign_to: Joi.number().integer().allow(null),
+        discount: Joi.number().allow(null)
+    })
+});
+
 
 
 export const createUser = async (req, res, next) => {
-    console.log(req.files)
     try {
+        // Validate user data
         const { error, value } = userSchema.validate(req.body);
         if (error) {
+            console.log("error")
+            console.log(error)
             return next(createError(400, error.details[0].message));
         }
 
-        // Access the uploaded file and image
-        const uploadedDocument = req.files.document; // Assuming 'document' is the field name for the uploaded document
-        const uploadedImage = req.files.image; // Assuming 'image' is the field name for the uploaded image
-        console.log(uploadedDocument, uploadedImage)
-        // Handle file and image uploads as needed
+        // Extract user and cart values
+        const userValue = { ...value };
+        delete userValue.cart; // Remove cart data from userValue
+        const cartValue = value.cart;
+        // Generate transaction ID for cart
+        cartValue.transaction_id = Math.floor(10000000 + Math.random() * 90000000);
+        // stringify cart items
+        cartValue.cart_items = JSON.stringify(cartValue.cart_items);
+
+
+        // Handle file uploads, generate password, etc.
+        const uploadedDocument = req.files.document;
+        const uploadedImage = req.files.image;
         let documentPath = '';
         let imagePath = '';
 
         if (uploadedDocument) {
-            // Handle the uploaded document (e.g., save it to a specific location)
-            const documentFile = uploadedDocument[0]; // Access the first (and only) file
+            const documentFile = uploadedDocument[0];
             documentPath = path.join(documentFile.destination, documentFile.filename);
-
-            value.documents = documentPath;
+            userValue.documents = documentPath;
         }
 
         if (uploadedImage) {
-            // Handle the uploaded image (e.g., save it to a specific location)
-            const imageFile = uploadedImage[0]; // Access the first (and only) file
+            const imageFile = uploadedImage[0];
             imagePath = path.join(imageFile.destination, imageFile.filename);
-
-            value.address_image = imagePath;
+            userValue.address_image = imagePath;
         }
 
-        console.log(documentPath, imagePath)
-
-        // create 6 digit random number. use method to increase randomness
+        // Generate and send password
         const password = generateStrongPassword(6);
-
-        // Send the password to the user's email
-
-        await sendOTPEmail(req.body.email, password, 'Login Credentials for GS1', null);
-
-        // Hash the password using bcrypt
-        // use hash sync  
+        await sendOTPEmail(userValue.email, password, 'Login Credentials', null);
         const hashedPassword = bcrypt.hashSync(password, 10);
-        req.body.password = hashedPassword;
+        userValue.password = hashedPassword;
 
+        // Start a transaction to ensure both user and cart are inserted
+        const transaction = await prisma.$transaction(async (prisma) => {
+            const newUser = await prisma.users_temp.create({
+                data: userValue
+            });
 
-        const newUser = await prisma.users.create({
-            data: value
+            cartValue.user_id = newUser.id; // Assuming user ID is needed for the cart
+
+            const newCart = await prisma.carts.create({
+                data: cartValue
+            });
+
+            return { newUser, newCart };
         });
 
-        res.status(201).json(newUser);
+        res.status(201).json(transaction);
     } catch (error) {
-        console.log(error)
+        console.log("error11")
+        console.log(error);
         next(error);
     }
 };
-
 
 
 export const getUserDetails = async (req, res, next) => {
@@ -183,6 +218,54 @@ export const getUserDetails = async (req, res, next) => {
             : {};
 
         const users = await prisma.users.findMany({
+            where: filterConditions
+        });
+
+        res.json(users);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getUsersTempDetails = async (req, res, next) => {
+    try {
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            user_type: Joi.string(),
+            slug: Joi.string(),
+            email: Joi.string().email(),
+            fname: Joi.string(),
+            lname: Joi.string(),
+            // ... define validation for other allowed columns
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false); // Disallows any keys that are not defined in the schema
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Check if any filter conditions are provided
+        const hasFilterConditions = Object.keys(value).length > 0;
+
+        // Construct filter conditions for Prisma query
+        const filterConditions = hasFilterConditions
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        const users = await prisma.users_temp.findMany({
             where: filterConditions
         });
 

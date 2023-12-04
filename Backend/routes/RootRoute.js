@@ -6,6 +6,7 @@ import attributesRoutes from './subRoutes/attributesRoutes.js';
 import countryStateCityRoutes from './subRoutes/countryStateCityRoutes.js';
 import gtinProductsRoutes from './subRoutes/gtinProductsRoutes.js';
 import otherProuductRoutes from './subRoutes/otherProuductRoutes.js';
+import adminRoutes from './subRoutes/adminRoutes.js';
 const router = express.Router();
 
 
@@ -23,6 +24,8 @@ router.use('/address', countryStateCityRoutes);
 router.use('/gtinProducts', gtinProductsRoutes);
 
 router.use('/otherProducts', otherProuductRoutes);
+
+router.use('/admin', adminRoutes);
 
 
 export default router;
