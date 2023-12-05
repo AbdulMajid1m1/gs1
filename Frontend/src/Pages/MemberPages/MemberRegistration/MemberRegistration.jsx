@@ -141,29 +141,53 @@ const MemmberRegisteration = () => {
     }, []);
 
 
-
-    const [filterCountry, setFilterCountry] = useState([]);
+    const [filteredStates, setFilteredStates] = useState([]);
+    const [filteredCities, setFilteredCities] = useState([]);
+    
+     // Handle country selection
     const handleCountryName = (event, value) => {
         setSelectedCountry(value);
-        // console.log(value?.id);
-        const filterState = state.filter((item) => item.country_id === value?.id);
-        setFilterCountry(filterState);
-
-    }
-
-    console.log(filterCountry);
-
-     const handleState = (event, value) => {
-        setSelectedState(value);
-        console.log('Selected Country ID:', value.id);
-      };
+        console.log(value)
+        const filteredStates = state.filter((state) => state.country_id == value?.id);
+        setFilteredStates(filteredStates);
+        setSelectedState(null);
+        setFilteredCities([]);
+        setSelectedCity(null);
+        console.log(filteredStates)
+    };
     
-      
-      const handleCity = (event, value) => {
+    // Handle state selection
+    const handleState = (event, value) => {
+        setSelectedState(value);
+        const filteredCities = city.filter((city) => city.state_id == value?.id);
+        setFilteredCities(filteredCities);
+        setSelectedCity(null);
+    };
+
+
+    const handleCity = (event, value) => {
         setSelectedCity(value);
         console.log('Selected State ID:', value.id);
       };
 
+
+    // const handleCountryName = (event, value) => {
+    //     setSelectedCountry(value);
+    //     // console.log(value?.id);
+    //     const filterState = state.filter((item) => item.country_id === value?.id);
+    //     setFilterCountry(filterState);
+
+    // }
+
+    // console.log(filterCountry);
+
+    //  const handleState = (event, value) => {
+    //     setSelectedState(value);
+    //     console.log('Selected Country ID:', value.id);
+    //   };
+    
+      
+     
 
 
     // // state Api   
@@ -810,7 +834,7 @@ const MemmberRegisteration = () => {
                                 <label className='text-secondary font-semibold' htmlFor='state'>State<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="state"
-                                    options={state}
+                                    options={filteredStates}
                                     value={selectedState}
                                     getOptionLabel={(option) => option?.name || ""}
                                     onChange={handleState}
@@ -852,7 +876,7 @@ const MemmberRegisteration = () => {
                                 <label className='text-secondary font-semibold' htmlFor='city'>City<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="city"
-                                    options={city}
+                                    options={filteredCities}
                                     value={selectedCity}
                                     getOptionLabel={(option) => option?.name || ""}
                                     onChange={handleCity}
