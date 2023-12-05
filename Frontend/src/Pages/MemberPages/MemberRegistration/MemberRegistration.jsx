@@ -9,6 +9,13 @@ import Swal from 'sweetalert2';
 import Footer from '../../../components/Footer/Footer';
 import { DotLoader } from 'react-spinners'
 
+const empty_data = [
+    "medical",
+    "non-medical",
+    "tobacco",
+    "cosmetics",
+    "pharma"
+];
 
 const MemmberRegisteration = () => {
     const sessionData = sessionStorage.getItem('saveCrNumberData');
@@ -39,6 +46,8 @@ const MemmberRegisteration = () => {
     const [upload, setUpload] = useState('')
     const [uploadCompanyDocuments, setUploadCompanyDocuments] = useState('')
     const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedMedical, setSelectedMedical] = useState(null);
+
    
 
     // multple select 
@@ -171,72 +180,9 @@ const MemmberRegisteration = () => {
       };
 
 
-    // const handleCountryName = (event, value) => {
-    //     setSelectedCountry(value);
-    //     // console.log(value?.id);
-    //     const filterState = state.filter((item) => item.country_id === value?.id);
-    //     setFilterCountry(filterState);
-
-    // }
-
-    // console.log(filterCountry);
-
-    //  const handleState = (event, value) => {
-    //     setSelectedState(value);
-    //     console.log('Selected Country ID:', value.id);
-    //   };
-    
-      
-     
-
-
-    // // state Api   
-    // useEffect(() => {
-    //     if (selectedCountry) {
-    //        const handleGetAllStates = async () => {
-    //           try {
-    //             const response = await newRequest.get(`/address/getAllStates`);
-    //             const data = response.data;
-    //             const states = data.map((state) => ({
-    //                 id: state.id,
-    //                 name: state.name,
-    //             }));
-    //             setState(states);
-    //         }
-    //         catch (error) {
-    //             console.error('Error fetching states:', error);
-    //         }
-    //     };
-    //         handleGetAllStates();
-
-    //     } else {
-    //         setState([]);
-    //     }
-    //   }, [selectedCountry]);
-
-
-    //  // City Api   
-    //   useEffect(() => {
-    //     if (selectedState) {
-    //         const handleGetAllCities = async () => {
-    //             try {
-    //                 const response = await newRequest.get(`/address/getAllCities`);
-    //                 const data = response.data;
-    //                 const states = data.map((state) => ({
-    //                     id: state.id,
-    //                     name: state.name,
-    //                 }));
-    //                 setCity(states);
-    //             }
-    //             catch (error) {
-    //                 console.error('Error fetching states:', error);
-    //             }
-    //         };
-    //         handleGetAllCities();
-    //     } else {
-    //         setState([]);
-    //     }
-    //   }, [selectedState]);
+      const handleMedicalChange = (event, value) => {
+        setSelectedMedical(value);
+      };
 
 
     console.log(selectedActivity?.activity)
@@ -451,7 +397,8 @@ const MemmberRegisteration = () => {
     useEffect(() => {
         const handleGtinNumber = async () => {
           try {
-            const response = await newRequest.get(`/gtinProducts?category=${selectedCategory}`);
+            // const response = await newRequest.get(`/gtinProducts?category=${selectedCategory}`);
+            const response = await newRequest.get(`/gtinProducts`);
             setGtinNumber(response.data);
           } catch (error) {
             console.error('Error fetching GTIN products:', error);
@@ -464,6 +411,7 @@ const MemmberRegisteration = () => {
     
         handleGtinNumber();
       }, [selectedCategory]);
+
 
 
     return (
@@ -546,7 +494,7 @@ const MemmberRegisteration = () => {
                         </div>
 
                         {/* Add Five Radio Buttons  */}
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6 mb-6'>
+                        {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6 mb-6'>
                             <div className='w-full font-sans sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                       <input
@@ -622,9 +570,9 @@ const MemmberRegisteration = () => {
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
+                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='email'>Email<span className='text-red-600'>*</span></label>
                                 <input
@@ -916,7 +864,46 @@ const MemmberRegisteration = () => {
                         </div>
 
 
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
+                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
+                            <div className='sm:w-[32.5%] w-full font-body sm:text-base text-sm flex flex-col'>
+                                <label className='text-secondary font-semibold' htmlFor='medical'>Medical/Non-Medical<span className='text-red-600'>*</span></label>
+                                <Autocomplete
+                                    id="medical"
+                                    options={empty_data}
+                                    value={selectedMedical}
+                                    getOptionLabel={(option) => option || ""}
+                                    onChange={handleCity}
+                                    onInputChange={(event, value) => {
+                                    if (!value) {
+                                        // perform operation when input is cleared
+                                        console.log("Input cleared");
+                                    }
+                                    }}
+                                    renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        InputProps={{
+                                        ...params.InputProps,
+                                        className: "text-white",
+                                        }}
+                                        InputLabelProps={{
+                                        ...params.InputLabelProps,
+                                        style: { color: "white" },
+                                        }}
+                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                        placeholder="Medical/Non-Medical"
+                                    />
+                                    )}
+                                    classes={{
+                                    endAdornment: "text-white",
+                                    }}
+                                    sx={{
+                                    "& .MuiAutocomplete-endAdornment": {
+                                        color: "white",
+                                    },
+                                    }}
+                                />
+                            </div>
 
                            
                         </div>
