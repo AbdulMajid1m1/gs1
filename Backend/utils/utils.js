@@ -11,3 +11,12 @@ export const serializeBigInt = (obj) => {
     }
     return obj;
 }
+
+export const generateRandomTransactionId = (length) => {
+    let transactionId = '';
+    for (let i = 0; i < length; i++) {
+        transactionId += Math.floor(1 + Math.random() * 9).toString();
+    }
+
+    return transactionId;
+};

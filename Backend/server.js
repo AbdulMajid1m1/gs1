@@ -6,8 +6,11 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import rootRoute from "./routes/RootRoute.js";
+
+import QRCode from 'qrcode';
 // import { PrismaClient } from '@prisma/client';
 import ejs from 'ejs';
+import { BACKEND_URL } from "./configs/envConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -51,10 +54,13 @@ app.set('views', path.join(__dirname, 'views'));
 // calling the routes
 app.use("/api", rootRoute);
 
-app.get('/render', (req, res) => {
+app.get('/render', async (req, res) => {
     // Define your dummy data here
+    const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
         memberData: {
+            qrCodeDataURL: qrCodeDataURL,
+            // Assuming $addMember->id is already known
             company_name_eng: 'Sample Company',
             mobile: '+966-123-456789',
             address: {
@@ -69,6 +75,23 @@ app.get('/render', (req, res) => {
                     member_category_description: 'Gold Membership',
                 },
             },
+        },
+        general: {
+            service_default_image: 'default_service_image.png',
+            logo: 'company_logo.png',
+        },
+        cart: {
+            request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
+            transaction_id: 'T123456789',
+            payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
+            cart_items: [
+                // Item descriptions
+            ],
+        },
+        currentDate: {
+            day: new Date().getDate(),
+            month: new Date().getMonth() + 1, // getMonth() returns 0-11
+            year: new Date().getFullYear(),
         },
         custom_amount: 100, // Example custom amount
         cart: {
@@ -92,6 +115,7 @@ app.get('/render', (req, res) => {
             bank_name: 'Sample Bank',
             bank_swift_code: 'SAMPLEBANK123',
         },
+        BACKEND_URL:BACKEND_URL,
     };
 
     // Render the EJS template with the dummy data
