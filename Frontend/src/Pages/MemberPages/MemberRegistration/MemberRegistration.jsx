@@ -13,8 +13,8 @@ import { DotLoader } from 'react-spinners'
 const MemmberRegisteration = () => {
     const sessionData = sessionStorage.getItem('saveCrNumberData');
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
-    console.log("Get the Cr Number", sessionData);
-    console.log("Get the Document Data", sesstionDocumentData);
+    // console.log("Get the Cr Number", sessionData);
+    // console.log("Get the Document Data", sesstionDocumentData);
     const [country, setCountry] = React.useState([])
     const [state, setState] = React.useState([])
     const [city, setCity] = useState([]);
@@ -56,14 +56,10 @@ const MemmberRegisteration = () => {
         //All Activities Api
         const handleGetAllActivities = async () => {
             try {
-                // const response = await newRequest.get(`/crs/getCrsById/${sessionData}`);
-                const response = await newRequest.get('/crs/getCrsById/452819');
+                const response = await newRequest.get(`/crs/getCrsByCrNo/${sessionData}`);
+                // const response = await newRequest.get('/crs/getCrsByCrNo/1010000006');
                
                 const activity = response.data;
-                //   const Activities = data.map((activity) => ({
-                //     id: activity.id,
-                //     name: activity.activity,
-                //   }));
                 console.log(activity);
                 setGetAllActivities(activity);
 
@@ -112,17 +108,114 @@ const MemmberRegisteration = () => {
                 console.error('Error fetching data:', error);
             }
         }
-       
-
+        const handleGetAllStates = async () => {
+            try {
+                const response = await newRequest.get(`/address/getAllStates`);
+                const data = response.data;
+                
+                setState(data);
+            }
+            catch (error) {
+                console.error('Error fetching states:', error);
+            }
+        }
+        const handleGetAllCities = async () => {
+            try {
+                const response = await newRequest.get(`/address/getAllCities`);
+                const data = response.data;
+                setCity(data);
+            }
+            catch (error) {
+                console.error('Error fetching states:', error);
+            }
+        }
+        
+        
         handleGetAllActivities();
         handleSearchGPC();
         handleGetAllCountries();
-        // handleGtinNumber();
+        handleGetAllStates();
+        handleGetAllCities();
         handleOtherProductsData();
   
     }, []);
 
 
+
+    const [filterCountry, setFilterCountry] = useState([]);
+    const handleCountryName = (event, value) => {
+        setSelectedCountry(value);
+        // console.log(value?.id);
+        const filterState = state.filter((item) => item.country_id === value?.id);
+        setFilterCountry(filterState);
+
+    }
+
+    console.log(filterCountry);
+
+     const handleState = (event, value) => {
+        setSelectedState(value);
+        console.log('Selected Country ID:', value.id);
+      };
+    
+      
+      const handleCity = (event, value) => {
+        setSelectedCity(value);
+        console.log('Selected State ID:', value.id);
+      };
+
+
+
+    // // state Api   
+    // useEffect(() => {
+    //     if (selectedCountry) {
+    //        const handleGetAllStates = async () => {
+    //           try {
+    //             const response = await newRequest.get(`/address/getAllStates`);
+    //             const data = response.data;
+    //             const states = data.map((state) => ({
+    //                 id: state.id,
+    //                 name: state.name,
+    //             }));
+    //             setState(states);
+    //         }
+    //         catch (error) {
+    //             console.error('Error fetching states:', error);
+    //         }
+    //     };
+    //         handleGetAllStates();
+
+    //     } else {
+    //         setState([]);
+    //     }
+    //   }, [selectedCountry]);
+
+
+    //  // City Api   
+    //   useEffect(() => {
+    //     if (selectedState) {
+    //         const handleGetAllCities = async () => {
+    //             try {
+    //                 const response = await newRequest.get(`/address/getAllCities`);
+    //                 const data = response.data;
+    //                 const states = data.map((state) => ({
+    //                     id: state.id,
+    //                     name: state.name,
+    //                 }));
+    //                 setCity(states);
+    //             }
+    //             catch (error) {
+    //                 console.error('Error fetching states:', error);
+    //             }
+    //         };
+    //         handleGetAllCities();
+    //     } else {
+    //         setState([]);
+    //     }
+    //   }, [selectedState]);
+
+
+    console.log(selectedActivity?.activity)
 
     const handleAttributeChange = (event, value) => {
         setSelectedAttributes(value);
@@ -161,70 +254,6 @@ const MemmberRegisteration = () => {
           option.product_name.startsWith('GLN') &&
           option.product_name !== selectedGLNOption.product_name
         );
-      };
-
-      const handleCountryName = (event, value) => {
-        setSelectedCountry(value);
-        console.log(value?.id);
-    }
-  
-
-     // state Api   
-    useEffect(() => {
-        if (selectedCountry) {
-           const handleGetAllStates = async () => {
-              try {
-                const response = await newRequest.get(`/address/getStateByCountryId/${selectedCountry.id}`);
-                const data = response.data;
-                const states = data.map((state) => ({
-                    id: state.id,
-                    name: state.name,
-                }));
-                setState(states);
-            }
-            catch (error) {
-                console.error('Error fetching states:', error);
-            }
-        };
-            handleGetAllStates();
-
-        } else {
-            setState([]);
-        }
-      }, [selectedCountry]);
-
-      const handleState = (event, value) => {
-        setSelectedState(value);
-        console.log('Selected Country ID:', value.id);
-      };
-    
-
-     // City Api   
-      useEffect(() => {
-        if (selectedState) {
-            const handleGetAllCities = async () => {
-                try {
-                    const response = await newRequest.get(`/address/getCityByStateId/${selectedState.id}`);
-                    const data = response.data;
-                    const states = data.map((state) => ({
-                        id: state.id,
-                        name: state.name,
-                    }));
-                    setCity(states);
-                }
-                catch (error) {
-                    console.error('Error fetching states:', error);
-                }
-            };
-            handleGetAllCities();
-        } else {
-            setState([]);
-        }
-      }, [selectedState]);
-      
-      const handleCity = (event, value) => {
-        setSelectedCity(value);
-        console.log('Selected State ID:', value.id);
       };
 
 
@@ -285,7 +314,7 @@ const MemmberRegisteration = () => {
         formData.append('code', 'Code12345');
         formData.append('verification_code', '123456');
         formData.append('cr_number', sessionData);
-        formData.append('cr_activity', selectedActivity);
+        formData.append('cr_activity', selectedActivity?.activity);
         formData.append('company_name_eng', companyEnglish);
         formData.append('company_name_arabic', companyArabic);
         formData.append('bussiness_activity', 'Trading');
@@ -454,7 +483,7 @@ const MemmberRegisteration = () => {
                                 <Autocomplete
                                     id="activty"
                                     // options={getAllActivities}
-                                    options={[getAllActivities]}
+                                    options={getAllActivities}
                                     value={selectedActivity}
                                     getOptionLabel={(option) => option?.activity || ""}
                                     onChange={handleSelectedActivityData}
