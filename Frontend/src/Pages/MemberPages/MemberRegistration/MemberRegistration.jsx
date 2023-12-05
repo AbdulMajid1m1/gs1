@@ -266,7 +266,7 @@ const MemmberRegisteration = () => {
         formData.append('lname', 'Doe');
         formData.append('email', email);
         formData.append('mobile', mobileNumber);
-        // formData.append('image', 'https://example.com/user-image.jpg');
+        formData.append('image', selectedImage);
         formData.append('address', '123 Street, City');
         formData.append('address1', 'Address Line 1');
         formData.append('address2', 'Address Line 2');
@@ -297,8 +297,8 @@ const MemmberRegisteration = () => {
         formData.append('total', '1500.50');
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
-        // formData.append('documents', 'https://example.com/documents.pdf');
-        // formData.append('address_image', 'https://example.com/address-image.jpg');
+        formData.append('documents', upload);
+        formData.append('address_image', 'https://example.com/address-image.jpg');
         formData.append('status', 'active');
         formData.append('payment_type', 'Credit Card');
         formData.append('payment_status', '1');
@@ -376,18 +376,23 @@ const MemmberRegisteration = () => {
     };
 
     const handleGtinNumberChange = (event, value) => {
-        setSelectedGtinNumber(value);
         if (value) {
-        const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
-        const newItem = {
+          const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
+          const newItem = {
             product: selectedGtinData.member_category_description,
             registrationFee: selectedGtinData.member_registration_fee || 0,
             yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
             price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
-        };
-        setSubscriptionData(prevData => [...prevData, newItem]);
+          };
+          // Replace the existing selection with the new item
+          setSubscriptionData([newItem]);
+          setSelectedGtinNumber(value);
+        } else {
+          // Handle the case when the selection is cleared
+          setSubscriptionData([]);
+          setSelectedGtinNumber(null);
         }
-    };
+      };
 
 
     useEffect(() => {
@@ -399,6 +404,10 @@ const MemmberRegisteration = () => {
             console.error('Error fetching GTIN products:', error);
           }
         };
+
+        
+        // Set initial value of gtinNumber to an empty array
+        setGtinNumber([]);
     
         handleGtinNumber();
       }, [selectedCategory]);
@@ -430,8 +439,8 @@ const MemmberRegisteration = () => {
               <Header />
             </div>
             <div className="flex flex-col justify-center items-center">
-                <div className='h-auto w-[85%] border-l border-r border-primary'>
-                    <div className='h-5 w-full bg-primary'></div>
+                <div className='h-auto sm:w-[85%] w-full border-l border-r border-primary'>
+                    <div className='h-5 w-full bg-primary rounded-t-md'></div>
                     <div className='h-16 w-full flex justify-between items-center px-5'>
                         <p className='sm:text-2xl font-semibold text-sm text-secondary'>Member Registration</p>
                     </div>
@@ -506,6 +515,8 @@ const MemmberRegisteration = () => {
                                         id='medical'
                                         name='category'
                                         type='radio'
+                                        checked={selectedCategory === 'medical'}
+                                        onChange={handleCategoryChange}
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
                                     <label htmlFor='medical' className='text-secondary font-semibold text-xs'>
@@ -519,6 +530,8 @@ const MemmberRegisteration = () => {
                                         id='tobacco'
                                         name='category'
                                         type='radio'
+                                        checked={selectedCategory === 'tobacco'}
+                                        onChange={handleCategoryChange}
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
                                     <label htmlFor='tobacco' className='text-secondary font-semibold text-xs'>
@@ -532,6 +545,8 @@ const MemmberRegisteration = () => {
                                         id='cosmetics'
                                         name='category'
                                         type='radio'
+                                        checked={selectedCategory === 'cosmetics'}
+                                        onChange={handleCategoryChange}
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
                                     <label htmlFor='cosmetics' className='text-secondary font-semibold text-xs'>
@@ -545,6 +560,8 @@ const MemmberRegisteration = () => {
                                         id='pharma'
                                         name='category'
                                         type='radio'
+                                        checked={selectedCategory === 'pharma'}
+                                        onChange={handleCategoryChange}
                                         className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
                                     />
                                     <label htmlFor='pharma' className='text-secondary font-semibold text-xs'>
@@ -999,6 +1016,14 @@ const MemmberRegisteration = () => {
                                         <td>{item.registrationFee}</td>
                                         <td>{item.yearlyFee}</td>
                                         <td>{item.price}</td>
+                                    </tr>
+                                    ))}
+                                {selectedOtherProducts.map((otherProduct, index) => (
+                                    <tr key={`other_${index}`}>
+                                        <td>{otherProduct.product_name}</td>
+                                        <td>{otherProduct.registration_fee || 0}</td>
+                                        <td>{otherProduct.yearly_fee || 0}</td>
+                                        <td>{otherProduct.price || 0}</td>
                                     </tr>
                                     ))}
                                 </tbody>

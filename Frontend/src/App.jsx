@@ -15,6 +15,10 @@ import GTINAddProducts from "./Pages/AdminPages/GTINAddProducts/GTINAddProducts"
 import GTINUpdateProducts from "./Pages/AdminPages/GTINAddProducts/GTINUpdateProducts";
 import GTINViewProduct from "./Pages/AdminPages/GTINAddProducts/GTINViewProduct";
 import EmailAddress from "./Pages/MemberPages/MemberLogin/EmailAddress/EmailAddress";
+import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/SelectActivity";
+import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
+import GLN from "./Pages/AdminPages/GLN/GLN";
+import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -27,9 +31,38 @@ const App = () => {
   };
   return (
     <>
+
+      {/* <Route
+        path="/admin"
+        element={
+
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/update-vendor" element={<UpdateVendor />} />
+            <Route path="/customer-list" element={<ListOfCustomer />} />
+            <Route path="/gtin" element={<GTIN />} />
+            <Route path="addproducts" element={<GTINAddProducts />} />
+            <Route
+              path="upate-gtin-product/:productId"
+              element={<GTINUpdateProducts />}
+            />
+            <Route
+              path="view-gtin-product/:productId"
+              element={<GTINViewProduct />}
+            />
+            <Route path="/gln" element={<GLN />} />
+            <Route path="/gs1-members" element={<Gs1Members />} />
+
+          </Routes>
+
+        }
+      /> */}
+
+
+
       <DataTableProvider2>
-      <DataTableProvider>
-        <SnackbarProvider>
+        <DataTableProvider>
+          <SnackbarProvider>
 
             <div>
               <BrowserRouter>
@@ -38,29 +71,31 @@ const App = () => {
                   <Route path="/get-barcode" element={<GetBarcode />} />
                   <Route path="/member-registration" element={<MemmberRegisteration />} />
                   <Route path="/email-address" element={<EmailAddress />} />
+                  <Route path="/select-activity" element={<SelectActivity />} />
+                  <Route path="/verify-code" element={<VerifyCode />} />
 
-                  
+
                   <Route
                     path="/*"
                     element={
                       <MainLayout>
                         <Routes>
-                            <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/update-vendor" element={<UpdateVendor />} />
-                            <Route path="/customer-list" element={<ListOfCustomer />} />
-                            <Route path="/gtin" element={<GTIN />} />
-                            <Route path="addproducts" element={<GTINAddProducts />} />
-                            <Route
-                              path="upate-gtin-product/:productId"
-                              element={<GTINUpdateProducts />}
-                            />
-                            <Route
-                              path="view-gtin-product/:productId"
-                              element={<GTINViewProduct />}
-                            />
+                          <Route path="/dashboard" element={<Dashboard />} />
+                          <Route path="/update-vendor" element={<UpdateVendor />} />
+                          <Route path="/customer-list" element={<ListOfCustomer />} />
+                          <Route path="/gtin" element={<GTIN />} />
+                          <Route path="addproducts" element={<GTINAddProducts />} />
+                          <Route
+                            path="upate-gtin-product/:productId"
+                            element={<GTINUpdateProducts />}
+                          />
+                          <Route
+                            path="view-gtin-product/:productId"
+                            element={<GTINViewProduct />}
+                          />
+                          <Route path="/gln" element={<GLN />} />
+                          <Route path="/gs1-members" element={<Gs1Members />} />
 
-
-                            
                         </Routes>
                       </MainLayout>
                     }
@@ -68,8 +103,8 @@ const App = () => {
                 </Routes>
               </BrowserRouter>
             </div>
-        </SnackbarProvider>
-      </DataTableProvider>
+          </SnackbarProvider>
+        </DataTableProvider>
       </DataTableProvider2>
     </>
   );

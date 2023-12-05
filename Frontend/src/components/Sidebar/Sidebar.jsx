@@ -6,37 +6,41 @@ import internal from '../../Images/internal.png'
 import isoicon from '../../Images/isoicon.png'
 import gs1logowhite from '../../Images/gs1logowhite.png'
 import profile from '../../Images/profile.png'
-import customers from '../../Images/customer.png'
 import backarrow from '../../Images/backarrow.png';
 import barcodescanner from '../../Images/barcodescanner.png';
+import identify from '../../Images/identify.png';
+import ngln from '../../Images/ngln.png';
+import nsscc from '../../Images/nsscc.png';
+import members from '../../Images/members.png';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const navigate = useNavigate();
-
-
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+  const [selectedPath, setSelectedPath] = useState('');
+  
+  
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsSidebarOpen(false);
       }
     };
-
+    
     document.addEventListener("mousedown", handleOutsideClick);
-
+    
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
-
-
-
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
-  const [selectedPath, setSelectedPath] = useState('');
+  
+  
+  
+  
   const [showFirstData, setShowFirstData] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleItemClick = (path) => {
@@ -166,37 +170,90 @@ const SideBar = () => {
             <p className="sidebar-text">Dashboard</p>
           </div>
 
+          <div
+              className="main-images-container"
+              onClick={() => setShowFirstData(!showFirstData)}
+            >
+              <img
+                src={identify}
+                className="main-inside-image bg-white rounded-full"
+                alt=""
+              />
+              <p className="sidebar-text">IDENTIFY</p>
+              {showFirstData ? (
+                <i className='fas fa-solid fa-chevron-up text-white'></i>
+              ) : (
+                <i className='fas fa-solid fa-chevron-down text-white'></i>
+              )}
+            </div>
+
+            {showFirstData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div
+                  className={`main-images-container ${selectedItem === '/gtin' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/gtin')}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, '/gtin')
+                  }
+                >
+                  <img
+                    src={barcodescanner}
+                    className="main-inside-sidebar bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">GTIN</p>
+                </div>
+
+                <div
+                  className={`main-images-container ${selectedItem === '/gln' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/gln')}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, '/gln')
+                  }
+                >
+                  <img
+                    src={ngln}
+                    className="main-inside-sidebar bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">GLN</p>
+                </div>
+
+                <div
+                  className={`main-images-container ${selectedItem === '/viewsscc' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/viewsscc')}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, '/viewsscc')
+                  }
+                >
+                  <img
+                    src={nsscc}
+                    className="main-inside-sidebar bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">SSCC</p>
+                </div>
+              </div>
+            )}
+
 
           <div
-            className={`main-images-container ${selectedItem === '/gtin' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/gtin')}
+            className={`main-images-container ${selectedItem === '/gs1-members' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/gs1-members')}
             onContextMenu={(event) =>
-              handleContextMenu(event, '/gtin')
+              handleContextMenu(event, '/gs1-members')
             }
 
           >
             <img
-              src={barcodescanner}
+              src={members}
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">GTIN</p>
-          </div>
-
-          <div
-            className={`main-images-container ${selectedItem === '/customer-list' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/customer-list')}
-            onContextMenu={(event) =>
-              handleContextMenu(event, '/customer-list')
-            }
-
-          >
-            <img
-              src={customers}
-              className="main-inside-image bg-white rounded-full"
-              alt=""
-            />
-            <p className="sidebar-text">List of Customers</p>
+            <p className="sidebar-text">Members</p>
           </div>
 
 
