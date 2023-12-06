@@ -1,29 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Gs1AllMembers } from '../../../../utils/datatablesource'
 import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import newRequest from '../../../../utils/userRequest';
 
 const Gs1Members = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([
-        {
-            "gs1_id": "123456789",
-            "company_name": "GS1 India",
-            "status": "INACTIVE",
-        },
-        {
-            "gs1_id": "123456789",
-            "company_name": "GS1 India",
-            "status": "INACTIVE",
-        },
-        {
-            "gs1_id": "123456789",
-            "company_name": "GS1 India",
-            "status": "Activated",
-        },
-    ]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+
+      useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await newRequest.get("/users",);
+          
+          console.log(response.data);
+          setData(response?.data?.products || []);
+          setIsLoading(false)
+
+        } catch (err) {
+          console.log(err);
+          setIsLoading(false)
+        }
+      };
+
+      fetchData(); // Calling the function within useEffect, not inside itself
+    }, []); // Empty array dependency ensures this useEffect runs once on component mount
+
 
     const handleEdit = (row) => {
         console.log(row);

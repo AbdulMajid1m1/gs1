@@ -1108,16 +1108,294 @@ export const Gs1AllMembers = [
           padding: '5px',
           borderRadius: '4px',
           color: '#fff',
-          backgroundColor: params.row.status === 'Activated' ? 'green' : 'red',
+          backgroundColor: params.row.status === 'active' ? 'green' : 'red',
         }}
       >
         {params.row.status}
       </div>
     ),
   },
-
-
-
-
+  {
+    field: "user_type",
+    headerName: "USER TYPE",
+    width: 180,
+  },
+  {
+    field: "location_uk",
+    headerName: "LOCATION (UK)",
+    width: 180,
+  },
+  {
+    field: "have_cr",
+    headerName: "HAVE CR",
+    width: 180,
+  },
+  {
+    field: "cr_number",
+    headerName: "CR NUMBER",
+    width: 180,
+  },
+  {
+    field: "email",
+    headerName: "EMAIL",
+    width: 180,
+  },
+  {
+    field: "mobile",
+    headerName: "MOBILE",
+    width: 180,
+  },
+  {
+    field: "image",
+    headerName: "IMAGE",
+    width: 180,
+  },
+  {
+    field: "address",
+    headerName: "ADDRESS",
+    width: 180,
+    renderCell: (params) => (
+      <div>
+        <p>Country: {params.row.address.countryName}</p>
+        <p>City: {params.row.address.cityName}</p>
+        <p>State: {params.row.address.stateName}</p>
+        <p>Zip: {params.row.address.zip}</p>
+      </div>
+    ),
+  },
+  {
+    field: "website",
+    headerName: "WEBSITE",
+    width: 180,
+  },
+  {
+    field: "district",
+    headerName: "DISTRICT",
+    width: 180,
+  },
+  {
+    field: "building_no",
+    headerName: "BUILDING NUMBER",
+    width: 180,
+  },
+  {
+    field: "unit_number",
+    headerName: "UNIT NUMBER",
+    width: 180,
+  },
+  {
+    field: "qr_corde",
+    headerName: "QR CODE",
+    width: 180,
+  },
+  {
+    field: "email_verified_at",
+    headerName: "EMAIL VERIFIED AT",
+    width: 180,
+  },
+  {
+    field: "password",
+    headerName: "PASSWORD",
+    width: 180,
+  },
+  {
+    field: "code",
+    headerName: "CODE",
+    width: 180,
+  },
+  {
+    field: "verification_code",
+    headerName: "VERIFICATION CODE",
+    width: 180,
+  },
+  {
+    field: "cr_activity",
+    headerName: "CR ACTIVITY",
+    width: 180,
+  },
+  {
+    field: "company_name_eng",
+    headerName: "COMPANY NAME (ENGLISH)",
+    width: 180,
+  },
+  {
+    field: "company_name_arabic",
+    headerName: "COMPANY NAME (ARABIC)",
+    width: 180,
+  },
+  {
+    field: "member_category",
+    headerName: "MEMBER CATEGORY",
+    width: 180,
+  },
+  {
+    field: "gpc",
+    headerName: "GPC",
+    width: 180,
+  },
+  {
+    field: "total",
+    headerName: "TOTAL",
+    width: 180,
+  },
+  {
+    field: "contactPerson",
+    headerName: "CONTACT PERSON",
+    width: 180,
+  },
+  {
+    field: "companyLandLine",
+    headerName: "COMPANY LANDLINE",
+    width: 180,
+  },
+  {
+    field: "documents",
+    headerName: "DOCUMENTS",
+    width: 180,
+  },
+  {
+    field: "address_image",
+    headerName: "ADDRESS IMAGE",
+    width: 180,
+  },
+  {
+    field: "payment_type",
+    headerName: "PAYMENT TYPE",
+    width: 180,
+  },
+  {
+    field: "payment_status",
+    headerName: "PAYMENT STATUS",
+    width: 180,
+  },
+  {
+    field: "online_payment",
+    headerName: "ONLINE PAYMENT",
+    width: 180,
+  },
+  {
+    field: "remember_token",
+    headerName: "REMEMBER TOKEN",
+    width: 180,
+  },
+  {
+    field: "parent_memberID",
+    headerName: "PARENT MEMBER ID",
+    width: 180,
+  },
+  {
+    field: "member_type",
+    headerName: "MEMBER TYPE",
+    width: 180,
+  },
+  {
+    field: "invoice_file",
+    headerName: "INVOICE FILE",
+    width: 180,
+  },
+  {
+    field: "otp_status",
+    headerName: "OTP STATUS",
+    width: 180,
+  },
+  {
+    field: "transaction_id",
+    headerName: "TRANSACTION ID",
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: "CREATED AT",
+    width: 180,
+  },
+  {
+    field: "updated_at",
+    headerName: "UPDATED AT",
+    width: 180,
+  },
+  {
+    field: "gcpGLNID",
+    headerName: "GCP GLN ID",
+    width: 180,
+  },
+  {
+    field: "gln",
+    headerName: "GLN",
+    width: 180,
+  },
+  {
+    field: "gcp_type",
+    headerName: "GCP TYPE",
+    width: 180,
+  },
+  {
+    field: "deleted_at",
+    headerName: "DELETED AT",
+    width: 180,
+  },
+  {
+    field: "gcp_expiry",
+    headerName: "GCP EXPIRY",
+    width: 180,
+  },
+  {
+    field: "memberID",
+    headerName: "MEMBER ID",
+    width: 180,
+  },
+  {
+    field: "user_id",
+    headerName: "USER ID",
+    width: 180,
+  },
+  {
+    field: "remarks",
+    headerName: "REMARKS",
+    width: 180,
+  },
+  {
+    field: "assign_to",
+    headerName: "ASSIGN TO",
+    width: 180,
+  },
+  {
+    field: "membership_category",
+    headerName: "MEMBERSHIP CATEGORY",
+    width: 180,
+  },
+  {
+    field: "upgradation_disc",
+    headerName: "UPGRADATION DISCOUNT",
+    width: 180,
+  },
+  {
+    field: "upgradation_disc_amount",
+    headerName: "UPGRADATION DISCOUNT AMOUNT",
+    width: 180,
+  },
+  {
+    field: "renewal_disc",
+    headerName: "RENEWAL DISCOUNT",
+    width: 180,
+  },
+  {
+    field: "renewal_disc_amount",
+    headerName: "RENEWAL DISCOUNT AMOUNT",
+    width: 180,
+  },
+  {
+    field: "membership_otherCategory",
+    headerName: "MEMBERSHIP OTHER CATEGORY",
+    width: 180,
+  },
+  {
+    field: "activityID",
+    headerName: "ACTIVITY ID",
+    width: 180,
+  },
+  {
+    field: "registration_type",
+    headerName: "REGISTRATION TYPE",
+    width: 180,
+  },
 ];
-
