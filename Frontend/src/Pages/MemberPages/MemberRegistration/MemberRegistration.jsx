@@ -1058,21 +1058,25 @@ const MemmberRegisteration = () => {
                                         <td>{item.price}</td>
                                     </tr>
                                     ))}
-                                {selectedOtherProducts.map((otherProduct, index) => (
-                                    <tr key={`other_${index}`}>
-                                        <td>{otherProduct.product_name}</td>
-                                        <td>{otherProduct.registration_fee || 0}</td>
-                                        <td>{otherProduct.yearly_fee || 0}</td>
-                                        <td>{otherProduct.price || 0}</td>
-                                    </tr>
+                                    {selectedOtherProducts.map((otherProduct, index) => (
+                                        <tr key={`other_${index}`}>
+                                            <td>{otherProduct.product_name}</td>
+                                            <td>{otherProduct.product_subscription_fee || 0}</td>
+                                            <td>{otherProduct.med_subscription_fee || 0}</td>
+                                            <td>{otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0}</td>
+                                        </tr>
                                     ))}
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                     <td colSpan="3" className="text-right font-bold">Total:</td>
-                                    <td>
-                                        {/* Calculate the total price for all selected rows */}
+                                    {/* <td>
                                         {subscriptionData.reduce((total, item) => total + item.price, 0)}
+                                    </td> */}
+                                     <td>
+                                        {subscriptionData.reduce((total, item) => total + item.price, 0) +
+                                        selectedOtherProducts.reduce((total, otherProduct) => 
+                                            total + (otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0), 0)}
                                     </td>
                                     </tr>
                                 </tfoot>

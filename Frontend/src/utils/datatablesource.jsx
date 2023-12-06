@@ -1105,14 +1105,17 @@ export const Gs1AllMembers = [
     renderCell: (params) => (
       <div
         style={{
-          padding: '5px',
-          borderRadius: '4px',
-          color: '#fff',
-          backgroundColor: params.row.status === 'active' ? 'green' : 'red',
+            padding: '5px',
+            paddingLeft: '10px',
+            paddingRight: '10px',
+            borderRadius: '20px',
+            border: '2px solid',
+            borderColor: params.row.status === 'active' ? 'green' : 'red',
+            color: params.row.status === 'active' ? 'green' : 'red',
         }}
-      >
+    >
         {params.row.status}
-      </div>
+    </div>
     ),
   },
   {
@@ -1150,19 +1153,19 @@ export const Gs1AllMembers = [
     headerName: "IMAGE",
     width: 180,
   },
-  {
-    field: "address",
-    headerName: "ADDRESS",
-    width: 180,
-    renderCell: (params) => (
-      <div>
-        <p>Country: {params.row.address.countryName}</p>
-        <p>City: {params.row.address.cityName}</p>
-        <p>State: {params.row.address.stateName}</p>
-        <p>Zip: {params.row.address.zip}</p>
-      </div>
-    ),
-  },
+  // {
+  //   field: "address",
+  //   headerName: "ADDRESS",
+  //   width: 180,
+  //   renderCell: (params) => (
+  //     <div>
+  //       <p>Country: {params.row.address.countryName}</p>
+  //       <p>City: {params.row.address.cityName}</p>
+  //       <p>State: {params.row.address.stateName}</p>
+  //       <p>Zip: {params.row.address.zip}</p>
+  //     </div>
+  //   ),
+  // },
   {
     field: "website",
     headerName: "WEBSITE",

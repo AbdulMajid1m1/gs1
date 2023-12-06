@@ -19,6 +19,7 @@ import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/Selec
 import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
 import GLN from "./Pages/AdminPages/GLN/GLN";
 import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
+import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -95,6 +96,8 @@ const App = () => {
                           />
                           <Route path="/gln" element={<GLN />} />
                           <Route path="/gs1-members" element={<Gs1Members />} />
+
+                          <Route path="/member-profile" element={<MemberProfile />} />
 
                         </Routes>
                       </MainLayout>

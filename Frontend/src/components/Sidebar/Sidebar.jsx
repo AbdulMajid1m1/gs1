@@ -12,6 +12,7 @@ import identify from '../../Images/identify.png';
 import ngln from '../../Images/ngln.png';
 import nsscc from '../../Images/nsscc.png';
 import members from '../../Images/members.png';
+import profileIcon from '../../Images/profileIcon.png';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -254,6 +255,23 @@ const SideBar = () => {
               alt=""
             />
             <p className="sidebar-text">Members</p>
+          </div>
+
+
+          <div
+            className={`main-images-container ${selectedItem === '/member-profile' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/member-profile')}
+            onContextMenu={(event) =>
+              handleContextMenu(event, '/member-profile')
+            }
+
+          >
+            <img
+              src={profileIcon}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">Profile</p>
           </div>
 
 

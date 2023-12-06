@@ -21,7 +21,7 @@ const VerifyCode = () => {
             confirmButtonColor: '#021F69',
             
         })
-        // navigate('/verify-code');
+        navigate('/member-profile');
 
     }
 
