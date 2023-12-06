@@ -17,7 +17,17 @@ userRouter.post('/', upload([
     },
 ]), createUser);
 userRouter.get('/', getUserDetails);
-userRouter.put('/:id', updateUser);
+
+userRouter.put('/:userId', upload([
+    {
+        name: 'document',
+        path: 'public/uploads/documents/MemberRegDocs',
+    },
+    {
+        name: 'image',
+        path: 'public/uploads/images/MemberRegImages',
+    },
+]), updateUser);
 userRouter.delete('/:id', deleteUser);
 
 userRouter.get('/temp', getUsersTempDetails);

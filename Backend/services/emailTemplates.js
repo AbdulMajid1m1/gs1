@@ -5,7 +5,7 @@ import { GMAIL_PASSWORD, GMAIL_USERNAME } from '../configs/envConfig.js';
 
 // Get the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const sendOTPEmail = async (email, password, subject, footerMessage, pdfBuffer) => {
+export const sendOTPEmail = async (email, password, subject, footerMessage, pdfBuffer, pdfBuffer2) => {
     return new Promise(async (resolve, reject) => {
         try {
             const transporter = nodemailer.createTransport({
@@ -29,7 +29,15 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
                     filename: 'invoice.pdf',
                     content: pdfBuffer,
                     contentType: 'application/pdf'
-                }]
+                },
+                {
+                    filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf', // Second PDF file
+                    content: pdfBuffer2,
+                    contentType: 'application/pdf'
+                }
+
+
+                ]
 
             };
 

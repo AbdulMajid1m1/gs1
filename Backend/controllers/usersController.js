@@ -8,6 +8,8 @@ import QRCode from 'qrcode';
 import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
 import fs from 'fs/promises';
+import fs1 from 'fs';
+
 import ejs from 'ejs';
 import pdf from 'html-pdf';
 import fsSync from 'fs';
@@ -16,7 +18,6 @@ import { generateRandomTransactionId } from '../utils/utils.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const userSchema = Joi.object({
     user_type: Joi.string().max(20),
     slug: Joi.string(),
@@ -85,6 +86,7 @@ const userSchema = Joi.object({
     membership_otherCategory: Joi.string().max(50),
     activityID: Joi.number().integer(),
     registration_type: Joi.string().max(10),
+    status: Joi.string().valid('active', 'inactive', 'rejected', 'suspend'), // TODO: remove status and allow only in update
 
     // Nested cart schema
     cart: Joi.object({
@@ -102,21 +104,15 @@ const userSchema = Joi.object({
 
         request_type: Joi.string(),
         payment_type: Joi.string(),
-        payment_status: Joi.string(),
         user_id: Joi.string(),
-        status: Joi.string(),
-        created_at: Joi.date(),
-        updated_at: Joi.date(),
-        deleted_at: Joi.date().allow(null),
-        reject_reason: Joi.string().allow(null),
-        reject_by: Joi.number().integer().allow(null),
         receipt: Joi.string(),
         receipt_path: Joi.string(),
         admin_id: Joi.number().integer(),
         assign_to: Joi.number().integer().allow(null),
-        discount: Joi.number().allow(null)
+        discount: Joi.number().allow(null),
     })
 });
+
 
 // Define a function to generate a PDF from EJS template
 
@@ -160,17 +156,26 @@ export const createUser = async (req, res, next) => {
         let documentPath = '';
         let imagePath = '';
 
+        if (!uploadedDocument) {
+            return next(createError(400, 'Document is required'));
+        }
         if (uploadedDocument) {
             const documentFile = uploadedDocument[0];
             documentPath = path.join(documentFile.destination, documentFile.filename);
             userValue.documents = documentPath;
         }
 
+        if (!uploadedImage) {
+            return next(createError(400, 'Image is required'));
+        }
+
+
         if (uploadedImage) {
             const imageFile = uploadedImage[0];
             imagePath = path.join(imageFile.destination, imageFile.filename);
             userValue.address_image = imagePath;
         }
+
 
         // Generate and send password
         const password = generateStrongPassword(6);
@@ -236,6 +241,10 @@ export const createUser = async (req, res, next) => {
         // Generate PDF from EJS template
         const pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1);
 
+        // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
+        const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
+
+
         // Define the directory and filename for the PDF
         const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
         const pdfFilename = `Invoice-${value?.company_name_eng}-${cartValue.transaction_id}.pdf`;
@@ -252,7 +261,9 @@ export const createUser = async (req, res, next) => {
         // Now you can use pdfFilePath to access or send the PDF file
         console.log(`PDF saved to: ${pdfFilePath}`);
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-        await sendOTPEmail(userValue.email, password, 'Login Credentials', null, pdfBuffer);
+        await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
+
+            , pdfBuffer, pdfBuffer2);
         const hashedPassword = bcrypt.hashSync(password, 10);
         userValue.password = hashedPassword;
 
@@ -376,34 +387,133 @@ export const getUsersTempDetails = async (req, res, next) => {
 };
 
 
+// export const updateUser = async (req, res, next) => {
+//     try {
+//         const schema = Joi.object({
+//             id: Joi.string().required(),
+//         });
+//         const { error: idError } = schema.validate(req.params);
+//         if (idError) {
+//             return next(createError(400, idError.details[0].message));
+//         }
+
+//         const { id } = req.params;
+//         const { error } = userSchema.validate(req.body);
+//         if (error) {
+//             return res.status(400).json({ error: error.details[0].message });
+//         }
+
+//         const updatedUser = await prisma.users.update({
+//             where: { id: id },
+//             data: req.body,
+//         });
+
+//         // Check if the update was successful
+//         if (!updatedUser) {
+//             return next(createError(404, 'User not found'));
+//         }
+
+//         res.json(updatedUser);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+
 export const updateUser = async (req, res, next) => {
     try {
         const schema = Joi.object({
-            id: Joi.string().required(),
+            userId: Joi.string().required(),
         });
-        const { error: idError } = schema.validate(req.params);
+        const { error: idError, value: idValue } = schema.validate(req.params);
         if (idError) {
             return next(createError(400, idError.details[0].message));
         }
 
-        const { id } = req.params;
-        const { error } = userSchema.validate(req.body);
+        const userId = idValue.userId;
+
+        // Validate user data
+        const { error, value } = userSchema.validate(req.body);
         if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            return next(createError(400, error.details[0].message));
         }
 
-        const updatedUser = await prisma.users.update({
-            where: { id: id },
-            data: req.body,
-        });
-
-        // Check if the update was successful
-        if (!updatedUser) {
+        // Check if the user exists
+        const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+        if (!existingUser) {
             return next(createError(404, 'User not found'));
         }
 
+        // Handle file uploads and delete old files if new ones are uploaded
+        if (req.files) {
+            if (req.files.document) {
+                const documentFile = req.files.document[0];
+                const documentPath = path.join(documentFile.destination, documentFile.filename);
+
+                // Delete the existing document
+                if (existingUser.documents) {
+                    const existingDocumentPath = path.join(__dirname, '..', existingUser.documents);
+                    console.log("existingDocumentPath", existingDocumentPath);
+
+                    if (fs1.existsSync(existingDocumentPath)) {
+                        try {
+                            await fs1.unlink(existingDocumentPath, (err) => {
+                                if (err) {
+                                    console.error('Error deleting old image:', err);
+                                } else {
+                                    console.log('Old image deleted successfully');
+                                }
+                            });
+                        } catch (err) {
+                            console.error('Error deleting old document:', err);
+                            // Handle other errors if needed
+                        }
+                    } else {
+                        console.log('Old document does not exist');
+                    }
+                }
+                // Update the document path
+                value.documents = documentPath;
+            }
+            if (req.files.image) {
+                const imageFile = req.files.image[0];
+                const imagePath = path.join(imageFile.destination, imageFile.filename);
+
+                // Delete the existing image
+                if (existingUser.address_image) {
+                    const existingImagePath = path.join(__dirname, '..', existingUser.address_image);
+                    console.log("existingImagePath", existingImagePath);
+
+                    if (fs1.existsSync(existingImagePath)) {
+                        try {
+                            await fs1.unlink(existingImagePath, (err) => {
+                                if (err) {
+                                    console.error('Error deleting old image:', err);
+                                } else {
+                                    console.log('Old image deleted successfully');
+                                }
+                            });
+                        } catch (err) {
+                            console.error('Error deleting old image:', err);
+                            // Handle other errors if needed
+                        }
+                    } else {
+                        console.log('Old image does not exist');
+                    }
+                }
+                // Update the image path
+                value.address_image = imagePath;
+            }
+        }
+        // Update user data in the database
+        const updatedUser = await prisma.users.update({
+            where: { id: userId },
+            data: value,
+        });
+
         res.json(updatedUser);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };

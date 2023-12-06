@@ -7,6 +7,8 @@ import countryStateCityRoutes from './subRoutes/countryStateCityRoutes.js';
 import gtinProductsRoutes from './subRoutes/gtinProductsRoutes.js';
 import otherProuductRoutes from './subRoutes/otherProuductRoutes.js';
 import adminRoutes from './subRoutes/adminRoutes.js';
+import productTypesRoutes from './subRoutes/productTypesRoutes.js';
+import productCategoriesRoutes from './subRoutes/productCategoriesRoutes.js';
 const router = express.Router();
 
 
@@ -26,6 +28,10 @@ router.use('/gtinProducts', gtinProductsRoutes);
 router.use('/otherProducts', otherProuductRoutes);
 
 router.use('/admin', adminRoutes);
+
+router.use('/productTypes', productTypesRoutes);
+
+router.use('/productCategories', productCategoriesRoutes);
 
 
 export default router;
