@@ -1,3 +1,5 @@
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,7 +10,7 @@
         <style>
             body {
                 font-family: DejaVu Sans, sans-serif;
-                padding-left: 2px;
+                padding: 4rem;
                 background-color: white;
             }
     
@@ -122,10 +124,7 @@
             }
     
             footer {
-                position: fixed;
-                bottom: -20px;
-                left: 0px;
-                right: 0px;
+                margin-top: 3rem;   
                 height: 70px;
                 font-size: 12px !important;
     
@@ -140,8 +139,7 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                background-image: url('{{asset("https://gs1.org.sa/upload/invoice_tree.png")}}');
-                /*            background-image: url('{{asset("\Config::get(`app.url`)/upload/invoice_tree.png")}}');*/
+                background-image: url("<%= data.BACKEND_URL %>/gs1Images/invoice_tree.png");
                 background-size: 500px;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -155,74 +153,12 @@
     </head>
 
 <body>
-    <?php 
-        $memberData = \App\Models\User::with('gtin_subscription')->where('id',$addMember->id)->first();
-        $general = \App\Models\GeneralSetting::first();
-        $registrationType = '';
-        if ($cart->request_type=='registration') {
-            $registrationType = "New Registration";
-        } elseif ($cart->request_type=='renew') {
-            $registrationType = "Renew";
-        } elseif ($cart->request_type=='addon') {
-            $registrationType = "Addons (Other Products)";
-        }
-        
-        $currentDate = date('d-m-Y');
-        $explodeDate = explode('-', $currentDate);
-        $date['day'] = $explodeDate[0];
-        $date['month'] = $explodeDate[1];
-        $date['year'] = $explodeDate[2];
-    ?>
+  
 
     <center style="margin: 0px auto;">
         <div class="content-container">
             <div class="contents">
-                <footer>
-                    <table class="" width="100%" cellspacing="0" cellpadding="0"
-                        style="border:none; font-size: 11px; line-height: 0.5 rem;">
-                        <tr>
-                            <td width="10%" class="text-left"
-                                style="border-right-style: 1px solid; border-color: #ED7D31">
-                                <span>
-                                    <?php echo DNS2D::getBarcodeHTML('http://www.gs1.org.sa', 'QRCODE',2,2); ?>
-                                </span>
-                            </td>
-                            <td width="90%" class="text-left" style="margin-left: 10px;">
-                                <table class="" width="100%" cellspacing="0" cellpadding="0"
-                                    style="border:none; font-size: 11px; line-height: 0.5 rem;">
-                                    <tr>
-                                        <td>
-                                            <i class="fas fa-phone" aria-hidden="true"></i>
-                                        </td>
-                                        <td style="padding-left: 10px;">
-                                            +<span>966</span>-<span>11</span>-<span>218</span>-<span>2423</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <i class="fas fa-envelope" aria-hidden="true"></i>
-                                        </td>
-                                        <td style="padding-left: 10px;">
-                                            gs1sa@gs1.org.sa
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <i class="fas fa-map-marker" aria-hidden="true"></i>
-                                        </td>
-                                        <td style="padding-left: 10px;">
-                                            <span>
-                                                King Fahad Branch Road, Al-Moatamarat District
-                                                P.O.Box 16683 Riyadh 11474, Saudi Arabia
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </footer>
-                <!----------------------------->
+            
 
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
                     <tr>
@@ -232,147 +168,183 @@
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
                     <tr>
                         <td width="50%">
-                            <img src="{{public_path('backend/images/logo/'. $general->service_default_image)}}"
+                            <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/service_default_image.jpeg"
+                         
                                 alt="logo" style="width: 116.64px; height: 58px;">
                         </td>
                         <td width="50%" class="text-right">
-                            <img src="{{public_path('backend/images/logo/'. $general->logo)}}" alt="logo"
+
+                                <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/logo.png"
+
                                 style="width: 135.64px; height: 58px; padding-bottom: 5px;">
+
+
                         </td>
                     </tr>
                 </table>
-                <hr style=" width: 100%; border: 10px solid #EF6231;"></hr>
-                <table class="" width="100%" cellspacing="0" cellpadding="0"
-                    style="border:none; font-size: 11px; line-height: 0.5 rem;">
+                <hr style=" border: 10px solid #EF6231;"></hr>
+                <table class="" width="100%" cellspacing="0" cellpadding="0" style="border:none; font-size: 11px; line-height: 0.5 rem;">
                     <tr>
+                        <!-- Billing Information -->
                         <td width="50%">
-                            <p style="line-height: 1rem;"><b>BILL TO,</b><br><span>{{@$memberData['company_name_eng']}}</span>
-                            </p>
-                        </td>
-                        <td width="50%" class="text-right">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="50%">
-
-                        </td>
-                        <td width="50%" class="text-right">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="50%">
+                            <p style="line-height: 1rem;"><b>BILL TO,</b><br><span><%= data.memberData.company_name_eng %></span></p>
                             <address>
-                                <p style="line-height: 1rem;">POBOX: <span>{{@$memberData->address->zip}}</span><br>
-                                    Mobile: <span>+</span>{{@$memberData['mobile']}}<br><span>{{@$memberData->address->countryName}},{{@$memberData->address->stateName}} ,{{@$memberData->address->cityName}}</span>
+                                <p style="line-height: 1rem;">
+                                    POBOX: <span><%= data.memberData.address.zip %></span><br>
+                                    Mobile: <span><%= data.memberData.mobile %></span><br>
+                                    <span><%= data.memberData.address.countryName %>, <%= data.memberData.address.stateName %>, <%= data.memberData.address.cityName %></span>
                                 </p>
                             </address>
                         </td>
+                        <!-- Date and Transaction Information -->
                         <td width="50%" class="text-right">
-                            <p class="p-text" style="line-height: 1rem;"><b>Date of Issue:</b><span>{{$date['day']}}</span>-<span>{{$date['month']}}</span>-<span>{{$date['year']}}</span><br><b>Company ID: </b>{{@$memberData['companyID']}} <br><b>Transaction ID: </b>{{@$cart->transaction_id}}
+                            <p class="p-text" style="line-height: 1rem;">
+                                <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
+                                <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br>
+                                <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
+                                <b>Membership Category:</b> <span><%= data.member_category %></span><br>
                             </p>
                         </td>
                     </tr>
                     <tr>
+                        <!-- Payment Type and Membership Type -->
                         <td width="50%">
-                            <p class="p-text"><b>Type of Payment: </b>{{@$registrationType}}</p>
+                            <p class="p-text">
+                                <b>Type of Payment:</b> 
+                                <% if (data.cart.payment_type === 'bank_transfer') { %>
+                                    Bank
+                                <% } else { %>
+                                    Mada/Visa
+                                <% } %>
+                            </p>
+                            <p class="p-text">
+                                <b>Membership Type:</b> <%= data.memberData.gtin_subscription.products.member_category_description %>
+                            </p>
                         </td>
                     </tr>
-                    <tr>
-                        <td width="50%">
-                            <p class="p-text"><b>Membership Type:</b>{{@$memberData->gtin_subscription->products->member_category_description}}</p>
-                        </td>
-                        @if($cart->request_type=='addon')
-                        @endif
-                    </tr>
-                    <tr>
-                        <td width="50%">
-                            <p class="p-text"><b>Payment Method:</b>{{(@$cart->payment_type=='bank_transfer')?'Bank':'Mada/Visa'}}</p>
-                        </td>
-                    </tr>
+                    <!-- Add any additional rows as needed -->
                 </table>
+                
 
-                <?php 
-                    $counter = 0;
-                    $cartItems = unserialize($cart->cart_items);
-                    $items = getMemberCartProducts($cartItems);
-                    $tbalance= 0;
-                    $total_balance = 0;
-                ?>
+              
 
-                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0"
-                    style=" font-size: 11px;">
-                    <tr class="p-text text-bold"
-                        style="background-color: #003D79; color: white;">
-                        <th colspan="2">#</th>
-                        <th colspan="4">Description</th>
-                        <th colspan="2">Registration Fee</th>
-                        <th colspan="2">Yearly Fee</th>
-                        <th colspan="2">SubTotal</th>
-                    </tr>
+              
+              <!-- Invoice Items Table -->
+              <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+                <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
+                    <th colspan="2">#</th>
+                    <th colspan="4">Description</th>
+                    <th colspan="2">Registration Fee</th>
+                    <th colspan="2">Yearly Fee</th>
+                    <th colspan="2">SubTotal</th>
+                </tr>
 
-                    @foreach($items as $addon)
-                    <?php $counter = $counter +1; ?>
+                <% data.cart.cart_items.forEach((item, index) => { %>
                     <tr>
-                        <td colspan="2" class="text-center p-text">{{$counter}}</td>
-                        <td colspan="4" class="p-text text-left">{{$addon}}</td>
-                        <td colspan="2" class="p-text text-right">0</td>
-                        <td colspan="2" class="p-text text-right">0</td>
-                        <td colspan="2" class="text-right p-text text-left">0</td>
+                        <td colspan="2" class="text-center p-text"><%= index + 1 %></td>
+                        <td colspan="4" class="p-text text-left"><%= item.productName %></td>
+                        <td colspan="2" class="p-text text-right"><%= item.registration_fee %></td>
+                        <td colspan="2" class="p-text text-right"><%= item.yearly_fee %></td>
+                       
+                        <td colspan="2" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10) %></td>
                     </tr>
-                    @endforeach
+                <% }); %>
 
-                    <tr style="background-color: #003D79; color: white; font-weight: bold;">
-                        <td colspan="10" class="text-bold p-text text-left"><span>Total</span></td>
-                        <td colspan="2" class="text-bold p-text text-right">{{@$custom_amount}}</td>
-                    </tr>
-                </table><br>
+                <tr style="background-color: #003D79; color: white; font-weight: bold;">
+                    <td colspan="10" class="text-bold p-text text-left">Total</td>
+                    <td colspan="2" class="text-bold p-text text-right"><%= data.cart.total %></td>
+                </tr>
+            </table><br>
 
-                <?php 
-                    $company_details = \App\Models\CompanyDetail::first();
-                ?>
+
+               
 
                 <div>
                     <p class="p-text" style="line-height: 0.5;">This is a system generated document and does not
                         require any signature and stamp.</p>
                 </div>
 
-                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0"
-                    style=" font-size: 11px;">
+                <!-- Bank Details Table -->
+                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                     <tr class="p-text text-bold" style="background-color: #003D79;">
-                        <td colspan="12" align="center" class="p-text text-left"><b>For bank transfer to our bank
-                                account</b></td>
+                        <td colspan="12" align="center" class="p-text text-left">For bank transfer to our bank account</td>
                     </tr>
                     <tr>
                         <td width="40%" colspan="4" class="text-left">Name</td>
-                        <td width="60%" colspan="8" class="text-left">{{$company_details->title}}</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.title %></td>
                     </tr>
                     <tr>
                         <td width="40%" colspan="4" class="text-left">Account Number</td>
-                        <td width="60%" colspan="8" class="text-left">{{$company_details->account_no}}</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.account_no %></td>
                     </tr>
                     <tr>
                         <td width="40%" colspan="4" class="text-left">IBAN NO</td>
-                        <td width="60%" colspan="8" class="text-left">{{$company_details->iban_no}}</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.iban_no %></td>
                     </tr>
                     <tr>
                         <td width="40%" colspan="4" class="text-left">Bank Name</td>
-                        <td width="60%" colspan="8" class="text-left">{{$company_details->bank_name}}</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.bank_name %></td>
                     </tr>
                     <tr>
                         <td width="40%" colspan="4" class="text-left">Bank Swift Code</td>
-                        <td width="60%" colspan="8" class="text-left">{{$company_details->bank_swift_code}}</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.bank_swift_code %></td>
                     </tr>
                 </table><br>
+
 
                 <div>
                     <p class="p-text" style="line-height: 0.5;">*Upon transfer, Please upload a copy of transfer receipt
                         from your account.</p>
                 </div>
             </div>
+            
         </div>
     </center>
+    <footer>
+        <table class="" width="100%" cellspacing="0" cellpadding="0"
+            style="border:none; font-size: 11px; line-height: 0.5 rem;">
+            <tr>
+                <td width="10%" class="text-left" style="border-right-style: 1px solid; border-color: #ED7D31">
+                    <img src="<%= data.memberData.qrCodeDataURL %>"
+                    style="width: 70px; height: 70px;"
+                    alt="QR Code">
+                </td>
+                <td width="90%" class="text-left" style="margin-left: 10px;">
+                    <table class="" width="100%" cellspacing="0" cellpadding="0"
+                        style="border:none; font-size: 11px; line-height: 0.5 rem;">
+                        <tr>
+                            <td>
+                                <i class="fas fa-phone" aria-hidden="true"></i>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                +<span>966</span>-<span>11</span>-<span>218</span>-<span>2423</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i class="fas fa-envelope" aria-hidden="true"></i>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                gs1sa@gs1.org.sa
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i class="fas fa-map-marker" aria-hidden="true"></i>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <span>
+                                    King Fahad Branch Road, Al-Moatamarat District
+                                    P.O.Box 16683 Riyadh 11474, Saudi Arabia
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </footer>
+    <!----------------------------->
 </body>
 
 </html>

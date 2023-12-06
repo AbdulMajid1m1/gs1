@@ -4,8 +4,18 @@ import { createError } from '../utils/createError.js';
 import { generateStrongPassword } from '../utils/functions/commonFunction.js';
 import { sendOTPEmail } from '../services/emailTemplates.js';
 import bcrypt from 'bcryptjs';
+import QRCode from 'qrcode';
+import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
+import fs from 'fs/promises';
+import ejs from 'ejs';
+import pdf from 'html-pdf';
+import fsSync from 'fs';
+import { BACKEND_URL } from '../configs/envConfig.js';
+import { generateRandomTransactionId } from '../utils/utils.js';
 
+// Define the directory name of the current module
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const userSchema = Joi.object({
     user_type: Joi.string().max(20),
@@ -19,9 +29,9 @@ const userSchema = Joi.object({
     email: Joi.string().email(),
     mobile: Joi.string(),
     image: Joi.string(),
-    address: Joi.string(),
-    address1: Joi.string(),
-    address2: Joi.string(),
+    country: Joi.string(),
+    city: Joi.string(),
+    state: Joi.string(),
     po_box: Joi.string(),
     mbl_extension: Joi.string(),
     website: Joi.string(),
@@ -34,7 +44,7 @@ const userSchema = Joi.object({
     unit_number: Joi.string(),
     qr_corde: Joi.string(),
     email_verified_at: Joi.date(),
-    code: Joi.string().max(50),
+    zip_code: Joi.string().max(50),
     verification_code: Joi.number().integer(),
     cr_number: Joi.string(),
     cr_activity: Joi.string(),
@@ -78,7 +88,7 @@ const userSchema = Joi.object({
 
     // Nested cart schema
     cart: Joi.object({
-        transaction_id: Joi.number().integer(),
+        transaction_id: Joi.string(),
         cart_items: Joi.array().items(Joi.object({
             productID: Joi.string(),
             productName: Joi.string(),
@@ -89,8 +99,7 @@ const userSchema = Joi.object({
             quotation: Joi.string()
         })),
         total: Joi.number(),
-        documents: Joi.string(),
-        file_path: Joi.string(),
+
         request_type: Joi.string(),
         payment_type: Joi.string(),
         payment_status: Joi.string(),
@@ -109,6 +118,19 @@ const userSchema = Joi.object({
     })
 });
 
+// Define a function to generate a PDF from EJS template
+
+const generatePDF = async (ejsFilePath, data) => {
+    const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
+    const htmlContent = await ejs.render(ejsTemplate, { data });
+
+    return new Promise((resolve, reject) => {
+        pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
+            if (err) return reject(err);
+            resolve(buffer);
+        });
+    });
+};
 
 
 export const createUser = async (req, res, next) => {
@@ -121,15 +143,16 @@ export const createUser = async (req, res, next) => {
             return next(createError(400, error.details[0].message));
         }
 
+
+
         // Extract user and cart values
         const userValue = { ...value };
         delete userValue.cart; // Remove cart data from userValue
         const cartValue = value.cart;
         // Generate transaction ID for cart
-        cartValue.transaction_id = Math.floor(10000000 + Math.random() * 90000000);
-        // stringify cart items
-        cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-
+        // Generate a random transaction ID with increased randomness
+        const randomTransactionIdLength = 10; // adjust the length as needed 2*5 = 10 for 10 digit transaction id
+        cartValue.transaction_id = generateRandomTransactionId(randomTransactionIdLength);
 
         // Handle file uploads, generate password, etc.
         const uploadedDocument = req.files.document;
@@ -151,13 +174,91 @@ export const createUser = async (req, res, next) => {
 
         // Generate and send password
         const password = generateStrongPassword(6);
-        await sendOTPEmail(userValue.email, password, 'Login Credentials', null);
+
+        // Generate QR code
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        console.log("cartValue")
+        console.log(cartValue)
+
+        const data1 = {
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+                // Assuming $addMember->id is already known
+                company_name_eng: value.company_name_eng,
+                mobile: value.mobile,
+                address: {
+                    zip: value.code,
+                    countryName: value.country,
+                    stateName: value.state,
+                    cityName: value.city,
+                },
+                companyID: value.companyID,
+                member_category: value.member_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: cartValue?.cart_items[0]?.productName,
+                    },
+                },
+            },
+
+            cart: cartValue,
+
+            // cart: {
+            //     request_type: 'New Registration', // Can be 'registration', 'renew', or 'addon
+            //     transaction_id: randTransactionId,
+            //     payment_type: value.payment_type, // Can be 'bank_transfer' or 'Mada/Visa'
+            //     cart_items: [
+            //         {
+
+            //         }
+            //         'Item 2 Description',
+            //         'Item 3 Description',
+            //     ],
+            // },
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL
+        };
+
+        // Generate PDF from EJS template
+        const pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1);
+
+        // Define the directory and filename for the PDF
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+        const pdfFilename = `Invoice-${value?.company_name_eng}-${cartValue.transaction_id}.pdf`;
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+        cartValue.documents = `/uploads/documents/MemberRegInvoice/${pdfFilename}`
+        // Ensure the directory exists
+        if (!fsSync.existsSync(pdfDirectory)) {
+            fsSync.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+        // Save the PDF file
+        await fs.writeFile(pdfFilePath, pdfBuffer);
+
+        // Now you can use pdfFilePath to access or send the PDF file
+        console.log(`PDF saved to: ${pdfFilePath}`);
+        cartValue.cart_items = JSON.stringify(cartValue.cart_items);
+        await sendOTPEmail(userValue.email, password, 'Login Credentials', null, pdfBuffer);
         const hashedPassword = bcrypt.hashSync(password, 10);
         userValue.password = hashedPassword;
 
         // Start a transaction to ensure both user and cart are inserted
         const transaction = await prisma.$transaction(async (prisma) => {
-            const newUser = await prisma.users_temp.create({
+            const newUser = await prisma.users.create({
                 data: userValue
             });
 
@@ -172,7 +273,6 @@ export const createUser = async (req, res, next) => {
 
         res.status(201).json(transaction);
     } catch (error) {
-        console.log("error11")
         console.log(error);
         next(error);
     }
