@@ -52,8 +52,6 @@ const userSchema = Joi.object({
     company_name_eng: Joi.string(),
     company_name_arabic: Joi.string(),
     bussiness_activity: Joi.string(),
-    membership_type: Joi.string(),
-    member_category: Joi.string().max(50),
     other_products: Joi.string(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
@@ -66,7 +64,7 @@ const userSchema = Joi.object({
     online_payment: Joi.string(),
     remember_token: Joi.string(),
     parent_memberID: Joi.number().integer(),
-    member_type: Joi.string().max(50),
+
     invoice_file: Joi.string(),
     otp_status: Joi.number().integer(),
     gcpGLNID: Joi.string().max(50),
@@ -78,6 +76,7 @@ const userSchema = Joi.object({
     user_id: Joi.string(),
     remarks: Joi.string(),
     assign_to: Joi.number().integer(),
+    membership_category_id: Joi.string().max(50),
     membership_category: Joi.string().max(50),
     upgradation_disc: Joi.number().integer(),
     upgradation_disc_amount: Joi.number(),
@@ -86,7 +85,11 @@ const userSchema = Joi.object({
     membership_otherCategory: Joi.string().max(50),
     activityID: Joi.number().integer(),
     registration_type: Joi.string().max(10),
-    status: Joi.string().valid('active', 'inactive', 'rejected', 'suspend'), // TODO: remove status and allow only in update
+    status: Joi.string().valid('active', 'inactive', 'reject', 'suspend'), // TODO: remove status and allow only in update
+    industryTypes: Joi.array().items(Joi.object({
+        id: Joi.string(),
+        name: Joi.string(),
+    })),
 
     // Nested cart schema
     cart: Joi.object({

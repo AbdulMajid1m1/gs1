@@ -29,7 +29,9 @@ export const createProductType = async (req, res, next) => {
 
 export const getAllProductTypes = async (req, res, next) => {
     try {
-        const productTypes = await prisma.product_types.findMany();
+        const productTypes = await prisma.product_types.findMany({
+            where: { status: 1 },
+        });
         res.json(productTypes);
     } catch (error) {
         next(error);

@@ -9,13 +9,6 @@ import Swal from 'sweetalert2';
 import Footer from '../../../components/Footer/Footer';
 import { DotLoader } from 'react-spinners'
 
-const empty_data = [
-    "medical",
-    "non-medical",
-    "tobacco",
-    "cosmetics",
-    "pharma"
-];
 
 const MemmberRegisteration = () => {
     const sessionData = sessionStorage.getItem('saveCrNumberData');
@@ -48,16 +41,23 @@ const MemmberRegisteration = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedMedical, setSelectedMedical] = useState(null);
 
-   
+
 
     // multple select 
-    const [selectedAttributes, setSelectedAttributes] = useState([]);
-    const [attributeOptions, setAttributeOptions] = useState([]);
+    const [selectedIndustries, setSelectedIndustries] = useState([]);
+    const [industryTypes, setIndustryTypes] = useState([]);
     const [selectedOtherProducts, setSelectedOtherProducts] = useState([]);
     const [otherProductsOptions, setOtherProductsOptions] = useState([]);
     const [selectedGLNOption, setSelectedGLNOption] = useState(null);
     const [selectProducts, setSelectProducts] = useState('');
-    const [gpcSelected, setGpcSelected] = useState('');
+
+    const empty_data = [
+        "medical",
+        "non-medical",
+        "tobacco",
+        "cosmetics",
+        "pharma"
+    ];
 
 
 
@@ -67,7 +67,7 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get(`/crs/getCrsByCrNo/${sessionData}`);
                 // const response = await newRequest.get('/crs/getCrsByCrNo/1010000006');
-               
+
                 const activity = response.data;
                 console.log(activity);
                 setGetAllActivities(activity);
@@ -79,11 +79,17 @@ const MemmberRegisteration = () => {
         };
 
         // Search GPC Api
-        const handleSearchGPC = async () => {
+        const fetchIndustryTypes = async () => {
             try {
-                const response = await newRequest.get('/attributes/113');
-                setAttributeOptions(response.data);
-            } 
+                const response = await newRequest.get('/productTypes');
+                // only get name and id from the response
+                const data = response.data;
+                const industryTypes = data.map((industryType) => ({
+                    id: industryType.id,
+                    name: industryType.name,
+                }));
+                setIndustryTypes(industryTypes);
+            }
             catch (error) {
                 console.error('Error fetching on Search GPC Api:', error);
             }
@@ -95,7 +101,7 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get('/otherProducts');
                 setOtherProductsOptions(response.data);
-            } 
+            }
             catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -112,7 +118,7 @@ const MemmberRegisteration = () => {
                     name: country.name_en,
                 }));
                 setCountry(countries);
-            } 
+            }
             catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -121,7 +127,7 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get(`/address/getAllStates`);
                 const data = response.data;
-                
+
                 setState(data);
             }
             catch (error) {
@@ -138,22 +144,22 @@ const MemmberRegisteration = () => {
                 console.error('Error fetching states:', error);
             }
         }
-        
-        
+
+
         handleGetAllActivities();
-        handleSearchGPC();
+        fetchIndustryTypes();
         handleGetAllCountries();
         handleGetAllStates();
         handleGetAllCities();
         handleOtherProductsData();
-  
+
     }, []);
 
 
     const [filteredStates, setFilteredStates] = useState([]);
     const [filteredCities, setFilteredCities] = useState([]);
-    
-     // Handle country selection
+
+    // Handle country selection
     const handleCountryName = (event, value) => {
         setSelectedCountry(value);
         console.log(value)
@@ -164,7 +170,7 @@ const MemmberRegisteration = () => {
         setSelectedCity(null);
         console.log(filteredStates)
     };
-    
+
     // Handle state selection
     const handleState = (event, value) => {
         setSelectedState(value);
@@ -177,30 +183,20 @@ const MemmberRegisteration = () => {
     const handleCity = (event, value) => {
         setSelectedCity(value);
         console.log('Selected State ID:', value.id);
-      };
-
-
-      const handleMedicalChange = (event, value) => {
-        setSelectedMedical(value);
-      };
+    };
 
 
     console.log(selectedActivity?.id)
 
-    const handleAttributeChange = (event, value) => {
-        setSelectedAttributes(value);
-        const attributesValue = value.map((option) => option.attributes_title);
-        
-        // Join the array elements into a single string
-        const joinedAttributes = attributesValue.join(', ');
-        console.log(joinedAttributes);
-        setGpcSelected(joinedAttributes);
+    const handleIndustryTypeChange = (event, value) => {
+        setSelectedIndustries(value);
+        console.log(value);
     };
 
-    
+
     const handleOtherProductsChange = (event, value) => {
         setSelectedOtherProducts(value);
-     
+
         const names = value.map((option) => option.product_name);
         // Join the array elements into a single string
         const joinedNames = names.join(', ');
@@ -209,54 +205,43 @@ const MemmberRegisteration = () => {
 
         // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
         const selectedGLN = value.find(
-          (option) =>
-            option.product_name === 'GLN ( 20 Locations)' ||
-            option.product_name === 'GLN ( 10 Locations)' ||
-            option.product_name === 'GLN (30 Locations)'    
+            (option) =>
+                option.product_name === 'GLN ( 20 Locations)' ||
+                option.product_name === 'GLN ( 10 Locations)' ||
+                option.product_name === 'GLN (30 Locations)'
         );
-    
+
         setSelectedGLNOption(selectedGLN);
 
-      };
-    
-      const getOptionDisabled = (option) => {
+    };
+
+    const getOptionDisabled = (option) => {
         return (
-          selectedGLNOption &&
-          option.product_name.startsWith('GLN') &&
-          option.product_name !== selectedGLNOption.product_name
+            selectedGLNOption &&
+            option.product_name.startsWith('GLN') &&
+            option.product_name !== selectedGLNOption.product_name
         );
-      };
-
-
-    //   console.log('Selected Country:', selectedCountry?.name);
-    //     console.log('Selected State:', selectedState?.name);
-    //     console.log('Selected City:', selectedCity?.name);
-    
-
+    };
 
     const handleSelectedActivityData = (event, value) => {
         setSelectedActivity(value);
     }
 
-    const handleGtinNumber = (event, value) => {
-        setSelectedGtinNumber(value);
-    }
-
-      // Image section
+    // Image section
     const handleImageChange = (event) => {
-      const imageFile = event.target.files[0];
-      const imageUrl = URL.createObjectURL(imageFile);
+        const imageFile = event.target.files[0];
+        const imageUrl = URL.createObjectURL(imageFile);
         setSelectedImage(imageUrl);
     };
 
 
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
-      
+
         const formData = new FormData();
-      
+
         // User data
         formData.append('user_type', 'new');
         formData.append('slug', 'user-slug');
@@ -292,7 +277,6 @@ const MemmberRegisteration = () => {
         formData.append('membership_type', 'Premium');
         formData.append('member_category', 'CategoryA');
         formData.append('other_products', selectProducts);
-        formData.append('gpc', 'GPC123');
         formData.append('image', selectedImage);
         formData.append('product_addons', 'AddonABC');
         formData.append('total', '1500.50');
@@ -321,8 +305,11 @@ const MemmberRegisteration = () => {
         formData.append('membership_otherCategory', 'OtherCategory');
         formData.append('activityID', selectedActivity?.id);
         formData.append('registration_type', 'New');
-        // ... (other user data)
-    
+        formData.append('industryTypes',selectedIndustries)
+        // industryTypes add industryTypes as list of object with name and id
+        // get the id and name from selectedIndustries and send them as list of object
+
+
 
         // Cart data
         subscriptionData.forEach((item, index) => {
@@ -345,40 +332,40 @@ const MemmberRegisteration = () => {
             formData.append(`cart[cart_items][${subscriptionData.length + index}][quotation]`, otherProduct.quotation); // Replace 'quotation' with your actual property
         });
 
-    
+
         newRequest
-          .post("/users", formData)
-          .then((response) => {
-            console.log(response.data);
-            setIsLoading(false);
-            setTimeout(() => {
-              navigate(-1);
-            }, 1500);
-      
-            // Add Swal message
-            Swal.fire({
-              icon: 'success',
-              title: 'Success',
-              text: 'Member Registered Successfully',
-              footer: '<a href="#">Why do I have this issue?</a>'
+            .post("/users", formData)
+            .then((response) => {
+                console.log(response.data);
+                setIsLoading(false);
+                setTimeout(() => {
+                    navigate(-1);
+                }, 1500);
+
+                // Add Swal message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Member Registered Successfully',
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                setIsLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err?.response?.data?.error || "Something went wrong!",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                });
             });
-          })
-          .catch((err) => {
-            console.log(err);
-            setIsLoading(false);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: err?.response?.data?.error || "Something went wrong!",
-              footer: '<a href="#">Why do I have this issue?</a>'
-            });
-          });
-      };
-      
+    };
+
 
     const [selectedCategory, setSelectedCategory] = useState('nonMedical');
     const [subscriptionData, setSubscriptionData] = useState([]);
-    
+
 
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.id);
@@ -388,69 +375,69 @@ const MemmberRegisteration = () => {
 
     const handleGtinNumberChange = (event, value) => {
         if (value) {
-          const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
-          const newItem = {
-            product: selectedGtinData.member_category_description,
-            registrationFee: selectedGtinData.member_registration_fee || 0,
-            yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
-            price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
-          };
-          // Replace the existing selection with the new item
-          setSubscriptionData([newItem]);
-          setSelectedGtinNumber(value);
+            const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
+            const newItem = {
+                product: selectedGtinData.member_category_description,
+                registrationFee: selectedGtinData.member_registration_fee || 0,
+                yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
+                price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
+            };
+            // Replace the existing selection with the new item
+            setSubscriptionData([newItem]);
+            setSelectedGtinNumber(value);
         } else {
-          // Handle the case when the selection is cleared
-          setSubscriptionData([]);
-          setSelectedGtinNumber(null);
+            // Handle the case when the selection is cleared
+            setSubscriptionData([]);
+            setSelectedGtinNumber(null);
         }
-      };
+    };
 
 
     useEffect(() => {
         const handleGtinNumber = async () => {
-          try {
-            // const response = await newRequest.get(`/gtinProducts?category=${selectedCategory}`);
-            const response = await newRequest.get(`/gtinProducts`);
-            setGtinNumber(response.data);
-          } catch (error) {
-            console.error('Error fetching GTIN products:', error);
-          }
+            try {
+                // const response = await newRequest.get(`/gtinProducts?category=${selectedCategory}`);
+                const response = await newRequest.get(`/gtinProducts`);
+                setGtinNumber(response.data);
+            } catch (error) {
+                console.error('Error fetching GTIN products:', error);
+            }
         };
 
-        
+
         // Set initial value of gtinNumber to an empty array
         setGtinNumber([]);
-    
-        handleGtinNumber();
-      }, [selectedCategory]);
 
-      
+        handleGtinNumber();
+    }, [selectedCategory]);
+
+
 
 
     return (
         <div>
-             {isLoading &&
+            {isLoading &&
 
                 <div className='loading-spinner-background'
-                style={{
-                    zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
+                    style={{
+                        zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
 
 
-                }}
+                    }}
                 >
-                <DotLoader
-                    size={45}
-                    color={"#FF693A"}
-                    // height={4}
-                    loading={isLoading}
-                />
+                    <DotLoader
+                        size={45}
+                        color={"#FF693A"}
+                        // height={4}
+                        loading={isLoading}
+                    />
                 </div>
-                }
+            }
 
-           <div className='sticky top-0 z-50 bg-white'>
-              {/* Headers */}
-              <Header />
+            <div className='sticky top-0 z-50 bg-white'>
+                {/* Headers */}
+                <Header />
             </div>
             <div className="flex flex-col justify-center items-center">
                 <div className='h-auto sm:w-[85%] w-full border-l border-r border-primary'>
@@ -464,7 +451,7 @@ const MemmberRegisteration = () => {
                     <form>
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label> 
+                                <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="activty"
                                     // options={getAllActivities}
@@ -690,7 +677,7 @@ const MemmberRegisteration = () => {
                             </div>
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='extension'>Extension no.<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='extension'>Extension no.</label>
                                 <input
                                     onChange={(e) => setExtension(e.target.value)}
                                     id='extension'
@@ -713,7 +700,7 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='website'>Website<span className='text-red-600 font-normal'>* Please enter a valid URL</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='website'>Website</label>
                                 <input
                                     onChange={(e) => setWebsite(e.target.value)}
                                     id='website'
@@ -723,23 +710,23 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='searchgpc'>Search GPC<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='industriesTypes'>Select Industries Releated to your Business<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     multiple
-                                    id='searchgpc'
-                                    options={attributeOptions}
-                                    getOptionLabel={(option) => option.attributes_title}
-                                    value={selectedAttributes}
-                                    onChange={handleAttributeChange}
+                                    id='industriesTypes'
+                                    options={industryTypes}
+                                    getOptionLabel={(option) => option.name}
+                                    value={selectedIndustries}
+                                    onChange={handleIndustryTypeChange}
                                     filterSelectedOptions
                                     renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label='Search GPC'
-                                        placeholder='Search GPC'
-                                        variant='outlined'
-                                    />
-                                        )}
+                                        <TextField
+                                            {...params}
+                                            label='Select mataching industries'
+                                            placeholder='select industries types'
+                                            variant='outlined'
+                                        />
+                                    )}
                                 />
                             </div>
 
@@ -748,7 +735,7 @@ const MemmberRegisteration = () => {
 
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
-                         
+
                             <div className='w-full font-body sm:text-base text-sm flex flex-col'>
                                 <label className='text-secondary font-semibold' htmlFor='country'>Country<span className='text-red-600'>*</span></label>
                                 <Autocomplete
@@ -887,38 +874,38 @@ const MemmberRegisteration = () => {
                                     getOptionLabel={(option) => option || ""}
                                     onChange={handleCity}
                                     onInputChange={(event, value) => {
-                                    if (!value) {
-                                        // perform operation when input is cleared
-                                        console.log("Input cleared");
-                                    }
+                                        if (!value) {
+                                            // perform operation when input is cleared
+                                            console.log("Input cleared");
+                                        }
                                     }}
                                     renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        InputProps={{
-                                        ...params.InputProps,
-                                        className: "text-white",
-                                        }}
-                                        InputLabelProps={{
-                                        ...params.InputLabelProps,
-                                        style: { color: "white" },
-                                        }}
-                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                        placeholder="Medical/Non-Medical"
-                                    />
+                                        <TextField
+                                            {...params}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                className: "text-white",
+                                            }}
+                                            InputLabelProps={{
+                                                ...params.InputLabelProps,
+                                                style: { color: "white" },
+                                            }}
+                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                            placeholder="Medical/Non-Medical"
+                                        />
                                     )}
                                     classes={{
-                                    endAdornment: "text-white",
+                                        endAdornment: "text-white",
                                     }}
                                     sx={{
-                                    "& .MuiAutocomplete-endAdornment": {
-                                        color: "white",
-                                    },
+                                        "& .MuiAutocomplete-endAdornment": {
+                                            color: "white",
+                                        },
                                     }}
                                 />
                             </div>
 
-                           
+
                         </div>
 
 
@@ -970,32 +957,32 @@ const MemmberRegisteration = () => {
                                     getOptionLabel={(option) => option?.member_category_description || ''}
                                     onChange={handleGtinNumberChange}
                                     onInputChange={(event, value) => {
-                                    if (!value) {
-                                        console.log('Input cleared');
-                                    }
+                                        if (!value) {
+                                            console.log('Input cleared');
+                                        }
                                     }}
                                     renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        InputProps={{
-                                        ...params.InputProps,
-                                        className: 'text-white',
-                                        }}
-                                        InputLabelProps={{
-                                        ...params.InputLabelProps,
-                                        style: { color: 'white' },
-                                        }}
-                                        className='bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full'
-                                        placeholder='GTIN'
-                                    />
+                                        <TextField
+                                            {...params}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                className: 'text-white',
+                                            }}
+                                            InputLabelProps={{
+                                                ...params.InputLabelProps,
+                                                style: { color: 'white' },
+                                            }}
+                                            className='bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full'
+                                            placeholder='GTIN'
+                                        />
                                     )}
                                     classes={{
-                                    endAdornment: 'text-white',
+                                        endAdornment: 'text-white',
                                     }}
                                     sx={{
-                                    '& .MuiAutocomplete-endAdornment': {
-                                        color: 'white',
-                                    },
+                                        '& .MuiAutocomplete-endAdornment': {
+                                            color: 'white',
+                                        },
                                     }}
                                 />
                             </div>
@@ -1012,16 +999,16 @@ const MemmberRegisteration = () => {
                                     onChange={handleOtherProductsChange}
                                     filterSelectedOptions
                                     renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label='Search GPC'
-                                        placeholder='Search GPC'
-                                        variant='outlined'
-                                    />
+                                        <TextField
+                                            {...params}
+                                            label='Search GPC'
+                                            placeholder='Search GPC'
+                                            variant='outlined'
+                                        />
                                     )}
                                     getOptionDisabled={getOptionDisabled}
-                            />
-                                
+                                />
+
                             </div>
 
                         </div>
@@ -1049,52 +1036,52 @@ const MemmberRegisteration = () => {
 
 
                         <div>
-                          <div className='mt-6'>
-                            <label className='text-secondary text-3xl font-sans font-bold'>Your Subscription</label>
-                            <div className="table-Bintobin-Axapta px-4">
-                                <p className='text-secondary text-2xl font-sans font-bold text-center mb-4 mt-4'>Subscription Summary</p>
-                                <table>
-                                <thead>
-                                    <tr>
-                                    <th>PRODUCT</th>
-                                    <th>REGISTRATION FEE</th>
-                                    <th>YEARLY FEE</th>
-                                    <th>PRICE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {subscriptionData.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.product}</td>
-                                        <td>{item.registrationFee}</td>
-                                        <td>{item.yearlyFee}</td>
-                                        <td>{item.price}</td>
-                                    </tr>
-                                    ))}
-                                    {selectedOtherProducts.map((otherProduct, index) => (
-                                        <tr key={`other_${index}`}>
-                                            <td>{otherProduct.product_name}</td>
-                                            <td>{otherProduct.product_subscription_fee || 0}</td>
-                                            <td>{otherProduct.med_subscription_fee || 0}</td>
-                                            <td>{otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                    <td colSpan="3" className="text-right font-bold">Total:</td>
-                                    {/* <td>
+                            <div className='mt-6'>
+                                <label className='text-secondary text-3xl font-sans font-bold'>Your Subscription</label>
+                                <div className="table-Bintobin-Axapta px-4">
+                                    <p className='text-secondary text-2xl font-sans font-bold text-center mb-4 mt-4'>Subscription Summary</p>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>PRODUCT</th>
+                                                <th>REGISTRATION FEE</th>
+                                                <th>YEARLY FEE</th>
+                                                <th>PRICE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {subscriptionData.map((item, index) => (
+                                                <tr key={index}>
+                                                    <td>{item.product}</td>
+                                                    <td>{item.registrationFee}</td>
+                                                    <td>{item.yearlyFee}</td>
+                                                    <td>{item.price}</td>
+                                                </tr>
+                                            ))}
+                                            {selectedOtherProducts.map((otherProduct, index) => (
+                                                <tr key={`other_${index}`}>
+                                                    <td>{otherProduct.product_name}</td>
+                                                    <td>{otherProduct.product_subscription_fee || 0}</td>
+                                                    <td>{otherProduct.med_subscription_fee || 0}</td>
+                                                    <td>{otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colSpan="3" className="text-right font-bold">Total:</td>
+                                                {/* <td>
                                         {subscriptionData.reduce((total, item) => total + item.price, 0)}
                                     </td> */}
-                                     <td>
-                                        {subscriptionData.reduce((total, item) => total + item.price, 0) +
-                                        selectedOtherProducts.reduce((total, otherProduct) => 
-                                            total + (otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0), 0)}
-                                    </td>
-                                    </tr>
-                                </tfoot>
-                                </table>
-                              </div>
+                                                <td>
+                                                    {subscriptionData.reduce((total, item) => total + item.price, 0) +
+                                                        selectedOtherProducts.reduce((total, otherProduct) =>
+                                                            total + (otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0), 0)}
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
@@ -1109,12 +1096,12 @@ const MemmberRegisteration = () => {
                                         type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
                                     <p className='text-secondary font-semibold'>Bank Transfer</p>
                                 </div>
-                                
+
                             </div>
-                         </div>
-                        
+                        </div>
+
                         <button onClick={handleSubmit} type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
-                                <i className="fas fa-check-circle mr-1"></i> Submit
+                            <i className="fas fa-check-circle mr-1"></i> Submit
                         </button>
 
                     </form>
@@ -1123,11 +1110,11 @@ const MemmberRegisteration = () => {
                 {/* </div> */}
             </div>
 
-            
-             {/* Footer */}
-             <div className='mt-6'>
+
+            {/* Footer */}
+            <div className='mt-6'>
                 <Footer />
-             </div>
+            </div>
             {/* End Footer */}
         </div>
     )
