@@ -8,6 +8,7 @@ import Header from '../../../components/Header/Header';
 import Swal from 'sweetalert2';
 import Footer from '../../../components/Footer/Footer';
 import { DotLoader } from 'react-spinners'
+import { toast } from 'react-toastify';
 
 
 const MemmberRegisteration = () => {
@@ -357,22 +358,27 @@ const MemmberRegisteration = () => {
                     navigate(-1);
                 }, 1500);
 
-                // Add Swal message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Member Registered Successfully',
-                    footer: '<a href="#">Why do I have this issue?</a>'
+                toast.success('Member Registered Successfully', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
                 });
+
             })
             .catch((err) => {
                 console.log(err);
                 setIsLoading(false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: err?.response?.data?.error || "Something went wrong!",
-                    footer: '<a href="#">Why do I have this issue?</a>'
+
+                toast.error(err?.response?.data?.error || "Something went wrong!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
                 });
             });
     };

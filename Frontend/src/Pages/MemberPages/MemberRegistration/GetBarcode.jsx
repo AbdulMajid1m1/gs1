@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import newRequest from '../../../utils/userRequest'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 const GetBarcode = () => {
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
@@ -148,20 +149,30 @@ const handleSelectChange = (event, value) => {
         activity: crActivity,
         status: 1, // i pass this status in hardcoded
       });
-  
-      // Handle success,
-      Swal.fire({
-        icon: 'success',
-        title: 'CR Number Added!',
-        text: `CR Number ${crNumber} with activity "${crActivity}" has been added successfully.`,
+
+      toast.success(`CR Number ${crNumber} with activity "${crActivity}" has been added successfully.`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+
     } catch (error) {
-      // Handle error,
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to add CR Number. Please try again.',
+      toast.error('Failed to add CR Number. Please try again.', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+
     }
   };
 
