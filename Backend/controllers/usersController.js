@@ -59,6 +59,7 @@ const userSchema = Joi.object({
     contactPerson: Joi.string(),
     companyLandLine: Joi.string(),
     documents: Joi.string(),
+    document: Joi.string(),
     address_image: Joi.string(),
     payment_type: Joi.string(),
     online_payment: Joi.string(),
@@ -160,7 +161,7 @@ export const createUser = async (req, res, next) => {
         const uploadedImage = req.files.image;
         let documentPath = '';
         let imagePath = '';
-
+        
         if (!uploadedDocument) {
             return next(createError(400, 'Document is required'));
         }
@@ -271,6 +272,7 @@ export const createUser = async (req, res, next) => {
             , pdfBuffer, pdfBuffer2);
         const hashedPassword = bcrypt.hashSync(password, 10);
         userValue.password = hashedPassword;
+        userValue.industryTypes = JSON.stringify(userValue.industryTypes);
 
         // Start a transaction to ensure both user and cart are inserted
         const transaction = await prisma.$transaction(async (prisma) => {
