@@ -243,12 +243,12 @@ const MemmberRegisteration = () => {
 
     // Image section
     const handleImageChange = (event) => {
-        const imageFile = event.target.files[0];
-        const imageUrl = URL.createObjectURL(imageFile);
-        setSelectedImage(imageUrl);
+        setSelectedImage(event.target.files[0]);
     };
 
-
+    const handleDocUpload = (event) => {
+        setUpload(event.target.files[0]);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -290,6 +290,7 @@ const MemmberRegisteration = () => {
         // formData.append('bussiness_activity', 'Trading');
         formData.append('other_products', selectProducts);
         formData.append('image', selectedImage);
+        formData.append('document', upload);
         // formData.append('product_addons', 'AddonABC');
         // formData.append('total', '1500.50');
         formData.append('contactPerson', contactPerson);
@@ -344,7 +345,11 @@ const MemmberRegisteration = () => {
 
 
         newRequest
-            .post("/users", formData)
+            .post("/users", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
             .then((response) => {
                 console.log(response.data);
                 setIsLoading(false);
@@ -948,17 +953,20 @@ const MemmberRegisteration = () => {
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='upload'>Upload Company Documents<span className='text-red-600'>*</span></label>
                                 <input
-                                    onChange={(e) => setUpload(e.target.value)}
+                                    onChange={handleDocUpload}
                                     id='upload'
+                                    accept=".pdf,.doc,.docx"
                                     placeholder='Upload Company Documents'
                                     type='file' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
 
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
+                                <label classNa me='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
                                 <input
                                     onChange={handleImageChange}
+                                    accept="image/*"
+
                                     // onChange={(e) => setUploadNationalAddress(e.target.value)}
                                     id='uploadNational'
                                     type='file' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
