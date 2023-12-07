@@ -4,6 +4,10 @@ import profileICon from "../../../../Images/profileICon.png"
 import { TextField } from '@mui/material'
 
 const Gs1MembersView = () => {
+    // get the sesstion data
+    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+    console.log(gs1MemberData)
+
   return (
     <div>
       <div className="p-1 h-full sm:ml-72">
@@ -34,10 +38,15 @@ const Gs1MembersView = () => {
 
                      <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                            <TextField 
-                              id="companyNameEnglish" 
-                                label="Company Name English"
-                                  variant="outlined" 
+                        <TextField 
+                            id="companyNameEnglish" 
+                              label="Company Name English"
+                                variant="outlined" 
+                                    value={gs1MemberData?.company_name_eng}
+                                InputLabelProps={{
+                                    shrink: Boolean(gs1MemberData?.company_name_eng),
+                                        style: { fontSize: gs1MemberData?.company_name_eng ? '16px' : '16px' },
+                            }}
                             />
                         </div>
 
@@ -46,6 +55,11 @@ const Gs1MembersView = () => {
                               id="companyNameArabic" 
                                 label="Company Name Arabic"
                                   variant="outlined" 
+                                  value={gs1MemberData?.company_name_arabic}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.company_name_arabic),
+                                          style: { fontSize: gs1MemberData?.company_name_arabic ? '16px' : '16px' },
+                              }}
                             />
                         </div>
 
@@ -54,6 +68,11 @@ const Gs1MembersView = () => {
                               id="Country" 
                                 label="Country"
                                   variant="outlined" 
+                                  value={gs1MemberData?.country}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.country),
+                                          style: { fontSize: gs1MemberData?.country ? '16px' : '16px' },
+                              }}
                             />
                         </div>
                     </div>
@@ -65,6 +84,11 @@ const Gs1MembersView = () => {
                               id="CountryShortName" 
                                 label="Country Short Name"
                                   variant="outlined" 
+                                  value={gs1MemberData?.country}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.country),
+                                          style: { fontSize: gs1MemberData?.country ? '16px' : '16px' },
+                              }}
                             />
                         </div>
 
@@ -73,6 +97,11 @@ const Gs1MembersView = () => {
                               id="State" 
                                 label="State"
                                   variant="outlined" 
+                                  value={gs1MemberData?.state}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.state),
+                                          style: { fontSize: gs1MemberData?.state ? '16px' : '16px' },
+                              }}
                             />
                         </div>
 
@@ -81,6 +110,11 @@ const Gs1MembersView = () => {
                               id="City" 
                                 label="City"
                                   variant="outlined" 
+                                  value={gs1MemberData?.city}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.city),
+                                          style: { fontSize: gs1MemberData?.city ? '16px' : '16px' },
+                              }}
                             />
                         </div>
                     </div>
@@ -92,6 +126,11 @@ const Gs1MembersView = () => {
                               id="ZipCode" 
                                 label="Zip Code"
                                   variant="outlined" 
+                                  value={gs1MemberData?.zip_code}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.zip_code),
+                                          style: { fontSize: gs1MemberData?.zip_code ? '16px' : '16px' },
+                              }}
                             />
                         </div>
 
@@ -100,6 +139,11 @@ const Gs1MembersView = () => {
                               id="mobile" 
                                 label="Mobile No (omit zero)"
                                   variant="outlined" 
+                                  value={gs1MemberData?.mbl_extension}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.mbl_extension),
+                                          style: { fontSize: gs1MemberData?.mbl_extension ? '16px' : '16px' },
+                              }}
                             />
                         </div>
 
@@ -119,6 +163,11 @@ const Gs1MembersView = () => {
                               id="upgradationDiscount" 
                                 label="Upgradation Discount"
                                   variant="outlined" 
+                                  value={gs1MemberData?.upgradation_disc_amount}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: { fontSize: '16px', paddingTop: '8px' },
+                                  }}
                             />
                         </div>
 
@@ -127,6 +176,11 @@ const Gs1MembersView = () => {
                               id="renewalDiscount" 
                                 label="Reneval Discount"
                                   variant="outlined" 
+                                  value={gs1MemberData?.renewal_disc_amount}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: { fontSize: '16px', paddingTop: '8px' },
+                                  }}
                             />
                         </div>
                       </div>
@@ -138,7 +192,7 @@ const Gs1MembersView = () => {
                             <button className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Change Membership</button>
                         </div>
 
-                        <div className='flex justify-between mt-8'>
+                        {/* <div className='flex justify-between mt-8'>
                             <div className='w-full flex flex-col gap-1 '>
                                 <p className='font-sans font-semibold text-sm text-gray-500'>Cr Number</p>
                                 <p className='text-gray-500'>No</p>
@@ -148,45 +202,194 @@ const Gs1MembersView = () => {
                                 <p className='font-sans font-semibold text-sm text-gray-500'>Cr Activity</p>
                                 <p className='text-gray-500'>No</p>
                             </div>
-                        </div>
-
-                        <div className='flex justify-between mt-8'>
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>CR Documents</p>
-                                <p className='text-gray-500'>MIM License</p>
+                        </div> */}
+                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="crNumber" 
+                                label="Cr Number"
+                                    variant="outlined" 
+                                        value={gs1MemberData?.cr_number}
+                                    InputLabelProps={{
+                                        shrink: Boolean(gs1MemberData?.cr_number),
+                                            style: { fontSize: gs1MemberData?.cr_number ? '16px' : '16px' },
+                                }}
+                                />
                             </div>
 
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>CR Document Number</p>
-                                <p className='text-gray-500'>2312</p>
-                            </div>
-                        </div>
-
-                        <div className='flex justify-between mt-8'>
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>Company Name English</p>
-                                <p className='text-gray-500'>CreativeM</p>
-                            </div>
-
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>Company Name Arabic</p>
-                                <p className='text-gray-500'>CreativeM</p>
-                            </div>
-                        </div>
-
-                        <div className='flex justify-between mt-8'>
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>Company GCP</p>
-                                <p className='text-gray-500'>Not Assigned</p>
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="crActivity" 
+                                    label="Cr Activity"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.cr_activity}
+                                    InputLabelProps={{
+                                        shrink: Boolean(gs1MemberData?.cr_activity),
+                                            style: { fontSize: gs1MemberData?.cr_activity ? '16px' : '16px' },
+                                }}
+                                />
                             </div>
 
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>Contact Person</p>
-                                <p className='text-gray-500'>ABDUL MAJID</p>
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <TextField 
+                                    id="crDocuments" 
+                                        label="CR Documents"
+                                        variant="outlined" 
+                                        value={gs1MemberData?.cr_documentID}
+                                        InputLabelProps={{
+                                            shrink: Boolean(gs1MemberData?.cr_documentID),
+                                                style: { fontSize: gs1MemberData?.cr_documentID ? '16px' : '16px' },
+                                    }}
+                                    />
                             </div>
-                        </div>
+                       </div>
+                    
 
-                        <div className='flex justify-between mt-8'>
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="crNumber" 
+                                label="CR Document Number"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.document_number}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px' },
+                                    }}
+                                />
+                            </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="companyNameEnglish" 
+                                    label="Company Name English"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.company_name_eng}
+                                    InputLabelProps={{
+                                        shrink: Boolean(gs1MemberData?.company_name_eng),
+                                            style: { fontSize: gs1MemberData?.company_name_eng ? '16px' : '16px' },
+                                }}
+                                />
+                            </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <TextField 
+                                    id="companyNameArabic" 
+                                        label="Company Name Arabic"
+                                        variant="outlined" 
+                                        value={gs1MemberData?.company_name_arabic}
+                                        InputLabelProps={{
+                                            shrink: Boolean(gs1MemberData?.company_name_arabic),
+                                                style: { fontSize: gs1MemberData?.company_name_arabic ? '16px' : '16px' },
+                                    }}
+                                    />
+                            </div>
+                       </div>
+                    
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="companyGCP" 
+                                label="Company GCP"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.gcpGLNID}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px' },
+                                    }}
+                                />
+                            </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="contactPerson" 
+                                    label="Contact Person"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.contactPerson}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                           style: { fontSize: '16px', paddingTop: '8px' },
+                                }}
+                                />
+                            </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <TextField 
+                                    id="mobileNo" 
+                                        label="Mobile No (omit zero)"
+                                        variant="outlined" 
+                                        value={gs1MemberData?.mobile}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px' },
+                                    }}
+                                    />
+                            </div>
+                       </div>
+
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="memberID" 
+                                label="Member ID"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.memberID}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px' },
+                                    }}
+                                />
+                            </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="companyLandline" 
+                                    label="Company Landline"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.companyLandLine}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                           style: { fontSize: '16px', paddingTop: '8px' },
+                                }}
+                                />
+                            </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <TextField 
+                                    id="membershipType" 
+                                        label="Membership Type"
+                                        variant="outlined" 
+                                        value={gs1MemberData?.membership_category}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px' },
+                                    }}
+                                    />
+                            </div>
+                       </div>
+                    
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        <div className="w-[32.5%] font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="GTIN" 
+                                label="GTIN"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.gpc}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px' },
+                                    }}
+                                />
+                            </div>
+                           
+                       </div>
+                    
+                    
+                      
+                        {/* <div className='flex justify-between mt-8'>
                             <div className='w-full flex flex-col gap-1 '>
                                 <p className='font-sans font-semibold text-sm text-gray-500'>Mobile No (omit zero)</p>
                                 <p className='text-gray-500'>339809338</p>
@@ -196,26 +399,14 @@ const Gs1MembersView = () => {
                                 <p className='font-sans font-semibold text-sm text-gray-500'>Member ID</p>
                                 <p className='text-gray-500'>3998</p>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className='flex justify-between mt-8'>
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>Company Landline</p>
-                                <p className='text-gray-500'>213</p>
-                            </div>
-
-                            <div className='w-full flex flex-col gap-1 '>
-                                <p className='font-sans font-semibold text-sm text-gray-500'>Membership Type</p>
-                                <p className='text-gray-500'>NON_MED_CATEGORY</p>
-                            </div>
-                        </div>
-
-                        <div className='flex justify-between mt-6'>
+                        {/* <div className='flex justify-between mt-6'>
                             <div className='w-full flex flex-col gap-1 '>
                                 <p className='font-sans font-semibold text-sm text-gray-500'>GTIN</p>
                                 <p className='text-gray-500'>Category B - ( 100 Barcodes )</p>
                             </div>
-                        </div>
+                        </div> */}
 
                       </div>
                     </div>

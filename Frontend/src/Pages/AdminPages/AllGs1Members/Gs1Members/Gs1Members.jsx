@@ -75,6 +75,8 @@ const Gs1Members = () => {
 
     const handleView = (row) => {
         console.log(row);
+        // save this data in session storage
+        sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
         navigate("/view-gs1-member/" + row?.id);
       };
 
