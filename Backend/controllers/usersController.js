@@ -86,10 +86,12 @@ const userSchema = Joi.object({
     activityID: Joi.number().integer(),
     registration_type: Joi.string().max(10),
     status: Joi.string().valid('active', 'inactive', 'reject', 'suspend'), // TODO: remove status and allow only in update
+   
     industryTypes: Joi.array().items(Joi.object({
         id: Joi.string(),
-        name: Joi.string(),
+        name: Joi.string()
     })),
+
 
     // Nested cart schema
     cart: Joi.object({
