@@ -185,7 +185,7 @@ const MemmberRegisteration = () => {
       };
 
 
-    console.log(selectedActivity?.activity)
+    console.log(selectedActivity?.id)
 
     const handleAttributeChange = (event, value) => {
         setSelectedAttributes(value);
@@ -216,6 +216,7 @@ const MemmberRegisteration = () => {
         );
     
         setSelectedGLNOption(selectedGLN);
+
       };
     
       const getOptionDisabled = (option) => {
@@ -230,6 +231,7 @@ const MemmberRegisteration = () => {
     //   console.log('Selected Country:', selectedCountry?.name);
     //     console.log('Selected State:', selectedState?.name);
     //     console.log('Selected City:', selectedCity?.name);
+    
 
 
     const handleSelectedActivityData = (event, value) => {
@@ -248,14 +250,15 @@ const MemmberRegisteration = () => {
     };
 
 
-
-    // Submit All Data    
-     const handleSubmit = (e) => {
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
       
         const formData = new FormData();
-        formData.append('user_type', 'admin');
+      
+        // User data
+        formData.append('user_type', 'new');
         formData.append('slug', 'user-slug');
         formData.append('location_uk', 'London');
         formData.append('have_cr', 'yes');
@@ -265,11 +268,10 @@ const MemmberRegisteration = () => {
         formData.append('lname', 'Doe');
         formData.append('email', email);
         formData.append('mobile', mobileNumber);
-        formData.append('image', selectedImage);
-        formData.append('address', '123 Street, City');
-        formData.append('address1', 'Address Line 1');
-        formData.append('address2', 'Address Line 2');
-        formData.append('po_box', 'PO Box 1001');
+        formData.append('country', selectedCountry?.name);
+        formData.append('state', selectedState?.name);
+        formData.append('city', selectedCity?.name);
+        formData.append('po_box', 'POBox1001');
         formData.append('mbl_extension', extension);
         formData.append('website', website);
         formData.append('no_of_staff', '50');
@@ -281,7 +283,6 @@ const MemmberRegisteration = () => {
         formData.append('unit_number', 'Unit 5');
         formData.append('qr_corde', 'QRCode123');
         formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
-        formData.append('code', 'Code12345');
         formData.append('verification_code', '123456');
         formData.append('cr_number', sessionData);
         formData.append('cr_activity', selectedActivity?.activity);
@@ -289,48 +290,62 @@ const MemmberRegisteration = () => {
         formData.append('company_name_arabic', companyArabic);
         formData.append('bussiness_activity', 'Trading');
         formData.append('membership_type', 'Premium');
-        formData.append('member_category', 'Category A');
+        formData.append('member_category', 'CategoryA');
         formData.append('other_products', selectProducts);
-        formData.append('gpc', gpcSelected);
-        formData.append('product_addons', 'Addon ABC');
+        formData.append('gpc', 'GPC123');
+        formData.append('image', selectedImage);
+        formData.append('product_addons', 'AddonABC');
         formData.append('total', '1500.50');
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
-        formData.append('documents', upload);
-        formData.append('address_image', 'https://example.com/address-image.jpg');
-        formData.append('status', 'active');
-        formData.append('payment_type', 'Credit Card');
-        formData.append('payment_status', '1');
         formData.append('online_payment', 'Enabled');
         formData.append('remember_token', 'TokenXYZ');
         formData.append('parent_memberID', '100');
-        formData.append('member_type', 'Type A');
+        formData.append('member_type', 'TypeA');
         formData.append('invoice_file', 'https://example.com/invoice.pdf');
         formData.append('otp_status', '1');
-        formData.append('transaction_id', '2001');
-        formData.append('created_at', '2023-03-15T00:00:00.000Z');
-        formData.append('updated_at', '2023-03-15T00:00:00.000Z');
         formData.append('gcpGLNID', 'GLN123');
         formData.append('gln', '123456');
-        formData.append('gcp_type', 'Type 1');
+        formData.append('gcp_type', 'Type1');
         formData.append('deleted_at', '2023-03-20T00:00:00.000Z');
         formData.append('gcp_expiry', '2024-03-15T00:00:00.000Z');
         formData.append('memberID', 'MID123');
         formData.append('user_id', 'UID123');
         formData.append('remarks', 'Sample remarks');
         formData.append('assign_to', '5');
-        formData.append('membership_category', 'Category B');
+        formData.append('membership_category', 'CategoryB');
         formData.append('upgradation_disc', '10');
         formData.append('upgradation_disc_amount', '100.00');
         formData.append('renewal_disc', '5');
         formData.append('renewal_disc_amount', '50.00');
-        formData.append('membership_otherCategory', 'Other Category');
-        formData.append('activityID', '123');
-        formData.append('registration_type', 'Online');
-        // formData.append('document', sesstionDocumentData);
-        formData.append('image', selectedImage);
+        formData.append('membership_otherCategory', 'OtherCategory');
+        formData.append('activityID', selectedActivity?.id);
+        formData.append('registration_type', 'New');
+        // ... (other user data)
+    
 
-      
+        // Cart data
+        subscriptionData.forEach((item, index) => {
+            formData.append(`cart[cart_items][${index}][productID]`, item.productId); // Replace 'productId' with your actual property
+            formData.append(`cart[cart_items][${index}][productName]`, item.product); // Replace 'productName' with your actual property
+            formData.append(`cart[cart_items][${index}][registration_fee]`, item.registrationFee); // Replace 'registrationFee' with your actual property
+            formData.append(`cart[cart_items][${index}][yearly_fee]`, item.yearlyFee); // Replace 'yearlyFee' with your actual property
+            formData.append(`cart[cart_items][${index}][price]`, item.price); // Replace 'price' with your actual property
+            formData.append(`cart[cart_items][${index}][product_type]`, item.productType); // Replace 'productType' with your actual property
+            formData.append(`cart[cart_items][${index}][quotation]`, item.quotation); // Replace 'quotation' with your actual property
+        });
+
+        selectedOtherProducts.forEach((otherProduct, index) => {
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][productID]`, otherProduct.id); // Replace 'productId' with your actual property
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][productName]`, otherProduct.product_name); // Replace 'productName' with your actual property
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][registration_fee]`, otherProduct.product_subscription_fee || 0);
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][yearly_fee]`, otherProduct.med_subscription_fee || 0);
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][price]`, (otherProduct.product_subscription_fee || 0) + (otherProduct.med_subscription_fee || 0));
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][product_type]`, otherProduct.product_type); // Replace 'product_type' with your actual property
+            formData.append(`cart[cart_items][${subscriptionData.length + index}][quotation]`, otherProduct.quotation); // Replace 'quotation' with your actual property
+        });
+
+    
         newRequest
           .post("/users", formData)
           .then((response) => {
@@ -339,30 +354,27 @@ const MemmberRegisteration = () => {
             setTimeout(() => {
               navigate(-1);
             }, 1500);
-
+      
             // Add Swal message
             Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Member Registered Successfully',
-                footer: '<a href="#">Why do I have this issue?</a>'
-            })
-
-      
+              icon: 'success',
+              title: 'Success',
+              text: 'Member Registered Successfully',
+              footer: '<a href="#">Why do I have this issue?</a>'
+            });
           })
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
             Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: err?.response?.data?.error || "Something went wrong!",
-                footer: '<a href="#">Why do I have this issue?</a>'
-            })
-
+              icon: 'error',
+              title: 'Oops...',
+              text: err?.response?.data?.error || "Something went wrong!",
+              footer: '<a href="#">Why do I have this issue?</a>'
+            });
           });
       };
-
+      
 
     const [selectedCategory, setSelectedCategory] = useState('nonMedical');
     const [subscriptionData, setSubscriptionData] = useState([]);
@@ -412,6 +424,7 @@ const MemmberRegisteration = () => {
         handleGtinNumber();
       }, [selectedCategory]);
 
+      
 
 
     return (

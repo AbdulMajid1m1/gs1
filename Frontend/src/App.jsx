@@ -20,6 +20,7 @@ import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
 import GLN from "./Pages/AdminPages/GLN/GLN";
 import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
 import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
+import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -98,6 +99,11 @@ const App = () => {
                           <Route path="/gs1-members" element={<Gs1Members />} />
 
                           <Route path="/member-profile" element={<MemberProfile />} />
+
+                          <Route
+                            path="view-gs1-member/:Id"
+                            element={<Gs1MembersView />}
+                          />
 
                         </Routes>
                       </MainLayout>
