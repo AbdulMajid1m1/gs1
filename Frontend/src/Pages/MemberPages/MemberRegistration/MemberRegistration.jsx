@@ -37,9 +37,8 @@ const MemmberRegisteration = () => {
     const [zipCode, setZipCode] = useState('')
     const [website, setWebsite] = useState('')
     const [upload, setUpload] = useState('')
-    const [uploadCompanyDocuments, setUploadCompanyDocuments] = useState('')
     const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedMedical, setSelectedMedical] = useState(null);
+    const [selectedCategories, setSelectedCategories] = useState(null);
 
 
 
@@ -51,13 +50,8 @@ const MemmberRegisteration = () => {
     const [selectedGLNOption, setSelectedGLNOption] = useState(null);
     const [selectProducts, setSelectProducts] = useState('');
 
-    const empty_data = [
-        "medical",
-        "non-medical",
-        "tobacco",
-        "cosmetics",
-        "pharma"
-    ];
+    const [categories, setCategories] = useState([]);
+
 
 
 
@@ -94,6 +88,23 @@ const MemmberRegisteration = () => {
                 console.error('Error fetching on Search GPC Api:', error);
             }
         };
+
+        const fetchCategories = async () => {
+            try {
+                const response = await newRequest.get('/productCategories');
+                // only get name and id from the response
+                const data = response.data;
+                const categories = data.map((category) => ({
+                    id: category.id,
+                    name: category.name,
+                }));
+                setCategories(categories);
+            }
+            catch (error) {
+                console.error('Error fetching on product Categories Api:', error);
+            }
+        };
+
 
 
         // Other Products Api (GLN, SSCC, UDI)
@@ -148,6 +159,7 @@ const MemmberRegisteration = () => {
 
         handleGetAllActivities();
         fetchIndustryTypes();
+        fetchCategories()
         handleGetAllCountries();
         handleGetAllStates();
         handleGetAllCities();
@@ -189,6 +201,8 @@ const MemmberRegisteration = () => {
     console.log(selectedActivity?.id)
 
     const handleIndustryTypeChange = (event, value) => {
+        console.log("valuess")
+        console.log(value)
         setSelectedIndustries(value);
         console.log(value);
     };
@@ -249,8 +263,8 @@ const MemmberRegisteration = () => {
         formData.append('have_cr', 'yes');
         formData.append('cr_documentID', '12345');
         formData.append('document_number', 'doc-67890');
-        formData.append('fname', 'John');
-        formData.append('lname', 'Doe');
+        // formData.append('fname', 'John');
+        // formData.append('lname', 'Doe');
         formData.append('email', email);
         formData.append('mobile', mobileNumber);
         formData.append('country', selectedCountry?.name);
@@ -259,56 +273,52 @@ const MemmberRegisteration = () => {
         formData.append('po_box', 'POBox1001');
         formData.append('mbl_extension', extension);
         formData.append('website', website);
-        formData.append('no_of_staff', '50');
-        formData.append('companyID', 'company-001');
-        formData.append('district', 'Central');
-        formData.append('building_no', '12A');
-        formData.append('additional_number', '202');
-        formData.append('other_landline', '0987654321');
-        formData.append('unit_number', 'Unit 5');
-        formData.append('qr_corde', 'QRCode123');
-        formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
-        formData.append('verification_code', '123456');
+        // formData.append('no_of_staff', '50');
+        // formData.append('companyID', 'company-001');
+        // formData.append('district', 'Central');
+        // formData.append('building_no', '12A');
+        // formData.append('additional_number', '202');
+        // formData.append('other_landline', '0987654321');
+        // formData.append('unit_number', 'Unit 5');
+        // formData.append('qr_corde', 'QRCode123');
+        // formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
+        // formData.append('verification_code', '123456');
         formData.append('cr_number', sessionData);
         formData.append('cr_activity', selectedActivity?.activity);
         formData.append('company_name_eng', companyEnglish);
         formData.append('company_name_arabic', companyArabic);
-        formData.append('bussiness_activity', 'Trading');
-        formData.append('membership_type', 'Premium');
-        formData.append('member_category', 'CategoryA');
+        // formData.append('bussiness_activity', 'Trading');
         formData.append('other_products', selectProducts);
         formData.append('image', selectedImage);
-        formData.append('product_addons', 'AddonABC');
-        formData.append('total', '1500.50');
+        // formData.append('product_addons', 'AddonABC');
+        // formData.append('total', '1500.50');
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
-        formData.append('online_payment', 'Enabled');
-        formData.append('remember_token', 'TokenXYZ');
-        formData.append('parent_memberID', '100');
-        formData.append('member_type', 'TypeA');
-        formData.append('invoice_file', 'https://example.com/invoice.pdf');
-        formData.append('otp_status', '1');
-        formData.append('gcpGLNID', 'GLN123');
-        formData.append('gln', '123456');
-        formData.append('gcp_type', 'Type1');
-        formData.append('deleted_at', '2023-03-20T00:00:00.000Z');
-        formData.append('gcp_expiry', '2024-03-15T00:00:00.000Z');
-        formData.append('memberID', 'MID123');
-        formData.append('user_id', 'UID123');
-        formData.append('remarks', 'Sample remarks');
-        formData.append('assign_to', '5');
-        formData.append('membership_category', 'CategoryB');
-        formData.append('upgradation_disc', '10');
-        formData.append('upgradation_disc_amount', '100.00');
-        formData.append('renewal_disc', '5');
-        formData.append('renewal_disc_amount', '50.00');
-        formData.append('membership_otherCategory', 'OtherCategory');
+        // formData.append('online_payment', 'Enabled');
+        // formData.append('remember_token', 'TokenXYZ');
+        // formData.append('parent_memberID', '100');
+        formData.append('membership_category_id', selectedCategories.id)
+        // formData.append('invoice_file', 'https://example.com/invoice.pdf');
+        // formData.append('otp_status', '1');
+        // formData.append('gcpGLNID', 'GLN123');
+        // formData.append('gln', '123456');
+        // formData.append('gcp_type', 'Type1');
+        // formData.append('memberID', 'MID123');
+        // formData.append('remarks', 'Sample remarks');
+        // formData.append('assign_to', '5');
+        formData.append('membership_category', selectedCategories.name);
+        // formData.append('upgradation_disc', '10');
+        // formData.append('upgradation_disc_amount', '100.00');
+        // formData.append('renewal_disc', '5');
+        // formData.append('renewal_disc_amount', '50.00');
+        // formData.append('membership_otherCategory', 'OtherCategory');
         formData.append('activityID', selectedActivity?.id);
         formData.append('registration_type', 'New');
-        formData.append('industryTypes',selectedIndustries)
-        // industryTypes add industryTypes as list of object with name and id
-        // get the id and name from selectedIndustries and send them as list of object
-
+        // formData.append('industryTypes', JSON.stringify(selectedIndustries));
+        selectedIndustries.forEach((item, index) => {
+            formData.append(`industryTypes[${index}][id]`, item.id);
+            formData.append(`industryTypes[${index}][name]`, item.name);
+        });
 
 
         // Cart data
@@ -363,12 +373,13 @@ const MemmberRegisteration = () => {
     };
 
 
-    const [selectedCategory, setSelectedCategory] = useState('nonMedical');
     const [subscriptionData, setSubscriptionData] = useState([]);
 
 
-    const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.id);
+    const handleCategoryChange = (event, value) => {
+        console.log("Value")
+        console.log(value)
+        setSelectedCategories(value);
         // Reset selectedGtinNumber when category changes
         setSelectedGtinNumber(null);
     };
@@ -409,8 +420,7 @@ const MemmberRegisteration = () => {
         setGtinNumber([]);
 
         handleGtinNumber();
-    }, [selectedCategory]);
-
+    }, [selectedCategories]);
 
 
 
@@ -492,85 +502,6 @@ const MemmberRegisteration = () => {
                                 />
                             </div>
                         </div>
-
-                        {/* Add Five Radio Buttons  */}
-                        {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6 mb-6'>
-                            <div className='w-full font-sans sm:text-base text-sm flex flex-col gap-1'>
-                                <div className='flex items-center gap-3'>
-                                      <input
-                                        id='nonMedical'
-                                        name='category'
-                                        type='radio'
-                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
-                                        checked={selectedCategory === 'nonMedical'}
-                                        onChange={handleCategoryChange}
-                                    />
-                                    <label htmlFor='nonMedical' className='text-secondary font-semibold text-xs'>
-                                        Non-Medical Category
-                                    </label>
-                                </div>
-                            </div>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <div className='flex items-center gap-3'>
-                                    <input
-                                        id='medical'
-                                        name='category'
-                                        type='radio'
-                                        checked={selectedCategory === 'medical'}
-                                        onChange={handleCategoryChange}
-                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
-                                    />
-                                    <label htmlFor='medical' className='text-secondary font-semibold text-xs'>
-                                        Medical Category
-                                    </label>
-                                </div>
-                            </div>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <div className='flex items-center gap-3'>
-                                    <input
-                                        id='tobacco'
-                                        name='category'
-                                        type='radio'
-                                        checked={selectedCategory === 'tobacco'}
-                                        onChange={handleCategoryChange}
-                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
-                                    />
-                                    <label htmlFor='tobacco' className='text-secondary font-semibold text-xs'>
-                                        Tobacco Category
-                                    </label>
-                                </div>
-                            </div>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <div className='flex items-center gap-3'>
-                                    <input
-                                        id='cosmetics'
-                                        name='category'
-                                        type='radio'
-                                        checked={selectedCategory === 'cosmetics'}
-                                        onChange={handleCategoryChange}
-                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
-                                    />
-                                    <label htmlFor='cosmetics' className='text-secondary font-semibold text-xs'>
-                                        Cosmetics Category
-                                    </label>
-                                </div>
-                            </div>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <div className='flex items-center gap-3'>
-                                    <input
-                                        id='pharma'
-                                        name='category'
-                                        type='radio'
-                                        checked={selectedCategory === 'pharma'}
-                                        onChange={handleCategoryChange}
-                                        className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3'
-                                    />
-                                    <label htmlFor='pharma' className='text-secondary font-semibold text-xs'>
-                                        Pharma Category
-                                    </label>
-                                </div>
-                            </div>
-                        </div> */}
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
@@ -866,13 +797,13 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className='sm:w-[32.5%] w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='medical'>Medical/Non-Medical<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='category'>Medical/Non-Medical<span className='text-red-600'>*</span></label>
                                 <Autocomplete
-                                    id="medical"
-                                    options={empty_data}
-                                    value={selectedMedical}
-                                    getOptionLabel={(option) => option || ""}
-                                    onChange={handleCity}
+                                    id="category"
+                                    options={categories}
+                                    value={selectedCategories}
+                                    getOptionLabel={(option) => option.name || ""}
+                                    onChange={handleCategoryChange}
                                     onInputChange={(event, value) => {
                                         if (!value) {
                                             // perform operation when input is cleared
