@@ -21,6 +21,7 @@ import GLN from "./Pages/AdminPages/GLN/GLN";
 import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
 import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
 import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
+import MemberDashboard from "./Pages/MemberPages/MemberDashboard/MemberDashboard";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -77,15 +78,16 @@ const App = () => {
                   <Route path="/verify-code" element={<VerifyCode />} />
 
 
+                  {/* Member Routes */}
                   <Route
-                    path="/*"
+                    path="/member/*"
                     element={
                       <MainLayout>
                         <Routes>
-                          <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/update-vendor" element={<UpdateVendor />} />
-                          <Route path="/customer-list" element={<ListOfCustomer />} />
-                          <Route path="/gtin" element={<GTIN />} />
+                          <Route path="dashboard" element={<MemberDashboard />} />
+                          <Route path="update-vendor" element={<UpdateVendor />} />
+                          <Route path="customer-list" element={<ListOfCustomer />} />
+                          <Route path="gtin" element={<GTIN />} />
                           <Route path="addproducts" element={<GTINAddProducts />} />
                           <Route
                             path="upate-gtin-product/:productId"
@@ -95,15 +97,28 @@ const App = () => {
                             path="view-gtin-product/:productId"
                             element={<GTINViewProduct />}
                           />
-                          <Route path="/gln" element={<GLN />} />
-                          <Route path="/gs1-members" element={<Gs1Members />} />
+                          <Route path="gln" element={<GLN />} />
+                          <Route path="gs1-members" element={<Gs1Members />} />
 
-                          <Route path="/member-profile" element={<MemberProfile />} />
+                          <Route path="member-profile" element={<MemberProfile />} />
 
                           <Route
                             path="view-gs1-member/:Id"
                             element={<Gs1MembersView />}
                           />
+
+                        </Routes>
+                      </MainLayout>
+                    }
+                  />
+
+                  {/* Admin Routes */}
+                  <Route
+                    path="/admin/*"
+                    element={
+                      <MainLayout>
+                        <Routes>
+                          <Route path="dashboard" element={<Dashboard />} />
 
                         </Routes>
                       </MainLayout>

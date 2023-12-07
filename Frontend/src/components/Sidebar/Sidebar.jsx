@@ -68,7 +68,7 @@ const SideBar = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const handleLogoClick = () => {
     setSelectedItem(null);
-    navigate('/dashboard') // Navigate to the "track" component
+    navigate('/member/dashboard') // Navigate to the "track" component
   };
 
 
@@ -156,10 +156,10 @@ const SideBar = () => {
           <hr />
 
           <div
-            className={`main-images-container ${selectedItem === '/dashboard' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/dashboard')}
+            className={`main-images-container ${selectedItem === '/member/dashboard' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/member/dashboard')}
             onContextMenu={(event) =>
-              handleContextMenu(event, '/dashboard')
+              handleContextMenu(event, '/member/dashboard')
             }
 
           >
@@ -194,10 +194,10 @@ const SideBar = () => {
                 onClick={toggleSidebar}
               >
                 <div
-                  className={`main-images-container ${selectedItem === '/gtin' ? 'selected-item' : ''}`}
-                  onClick={() => handleItemClick('/gtin')}
+                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/gtin')}
                   onContextMenu={(event) =>
-                    handleContextMenu(event, '/gtin')
+                    handleContextMenu(event, '/member/gtin')
                   }
                 >
                   <img
@@ -209,10 +209,10 @@ const SideBar = () => {
                 </div>
 
                 <div
-                  className={`main-images-container ${selectedItem === '/gln' ? 'selected-item' : ''}`}
-                  onClick={() => handleItemClick('/gln')}
+                  className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/gln')}
                   onContextMenu={(event) =>
-                    handleContextMenu(event, '/gln')
+                    handleContextMenu(event, '/member/gln')
                   }
                 >
                   <img
@@ -224,10 +224,10 @@ const SideBar = () => {
                 </div>
 
                 <div
-                  className={`main-images-container ${selectedItem === '/viewsscc' ? 'selected-item' : ''}`}
-                  onClick={() => handleItemClick('/viewsscc')}
+                  className={`main-images-container ${selectedItem === '/member/viewsscc' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/viewsscc')}
                   onContextMenu={(event) =>
-                    handleContextMenu(event, '/viewsscc')
+                    handleContextMenu(event, '/member/viewsscc')
                   }
                 >
                   <img
@@ -242,10 +242,10 @@ const SideBar = () => {
 
 
           <div
-            className={`main-images-container ${selectedItem === '/gs1-members' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/gs1-members')}
+            className={`main-images-container ${selectedItem === '/member/gs1-members' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/member/gs1-members')}
             onContextMenu={(event) =>
-              handleContextMenu(event, '/gs1-members')
+              handleContextMenu(event, '/member/gs1-members')
             }
 
           >
@@ -259,10 +259,10 @@ const SideBar = () => {
 
 
           <div
-            className={`main-images-container ${selectedItem === '/member-profile' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/member-profile')}
+            className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/member/member-profile')}
             onContextMenu={(event) =>
-              handleContextMenu(event, '/member-profile')
+              handleContextMenu(event, '/member/member-profile')
             }
 
           >

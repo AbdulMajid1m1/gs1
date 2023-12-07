@@ -103,12 +103,12 @@ const Gtin = () => {
 
   const handleEdit = (row) => {
     console.log(row);
-    navigate("/upate-gtin-product/" + row?.product_id);
+    navigate("/member/upate-gtin-product/" + row?.product_id);
     // navigate("/upate-gtin-product/" + row?.id);
   };
   const handleView = (row) => {
     console.log(row);
-    navigate("/view-gtin-product/" + row?.product_id);
+    navigate("/member/view-gtin-product/" + row?.product_id);
   };
   const handleUpdate = (row) => {
     console.log(row);
@@ -276,7 +276,7 @@ const Gtin = () => {
         <div className='h-auto w-full shadow-xl'>
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
             <button
-              onClick={() => navigate('/addproducts')}
+              onClick={() => navigate('/member/addproducts')}
               className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
               <i className="fas fa-plus mr-1"></i>Add Product
             </button>

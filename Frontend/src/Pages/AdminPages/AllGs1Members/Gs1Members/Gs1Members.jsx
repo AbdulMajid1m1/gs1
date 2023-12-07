@@ -9,6 +9,7 @@ import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Gs1Members = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -77,7 +78,7 @@ const Gs1Members = () => {
         console.log(row);
         // save this data in session storage
         sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
-        navigate("/view-gs1-member/" + row?.id);
+        navigate("/member/view-gs1-member/" + row?.id);
       };
 
   
@@ -97,34 +98,47 @@ const Gs1Members = () => {
           try {
             const isDeleted = await newRequest.delete("/users/" + row?.id);
             if (isDeleted) {
-              // Show success message if the user was deleted successfully
-              Swal.fire({
-                icon: 'success',
-                title: 'User deleted successfully',
-                showConfirmButton: false,
-                timer: 2000,
+              toast.success('User deleted successfully', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
               });
+
               
               // filter out the deleted user from the data
               const filteredData = data.filter((item) => item?.id !== row?.id);
               setData(filteredData);
             } else {
               // Handle any additional logic if the user was not deleted successfully
-              Swal.fire({
-                icon: 'error',
-                title: 'Failed to delete user',
-                showConfirmButton: false,
-                timer: 2000,
+              toast.error('Failed to delete user', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
               });
+
             }
           } catch (error) {
             // Handle any error that occurred during the deletion
             console.error("Error deleting user:", error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Something went wrong while deleting user',
-              showConfirmButton: false,
-              timer: 2000,
+            toast.error('Something went wrong while deleting user', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
             });
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -179,12 +193,17 @@ const Gs1Members = () => {
     
     
         if (selectedStatus === initialStatus) {
-          Swal.fire({
-            icon: 'info',
-            title: 'No changes were made',
-            showConfirmButton: false,
-            timer: 2000,
-          });
+           // No changes were made, show a Toastify info message
+            toast.info('No changes were made', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           return;
         }
     
@@ -198,19 +217,29 @@ const Gs1Members = () => {
     
     
           refreshData();
-          Swal.fire({
-            icon: 'success',
-            title: res?.data?.message || 'Status updated successfully',
-            showConfirmButton: false,
-            timer: 2000,
+
+          toast.success(res?.data?.message || 'Status updated successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
           });
+
     
         } catch (err) {
-          Swal.fire({
-            icon: 'error',
-            title: err?.response?.data?.message || 'Something went wrong!',
-            showConfirmButton: false,
-            timer: 2000,
+          toast.error(err?.response?.data?.message || 'Something went wrong!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
           });
         }
     
@@ -221,7 +250,7 @@ const Gs1Members = () => {
   return (
     <div>
       <div className="p-3 h-full sm:ml-72">
-        
+
         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
             <DataTable data={data} title="All GS1 Members" columnsName={Gs1AllMembers}
