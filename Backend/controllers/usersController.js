@@ -55,7 +55,7 @@ const userSchema = Joi.object({
     other_products: Joi.string().optional(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
-    total: Joi.number(),
+    // total: Joi.number(),
     contactPerson: Joi.string(),
     companyLandLine: Joi.string(),
     documents: Joi.string(),

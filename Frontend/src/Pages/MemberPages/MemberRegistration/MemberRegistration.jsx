@@ -21,7 +21,6 @@ const MemmberRegisteration = () => {
     const [state, setState] = React.useState([])
     const [city, setCity] = useState([]);
     const [gtinNumber, setGtinNumber] = useState('')
-    const [getAllActivities, setGetAllActivities] = React.useState([])
     const [companyLandLine, setCompanyLandLine] = React.useState('')
     const [mobileNumber, setMobileNumber] = React.useState('')
     const [selectedCity, setSelectedCity] = useState("");
@@ -50,7 +49,7 @@ const MemmberRegisteration = () => {
     const [selectedOtherProducts, setSelectedOtherProducts] = useState([]);
     const [otherProductsOptions, setOtherProductsOptions] = useState([]);
     const [selectedGLNOption, setSelectedGLNOption] = useState(null);
-    const [selectProducts, setSelectProducts] = useState('');
+    // const [selectProducts, setSelectProducts] = useState('');
 
     const [categories, setCategories] = useState([]);
 
@@ -332,7 +331,7 @@ const MemmberRegisteration = () => {
         formData.append('image', selectedImage);
         formData.append('document', upload);
         // formData.append('product_addons', 'AddonABC');
-        formData.append('total', totalPrice);
+     
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
         // formData.append('online_payment', 'Enabled');
@@ -365,28 +364,34 @@ const MemmberRegisteration = () => {
         });
 
 
-        // Cart data
-        subscriptionData.forEach((item, index) => {
-            formData.append(`cart[cart_items][${index}][productID]`, item.productId); // Replace 'productId' with your actual property
-            formData.append(`cart[cart_items][${index}][productName]`, item.product); // Replace 'productName' with your actual property
-            formData.append(`cart[cart_items][${index}][registration_fee]`, item.registrationFee); // Replace 'registrationFee' with your actual property
-            formData.append(`cart[cart_items][${index}][yearly_fee]`, item.yearlyFee); // Replace 'yearlyFee' with your actual property
-            formData.append(`cart[cart_items][${index}][price]`, item.price); // Replace 'price' with your actual property
-            formData.append(`cart[cart_items][${index}][product_type]`, item.productType); 
-            formData.append(`cart[cart_items][${index}][quotation]`, item.quotation); 
+        let currentIndex = 0;
+
+        subscriptionData.forEach((item) => {
+            formData.append(`cart[cart_items][${currentIndex}][productID]`, item.productId); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][productName]`, item.product); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, item.registrationFee); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, item.yearlyFee); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][price]`, item.price); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][product_type]`, item.productType); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); // Adjust as per your actual property
+            currentIndex++;
         });
 
-        selectedOtherProducts.forEach((otherProduct, index) => {
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][productID]`, otherProduct.id); // Replace 'productId' with your actual property
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][productName]`, otherProduct.product_name); // Replace 'productName' with your actual property
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][registration_fee]`, otherProduct.product_subscription_fee || 0);
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][yearly_fee]`, otherProduct.med_subscription_fee || 0);
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][price]`, (otherProduct.product_subscription_fee || 0) + (otherProduct.med_subscription_fee || 0));
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][product_type]`, otherProduct.product_type); // Replace 'product_type' with your actual property
-            formData.append(`cart[cart_items][${subscriptionData.length + index}][quotation]`, otherProduct.quotation); // Replace 'quotation' with your actual property
+        selectedOtherProducts.forEach((otherProduct) => {
+            formData.append(`cart[cart_items][${currentIndex}][productID]`, otherProduct.id); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][productName]`, otherProduct.product_name); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, otherProduct.price); // Assuming 'price' is already calculated based on the selected category
+            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.yearly_fee || 0); // Adjust if there's a separate yearly fee
+            formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
+            formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type); // Adjust as per your actual property
+            formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); // Adjust as per your actual property
+            currentIndex++;
         });
 
+        formData.append('cart[total]', totalPrice);
 
+        console.log(selectedOtherProducts)
+        console.log(subscriptionData)
         newRequest
             .post("/users", formData, {
                 headers: {
