@@ -52,7 +52,7 @@ const userSchema = Joi.object({
     company_name_eng: Joi.string(),
     company_name_arabic: Joi.string(),
     bussiness_activity: Joi.string(),
-    other_products: Joi.string(),
+    other_products: Joi.string().optional(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
     total: Joi.number(),
@@ -87,7 +87,7 @@ const userSchema = Joi.object({
     activityID: Joi.number().integer(),
     registration_type: Joi.string().max(10),
     status: Joi.string().valid('active', 'inactive', 'reject', 'suspend'), // TODO: remove status and allow only in update
-   
+
     industryTypes: Joi.array().items(Joi.object({
         id: Joi.string(),
         name: Joi.string()
@@ -161,7 +161,7 @@ export const createUser = async (req, res, next) => {
         const uploadedImage = req.files.image;
         let documentPath = '';
         let imagePath = '';
-        
+
         if (!uploadedDocument) {
             return next(createError(400, 'Document is required'));
         }

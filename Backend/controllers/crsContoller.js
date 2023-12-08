@@ -85,10 +85,17 @@ export const getCrsByKeyword = async (req, res, next) => {
 
         const cr = await prisma.crs.findMany({
             where: {
-                cr: {
-                    contains: keyword,
-                },
-            }
+                AND: [
+                    {
+                        cr: {
+                            contains: keyword,
+                        },
+                    },
+                    {
+                        isRegistered: 0,
+                    },
+                ],
+            },
 
         });
 
@@ -121,7 +128,7 @@ export const getCrsByCrNo = async (req, res, next) => {
             return next(createError(400, error.details[0].message));
         }
 
-        
+
 
         const crs = await prisma.crs.findMany({
             where: {

@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 
 
 const MemmberRegisteration = () => {
-    const sessionData = sessionStorage.getItem('saveCrNumberData');
+    // const sessionData = sessionStorage.getItem('saveCrNumberData');
+    const selectedCr = sessionStorage.getItem('selectedCr');
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
     // console.log("Get the Cr Number", sessionData);
     // console.log("Get the Document Data", sesstionDocumentData);
@@ -27,7 +28,7 @@ const MemmberRegisteration = () => {
     const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [selectedGtinNumber, setSelectedGtinNumber] = useState("");
-    const [selectedActivity, setSelectedActivity] = React.useState('')
+    // const [selectedActivity, setSelectedActivity] = React.useState('')
     const [isLoading, setIsLoading] = useState(false);
 
     const [email, setEmail] = useState('')
@@ -57,21 +58,21 @@ const MemmberRegisteration = () => {
 
 
     useEffect(() => {
-        //All Activities Api
-        const handleGetAllActivities = async () => {
-            try {
-                const response = await newRequest.get(`/crs/getCrsByCrNo/${sessionData}`);
-                // const response = await newRequest.get('/crs/getCrsByCrNo/1010000006');
+        //     //All Activities Api
+        //     const handleGetAllActivities = async () => {
+        //         try {
+        //             const response = await newRequest.get(`/crs/getCrsByCrNo/${sessionData}`);
+        //             // const response = await newRequest.get('/crs/getCrsByCrNo/1010000006');
 
-                const activity = response.data;
-                console.log(activity);
-                setGetAllActivities(activity);
+        //             const activity = response.data;
+        //             console.log(activity);
+        //             setGetAllActivities(activity);
 
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+        //         } catch (error) {
+        //             console.error('Error fetching data:', error);
+        //         }
 
-        };
+        //     };
 
         // Search GPC Api
         const fetchIndustryTypes = async () => {
@@ -158,7 +159,7 @@ const MemmberRegisteration = () => {
         }
 
 
-        handleGetAllActivities();
+        // handleGetAllActivities();
         fetchIndustryTypes();
         fetchCategories()
         handleGetAllCountries();
@@ -199,34 +200,32 @@ const MemmberRegisteration = () => {
     };
 
 
-    console.log(selectedActivity?.id)
 
     const handleIndustryTypeChange = (event, value) => {
-        console.log("valuess")
-        console.log(value)
         setSelectedIndustries(value);
         console.log(value);
     };
 
 
     const handleOtherProductsChange = (event, value) => {
+        // setSelectedOtherProducts(value);
+
+        // const names = value.map((option) => option.product_name);
+        // // Join the array elements into a single string
+        // const joinedNames = names.join(', ');
+        // console.log(joinedNames);
+        // setSelectProducts(joinedNames);
+
+        // // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
+        // const selectedGLN = value.find(
+        //     (option) =>
+        //         option.product_name === 'GLN ( 20 Locations)' ||
+        //         option.product_name === 'GLN ( 10 Locations)' ||
+        //         option.product_name === 'GLN (30 Locations)'
+        // );
+
+        // setSelectedGLNOption(selectedGLN);
         setSelectedOtherProducts(value);
-
-        const names = value.map((option) => option.product_name);
-        // Join the array elements into a single string
-        const joinedNames = names.join(', ');
-        console.log(joinedNames);
-        setSelectProducts(joinedNames);
-
-        // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
-        const selectedGLN = value.find(
-            (option) =>
-                option.product_name === 'GLN ( 20 Locations)' ||
-                option.product_name === 'GLN ( 10 Locations)' ||
-                option.product_name === 'GLN (30 Locations)'
-        );
-
-        setSelectedGLNOption(selectedGLN);
 
     };
 
@@ -238,9 +237,44 @@ const MemmberRegisteration = () => {
         );
     };
 
-    const handleSelectedActivityData = (event, value) => {
-        setSelectedActivity(value);
-    }
+    const [subscriptionData, setSubscriptionData] = useState([]);
+
+    useEffect(() => {
+        let newSubscriptionData = [];
+        let newSelectedOtherProducts = [];
+
+        if (selectedGtinNumber) {
+            const registrationFee = selectedCategories?.name === "medical"
+                ? selectedGtinNumber.med_registration_fee
+                : selectedGtinNumber.member_registration_fee;
+
+            const yearlyFee = selectedGtinNumber.gtin_yearly_subscription_fee || 0; // Assuming this value is constant
+
+            newSubscriptionData = [{
+                product: selectedGtinNumber.member_category_description,
+                registrationFee: registrationFee || 0,
+                yearlyFee: yearlyFee,
+                price: registrationFee + yearlyFee,
+            }];
+        }
+
+        if (selectedOtherProducts.length) {
+            newSelectedOtherProducts = selectedOtherProducts.map(product => ({
+                ...product,
+                price: selectedCategories?.name === "medical"
+                    ? product.med_subscription_fee
+                    : product.product_subscription_fee,
+            }));
+        }
+
+        setSubscriptionData(newSubscriptionData);
+        setSelectedOtherProducts(newSelectedOtherProducts);
+    }, [selectedCategories, selectedGtinNumber, selectedOtherProducts]);
+
+
+    // Calculate total price
+    const totalPrice = subscriptionData.reduce((total, item) => total + item.price, 0) +
+        selectedOtherProducts.reduce((total, item) => total + item.price, 0);
 
     // Image section
     const handleImageChange = (event) => {
@@ -262,7 +296,7 @@ const MemmberRegisteration = () => {
         formData.append('slug', 'user-slug');
         formData.append('location_uk', 'London');
         formData.append('have_cr', 'yes');
-        formData.append('cr_documentID', '12345');
+
         formData.append('document_number', 'doc-67890');
         // formData.append('fname', 'John');
         // formData.append('lname', 'Doe');
@@ -284,16 +318,21 @@ const MemmberRegisteration = () => {
         // formData.append('qr_corde', 'QRCode123');
         // formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
         // formData.append('verification_code', '123456');
-        formData.append('cr_number', sessionData);
-        formData.append('cr_activity', selectedActivity?.activity);
+        if (selectedCr?.cr && selectedCr?.activity) {
+            formData.append('cr_number', selectedCr?.cr);
+            formData.append('cr_activity', selectedCr?.activity);
+            formData.append('cr_documentID', selectedCr?.id || 0); //TODO: crs table id is srting and CrDocument_id is int check it later
+
+        }
+
         formData.append('company_name_eng', companyEnglish);
         formData.append('company_name_arabic', companyArabic);
         // formData.append('bussiness_activity', 'Trading');
-        formData.append('other_products', selectProducts);
+        // formData.append('other_products', selectProducts);
         formData.append('image', selectedImage);
         formData.append('document', upload);
         // formData.append('product_addons', 'AddonABC');
-        // formData.append('total', '1500.50');
+        formData.append('total', totalPrice);
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
         // formData.append('online_payment', 'Enabled');
@@ -308,13 +347,16 @@ const MemmberRegisteration = () => {
         // formData.append('memberID', 'MID123');
         // formData.append('remarks', 'Sample remarks');
         // formData.append('assign_to', '5');
-        formData.append('membership_category', selectedCategories.name);
+
+        formData.append('membership_category', selectedCategories.name === 'medical' ? 'med_category' : 'non_med_category');
+        if (selectedCategories.name !== 'medical') {
+            formData.append('membership_otherCategory', selectedCategories.name);
+        }
         // formData.append('upgradation_disc', '10');
         // formData.append('upgradation_disc_amount', '100.00');
         // formData.append('renewal_disc', '5');
         // formData.append('renewal_disc_amount', '50.00');
-        // formData.append('membership_otherCategory', 'OtherCategory');
-        formData.append('activityID', selectedActivity?.id);
+        // formData.append('activityID', selectedActivity?.id);
         formData.append('registration_type', 'New');
         // formData.append('industryTypes', JSON.stringify(selectedIndustries));
         selectedIndustries.forEach((item, index) => {
@@ -330,8 +372,8 @@ const MemmberRegisteration = () => {
             formData.append(`cart[cart_items][${index}][registration_fee]`, item.registrationFee); // Replace 'registrationFee' with your actual property
             formData.append(`cart[cart_items][${index}][yearly_fee]`, item.yearlyFee); // Replace 'yearlyFee' with your actual property
             formData.append(`cart[cart_items][${index}][price]`, item.price); // Replace 'price' with your actual property
-            formData.append(`cart[cart_items][${index}][product_type]`, item.productType); // Replace 'productType' with your actual property
-            formData.append(`cart[cart_items][${index}][quotation]`, item.quotation); // Replace 'quotation' with your actual property
+            formData.append(`cart[cart_items][${index}][product_type]`, item.productType); 
+            formData.append(`cart[cart_items][${index}][quotation]`, item.quotation); 
         });
 
         selectedOtherProducts.forEach((otherProduct, index) => {
@@ -384,7 +426,6 @@ const MemmberRegisteration = () => {
     };
 
 
-    const [subscriptionData, setSubscriptionData] = useState([]);
 
 
     const handleCategoryChange = (event, value) => {
@@ -392,33 +433,19 @@ const MemmberRegisteration = () => {
         console.log(value)
         setSelectedCategories(value);
         // Reset selectedGtinNumber when category changes
-        setSelectedGtinNumber(null);
+        // setSelectedGtinNumber(null);
     };
 
     const handleGtinNumberChange = (event, value) => {
-        if (value) {
-            const selectedGtinData = gtinNumber.find((item) => item.id === value.id);
-            const newItem = {
-                product: selectedGtinData.member_category_description,
-                registrationFee: selectedGtinData.member_registration_fee || 0,
-                yearlyFee: selectedGtinData.gtin_yearly_subscription_fee || 0,
-                price: selectedGtinData.member_registration_fee || 0 + selectedGtinData.gtin_yearly_subscription_fee || 0,
-            };
-            // Replace the existing selection with the new item
-            setSubscriptionData([newItem]);
-            setSelectedGtinNumber(value);
-        } else {
-            // Handle the case when the selection is cleared
-            setSubscriptionData([]);
-            setSelectedGtinNumber(null);
-        }
+
+        setSelectedGtinNumber(value);
     };
 
 
     useEffect(() => {
         const handleGtinNumber = async () => {
             try {
-                // const response = await newRequest.get(`/gtinProducts?category=${selectedCategory}`);
+                // const response = await newRequest.get(`/gtinProducts?category=${selectedCategories}`);
                 const response = await newRequest.get(`/gtinProducts`);
                 setGtinNumber(response.data);
             } catch (error) {
@@ -470,49 +497,49 @@ const MemmberRegisteration = () => {
 
                 <div className='h-auto sm:w-[85%] w-full p-6 shadow-xl border-l border-r border-primary'>
                     <form>
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-                                    id="activty"
-                                    // options={getAllActivities}
-                                    options={getAllActivities}
-                                    value={selectedActivity}
-                                    getOptionLabel={(option) => option?.activity || ""}
-                                    onChange={handleSelectedActivityData}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            // perform operation when input is cleared
-                                            console.log("Input cleared");
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: "text-white",
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: "white" },
-                                            }}
-                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="CR Activities"
-                                        // required
-                                        />
-                                    )}
-                                    classes={{
-                                        endAdornment: "text-white",
-                                    }}
-                                    sx={{
-                                        "& .MuiAutocomplete-endAdornment": {
-                                            color: "white",
-                                        },
-                                    }}
-                                />
-                            </div>
+                        {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
+                        <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                            <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label>
+                            <Autocomplete
+                                id="activty"
+                                // options={getAllActivities}
+                                options={getAllActivities}
+                                value={selectedActivity}
+                                getOptionLabel={(option) => option?.activity || ""}
+                                onChange={handleSelectedActivityData}
+                                onInputChange={(event, value) => {
+                                    if (!value) {
+                                        // perform operation when input is cleared
+                                        console.log("Input cleared");
+                                    }
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            className: "text-white",
+                                        }}
+                                        InputLabelProps={{
+                                            ...params.InputLabelProps,
+                                            style: { color: "white" },
+                                        }}
+                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                        placeholder="CR Activities"
+                                    // required
+                                    />
+                                )}
+                                classes={{
+                                    endAdornment: "text-white",
+                                }}
+                                sx={{
+                                    "& .MuiAutocomplete-endAdornment": {
+                                        color: "white",
+                                    },
+                                }}
+                            />
                         </div>
+                    </div> */}
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
@@ -808,7 +835,7 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className='sm:w-[32.5%] w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='category'>Medical/Non-Medical<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='category'>Membership category<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="category"
                                     options={categories}
@@ -833,7 +860,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="Medical/Non-Medical"
+                                            placeholder="medical/Non-medical"
                                         />
                                     )}
                                     classes={{
@@ -1003,25 +1030,22 @@ const MemmberRegisteration = () => {
                                                     <td>{item.price}</td>
                                                 </tr>
                                             ))}
-                                            {selectedOtherProducts.map((otherProduct, index) => (
-                                                <tr key={`other_${index}`}>
-                                                    <td>{otherProduct.product_name}</td>
-                                                    <td>{otherProduct.product_subscription_fee || 0}</td>
-                                                    <td>{otherProduct.med_subscription_fee || 0}</td>
-                                                    <td>{otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0}</td>
+                                            {selectedOtherProducts.map((item, index) => (
+                                                <tr key={index}>
+                                                    <td>{item.product_name}</td>
+                                                    <td>{item.price}</td>
+                                                    <td>If there's a yearly fee for other products, display here</td>
+                                                    <td>{item.price}</td>
                                                 </tr>
                                             ))}
+
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <td colSpan="3" className="text-right font-bold">Total:</td>
-                                                {/* <td>
-                                        {subscriptionData.reduce((total, item) => total + item.price, 0)}
-                                    </td> */}
+
                                                 <td>
-                                                    {subscriptionData.reduce((total, item) => total + item.price, 0) +
-                                                        selectedOtherProducts.reduce((total, otherProduct) =>
-                                                            total + (otherProduct.product_subscription_fee + otherProduct.med_subscription_fee || 0), 0)}
+                                                    {totalPrice}
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -1053,15 +1077,15 @@ const MemmberRegisteration = () => {
 
                 </div>
                 {/* </div> */}
-            </div>
+            </div >
 
 
             {/* Footer */}
-            <div className='mt-6'>
+            <div div className='mt-6' >
                 <Footer />
-            </div>
+            </div >
             {/* End Footer */}
-        </div>
+        </div >
     )
 }
 
