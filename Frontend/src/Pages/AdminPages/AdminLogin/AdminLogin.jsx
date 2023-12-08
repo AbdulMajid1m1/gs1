@@ -8,6 +8,7 @@ const AdminLogin = () => {
   
   const [showImage, setShowImage] = useState(false);
 
+
   useEffect(() => {
     // Trigger the animation after the component is mounted
     setShowImage(true);
