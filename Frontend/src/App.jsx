@@ -22,6 +22,7 @@ import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
 import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
 import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
 import MemberDashboard from "./Pages/MemberPages/MemberDashboard/MemberDashboard";
+import AdminLogin from "./Pages/AdminPages/AdminLogin/AdminLogin";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -76,6 +77,10 @@ const App = () => {
                   <Route path="/email-address" element={<EmailAddress />} />
                   <Route path="/select-activity" element={<SelectActivity />} />
                   <Route path="/verify-code" element={<VerifyCode />} />
+
+
+                  {/* Admin Pages */}
+                  <Route path="/admin-login" element={<AdminLogin />} />
 
 
                   {/* Member Routes */}
