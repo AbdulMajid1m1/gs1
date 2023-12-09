@@ -30,6 +30,16 @@ import Products from "./Pages/AdminPages/AdminIndentify/Products/Products";
 import MemberProducts from "./Pages/AdminPages/AdminCapture/MemberProducts/MemberProducts";
 import VerifiedByGS1 from "./Pages/AdminPages/AdminCapture/VerifiedByGS1/VerifiedByGS1";
 import Notifications from "./Pages/AdminPages/AdminCapture/Notifications/Notifications";
+import GS1Registries from "./Pages/AdminPages/AdminShare/GS1Registries/GS1Registries";
+import GcpLicense from "./Pages/AdminPages/AdminShare/GcpLicense/GcpLicense";
+import Migration from "./Pages/AdminPages/Others/Migration/Migration";
+import HelpDesk from "./Pages/AdminPages/Others/HelpDesk/HelpDesk";
+import OldInActiveMembers from "./Pages/AdminPages/Others/OldInActiveMembers/OldInActiveMembers";
+import StaffHelpDesk from "./Pages/AdminPages/Others/StaffHelpDesk/StaffHelpDesk";
+import Frontend from "./Pages/AdminPages/AdminTab/FrontEnd/Frontend";
+import Settings from "./Pages/AdminPages/AdminTab/Settings/Settings";
+import MasterData from "./Pages/AdminPages/AdminTab/MasterData/MasterData";
+import Reports from "./Pages/AdminPages/AdminTab/Reports/Reports";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -121,6 +131,21 @@ const App = () => {
                           <Route path="member-products" element={<MemberProducts />} />
                           <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
                           <Route path="notfications" element={<Notifications />} />
+
+                          <Route path="gcp-license" element={<GcpLicense />} />
+                          <Route path="gs1-registries" element={<GS1Registries />} />
+
+                          <Route path="migration" element={<Migration />} />
+                          <Route path="help-desk" element={<HelpDesk />} />
+                          <Route path="old-inactive-members" element={<OldInActiveMembers />} />
+                          <Route path="staff-help-desk" element={<StaffHelpDesk />} />
+
+                          <Route path="front-end" element={<Frontend />} />
+                          <Route path="settings" element={<Settings />} />
+                          <Route path="master-data" element={<MasterData />} />
+                          <Route path="reports" element={<Reports />} />
+
+
 
                         
                         </Routes>

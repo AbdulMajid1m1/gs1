@@ -341,6 +341,44 @@ const AdminSideBar = () => {
             )}
           </div>
 
+          {showThirdData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/gcp-license' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/gcp-license')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/gcp-license')
+                  }
+                  >
+                  <img
+                    src={memberproducts}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">GCP Licenses</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/gs1-registries' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/gs1-registries')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/gs1-registries')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">GS1 Registries</p>
+                </div>
+
+              </div>
+              )}
+
 
           <div
             className={`main-images-container`}
@@ -359,6 +397,74 @@ const AdminSideBar = () => {
             )}
           </div>
 
+          {showFourthData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/migration')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/migration')
+                  }
+                  >
+                  <img
+                    src={memberproducts}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Migration</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/help-desk')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/help-desk')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Old InActive Members</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/old-inactive-members')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/old-inactive-members')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">HelpDesk</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/staff-help-desk' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/staff-help-desk')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/staff-help-desk')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Staff HelpDesk</p>
+                </div>
+
+              </div>
+              )}
+
 
           <div
             className={`main-images-container`}
@@ -376,6 +482,74 @@ const AdminSideBar = () => {
               <i className='fas fa-solid fa-chevron-down text-white'></i>
             )}
           </div>
+
+          {showFifthData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/front-end' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/front-end')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/front-end')
+                  }
+                  >
+                  <img
+                    src={memberproducts}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Frontend</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/settings')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/settings')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Settings</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/master-data')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/master-data')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Master Data</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/reports' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/reports')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/reports')
+                  }
+                  >
+                  <img
+                    src={verifiedbygs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Reports</p>
+                </div>
+
+              </div>
+              )}
 
 
           {/* Implement Any Icon above the Hide Icons */}
