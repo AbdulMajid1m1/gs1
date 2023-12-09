@@ -131,6 +131,7 @@ const GetBarcode = () => {
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
     console.log(reason);
+    setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
       setCrList([]); // Clear the data list if there is no input
       setSelectedCr(null);
@@ -346,9 +347,12 @@ const GetBarcode = () => {
                         </li>
                       )}
 
+
                       renderInput={(params) => (
                         <TextField
                           // required
+                          error={isSubmitClicked && !selectedCr?.cr}
+                          helperText={isSubmitClicked && !selectedCr?.cr ? "CR Number is required" : ""}
                           {...params}
                           label="Search CR Number"
                           InputProps={{
@@ -381,9 +385,7 @@ const GetBarcode = () => {
 
                     />
                     {/* If nothing is select i show that error */}
-                    {isSubmitClicked && !isAutocompleteFilled && (
-                      <p className="text-red-500 font-sans text-sm">CR Number Autocomplete field is required.</p>
-                    )}
+
 
                     <p onClick={handleAddCR} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
 
