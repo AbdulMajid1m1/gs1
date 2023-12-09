@@ -349,12 +349,13 @@ model cr_documents {
 }
 
 model crs {
-  id         String    @id @default(cuid())
-  cr         String?   @db.NVarChar(Max)
-  activity   String?   @db.NVarChar(Max)
-  status     Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  id           String    @id @default(cuid())
+  cr           String?   @db.NVarChar(Max)
+  activity     String?   @db.NVarChar(Max)
+  status       Int?
+  isRegistered Int    @default(0, map: "DF_crs_isRegistered")
+  created_at   DateTime? @db.DateTime
+  updated_at   DateTime? @db.DateTime
 }
 
 model email_reminders {
