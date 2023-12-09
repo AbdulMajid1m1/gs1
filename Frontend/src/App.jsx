@@ -79,10 +79,6 @@ const App = () => {
                   <Route path="/verify-code" element={<VerifyCode />} />
 
 
-                  {/* Admin Pages */}
-                  <Route path="/admin-login" element={<AdminLogin />} />
-
-
                   {/* Member Routes */}
                   <Route
                     path="/member/*"
@@ -116,7 +112,13 @@ const App = () => {
                       </MainLayout>
                     }
                   />
+                  </Routes>
 
+
+
+                  <Routes>
+                  {/* Admin Pages */}
+                  <Route path="/admin-login" element={<AdminLogin />} />
                   {/* Admin Routes */}
                   <Route
                     path="/admin/*"
@@ -129,7 +131,7 @@ const App = () => {
                       </MainLayout>
                     }
                   />
-                </Routes>
+                  </Routes>
               </BrowserRouter>
             </div>
           </SnackbarProvider>
