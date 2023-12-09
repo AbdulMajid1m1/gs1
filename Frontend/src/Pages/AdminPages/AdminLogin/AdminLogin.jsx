@@ -17,79 +17,94 @@ const AdminLogin = () => {
   }, []);
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-        if (!password) {
-            toast.error('Please enter password', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            return;
-        }
-        if (!email) {
-            // show toast message
-            toast.error('Please enter email', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            return;
-        }
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+     
+  //   newRequest.post('/admin/login', {
+  //       "email": email,
+  //       "password": password
+  //       });
+  //       try {
+  //           console.log(res)
+  //           toast.success(res?.data?.message || "Login Successfully", {
+  //               position: "top-right",
+  //               autoClose: 2000,
+  //               hideProgressBar: false,
+  //               closeOnClick: true,
+  //               pauseOnHover: true,
+  //               draggable: true,
+  //               progress: undefined,
+  //               theme: "light",
+  //             });
 
-    
-    const res = await newRequest.post('/admin/login', {
-        "email": email,
-        "password": password
-        });
-        try {
-            console.log(res)
-            toast.success(res?.data?.message || "Login Successfully", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-
-            setIsLoading(false);
-            navigate('/admin/dashboard');
+  //           setIsLoading(false);
+  //           navigate('/admin/dashboard');
 
             
-        } catch (err) {
-            console.log(err)
-            toast.error('Something went wrong!', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            setIsLoading(false);
-        }
+  //       } 
+  //       catch (err) {
+  //           console.log(err)
+  //           toast.error(err?.response?.data?.message || 'Invalid Credentials', {
+  //               position: "top-right",
+  //               autoClose: 2000,
+  //               hideProgressBar: false,
+  //               closeOnClick: true,
+  //               pauseOnHover: true,
+  //               draggable: true,
+  //               progress: undefined,
+  //               theme: "light",
+  //             });
+  //             setIsLoading(false);
+  //       }
 
-        
+      
+  // }
+
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setIsLoading(true);
     
+      newRequest.post('/admin/login', {
+        "email": email,
+        "password": password
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res?.data?.message || "Login Successfully", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+    
+        setIsLoading(false);
+        navigate('/admin/dashboard');
+        
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.message || 'Invalid Credentials', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setIsLoading(false);
+      });
+    }
+  
 
 
-  }
 
   return (
     <>
@@ -125,7 +140,8 @@ const AdminLogin = () => {
                   <div>
                     <label htmlFor="email" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Email Address</label>
                     <input 
-                       type="text"
+                      required
+                       type="email"
                           id="email"
                            value={email}
                              onChange={(e) => setEmail(e.target.value)}
@@ -138,7 +154,7 @@ const AdminLogin = () => {
                       <label htmlFor="password" className="text-sm text-gray-600 dark:text-gray-200">Password</label>
                     </div>
                     <input
-                    //   required
+                      required
                         value={password}
                           onChange={(e) => setPassword(e.target.value)}
                             type="password" 
