@@ -23,6 +23,13 @@ import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberP
 import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
 import MemberDashboard from "./Pages/MemberPages/MemberDashboard/MemberDashboard";
 import AdminLogin from "./Pages/AdminPages/AdminLogin/AdminLogin";
+import AdminSideBar from "./components/AdminSidebar/AdminSidebar";
+import RegisteredMembers from "./Pages/AdminPages/AdminIndentify/RegisteredMembers/RegisteredMembers";
+import Brands from "./Pages/AdminPages/AdminIndentify/Brands/Brands";
+import Products from "./Pages/AdminPages/AdminIndentify/Products/Products";
+import MemberProducts from "./Pages/AdminPages/AdminCapture/MemberProducts/MemberProducts";
+import VerifiedByGS1 from "./Pages/AdminPages/AdminCapture/VerifiedByGS1/VerifiedByGS1";
+import Notifications from "./Pages/AdminPages/AdminCapture/Notifications/Notifications";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -33,36 +40,17 @@ const App = () => {
       </div>
     );
   };
+
+  const AdminMainLayout = ({ children }) => {
+    return (
+      <div className="main-layout-container">
+        <AdminSideBar />
+        <span className="right-layout">{children}</span>
+      </div>
+    );
+  };
   return (
     <>
-
-      {/* <Route
-        path="/admin"
-        element={
-
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/update-vendor" element={<UpdateVendor />} />
-            <Route path="/customer-list" element={<ListOfCustomer />} />
-            <Route path="/gtin" element={<GTIN />} />
-            <Route path="addproducts" element={<GTINAddProducts />} />
-            <Route
-              path="upate-gtin-product/:productId"
-              element={<GTINUpdateProducts />}
-            />
-            <Route
-              path="view-gtin-product/:productId"
-              element={<GTINViewProduct />}
-            />
-            <Route path="/gln" element={<GLN />} />
-            <Route path="/gs1-members" element={<Gs1Members />} />
-
-          </Routes>
-
-        }
-      /> */}
-
-
 
       <DataTableProvider2>
         <DataTableProvider>
@@ -117,18 +105,26 @@ const App = () => {
 
 
                   <Routes>
-                  {/* Admin Pages */}
-                  <Route path="/admin-login" element={<AdminLogin />} />
+                    <Route path="/admin-login" element={<AdminLogin />} />
+                  
                   {/* Admin Routes */}
                   <Route
                     path="/admin/*"
                     element={
-                      <MainLayout>
+                      <AdminMainLayout>
                         <Routes>
                           <Route path="dashboard" element={<Dashboard />} />
+                          <Route path="registered-members" element={<RegisteredMembers />} />
+                          <Route path="brands" element={<Brands />} />
+                          <Route path="products" element={<Products />} />
 
+                          <Route path="member-products" element={<MemberProducts />} />
+                          <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
+                          <Route path="notfications" element={<Notifications />} />
+
+                        
                         </Routes>
-                      </MainLayout>
+                      </AdminMainLayout>
                     }
                   />
                   </Routes>
