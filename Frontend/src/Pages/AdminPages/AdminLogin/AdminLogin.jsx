@@ -126,7 +126,7 @@ const AdminLogin = () => {
                 />
             </div>
             }
-      <div className="bg-white dark:bg-gray-900">
+      <div className="bg-white">
         <div className="flex justify-center h-screen">
           
           <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
@@ -138,20 +138,20 @@ const AdminLogin = () => {
               <div className="mt-3 px-5">
                 <form onSubmit={handleSubmit}>
                   <div>
-                    <label htmlFor="email" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Email Address</label>
+                    <label htmlFor="email" className="block mb-2 text-sm text-secondary">User ID</label>
                     <input 
                       required
                        type="email"
                           id="email"
                            value={email}
                              onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                      className="block w-full px-4 py-2 mt-2 text-secondary placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
 
                   <div className="mt-6">
                     <div className="flex justify-between mb-2">
-                      <label htmlFor="password" className="text-sm text-gray-600 dark:text-gray-200">Password</label>
+                      <label htmlFor="password" className="text-sm text-secondary">Password</label>
                     </div>
                     <input
                       required
@@ -159,7 +159,7 @@ const AdminLogin = () => {
                           onChange={(e) => setPassword(e.target.value)}
                             type="password" 
                               id="password"
-                                className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" 
+                                className="block w-full px-4 py-2 mt-2 text-secondary placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" 
                     />
                   </div>
                   <div className="mt-6">
