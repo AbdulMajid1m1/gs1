@@ -9,12 +9,13 @@ import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
-
+import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
 import pdf from 'html-pdf';
 import fsSync from 'fs';
-import { BACKEND_URL } from '../configs/envConfig.js';
+import { BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../configs/envConfig.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
+import { cookieOptions } from '../utils/authUtilities.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -297,6 +298,40 @@ export const createUser = async (req, res, next) => {
 };
 
 
+export const memberLogin = async (req, res, next) => {
+    try {
+        // Validate user data (email, activity, password)
+        const { email, activity, password } = req.body;
+
+        // Query the database to find a user with the provided email and activity
+        const user = await prisma.users.findFirst({
+            where: { email: email, cr_activity: activity },
+        });
+
+        if (!user) {
+            return res.status(401).json({ error: 'User not found' });
+        }
+    
+        const passwordMatch = bcrypt.compareSync(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
+
+        // If email, activity, and password are correct, generate a JWT token
+        const token = jwt.sign({ userId: user.id }, MEMBER_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+        // Send the token in the response
+        // res.status(200).json({ token });
+        delete user.password;
+        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 export const getUserDetails = async (req, res, next) => {
     try {
         // Define allowable columns for filtering
@@ -344,6 +379,8 @@ export const getUserDetails = async (req, res, next) => {
         next(error);
     }
 };
+
+
 
 export const getUsersTempDetails = async (req, res, next) => {
     try {
@@ -425,6 +462,46 @@ export const getUsersTempDetails = async (req, res, next) => {
 //         next(error);
 //     }
 // };
+
+
+export const getCrInfo = async (req, res, next) => {
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+    });
+
+    const { error, value } = schema.validate(req.query);
+
+    if (error) {
+        // Validation failed, send a 400 Bad Request response
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { email } = value;
+    try {
+        // Query the database to find all users with the provided email
+        const users = await prisma.users.findMany({
+            where: { email: email },
+            select: { cr_activity: true, cr_number: true },
+        });
+
+        if (users.length > 0) {
+            // Users found, return their CR activity and CR number
+            res.json(users.map(user => ({
+                cr_activity: user.cr_activity,
+                cr_number: user.cr_number
+            })));
+        } else {
+            // Users not found, send a 404 Not Found response
+            res.status(404).json({ error: 'Users not found' });
+        }
+    } catch (error) {
+        // Handle any errors that occur during the database query
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 
 
 export const updateUser = async (req, res, next) => {

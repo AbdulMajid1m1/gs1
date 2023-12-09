@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteUser, getUserDetails, getUsersTempDetails, updateUser } from '../../controllers/usersController.js';
+import { createUser, deleteUser, getCrInfo, getUserDetails, getUsersTempDetails, memberLogin, updateUser } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 
 const userRouter = express.Router();
@@ -31,5 +31,10 @@ userRouter.put('/:userId', upload([
 userRouter.delete('/:id', deleteUser);
 
 userRouter.get('/temp', getUsersTempDetails);
+
+userRouter.get('/getCrInfoByEmail', getCrInfo);
+userRouter.post('/memberLogin', memberLogin);
+
+
 
 export default userRouter;
