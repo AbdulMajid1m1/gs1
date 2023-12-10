@@ -78,7 +78,7 @@ const RegisteredMembers = () => {
         console.log(row);
         // save this data in session storage
         sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
-        navigate("/member/view-gs1-member/" + row?.id);
+        navigate("view-registered-member/" + row?.id);
       };
 
   

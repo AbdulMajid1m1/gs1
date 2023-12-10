@@ -201,7 +201,7 @@ const AdminSideBar = () => {
                 className="main-inside-image bg-white rounded-full"
                 alt=""
               />
-              <p className="sidebar-text">Identify</p>
+              <p className="sidebar-text">IDENTIFY</p>
               {showFirstData ? (
                 <i className='fas fa-solid fa-chevron-up text-white'></i>
               ) : (
@@ -272,7 +272,7 @@ const AdminSideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Capture</p>
+            <p className="sidebar-text">CAPTURE</p>
             {showSecondData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (
@@ -344,7 +344,7 @@ const AdminSideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Share</p>
+            <p className="sidebar-text">SHARE</p>
             {showThirdData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (
@@ -400,7 +400,7 @@ const AdminSideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Others</p>
+            <p className="sidebar-text">OTHERS</p>
             {showFourthData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (
@@ -486,7 +486,7 @@ const AdminSideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Admin</p>
+            <p className="sidebar-text">ADMIN</p>
             {showFifthData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (

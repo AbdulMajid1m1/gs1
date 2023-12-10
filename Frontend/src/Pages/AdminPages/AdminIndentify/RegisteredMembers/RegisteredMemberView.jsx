@@ -1,13 +1,82 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import visitFrontend from "../../../../Images/visitFrontend.png"
 import profileICon from "../../../../Images/profileICon.png"
 import { TextField } from '@mui/material'
+import DataTable from '../../../../components/Datatable/Datatable'
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { DataTableContext } from '../../../../Contexts/DataTableContext'
+import { useNavigate } from 'react-router-dom'
+import { GtinColumn } from '../../../../utils/datatablesource'
 
-const Gs1MembersView = () => {
+const RegisteredMembersView = () => {
     // get the sesstion data
     const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
     console.log(gs1MemberData)
 
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState([
+        {
+            product_id: 'Initial Product ID',
+            productnameenglish: 'Initial Product Name',
+            BrandName: 'Initial Brand',
+            qrcode: 'Initial QRCode',
+            barcode: 'Initial Barcode',
+            product_url: 'http://example.com/initial',
+            product_link_url: 'http://example.com/link/initial',
+            status: 'Initial Status',
+          },
+          {
+            product_id: 'Initial Product ID',
+            productnameenglish: 'Initial Product Name',
+            BrandName: 'Initial Brand',
+            qrcode: 'Initial QRCode',
+            barcode: 'Initial Barcode',
+            product_url: 'http://example.com/initial',
+            product_link_url: 'http://example.com/link/initial',
+            status: 'Initial Status',
+          },
+          {
+            product_id: 'Initial Product ID',
+            productnameenglish: 'Initial Product Name',
+            BrandName: 'Initial Brand',
+            qrcode: 'Initial QRCode',
+            barcode: 'Initial Barcode',
+            product_url: 'http://example.com/initial',
+            product_link_url: 'http://example.com/link/initial',
+            status: 'Initial Status',
+          },
+          {
+            product_id: 'Initial Product ID',
+            productnameenglish: 'Initial Product Name',
+            BrandName: 'Initial Brand',
+            qrcode: 'Initial QRCode',
+            barcode: 'Initial Barcode',
+            product_url: 'http://example.com/initial',
+            product_link_url: 'http://example.com/link/initial',
+            status: 'Initial Status',
+          },
+    
+    ]);
+    const navigate = useNavigate();
+    
+    const { rowSelectionModel, setRowSelectionModel,
+      tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+    const [filteredData, setFilteredData] = useState([]);
+
+
+    const handleView = (row) => {
+        console.log(row);
+    }
+
+    const handleRowClickInParent = (item) => {
+        if (!item || item?.length === 0) {
+          setTableSelectedRows(data)
+          setFilteredData(data)
+          return
+        }
+    
+      }
   return (
     <div>
       <div className="p-0 h-full sm:ml-72">
@@ -386,8 +455,68 @@ const Gs1MembersView = () => {
                             </div>
                            
                        </div>
-                    
-                    
+
+                       
+                     <div className='flex gap-5 flex-wrap'>
+                        <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                        className='sm:w-[50%] w-full'
+                        >
+                       <DataTable data={data} 
+                            title="Member'z Products"
+                            columnsName={GtinColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+                          <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                            className='sm:w-[50%] w-full'
+                          >
+                       <DataTable data={data} 
+                            title="GPC (Global Product Classification)"
+                            columnsName={GtinColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+                       </div>
+
                       
                         {/* <div className='flex justify-between mt-8'>
                             <div className='w-full flex flex-col gap-1 '>
@@ -412,9 +541,52 @@ const Gs1MembersView = () => {
                     </div>
                  </div>
                </div>
+
+
+                 <div className='flex justify-center items-center bg-[#DAF2EE]'>
+                   <div className="h-auto w-[97%] px-0 pt-4">
+                     <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+                        
+                        <div className='flex justify-between'>
+                            <p className='text-blue-500 font-sans font-semibold'>Member Documents</p>
+                            <button className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Add</button>
+                        </div>
+                        
+                        <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                          >
+                       <DataTable data={data} 
+                            title="Member Documents"
+                            columnsName={GtinColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+                     </div>
+                   </div>
+                 </div>
+                    
         </div>
     </div>
   )
 }
 
-export default Gs1MembersView
+export default RegisteredMembersView

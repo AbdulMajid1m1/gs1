@@ -43,6 +43,7 @@ import Reports from "./Pages/AdminPages/AdminTab/Reports/Reports";
 import PaymentSlips from "./Pages/MemberPages/PaymentSlips/PaymentSlips";
 import BankSlip from "./Pages/MemberPages/PaymentSlips/BankSlip";
 import TransactionHistory from "./Pages/MemberPages/TransactionHistory/TransactionHistory";
+import RegisteredMembersView from "./Pages/AdminPages/AdminIndentify/RegisteredMembers/RegisteredMemberView";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -104,10 +105,10 @@ const App = () => {
 
                           <Route path="member-profile" element={<MemberProfile />} />
 
-                          <Route
+                          {/* <Route
                             path="view-gs1-member/:Id"
                             element={<Gs1MembersView />}
-                          />
+                          /> */}
 
                           <Route path="payment-slips" element={<PaymentSlips />} />
                           <Route path="bank-slip" element={<BankSlip />} />
@@ -134,6 +135,17 @@ const App = () => {
                         <Routes>
                           <Route path="dashboard" element={<Dashboard />} />
                           <Route path="registered-members" element={<RegisteredMembers />} />
+
+                          <Route
+                            path="view-registered-member/:Id"
+                            element={<RegisteredMembersView />}
+                          />
+
+                          <Route
+                            path="view-gs1-member/:Id"
+                            element={<Gs1MembersView />}
+                          />
+                          
                           <Route path="brands" element={<Brands />} />
                           <Route path="products" element={<Products />} />
 
