@@ -18,7 +18,18 @@ import products from '../../Images/products.png';
 import memberproducts from '../../Images/memberproducts.png';
 import verifiedbygs1 from '../../Images/verified.png';
 import notifications from '../../Images/notify.png';
-
+import settingIcon from '../../Images/settingIcon.png'
+import frontend from '../../Images/frontend.png'
+import report from '../../Images/report.png'
+import migration from '../../Images/migration.png'
+import inactive from '../../Images/inactive.png'
+import helpdesk from '../../Images/helpdesk.png'
+import staffHelpDesk from '../../Images/staffHelpDesk.png'
+import registries from '../../Images/registries.png'
+import gcp from '../../Images/gcp.png'
+import verifiedIcon from '../../Images/verifiedIcon.png'
+import gs1 from '../../Images/gs1.png'
+import gdsnproduct from '../../Images/gdsnproduct.png'
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -297,7 +308,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={gs1}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -354,7 +365,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={memberproducts}
+                    src={gcp}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -369,7 +380,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={gdsnproduct}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -410,7 +421,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={memberproducts}
+                    src={migration}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -425,7 +436,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={inactive}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -440,7 +451,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={helpdesk}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -455,7 +466,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={staffHelpDesk}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -496,7 +507,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={memberproducts}
+                    src={frontend}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -511,7 +522,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={settingIcon}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -541,7 +552,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbygs1}
+                    src={report}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />

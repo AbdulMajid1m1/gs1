@@ -1,20 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../../components/Header/Header'
 import Footer from '../../../../components/Footer/Footer'
 import { useNavigate } from 'react-router-dom'
+import newRequest from '../../../../utils/userRequest'
+import { toast } from 'react-toastify'
+import { DotLoader } from 'react-spinners'
+
 
 const EmailAddress = () => {
     const [email, setEmail] = React.useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate();
     
+    // abdulmajid1m2@gmail.com
     const handleSubmit = (e) => {
         e.preventDefault()
+        setIsLoading(true)
         console.log(email)
-        navigate('/select-activity');
+
+        newRequest.get(`/users/getCrInfoByEmail?email=${email}`)
+         .then(response => {
+                console.log(response.data)
+                toast.success(response?.data?.message, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                setIsLoading(false)
+
+                navigate('/select-activity');
+
+                // save the response of this api in session storage
+                sessionStorage.setItem('userActivity', JSON.stringify(response?.data))
+
+                // save the email in session storage
+                sessionStorage.setItem('email', email)
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error(err?.response?.data?.message || 'User Not found', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                setIsLoading(false)
+            })
+
     }
 
   return (
     <div>
+        {isLoading &&
+
+            <div className='loading-spinner-background'
+                style={{
+                    zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
+
+
+                }}
+            >
+                <DotLoader
+                    size={45}
+                    color={"#FF693A"}
+                    // height={4}
+                    loading={isLoading}
+                />
+            </div>
+            }
         <div className='sticky top-0 z-50 bg-white'>
              <Header />
         </div>

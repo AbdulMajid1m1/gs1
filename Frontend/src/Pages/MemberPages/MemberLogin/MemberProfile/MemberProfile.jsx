@@ -287,7 +287,7 @@ const MemberProfile = () => {
           
             <div className='flex justify-center items-center'>
                 <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-start items-center px-10">
-                    <p className="sm:text-3xl text-secondary text-sm font-sans font-semibold">Profile</p>
+                    <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">Profile</p>
                 </div>
             </div>
 

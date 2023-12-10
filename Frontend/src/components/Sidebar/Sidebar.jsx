@@ -13,6 +13,11 @@ import ngln from '../../Images/ngln.png';
 import nsscc from '../../Images/nsscc.png';
 import members from '../../Images/members.png';
 import profileIcon from '../../Images/profileIcon.png';
+import payslip from '../../Images/payslip.png';
+import capture from '../../Images/capture.png';
+import transactionhistory from '../../Images/transactionhistory.png';
+import share from '../../Images/share.png';
+import verifiedbyGs1 from '../../Images/verifiedbyGs1.png';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -41,6 +46,8 @@ const SideBar = () => {
   
   
   const [showFirstData, setShowFirstData] = useState(false);
+  const [showSecondData, setShowSecondData] = useState(false);
+  const [showThirdData, setShowThirdData] = useState(false);
   const navigate = useNavigate();
 
 
@@ -241,21 +248,121 @@ const SideBar = () => {
             )}
 
 
-          <div
-            className={`main-images-container ${selectedItem === '/member/gs1-members' ? 'selected-item' : ''}`}
-            onClick={() => handleItemClick('/member/gs1-members')}
-            onContextMenu={(event) =>
-              handleContextMenu(event, '/member/gs1-members')
-            }
-
-          >
+            <div
+              className="main-images-container"
+              onClick={() => setShowSecondData(!showSecondData)}
+            >
             <img
-              src={members}
+              src={capture}
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Members</p>
+            <p className="sidebar-text">CAPTURE</p>
+            {showSecondData ? (
+                <i className='fas fa-solid fa-chevron-up text-white'></i>
+              ) : (
+                <i className='fas fa-solid fa-chevron-down text-white'></i>
+              )}
           </div>
+
+          {showSecondData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/payment-slips' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/payment-slips')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/payment-slips')
+                  }
+                  >
+                  <img
+                    src={payslip}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Payment Slips</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/transaction-history' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/transaction-history')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/transaction-history')
+                  }
+                  >
+                  <img
+                    src={transactionhistory}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Transaction History</p>
+                </div>
+               
+
+              </div>
+              )}
+
+
+            <div
+              className="main-images-container"
+              onClick={() => setShowThirdData(!showThirdData)}
+            >
+            <img
+              src={share}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">SHARE</p>
+            {showThirdData ? (
+                <i className='fas fa-solid fa-chevron-up text-white'></i>
+              ) : (
+                <i className='fas fa-solid fa-chevron-down text-white'></i>
+              )}
+          </div>
+
+          {showThirdData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
+                  className={`main-images-container ${selectedItem === '/member' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member')
+                  }
+                  >
+                  <img
+                    src={verifiedbyGs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Verified by GS1</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/')
+                  }
+                  >
+                  <img
+                    src={transactionhistory}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">GS1 Digital Link</p>
+                </div>
+               
+
+              </div>
+              )}
+
+
+
 
 
           <div

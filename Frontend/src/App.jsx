@@ -40,6 +40,9 @@ import Frontend from "./Pages/AdminPages/AdminTab/FrontEnd/Frontend";
 import Settings from "./Pages/AdminPages/AdminTab/Settings/Settings";
 import MasterData from "./Pages/AdminPages/AdminTab/MasterData/MasterData";
 import Reports from "./Pages/AdminPages/AdminTab/Reports/Reports";
+import PaymentSlips from "./Pages/MemberPages/PaymentSlips/PaymentSlips";
+import BankSlip from "./Pages/MemberPages/PaymentSlips/BankSlip";
+import TransactionHistory from "./Pages/MemberPages/TransactionHistory/TransactionHistory";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -105,6 +108,12 @@ const App = () => {
                             path="view-gs1-member/:Id"
                             element={<Gs1MembersView />}
                           />
+
+                          <Route path="payment-slips" element={<PaymentSlips />} />
+                          <Route path="bank-slip" element={<BankSlip />} />
+
+                          <Route path="transaction-history" element={<TransactionHistory />} />
+
 
                         </Routes>
                       </MainLayout>
