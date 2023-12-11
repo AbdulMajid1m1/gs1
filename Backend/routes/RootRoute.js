@@ -10,11 +10,13 @@ import adminRoutes from './subRoutes/adminRoutes.js';
 import productTypesRoutes from './subRoutes/productTypesRoutes.js';
 import productCategoriesRoutes from './subRoutes/productCategoriesRoutes.js';
 import EissaRootRoute from './EissaRootRoute.js';
+import brandRoutes from './brandRoutes.js';
 const router = express.Router();
 
 
 
 router.use('/', EissaRootRoute);
+
 router.use('/crs', crsRoutes);
 
 router.use('/users', userRoutes);
@@ -35,5 +37,6 @@ router.use('/productTypes', productTypesRoutes);
 
 router.use('/productCategories', productCategoriesRoutes);
 
+router.use('/brands', brandRoutes);
 
 export default router;

@@ -311,7 +311,7 @@ export const memberLogin = async (req, res, next) => {
         if (!user) {
             return res.status(401).json({ error: 'User not found' });
         }
-    
+
         const passwordMatch = bcrypt.compareSync(password, user.password);
 
         if (!passwordMatch) {
@@ -655,7 +655,7 @@ export const getCarts = async (req, res, next) => {
             request_type: Joi.string(),
             payment_type: Joi.string(),
             user_id: Joi.string(),
-           
+
             // ... define validation for other allowed columns
         };
 
