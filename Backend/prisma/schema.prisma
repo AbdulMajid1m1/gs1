@@ -134,14 +134,14 @@ model auto_generated_documents {
 }
 
 model bank_slips {
-  id             Int       @id(map: "PK_bank_slips") @default(autoincrement())
-  transaction_id Int?
+  id             String    @id @default(cuid())
+  transaction_id String?
   details        String?   @db.NVarChar(Max)
   documents      String?   @db.NVarChar(Max)
   status         String?   @default("pending", map: "DF_bank_slips_status") @db.VarChar(10)
-  user_id        Int?      @default(0, map: "DF_bank_slips_user_id")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
+  user_id        String?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
   deleted_at     DateTime? @db.DateTime
   admin_id       String?   @default("0", map: "DF_bank_slips_admin_id") @db.VarChar(10)
   reject_reason  String?   @db.Text
@@ -1501,11 +1501,11 @@ model product_images {
 }
 
 model product_packagings {
-  id         BigInt    @id(map: "PK_product_packagings") @default(autoincrement())
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
   status     Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model product_types {

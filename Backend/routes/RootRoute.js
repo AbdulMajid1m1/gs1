@@ -10,7 +10,9 @@ import adminRoutes from './subRoutes/adminRoutes.js';
 import productTypesRoutes from './subRoutes/productTypesRoutes.js';
 import productCategoriesRoutes from './subRoutes/productCategoriesRoutes.js';
 import EissaRootRoute from './EissaRootRoute.js';
-import brandRoutes from './brandRoutes.js';
+import brandRoutes from './subRoutes/brandRoutes.js';
+import bankslipRoutes from './subRoutes/bankslipRoutes.js';
+
 const router = express.Router();
 
 
@@ -38,5 +40,7 @@ router.use('/productTypes', productTypesRoutes);
 router.use('/productCategories', productCategoriesRoutes);
 
 router.use('/brands', brandRoutes);
+
+router.use('/bankslip', bankslipRoutes);
 
 export default router;

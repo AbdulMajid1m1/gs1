@@ -31,10 +31,10 @@ export const createBrand = async (req, res, next) => {
 
 
 const allowedColumns = {
-    id: Joi.number().integer(),
+    id: Joi.string(),
     name: Joi.string(),
     status: Joi.string(),
-    user_id: Joi.number().integer(),
+    user_id: Joi.string(),
     // Add more columns as needed
 };
 
