@@ -9,10 +9,12 @@ import otherProuductRoutes from './subRoutes/otherProuductRoutes.js';
 import adminRoutes from './subRoutes/adminRoutes.js';
 import productTypesRoutes from './subRoutes/productTypesRoutes.js';
 import productCategoriesRoutes from './subRoutes/productCategoriesRoutes.js';
+import EissaRootRoute from './EissaRootRoute.js';
 const router = express.Router();
 
 
 
+router.use('/', EissaRootRoute);
 router.use('/crs', crsRoutes);
 
 router.use('/users', userRoutes);
