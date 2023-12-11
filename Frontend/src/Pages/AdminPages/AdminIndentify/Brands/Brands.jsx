@@ -110,7 +110,7 @@ const Brands = () => {
                     {/* Back Button */}
                     <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                         <button
-                          onClick={() => navigate('/member/bank-slip')}
+                          // onClick={() => navigate('/member/bank-slip')}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
                         </button>
