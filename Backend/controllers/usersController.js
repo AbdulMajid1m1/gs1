@@ -382,6 +382,8 @@ export const getUserDetails = async (req, res, next) => {
 
 
 
+
+
 export const getUsersTempDetails = async (req, res, next) => {
     try {
         // Define allowable columns for filtering
@@ -632,6 +634,62 @@ export const deleteUser = async (req, res, next) => {
         if (error.message.includes('Record to delete does not exist')) {
             return next(createError(404, 'User not found'));
         }
+        next(error);
+    }
+};
+
+
+
+
+// Carts Controllers Start
+
+export const getCarts = async (req, res, next) => {
+    try {
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            transaction_id: Joi.string(),
+            cart_items: Joi.string(),
+            total: Joi.number(),
+            documents: Joi.string(),
+            request_type: Joi.string(),
+            payment_type: Joi.string(),
+            user_id: Joi.string(),
+           
+            // ... define validation for other allowed columns
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false); // Disallows any keys that are not defined in the schema
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Check if any filter conditions are provided
+        const hasFilterConditions = Object.keys(value).length > 0;
+
+        // Construct filter conditions for Prisma query
+        const filterConditions = hasFilterConditions
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        const carts = await prisma.carts.findMany({
+            where: filterConditions
+        });
+
+        res.json(carts);
+    } catch (error) {
         next(error);
     }
 };
