@@ -321,32 +321,32 @@ model cookie_consents {
 }
 
 model countries {
-  id                String    @id @default(cuid())
-  name_en           String?   @db.NVarChar(Max)
-  name_ar           String?   @db.NVarChar(Max)
-  country_code      String?   @db.NVarChar(Max)
-  country_shortName String?   @db.NVarChar(Max)
+  id                String   @id @default(cuid())
+  name_en           String?  @db.NVarChar(Max)
+  name_ar           String?  @db.NVarChar(Max)
+  country_code      String?  @db.NVarChar(Max)
+  country_shortName String?  @db.NVarChar(Max)
   status            Int?
-  created_at        DateTime? @db.DateTime
-  updated_at        DateTime? @db.DateTime
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
 }
 
 model country_of_sales {
-  id                    BigInt    @id(map: "PK__country___3213E83F52C909D1") @default(autoincrement())
-  Alpha2                String    @db.NVarChar(255)
-  Alpha3                String    @db.NVarChar(255)
-  country_code_numeric3 String    @db.NVarChar(255)
-  country_name          String    @db.NVarChar(255)
-  created_at            DateTime? @db.DateTime
-  updated_at            DateTime? @db.DateTime
+  id                    String   @id @default(cuid())
+  Alpha2                String   @db.NVarChar(255)
+  Alpha3                String   @db.NVarChar(255)
+  country_code_numeric3 String   @db.NVarChar(255)
+  country_name          String   @db.NVarChar(255)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
 }
 
 model cr_documents {
-  id         String    @id
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
   status     Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model crs {
@@ -521,11 +521,11 @@ model gcp_histories {
 }
 
 model gcp_types {
-  id              BigInt    @id(map: "PK__gcp_type__3213E83FD86DB395") @default(autoincrement())
-  gcp_code        String    @db.NVarChar(255)
-  gcp_description String?   @db.NVarChar(Max)
-  created_at      DateTime? @db.DateTime
-  updated_at      DateTime? @db.DateTime
+  id              String   @id @default(cuid())
+  gcp_code        String   @db.NVarChar(255)
+  gcp_description String?  @db.NVarChar(Max)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 }
 
 model general_settings {
@@ -804,13 +804,13 @@ model help_desks {
 }
 
 model hs_codes {
-  id            BigInt    @id(map: "PK__hs_codes__3213E83F1BC26C90") @default(autoincrement())
-  CNKEY         String    @db.NVarChar(255)
-  HSCODES       String    @db.NVarChar(255)
-  DescriptionEN String    @db.NVarChar(Max)
+  id            String   @id @default(cuid())
+  CNKEY         String   @db.NVarChar(255)
+  HSCODES       String   @db.NVarChar(255)
+  DescriptionEN String   @db.NVarChar(Max)
   addBy         Int
-  created_at    DateTime? @db.DateTime
-  updated_at    DateTime? @db.DateTime
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 }
 
 model issuing_agencies {
@@ -1377,16 +1377,16 @@ model old_users {
 }
 
 model other_products {
-  id                       String    @id @default(cuid())
-  product_name             String?   @db.NVarChar(Max)
+  id                       String   @id @default(cuid())
+  product_name             String?  @db.NVarChar(Max)
   total_no_of_barcodes     Float?
   product_subscription_fee Float?
-  code                     String?   @db.NVarChar(Max)
+  code                     String?  @db.NVarChar(Max)
   status                   Int?
-  created_at               DateTime? @db.DateTime
-  updated_at               DateTime? @db.DateTime
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
   med_subscription_fee     Float?
-  variant                  String?   @db.NVarChar(10)
+  variant                  String?  @db.NVarChar(10)
 }
 
 model other_products_subcriptions {
@@ -1839,22 +1839,22 @@ model udi_regulation_data {
 }
 
 model units {
-  id         BigInt    @id(map: "PK_units") @default(autoincrement())
-  unit_code  String?   @db.VarChar(50)
-  unit_name  String?   @db.NVarChar(50)
+  id         String   @id @default(cuid())
+  unit_code  String?  @db.VarChar(50)
+  unit_name  String?  @db.NVarChar(50)
   status     Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model unspscs {
-  id         BigInt    @id(map: "PK__unspscs__3213E83FD855EFCA") @default(autoincrement())
+  id         String   @id @default(cuid())
   commodity  Int
-  title      String    @db.NVarChar(255)
-  definition String    @db.NVarChar(Max)
-  addedBy    Int       @db.TinyInt
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  title      String   @db.NVarChar(255)
+  definition String   @db.NVarChar(Max)
+  addedBy    Int      @db.TinyInt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model upcoming_events {

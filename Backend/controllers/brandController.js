@@ -111,10 +111,16 @@ export const deleteBrand = async (req, res, next) => {
         const { id } = value;
 
 
-        await prisma.brands.delete({
+
+
+        const brand = await prisma.brands.deleteMany({
             where: { id: id },
         });
-        
+        console.log(brand);
+        if (brand.count === 0) {
+            return next(createError(404, 'Brand not found'));
+        }
+
 
         res.json({ message: 'Brand deleted successfully' });
     } catch (error) {
