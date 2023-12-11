@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBrand, getBrands, updateBrand, deleteBrand } from '../controllers/brandController.js';
+import { createBrand, getBrands, updateBrand, deleteBrand } from '../../controllers/brandController.js';
 
 const router = express.Router();
 

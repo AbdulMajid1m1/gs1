@@ -3,6 +3,15 @@ import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 
+
+
+const brandSchema = Joi.object({
+    name: Joi.string().max(255).required(),
+    name_ar: Joi.string().max(255).required(),
+    status: Joi.string().valid('active', 'inactive').required(),
+    user_id: Joi.string().required(),
+});
+
 export const createBrand = async (req, res, next) => {
     try {
         const { error, value } = brandSchema.validate(req.body);
@@ -22,10 +31,10 @@ export const createBrand = async (req, res, next) => {
 
 
 const allowedColumns = {
-    id: Joi.number().integer(),
+    id: Joi.string(),
     name: Joi.string(),
     status: Joi.string(),
-    user_id: Joi.number().integer(),
+    user_id: Joi.string(),
     // Add more columns as needed
 };
 
@@ -70,13 +79,14 @@ export const getBrands = async (req, res, next) => {
 export const updateBrand = async (req, res, next) => {
     try {
         const { id } = req.params;
+        if (!id) return res.status(400).json({ error: 'id is required' });
         const { error, value } = brandSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
 
         const updatedBrand = await prisma.brands.update({
-            where: { id: parseInt(id) },
+            where: { id: id },
             data: value,
         });
 
@@ -101,9 +111,16 @@ export const deleteBrand = async (req, res, next) => {
         const { id } = value;
 
 
-        await prisma.brands.delete({
-            where: { id: parseInt(id) },
+
+
+        const brand = await prisma.brands.deleteMany({
+            where: { id: id },
         });
+        console.log(brand);
+        if (brand.count === 0) {
+            return next(createError(404, 'Brand not found'));
+        }
+
 
         res.json({ message: 'Brand deleted successfully' });
     } catch (error) {
