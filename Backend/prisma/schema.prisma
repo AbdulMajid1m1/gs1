@@ -207,13 +207,14 @@ model bookings {
 }
 
 model brands {
-  id         BigInt    @id(map: "PK__brands__3213E83F8E9220FB") @default(autoincrement())
-  name       String    @db.NVarChar(255)
-  name_ar    String    @db.NVarChar(255)
-  status     String    @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
+  id         String   @id @default(cuid())
+  name       String   @db.NVarChar(255)
+  name_ar    String   @db.NVarChar(255)
+  status     String   @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
   user_id    Int
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  // use default value for created_at
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model brandsForApproval {
@@ -353,7 +354,7 @@ model crs {
   cr           String?   @db.NVarChar(Max)
   activity     String?   @db.NVarChar(Max)
   status       Int?
-  isRegistered Int    @default(0, map: "DF_crs_isRegistered")
+  isRegistered Int       @default(0, map: "DF_crs_isRegistered")
   created_at   DateTime? @db.DateTime
   updated_at   DateTime? @db.DateTime
 }
