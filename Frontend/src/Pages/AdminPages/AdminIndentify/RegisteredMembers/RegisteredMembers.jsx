@@ -10,55 +10,73 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useQuery } from 'react-query'
 
 const RegisteredMembers = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState([]);
+    const [IsLoading, setIsLoading] = useState(true);
+    // const [data, setData] = useState([]);
+    const [gridData, setGridData] = useState([]);
     const navigate = useNavigate();
     
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
-      useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await newRequest.get("/users",);
+
+    const { isLoading, error, data, isFetching } = useQuery("fatchMembers", async () => {
+      const response = await newRequest.get("/users",);
+      return response?.data || [];
+      
+    });
+
+    useEffect(() => {
+      if (data) {
+        setGridData(data)
+        setFilteredData(data)
+        setIsLoading(false)
+      }
+    },[data]);
+
+    
+    //   useEffect(() => {
+    //   const fetchData = async () => {
+    //     try {
+    //       const response = await newRequest.get("/users",);
           
-          console.log(response.data);
-          setData(response?.data || []);
-          setIsLoading(false)
+    //       console.log(response.data);
+    //       setData(response?.data || []);
+    //       setIsLoading(false)
 
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false)
-        }
-      };
+    //     } catch (err) {
+    //       console.log(err);
+    //       setIsLoading(false)
+    //     }
+    //   };
 
-      fetchData(); // Calling the function within useEffect, not inside itself
-    }, []); // Empty array dependency ensures this useEffect runs once on component mount
+    //   fetchData(); // Calling the function within useEffect, not inside itself
+    // }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
     
-  const refreshData = async () => {
-    setIsLoading(true);
-    try {
-        const response = await newRequest.get("/users",);
+  // const refreshData = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //       const response = await newRequest.get("/users",);
         
-        console.log(response.data);
-        setData(response?.data || []);
-        setIsLoading(false)
+  //       console.log(response.data);
+  //       setData(response?.data || []);
+  //       setIsLoading(false)
 
-    } catch (err) {
-      console.log(err);
-      Swal.fire(
-        'Error!',
-          err?.response?.data?.message || 'Something went wrong!.',
-        'error'
-      )
+  //   } catch (err) {
+  //     console.log(err);
+  //     Swal.fire(
+  //       'Error!',
+  //         err?.response?.data?.message || 'Something went wrong!.',
+  //       'error'
+  //     )
 
-    }
-  };
+  //   }
+  // };
 
     const handleEdit = (row) => {
         console.log(row);
@@ -112,7 +130,9 @@ const RegisteredMembers = () => {
               
               // filter out the deleted user from the data
               const filteredData = data.filter((item) => item?.id !== row?.id);
-              setData(filteredData);
+              // setData(filteredData);
+              setGridData(filteredData);
+              
             } else {
               // Handle any additional logic if the user was not deleted successfully
               toast.error('Failed to delete user', {
@@ -213,10 +233,21 @@ const RegisteredMembers = () => {
             {
               status: selectedStatus,
             }
-          );
+          );  
     
     
-          refreshData();
+          // refreshData();
+          const updatedData = data.map((item) => {
+            if (item.id === selectedUser.id) {
+              return {
+                ...item,
+                status: selectedStatus,
+              };
+            }
+            return item;
+          });
+          setGridData(updatedData)
+
 
           toast.success(res?.data?.message || 'Status updated successfully', {
             position: "top-right",
@@ -241,6 +272,8 @@ const RegisteredMembers = () => {
             progress: undefined,
             theme: "light",
           });
+
+          console.log(err); 
         }
     
       };
@@ -253,14 +286,14 @@ const RegisteredMembers = () => {
 
         <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
 
-            <DataTable data={data} title="Registered Members" columnsName={Gs1AllMembers}
+            <DataTable data={gridData} title="Registered Members" columnsName={Gs1AllMembers}
             loading={isLoading}
             secondaryColor="secondary"
             handleRowClickInParent={handleRowClickInParent}
 
             dropDownOptions={[
                 {
-                  label: "View",
+                  label: "Profile",
                   icon: (
                     <VisibilityIcon
                       fontSize="small"
@@ -271,7 +304,7 @@ const RegisteredMembers = () => {
                   action: handleView,
                 },
                 {
-                  label: "Change status",
+                  label: "Activation",
                   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                   ,
                   action: handleStatusChange,

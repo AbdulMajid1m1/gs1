@@ -45,6 +45,9 @@ import BankSlip from "./Pages/MemberPages/PaymentSlips/BankSlip";
 import TransactionHistory from "./Pages/MemberPages/TransactionHistory/TransactionHistory";
 import RegisteredMembersView from "./Pages/AdminPages/AdminIndentify/RegisteredMembers/RegisteredMemberView";
 import MemberBrands from "./Pages/MemberPages/MemberBrands/MemberBrands";
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+
+const queryClient = new QueryClient()
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -134,9 +137,11 @@ const App = () => {
                     path="/admin/*"
                     element={
                       <AdminMainLayout>
+                        <QueryClientProvider client={queryClient}>
                         <Routes>
                           <Route path="dashboard" element={<Dashboard />} />
-                          <Route path="registered-members" element={<RegisteredMembers />} />
+                          
+                            <Route path="registered-members" element={<RegisteredMembers />} />
 
                           <Route
                             path="view-registered-member/:Id"
@@ -172,6 +177,7 @@ const App = () => {
 
                         
                         </Routes>
+                        </QueryClientProvider>
                       </AdminMainLayout>
                     }
                   />

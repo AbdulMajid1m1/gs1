@@ -1424,3 +1424,138 @@ export const Gs1AllMembers = [
     width: 180,
   },
 ];
+
+
+
+export const MembersDocumentColumn = [
+  {
+    field: "type",
+    headerName: "Type",
+    width: 180,
+  },
+  {
+    field: "document",
+    headerName: "Document",
+    width: 180,
+  },
+  {
+    field: "invoice",
+    headerName: "Invoice",
+    width: 180,
+  },
+  {
+    field: "date",
+    headerName: "Date",
+    width: 180,
+  },
+
+
+
+]
+
+
+export const MembersBrandsColumn = [
+  {
+    field: "id",
+    headerName: "ID",
+    width: 180,
+  },
+  {
+    field: "name",
+    headerName: "Name",
+    width: 180,
+  },
+  {
+    field: "name_ar",
+    headerName: "Name Arabic",
+    width: 180,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 180,
+  },
+  {
+    field: "user_id",
+    headerName: "User ID",
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: "Created At",
+    width: 180,
+  },
+  {
+    field: "updated_at",
+    headerName: "Updated At",
+    width: 180,
+  },
+
+
+
+
+]
+
+
+
+export const AdminBrandsColumn = [
+  {
+    field: "id",
+    headerName: "ID",
+    width: 180,
+  },
+  {
+    field: "name",
+    headerName: "Name",
+    width: 180,
+  },
+  {
+    field: "name_ar",
+    headerName: "Name Arabic",
+    width: 180,
+  },
+  // {
+  //   field: "status",
+  //   headerName: "Status",
+  //   width: 180,
+  // },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+    renderCell: (params) => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  {
+    field: "user_id",
+    headerName: "User ID",
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: "Created At",
+    width: 180,
+  },
+  {
+    field: "updated_at",
+    headerName: "Updated At",
+    width: 180,
+  },
+
+
+
+
+]
