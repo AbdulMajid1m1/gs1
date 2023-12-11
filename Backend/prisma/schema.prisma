@@ -1504,8 +1504,8 @@ model product_packagings {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
   status     Int?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 }
 
 model product_types {
