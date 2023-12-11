@@ -44,6 +44,7 @@ import PaymentSlips from "./Pages/MemberPages/PaymentSlips/PaymentSlips";
 import BankSlip from "./Pages/MemberPages/PaymentSlips/BankSlip";
 import TransactionHistory from "./Pages/MemberPages/TransactionHistory/TransactionHistory";
 import RegisteredMembersView from "./Pages/AdminPages/AdminIndentify/RegisteredMembers/RegisteredMemberView";
+import MemberBrands from "./Pages/MemberPages/MemberBrands/MemberBrands";
 
 const App = () => {
   const MainLayout = ({ children }) => {
@@ -90,6 +91,7 @@ const App = () => {
                           <Route path="dashboard" element={<MemberDashboard />} />
                           <Route path="update-vendor" element={<UpdateVendor />} />
                           <Route path="customer-list" element={<ListOfCustomer />} />
+                          <Route path="member-brands" element={<MemberBrands />} />
                           <Route path="gtin" element={<GTIN />} />
                           <Route path="addproducts" element={<GTINAddProducts />} />
                           <Route

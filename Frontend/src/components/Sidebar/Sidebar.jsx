@@ -244,6 +244,21 @@ const SideBar = () => {
                   />
                   <p className="sidebar-text">SSCC</p>
                 </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/member-brands' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/member-brands')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/member-brands')
+                  }
+                  >
+                  <img
+                    src={payslip}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Brands</p>
+                </div>
               </div>
             )}
 

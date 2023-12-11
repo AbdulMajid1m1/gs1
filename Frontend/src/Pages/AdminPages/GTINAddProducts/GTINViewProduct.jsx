@@ -16,6 +16,7 @@ import {
   DataMatrixGenerator,
 } from "../../../utils/Barcodes/Barcodes";
 import DownloadButton from "../../../utils/Buttons/DownloadBtn";
+import DashboardRightHeader from "../../../components/DashboardRightHeader/DashboardRightHeader";
 // import { CurrentUserContext } from "../../Contexts/CurrentUserContext";
 
 const GTINViewProduct = () => {
@@ -288,22 +289,15 @@ const GTINViewProduct = () => {
 
       {/* <SideBar /> */}
 
-      <div className="p-3 h-full sm:ml-72">
-        <div className="flex flex-col justify-center items-center bg-slate-100">
-          {" "}
-          {/* Added CSS classes */}
-          <div className="h-auto w-full p-4">
-            <div className="h-16 w-full bg-white shadow-xl flex justify-start items-center gap-3 px-5 border-l-2 border-[#e49515]">
-              <i
-                onClick={() => navigate("/gtin")}
-                className="fas fa-arrow-left text-2xl text-[#e49515] cursor-pointer"
-              ></i>
-              <p className="sm:text-2xl text-sm font-body"> View Product</p>
-            </div>
+      <div className="p-0 h-full sm:ml-72  bg-slate-100">
+          <div>
+            <DashboardRightHeader title="View Product" />
           </div>
-          <div className="h-auto sm:w-[700px] w-full p-5 bg-white">
+        <div className="flex flex-col justify-center items-center p-4">
+          {" "}
+          <div className="h-auto w-full p-5 bg-white">
             <div className="popup-header">
-              <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#D4EDDA] text-xl mb:2 md:mb-5">
+              <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
                 <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
                   <p className="font-semibold">Complete Data</p>
                   <p>
@@ -315,27 +309,28 @@ const GTINViewProduct = () => {
               </div>
             </div>
 
-            <div className="flex flex-row justify-between items-center gap-3">
-              <div className="flex flex-col gap-3 w-full">
-                <label htmlFor="fields1">Product Name [English]</label>
+
+             <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
+               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                <label htmlFor="fields1" className="text-secondary">Product Name [English]</label>
                 <input
                   disabled={true}
                   type="text"
                   id="fields1"
                   onChange={(e) => setProductNameEnglish(e.target.value)}
                   value={productNameEnglish}
-                  className="w-full"
+                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                   placeholder="Product Name English"
                 />
               </div>
 
-              <div className="flex flex-col gap-3 w-full">
-                <label htmlFor="fields2">Product Name [Arabic]</label>
+              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                <label htmlFor="fields2" className="text-secondary">Product Name [Arabic]</label>
                 <input
                   disabled={true}
                   type="text"
                   id="fields2"
-                  className="w-full"
+                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                   value={productNameArabic}
                   onChange={(e) => setProductNameArabic(e.target.value)}
                   placeholder="Product Name Arabic"
@@ -343,14 +338,13 @@ const GTINViewProduct = () => {
               </div>
             </div>
 
-            <div className="header-line"></div>
-
+            <div className="w-full h-[2px] bg-primary mb-6 mt-6"></div>
+            
             <div className="popup-form">
               <form>
-                <div>
-                  {/* Recipe inputs */}
-                  <div className="form-row">
-                    <label htmlFor="field1">Brand Name [English] </label>
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field1" className="text-secondary">Brand Name [English] </label>
                     <input
                       disabled={true}
                       type="text"
@@ -358,11 +352,13 @@ const GTINViewProduct = () => {
                       onChange={(e) => setBrandNameEnglish(e.target.value)}
                       value={brandNameEnglish}
                       placeholder="Brand Name [English]"
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+
                     />
                   </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field2">Brand Name [Arabic] </label>
+                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field2" className="text-secondary">Brand Name [Arabic] </label>
                     <input
                       type="text"
                       id="field2"
@@ -370,12 +366,16 @@ const GTINViewProduct = () => {
                       value={brandNameArabic}
                       placeholder="Brand Name [Arabic]"
                       disabled={true}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+
                     />
                   </div>
-
-                  <div className="form-row">
-                    <label htmlFor="field3">Unit Code</label>
-                    <div className="w-[70%]">
+              </div>
+                
+                
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field3" className="text-secondary">Unit Code</label>
                       <Autocomplete
                         disabled={true}
                         id="zone"
@@ -400,7 +400,7 @@ const GTINViewProduct = () => {
                               ...params.InputLabelProps,
                               style: { color: "white" },
                             }}
-                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
                             placeholder="Enter/Unit"
                             required
                           />
@@ -414,24 +414,29 @@ const GTINViewProduct = () => {
                           },
                         }}
                       />
-                    </div>
+                    {/* </div> */}
                   </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field4">Size</label>
+                  {/* <div className="form-row"> */}
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field4" className="text-secondary">Size</label>
                     <input
                       disabled={true}
                       type="text"
                       id="field4"
                       onChange={(e) => setSize(e.target.value)}
                       value={size}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                       placeholder="Size"
                     />
                   </div>
-
-                  <div className="form-row">
-                    <label htmlFor="field5">Region</label>
-                    <div className="w-[70%]">
+                </div>
+                  
+            
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+               
+                    <label htmlFor="field5" className="text-secondary">Region</label>
                       <Autocomplete
                         // disable selecting and searching
                         disabled={true}
@@ -472,12 +477,11 @@ const GTINViewProduct = () => {
                           },
                         }}
                       />
-                    </div>
                   </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field6">Country of Sale</label>
-                    <div className="w-[70%]">
+           
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field6" className="text-secondary">Country of Sale</label>
                       <Autocomplete
                         disabled={true}
                         id="countryName"
@@ -516,14 +520,15 @@ const GTINViewProduct = () => {
                           },
                         }}
                       />
-                    </div>
                   </div>
+                 </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field7">
+            
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field7" className="text-secondary">
                       Product Description Language{" "}
                     </label>
-                    <div className="w-[70%]">
                       <Autocomplete
                         disabled={true}
                         id="productDescriptionLanguage"
@@ -562,12 +567,11 @@ const GTINViewProduct = () => {
                           },
                         }}
                       />
-                    </div>
                   </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field8">Product Type</label>
-                    <div className="w-[70%]">
+
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field8" className="text-secondary">Product Type</label>
                       <Autocomplete
                         disabled={true}
                         id="productType"
@@ -606,12 +610,14 @@ const GTINViewProduct = () => {
                           },
                         }}
                       />
-                    </div>
+                    {/* </div> */}
                   </div>
+                 </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field9">Package Type</label>
-                    <div className="w-[70%]">
+              
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field9" className="text-secondary">Package Type</label>
                       <Autocomplete
                         disabled={true}
                         id="packageType"
@@ -650,11 +656,10 @@ const GTINViewProduct = () => {
                           },
                         }}
                       />
-                    </div>
                   </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field10">GPC</label>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field10" className="text-secondary">GPC</label>
                     <input
                       disabled={true}
                       type="text"
@@ -664,53 +669,71 @@ const GTINViewProduct = () => {
                       placeholder="GPC"
                     />
                   </div>
+                 </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field11">HS-Code</label>
+
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                  <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field11" className="text-secondary">HS-Code</label>
                     <input
                       disabled={true}
                       type="text"
                       id="field11"
                       onChange={(e) => setHsCode(e.target.value)}
                       value={hsCode}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                       placeholder="HS-Code"
                     />
                   </div>
+                </div>
+                  
+                  {/* <div>
+                  
+                </div> */}
 
-                  <div className="form-row">
-                    <label htmlFor="field12">Description [English] </label>
+
+                <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field12" className="text-secondary">Description [English] </label>
                     <textarea
                       disabled={true}
                       type="text"
                       onChange={(e) => setDescriptionEnglish(e.target.value)}
                       value={descriptionEnglish}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                       id="field12"
                     />
                   </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field13">Description [Arabic] </label>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    <label htmlFor="field13" className="text-secondary">Description [Arabic] </label>
                     <textarea
                       disabled={true}
                       type="text"
                       onChange={(e) => setDescriptionArabic(e.target.value)}
                       value={descriptionArabic}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                       id="field13"
                     />
                   </div>
+              </div>
 
-                  <div className="form-row">
-                    <label htmlFor="field12">Product URL</label>
+              <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                <div className="w-full sm:w-[49%] font-body sm:text-base text-sm flex flex-col gap-0">
+                  <label htmlFor="field12" className="text-secondary">Product URL</label>
                     <input
                       disabled={true}
                       type="text"
                       id="field12"
                       onChange={(e) => setProductUrl(e.target.value)}
                       value={productUrl}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                       placeholder="Product URL"
                     />
                   </div>
-
+              </div>
+                  
+                  <div>
                   {/* Image container */}
                   <div className="flex justify-center items-center gap-7 flex-wrap mt-10 mb-10">
                     <div>

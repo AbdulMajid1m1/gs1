@@ -2,7 +2,7 @@ import React from 'react'
 import visitFrontend from "../../Images/visitFrontend.png"
 import profileICon from "../../Images/profileICon.png"
 
-const DashboardRightHeader = ({ title }) => {
+const DashboardRightHeader = ({ title, member, gcp }) => {
   return (
     <div>
         <div className='h-32 w-full flex justify-end items-start p-3 bg-primary -mt-6 sm:gap-7 gap-4'>
@@ -20,8 +20,10 @@ const DashboardRightHeader = ({ title }) => {
           </div>
           
             <div className='flex justify-center items-center'>
-                <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-start items-center px-10">
+                <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-between items-center gap-1 px-10">
                     <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">{title}</p>
+                    <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">{member}</p>
+                    <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">{gcp}</p>
                 </div>
             </div>
 

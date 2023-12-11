@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { RiseLoader } from 'react-spinners';
 // import { CurrentUserContext } from '../../Contexts/CurrentUserContext';
 import { CircularProgress } from '@mui/material';
+import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
 // import SideBar from '../../Components/SideBar/SideBar';
 
 
@@ -491,602 +492,517 @@ const GTINAddProducts = () => {
 
             {/* <SideBar /> */}
 
-            <div className="p-3 h-full sm:ml-72">
+            <div className="p-0 h-full sm:ml-72  bg-slate-100">
+              <div>
+                <DashboardRightHeader title="Add Product" member={'Member: Binmar Property'}
+                    gcp={'GCP: 62810000032'}
+                />
+              </div>
+
+              <div className="flex flex-col justify-center items-center p-4">
+                {" "}
+                <div className="h-auto w-full p-5 bg-white">
+                    <div className="popup-header">
+                    <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
+                        <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
+                        <p className="font-semibold">Complete Data</p>
+                        <p>
+                            This number is registered to company: :{" "}
+                            {/* <span className="font-semibold">{currentUser?.user?.company_name_eng}</span> */}
+                            <span className="font-semibold">Hasnain, Majid</span>
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
+                      <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                         <label htmlFor="fields1" className="text-secondary">Product Name [English]</label>
+                        <input
+                          disabled={true}
+                          type="text"
+                          id="fields1"
+                          onChange={(e) => setProductNameEnglish(e.target.value)}
+                          value={productNameEnglish}
+                          className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                          placeholder="Product Name English"
+                        />
+                    </div>
+
+                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                        <label htmlFor="fields2" className="text-secondary">Product Name [Arabic]</label>
+                        <input
+                          disabled={true}
+                          type="text"
+                          id="fields2"
+                          className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                          value={productNameArabic}
+                          onChange={(e) => setProductNameArabic(e.target.value)}
+                          placeholder="Product Name Arabic"
+                        />
+                    </div>
+                  </div>
+
+                  <div className="w-full h-[2px] bg-primary mb-6 mt-6"></div>
+            
+                  <div className="popup-form">
+                    <form onSubmit={handleFormSubmit}>
+                      <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field1" className="text-secondary">Brand Name [English] </label>
+                            <input
+                            disabled={true}
+                            type="text"
+                            id="field1"
+                            onChange={(e) => setBrandNameEnglish(e.target.value)}
+                            value={brandNameEnglish}
+                            placeholder="Brand Name [English]"
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+
+                            />
+                        </div>
+
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field2" className="text-secondary">Brand Name [Arabic] </label>
+                            <input
+                            type="text"
+                            id="field2"
+                            onChange={(e) => setBrandNameArabic(e.target.value)}
+                            value={brandNameArabic}
+                            placeholder="Brand Name [Arabic]"
+                            disabled={true}
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+
+                            />
+                        </div>
+                    </div>
+                        
+                        
+                        <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field3" className="text-secondary">Unit Code</label>
+                            <Autocomplete
+                                disabled={true}
+                                id="zone"
+                                options={unitCode}
+                                getOptionLabel={(option) => option}
+                                onChange={handleUnitCodeChange}
+                                value={selectedUnitCode}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Enter/Unit"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
+                            />
+                            {/* </div> */}
+                        </div>
+
+                        {/* <div className="form-row"> */}
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field4" className="text-secondary">Size</label>
+                            <input
+                            disabled={true}
+                            type="text"
+                            id="field4"
+                            onChange={(e) => setSize(e.target.value)}
+                            value={size}
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                            placeholder="Size"
+                            />
+                        </div>
+                        </div>
+                        
+                    
+                        <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                    
+                            <label htmlFor="field5" className="text-secondary">Region</label>
+                            <Autocomplete
+                                // disable selecting and searching
+                                disabled={true}
+                                id="region"
+                                options={region}
+                                getOptionLabel={(option) => option}
+                                // onChange={handleUnitCodeChange}
+                                onChange={handleSelectRegion}
+                                value={selectedRegion}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Enter/Region"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
+                            />
+                        </div>
+
+                
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field6" className="text-secondary">Country of Sale</label>
+                            <Autocomplete
+                                disabled={true}
+                                id="countryName"
+                                options={allCountryName}
+                                getOptionLabel={(option) => option}
+                                onChange={handleAllCounrtyName}
+                                value={selectedCountry}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Enter/Country Name"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
+                            />
+                        </div>
+                        </div>
+
+                    
+                        <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field7" className="text-secondary">
+                            Product Description Language{" "}
+                            </label>
+                            <Autocomplete
+                                disabled={true}
+                                id="productDescriptionLanguage"
+                                options={productDescriptionLanguage}
+                                getOptionLabel={(option) => option}
+                                onChange={handleProductDiscription}
+                                value={selectedProductDescription}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Enter/ Product Description Language"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
+                            />
+                        </div>
 
 
-                <div className='flex flex-col justify-center items-center bg-slate-100'> {/* Added CSS classes */}
-                    <div className='h-auto w-full p-4'>
-                        <div className='h-16 w-full bg-white shadow-xl flex justify-start items-center gap-3 px-5 border-l-2 border-[#e49515]'>
-                            <i onClick={() => navigate('/gtin')} className="fas fa-arrow-left text-2xl text-[#e49515] cursor-pointer"></i>
-                            <p className='sm:text-2xl text-sm font-body'> Add Product</p>
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field8" className="text-secondary">Product Type</label>
+                            <Autocomplete
+                                disabled={true}
+                                id="productType"
+                                options={productType}
+                                getOptionLabel={(option) => option}
+                                onChange={handleProductType}
+                                value={selectedProductType}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Enter/ Product Type"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
+                            />
+                            {/* </div> */}
+                        </div>
+                        </div>
+
+                    
+                        <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field9" className="text-secondary">Package Type</label>
+                            <Autocomplete
+                                disabled={true}
+                                id="packageType"
+                                options={packageType}
+                                getOptionLabel={(option) => option}
+                                onChange={handlePackageType}
+                                value={selectedPackageType}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Enter/ Package Type"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
+                            />
+                        </div>
+
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field10" className="text-secondary">GPC</label>
+                            <input
+                            disabled={true}
+                            type="text"
+                            id="field10"
+                            value={gpc}
+                            onChange={(e) => setGpc(e.target.value)}
+                            placeholder="GPC"
+                            />
+                        </div>
+                        </div>
+
+
+                        <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                        <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field11" className="text-secondary">HS-Code</label>
+                            <input
+                            disabled={true}
+                            type="text"
+                            id="field11"
+                            onChange={(e) => setHsCode(e.target.value)}
+                            value={hsCode}
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                            placeholder="HS-Code"
+                            />
+                        </div>
+                        </div>
+                        
+                        {/* <div>
+                        
+                        </div> */}
+
+
+                        <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field12" className="text-secondary">Description [English] </label>
+                            <textarea
+                            disabled={true}
+                            type="text"
+                            onChange={(e) => setDescriptionEnglish(e.target.value)}
+                            value={descriptionEnglish}
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                            id="field12"
+                            />
+                        </div>
+
+                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                            <label htmlFor="field13" className="text-secondary">Description [Arabic] </label>
+                            <textarea
+                            disabled={true}
+                            type="text"
+                            onChange={(e) => setDescriptionArabic(e.target.value)}
+                            value={descriptionArabic}
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                            id="field13"
+                            />
                         </div>
                     </div>
 
-                    <div className='h-auto sm:w-[700px] w-full p-5 bg-white'>
-                        <div className="popup-header">
-                            <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#D4EDDA] text-xl mb:2 md:mb-5">
-                                <div className='flex justify-start flex-col gap-2 text-xs sm:text-sm'>
-                                    <p className='font-semibold'>Complete Data</p>
-                                    {/* <p>This number is registered to company: : <span className='font-semibold'>{currentUser?.user?.company_name_eng}</span></p> */}
-                                    <p>This number is registered to company: : <span className='font-semibold'></span></p>
+                    <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                        <div className="w-full sm:w-[49%] font-body sm:text-base text-sm flex flex-col gap-0">
+                        <label htmlFor="field12" className="text-secondary">Product URL</label>
+                            <input
+                            disabled={true}
+                            type="text"
+                            id="field12"
+                            onChange={(e) => setProductUrl(e.target.value)}
+                            value={productUrl}
+                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                            placeholder="Product URL"
+                            />
+                        </div>
+                    </div>
+                
+                <div>
+                {/* Image container */}
+                   <div className='flex justify-center items-center gap-7 flex-wrap mt-10'>
+                      <div>
+                         <span>Front Photo</span>
+                           <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
+                              <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
+                                 <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
+                                    Select Image
+                                    <input
+                                        type="file"
+                                        id="imageInput"
+                                        // accept="image/*"
+                                        onChange={handleImageChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                  </label>
                                 </div>
+                                {selectedImage && (
+                                    <div className='h-56 flex justify-center items-center object-contain w-auto'>
+                                        <img src={selectedImage} className='h-56 w-56' alt="Selected Image" />
+                                    </div>
+                                )}
+                             </div>
+                        </div>
+
+
+                        <div>
+                           <span>Back Photo</span>
+                             <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
+                               <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
+                                    <label htmlFor="backImageInput" className="cursor-pointer whitespace-nowrap">
+                                        Select Image
+                                    <input
+                                        type="file"
+                                        id="backImageInput"
+                                        onChange={handleBackImageChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                    </label>
+                                </div>
+                                {selectedBackImage && (
+                                    <div className="h-56 flex justify-center items-center object-contain w-auto">
+                                        <img src={selectedBackImage} className='h-56 w-56' alt="Selected Image" />
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        <div className='flex flex-row justify-between items-center gap-3'>
-                            <div className='flex flex-col gap-3 w-full'>
-                                <label htmlFor="fields1">Product Name [English] <span className='text-red-600'>*</span></label>
-                                <input
-                                    type='text'
-                                    id='fields1'
-                                    value={productNameEnglish}
-                                    onChange={(e) => setProductNameEnglish(e.target.value)}
-                                    className='w-full h-10 p-2' placeholder='Product Name English' />
-                            </div>
-
-                            <div className='flex flex-col gap-3 w-full'>
-                                <label htmlFor="fields2">Product Name [Arabic] <span className='text-red-600'>*</span></label>
-                                <input
-                                    type='text'
-                                    id='fields2'
-                                    className='w-full h-10 p-2'
-                                    value={productNameArabic}
-                                    onChange={(e) => setProductNameArabic(e.target.value)}
-                                    placeholder='Product Name Arabic' />
-                            </div>
-                        </div>
-
-                        <div className='header-line'></div>
-
-                        <div className="popup-form">
-                            <form onSubmit={handleFormSubmit}>
-                                <div>
-                                    {/* Recipe inputs */}
-                                    <div className="form-row">
-                                        <label htmlFor="field1">Brand Name [English] <span className='text-red-600'>*</span></label>
-                                        <input
-                                            type="text"
-                                            id="field1"
-                                            onChange={(e) => setBrandNameEnglish(e.target.value)}
-                                            className='h-10 mt-2 p-2'
-                                            placeholder='Brand Name [English]' />
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="field2">Brand Name [Arabic] <span className='text-red-600'>*</span></label>
-                                        <input
-                                            type="text"
-                                            id="field2"
-                                            onChange={(e) => setBrandNameArabic(e.target.value)}
-                                            className='h-10 mt-2 p-2'
-                                            placeholder='Brand Name [Arabic]' />
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="zone">Unit Code <span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="zone"
-                                                options={unitCode}
-                                                getOptionLabel={(option) => option}
-                                                onChange={handleUnitCodeChange}
-                                                value={selectedUnitCode}
-
-                                                onInputChange={(event, value) => {
-                                                    if (!value) {
-                                                        // perform operation when input is cleared
-                                                        console.log("Input cleared");
-
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            className: "text-white",
-                                                        }}
-                                                        InputLabelProps={{
-                                                            ...params.InputLabelProps,
-                                                            style: { color: "white" },
-                                                        }}
-
-                                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                        placeholder="Enter/Unit"
-                                                        required
-                                                    />
-                                                )}
-                                                classes={{
-                                                    endAdornment: "text-white",
-                                                }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        color: 'white',
-                                                    },
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="field4">Size <span className='text-red-600'>*</span></label>
-                                        <input
-                                            type="text"
-                                            id="field4"
-                                            onChange={(e) => setSize(e.target.value)}
-                                            className='h-10 mt-2 p-2'
-                                            placeholder='Size' />
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="region">Region <span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="region"
-                                                options={region}
-                                                getOptionLabel={(option) => option}
-                                                // onChange={handleUnitCodeChange}
-                                                onChange={handleSelectRegion}
-                                                value={selectedRegion}
-                                                onInputChange={(event, value) => {
-                                                    if (!value) {
-                                                        // perform operation when input is cleared
-                                                        console.log("Input cleared");
-
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            className: "text-white",
-                                                        }}
-                                                        InputLabelProps={{
-                                                            ...params.InputLabelProps,
-                                                            style: { color: "white" },
-                                                        }}
-
-                                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                        placeholder="Enter/Region"
-                                                        required
-                                                    />
-                                                )}
-                                                classes={{
-                                                    endAdornment: "text-white",
-                                                }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        color: 'white',
-                                                    },
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="field6">Country of Sale <span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="field6"
-                                                options={allCountryName}
-                                                getOptionLabel={(option) => option}
-                                                onChange={handleAllCounrtyName}
-                                                value={selectedCountry}
-
-                                                onInputChange={(event, value) => {
-                                                    if (!value) {
-                                                        // perform operation when input is cleared
-                                                        console.log("Input cleared");
-
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            className: "text-white",
-                                                        }}
-                                                        InputLabelProps={{
-                                                            ...params.InputLabelProps,
-                                                            style: { color: "white" },
-                                                        }}
-
-                                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                        placeholder="Enter/Country Name"
-                                                        required
-                                                    />
-                                                )}
-                                                classes={{
-                                                    endAdornment: "text-white",
-                                                }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        color: 'white',
-                                                    },
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="productDescriptionLanguage">Product Description Language <span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="productDescriptionLanguage"
-                                                options={productDescriptionLanguage}
-                                                getOptionLabel={(option) => option}
-                                                onChange={handleProductDiscription}
-                                                value={selectedProductDescription}
-                                                onInputChange={(event, value) => {
-                                                    if (!value) {
-                                                        // perform operation when input is cleared
-                                                        console.log("Input cleared");
-
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            className: "text-white",
-                                                        }}
-                                                        InputLabelProps={{
-                                                            ...params.InputLabelProps,
-                                                            style: { color: "white" },
-                                                        }}
-
-                                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                        placeholder="Enter/ Product Description Language"
-                                                        required
-                                                    />
-                                                )}
-                                                classes={{
-                                                    endAdornment: "text-white",
-                                                }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        color: 'white',
-                                                    },
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="field8">Product Type <span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="field8"
-                                                options={productType}
-                                                getOptionLabel={(option) => option}
-                                                onChange={handleProductType}
-                                                value={selectedProductType}
-                                                onInputChange={(event, value) => {
-                                                    if (!value) {
-                                                        // perform operation when input is cleared
-                                                        console.log("Input cleared");
-
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            className: "text-white",
-                                                        }}
-                                                        InputLabelProps={{
-                                                            ...params.InputLabelProps,
-                                                            style: { color: "white" },
-                                                        }}
-
-                                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                        placeholder="Enter/ Product Type"
-                                                        required
-                                                    />
-                                                )}
-                                                classes={{
-                                                    endAdornment: "text-white",
-                                                }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        color: 'white',
-                                                    },
-                                                }}
-                                            />
-
-                                        </div>
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="packageType">Package Type <span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="packageType"
-                                                options={packageType}
-                                                getOptionLabel={(option) => option}
-                                                onChange={handlePackageType}
-                                                value={selectedPackageType}
-
-                                                onInputChange={(event, value) => {
-                                                    if (!value) {
-                                                        // perform operation when input is cleared
-                                                        console.log("Input cleared");
-
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            className: "text-white",
-                                                        }}
-                                                        InputLabelProps={{
-                                                            ...params.InputLabelProps,
-                                                            style: { color: "white" },
-                                                        }}
-
-                                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                        placeholder="Enter/ Package Type"
-                                                        required
-                                                    />
-                                                )}
-                                                classes={{
-                                                    endAdornment: "text-white",
-                                                }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        color: 'white',
-                                                    },
-                                                }}
-                                            />
-
-                                        </div>
-                                    </div>
 
 
 
-                                    <div className="form-row">
-                                        <label htmlFor="serachGpc">GPC<span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
+                    </div>
+                </div>
 
+                    <div className='footer-line'></div>
 
-
-
-                                            <Autocomplete
-                                                id="serachGpc"
-                                                required
-                                                options={gpcList}
-                                                getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
-                                                onChange={handleGPCAutoCompleteChange}
-                                                value={gpc}
-                                                onInputChange={(event, newInputValue, params) => handleAutoCompleteInputChange(event, newInputValue, params)}
-                                                loading={autocompleteLoading}
-                                                sx={{ marginTop: '10px' }}
-                                                open={open}
-                                                onOpen={() => {
-                                                    // setOpen(true);
-                                                }}
-                                                onClose={() => {
-                                                    setOpen(false);
-                                                }}
-                                                renderOption={(props, option) => (
-                                                    <li {...props}>
-                                                        {option ? `${option?.value}` : 'No options'}
-                                                    </li>
-                                                )}
-
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        // required
-                                                        {...params}
-                                                        label="Search GPC here"
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            endAdornment: (
-                                                                <React.Fragment>
-                                                                    {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                                    {params.InputProps.endAdornment}
-                                                                </React.Fragment>
-                                                            ),
-                                                        }}
-                                                        sx={{
-                                                            '& label.Mui-focused': {
-                                                                color: '#00006A',
-                                                            },
-                                                            '& .MuiInput-underline:after': {
-                                                                borderBottomColor: '#00006A',
-                                                            },
-                                                            '& .MuiOutlinedInput-root': {
-                                                                '&:hover fieldset': {
-                                                                    borderColor: '#000000',
-                                                                },
-                                                                '&.Mui-focused fieldset': {
-                                                                    borderColor: '#000000',
-                                                                },
-                                                            },
-                                                        }}
-                                                    />
-                                                )}
-
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <label htmlFor="hs-code">HS-Code<span className='text-red-600'>*</span></label>
-                                        <div className='w-[70%]'>
-
-                                            <Autocomplete
-                                                id="hs-code"
-                                                required
-                                                options={hsCodeList}
-                                                getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
-                                                onChange={handleHsCodeAutoCompleteChange}
-                                                value={hsCode}
-                                                onInputChange={(event, newInputValue, params) => handleHsCodeAutoCompleteInputChange(event, newInputValue, params)}
-                                                loading={autocompleteLoadingForHsCode}
-                                                sx={{ marginTop: '10px' }}
-                                                open={hsLoaderOpen}
-                                                onOpen={() => {
-                                                    // setOpen(true);
-                                                }}
-                                                onClose={() => {
-                                                    setHsLoaderOpen(false);
-                                                }}
-                                                renderOption={(props, option) => (
-                                                    <li {...props}>
-                                                        {option ? `${option?.DescriptionEN}` : 'No options'}
-                                                    </li>
-                                                )}
-
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        // required
-                                                        {...params}
-                                                        label="Search HS-Code here"
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            endAdornment: (
-                                                                <React.Fragment>
-                                                                    {autocompleteLoadingForHsCode ? <CircularProgress color="inherit" size={20} /> : null}
-                                                                    {params.InputProps.endAdornment}
-                                                                </React.Fragment>
-                                                            ),
-                                                        }}
-                                                        sx={{
-                                                            '& label.Mui-focused': {
-                                                                color: '#00006A',
-                                                            },
-                                                            '& .MuiInput-underline:after': {
-                                                                borderBottomColor: '#00006A',
-                                                            },
-                                                            '& .MuiOutlinedInput-root': {
-                                                                '&:hover fieldset': {
-                                                                    borderColor: '#000000',
-                                                                },
-                                                                '&.Mui-focused fieldset': {
-                                                                    borderColor: '#000000',
-                                                                },
-                                                            },
-                                                        }}
-                                                    />
-                                                )}
-
-                                            />
-
-                                        </div>
-                                    </div>
-
-                                    {/* <div className="form-row">
-                                        <label htmlFor="field11">HS-Code <span className='text-red-600'>*</span></label>
-                                        <input
-                                            type="text"
-                                            id="field11"
-                                            onChange={(e) => setHsCode(e.target.value)}
-                                            placeholder='HS-Code' />
-                                    </div> */}
-
-                                    <div className="form-row">
-                                        <label htmlFor="field12">Description [English] <span className='text-red-600'>*</span></label>
-                                        <textarea
-                                            type="text"
-                                            onChange={(e) => setDescriptionEnglish(e.target.value)}
-                                            id="field12" />
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="field13">Description [Arabic] <span className='text-red-600'>*</span></label>
-                                        <textarea
-                                            type="text"
-                                            onChange={(e) => setDescriptionArabic(e.target.value)}
-                                            id="field13" />
-                                    </div>
-
-                                    <div className="form-row">
-                                        <label htmlFor="field14">Product URL <span className='text-red-600'>*</span></label>
-                                        <input
-                                            type="text"
-                                            id="field14"
-                                            onChange={(e) => setProductUrl(e.target.value)}
-                                            className='h-10 p-2'
-                                            placeholder='Product URL' />
-                                    </div>
-
-                                    {/* Image container */}
-                                    <div className='flex justify-center items-center gap-7 flex-wrap mt-10'>
-                                        <div>
-                                            <span>Front Photo</span>
-                                            <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
-                                                <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
-                                                    <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
-                                                        Select Image
-                                                        <input
-                                                            type="file"
-                                                            id="imageInput"
-                                                            // accept="image/*"
-                                                            onChange={handleImageChange}
-                                                            style={{ display: 'none' }}
-                                                        />
-                                                    </label>
-                                                </div>
-                                                {selectedImage && (
-                                                    <div className='h-56 flex justify-center items-center object-contain w-auto'>
-                                                        <img src={selectedImage} className='h-56 w-56' alt="Selected Image" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div>
-                                            <span>Back Photo</span>
-                                            <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
-                                                <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-blue-500 text-white font-body">
-                                                    <label htmlFor="backImageInput" className="cursor-pointer whitespace-nowrap">
-                                                        Select Image
-                                                        <input
-                                                            type="file"
-                                                            id="backImageInput"
-                                                            onChange={handleBackImageChange}
-                                                            style={{ display: 'none' }}
-                                                        />
-                                                    </label>
-                                                </div>
-                                                {selectedBackImage && (
-                                                    <div className="h-56 flex justify-center items-center object-contain w-auto">
-                                                        <img src={selectedBackImage} className='h-56 w-56' alt="Selected Image" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-
-
-
-
-                                    </div>
-                                </div>
-
-                                <div className='footer-line'></div>
-
-                                <div className="popup-footer">
-                                    {/* <button type='button' onClick={() => navigate(-1)} className="popup-close">Back</button>
-                                    <button type='submit' className="popup-save" id="gtin-form">Add</button> */}
-                                    <button onClick={() => navigate(-1)} className="popup-close">Back</button>
-                                    <button className="popup-save" id="gtin-form">Add</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div className="popup-footer">
+                    {/* <button type='button' onClick={() => navigate(-1)} className="popup-close">Back</button>
+                        <button type='submit' className="popup-save" id="gtin-form">Add</button> */}
+                        <button onClick={() => navigate(-1)} className="popup-close">Back</button>
+                        <button className="popup-save" id="gtin-form">Add</button>
+                    </div>
+                    </form>
+                </div>
 
 
                     </div>
