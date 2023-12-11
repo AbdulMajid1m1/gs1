@@ -211,7 +211,7 @@ model brands {
   name       String   @db.NVarChar(255)
   name_ar    String   @db.NVarChar(255)
   status     String   @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
-  user_id    Int
+  user_id    String
   // use default value for created_at
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
