@@ -5,78 +5,45 @@ import DataTable from '../../../components/Datatable/Datatable'
 import { useNavigate } from 'react-router-dom'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../Contexts/DataTableContext'
-import { GtinColumn } from '../../../utils/datatablesource'
+import { paymentSlipColumn } from '../../../utils/datatablesource'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
+import newRequest from '../../../utils/userRequest'
+import { useQuery } from 'react-query'
 
 const PaymentSlips = () => {
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([
-        {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-          {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-          {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-          {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-    
-    ]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState([]);
     const navigate = useNavigate();
     
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
-    //   useEffect(() => {
-    //   const fetchData = async () => {
-    //     try {
-    //       const response = await newRequest.get("/users",);
+      useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await newRequest.get("/bankslip",);
           
-    //       console.log(response.data);
-    //       setData(response?.data || []);
-    //       setIsLoading(false)
+          console.log(response.data);
+          setData(response?.data || []);
+          setIsLoading(false)
 
-    //     } catch (err) {
-    //       console.log(err);
-    //       setIsLoading(false)
-    //     }
-    //   };
+        } catch (err) {
+          console.log(err);
+          setIsLoading(false)
+        }
+      };
 
-    //   fetchData(); // Calling the function within useEffect, not inside itself
-    // }, []); // Empty array dependency ensures this useEffect runs once on component mount
+      fetchData(); // Calling the function within useEffect, not inside itself
+    }, []); // Empty array dependency ensures this useEffect runs once on component mount
+
+    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
+    //   const response = await newRequest.get("/bankslip",);
+    //   return response?.data || [];
+    //   console.log(response.data);
+      
+    // });
 
     const handleView = (row) => {
         console.log(row);
@@ -132,7 +99,7 @@ const PaymentSlips = () => {
 
                     <DataTable data={data} 
                       title="Payment Slips"
-                       columnsName={GtinColumn}
+                       columnsName={paymentSlipColumn}
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}

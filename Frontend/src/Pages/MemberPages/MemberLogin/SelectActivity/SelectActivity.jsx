@@ -74,6 +74,11 @@ const SelectActivity = () => {
 
                 navigate('/member/dashboard');
 
+
+                // save the response in sesstion
+                sessionStorage.setItem('memberData', JSON.stringify(response?.data?.memberData));
+
+
             })
             .catch(err => {
                 console.log(err)

@@ -90,6 +90,7 @@ const App = () => {
                     path="/member/*"
                     element={
                       <MainLayout>
+                        <QueryClientProvider client={queryClient}>
                         <Routes>
                           <Route path="dashboard" element={<MemberDashboard />} />
                           <Route path="update-vendor" element={<UpdateVendor />} />
@@ -122,6 +123,7 @@ const App = () => {
 
 
                         </Routes>
+                        </QueryClientProvider>
                       </MainLayout>
                     }
                   />
@@ -144,7 +146,7 @@ const App = () => {
                             <Route path="registered-members" element={<RegisteredMembers />} />
 
                           <Route
-                            path="view-registered-member/:Id"
+                            path="registered-members/view-registered-member/:Id"
                             element={<RegisteredMembersView />}
                           />
 

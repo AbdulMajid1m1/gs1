@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import Swal from 'sweetalert2'
 import { toast } from 'react-toastify'
+import DataTable2 from '../../../../components/Datatable/Datatable2'
 
 const RegisteredMembersView = () => {
     // get the sesstion data
@@ -302,6 +303,107 @@ const RegisteredMembersView = () => {
         // show the both input field type data in console
         console.log(formValues);
       };
+
+
+      // Update Brands Data   
+      const handleUpdateBrandCompany = async (selectedUser) => {
+        const statusOptions = ["active", "inactive"];
+        const initialStatus = selectedUser.status;
+        console.log(initialStatus);
+      
+        const { value: formValues } = await Swal.fire({
+            title: `<strong>Update Brands</strong>`,
+            html: `
+              <select id="status" class="swal2-select" placeholder="Status">
+                ${statusOptions.map((status) => `
+                  <option value="${status}" ${initialStatus === status ? 'selected' : ''}>${status}</option>
+                `).join('')}
+              </select>
+              <input id="name" class="swal2-input" placeholder="Name" value="${selectedUser.name}" readonly>
+              <input id="name_ar" class="swal2-input" placeholder="Arabic Name" value="${selectedUser.name_ar}" readonly>
+              <input id="user_id" class="swal2-input" placeholder="User ID" value="${selectedUser.user_id}" readonly>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Update',
+            confirmButtonColor: '#1E3B8B',
+            cancelButtonColor: '#FF0032',
+            preConfirm: () => {
+              return {
+                status: document.getElementById('status').value,
+                name: document.getElementById('name').value,
+                name_ar: document.getElementById('name_ar').value,
+                user_id: document.getElementById('user_id').value,
+              };
+            },
+          });
+      
+        if (!formValues) { // Cancel button was pressed or invalid input
+          return;
+        }
+      
+        const { status, name, name_ar, user_id } = formValues;
+      
+        if (status === 'reject') {
+          handleReject(selectedUser); // Handle "reject" action
+          return;
+        }
+      
+        if (status === initialStatus) {
+          // No changes were made, show a Toastify info message
+          toast.info('No changes were made', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
+        }
+      
+        try {
+          const response = await newRequest.put(
+            `/brands/${selectedUser.id}`, // Replace with the correct endpoint for updating status
+            {
+              status,
+              name,
+              name_ar,
+              user_id,
+            }
+          );
+      
+          toast.success(response?.data?.message || 'Status updated successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          refreshBrandData();
+      
+        } catch (error) {
+          toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+      
+          console.log(error);
+        }
+      };
+      
+
 
 
     //   HandleDelete
@@ -768,7 +870,7 @@ const RegisteredMembersView = () => {
                         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                         className='sm:w-[50%] w-full'
                         >
-                       <DataTable data={membersDocuemtsData} 
+                       <DataTable2 data={membersDocuemtsData} 
                             title="Member'z Documents"
                             columnsName={MembersDocumentColumn}
                                 loading={isLoading}
@@ -831,6 +933,17 @@ const RegisteredMembersView = () => {
                                 // action: handleView,
                                 // },
                                 {
+                                    label: "Edit",
+                                    icon: (
+                                        <EditIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleUpdateBrandCompany,
+                                },
+                                {
                                     label: "Delete",
                                     icon: (
                                         <DeleteIcon
@@ -840,7 +953,8 @@ const RegisteredMembersView = () => {
                                         />
                                     ),
                                     action: handleDelete,
-                                    },
+                                },
+
 
                             ]}
                             uniqueId="gtinMainTableId"

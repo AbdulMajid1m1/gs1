@@ -1455,11 +1455,11 @@ export const MembersDocumentColumn = [
 
 
 export const MembersBrandsColumn = [
-  {
-    field: "id",
-    headerName: "ID",
-    width: 180,
-  },
+  // {
+  //   field: "id",
+  //   headerName: "ID",
+  //   width: 180,
+  // },
   {
     field: "name",
     headerName: "Name",
@@ -1470,10 +1470,30 @@ export const MembersBrandsColumn = [
     headerName: "Name Arabic",
     width: 180,
   },
+  // {
+  //   field: "status",
+  //   headerName: "Status",
+  //   width: 180,
+  // },
   {
     field: "status",
     headerName: "Status",
-    width: 180,
+    width: 120,
+    renderCell: (params) => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
   },
   {
     field: "user_id",
@@ -1555,6 +1575,74 @@ export const AdminBrandsColumn = [
     width: 180,
   },
 
+
+
+
+]
+
+
+
+export const paymentSlipColumn = [
+  {
+    field: "admin_id",
+    headerName: "Admin ID",
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: "Created At",
+    width: 180,
+  },
+  {
+    field: "deleted_at",
+    headerName: "Deleted At",
+    width: 180,
+  },
+  {
+    field: "details",
+    headerName: "Details",
+    width: 180,
+  },
+  {
+    field: "documents",
+    headerName: "Documents",
+    width: 180,
+  },
+  {
+    field: "transaction_id",
+    headerName: "Transaction ID",
+    width: 180,
+  },
+  {
+    field: "id",
+    headerName: "ID",
+    width: 180,
+  },
+  {
+    field: "reject_reason",
+    headerName: "Reject Reason",
+    width: 180,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 180,
+  },
+  {
+    field: "transaction_id",
+    headerName: "Transaction ID",
+    width: 180,
+  },
+  {
+    field: "updated_at",
+    headerName: "Updated At",
+    width: 180,
+  },
+  {
+    field: "user_id",
+    headerName: "User ID",
+    width: 180,
+  },
 
 
 
