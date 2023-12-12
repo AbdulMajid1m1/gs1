@@ -1,7 +1,16 @@
 BEGIN TRY
 
 BEGIN TRAN;
-
+-- CreateTable
+CREATE TABLE [dbo].[units] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [unit_code] varchar(50),
+    [unit_name] nvarchar(50),
+    [status] int,
+    [created_at] DATETIME2,
+    [updated_at] DATETIME2,
+    
+);
 -- CreateTable
 CREATE TABLE [dbo].[add_member_gln_products] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -1708,12 +1717,76 @@ CREATE TABLE [dbo].[product_images] (
 CREATE TABLE [dbo].[product_packagings] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
-    [status] INT,
+    [status] INT DEFAULT 1,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_product_packagings] PRIMARY KEY CLUSTERED ([id])
+   
 );
-
+-- CreateTable
+CREATE TABLE [dbo].[unspscs] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [commodity] int,
+    [title] nvarchar(255),
+    [definition] nvarchar(MAX),
+    [addedBy] tinyint,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+   
+);
+-- CreateTable
+CREATE TABLE [dbo].[hs_codes] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [CNKEY] nvarchar(255),
+    [HSCODES] nvarchar(255),
+    [DescriptionEN] nvarchar(MAX),
+    [addBy] int,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+   
+);
+-- CreateTable
+CREATE TABLE [dbo].[country_of_sales] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [Alpha2] nvarchar(255),
+    [Alpha3] nvarchar(255),
+    [country_code_numeric3] nvarchar(255),
+    [country_name] nvarchar(255),
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+   
+);
+-- CreateTable
+CREATE TABLE [dbo].[gcp_types] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [gcp_code] nvarchar(255),
+    [gcp_description] nvarchar(MAX),
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+   
+);
+-- CreateTable
+CREATE TABLE [dbo].[other_products] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [product_name] nvarchar(MAX),
+    [total_no_of_barcodes] float,
+    [product_subscription_fee] float,
+    [code] NVARCHAR(max),
+    [med_subscription_fee] float,
+    [variant] nvarchar(10),
+    [status] INT DEFAULT 1,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+   
+);
+-- CreateTable
+CREATE TABLE [dbo].[cr_documents] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [name] NVARCHAR(max),
+    [status] INT DEFAULT 1,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+   
+);
 -- CreateTable
 CREATE TABLE [dbo].[product_types] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -2089,16 +2162,24 @@ CREATE TABLE [dbo].[udi_regulation_data] (
     [is_software] VARCHAR(50),
     CONSTRAINT [PK__udi_regu__3213E83F47DE9E30] PRIMARY KEY CLUSTERED ([id])
 );
-
+-- CreateTable
+CREATE TABLE [dbo].[product_packagings] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [name] nvarchar(MAX),
+    [status] int DEFAULT 1,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    
+);
 -- CreateTable
 CREATE TABLE [dbo].[units] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [unit_code] VARCHAR(50),
     [unit_name] NVARCHAR(50),
-    [status] INT,
+    [status] INT DEFAULT 1,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_units] PRIMARY KEY CLUSTERED ([id])
+    
 );
 
 -- CreateTable
