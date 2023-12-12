@@ -1,4 +1,5 @@
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import imageLiveUrl from "./urlConverter/imageLiveUrl";
 import QRCode from "qrcode.react";
 const QRCodeCell = (props) => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;
@@ -1603,10 +1604,67 @@ export const paymentSlipColumn = [
     headerName: "Details",
     width: 180,
   },
+  // {
+  //   field: "documents",
+  //   headerName: "Documents",
+  //   width: 180,
+  // },
   {
     field: "documents",
-    headerName: "Documents",
+    headerName: "Pdf Doc",
     width: 180,
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+    renderEditCell: (params) =>
+      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+    editable: true,
+    type: "string",
   },
   {
     field: "transaction_id",
