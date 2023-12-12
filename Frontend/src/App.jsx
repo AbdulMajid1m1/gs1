@@ -46,6 +46,7 @@ import TransactionHistory from "./Pages/MemberPages/TransactionHistory/Transacti
 import RegisteredMembersView from "./Pages/AdminPages/AdminIndentify/RegisteredMembers/RegisteredMemberView";
 import MemberBrands from "./Pages/MemberPages/MemberBrands/MemberBrands";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import Units from "./Pages/AdminPages/MasterData/Units/Units";
 
 const queryClient = new QueryClient()
 
@@ -174,6 +175,9 @@ const App = () => {
                           <Route path="settings" element={<Settings />} />
                           <Route path="master-data" element={<MasterData />} />
                           <Route path="reports" element={<Reports />} />
+
+                          <Route path="units" element={<Units />} />
+
 
 
 

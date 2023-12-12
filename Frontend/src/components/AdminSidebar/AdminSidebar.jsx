@@ -562,6 +562,21 @@ const AdminSideBar = () => {
               </div>
               )}
 
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/units')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/units')
+                  }
+                  >
+                  <img
+                    src={gs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Master Data</p>
+                </div>
+
 
           {/* Implement Any Icon above the Hide Icons */}
           <div className="main-images-container-hide">

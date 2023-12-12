@@ -1647,3 +1647,42 @@ export const paymentSlipColumn = [
 
 
 ]
+
+
+
+
+export const masterDataColumn = [
+  {
+    field: "id",
+    headerName: "ID",
+    width: 180,
+  },
+  {
+    field: "unit_code",
+    headerName: "Unit Code",
+    width: 180,
+  },
+  {
+    field: "unit_name",
+    headerName: "Unit Name",
+    width: 180,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: "Created At",
+    width: 180,
+  },
+  {
+    field: "updated_at",
+    headerName: "Updated At",
+    width: 180,
+  },
+
+
+
+]
