@@ -13,7 +13,6 @@ export const getAllCountries = async (req, res, next) => {
         next(error);
     }
 };
-
 export const getAllStates = async (req, res, next) => {
     try {
         const states = await prisma.states.findMany();
@@ -36,7 +35,6 @@ export const getAllCities = async (req, res, next) => {
         next(error);
     }
 };
-
 export const getStateByCountryId = async (req, res, next) => {
     try {
         const schema = Joi.object({
@@ -60,8 +58,6 @@ export const getStateByCountryId = async (req, res, next) => {
         next(error);
     }
 };
-
-
 export const getCityByStateId = async (req, res, next) => {
     try {
         const schema = Joi.object({

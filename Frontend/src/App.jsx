@@ -47,6 +47,13 @@ import RegisteredMembersView from "./Pages/AdminPages/AdminIndentify/RegisteredM
 import MemberBrands from "./Pages/MemberPages/MemberBrands/MemberBrands";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import Units from "./Pages/AdminPages/MasterData/Units/Units";
+import Documents from './Pages/AdminPages/MasterData/document/document';
+import ProductPackaging from './Pages/AdminPages/MasterData/productPackaging/productPackaging';
+import Other_products from './Pages/AdminPages/MasterData/other_product/other_product';
+import Gcp_type from './Pages/AdminPages/MasterData/gcp_type/gcp_type';
+import CountryofSales from './Pages/AdminPages/MasterData/countryofsale/countryofsale';
+import Hscode from './Pages/AdminPages/MasterData/hscode/hscode';
+import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
 
 const queryClient = new QueryClient()
 
@@ -177,11 +184,13 @@ const App = () => {
                           <Route path="reports" element={<Reports />} />
 
                           <Route path="units" element={<Units />} />
-
-
-
-
-                        
+<Route path="Documents" element={<Documents />} />;
+<Route path="ProductPackaging" element={<ProductPackaging />} />
+<Route path="Other_products" element={<Other_products />} />
+<Route path="Gcp_type" element={<Gcp_type />} />
+<Route path="CountryofSales" element={<CountryofSales />} />
+<Route path="Hscode" element={<Hscode />} />
+  <Route path="UNSPCS" element={<UNSPCS />} />                      
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
