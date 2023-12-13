@@ -18,6 +18,9 @@ import {
 import DownloadButton from "../../../utils/Buttons/DownloadBtn";
 import DashboardRightHeader from "../../../components/DashboardRightHeader/DashboardRightHeader";
 // import { CurrentUserContext } from "../../Contexts/CurrentUserContext";
+import Identify from '../../../Images/Identify.png';
+import capture from '../../../Images/capture.png';
+import share from '../../../Images/share.png';
 
 const GTINViewProduct = () => {
   const CompanyName = JSON.parse(sessionStorage.getItem("CompanyName"));
@@ -126,90 +129,90 @@ const GTINViewProduct = () => {
     setSelectedBackImage(backImageUrl);
   };
 
-  useEffect(() => {
-    userRequest
-      .get("/getAllCountries")
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data;
-        const country = data.map((country) => country.name_en);
-        setUnitCode(country);
-        console.log(country);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  // useEffect(() => {
+  //   userRequest
+  //     .get("/getAllCountries")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       const country = data.map((country) => country.name_en);
+  //       setUnitCode(country);
+  //       console.log(country);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
 
-    // All Countries Api
-    userRequest
-      .get("/getAllCountries")
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data;
-        const country = data.map((country) => country.name_en);
-        setRegion(country);
-        console.log(country);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  //   // All Countries Api
+  //   userRequest
+  //     .get("/getAllCountries")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       const country = data.map((country) => country.name_en);
+  //       setRegion(country);
+  //       console.log(country);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
 
-    // All Countries of Sales Api
-    userRequest
-      .get("/getAlCountriesOfSales")
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data;
-        const countryName = data.map((country) => country.country_name);
-        setAllCountryName(countryName);
-        console.log(countryName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  //   // All Countries of Sales Api
+  //   userRequest
+  //     .get("/getAlCountriesOfSales")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       const countryName = data.map((country) => country.country_name);
+  //       setAllCountryName(countryName);
+  //       console.log(countryName);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
 
-    // Product Description Language Api
-    userRequest
-      .get("/getAllProdDescLanguages")
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data;
-        const productlanguage = data.map((country) => country.language_name);
-        setProductDescriptionLanguage(productlanguage);
-        console.log(productlanguage);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  //   // Product Description Language Api
+  //   userRequest
+  //     .get("/getAllProdDescLanguages")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       const productlanguage = data.map((country) => country.language_name);
+  //       setProductDescriptionLanguage(productlanguage);
+  //       console.log(productlanguage);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
 
-    // Product type Api
-    userRequest
-      .get("/getAllProductTypesFromGs1ProdDb")
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data;
-        const name = data.map((country) => country.name);
-        setProductType(name);
-        console.log(name);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  //   // Product type Api
+  //   userRequest
+  //     .get("/getAllProductTypesFromGs1ProdDb")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       const name = data.map((country) => country.name);
+  //       setProductType(name);
+  //       console.log(name);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
 
-    // Package type Api
-    userRequest
-      .get("/getAllProductPackagings")
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data;
-        const PackageName = data.map((country) => country.name);
-        setPackageType(PackageName);
-        console.log(PackageName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  //   // Package type Api
+  //   userRequest
+  //     .get("/getAllProductPackagings")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       const PackageName = data.map((country) => country.name);
+  //       setPackageType(PackageName);
+  //       console.log(PackageName);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   const { openSnackbar } = useContext(SnackbarContext);
 
@@ -735,7 +738,7 @@ const GTINViewProduct = () => {
                   
                   <div>
                   {/* Image container */}
-                  <div className="flex justify-center items-center gap-7 flex-wrap mt-10 mb-10">
+                  {/* <div className="flex justify-center items-center gap-7 flex-wrap mt-10 mb-10">
                     <div>
                       <span>Front Photo</span>
                       <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
@@ -801,7 +804,66 @@ const GTINViewProduct = () => {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
+                  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-28 lg:gap-y-16 sm:mt-20 mt-24">
+                        <div class="relative group h-48 flex   flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                            <a href="#" class="block">
+                                <div class="h-28">
+                                    <div
+                                        class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9]   duration-300 w-[90%] h-48 bg-[#C3E2DC] rounded-xl justify-items-center align-middle">
+                                        <img src={Identify}
+                                            class="w-36 h-36  mt-6 m-auto" alt="Automotive" title="Automotive" loading="lazy"
+                                            width="200" height="200" />
+                                    </div>
+                                </div>
+                                <div class="p-6 z-10 w-full">
+                                    <p
+                                        class="mb-2 inline-block text-tg text-center w-full text-xl font-sans font-semibold leading-snug tracking-normal antialiased">
+                                        Identify
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="relative group h-48 flex   flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                            <a href="#" class="block">
+                                <div class="h-28">
+                                    <div
+                                        class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9]   duration-300 w-[90%] h-48 bg-[#C3E2DC] rounded-xl justify-items-center align-middle">
+                                        <img src={capture}
+                                            class="w-36 h-36  mt-6 m-auto" alt="Toys and Baby Products"
+                                            title="Toys and Baby Products" loading="lazy" width="200" height="200" />
+                                    </div>
+                                </div>
+                                <div class="p-6   z-10 w-full   ">
+                                    <p
+                                        class="mb-2 inline-block text-tg text-center w-full  text-xl  font-sans  font-semibold leading-snug tracking-normal   antialiased">
+                                        Capture
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="relative group h-48 flex   flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                            <a href="#" class="block">
+                                <div class="h-28">
+                                    <div
+                                        class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9] duration-300 w-[90%] h-48 bg-[#C3E2DC] rounded-xl justify-items-center align-middle">
+                                        <img src={share}
+                                            class="w-36 h-36  mt-6 m-auto" alt="Medical" title="Medical" loading="lazy" width="200"
+                                            height="200" />
+                                    </div>
+                                </div>
+                                <div class="p-6 z-10 w-full   ">
+                                    <p
+                                        class="mb-2 inline-block text-tg text-center w-full text-xl font-sans font-semibold leading-snug tracking-normal antialiased">
+                                        Share
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                     </div>
+
 
                   <div className="form-row flex items-center justify-between gap-7 flex-wrap mb-10">
                     <div

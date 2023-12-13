@@ -12,7 +12,9 @@ import { RiseLoader } from 'react-spinners';
 import { CircularProgress } from '@mui/material';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
 // import SideBar from '../../Components/SideBar/SideBar';
-
+import Identify from '../../../Images/Identify.png';
+import capture from '../../../Images/capture.png';
+import share from '../../../Images/share.png';
 
 
 
@@ -519,7 +521,6 @@ const GTINAddProducts = () => {
                       <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                          <label htmlFor="fields1" className="text-secondary">Product Name [English]</label>
                         <input
-                          disabled={true}
                           type="text"
                           id="fields1"
                           onChange={(e) => setProductNameEnglish(e.target.value)}
@@ -532,7 +533,6 @@ const GTINAddProducts = () => {
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                         <label htmlFor="fields2" className="text-secondary">Product Name [Arabic]</label>
                         <input
-                          disabled={true}
                           type="text"
                           id="fields2"
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
@@ -551,7 +551,6 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field1" className="text-secondary">Brand Name [English] </label>
                             <input
-                            disabled={true}
                             type="text"
                             id="field1"
                             onChange={(e) => setBrandNameEnglish(e.target.value)}
@@ -570,7 +569,6 @@ const GTINAddProducts = () => {
                             onChange={(e) => setBrandNameArabic(e.target.value)}
                             value={brandNameArabic}
                             placeholder="Brand Name [Arabic]"
-                            disabled={true}
                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
 
                             />
@@ -582,8 +580,7 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field3" className="text-secondary">Unit Code</label>
                             <Autocomplete
-                                disabled={true}
-                                id="zone"
+                                id="field3"
                                 options={unitCode}
                                 getOptionLabel={(option) => option}
                                 onChange={handleUnitCodeChange}
@@ -626,7 +623,6 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field4" className="text-secondary">Size</label>
                             <input
-                            disabled={true}
                             type="text"
                             id="field4"
                             onChange={(e) => setSize(e.target.value)}
@@ -643,9 +639,7 @@ const GTINAddProducts = () => {
                     
                             <label htmlFor="field5" className="text-secondary">Region</label>
                             <Autocomplete
-                                // disable selecting and searching
-                                disabled={true}
-                                id="region"
+                                id="field5"
                                 options={region}
                                 getOptionLabel={(option) => option}
                                 // onChange={handleUnitCodeChange}
@@ -688,8 +682,7 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field6" className="text-secondary">Country of Sale</label>
                             <Autocomplete
-                                disabled={true}
-                                id="countryName"
+                                id="field6"
                                 options={allCountryName}
                                 getOptionLabel={(option) => option}
                                 onChange={handleAllCounrtyName}
@@ -735,8 +728,7 @@ const GTINAddProducts = () => {
                             Product Description Language{" "}
                             </label>
                             <Autocomplete
-                                disabled={true}
-                                id="productDescriptionLanguage"
+                                id="field7"
                                 options={productDescriptionLanguage}
                                 getOptionLabel={(option) => option}
                                 onChange={handleProductDiscription}
@@ -778,8 +770,7 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field8" className="text-secondary">Product Type</label>
                             <Autocomplete
-                                disabled={true}
-                                id="productType"
+                                id="field8"
                                 options={productType}
                                 getOptionLabel={(option) => option}
                                 onChange={handleProductType}
@@ -824,8 +815,7 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field9" className="text-secondary">Package Type</label>
                             <Autocomplete
-                                disabled={true}
-                                id="packageType"
+                                id="field9"
                                 options={packageType}
                                 getOptionLabel={(option) => option}
                                 onChange={handlePackageType}
@@ -866,7 +856,6 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field10" className="text-secondary">GPC</label>
                             <input
-                            disabled={true}
                             type="text"
                             id="field10"
                             value={gpc}
@@ -881,7 +870,6 @@ const GTINAddProducts = () => {
                         <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field11" className="text-secondary">HS-Code</label>
                             <input
-                            disabled={true}
                             type="text"
                             id="field11"
                             onChange={(e) => setHsCode(e.target.value)}
@@ -901,7 +889,6 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field12" className="text-secondary">Description [English] </label>
                             <textarea
-                            disabled={true}
                             type="text"
                             onChange={(e) => setDescriptionEnglish(e.target.value)}
                             value={descriptionEnglish}
@@ -913,7 +900,6 @@ const GTINAddProducts = () => {
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field13" className="text-secondary">Description [Arabic] </label>
                             <textarea
-                            disabled={true}
                             type="text"
                             onChange={(e) => setDescriptionArabic(e.target.value)}
                             value={descriptionArabic}
@@ -927,7 +913,6 @@ const GTINAddProducts = () => {
                         <div className="w-full sm:w-[49%] font-body sm:text-base text-sm flex flex-col gap-0">
                         <label htmlFor="field12" className="text-secondary">Product URL</label>
                             <input
-                            disabled={true}
                             type="text"
                             id="field12"
                             onChange={(e) => setProductUrl(e.target.value)}
@@ -940,7 +925,7 @@ const GTINAddProducts = () => {
                 
                 <div>
                 {/* Image container */}
-                   <div className='flex justify-center items-center gap-7 flex-wrap mt-10'>
+                   {/* <div className='flex justify-center items-center gap-7 flex-wrap mt-10'>
                       <div>
                          <span>Front Photo</span>
                            <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
@@ -990,8 +975,67 @@ const GTINAddProducts = () => {
 
 
 
-                    </div>
-                </div>
+                    </div> */}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-28 lg:gap-y-16 sm:mt-20 mt-24">
+                        <div class="relative group h-48 flex   flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                            <a href="#" class="block">
+                                <div class="h-28">
+                                    <div
+                                        class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9]   duration-300 w-[90%] h-48 bg-[#C3E2DC] rounded-xl justify-items-center align-middle">
+                                        <img src={Identify}
+                                            class="w-36 h-36  mt-6 m-auto" alt="Automotive" title="Automotive" loading="lazy"
+                                            width="200" height="200" />
+                                    </div>
+                                </div>
+                                <div class="p-6 z-10 w-full">
+                                    <p
+                                        class="mb-2 inline-block text-tg text-center w-full text-xl font-sans font-semibold leading-snug tracking-normal antialiased">
+                                        Identify
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="relative group h-48 flex   flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                            <a href="#" class="block">
+                                <div class="h-28">
+                                    <div
+                                        class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9]   duration-300 w-[90%] h-48 bg-[#C3E2DC] rounded-xl justify-items-center align-middle">
+                                        <img src={capture}
+                                            class="w-36 h-36  mt-6 m-auto" alt="Toys and Baby Products"
+                                            title="Toys and Baby Products" loading="lazy" width="200" height="200" />
+                                    </div>
+                                </div>
+                                <div class="p-6   z-10 w-full   ">
+                                    <p
+                                        class="mb-2 inline-block text-tg text-center w-full  text-xl  font-sans  font-semibold leading-snug tracking-normal   antialiased">
+                                        Capture
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="relative group h-48 flex   flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                            <a href="#" class="block">
+                                <div class="h-28">
+                                    <div
+                                        class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9] duration-300 w-[90%] h-48 bg-[#C3E2DC] rounded-xl justify-items-center align-middle">
+                                        <img src={share}
+                                            class="w-36 h-36  mt-6 m-auto" alt="Medical" title="Medical" loading="lazy" width="200"
+                                            height="200" />
+                                    </div>
+                                </div>
+                                <div class="p-6 z-10 w-full   ">
+                                    <p
+                                        class="mb-2 inline-block text-tg text-center w-full text-xl font-sans font-semibold leading-snug tracking-normal antialiased">
+                                        Share
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                     </div>
+
+                  </div>
 
                     <div className='footer-line'></div>
 

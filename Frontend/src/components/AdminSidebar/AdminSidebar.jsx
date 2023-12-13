@@ -29,7 +29,9 @@ import registries from '../../Images/registries.png'
 import gcp from '../../Images/gcp.png'
 import verifiedIcon from '../../Images/verifiedIcon.png'
 import gs1 from '../../Images/gs1.png'
+import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
 import gdsnproduct from '../../Images/gdsnproduct.png'
+import masterdata from '../../Images/masterdata.png'
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -62,6 +64,7 @@ const AdminSideBar = () => {
   const [showThirdData, setShowThirdData] = useState(false);
   const [showFourthData, setShowFourthData] = useState(false);
   const [showFifthData, setShowFifthData] = useState(false);
+  const [showSixthData, setShowSixthData] = useState(false);
   const navigate = useNavigate();
 
 
@@ -308,7 +311,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={gs1}
+                    src={verifiedbyGs1}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -563,6 +566,28 @@ const AdminSideBar = () => {
               )}
 
                 <div 
+                   className={`main-images-container`}
+                   onClick={() => setShowSixthData(!showSixthData)}
+                  >
+                  <img
+                    src={masterdata}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Master Data</p>
+                  {showSixthData ? (
+                      <i className='fas fa-solid fa-chevron-up text-white'></i>
+                    ) : (
+                      <i className='fas fa-solid fa-chevron-down text-white'></i>
+                    )}
+                </div>
+
+              {showSixthData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
                   className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/admin/units')}
                       onContextMenu={(event) =>
@@ -570,12 +595,16 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={gs1}
+                    src={frontend}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Master Data</p>
+                  <p className="sidebar-text">Units</p>
                 </div>
+
+              </div>
+              )}
+
 
 
           {/* Implement Any Icon above the Hide Icons */}
