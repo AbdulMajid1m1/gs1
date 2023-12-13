@@ -565,6 +565,8 @@ const AdminSideBar = () => {
               </div>
               )}
 
+
+                {/* Master Data */}
                 <div 
                    className={`main-images-container`}
                    onClick={() => setShowSixthData(!showSixthData)}
