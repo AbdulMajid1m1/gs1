@@ -9,6 +9,8 @@ import { masterDataColumn, paymentSlipColumn } from '../../../../utils/datatable
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
+import Swal from 'sweetalert2';
+import {toast} from 'react-toastify';
 
 const Units = () => {
 
@@ -48,7 +50,78 @@ const Units = () => {
     const handleView = (row) => {
         console.log(row);
     }
+const handleAddCompany = async () => {
+      const { value: formValues } = await Swal.fire({
+        title: 'Create Unit',
+        html:
+          '<input id="unitname" class="swal2-input" placeholder="unit Name">' +
+          
+        '<input id="unitcode" class="swal2-input" placeholder="unit code">',
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create Unit',
+          confirmButtonAriaLabel: 'Create',
+          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
+          cancelButtonAriaLabel: 'Cancel',  
+          confirmButtonColor: '#021F69',
 
+        preConfirm: () => {
+          return {
+            unit_name: document.getElementById('unitname').value,
+            unit_code: document.getElementById('unitcode').value,
+          };
+        },
+        inputValidator: (form) => {
+          if (!form.unitname  || !form.unitcode) {
+            return 'Both Company Name and unite code are required';
+          }
+        },
+      });
+  
+      if (!formValues) {
+        return; // Cancelled or invalid input
+      }
+  
+      const { unit_name, unit_code } = formValues;
+  
+      try {
+        // Send a request to your API to add the company
+        const response = await newRequest.post('/units/', {
+          unit_name: unit_name,
+          unit_code: unit_code,
+          status: '0', // You may want to modify this based on your requirements
+         
+        });
+  
+        toast.success(`Company ${unit_name} with unite code "${unit_code}" has been added successfully.`, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+
+        });
+
+        console.log(response.data);
+  
+      } catch (error) {
+        toast.error(error?.response?.data?.error || 'Error', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        console.log(error);
+      }
+    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -93,7 +166,13 @@ const Units = () => {
                             </button>
                           </div> */}
                         {/* </div> */}
-
+<div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                        <button
+                          onClick={handleAddCompany}
+                            className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                              <i className="fas fa-plus mr-2"></i>Add
+                        </button>
+                    </div>
                     {/* DataGrid */}
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 

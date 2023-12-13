@@ -9,7 +9,8 @@ import { unspcs_, paymentSlipColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
-
+import Swal from 'sweetalert2';
+import {toast} from 'react-toastify';
 const UNSPCS = () => {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +49,82 @@ const UNSPCS = () => {
     const handleView = (row) => {
         console.log(row);
     }
+const handleAddCompany = async () => {
+      const { value: formValues } = await Swal.fire({
+        title: 'Create UNSPSC',
+        html:
+          '<input id="commodity" type="number" class="swal2-input" placeholder="commodity">' +
+          '<input id="title" class="swal2-input"  placeholder="title">' +
+          '<input id="definition" class="swal2-input" placeholder="definition">',
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create UNSPSC',
+          confirmButtonAriaLabel: 'Create',
+          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
+          cancelButtonAriaLabel: 'Cancel',  
+          confirmButtonColor: '#021F69',
 
+        preConfirm: () => {
+          return {
+            commodity: document.getElementById('commodity').value,
+            title: document.getElementById('title').value,
+            definition: document.getElementById('definition').value,
+            
+           
+          };
+        },
+        inputValidator: (form) => {
+          if (!form.commodity  || !form.title  || !form.definition ) {
+            return 'All Input field is required';
+          }
+        },
+      });
+  
+      if (!formValues) {
+        return; 
+      }
+  
+      const { commodity, title,definition } = formValues;
+  
+      try {
+      
+        const response = await newRequest.post('/createUNSPSC/', {
+          commodity: commodity,
+          title: title,
+          definition: definition, // You may want to modify this based on your requirements
+          addedBy:1 // You may want to modify this based on your requirements
+      
+        });
+  
+        toast.success(`commodity ${commodity} with title "${title}" has been added successfully.`, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+
+        });
+
+        console.log(response.data);
+  
+      } catch (error) {
+        toast.error(error?.response?.data?.error || 'Error', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        console.log(error);
+      }
+    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -93,7 +169,13 @@ const UNSPCS = () => {
                             </button>
                           </div> */}
                         {/* </div> */}
-
+<div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                        <button
+                          onClick={handleAddCompany}
+                            className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                              <i className="fas fa-plus mr-2"></i>Add
+                        </button>
+                    </div>
                     {/* DataGrid */}
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 

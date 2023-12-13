@@ -9,7 +9,8 @@ import { product_packaging } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
-
+import Swal from 'sweetalert2';
+import {toast} from 'react-toastify';
 const ProductPackaging = () => {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +49,75 @@ const ProductPackaging = () => {
     const handleView = (row) => {
         console.log(row);
     }
+const handleAddCompany = async () => {
+      const { value: formValues } = await Swal.fire({
+        title: 'Create product Packaging',
+        html:
+          '<input id="name" class="swal2-input" placeholder="name">',
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create product Packaging',
+          confirmButtonAriaLabel: 'Create',
+          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
+          cancelButtonAriaLabel: 'Cancel',  
+          confirmButtonColor: '#021F69',
 
+        preConfirm: () => {
+          return {
+            name: document.getElementById('name').value,
+          
+           
+          };
+        },
+        inputValidator: (form) => {
+          if (!form.name  ) {
+            return 'All Input field is required';
+          }
+        },
+      });
+  
+      if (!formValues) {
+        return; 
+      }
+  
+      const { name } = formValues;
+  
+      try {
+      
+        const response = await newRequest.post('/createproductpackag/', {
+          name: name,
+          status: 1,
+        });
+  
+        toast.success(`product Packaging ${name} has been added successfully.`, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+
+        });
+
+        console.log(response.data);
+  
+      } catch (error) {
+        toast.error(error?.response?.data?.error || 'Error', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        console.log(error);
+      }
+    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -93,7 +162,13 @@ const ProductPackaging = () => {
                             </button>
                           </div> */}
                         {/* </div> */}
-
+<div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                        <button
+                          onClick={handleAddCompany}
+                            className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                              <i className="fas fa-plus mr-2"></i>Add
+                        </button>
+                    </div>
                     {/* DataGrid */}
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
