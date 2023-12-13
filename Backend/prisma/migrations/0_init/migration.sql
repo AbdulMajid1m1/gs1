@@ -2171,6 +2171,7 @@ CREATE TABLE [dbo].[product_packagings] (
     [updated_at] DATETIME,
     
 );
+
 -- CreateTable
 CREATE TABLE [dbo].[units] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
