@@ -1911,6 +1911,39 @@ export const state = [
     width: 180,
   },
 ];
+export const country__ = [
+ 
+  {
+    field: 'name_en',
+    headerName: 'name_en',
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'name_ar',
+    width: 180,
+  },
+  {
+    field: 'country_code',
+    headerName: 'country_code',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'status',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+  },
+];
 export const Hs_code = [
  
   {

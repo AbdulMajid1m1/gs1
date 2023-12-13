@@ -56,6 +56,7 @@ import Hscode from './Pages/AdminPages/MasterData/hscode/hscode';
 import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
 import Cities from './Pages/AdminPages/MasterData/city/cities';
 import State from './Pages/AdminPages/MasterData/state/state';
+import Country from './Pages/AdminPages/MasterData/country/country';
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -195,6 +196,7 @@ const App = () => {
                             <Route path="UNSPCS" element={<UNSPCS />} />    
                             <Route path="Cities" element={<Cities />} />   
                             <Route path="State" element={<State />} /> 
+                            <Route path="Country" element={<Country />} /> 
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
