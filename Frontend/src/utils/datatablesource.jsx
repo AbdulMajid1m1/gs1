@@ -1863,6 +1863,30 @@ export const counrty_sales = [
     width: 180,
   },
 ];
+export const city = [
+ 
+  {
+    field: 'name',
+    headerName: 'name',
+    width: 180,
+  },
+  {
+    field: 'state_id',
+    headerName: 'state_id',
+    width: 180,
+  },
+ 
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+  },
+];
 export const Hs_code = [
  
   {

@@ -54,7 +54,7 @@ import Gcp_type from './Pages/AdminPages/MasterData/gcp_type/gcp_type';
 import CountryofSales from './Pages/AdminPages/MasterData/countryofsale/countryofsale';
 import Hscode from './Pages/AdminPages/MasterData/hscode/hscode';
 import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
-
+import Cities from './Pages/AdminPages/MasterData/city/cities';
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -191,7 +191,8 @@ const App = () => {
                           <Route path="Gcp_type" element={<Gcp_type />} />
                           <Route path="CountryofSales" element={<CountryofSales />} />
                           <Route path="Hscode" element={<Hscode />} />
-                          <Route path="UNSPCS" element={<UNSPCS />} />                      
+                            <Route path="UNSPCS" element={<UNSPCS />} />    
+                          <Route path="Cities" element={<Cities />} />   
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
