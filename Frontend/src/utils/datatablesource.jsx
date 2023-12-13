@@ -1567,11 +1567,7 @@ export const paymentSlipColumn = [
 ];
 
 export const masterDataColumn = [
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
+  
   {
     field: 'unit_code',
     headerName: 'Unit Code',

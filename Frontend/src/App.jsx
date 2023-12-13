@@ -184,13 +184,13 @@ const App = () => {
                           <Route path="reports" element={<Reports />} />
 
                           <Route path="units" element={<Units />} />
-<Route path="Documents" element={<Documents />} />;
-<Route path="ProductPackaging" element={<ProductPackaging />} />
-<Route path="Other_products" element={<Other_products />} />
-<Route path="Gcp_type" element={<Gcp_type />} />
-<Route path="CountryofSales" element={<CountryofSales />} />
-<Route path="Hscode" element={<Hscode />} />
-  <Route path="UNSPCS" element={<UNSPCS />} />                      
+                          <Route path="Documents" element={<Documents />} />;
+                          <Route path="ProductPackaging" element={<ProductPackaging />} />
+                          <Route path="Other_products" element={<Other_products />} />
+                          <Route path="Gcp_type" element={<Gcp_type />} />
+                          <Route path="CountryofSales" element={<CountryofSales />} />
+                          <Route path="Hscode" element={<Hscode />} />
+                          <Route path="UNSPCS" element={<UNSPCS />} />                      
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
