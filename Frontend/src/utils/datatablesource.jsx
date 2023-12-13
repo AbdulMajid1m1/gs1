@@ -1887,6 +1887,30 @@ export const city = [
     width: 180,
   },
 ];
+export const state = [
+ 
+  {
+    field: 'name',
+    headerName: 'name',
+    width: 180,
+  },
+  {
+    field: 'country_id',
+    headerName: 'country_id',
+    width: 180,
+  },
+ 
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+  },
+];
 export const Hs_code = [
  
   {
