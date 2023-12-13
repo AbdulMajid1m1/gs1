@@ -701,6 +701,48 @@ const AdminSideBar = () => {
                   />
                   <p className="sidebar-text">UNSPCS</p>
               </div>
+               <div 
+                  className={`main-images-container ${selectedItem === '/admin/Cities' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/Cities')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/Cities')
+                  }
+                  >
+                  <img
+                    src={frontend}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Cities</p>
+              </div>
+              <div 
+                  className={`main-images-container ${selectedItem === '/admin/State' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/State')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/State')
+                  }
+                  >
+                  <img
+                    src={frontend}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">State</p>
+              </div>
+              <div 
+                  className={`main-images-container ${selectedItem === '/admin/Country' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/Country')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/Country')
+                  }
+                  >
+                  <img
+                    src={frontend}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Country</p>
+              </div>
               </div>
               )}
 
