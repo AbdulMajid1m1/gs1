@@ -91,7 +91,7 @@ const App = () => {
                   <Route path="/email-address" element={<EmailAddress />} />
                   <Route path="/select-activity" element={<SelectActivity />} />
                   <Route path="/verify-code" element={<VerifyCode />} />
-                  <Route path="main-popup" element={<MainPopUp />} />
+                  {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
                   {/* Member Routes */}
