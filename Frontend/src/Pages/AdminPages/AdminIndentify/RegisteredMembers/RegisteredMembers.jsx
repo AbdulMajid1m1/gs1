@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useQuery } from 'react-query'
+import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 
 const RegisteredMembers = () => {
     const [IsLoading, setIsLoading] = useState(true);
@@ -282,9 +283,14 @@ const RegisteredMembers = () => {
       
   return (
     <div>
-      <div className="p-3 h-full sm:ml-72">
+      <div className="p-0 h-full sm:ml-72">
+        <div>
+          <DashboardRightHeader 
+            title={'Registered Members'}
+          />
+        </div>
 
-        <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
+        <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
             <DataTable data={gridData} title="Registered Members" columnsName={Gs1AllMembers}
             loading={isLoading}

@@ -10,10 +10,10 @@ import DataTableProvider2 from "./Contexts/DataTableContext2";
 import HomePage from "./Pages/UserPages/HomePage/HomePage";
 import MemmberRegisteration from "./Pages/MemberPages/MemberRegistration/MemberRegistration";
 import GetBarcode from "./Pages/MemberPages/MemberRegistration/GetBarcode"
-import GTIN from "./Pages/AdminPages/Gtin/Gtin";
-import GTINAddProducts from "./Pages/AdminPages/GTINAddProducts/GTINAddProducts";
-import GTINUpdateProducts from "./Pages/AdminPages/GTINAddProducts/GTINUpdateProducts";
-import GTINViewProduct from "./Pages/AdminPages/GTINAddProducts/GTINViewProduct";
+import GTIN from "./Pages/MemberPages/GTIN/GTIN";
+import GTINAddProducts from "./Pages/MemberPages/GTINAddProducts/GTINAddProducts";
+import GTINUpdateProducts from "./Pages/MemberPages/GTINAddProducts/GTINUpdateProducts";
+import GTINViewProduct from "./Pages/MemberPages/GTINAddProducts/GTINViewProduct";
 import EmailAddress from "./Pages/MemberPages/MemberLogin/EmailAddress/EmailAddress";
 import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/SelectActivity";
 import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
@@ -46,7 +46,17 @@ import TransactionHistory from "./Pages/MemberPages/TransactionHistory/Transacti
 import RegisteredMembersView from "./Pages/AdminPages/AdminIndentify/RegisteredMembers/RegisteredMemberView";
 import MemberBrands from "./Pages/MemberPages/MemberBrands/MemberBrands";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-
+import Units from "./Pages/AdminPages/MasterData/Units/Units";
+import Documents from './Pages/AdminPages/MasterData/document/document';
+import ProductPackaging from './Pages/AdminPages/MasterData/productPackaging/productPackaging';
+import Other_products from './Pages/AdminPages/MasterData/other_product/other_product';
+import Gcp_type from './Pages/AdminPages/MasterData/gcp_type/gcp_type';
+import CountryofSales from './Pages/AdminPages/MasterData/countryofsale/countryofsale';
+import Hscode from './Pages/AdminPages/MasterData/hscode/hscode';
+import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
+import Cities from './Pages/AdminPages/MasterData/city/cities';
+import State from './Pages/AdminPages/MasterData/state/state';
+import Country from './Pages/AdminPages/MasterData/country/country';
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -83,6 +93,7 @@ const App = () => {
                   <Route path="/email-address" element={<EmailAddress />} />
                   <Route path="/select-activity" element={<SelectActivity />} />
                   <Route path="/verify-code" element={<VerifyCode />} />
+                  {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
                   {/* Member Routes */}
@@ -175,9 +186,17 @@ const App = () => {
                           <Route path="master-data" element={<MasterData />} />
                           <Route path="reports" element={<Reports />} />
 
-
-
-                        
+                          <Route path="units" element={<Units />} />
+                          <Route path="Documents" element={<Documents />} />;
+                          <Route path="ProductPackaging" element={<ProductPackaging />} />
+                          <Route path="Other_products" element={<Other_products />} />
+                          <Route path="Gcp_type" element={<Gcp_type />} />
+                          <Route path="CountryofSales" element={<CountryofSales />} />
+                          <Route path="Hscode" element={<Hscode />} />
+                            <Route path="UNSPCS" element={<UNSPCS />} />    
+                            <Route path="Cities" element={<Cities />} />   
+                            <Route path="State" element={<State />} /> 
+                            <Route path="Country" element={<Country />} /> 
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>

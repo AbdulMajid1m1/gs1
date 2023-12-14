@@ -12,8 +12,11 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 
 const Brands = () => {
-  const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
+    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+    console.log(gs1MemberData)
+   
     const navigate = useNavigate();
     
     const { rowSelectionModel, setRowSelectionModel,
@@ -23,7 +26,7 @@ const Brands = () => {
       useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await newRequest.get(`/brands?user_id=901`,);
+          const response = await newRequest.get(`/brands?user_id=${gs1MemberData?.id}`,);
           
           console.log(response.data);
           setData(response?.data || []);
@@ -37,6 +40,22 @@ const Brands = () => {
 
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
+
+    // refreshData
+    const refreshData = async () => {
+      try {
+        const response = await newRequest.get(`/brands?user_id=${gs1MemberData?.id}`,);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
+
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
+
 
     const handleEdit = (row) => {
       console.log(row);
@@ -95,7 +114,7 @@ const Brands = () => {
           name: companyName,
           name_ar: companyNameArabic,
           status: 'active', // You may want to modify this based on your requirements
-          user_id: '901', // Replace with the actual user ID
+          user_id: gs1MemberData?.id, // Replace with the actual user ID
         });
   
         toast.success(`Company ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
@@ -110,6 +129,7 @@ const Brands = () => {
 
         });
 
+        refreshData();
         console.log(response.data);
   
       } catch (error) {

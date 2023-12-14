@@ -21,7 +21,7 @@ const DashboardRightHeader = ({ title, member, gcp }) => {
           
             <div className='flex justify-center items-center'>
                 <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-between items-center gap-1 px-10">
-                    <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">{title}</p>
+                    <p className="sm:text-2xl text-secondary text-lg font-sans font-semibold">{title}</p>
                     <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">{member}</p>
                     <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">{gcp}</p>
                 </div>
