@@ -29,9 +29,9 @@ import registries from '../../Images/registries.png'
 import gcp from '../../Images/gcp.png'
 import verifiedIcon from '../../Images/verifiedIcon.png'
 import gs1 from '../../Images/gs1.png'
-import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
-import gdsnproduct from '../../Images/gdsnproduct.png'
-import masterdata from '../../Images/masterdata.png'
+// import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
+// import gdsnproduct from '../../Images/gdsnproduct.png'
+// import masterdata from '../../Images/masterdata.png'
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -311,7 +311,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={verifiedbyGs1}
+                    src={gcp}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -383,7 +383,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={gdsnproduct}
+                    src={gcp}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -572,7 +572,7 @@ const AdminSideBar = () => {
                    onClick={() => setShowSixthData(!showSixthData)}
                   >
                   <img
-                    src={masterdata}
+                    src={gcp}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />

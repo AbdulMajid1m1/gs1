@@ -16,6 +16,7 @@ import { toast } from 'react-toastify'
 import DataTable2 from '../../../../components/Datatable/Datatable2'
 import './RegisteredMember.css'
 import AddBrands from './AddBrands'
+import UpdateBrands from './UpdateBrands'
 
 const RegisteredMembersView = () => {
     // get the sesstion data
@@ -183,74 +184,15 @@ const RegisteredMembersView = () => {
         setCreatePopupVisibility(true);
       };
 
-      
+
       const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
-      const [brandName, setBrandName] = useState("");
-      const [brandNameArabic, setBrandNameArabic] = useState("");
-      const [brandStatus, setBrandStatus] = useState("");
-      const [brandUserId, setBrandUserId] = useState("");
 
-
-      const handleShowUpdatePopup = (selectedUser) => {
-        setBrandName(selectedUser?.name);
-        setBrandNameArabic(selectedUser?.name_ar);
-        setBrandStatus(selectedUser?.status);
-        setBrandUserId(selectedUser?.id);
-    
+      const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
+        // console.log(row)
+        // save this row data in session storage 
+        sessionStorage.setItem("updateBrandData", JSON.stringify(row));
       };
-
-      const handleCloseUpdatePopup = () => {
-        setUpdatePopupVisibility(false);
-      };
-
-
-  const handleUpdateBrand = async () => {
-    // console.log(brandUserId);
-   
-    try {
-      const response = await newRequest.put(`/brands/${brandUserId}`, {
-        name: brandName,
-        name_ar: brandNameArabic,
-        status: brandStatus,
-        user_id: brandUserId,
-      });
-
-      toast.success(response?.data?.message || 'Status updated successfully', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      console.log(response.data);
-      refreshBrandData();
-      // handleCloseCreatePopup();
-
-    } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      console.log(error);
-    }
-
-
-
-    
-  };
-
 
 
 
@@ -328,10 +270,6 @@ const RegisteredMembersView = () => {
   return (
     <div>
       <div className="p-0 h-full sm:ml-72">
-          <AddBrands
-            handleShowCreatePopup={handleShowCreatePopup}
-          />
-
         <div className='h-32 w-full flex justify-end items-start p-3 bg-primary -mt-6 sm:gap-7 gap-4'>
                 <div className='flex justify-center items-center mt-1 cursor-pointer'>
                     <img src={visitFrontend} 
@@ -886,97 +824,15 @@ const RegisteredMembersView = () => {
                  </div>
 
 
-                 {isUpdatePopupVisible && (
-                   <div className="popup-overlay">
-                     <div className="popup-container h-auto sm:w-[45%] w-full">
-                       <div className="popup-form w-full">         
-                          <form className='w-full'>
-                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Brands</h2>
-                            <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">Brand Name EN</label>
-                                <input
-                                  type="text"
-                                  id="field1"
-                                  value={brandName}
-                                  onChange={(e) => setBrandName(e.target.value)}
-                                  readOnly
-                                  placeholder="Enter Brand Name EN"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                              </div>
-
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary">Brand Name AR </label>
-                                <input
-                                  type="text"
-                                  id="field2"
-                                  value={brandNameArabic}
-                                  onChange={(e) => setBrandNameArabic(e.target.value)}
-                                  readOnly
-                                  placeholder="Enter Brand Name AR"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                              </div>
-                            </div>
-
-                            <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">Status</label>
-                                <select
-                                  type="text"
-                                  id="field1"
-                                  value={brandStatus}
-                                  onChange={(e) => setBrandStatus(e.target.value)}
-                                  readOnly
-                                  placeholder="Enter Brand Name EN"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                >
-                                  <option value="active">Active</option>
-                                  <option value="inactive">Inactive</option>
-                                </select>
-                              </div>
-
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary">User Id</label>
-                                <input
-                                  type="text"
-                                  id="field2"
-                                  value={brandUserId}
-                                  onChange={(e) => setBrandUserId(e.target.value)}
-                                  placeholder="User Id"
-                                  readOnly
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                              </div>
-                            </div>
-
-                            <div className="w-full flex justify-center items-center gap-8 mt-5">
-                              <button
-                                type="button"
-                                className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                                onClick={handleCloseUpdatePopup}
-                              >
-                                Close
-                              </button>
-                              <button
-                                type="button"
-                                onClick={handleUpdateBrand}
-                                className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
-                              >
-                                Update Brand
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-
                    {/* AddBrands component with handleShowCreatePopup prop */}
                   {isCreatePopupVisible && (
                     <AddBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshBrandData}/>
+                  )}
+
+
+                  {/* UpdateBrands component with handleShowUpdatePopup prop */}
+                  {isUpdatePopupVisible && (
+                    <UpdateBrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshBrandData}/>
                   )}
 
         </div>

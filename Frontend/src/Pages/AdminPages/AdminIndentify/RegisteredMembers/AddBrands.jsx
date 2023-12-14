@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import SendIcon from '@mui/icons-material/Send';
 
 const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [companyName, setCompanyName] = useState("");
@@ -8,7 +11,8 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get the sesstion data
     const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
     console.log(gs1MemberData)
-    
+    const [loading, setLoading] = useState(false);
+
     
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -17,6 +21,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
+    setLoading(true);
     try {
       const response = await newRequest.post('/brands/', {
         name: companyName,
@@ -105,13 +110,23 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                >
                                  Close
                                </button>
-                               <button
+                               {/* <button
                                  type="button"
                                  onClick={handleAddCompany}
                                  className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                >
                                  Add Brand
-                               </button>
+                               </button> */}
+                               <Button
+                                  variant="contained"
+                                  style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                                  onClick={handleAddCompany}
+                                  disabled={loading}
+                                  className="w-[70%] ml-2"
+                                  endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
+                                >
+                                  Update Brand
+                              </Button>
                              </div>
                            </form>
                          </div>
