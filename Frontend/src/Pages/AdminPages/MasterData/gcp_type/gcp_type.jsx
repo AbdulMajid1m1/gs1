@@ -11,13 +11,21 @@ import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
 import {toast} from 'react-toastify';
-
+import AdddcpType from './addgcpType';
 const Gcp_type = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     
+  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+    const handleShowCreatePopup = () => {
+      setCreatePopupVisibility(true);
+    };
+
+  
+  
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
@@ -46,82 +54,23 @@ const Gcp_type = () => {
     //   console.log(response.data);
       
     // });
+const refreshcitiesData = async () => {
+      try {
+        const response = await newRequest.get("/getAllgpctype",);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
+
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
 
     const handleView = (row) => {
         console.log(row);
     }
-const handleAddCompany = async () => {
-      const { value: formValues } = await Swal.fire({
-        title: 'Create GCP type',
-        html:
-          '<input id="gcp_code" class="swal2-input" placeholder="gcp code">' +
-          
-        '<input id="gcp_description" class="swal2-input" placeholder="gcp description">',
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create GCP type',
-          confirmButtonAriaLabel: 'Create',
-          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
-          cancelButtonAriaLabel: 'Cancel',  
-          confirmButtonColor: '#021F69',
-
-        preConfirm: () => {
-          return {
-            gcp_code: document.getElementById('gcp_code').value,
-            gcp_description: document.getElementById('gcp_description').value,
-          };
-        },
-        inputValidator: (form) => {
-          if (!form.gcp_code  || !form.gcp_description) {
-            return 'Both gcp code and gcp description are required';
-          }
-        },
-      });
-  
-      if (!formValues) {
-        return; // Cancelled or invalid input
-      }
-  
-      const { gcp_code, gcp_description } = formValues;
-  
-      try {
-        // Send a request to your API to add the company
-        const response = await newRequest.post('/creategpctype/', {
-          gcp_code: gcp_code,
-          gcp_description: gcp_description,
-        
-         
-        });
-  
-        toast.success(`GCP Code ${gcp_code} with DCP description "${gcp_description}" has been added successfully.`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-
-        });
-
-        console.log(response.data);
-  
-      } catch (error) {
-        toast.error(error?.response?.data?.error || 'Error', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        console.log(error);
-      }
-    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -168,7 +117,7 @@ const handleAddCompany = async () => {
                         {/* </div> */}
 <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                         <button
-                          onClick={handleAddCompany}
+                          onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
                         </button>
@@ -207,7 +156,10 @@ const handleAddCompany = async () => {
             </div>
       
 
-
+{/* AdddcpType component with handleShowCreatePopup prop */}
+             {isCreatePopupVisible && (
+                    <AdddcpType isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
         </div>
     </div>
   )
