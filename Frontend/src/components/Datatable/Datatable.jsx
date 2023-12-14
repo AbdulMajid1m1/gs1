@@ -546,11 +546,15 @@ const DataTable = ({
         )} */}
 
         <MuiCustomTable
+
+
           secondaryColor={secondaryColor ? secondaryColor : null}
           loading={loading}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }
+
+
           editMode="none" // set to row if need to edit row
           processRowUpdate={processRowUpdate ? processRowUpdate : null}
           onProcessRowUpdateError={(params, error) => {
@@ -565,7 +569,14 @@ const DataTable = ({
                 ? idColumn.concat(columnsName.concat(actionColumn))
                 : idColumn.concat(columnsName))
           }
+          initialState={{
+            pinnedColumns: {
+              // show actions column as pinned if actionColumnVisibility is false
 
+              left: idColumn.concat(columnsName),
+
+            },
+          }}
 
           pageSize={30}
           rowsPerPageOptions={[30, 50, 100]}

@@ -1952,7 +1952,8 @@ model users {
   gcp_expiry               DateTime? @db.DateTime
   memberID                 String?   @db.NVarChar(Max)
   user_id                  String?   @db.NVarChar(Max)
-  remarks                  String?   @db.NVarChar(Max)
+  
+  remarks                  String?   @default("Pending Invoice", map: "DF_users_remarks") @db.NVarChar(Max)
   assign_to                Int?      @default(0, map: "DF_users_assign_to")
   membership_category      String?   @db.NVarChar(50)
   membership_category_id   String?   @db.NVarChar(1000)

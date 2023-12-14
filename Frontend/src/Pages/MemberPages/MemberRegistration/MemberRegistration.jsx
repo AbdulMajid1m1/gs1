@@ -5,7 +5,6 @@ import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../utils/userRequest';
 import './MemberRegistration.css';
 import Header from '../../../components/Header/Header';
-import Swal from 'sweetalert2';
 import Footer from '../../../components/Footer/Footer';
 import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
@@ -13,8 +12,11 @@ import { toast } from 'react-toastify';
 
 const MemmberRegisteration = () => {
     // const sessionData = sessionStorage.getItem('saveCrNumberData');
-    const selectedCr = sessionStorage.getItem('selectedCr');
+    const selectedCr = JSON.parse(sessionStorage.getItem('selectedCr'));
+
+
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
+    const location = sessionStorage.getItem('location');
     // console.log("Get the Cr Number", sessionData);
     // console.log("Get the Document Data", sesstionDocumentData);
     const [country, setCountry] = React.useState([])
@@ -57,21 +59,6 @@ const MemmberRegisteration = () => {
 
 
     useEffect(() => {
-        //     //All Activities Api
-        //     const handleGetAllActivities = async () => {
-        //         try {
-        //             const response = await newRequest.get(`/crs/getCrsByCrNo/${sessionData}`);
-        //             // const response = await newRequest.get('/crs/getCrsByCrNo/1010000006');
-
-        //             const activity = response.data;
-        //             console.log(activity);
-        //             setGetAllActivities(activity);
-
-        //         } catch (error) {
-        //             console.error('Error fetching data:', error);
-        //         }
-
-        //     };
 
         // Search GPC Api
         const fetchIndustryTypes = async () => {
@@ -243,6 +230,7 @@ const MemmberRegisteration = () => {
         let newSelectedOtherProducts = [];
 
         if (selectedGtinNumber) {
+            // console.log(selectedGtinNumber)
             const registrationFee = selectedCategories?.name === "medical"
                 ? selectedGtinNumber.med_registration_fee
                 : selectedGtinNumber.member_registration_fee;
@@ -254,6 +242,8 @@ const MemmberRegisteration = () => {
                 registrationFee: registrationFee || 0,
                 yearlyFee: yearlyFee,
                 price: registrationFee + yearlyFee,
+                productId: selectedGtinNumber.id,
+                productType: selectedGtinNumber.type,
             }];
         }
 
@@ -292,11 +282,13 @@ const MemmberRegisteration = () => {
 
         // User data
         formData.append('user_type', 'new');
-        formData.append('slug', 'user-slug');
-        formData.append('location_uk', 'London');
-        formData.append('have_cr', 'yes');
+        // formData.append('slug', 'user-slug');
+        if (location) {
+            formData.append('location_uk', location);
+        }
+        formData.append('have_cr', selectedCr ? 'yes' : 'no');
 
-        formData.append('document_number', 'doc-67890');
+        // formData.append('document_number', 'doc-67890');
         // formData.append('fname', 'John');
         // formData.append('lname', 'Doe');
         formData.append('email', email);
@@ -304,11 +296,12 @@ const MemmberRegisteration = () => {
         formData.append('country', selectedCountry?.name);
         formData.append('state', selectedState?.name);
         formData.append('city', selectedCity?.name);
-        formData.append('po_box', 'POBox1001');
+        formData.append('po_box', zipCode);
         formData.append('mbl_extension', extension);
-        formData.append('website', website);
+        if (website) {
+            formData.append('website', website);
+        }
         // formData.append('no_of_staff', '50');
-        // formData.append('companyID', 'company-001');
         // formData.append('district', 'Central');
         // formData.append('building_no', '12A');
         // formData.append('additional_number', '202');
@@ -320,7 +313,7 @@ const MemmberRegisteration = () => {
         if (selectedCr?.cr && selectedCr?.activity) {
             formData.append('cr_number', selectedCr?.cr);
             formData.append('cr_activity', selectedCr?.activity);
-            formData.append('cr_documentID', selectedCr?.id || 0); //TODO: crs table id is srting and CrDocument_id is int check it later
+            formData.append('cr_documentID', selectedCr?.crId || 0); //TODO: crs table id is srting and CrDocument_id is int check it later
 
         }
 
@@ -331,7 +324,7 @@ const MemmberRegisteration = () => {
         formData.append('image', selectedImage);
         formData.append('document', upload);
         // formData.append('product_addons', 'AddonABC');
-     
+
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
         // formData.append('online_payment', 'Enabled');
@@ -344,11 +337,11 @@ const MemmberRegisteration = () => {
         // formData.append('gln', '123456');
         // formData.append('gcp_type', 'Type1');
         // formData.append('memberID', 'MID123');
-        // formData.append('remarks', 'Sample remarks');
+
         // formData.append('assign_to', '5');
 
-        formData.append('membership_category', selectedCategories.name === 'medical' ? 'med_category' : 'non_med_category');
-        if (selectedCategories.name !== 'medical') {
+        formData.append('membership_category', selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category');
+        if (selectedCategories.name !== 'non-medical') {
             formData.append('membership_otherCategory', selectedCategories.name);
         }
         // formData.append('upgradation_disc', '10');
@@ -593,7 +586,7 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='mobile'>Comapny Landline<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline<span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm '>
                                     <PhoneInput
                                         international
@@ -686,6 +679,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='industriesTypes'>Select Industries Releated to your Business<span className='text-red-600'>*</span></label>
                                 <Autocomplete
+
                                     multiple
                                     id='industriesTypes'
                                     options={industryTypes}
@@ -695,8 +689,11 @@ const MemmberRegisteration = () => {
                                     filterSelectedOptions
                                     renderInput={(params) => (
                                         <TextField
+
+
+                                            autoComplete="off"
                                             {...params}
-                                            label='Select mataching industries'
+                                            label='Select matching industries'
                                             placeholder='select industries types'
                                             variant='outlined'
                                         />
@@ -726,6 +723,7 @@ const MemmberRegisteration = () => {
                                     }}
                                     renderInput={(params) => (
                                         <TextField
+                                            autoComplete="off"
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
@@ -768,6 +766,7 @@ const MemmberRegisteration = () => {
                                     }}
                                     renderInput={(params) => (
                                         <TextField
+                                            autoComplete="off"
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
@@ -810,6 +809,7 @@ const MemmberRegisteration = () => {
                                     }}
                                     renderInput={(params) => (
                                         <TextField
+                                            autoComplete="off"
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
@@ -855,6 +855,7 @@ const MemmberRegisteration = () => {
                                     }}
                                     renderInput={(params) => (
                                         <TextField
+                                            autoComplete="off"
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
@@ -937,6 +938,7 @@ const MemmberRegisteration = () => {
                                     }}
                                     renderInput={(params) => (
                                         <TextField
+                                            autoComplete="off"
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
@@ -974,6 +976,7 @@ const MemmberRegisteration = () => {
                                     filterSelectedOptions
                                     renderInput={(params) => (
                                         <TextField
+                                            autoComplete="off"
                                             {...params}
                                             label='Search GPC'
                                             placeholder='Search GPC'

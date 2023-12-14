@@ -326,15 +326,15 @@ export const ShipmentRequestColumns = [
     headerName: 'Date Time',
     width: 180,
     renderCell: params => {
-      const dateObject = new Date (params.value); // Assuming the datetime is in a format recognizable by JavaScript's Date constructor
-      return new Intl.DateTimeFormat ('en-US', {
+      const dateObject = new Date(params.value); // Assuming the datetime is in a format recognizable by JavaScript's Date constructor
+      return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
         month: 'short',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-      }).format (dateObject);
+      }).format(dateObject);
     },
   },
 ];
@@ -362,8 +362,8 @@ export const ShipmentDocColumns = [
     headerName: 'Document',
     width: 180,
     renderCell: params => {
-      console.log ('params');
-      console.log (params);
+      console.log('params');
+      console.log(params);
 
       return (
         <InsertDriveFileIcon
@@ -942,7 +942,7 @@ export const GtinColumn = [
     width: 180,
     renderCell: params => {
       let url = params.value;
-      if (!url.startsWith ('http://') && !url.startsWith ('https://')) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
       }
       return (
@@ -958,7 +958,7 @@ export const GtinColumn = [
     width: 200,
     renderCell: params => {
       let url = params.value;
-      if (!url.startsWith ('http://') && !url.startsWith ('https://')) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
       }
       return (
@@ -1593,7 +1593,14 @@ export const paymentSlipColumn = [
   {
     field: 'created_at',
     headerName: 'Created At',
+    // make it date time type
+    type: 'dateTime',
+
     width: 180,
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'deleted_at',
@@ -1705,7 +1712,7 @@ export const paymentSlipColumn = [
 ];
 
 export const masterDataColumn = [
-  
+
   {
     field: 'unit_code',
     headerName: 'Unit Code',
@@ -1734,7 +1741,7 @@ export const masterDataColumn = [
 ];
 
 export const document = [
-  
+
   {
     field: 'name',
     headerName: 'name',
@@ -1758,7 +1765,7 @@ export const document = [
   },
 ];
 export const product_packaging = [
-  
+
   {
     field: 'name',
     headerName: 'name',
@@ -1782,7 +1789,7 @@ export const product_packaging = [
   },
 ];
 export const Other_Products = [
-  
+
   {
     field: 'product_name',
     headerName: 'product_name',
@@ -1831,7 +1838,7 @@ export const Other_Products = [
   },
 ];
 export const Gcp_types = [
-  
+
   {
     field: 'gcp_code',
     headerName: 'gcp_code',
@@ -1855,7 +1862,7 @@ export const Gcp_types = [
   },
 ];
 export const counrty_sales = [
- 
+
   {
     field: 'Alpha2',
     headerName: 'Alpha2',
@@ -1888,7 +1895,7 @@ export const counrty_sales = [
   },
 ];
 export const city = [
- 
+
   {
     field: 'name',
     headerName: 'name',
@@ -1899,7 +1906,7 @@ export const city = [
     headerName: 'state_id',
     width: 180,
   },
- 
+
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -1912,7 +1919,7 @@ export const city = [
   },
 ];
 export const state = [
- 
+
   {
     field: 'name',
     headerName: 'name',
@@ -1923,7 +1930,7 @@ export const state = [
     headerName: 'country_id',
     width: 180,
   },
- 
+
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -1936,7 +1943,7 @@ export const state = [
   },
 ];
 export const country__ = [
- 
+
   {
     field: 'name_en',
     headerName: 'name_en',
@@ -1969,7 +1976,7 @@ export const country__ = [
   },
 ];
 export const Hs_code = [
- 
+
   {
     field: 'CNKEY',
     headerName: 'CNKEY',
@@ -2002,7 +2009,7 @@ export const Hs_code = [
   },
 ];
 export const unspcs_ = [
-  
+
   {
     field: 'commodity',
     headerName: 'commodity',

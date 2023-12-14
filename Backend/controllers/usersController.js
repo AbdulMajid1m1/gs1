@@ -76,7 +76,6 @@ const userSchema = Joi.object({
     gcp_expiry: Joi.date(),
     memberID: Joi.string(),
     user_id: Joi.string(),
-    remarks: Joi.string(),
     assign_to: Joi.number().integer(),
     membership_category_id: Joi.string().max(50),
     membership_category: Joi.string().max(50),
@@ -145,9 +144,6 @@ export const createUser = async (req, res, next) => {
             console.log(error)
             return next(createError(400, error.details[0].message));
         }
-
-
-
         // Extract user and cart values
         const userValue = { ...value };
         delete userValue.cart; // Remove cart data from userValue
@@ -155,8 +151,9 @@ export const createUser = async (req, res, next) => {
         // Generate transaction ID for cart
         // Generate a random transaction ID with increased randomness
         const randomTransactionIdLength = 10; // adjust the length as needed 2*5 = 10 for 10 digit transaction id
-        cartValue.transaction_id = generateRandomTransactionId(randomTransactionIdLength);
-
+        const transactionId = generateRandomTransactionId(randomTransactionIdLength);
+        cartValue.transaction_id = transactionId;
+        userValue.transaction_id = transactionId;
         // Handle file uploads, generate password, etc.
         const uploadedDocument = req.files.document;
         const uploadedImage = req.files.image;
@@ -168,6 +165,8 @@ export const createUser = async (req, res, next) => {
         }
         if (uploadedDocument) {
             const documentFile = uploadedDocument[0];
+            // fix the path of the documentFile remove the public from the path
+            documentFile.destination = documentFile.destination.replace('public', '');
             documentPath = path.join(documentFile.destination, documentFile.filename);
             userValue.documents = documentPath;
         }
@@ -179,6 +178,8 @@ export const createUser = async (req, res, next) => {
 
         if (uploadedImage) {
             const imageFile = uploadedImage[0];
+            // fix the path of the imageFile remove the public from the path
+            imageFile.destination = imageFile.destination.replace('public', '');
             imagePath = path.join(imageFile.destination, imageFile.filename);
             userValue.address_image = imagePath;
         }
@@ -215,18 +216,7 @@ export const createUser = async (req, res, next) => {
 
             cart: cartValue,
 
-            // cart: {
-            //     request_type: 'New Registration', // Can be 'registration', 'renew', or 'addon
-            //     transaction_id: randTransactionId,
-            //     payment_type: value.payment_type, // Can be 'bank_transfer' or 'Mada/Visa'
-            //     cart_items: [
-            //         {
 
-            //         }
-            //         'Item 2 Description',
-            //         'Item 3 Description',
-            //     ],
-            // },
             currentDate: {
                 day: new Date().getDate(),
                 month: new Date().getMonth() + 1, // getMonth() returns 0-11
@@ -603,6 +593,124 @@ export const updateUser = async (req, res, next) => {
         next(error);
     }
 };
+
+
+const userStatusSchema = Joi.object({
+    status: Joi.string().valid('active', 'inactive', 'reject', 'suspend').required(),
+    userId: Joi.string().required(),
+});
+
+
+export const updateUserStatus = async (req, res, next) => {
+    try {
+        // Validate user data
+        const { error, value } = userStatusSchema.validate(req.body);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
+
+        const { userId, status } = value;
+
+        // Start a transaction
+        const updatedUser = await prisma.$transaction(async (prisma) => {
+            // Check if the user exists
+            const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+            if (!existingUser) {
+                throw createError(404, 'User not found');
+            }
+
+            let userUpdateResult;
+
+            // If status is active, perform complex operations
+            if (status === 'active') {
+                const cart = await prisma.carts.findFirst({ where: { user_id: userId } });
+
+                if (cart && cart.cart_items) {
+                    const cartItems = JSON.parse(cart.cart_items);
+                    const firstCartItem = cartItems[0];
+                    const product = await prisma.gtin_products.findUnique({
+                        where: { id: firstCartItem.productID }
+                    });
+
+                    if (product) {
+                        // Update user and gtin_products
+                        userUpdateResult = await prisma.users.update({
+                            where: { id: userId },
+                            data: { gcpGLNID: `628${product.gcp_start_range}` }
+                        });
+
+                        await prisma.gtin_products.update({
+                            where: { id: product.id },
+                            data: { gcp_start_range: (parseInt(product.gcp_start_range) + 1).toString() }
+                        });
+
+                        // Fetch and update TblSysCtrNo
+                        const tblSysNo = await prisma.tblSysNo.findFirst();
+                        if (tblSysNo) {
+                            userUpdateResult = await prisma.users.update({
+                                where: { id: userId },
+                                data: {
+                                    companyID: tblSysNo.TblSysCtrNo,
+                                    memberID: tblSysNo.TblSysCtrNo,
+                                }
+                            });
+
+                            await prisma.tblSysNo.update({
+                                where: { SysNoID: tblSysNo.SysNoID },
+                                data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
+                            });
+                        }
+                    }
+                }
+            } else {
+                // Update status if not active
+                userUpdateResult = await prisma.users.update({
+                    where: { id: userId },
+                    data: { status: status }
+                });
+            }
+
+            return userUpdateResult;
+        });
+
+        res.json(updatedUser);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+// export const updateUserStatus = async (req, res, next) => {
+//     try {
+
+//         // Validate user data
+//         const { error, value } = userStatusSchema.validate(req.body);
+//         if (error) {
+//             return next(createError(400, error.details[0].message));
+//         }
+
+
+//         const { userId, status } = value;
+
+
+//         // Check if the user exists
+//         const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+//         if (!existingUser) {
+//             return next(createError(404, 'User not found'));
+//         }
+
+//         const updatedUser = await prisma.users.update({
+//             where: { id: userId },
+//             data: { status: status },
+//         });
+
+//         res.json(updatedUser);
+//     } catch (error) {
+//         console.log(error);
+//         next(error);
+//     }
+// };
 
 
 export const deleteUser = async (req, res, next) => {

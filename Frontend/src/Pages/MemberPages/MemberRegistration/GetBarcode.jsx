@@ -19,7 +19,7 @@ const GetBarcode = () => {
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
   const [isDocumentAutocompleteFilled, setIsDocumentAutocompleteFilled] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
-
+  const [location, setLocation] = useState(""); // Default to 'Yes
   const abortControllerRef = useRef(null);
 
 
@@ -44,6 +44,10 @@ const GetBarcode = () => {
   };
 
   useEffect(() => {
+    //clear all session data
+    sessionStorage.removeItem('selectedCr');
+    sessionStorage.removeItem('saveDocumentData');
+    sessionStorage.removeItem('location');
     newRequest.get('/crDocuments')
       .then((response) => {
         console.log(response.data);
@@ -58,13 +62,19 @@ const GetBarcode = () => {
       });
   }, []);
 
+  useEffect(() => {
+    sessionStorage.setItem('location', location);
+  }, [location]);
+
+
 
   const handleGPCAutoCompleteChange = (event, value) => {
+    console.log(value);
     setSelectedCr(value);
 
 
     // sessionStorage.setItem('saveCrNumberData', saveCrNumberData);
-    sessionStorage.setItem('selectedCr', value);
+    sessionStorage.setItem('selectedCr', JSON.stringify(value));
 
     // Update the state variable when Autocomplete field is filled
     setIsAutocompleteFilled(value !== null && value !== '');
@@ -271,12 +281,18 @@ const GetBarcode = () => {
                 </div>
                 <div className='flex flex-col sm:flex-row gap-4'>
                   <div className='flex items-center gap-2'>
-                    <input type="radio" name="company" id="company-yes" />
+                    <input type="radio" name="company" id="company-yes"
+                      value='yes' onChange={(e) => setLocation(e.target.value)} checked={location === 'yes'}
+
+                    />
                     <label htmlFor="company-yes" className='text-secondary font-medium'>Yes</label>
                   </div>
                   <div className='flex items-center gap-2'>
-                    <input type="radio" name="company" id="company-no" />
-                    <label htmlFor="company-no" className='text-secondary font-medium'>No</label>
+                    <input type="radio" name="company" id="company-no"
+                      value='no' onChange={(e) => setLocation(e.target.value)} checked={location === 'no'}
+                    />
+                    <label htmlFor="company-no" className='text-secondary font-medium'
+                    >No</label>
                   </div>
                 </div>
               </div>
@@ -356,7 +372,7 @@ const GetBarcode = () => {
                           {...params}
                           label="Search CR Number"
                           InputProps={{
-                            ...params.InputProps,
+                          ...params.InputProps,
                             endAdornment: (
                               <React.Fragment>
                                 {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
