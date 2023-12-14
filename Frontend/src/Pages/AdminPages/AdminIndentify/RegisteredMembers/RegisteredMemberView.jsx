@@ -15,6 +15,7 @@ import Swal from 'sweetalert2'
 import { toast } from 'react-toastify'
 import DataTable2 from '../../../../components/Datatable/Datatable2'
 import './RegisteredMember.css'
+import AddBrands from './AddBrands'
 
 const RegisteredMembersView = () => {
     // get the sesstion data
@@ -140,22 +141,8 @@ const RegisteredMembersView = () => {
         }
     };
 
-    //     const fetchMembersDocuments = async () => {
-    //         try {
-    //         const response = await newRequest.get(`/users/cart?user_id=clpxx5wmo0004h4a5111fcnrx`,);
-            
-    //         console.log(response.data);
-    //         setMembersDocumentsData(response?.data || []);
-    //         setIsLoading(false)
-
-    //         } catch (err) {
-    //         console.log(err);
-    //         setIsLoading(false)
-    //     }
-    // };
-    //     fetchMembersDocuments();
-        fetchData(); // Calling the function within useEffect, not inside itself
-      }, []); // Empty array dependency ensures this useEffect runs once on component mount
+      fetchData(); // Calling the function within useEffect, not inside itself
+    }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
     
     // For refresh the Brand Datagrid
@@ -190,202 +177,35 @@ const RegisteredMembersView = () => {
       }
 
 
-    // add the brands api 
-    const handleAddCompany = async () => {
-        const { value: formValues } = await Swal.fire({
-          title: 'Create Brand',
-          html:
-            '<input id="companyName" class="swal2-input" placeholder="Company Name">' +
-            '<input id="brandcompanyNameArabic" class="swal2-input" placeholder="Company Arabic Name">',
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create Brand',
-          confirmButtonAriaLabel: 'Create',
-          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
-          cancelButtonAriaLabel: 'Cancel',
-          confirmButtonColor: '#021F69',
-          preConfirm: () => {
-            return {
-              companyName: document.getElementById('companyName').value,
-              brandcompanyNameArabic: document.getElementById('brandcompanyNameArabic').value,
-            };
-          },
-          inputValidator: (form) => {
-            if (!form.companyName || !form.brandcompanyNameArabic) {
-              return 'Both Company Name and Company Arabic Name are required';
-            }
-          },
-        });
-      
-        if (!formValues) {
-          return; // Cancelled or invalid input
-        }
-      
-        const { companyName, brandcompanyNameArabic } = formValues;
-      
-        try {
-          // Send a request to your API to add the company
-          const response = await newRequest.post('/brands/', {
-            name: companyName,
-            name_ar: brandcompanyNameArabic,
-            status: 'active', // You may want to modify this based on your requirements
-            user_id: gs1MemberData?.id, // Replace with the actual user ID
-          });
-      
-          toast.success(`Company ${companyName} with Arabic name "${brandcompanyNameArabic}" has been added successfully.`, {
-            position: 'top-right',
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          });
-      
-          console.log(response.data);
-          refreshBrandData();
-      
-        } catch (error) {
-          toast.error(error?.response?.data?.error || 'Error', {
-            position: 'top-right',
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          });
-      
-          console.log(error);
-        }
-      
-        // show the both input field type data in console
-        console.log(formValues);
+      const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+      const handleShowCreatePopup = () => {
+        setCreatePopupVisibility(true);
       };
 
-
-      // // Update Brands Data   
-      // const handleUpdateBrandCompany = async (selectedUser) => {
-      //   const statusOptions = ["active", "inactive"];
-      //   const initialStatus = selectedUser.status;
-      //   console.log(initialStatus);
       
-      //   const { value: formValues } = await Swal.fire({
-      //       title: `<strong>Update Brands</strong>`,
-      //       html: `
-      //         <select id="status" class="swal2-select" placeholder="Status">
-      //           ${statusOptions.map((status) => `
-      //             <option value="${status}" ${initialStatus === status ? 'selected' : ''}>${status}</option>
-      //           `).join('')}
-      //         </select>
-      //         <input id="name" class="swal2-input" placeholder="Name" value="${selectedUser.name}" readonly>
-      //         <input id="name_ar" class="swal2-input" placeholder="Arabic Name" value="${selectedUser.name_ar}" readonly>
-      //         <input id="user_id" class="swal2-input" placeholder="User ID" value="${selectedUser.user_id}" readonly>
-      //       `,
-      //       showCancelButton: true,
-      //       confirmButtonText: 'Update',
-      //       confirmButtonColor: '#1E3B8B',
-      //       cancelButtonColor: '#FF0032',
-      //       preConfirm: () => {
-      //         return {
-      //           status: document.getElementById('status').value,
-      //           name: document.getElementById('name').value,
-      //           name_ar: document.getElementById('name_ar').value,
-      //           user_id: document.getElementById('user_id').value,
-      //         };
-      //       },
-      //     });
-      
-      //   if (!formValues) { // Cancel button was pressed or invalid input
-      //     return;
-      //   }
-      
-      //   const { status, name, name_ar, user_id } = formValues;
-      
-      //   if (status === 'reject') {
-      //     handleReject(selectedUser); // Handle "reject" action
-      //     return;
-      //   }
-      
-      //   if (status === initialStatus) {
-      //     // No changes were made, show a Toastify info message
-      //     toast.info('No changes were made', {
-      //       position: "top-right",
-      //       autoClose: 2000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       pauseOnHover: true,
-      //       draggable: true,
-      //       progress: undefined,
-      //       theme: "light",
-      //     });
-      //     return;
-      //   }
-      
-      //   try {
-      //     const response = await newRequest.put(
-      //       `/brands/${selectedUser.id}`, // Replace with the correct endpoint for updating status
-      //       {
-      //         status,
-      //         name,
-      //         name_ar,
-      //         user_id,
-      //       }
-      //     );
-      
-      //     toast.success(response?.data?.message || 'Status updated successfully', {
-      //       position: "top-right",
-      //       autoClose: 5000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       pauseOnHover: true,
-      //       draggable: true,
-      //       progress: undefined,
-      //       theme: "light",
-      //     });
-
-      //     refreshBrandData();
-      
-      //   } catch (error) {
-      //     toast.error(error?.response?.data?.message || 'Something went wrong!', {
-      //       position: "top-right",
-      //       autoClose: 5000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       pauseOnHover: true,
-      //       draggable: true,
-      //       progress: undefined,
-      //       theme: "light",
-      //     });
-      
-      //     console.log(error);
-      //   }
-      // };
-      
-      const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+      const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
       const [brandName, setBrandName] = useState("");
       const [brandNameArabic, setBrandNameArabic] = useState("");
       const [brandStatus, setBrandStatus] = useState("");
       const [brandUserId, setBrandUserId] = useState("");
 
 
-      const handleShowCreatePopup = (selectedUser) => {
+      const handleShowUpdatePopup = (selectedUser) => {
         setBrandName(selectedUser?.name);
         setBrandNameArabic(selectedUser?.name_ar);
         setBrandStatus(selectedUser?.status);
         setBrandUserId(selectedUser?.id);
     
-        setCreatePopupVisibility(true);
+        setUpdatePopupVisibility(true);
       };
 
-      const handleCloseCreatePopup = () => {
-        setCreatePopupVisibility(false);
+      const handleCloseUpdatePopup = () => {
+        setUpdatePopupVisibility(false);
       };
 
 
-  const handleCreateBrand = async () => {
+  const handleUpdateBrand = async () => {
     // console.log(brandUserId);
    
     try {
@@ -409,7 +229,7 @@ const RegisteredMembersView = () => {
 
       console.log(response.data);
       refreshBrandData();
-      handleCloseCreatePopup();
+      // handleCloseCreatePopup();
 
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Something went wrong!', {
@@ -508,6 +328,10 @@ const RegisteredMembersView = () => {
   return (
     <div>
       <div className="p-0 h-full sm:ml-72">
+          <AddBrands
+            handleShowCreatePopup={handleShowCreatePopup}
+          />
+
         <div className='h-32 w-full flex justify-end items-start p-3 bg-primary -mt-6 sm:gap-7 gap-4'>
                 <div className='flex justify-center items-center mt-1 cursor-pointer'>
                     <img src={visitFrontend} 
@@ -887,7 +711,7 @@ const RegisteredMembersView = () => {
                     <div className='flex justify-end'>
                         {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                         <button
-                           onClick={handleAddCompany} 
+                           onClick={handleShowCreatePopup} 
                             className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                         >
                             Add
@@ -970,7 +794,7 @@ const RegisteredMembersView = () => {
                                         style={{ color: "rgb(37 99 235)" }}
                                         />
                                     ),
-                                    action: handleShowCreatePopup,
+                                    action: handleShowUpdatePopup,
                                 },
                                 {
                                     label: "Delete",
@@ -1025,7 +849,7 @@ const RegisteredMembersView = () => {
                         <div className='flex justify-between'>
                             <p className='text-blue-500 font-sans font-semibold'>Member Documents</p>
                             <button 
-                              onClick={handleShowCreatePopup}
+                              // onClick={handleShowCreatePopup}
                               className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Add</button>
                         </div>
                         
@@ -1062,7 +886,7 @@ const RegisteredMembersView = () => {
                  </div>
 
 
-                 {isCreatePopupVisible && (
+                 {isUpdatePopupVisible && (
                    <div className="popup-overlay">
                      <div className="popup-container h-auto sm:w-[45%] w-full">
                        <div className="popup-form w-full">         
@@ -1131,13 +955,13 @@ const RegisteredMembersView = () => {
                               <button
                                 type="button"
                                 className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                                onClick={handleCloseCreatePopup}
+                                onClick={handleCloseUpdatePopup}
                               >
                                 Close
                               </button>
                               <button
                                 type="button"
-                                onClick={handleCreateBrand}
+                                onClick={handleUpdateBrand}
                                 className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                               >
                                 Update Brand
@@ -1148,7 +972,13 @@ const RegisteredMembersView = () => {
                       </div>
                     </div>
                   )}
-                    
+
+
+                   {/* AddBrands component with handleShowCreatePopup prop */}
+                  {isCreatePopupVisible && (
+                    <AddBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshBrandData}/>
+                  )}
+
         </div>
     </div>
   )
