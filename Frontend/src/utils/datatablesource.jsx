@@ -1508,10 +1508,10 @@ export const MembersBrandsColumn = [
     renderCell: params => (
       <div
         style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
+          padding: '3px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'active' ? 'green' : 'red',
           color: params.row.status === 'active' ? 'green' : 'red',
@@ -1530,11 +1530,23 @@ export const MembersBrandsColumn = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 
@@ -1567,9 +1579,9 @@ export const AdminBrandsColumn = [
       <div
         style={{
           padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'active' ? 'green' : 'red',
           color: params.row.status === 'active' ? 'green' : 'red',
@@ -1588,11 +1600,23 @@ export const AdminBrandsColumn = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 
@@ -1715,6 +1739,12 @@ export const paymentSlipColumn = [
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'user_id',
