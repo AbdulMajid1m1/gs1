@@ -8,31 +8,51 @@ import { DotLoader } from 'react-spinners'
 
 
 const BankSlip = () => {
-    const [translationID, setTranslationID] = useState([]);
-    const [document, setDocument] = useState('');
+    const [document, setDocument] = useState(null);
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const memberDataString = sessionStorage.getItem('memberData');
     const memberData = JSON.parse(memberDataString);
-    // console.log(memberData);
+    console.log(memberData);
+    const [translationID, setTranslationID] = useState(memberData?.transaction_id || '');
     const navigate = useNavigate();
+
     
-    // const [selectedTranslationID, setSelectedTranslationID] = useState('');
-    // const handleTranslationID = (event, value) => {
-    //     setSelectedTranslationID(value);
-    // }
+    
+    const [selectedTranslationID, setSelectedTranslationID] = useState('');
+    const handleTranslationID = (event, value) => {
+        setSelectedTranslationID(value);
+    }
+
+    const handleFileChange = (e) => {
+        setDocument(e.target.files[0]);
+        setError('');
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(translationID, document, description);
+
+        if (memberData.payment_status === 0 && !selectedTranslationID) {
+            setError('Please select a TranslationID.');
+        } else if (memberData.payment_status === 0 && !document) {
+            setError('Please upload a document.');
+        } else {
+            setError('');
+    
+            // Perform the upload or submission logic here
+            console.log('Document uploaded:', document);
+    
         setIsLoading(true);
 
         const formData = new FormData();
         formData.append('transaction_id', translationID);
-        formData.append('details', description);
-        formData.append('status', 'pending');
-        formData.append('user_id', memberData?.user_id);
-        formData.append('bankSlip', document);
+        formData.append('receipt', document);
+        // formData.append('details', description);
+        // formData.append('status', 'pending');
+        // formData.append('user_id', memberData?.user_id);
 
         const config = {
             headers: {
@@ -40,7 +60,7 @@ const BankSlip = () => {
             },
         };
 
-        newRequest.post('/bankslip', formData, config)
+        newRequest.post('/users/receiptUpload', formData, config)
         .then(res => {
             console.log(res.data);
             setIsLoading(false);
@@ -73,7 +93,7 @@ const BankSlip = () => {
             });
         })
 
-
+    }
         
     }
 
@@ -124,19 +144,21 @@ const BankSlip = () => {
                         <label htmlFor="translate">
                             TranslationID<span className="text-red-600"> (TransactionID is Invoice#)</span>
                         </label>
-                        <input
+                        {/* <input
                             id="translate"
                             type="text"
                             placeholder="Trasnlation ID"
                             onChange={(e) => setTranslationID(e.target.value)}
                             className="border-1 w-full rounded-sm p-2 mb-3"
-                        />
+                        /> */}
                         
-                        {/* <Autocomplete
+                        {/* {memberData.payment_status === 0 && ( */}
+                        {memberData.payment_status === 0 && memberData.status !== 1 && (
+                        <Autocomplete
                             id="translate"
-                            options={translationID}
+                            options={[translationID]}
                             value={selectedTranslationID}
-                            getOptionLabel={(option) => option}
+                            getOptionLabel={(option) => option?.transaction_id || ''}
                             onChange={handleTranslationID}
                             onInputChange={(event, value) => {
                             if (!value) {
@@ -168,7 +190,8 @@ const BankSlip = () => {
                                 color: "white",
                             },
                             }}
-                        /> */}
+                        />
+                        )}
                    </div>
 
                    
@@ -181,10 +204,12 @@ const BankSlip = () => {
                             // id="upload"
                             // disabled
                             type="file"
-                            onChange={(e) => setDocument(e.target.files[0])}
+                            // onChange={(e) => setDocument(e.target.files[0])}
+                            onChange={handleFileChange}
                             placeholder="37000"
                             className="border-1 w-full text-secondary border-[#f1efef] rounded-sm p-2 mb-3"
                             />
+                        {error && <p className="text-red-600">{error}</p>}
                     </div>
 
                     <div className="w-full font-sans text-secondary sm:text-base text-sm">

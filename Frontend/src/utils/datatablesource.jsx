@@ -1069,9 +1069,9 @@ export const Gs1AllMembers = [
       <div
         style={{
           padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'active' ? 'green' : 'red',
           color: params.row.status === 'active' ? 'green' : 'red',
@@ -1352,11 +1352,23 @@ export const Gs1AllMembers = [
     field: 'created_at',
     headerName: 'CREATED AT',
     width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'UPDATED AT',
     width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'gcpGLNID',
@@ -2041,3 +2053,229 @@ export const unspcs_ = [
     width: 180,
   },
 ];
+
+
+
+
+export const financeColumn = [
+  {
+    field: 'id',
+    headerName: 'ID',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'cart_items',
+    headerName: 'Cart Items',
+    width: 180,
+  },
+  {
+    field: 'total',
+    headerName: 'Total',
+    width: 180,
+  },
+  // {
+  //   field: 'documents',
+  //   headerName: 'Documents',
+  //   width: 180,
+  // },
+  {
+    field: 'documents',
+    headerName: 'Documents',
+    width: 180,
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+    renderEditCell: (params) =>
+      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+    editable: true,
+    type: "string",
+  },
+  {
+    field: 'request_type',
+    headerName: 'Request Type',
+    width: 180,
+  },
+  {
+    field: 'payment_type',
+    headerName: 'Payment Type',
+    width: 180,
+  },
+  {
+    field: 'user_id',
+    headerName: 'User ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'deleted_at',
+    headerName: 'Deleted At',
+    width: 180,
+  },
+  {
+    field: 'reject_reason',
+    headerName: 'Reject Reason',
+    width: 180,
+  },
+  {
+    field: 'reject_by',
+    headerName: 'Reject By',
+    width: 180,
+  },
+  {
+    field: 'receipt',
+    headerName: 'Receipt',
+    width: 180,
+  },
+  // {
+  //   field: 'receipt_path',
+  //   headerName: 'Receipt Path',
+  //   width: 180,
+  // },
+  {
+    field: 'receipt_path',
+    headerName: 'Receipt Path',
+    width: 180,
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+    renderEditCell: (params) =>
+      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+    editable: true,
+    type: "string",
+  },
+  {
+    field: 'admin_id',
+    headerName: 'Admin ID',
+    width: 180,
+  },
+  {
+    field: 'assign_to',
+    headerName: 'Assign To',
+    width: 180,
+  },
+  {
+    field: 'discount',
+    headerName: 'Discount',
+    width: 180,
+  },
+];
+
+
+
+
