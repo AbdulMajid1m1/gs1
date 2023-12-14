@@ -10,13 +10,18 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import Addproduct from './addproductpack';
 const ProductPackaging = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    
+     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+    const handleShowCreatePopup = () => {
+      setCreatePopupVisibility(true);
+    };
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
@@ -45,7 +50,19 @@ const ProductPackaging = () => {
     //   console.log(response.data);
       
     // });
+const refreshcitiesData = async () => {
+      try {
+        const response = await newRequest.get("/getAllproductPackag",);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
 
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
     const handleView = (row) => {
         console.log(row);
     }
@@ -164,7 +181,7 @@ const handleAddCompany = async () => {
                         {/* </div> */}
 <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                         <button
-                          onClick={handleAddCompany}
+                          onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
                         </button>
@@ -202,7 +219,10 @@ const handleAddCompany = async () => {
               </div>
             </div>
       
-
+ {/* Addproduct component with handleShowCreatePopup prop */}
+             {isCreatePopupVisible && (
+                    <Addproduct isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
 
         </div>
     </div>
