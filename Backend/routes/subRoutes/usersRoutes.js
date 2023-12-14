@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteUser, getCarts, getCrInfo, getUserDetails, getUsersTempDetails, memberLogin, updateUser, updateUserStatus } from '../../controllers/usersController.js';
+import { createUser, deleteUser, getCarts, getCrInfo, getUserDetails, getUsersTempDetails, memberLogin, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 
 const userRouter = express.Router();
@@ -41,6 +41,14 @@ userRouter.post('/memberLogin', memberLogin);
 // carts routes
 
 userRouter.get('/cart', getCarts);
+
+
+userRouter.post('/receiptUpload', upload([
+    {
+        name: 'receipt',
+        path: 'public/uploads/documents/MemberRegRecipent',
+    },
+]), updateCartReceipt);
 
 
 

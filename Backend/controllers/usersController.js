@@ -801,3 +801,54 @@ export const getCarts = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+export const updateCartReceipt = async (req, res, next) => {
+    // Validate body data
+    const schema = Joi.object({
+        transaction_id: Joi.string().required(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+
+    // Get uploaded receipt image
+    const uploadedImage = req.files.receipt;
+
+    if (!uploadedImage) {
+        return next(createError(400, 'Receipt image is required'));
+    }
+
+    const imageFile = uploadedImage[0];
+    const imageName = imageFile.filename;
+    imageFile.destination = imageFile.destination.replace('public', '');
+    const imagePath = path.join(imageFile.destination, imageName);
+    // remove the public from the path
+
+    // Find cart based on transaction ID
+    const cart = await prisma.carts.findFirst({
+        where: { transaction_id: value.transaction_id },
+    });
+
+    if (!cart) {
+        return next(createError(404, 'Cart not found'));
+    }
+
+    // Update cart with receipt information
+    const updatedCart = await prisma.carts.update({
+        where: { id: cart.id },
+        data: {
+            receipt: imageName,
+            receipt_path: imagePath,
+        },
+    });
+
+    res.status(200).json({
+        message: 'Receipt uploaded and cart updated successfully.',
+        updatedCart: updatedCart,
+    });
+};
