@@ -340,8 +340,8 @@ const MemmberRegisteration = () => {
 
         // formData.append('assign_to', '5');
 
-        formData.append('membership_category', selectedCategories.name === 'medical' ? 'med_category' : 'non_med_category');
-        if (selectedCategories.name !== 'medical') {
+        formData.append('membership_category', selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category');
+        if (selectedCategories.name !== 'non-medical') {
             formData.append('membership_otherCategory', selectedCategories.name);
         }
         // formData.append('upgradation_disc', '10');

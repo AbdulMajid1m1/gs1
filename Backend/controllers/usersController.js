@@ -647,13 +647,13 @@ export const updateUserStatus = async (req, res, next) => {
                                 where: { id: userId },
                                 data: {
                                     companyID: tblSysNo.TblSysCtrNo,
-                                    memberID: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString()
+                                    memberID: tblSysNo.TblSysCtrNo,
                                 }
                             });
 
                             await prisma.tblSysNo.update({
                                 where: { SysNoID: tblSysNo.SysNoID },
-                                data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 2).toString() }
+                                data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
                             });
                         }
                     }
