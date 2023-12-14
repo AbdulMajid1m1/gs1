@@ -1,4 +1,5 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
 const QRCodeCell = props => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;

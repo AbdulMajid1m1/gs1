@@ -371,7 +371,12 @@ const RegisteredMembersView = () => {
       const [brandUserId, setBrandUserId] = useState("");
 
 
-      const handleShowCreatePopup = () => {
+      const handleShowCreatePopup = (selectedUser) => {
+        setBrandName(selectedUser?.name);
+        setBrandNameArabic(selectedUser?.name_ar);
+        setBrandStatus(selectedUser?.status);
+        setBrandUserId(selectedUser?.id);
+    
         setCreatePopupVisibility(true);
       };
 
@@ -380,18 +385,11 @@ const RegisteredMembersView = () => {
       };
 
 
-  const handleCreateBrand = async (row) => {
-    console.log(row);
-    setCreatePopupVisibility(true);
-
-    setBrandName(row?.name);
-    setBrandNameArabic(row?.name_ar);
-    setBrandStatus(row?.status);
-    setBrandUserId(row?.id);
-
-    // integrate this put api {{v2gs1Local}}/brands/clq0y51w000007zaaduhu7c0z try catch block use
+  const handleCreateBrand = async () => {
+    // console.log(brandUserId);
+   
     try {
-      const response = await newRequest.put(`/brands/${row?.id}`, {
+      const response = await newRequest.put(`/brands/${brandUserId}`, {
         name: brandName,
         name_ar: brandNameArabic,
         status: brandStatus,
@@ -409,7 +407,9 @@ const RegisteredMembersView = () => {
         theme: "light",
       });
 
+      console.log(response.data);
       refreshBrandData();
+      handleCloseCreatePopup();
 
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Something went wrong!', {
@@ -1066,7 +1066,7 @@ const RegisteredMembersView = () => {
                    <div className="popup-overlay">
                      <div className="popup-container h-auto sm:w-[45%] w-full">
                        <div className="popup-form w-full">         
-                          <form onSubmit={handleCreateBrand} className='w-full'>
+                          <form className='w-full'>
                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Brands</h2>
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -1076,6 +1076,7 @@ const RegisteredMembersView = () => {
                                   id="field1"
                                   value={brandName}
                                   onChange={(e) => setBrandName(e.target.value)}
+                                  readOnly
                                   placeholder="Enter Brand Name EN"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
@@ -1088,6 +1089,7 @@ const RegisteredMembersView = () => {
                                   id="field2"
                                   value={brandNameArabic}
                                   onChange={(e) => setBrandNameArabic(e.target.value)}
+                                  readOnly
                                   placeholder="Enter Brand Name AR"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
@@ -1102,6 +1104,7 @@ const RegisteredMembersView = () => {
                                   id="field1"
                                   value={brandStatus}
                                   onChange={(e) => setBrandStatus(e.target.value)}
+                                  readOnly
                                   placeholder="Enter Brand Name EN"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 >
@@ -1118,12 +1121,12 @@ const RegisteredMembersView = () => {
                                   value={brandUserId}
                                   onChange={(e) => setBrandUserId(e.target.value)}
                                   placeholder="User Id"
+                                  readOnly
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                               </div>
                             </div>
 
-                            {/* Create two buttons for close and create brand */}
                             <div className="w-full flex justify-center items-center gap-8 mt-5">
                               <button
                                 type="button"
