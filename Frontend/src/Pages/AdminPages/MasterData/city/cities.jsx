@@ -9,8 +9,6 @@ import { city, paymentSlipColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
-import Swal from 'sweetalert2';
-import {toast} from 'react-toastify';
 import AddCity from './AddCity';
 
 const Cities = () => {
@@ -75,75 +73,6 @@ const Cities = () => {
     const handleView = (row) => {
         console.log(row);
     }
-const handleAddCompany = async () => {
-      const { value: formValues } = await Swal.fire({
-        title: 'Create Cities',
-        html:
-          '<input id="name" class="swal2-input" placeholder="name">' +
-          '<input id="state_id" class="swal2-input" placeholder="state id">' ,
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create Cities',
-          confirmButtonAriaLabel: 'Create',
-          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
-          cancelButtonAriaLabel: 'Cancel',  
-          confirmButtonColor: '#021F69',
-
-        preConfirm: () => {
-          return {
-            name: document.getElementById('name').value,
-            state_id: document.getElementById('state_id').value,
-          };
-        },
-        inputValidator: (form) => {
-          if (!form.name  || !form.state_id  ) {
-            return 'All Input field is required';
-          }
-        },
-      });
-  
-      if (!formValues) {
-        return; // Cancelled or invalid input
-      }
-  
-      const { name, state_id,country_code_numeric3,country_name } = formValues;
-  
-      try {
-        // Send a request to your API to add the company
-        const response = await newRequest.post('/address/createCities/', {
-          name: name,
-          state_id: state_id,
-        });
-  
-        toast.success(`name ${name} with state_id "${state_id}" has been added successfully.`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-
-        });
-
-        console.log(response.data);
-  
-      } catch (error) {
-        toast.error(error?.response?.data?.error || 'Error', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        console.log(error);
-      }
-    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
