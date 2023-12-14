@@ -1,6 +1,7 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
+import { backendUrl } from './config';
 const QRCodeCell = props => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;
   return <QRCode value={url} size={40} />;
@@ -1275,10 +1276,32 @@ export const Gs1AllMembers = [
     editable: true,
     type: "string",
   },
+  // {
+  //   field: 'address_image',
+  //   headerName: 'ADDRESS IMAGE',
+  //   width: 180,
+  // },
   {
-    field: 'address_image',
-    headerName: 'ADDRESS IMAGE',
-    width: 180,
+    field: "address_image",
+    headerName: "ADDRESS IMAGE",
+    width: 220,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.address_image)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
   },
   {
     field: 'payment_type',
