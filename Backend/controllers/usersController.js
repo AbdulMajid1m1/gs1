@@ -165,6 +165,8 @@ export const createUser = async (req, res, next) => {
         }
         if (uploadedDocument) {
             const documentFile = uploadedDocument[0];
+            // fix the path of the documentFile remove the public from the path
+            documentFile.destination = documentFile.destination.replace('public', '');
             documentPath = path.join(documentFile.destination, documentFile.filename);
             userValue.documents = documentPath;
         }
@@ -176,6 +178,8 @@ export const createUser = async (req, res, next) => {
 
         if (uploadedImage) {
             const imageFile = uploadedImage[0];
+            // fix the path of the imageFile remove the public from the path
+            imageFile.destination = imageFile.destination.replace('public', '');
             imagePath = path.join(imageFile.destination, imageFile.filename);
             userValue.address_image = imagePath;
         }
