@@ -11,6 +11,8 @@ import { city, paymentSlipColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
+import Swal from 'sweetalert2';
+import {toast} from 'react-toastify';
 import AddCity from './AddCity';
 import Updatecity from './updatecity';
 const Cities = () => {
@@ -18,7 +20,7 @@ const Cities = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-
+const [brandsData, setBrandsData] = useState([]);
 
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 

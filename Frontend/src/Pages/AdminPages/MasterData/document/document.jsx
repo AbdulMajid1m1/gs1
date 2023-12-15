@@ -11,6 +11,8 @@ import { document, paymentSlipColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
+import Swal from 'sweetalert2';
+import {toast} from 'react-toastify';
 import Adddocumment from './adddocument';
 import Updatedocument from './updatedocument';
 const Documents = () => {
