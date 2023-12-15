@@ -9,13 +9,17 @@ import { document, paymentSlipColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
-
+import Adddocumment from './adddocument';
 const Documents = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    
+    const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+    const handleShowCreatePopup = () => {
+      setCreatePopupVisibility(true);
+    };
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
@@ -44,7 +48,19 @@ const Documents = () => {
     //   console.log(response.data);
       
     // });
+ const refreshcitiesData = async () => {
+      try {
+        const response = await newRequest.get("/getAllcr_documents",);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
 
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
     const handleView = (row) => {
         console.log(row);
     }
@@ -93,7 +109,13 @@ const Documents = () => {
                             </button>
                           </div> */}
                         {/* </div> */}
-
+  <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                        <button
+                          onClick={handleShowCreatePopup}
+                            className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                              <i className="fas fa-plus mr-2"></i>Add
+                        </button>
+                    </div>
                     {/* DataGrid */}
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
@@ -128,6 +150,10 @@ const Documents = () => {
             </div>
       
 
+             {/* Adddocumment component with handleShowCreatePopup prop */}
+             {isCreatePopupVisible && (
+                    <Adddocumment isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
 
         </div>
     </div>
