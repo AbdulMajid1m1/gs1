@@ -89,9 +89,9 @@ const refreshcitiesData = async () => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              const isDeleted = await newRequest.delete("/brands/" + row?.id);
+              const isDeleted = await newRequest.delete("/address/deleteStates/" + row?.id);
               if (isDeleted) {
-                toast.success('User deleted successfully', {
+                toast.success('States deleted successfully', {
                   position: "top-right",
                   autoClose: 2000,
                   hideProgressBar: false,

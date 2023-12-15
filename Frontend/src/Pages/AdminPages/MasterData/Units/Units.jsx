@@ -89,9 +89,9 @@ const handleDelete = async (row) => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              const isDeleted = await newRequest.delete("/brands/" + row?.id);
+              const isDeleted = await newRequest.delete("/deleteunit/" + row?.id);
               if (isDeleted) {
-                toast.success('User deleted successfully', {
+                toast.success('unit deleted successfully', {
                   position: "top-right",
                   autoClose: 2000,
                   hideProgressBar: false,
