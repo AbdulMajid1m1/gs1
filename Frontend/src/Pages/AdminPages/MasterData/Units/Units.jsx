@@ -21,7 +21,7 @@ const Units = () => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
      const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
-
+const [brandsData, setBrandsData] = useState([]);
     const handleShowCreatePopup = () => {
       setCreatePopupVisibility(true);
   };

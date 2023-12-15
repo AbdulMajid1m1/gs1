@@ -20,7 +20,7 @@ const CountryofSales = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    
+    const [brandsData, setBrandsData] = useState([]);
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 
     const handleShowCreatePopup = () => {
