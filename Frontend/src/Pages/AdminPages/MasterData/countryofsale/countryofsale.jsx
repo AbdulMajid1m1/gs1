@@ -88,9 +88,9 @@ const handleDelete = async (row) => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              const isDeleted = await newRequest.delete("/brands/" + row?.id);
+              const isDeleted = await newRequest.delete("/deletecountryofsale/" + row?.id);
               if (isDeleted) {
-                toast.success('User deleted successfully', {
+                toast.success('country of sale deleted successfully', {
                   position: "top-right",
                   autoClose: 2000,
                   hideProgressBar: false,
