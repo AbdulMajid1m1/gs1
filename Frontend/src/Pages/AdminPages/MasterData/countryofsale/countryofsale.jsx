@@ -10,8 +10,11 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {toast} from 'react-toastify';
 import Addcountryofsale from './addcounrtyofsale';
+import Updatecountryofsale from './updatecountryofsale';
 const CountryofSales = () => {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +26,14 @@ const CountryofSales = () => {
     const handleShowCreatePopup = () => {
       setCreatePopupVisibility(true);
     };
-  
+   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+
+      const handleShowUpdatePopup = (row) => {
+        setUpdatePopupVisibility(true);
+        // console.log(row)
+        // save this row data in session storage 
+        sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+      };
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
@@ -64,7 +74,71 @@ const CountryofSales = () => {
     const handleView = (row) => {
         console.log(row);
     }
-
+const handleDelete = async (row) => {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover this User Account!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it',
+          // changes the color of the confirm button to red
+          confirmButtonColor: '#1E3B8B',
+          cancelButtonColor: '#FF0032',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const isDeleted = await newRequest.delete("/brands/" + row?.id);
+              if (isDeleted) {
+                toast.success('User deleted successfully', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+  
+                
+                // filter out the deleted user from the data
+                const filteredData = brandsData.filter((item) => item?.id !== row?.id);
+                setBrandsData(filteredData);
+                
+              } else {
+                // Handle any additional logic if the user was not deleted successfully
+                toast.error('Failed to delete user', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+  
+              }
+            } catch (error) {
+              // Handle any error that occurred during the deletion
+              console.error("Error deleting user:", error);
+              toast.error('Something went wrong while deleting user', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            return;
+          }
+        });
+    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -138,6 +212,28 @@ const CountryofSales = () => {
                         ),
                         action: handleView,
                         },
+{
+                                    label: "Edit",
+                                    icon: (
+                                        <EditIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleShowUpdatePopup,
+                                },
+                                {
+                                    label: "Delete",
+                                    icon: (
+                                        <DeleteIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleDelete,
+                                },
 
                     ]}
                     uniqueId="gtinMainTableId"
@@ -154,6 +250,10 @@ const CountryofSales = () => {
                     <Addcountryofsale isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
                   )}
 
+        {/* Updatecountryofsale component with handleShowUpdatePopup prop */}
+                  {isUpdatePopupVisible && (
+                    <Updatecountryofsale isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
         </div>
     </div>
   )
