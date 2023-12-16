@@ -7,6 +7,7 @@ import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { debounce } from '@mui/material/utils';
+import AddCrNumber from './AddCrNumber'
 
 const GetBarcode = () => {
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
@@ -21,6 +22,12 @@ const GetBarcode = () => {
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [location, setLocation] = useState(""); // Default to 'Yes
   const abortControllerRef = useRef(null);
+
+  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+  const handleShowCreatePopup = () => {
+      setCreatePopupVisibility(true);
+    };
 
 
   const navigate = useNavigate();
@@ -403,7 +410,7 @@ const GetBarcode = () => {
                     {/* If nothing is select i show that error */}
 
 
-                    <p onClick={handleAddCR} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
+                    <p onClick={handleShowCreatePopup} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
 
                   </>
                 ) : (
@@ -479,7 +486,11 @@ const GetBarcode = () => {
         </div>
       </div>
 
-
+      
+      {/* AddBrands component with handleShowCreatePopup prop */}
+      {isCreatePopupVisible && (
+          <AddCrNumber isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} />
+      )}
 
       {/* Footer */}
       <Footer />

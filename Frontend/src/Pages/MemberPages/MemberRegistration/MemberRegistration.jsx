@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import PhoneInput from 'react-phone-number-input';
-import "react-phone-number-input/style.css";
+// import PhoneInput from 'react-phone-number-input';
+// import "react-phone-number-input/style.css";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../utils/userRequest';
 import './MemberRegistration.css';
@@ -54,8 +56,6 @@ const MemmberRegisteration = () => {
     // const [selectProducts, setSelectProducts] = useState('');
 
     const [categories, setCategories] = useState([]);
-
-
 
 
     useEffect(() => {
@@ -459,6 +459,7 @@ const MemmberRegisteration = () => {
     }, [selectedCategories]);
 
 
+    // console.log("company", companyLandLine)
 
     return (
         <div>
@@ -588,7 +589,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline<span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm '>
-                                    <PhoneInput
+                                    {/* <PhoneInput
                                         international
                                         defaultCountry="SA"
                                         value={companyLandLine}
@@ -608,8 +609,24 @@ const MemmberRegisteration = () => {
                                             padding: '2px',
                                             marginBottom: '3px',
                                         }}
-                                    />
-
+                                    /> */}
+                                    <PhoneInput
+                                        international
+                                        country={'sa'}
+                                        defaultCountry={'sa'}
+                                        value={companyLandLine}
+                                        // onChange={setCompanyLandLine}
+                                        onChange={(e) => setCompanyLandLine(e)}
+                                        inputProps={{
+                                            id: 'mobile',
+                                            placeholder: 'Company Landline',
+                                        }}
+                                        
+                                        inputStyle={{
+                                            width: '100%',
+                                            borderRadius: '0px',
+                                        }}
+                                        />
 
                                 </div>
                             </div>
@@ -617,9 +634,10 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Mobile Number <span>(Omit Zero)</span><span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm'>
-                                    <PhoneInput
+                                    {/* <PhoneInput
                                         international
-                                        defaultCountry="SA"
+                                        country={'sa'}
+                                        defaultCountry={'sa'}
                                         value={mobileNumber}
                                         onChange={setMobileNumber}
                                         containerStyle={{
@@ -637,7 +655,24 @@ const MemmberRegisteration = () => {
                                             padding: '2px',
                                             marginBottom: '3px',
                                         }}
-                                    />
+                                    /> */}
+                                     <PhoneInput
+                                        international
+                                        country={'sa'}
+                                        defaultCountry={'sa'}
+                                        value={mobileNumber}
+                                        onChange={setMobileNumber}
+                                        // onChange={(e) => setCompanyLandLine(e)}
+                                        inputProps={{
+                                            id: 'mobile',
+                                            placeholder: 'Mobile Number',
+                                        }}
+                                        
+                                        inputStyle={{
+                                            width: '100%',
+                                            borderRadius: '0px',
+                                        }}
+                                        />
 
 
                                 </div>
@@ -1077,7 +1112,7 @@ const MemmberRegisteration = () => {
                             </div>
                         </div>
 
-                        <button onClick={handleSubmit} type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
+                        <button onClick={handleSubmit} type='button' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
                             <i className="fas fa-check-circle mr-1"></i> Submit
                         </button>
 
