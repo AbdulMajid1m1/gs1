@@ -20,7 +20,22 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     
 
     const handleAddCompany = async () => {
-    //  integrate the post api in try catch blcck
+    
+    // Check if required fields are empty
+    if (!companyName || !companyNameArabic) {
+      toast.error('Brand Name (EN and AR) are required.', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+      return;
+    }
+    
     setLoading(true);
     try {
       const response = await newRequest.post('/brands/', {

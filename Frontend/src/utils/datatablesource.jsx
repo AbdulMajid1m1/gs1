@@ -2342,3 +2342,69 @@ export const financeColumn = [
 
 
 
+export const helpDeskColumn = [
+  {
+    field: 'id',
+    headerName: 'ID',
+    width: 180,
+  },
+  {
+    field: 'ticket_id',
+    headerName: 'Ticket ID',
+    width: 180,
+  },
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    width: 180,
+  },
+  {
+    field: 'priority',
+    headerName: 'Priority',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+  },
+
+
+
+
+]
+
+
+
+
+
+export const subscribedGtinColumn = [
+  {
+    field: 'Product',
+    headerName: 'Product',
+    width: 180,
+  },
+  {
+    field: 'Description',
+    headerName: 'Description',
+    width: 180,
+  },
+  {
+    field: 'Registered_Date',
+    headerName: 'Registered Date',
+    width: 180,
+  },
+  {
+    field: 'Expiry_date',
+    headerName: 'Expiry date',
+    width: 180,
+  },
+
+
+
+]

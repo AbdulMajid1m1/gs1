@@ -1,15 +1,36 @@
 import React, { useContext, useEffect, useState } from 'react'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
 import DataTable from '../../../components/Datatable/Datatable'
-import { paymentSlipColumn } from '../../../utils/datatablesource'
+import { helpDeskColumn, paymentSlipColumn } from '../../../utils/datatablesource'
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../Contexts/DataTableContext'
 import { useNavigate } from 'react-router-dom'
 import CreateTicketPopUp from './CreateTicketPopUp';
+import UpdateTicketPopUp from './UpdateTicketPopUp';
 
 const HelpDesk = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([
+    {
+      id: 1,
+      ticket_id: "T001",
+      subject: "Subject 1",
+      priority: "High",
+      created_at: "2021-10-01",
+      updated_at: "2021-10-01",
+    },
+    {
+      id: 2,
+      ticket_id: "T002",
+      subject: "Subject 2",
+      priority: "High",
+      created_at: "2021-10-01",
+      updated_at: "2021-10-01",
+    },
+
+  ]);
   const navigate = useNavigate();
   
   const { rowSelectionModel, setRowSelectionModel,
@@ -49,6 +70,11 @@ const HelpDesk = () => {
       console.log(row);
   }
 
+  const handleDelete = (row) => {
+    console.log(row);
+  };
+
+
   const handleRowClickInParent = (item) => {
       if (!item || item?.length === 0) {
         setTableSelectedRows(data)
@@ -64,6 +90,17 @@ const HelpDesk = () => {
   const handleShowCreatePopup = () => {
       setCreatePopupVisibility(true);
     };
+
+
+  const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+
+  const handleShowUpdatePopup = (row) => {
+      setUpdatePopupVisibility(true);
+      // console.log(row)
+      // save this row data in session storage 
+      // sessionStorage.setItem("updateTicketRow", JSON.stringify(row));
+  };
+
 
 
   return (
@@ -94,22 +131,44 @@ const HelpDesk = () => {
 
                     <DataTable data={data} 
                       title="Help Desk"
-                       columnsName={paymentSlipColumn}
+                       columnsName={helpDeskColumn}
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}
 
                     dropDownOptions={[
+                        // {
+                        // label: "View",
+                        // icon: (
+                        //     <VisibilityIcon
+                        //     fontSize="small"
+                        //     color="action"
+                        //     style={{ color: "rgb(37 99 235)" }}
+                        //     />
+                        // ),
+                        // action: handleView,
+                        // },
                         {
-                        label: "View",
-                        icon: (
-                            <VisibilityIcon
-                            fontSize="small"
-                            color="action"
-                            style={{ color: "rgb(37 99 235)" }}
-                            />
-                        ),
-                        action: handleView,
+                          label: "Edit",
+                          icon: (
+                              <EditIcon
+                              fontSize="small"
+                              color="action"
+                              style={{ color: "rgb(37 99 235)" }}
+                              />
+                          ),
+                          action: handleShowUpdatePopup,
+                        },
+                        {
+                          label: "Delete",
+                          icon: (
+                              <DeleteIcon
+                              fontSize="small"
+                              color="action"
+                              style={{ color: "rgb(37 99 235)" }}
+                              />
+                          ),
+                          action: handleDelete,
                         },
 
                     ]}
@@ -126,6 +185,11 @@ const HelpDesk = () => {
            {/* AddBrands component with handleShowCreatePopup prop */}
            {isCreatePopupVisible && (
               <CreateTicketPopUp isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshHelpDeskData}/>
+            )}
+
+            {/* UpdateBrands component with handleShowUpdatePopup prop */}
+            {isUpdatePopupVisible && (
+              <UpdateTicketPopUp isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshHelpDeskData}/>
             )}
 
       </div>

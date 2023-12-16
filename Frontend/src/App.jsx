@@ -57,7 +57,8 @@ import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
 import Cities from './Pages/AdminPages/MasterData/city/cities';
 import State from './Pages/AdminPages/MasterData/state/state';
 import Country from './Pages/AdminPages/MasterData/country/country';
-import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
+import MemberHelpDesk from "./Pages/MemberPages/MemberHelpDesk/MemberHelpDesk";
+import SubscribedGTIN from "./Pages/MemberPages/SubscribedGTIN/SubscribedGTIN";
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -132,7 +133,8 @@ const App = () => {
                           <Route path="bank-slip" element={<BankSlip />} />
 
                           <Route path="transaction-history" element={<TransactionHistory />} />
-                          {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
+                          <Route path="member-helpdesk" element={<MemberHelpDesk />} />
+                          <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
 
 
                         </Routes>
@@ -199,7 +201,6 @@ const App = () => {
                             <Route path="Cities" element={<Cities />} />   
                             <Route path="State" element={<State />} /> 
                             <Route path="Country" element={<Country />} /> 
-                            <Route path="crnumber" element={<Crnumber />} />
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
