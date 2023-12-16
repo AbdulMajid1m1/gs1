@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 
-const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
-    const [name, setName] = useState("");
-    const [state_id, setstate_id] = useState("");
+const Addcrnumber = ({ isVisible, setVisibility, refreshBrandData }) => {
+    const [cr, setcr] = useState('');
+    const [activity, setactivity] = useState('');
+    const [status, setstatus] = useState('');
     
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -14,12 +15,13 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
-      const response = await newRequest.post('/address/createCities/', {
-        name: name,
-        state_id: state_id,
+      const response = await newRequest.post('/crs/', {
+        cr: cr,
+        activity: activity,
+        status: Number(status),
       });
 
-      toast.success(`name ${name} has been added successfully.`, {
+      toast.success(`cr ${cr} has been added successfully.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -64,27 +66,38 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
                            <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add City</h2>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Cr number</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">City name</label>
+                                 <label htmlFor="field1" className="text-secondary">cr</label>
                                  <input
                                    type="text"
-                                   id="name"
-                                   value={name}
-                                   onChange={(e) => setName(e.target.value)}
-                                   placeholder="Enter City Name "
+                                   id="cr"
+                                   value={cr}
+                                   onChange={(e) => setcr(e.target.value)}
+                                   placeholder="Enter cr "
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">state id</label>
+                                 <label htmlFor="field1" className="text-secondary">activity</label>
                                  <input
                                    type="text"
-                                   id="state_id"
-                                   value={state_id}
-                                   onChange={(e) => setstate_id(e.target.value)}
+                                   id="activity"
+                                   value={activity}
+                                   onChange={(e) => setactivity(e.target.value)}
+                                   placeholder="Enter activity "
+                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                 />
+                                  </div>
+                                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                 <label htmlFor="field1" className="text-secondary">status</label>
+                                 <input
+                                   type="number"
+                                   id="status"
+                                   value={status}
+                                   onChange={(e) => setstatus(e.target.value)}
                                    placeholder="Enter state id "
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
@@ -104,7 +117,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  onClick={handleAddCompany}
                                  className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                >
-                                 Add City
+                                 Add Cr number
                                </button>
                              </div>
                            </form>
@@ -117,4 +130,4 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
   )
 }
 
-export default AddCity
+export default Addcrnumber

@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 // import profileICon from "../../../Images/profileICon.png"
 import DataTable from '../../../../components/Datatable/Datatable'
 import { useNavigate } from 'react-router-dom'
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
 import { city, paymentSlipColumn } from '../../../../utils/datatablesource'
@@ -12,13 +14,13 @@ import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
 import {toast} from 'react-toastify';
 import AddCity from './AddCity';
-
+import Updatecity from './updatecity';
 const Cities = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-
+const [brandsData, setBrandsData] = useState([]);
 
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 
@@ -26,7 +28,14 @@ const Cities = () => {
       setCreatePopupVisibility(true);
     };
 
-    
+    const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+
+      const handleShowUpdatePopup = (row) => {
+        setUpdatePopupVisibility(true);
+        // console.log(row)
+        // save this row data in session storage 
+        sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+      };
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
@@ -71,79 +80,74 @@ const Cities = () => {
     //   console.log(response.data);
       
     // });
-
+const handleDelete = async (row) => {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover this User Account!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it',
+          // changes the color of the confirm button to red
+          confirmButtonColor: '#1E3B8B',
+          cancelButtonColor: '#FF0032',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const isDeleted = await newRequest.delete("/address/deleteCities/" + row?.id);
+              if (isDeleted) {
+                toast.success('City deleted successfully', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+  
+                
+                // filter out the deleted user from the data
+                const filteredData = brandsData.filter((item) => item?.id !== row?.id);
+                setBrandsData(filteredData);
+                
+              } else {
+                // Handle any additional logic if the user was not deleted successfully
+                toast.error('Failed to delete user', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+  
+              }
+            } catch (error) {
+              // Handle any error that occurred during the deletion
+              console.error("Error deleting user:", error);
+              toast.error('Something went wrong while deleting user', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            return;
+          }
+        });
+    };
     const handleView = (row) => {
         console.log(row);
     }
-const handleAddCompany = async () => {
-      const { value: formValues } = await Swal.fire({
-        title: 'Create Cities',
-        html:
-          '<input id="name" class="swal2-input" placeholder="name">' +
-          '<input id="state_id" class="swal2-input" placeholder="state id">' ,
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create Cities',
-          confirmButtonAriaLabel: 'Create',
-          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
-          cancelButtonAriaLabel: 'Cancel',  
-          confirmButtonColor: '#021F69',
-
-        preConfirm: () => {
-          return {
-            name: document.getElementById('name').value,
-            state_id: document.getElementById('state_id').value,
-          };
-        },
-        inputValidator: (form) => {
-          if (!form.name  || !form.state_id  ) {
-            return 'All Input field is required';
-          }
-        },
-      });
-  
-      if (!formValues) {
-        return; // Cancelled or invalid input
-      }
-  
-      const { name, state_id,country_code_numeric3,country_name } = formValues;
-  
-      try {
-        // Send a request to your API to add the company
-        const response = await newRequest.post('/address/createCities/', {
-          name: name,
-          state_id: state_id,
-        });
-  
-        toast.success(`name ${name} with state_id "${state_id}" has been added successfully.`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-
-        });
-
-        console.log(response.data);
-  
-      } catch (error) {
-        toast.error(error?.response?.data?.error || 'Error', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        console.log(error);
-      }
-    };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -195,6 +199,28 @@ const handleAddCompany = async () => {
                         ),
                         action: handleView,
                         },
+{
+                                    label: "Edit",
+                                    icon: (
+                                        <EditIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleShowUpdatePopup,
+                                },
+                                {
+                                    label: "Delete",
+                                    icon: (
+                                        <DeleteIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleDelete,
+                                },
 
                     ]}
                     uniqueId="gtinMainTableId"
@@ -211,7 +237,10 @@ const handleAddCompany = async () => {
              {isCreatePopupVisible && (
                     <AddCity isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
                   )}
-
+{/* Updatecity component with handleShowUpdatePopup prop */}
+                  {isUpdatePopupVisible && (
+                    <Updatecity isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
 
         </div>
     </div>

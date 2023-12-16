@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 
-const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
-    const [name, setName] = useState("");
-    const [state_id, setstate_id] = useState("");
+const AdddcpType = ({ isVisible, setVisibility, refreshBrandData }) => {
+    const [gcp_code, setgcp_code] = useState("");
+    const [gcp_description, setgcp_description] = useState("");
     
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -14,12 +14,12 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
-      const response = await newRequest.post('/address/createCities/', {
-        name: name,
-        state_id: state_id,
+      const response = await newRequest.post('/creategpctype', {
+        gcp_code: gcp_code,
+         gcp_description: gcp_description,
       });
 
-      toast.success(`name ${name} has been added successfully.`, {
+      toast.success(`gcp_code ${gcp_code} has been added successfully.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -64,28 +64,28 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
                            <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add City</h2>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add GCP Type</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">City name</label>
+                                 <label htmlFor="field1" className="text-secondary">GCP Code</label>
                                  <input
                                    type="text"
-                                   id="name"
-                                   value={name}
-                                   onChange={(e) => setName(e.target.value)}
-                                   placeholder="Enter City Name "
+                                   id="gcp_code"
+                                   value={gcp_code}
+                                   onChange={(e) => setgcp_code(e.target.value)}
+                                   placeholder="Enter gcp_code "
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">state id</label>
+                                 <label htmlFor="field1" className="text-secondary">gcp description</label>
                                  <input
                                    type="text"
-                                   id="state_id"
-                                   value={state_id}
-                                   onChange={(e) => setstate_id(e.target.value)}
-                                   placeholder="Enter state id "
+                                   id="gcp_description"
+                                   value={gcp_description}
+                                   onChange={(e) => setgcp_description(e.target.value)}
+                                   placeholder="Enter gcp description "
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -104,7 +104,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  onClick={handleAddCompany}
                                  className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                >
-                                 Add City
+                                 Add gcp
                                </button>
                              </div>
                            </form>
@@ -117,4 +117,4 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
   )
 }
 
-export default AddCity
+export default AdddcpType

@@ -385,6 +385,11 @@ const RegisteredMembersView = () => {
                               id="Email" 
                                 label="Email"
                                   variant="outlined" 
+                                  value={gs1MemberData?.email}
+                                  InputLabelProps={{
+                                      shrink: Boolean(gs1MemberData?.email),
+                                          style: { fontSize: gs1MemberData?.email ? '16px' : '16px', zIndex: '0' },
+                              }}
                             />
                         </div>
                     </div>

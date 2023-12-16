@@ -10,18 +10,36 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {toast} from 'react-toastify';
-
+import Addcountryofsale from './addcounrtyofsale';
+import Updatecountryofsale from './updatecountryofsale';
 const CountryofSales = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    
+    const [brandsData, setBrandsData] = useState([]);
+  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+    const handleShowCreatePopup = () => {
+      setCreatePopupVisibility(true);
+    };
+   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+
+      const handleShowUpdatePopup = (row) => {
+        setUpdatePopupVisibility(true);
+        // console.log(row)
+        // save this row data in session storage 
+        sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+      };
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
+  
+  
       useEffect(() => {
       const fetchData = async () => {
         try {
@@ -40,90 +58,86 @@ const CountryofSales = () => {
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
-    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
-    //   const response = await newRequest.get("/bankslip",);
-    //   return response?.data || [];
-    //   console.log(response.data);
-      
-    // });
+     const refreshcitiesData = async () => {
+      try {
+        const response = await newRequest.get("/getAllcountryofsale",);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
 
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
     const handleView = (row) => {
         console.log(row);
     }
-const handleAddCompany = async () => {
-      const { value: formValues } = await Swal.fire({
-        title: 'Create Country of Sales',
-        html:
-          '<input id="Alpha2" class="swal2-input" placeholder="Alpha2">' +
-          '<input id="Alpha3" class="swal2-input" placeholder="Alpha3">' +
-          '<input id="country_code_numeric3" class="swal2-input" placeholder="country code">' +
-          '<input id="country_name" class="swal2-input" placeholder="country name">',
+const handleDelete = async (row) => {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover this User Account!',
+          icon: 'warning',
           showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create Country of Sales',
-          confirmButtonAriaLabel: 'Create',
-          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
-          cancelButtonAriaLabel: 'Cancel',  
-          confirmButtonColor: '#021F69',
-
-        preConfirm: () => {
-          return {
-            Alpha2: document.getElementById('Alpha2').value,
-            Alpha3: document.getElementById('Alpha3').value,
-            country_code_numeric3: document.getElementById('country_code_numeric3').value,
-            country_name: document.getElementById('country_name').value,
-          };
-        },
-        inputValidator: (form) => {
-          if (!form.Alpha2  || !form.Alpha3  || !form.country_code_numeric3  || !form.country_name ) {
-            return 'All Input field is required';
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it',
+          // changes the color of the confirm button to red
+          confirmButtonColor: '#1E3B8B',
+          cancelButtonColor: '#FF0032',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const isDeleted = await newRequest.delete("/deletecountryofsale/" + row?.id);
+              if (isDeleted) {
+                toast.success('country of sale deleted successfully', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+  
+                
+                // filter out the deleted user from the data
+                const filteredData = brandsData.filter((item) => item?.id !== row?.id);
+                setBrandsData(filteredData);
+                
+              } else {
+                // Handle any additional logic if the user was not deleted successfully
+                toast.error('Failed to delete user', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+  
+              }
+            } catch (error) {
+              // Handle any error that occurred during the deletion
+              console.error("Error deleting user:", error);
+              toast.error('Something went wrong while deleting user', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            return;
           }
-        },
-      });
-  
-      if (!formValues) {
-        return; // Cancelled or invalid input
-      }
-  
-      const { Alpha2, Alpha3,country_code_numeric3,country_name } = formValues;
-  
-      try {
-        // Send a request to your API to add the company
-        const response = await newRequest.post('/createcountryofsale/', {
-          Alpha2: Alpha2,
-          Alpha3: Alpha3,
-          country_code_numeric3: country_code_numeric3, // You may want to modify this based on your requirements
-          country_name: country_name,
         });
-  
-        toast.success(`Alpha2 ${Alpha2} with Alpha3 "${Alpha3}" has been added successfully.`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-
-        });
-
-        console.log(response.data);
-  
-      } catch (error) {
-        toast.error(error?.response?.data?.error || 'Error', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        console.log(error);
-      }
     };
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
@@ -171,7 +185,7 @@ const handleAddCompany = async () => {
                         {/* </div> */}
 <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                         <button
-                          onClick={handleAddCompany}
+                          onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
                         </button>
@@ -198,6 +212,28 @@ const handleAddCompany = async () => {
                         ),
                         action: handleView,
                         },
+{
+                                    label: "Edit",
+                                    icon: (
+                                        <EditIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleShowUpdatePopup,
+                                },
+                                {
+                                    label: "Delete",
+                                    icon: (
+                                        <DeleteIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleDelete,
+                                },
 
                     ]}
                     uniqueId="gtinMainTableId"
@@ -209,8 +245,15 @@ const handleAddCompany = async () => {
               </div>
             </div>
       
+{/* Addcountryofsale component with handleShowCreatePopup prop */}
+             {isCreatePopupVisible && (
+                    <Addcountryofsale isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
 
-
+        {/* Updatecountryofsale component with handleShowUpdatePopup prop */}
+                  {isUpdatePopupVisible && (
+                    <Updatecountryofsale isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
         </div>
     </div>
   )
