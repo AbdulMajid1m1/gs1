@@ -18,6 +18,7 @@ import capture from '../../Images/capture.png';
 import transactionhistory from '../../Images/transactionhistory.png';
 import share from '../../Images/share.png';
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png';
+import helpdesk1 from '../../Images/helpdesk1.png';
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -394,6 +395,23 @@ const SideBar = () => {
               alt=""
             />
             <p className="sidebar-text">Profile</p>
+          </div>
+
+
+          <div
+            className={`main-images-container ${selectedItem === '/member/member-helpdesk' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/member/member-helpdesk')}
+            onContextMenu={(event) =>
+              handleContextMenu(event, '/member/member-helpdesk')
+            }
+
+          >
+            <img
+              src={helpdesk1}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">Help Desk</p>
           </div>
 
 

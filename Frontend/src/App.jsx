@@ -132,6 +132,7 @@ const App = () => {
                           <Route path="bank-slip" element={<BankSlip />} />
 
                           <Route path="transaction-history" element={<TransactionHistory />} />
+                          {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
 
                         </Routes>
