@@ -6,7 +6,7 @@ import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
 import { useNavigate } from 'react-router-dom'
-import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn } from '../../../../utils/datatablesource'
+import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn } from '../../../../utils/datatablesource'
 import newRequest from '../../../../utils/userRequest'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,49 +29,7 @@ const RegisteredMembersView = () => {
   
   
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([
-        {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-          {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-          {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-          {
-            product_id: 'Initial Product ID',
-            productnameenglish: 'Initial Product Name',
-            BrandName: 'Initial Brand',
-            qrcode: 'Initial QRCode',
-            barcode: 'Initial Barcode',
-            product_url: 'http://example.com/initial',
-            product_link_url: 'http://example.com/link/initial',
-            status: 'Initial Status',
-          },
-    
-    ]);
+    const [data, setData] = useState([]);
     const [brandsData, setBrandsData] = useState([]);
 
     const [membersDocuemtsData, setMembersDocumentsData] = useState([
@@ -142,6 +100,22 @@ const RegisteredMembersView = () => {
         }
     };
 
+
+    const fetchFinanceData = async () => {
+      try {
+        const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
+
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+          }
+      };
+
+      fetchFinanceData();
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -794,8 +768,8 @@ const RegisteredMembersView = () => {
                         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                           >
                        <DataTable data={data} 
-                            title="Member Documents"
-                            columnsName={GtinColumn}
+                            title="Finance"
+                            columnsName={financeColumn}
                                 loading={isLoading}
                                 secondaryColor="secondary"
                                 handleRowClickInParent={handleRowClickInParent}

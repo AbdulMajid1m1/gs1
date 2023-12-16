@@ -326,15 +326,15 @@ export const ShipmentRequestColumns = [
     headerName: 'Date Time',
     width: 180,
     renderCell: params => {
-      const dateObject = new Date (params.value); // Assuming the datetime is in a format recognizable by JavaScript's Date constructor
-      return new Intl.DateTimeFormat ('en-US', {
+      const dateObject = new Date(params.value); // Assuming the datetime is in a format recognizable by JavaScript's Date constructor
+      return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
         month: 'short',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-      }).format (dateObject);
+      }).format(dateObject);
     },
   },
 ];
@@ -362,8 +362,8 @@ export const ShipmentDocColumns = [
     headerName: 'Document',
     width: 180,
     renderCell: params => {
-      console.log ('params');
-      console.log (params);
+      console.log('params');
+      console.log(params);
 
       return (
         <InsertDriveFileIcon
@@ -942,7 +942,7 @@ export const GtinColumn = [
     width: 180,
     renderCell: params => {
       let url = params.value;
-      if (!url.startsWith ('http://') && !url.startsWith ('https://')) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
       }
       return (
@@ -958,7 +958,7 @@ export const GtinColumn = [
     width: 200,
     renderCell: params => {
       let url = params.value;
-      if (!url.startsWith ('http://') && !url.startsWith ('https://')) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
       }
       return (
@@ -1069,9 +1069,9 @@ export const Gs1AllMembers = [
       <div
         style={{
           padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'active' ? 'green' : 'red',
           color: params.row.status === 'active' ? 'green' : 'red',
@@ -1352,11 +1352,23 @@ export const Gs1AllMembers = [
     field: 'created_at',
     headerName: 'CREATED AT',
     width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'UPDATED AT',
     width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'gcpGLNID',
@@ -1496,10 +1508,10 @@ export const MembersBrandsColumn = [
     renderCell: params => (
       <div
         style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
+          padding: '3px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'active' ? 'green' : 'red',
           color: params.row.status === 'active' ? 'green' : 'red',
@@ -1518,11 +1530,23 @@ export const MembersBrandsColumn = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 
@@ -1555,9 +1579,9 @@ export const AdminBrandsColumn = [
       <div
         style={{
           padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'active' ? 'green' : 'red',
           color: params.row.status === 'active' ? 'green' : 'red',
@@ -1576,11 +1600,23 @@ export const AdminBrandsColumn = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 
@@ -1593,7 +1629,14 @@ export const paymentSlipColumn = [
   {
     field: 'created_at',
     headerName: 'Created At',
+    // make it date time type
+    type: 'dateTime',
+
     width: 180,
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'deleted_at',
@@ -1696,6 +1739,12 @@ export const paymentSlipColumn = [
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'user_id',
@@ -1705,7 +1754,7 @@ export const paymentSlipColumn = [
 ];
 
 export const masterDataColumn = [
-  
+
   {
     field: 'unit_code',
     headerName: 'Unit Code',
@@ -1734,7 +1783,7 @@ export const masterDataColumn = [
 ];
 
 export const document = [
-  
+
   {
     field: 'name',
     headerName: 'name',
@@ -1758,7 +1807,7 @@ export const document = [
   },
 ];
 export const product_packaging = [
-  
+
   {
     field: 'name',
     headerName: 'name',
@@ -1782,7 +1831,7 @@ export const product_packaging = [
   },
 ];
 export const Other_Products = [
-  
+
   {
     field: 'product_name',
     headerName: 'product_name',
@@ -1831,7 +1880,7 @@ export const Other_Products = [
   },
 ];
 export const Gcp_types = [
-  
+
   {
     field: 'gcp_code',
     headerName: 'gcp_code',
@@ -1855,7 +1904,7 @@ export const Gcp_types = [
   },
 ];
 export const counrty_sales = [
- 
+
   {
     field: 'Alpha2',
     headerName: 'Alpha2',
@@ -1888,7 +1937,7 @@ export const counrty_sales = [
   },
 ];
 export const city = [
- 
+
   {
     field: 'name',
     headerName: 'name',
@@ -1899,7 +1948,7 @@ export const city = [
     headerName: 'state_id',
     width: 180,
   },
- 
+
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -1912,7 +1961,7 @@ export const city = [
   },
 ];
 export const state = [
- 
+
   {
     field: 'name',
     headerName: 'name',
@@ -1923,7 +1972,7 @@ export const state = [
     headerName: 'country_id',
     width: 180,
   },
- 
+
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -1936,7 +1985,7 @@ export const state = [
   },
 ];
 export const country__ = [
- 
+
   {
     field: 'name_en',
     headerName: 'name_en',
@@ -1969,7 +2018,7 @@ export const country__ = [
   },
 ];
 export const Hs_code = [
- 
+
   {
     field: 'CNKEY',
     headerName: 'CNKEY',
@@ -2002,7 +2051,7 @@ export const Hs_code = [
   },
 ];
 export const unspcs_ = [
-  
+
   {
     field: 'commodity',
     headerName: 'commodity',
@@ -2034,3 +2083,229 @@ export const unspcs_ = [
     width: 180,
   },
 ];
+
+
+
+
+export const financeColumn = [
+  {
+    field: 'id',
+    headerName: 'ID',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'cart_items',
+    headerName: 'Cart Items',
+    width: 180,
+  },
+  {
+    field: 'total',
+    headerName: 'Total',
+    width: 180,
+  },
+  // {
+  //   field: 'documents',
+  //   headerName: 'Documents',
+  //   width: 180,
+  // },
+  {
+    field: 'documents',
+    headerName: 'Documents',
+    width: 180,
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+    renderEditCell: (params) =>
+      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+    editable: true,
+    type: "string",
+  },
+  {
+    field: 'request_type',
+    headerName: 'Request Type',
+    width: 180,
+  },
+  {
+    field: 'payment_type',
+    headerName: 'Payment Type',
+    width: 180,
+  },
+  {
+    field: 'user_id',
+    headerName: 'User ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'deleted_at',
+    headerName: 'Deleted At',
+    width: 180,
+  },
+  {
+    field: 'reject_reason',
+    headerName: 'Reject Reason',
+    width: 180,
+  },
+  {
+    field: 'reject_by',
+    headerName: 'Reject By',
+    width: 180,
+  },
+  {
+    field: 'receipt',
+    headerName: 'Receipt',
+    width: 180,
+  },
+  // {
+  //   field: 'receipt_path',
+  //   headerName: 'Receipt Path',
+  //   width: 180,
+  // },
+  {
+    field: 'receipt_path',
+    headerName: 'Receipt Path',
+    width: 180,
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+    renderEditCell: (params) =>
+      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+    editable: true,
+    type: "string",
+  },
+  {
+    field: 'admin_id',
+    headerName: 'Admin ID',
+    width: 180,
+  },
+  {
+    field: 'assign_to',
+    headerName: 'Assign To',
+    width: 180,
+  },
+  {
+    field: 'discount',
+    headerName: 'Discount',
+    width: 180,
+  },
+];
+
+
+
+

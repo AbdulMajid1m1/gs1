@@ -180,7 +180,7 @@ const RegisteredMembers = () => {
 
 
       const handleStatusChange = async (selectedUser) => {
-        const statusOptions = ["active", "suspended", "inactive", "reject"];
+        const statusOptions = ["active", "suspend", "inactive", "reject"];
         const initialStatus = selectedUser.status;
         console.log(initialStatus);
     
@@ -207,10 +207,10 @@ const RegisteredMembers = () => {
           return;
         }
     
-        if (selectedStatus === 'reject') {
-          handleReject(selectedUser); // Handle "reject" action
-          return;
-        }
+        // if (selectedStatus === 'reject') {
+        //   handleReject(selectedUser); // Handle "reject" action
+        //   return;
+        // }
     
     
         if (selectedStatus === initialStatus) {
@@ -229,9 +229,10 @@ const RegisteredMembers = () => {
         }
     
         try {
-          const res = await newRequest.put(
-            `/users/${selectedUser.id}`,
+          const res = await newRequest.post(
+            '/users/updateUserStatus',
             {
+              userId : selectedUser.id,
               status: selectedStatus,
             }
           );  
