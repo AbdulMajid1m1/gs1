@@ -31,7 +31,7 @@ const handleUpdateBrand = async () => {
       country_id: Number(country_id),
     });
 
-    toast.success(response?.data?.message || 'Status updated successfully', {
+    toast.success(response?.data?.message || 'State updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

@@ -37,7 +37,7 @@ const handleUpdateBrand = async () => {
     
     });
 
-    toast.success(response?.data?.message || 'Status updated successfully', {
+    toast.success(response?.data?.message || 'unspcs updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

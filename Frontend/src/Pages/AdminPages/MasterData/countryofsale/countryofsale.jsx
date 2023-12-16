@@ -77,7 +77,7 @@ const CountryofSales = () => {
 const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
-          text: 'You will not be able to recover this User Account!',
+          text: 'You will not be able to recover this counrty of sale!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, delete it!',
