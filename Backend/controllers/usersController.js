@@ -2,7 +2,7 @@ import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import { generateStrongPassword } from '../utils/functions/commonFunction.js';
-import { sendOTPEmail } from '../services/emailTemplates.js';
+import { sendEmail, sendOTPEmail } from '../services/emailTemplates.js';
 import bcrypt from 'bcryptjs';
 import QRCode from 'qrcode';
 import { fileURLToPath } from 'url'; // Import the fileURLToPath function
@@ -13,9 +13,10 @@ import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
 import pdf from 'html-pdf';
 import fsSync from 'fs';
-import { BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../configs/envConfig.js';
+import { ADMIN_EMAIL, BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../configs/envConfig.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
 import { cookieOptions } from '../utils/authUtilities.js';
+import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -633,11 +634,29 @@ export const updateUserStatus = async (req, res, next) => {
                     });
 
                     if (product) {
-                        // Update user and gtin_products
+
+                        // Generate gcpGLNID and GLN
+                        const gcpGLNID = `628${product.gcp_start_range}`;
+                        const gln = generateGTIN13(gcpGLNID);
+
+                        // Calculate expiry date (1 year from now)
+                        let expiryDate = new Date();
+                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+
+                        // Update user with new information
                         userUpdateResult = await prisma.users.update({
                             where: { id: userId },
-                            data: { gcpGLNID: `628${product.gcp_start_range}` }
+                            data: {
+                                gcpGLNID: gcpGLNID,
+                                gln: gln,
+                                gcp_expiry: expiryDate,
+                                remarks: 'Registered',
+                                payment_status: 1,
+                                status: status
+                            }
                         });
+
 
                         await prisma.gtin_products.update({
                             where: { id: product.id },
@@ -670,14 +689,44 @@ export const updateUserStatus = async (req, res, next) => {
                 });
             }
 
+
             return userUpdateResult;
         });
+
+        // Send an email based on the updated status
+        await sendStatusUpdateEmail(updatedUser.email, updatedUser.status);
 
         res.json(updatedUser);
     } catch (error) {
         console.log(error);
         next(error);
     }
+};
+
+// Function to send status update email
+const sendStatusUpdateEmail = async (userEmail, status) => {
+    let subject, emailContent;
+
+    switch (status) {
+        case 'active':
+            subject = 'Your Gs1Ksa member Account is Now Active';
+            emailContent = '<p>Your account has been activated. You can now access all the features.</p>';
+            break;
+        case 'inactive':
+            subject = 'Your Gs1Ksa member Account is Inactive';
+            emailContent = '<p>Your account is currently inactive. Please contact support for more details.</p>';
+            break;
+        // Add more cases for other statuses
+        default:
+            subject = 'Your Gs1Ksa member Account Status Updated';
+            emailContent = `<p>Your account status has been updated to: ${status}.</p>`;
+    }
+
+    await sendEmail({
+        toEmail: userEmail,
+        subject: subject,
+        htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`
+    });
 };
 
 
@@ -804,21 +853,71 @@ export const getCarts = async (req, res, next) => {
 
 
 
+// export const updateCartReceipt = async (req, res, next) => {
+//     // Validate body data
+//     const schema = Joi.object({
+//         transaction_id: Joi.string().required(),
+
+//     });
+
+//     const { error, value } = schema.validate(req.body);
+
+//     if (error) {
+//         return next(createError(400, error.details[0].message));
+//     }
+
+//     // Get uploaded receipt image
+//     const uploadedImage = req.files.receipt;
+
+//     if (!uploadedImage) {
+//         return next(createError(400, 'Receipt image is required'));
+//     }
+
+//     const imageFile = uploadedImage[0];
+//     const imageName = imageFile.filename;
+//     imageFile.destination = imageFile.destination.replace('public', '');
+//     const imagePath = path.join(imageFile.destination, imageName);
+//     // remove the public from the path
+
+//     // Find cart based on transaction ID
+//     const cart = await prisma.carts.findFirst({
+//         where: { transaction_id: value.transaction_id },
+//     });
+
+//     if (!cart) {
+//         return next(createError(404, 'Cart not found'));
+//     }
+
+//     // Update cart with receipt information
+//     const updatedCart = await prisma.carts.update({
+//         where: { id: cart.id },
+//         data: {
+//             receipt: imageName,
+//             receipt_path: imagePath,
+//         },
+//     });
+
+//     res.status(200).json({
+//         message: 'Receipt uploaded and cart updated successfully.',
+//         updatedCart: updatedCart,
+//     });
+// };
+
+
 export const updateCartReceipt = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
         transaction_id: Joi.string().required(),
+        user_id: Joi.string().required(),
     });
 
     const { error, value } = schema.validate(req.body);
-
     if (error) {
         return next(createError(400, error.details[0].message));
     }
 
     // Get uploaded receipt image
     const uploadedImage = req.files.receipt;
-
     if (!uploadedImage) {
         return next(createError(400, 'Receipt image is required'));
     }
@@ -827,19 +926,21 @@ export const updateCartReceipt = async (req, res, next) => {
     const imageName = imageFile.filename;
     imageFile.destination = imageFile.destination.replace('public', '');
     const imagePath = path.join(imageFile.destination, imageName);
-    // remove the public from the path
 
-    // Find cart based on transaction ID
-    const cart = await prisma.carts.findFirst({
-        where: { transaction_id: value.transaction_id },
-    });
+    // Use Prisma's transaction method
+    const [cart, user] = await prisma.$transaction([
+        prisma.carts.findFirst({ where: { transaction_id: value.transaction_id } }),
+        prisma.users.findUnique({ where: { id: value.user_id } })
+    ]);
 
     if (!cart) {
         return next(createError(404, 'Cart not found'));
     }
+    if (!user) {
+        return next(createError(404, 'User not found'));
+    }
 
-    // Update cart with receipt information
-    const updatedCart = await prisma.carts.update({
+    await prisma.carts.update({
         where: { id: cart.id },
         data: {
             receipt: imageName,
@@ -847,8 +948,26 @@ export const updateCartReceipt = async (req, res, next) => {
         },
     });
 
+    // Enhanced email template
+    const emailTemplate = `
+        <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+            <h2 style="color: black;">Bank Slip Uploaded</h2>
+
+            <p>The company <strong>${user.company_name_eng}</strong> has uploaded a bank slip for the transaction with ID: <strong>${value.transaction_id}</strong>.</p>
+            <p>Please review the uploaded document at your earliest convenience.</p>
+            <p>Gs1Ksa</p>
+            <img src="${BACKEND_URL}/gs1Images/backend/logo/service_default_image.jpeg" alt="GS1 Logo" style="width: 150px; height: auto;"/>
+        </div>
+    `;
+
+    await sendEmail({
+        toEmail: ADMIN_EMAIL, // Replace with the admin's email address
+        subject: 'New Bank Slip Uploaded',
+        htmlContent: emailTemplate,
+    });
+
     res.status(200).json({
         message: 'Receipt uploaded and cart updated successfully.',
-        updatedCart: updatedCart,
+        updatedCart: cart,
     });
 };

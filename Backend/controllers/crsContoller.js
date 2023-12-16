@@ -160,7 +160,7 @@ export const updateCrs = async (req, res, next) => {
     try {
 
         const schema = Joi.object({
-            id: Joi.number().integer().required(),
+            id: Joi.string().required(),
         });
         const { error: idError } = schema.validate(req.params);
         if (idError) {
@@ -176,7 +176,7 @@ export const updateCrs = async (req, res, next) => {
 
         const { cr, activity, status } = req.body;
         const updatedCrs = await prisma.crs.update({
-            where: { id: parseInt(id) },
+            where: { id: id },
             data: {
                 cr,
                 activity,
@@ -204,7 +204,7 @@ export const deleteCrs = async (req, res, next) => {
         const { id } = req.params;
         // You can add validation for the ID here if needed
         await prisma.crs.delete({
-            where: { id: parseInt(id) },
+            where: { id: id },
         });
         return res.json({ message: 'CR deleted successfully' });
     } catch (error) {

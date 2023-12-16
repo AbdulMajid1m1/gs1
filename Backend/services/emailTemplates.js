@@ -48,3 +48,42 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
         }
     });
 }
+
+
+
+export const sendEmail = async ({
+    fromEmail = process.env.EMAIL,
+    toEmail,
+    subject,
+    htmlContent,
+    attachments = []
+}) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.GMAIL_USERNAME,
+                    pass: process.env.GMAIL_PASSWORD
+                }
+            });
+
+            const mailOptions = {
+                from: `Gs1Ksa <${fromEmail}>`,
+                to: toEmail,
+                subject: subject,
+                html: htmlContent,
+                attachments: attachments.map(attachment => ({
+                    filename: attachment.filename,
+                    content: attachment.content,
+                    contentType: attachment.contentType
+                }))
+            };
+
+            await transporter.sendMail(mailOptions);
+            resolve({ success: true, message: 'Email sent successfully!' });
+        } catch (error) {
+            reject({ success: false, message: 'Error in sending email', error: error });
+        }
+    });
+}
