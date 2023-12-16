@@ -258,7 +258,7 @@ const RegisteredMembersView = () => {
                 </div>
             </div>
             
-                <div className='flex justify-center items-center'>
+                <div className='flex justify-center items-center bg-[#DAF2EE]'>
                     <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-start items-center px-10">
                         <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">GS1 Member Details</p>
                     </div>
