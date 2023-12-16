@@ -122,6 +122,31 @@ app.get('/render', async (req, res) => {
     res.render('pdf/customInvoice', { data });
 });
 
+app.get('/renderCertificate', (req, res) => {
+    const BACKEND_URL = 'http://localhost:3000'; // Adjust this URL as needed
+
+    const currentDate = {
+        day: new Date().getDate(),
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+    };
+
+    const memberData = {
+        company_name_eng: 'Sample Company',
+        gln: '1234567890123',
+        companyID: '1234567890',
+        // ... more data ...
+    };
+
+    const general = {
+        logo: 'company_logo.png',
+        // ... more data ...
+    };
+
+    res.render('pdf/certificate', { BACKEND_URL, currentDate, memberData, general });
+});
+
+
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong!";

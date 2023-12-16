@@ -743,6 +743,20 @@ const AdminSideBar = () => {
                   />
                   <p className="sidebar-text">Country</p>
               </div>
+              <div 
+                  className={`main-images-container ${selectedItem === '/admin/crnumber' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/crnumber')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/crnumber')
+                  }
+                  >
+                  <img
+                    src={frontend}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">crnumber</p>
+              </div>
               </div>
               )}
 
