@@ -57,6 +57,7 @@ import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
 import Cities from './Pages/AdminPages/MasterData/city/cities';
 import State from './Pages/AdminPages/MasterData/state/state';
 import Country from './Pages/AdminPages/MasterData/country/country';
+import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -197,6 +198,7 @@ const App = () => {
                             <Route path="Cities" element={<Cities />} />   
                             <Route path="State" element={<State />} /> 
                             <Route path="Country" element={<Country />} /> 
+                            <Route path="crnumber" element={<Crnumber />} />
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>

@@ -1984,6 +1984,39 @@ export const state = [
     width: 180,
   },
 ];
+export const crnumber__ = [
+
+  {
+    field: 'cr',
+    headerName: 'cr',
+    width: 180,
+  },
+  {
+    field: 'activity',
+    headerName: 'activity',
+    width: 180,
+  },
+ {
+    field: 'status',
+    headerName: 'status',
+    width: 180,
+  },
+  {
+    field: 'isRegistered',
+    headerName: 'isRegistered',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+  },
+];
 export const country__ = [
 
   {
