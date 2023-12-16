@@ -415,6 +415,23 @@ const SideBar = () => {
           </div>
 
 
+          <div
+            className={`main-images-container ${selectedItem === '/member/subscribed-gtin' ? 'selected-item' : ''}`}
+            onClick={() => handleItemClick('/member/subscribed-gtin')}
+            onContextMenu={(event) =>
+              handleContextMenu(event, '/member/subscribed-gtin')
+            }
+
+          >
+            <img
+              src={helpdesk1}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">Subscribed GTIN</p>
+          </div>
+
+
           {/* Implement Any Icon above the Hide Icons */}
           <div className="main-images-container-hide">
             <img src={internal} className="main-inside-image" alt="" />

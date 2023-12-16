@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import './TicketPopUp.css'
 
-const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
+const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [companyName, setCompanyName] = useState("");
     const [companyNameArabic, setCompanyNameArabic] = useState("");
     // get the sesstion data
@@ -15,7 +15,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [loading, setLoading] = useState(false);
 
     
-    const handleCloseCreatePopup = () => {
+    const handleCloseUpdatePopup = () => {
         setVisibility(false);
       };
     
@@ -76,7 +76,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
                            <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Create Ticket</h2>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Ticket</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                  <label htmlFor="field1" className="text-secondary">Title<span className='text-red-600'> *</span></label>
@@ -85,7 +85,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                    id="field1"
                                    value={companyName}
                                    onChange={(e) => setCompanyName(e.target.value)}
-                                   placeholder="Enter Title"
+                                   placeholder="Sample ticket"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -97,7 +97,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                    id="field2"
                                    value={companyNameArabic}
                                    onChange={(e) => setCompanyNameArabic(e.target.value)}
-                                   placeholder="Enter Description"
+                                   placeholder="problem issue need to solve"
                                    className="border-1 w-full h-28 rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -122,7 +122,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                <button
                                  type="button"
                                  className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                                 onClick={handleCloseCreatePopup}
+                                 onClick={handleCloseUpdatePopup}
                                >
                                  Close
                                </button>
@@ -154,4 +154,4 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   )
 }
 
-export default CreateTicketPopUp
+export default UpdateTicketPopUp
