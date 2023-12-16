@@ -57,6 +57,7 @@ import UNSPCS from './Pages/AdminPages/MasterData/UNSPCS/UNSPCS';
 import Cities from './Pages/AdminPages/MasterData/city/cities';
 import State from './Pages/AdminPages/MasterData/state/state';
 import Country from './Pages/AdminPages/MasterData/country/country';
+import MemberHelpDesk from "./Pages/MemberPages/MemberHelpDesk/MemberHelpDesk";
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -131,6 +132,7 @@ const App = () => {
                           <Route path="bank-slip" element={<BankSlip />} />
 
                           <Route path="transaction-history" element={<TransactionHistory />} />
+                          <Route path="member-helpdesk" element={<MemberHelpDesk />} />
 
 
                         </Routes>

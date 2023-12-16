@@ -156,7 +156,8 @@ const BankSlip = () => {
                         {memberData.payment_status === 0 && memberData.status !== 1 && (
                         <Autocomplete
                             id="translate"
-                            options={[translationID]}
+                            // options={[translationID]}
+                            options={[{ transaction_id: memberData?.transaction_id }]}
                             value={selectedTranslationID}
                             getOptionLabel={(option) => option?.transaction_id || ''}
                             onChange={handleTranslationID}
