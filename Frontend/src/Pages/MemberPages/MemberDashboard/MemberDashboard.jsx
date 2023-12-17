@@ -7,6 +7,8 @@ import barcoderemain from '../../../Images/barcoderemain.png'
 import dashboardchart from '../../../Images/dashboardchart.png'
 
 const MemberDashboard = () => {
+  const memberData = JSON.parse(sessionStorage.getItem('memberData'));
+  console.log('memberData', memberData);
   return (
     <div>
        <div className="h-full sm:ml-72 bg-slate-100">
@@ -20,8 +22,8 @@ const MemberDashboard = () => {
             <div className="h-auto w-full px-5 py-4 bg-[#225BED] rounded-md">
               <div className='w-full flex justify-between items-center'>
                 <div className='w-full flex flex-col gap-1'>
-                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: 62810000032</p>
-                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>Member ID: 3998</p>
+                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: {memberData?.gcpGLNID}</p>
+                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>Member ID: <span>{memberData?.memberID}</span></p>
                 </div>
 
                 <div className='w-full flex flex-col gap-1 justify-end items-end'>
