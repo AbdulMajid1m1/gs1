@@ -59,6 +59,8 @@ import State from './Pages/AdminPages/MasterData/state/state';
 import Country from './Pages/AdminPages/MasterData/country/country';
 import MemberHelpDesk from "./Pages/MemberPages/MemberHelpDesk/MemberHelpDesk";
 import SubscribedGTIN from "./Pages/MemberPages/SubscribedGTIN/SubscribedGTIN";
+import MemberData from "./Pages/MemberPages/MemberData/MemberData";
+import MemberCrNumber from "./Pages/MemberPages/MemberCrNumber/MemberCrNumber";
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -135,6 +137,9 @@ const App = () => {
                           <Route path="transaction-history" element={<TransactionHistory />} />
                           <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                           <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
+
+                          <Route path="member-data" element={<MemberData />} />
+                          <Route path="member-crnumber" element={<MemberCrNumber />} />
 
 
                         </Routes>
