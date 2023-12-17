@@ -53,36 +53,36 @@ const RegisteredMembersView = () => {
 
     ]);
 
-    useEffect(() => {
-      const fetchMemberBrandData = async () => {
-        try {
-          const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+    // useEffect(() => {
+    //   const fetchMemberBrandData = async () => {
+    //     try {
+    //       const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
           
-          console.log(response.data);
+    //       console.log(response.data);
     
-          // Assuming the API response contains an array of documents
-          const documents = response?.data.map(item => item.documents);
+    //       // Assuming the API response contains an array of documents
+    //       const documents = response?.data.map(item => item.documents);
     
-          // Update the invoice section in the state with the documents from the API response
-          setMembersDocumentsData(prevState => [
-            ...prevState.slice(0, 2),  // Keep the first two items unchanged
-            {
-              type: 'invoice',
-              document: documents.join(', '),  // Join multiple documents if there are more than one
-              date: gs1MemberData?.created_at,
-            },
-            ...prevState.slice(3),  // Keep the remaining items unchanged
-          ]);
+    //       // Update the invoice section in the state with the documents from the API response
+    //       setMembersDocumentsData(prevState => [
+    //         ...prevState.slice(0, 2),  // Keep the first two items unchanged
+    //         {
+    //           type: 'invoice',
+    //           document: documents.join(', '),  // Join multiple documents if there are more than one
+    //           date: gs1MemberData?.created_at,
+    //         },
+    //         ...prevState.slice(3),  // Keep the remaining items unchanged
+    //       ]);
     
-          setIsLoading(false);
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false);
-        }
-      };
+    //       setIsLoading(false);
+    //     } catch (err) {
+    //       console.log(err);
+    //       setIsLoading(false);
+    //     }
+    //   };
     
-      fetchMemberBrandData();
-    }, [gs1MemberData?.id]);  // Dependencies for the useEffect
+    //   fetchMemberBrandData();
+    // }, [gs1MemberData?.id]);  // Dependencies for the useEffect
     
     
     useEffect(() => {
