@@ -6,7 +6,7 @@ import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
 import { useNavigate } from 'react-router-dom'
-import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn } from '../../../../utils/datatablesource'
+import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn, memberHistoryColumnData, submenusDataColumn } from '../../../../utils/datatablesource'
 import newRequest from '../../../../utils/userRequest'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -51,6 +51,35 @@ const RegisteredMembersView = () => {
           
 
 
+    ]);
+
+    const [subMenusData, setSubMenusData] = useState([
+        {
+            name: 'Mohamed Matrudi',
+            email: 'hasnainbangash03@gmail.com',
+            Registered_Date: '12/12/2021',
+            Code: '123456789',
+            member_type: 'Member',
+            Status: 'Active',
+            action: 'View',
+        },
+        {
+          name: 'Mohamed Matrudi',
+          email: 'hasnainbangash03@gmail.com',
+          Registered_Date: '12/12/2021',
+          Code: '123456789',
+          member_type: 'Member',
+          Status: 'Active',
+          action: 'View',
+      },
+    ]);
+
+    const [memberHistoryData, setMemberHistoryData] = useState([
+        {
+            transaction_id: '123456789',
+            Operation_date: '12/12/2021',
+            created_by: 'Mohamed Matrudi',
+        }
     ]);
 
     // useEffect(() => {
@@ -468,7 +497,7 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="crDocuments" 
                                         label="CR Documents"
@@ -479,24 +508,7 @@ const RegisteredMembersView = () => {
                                                 style: { fontSize: gs1MemberData?.cr_documentID ? '16px' : '16px', zIndex: '0' },
                                     }}
                                     />
-                            </div>
-                       </div>
-                    
-
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                            <TextField 
-                                id="crNumber" 
-                                label="CR Document Number"
-                                    variant="outlined" 
-                                    value={gs1MemberData?.document_number}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                               style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
-                                    }}
-                                />
-                            </div>
-
+                            </div> */}
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="companyNameEnglish" 
@@ -509,6 +521,24 @@ const RegisteredMembersView = () => {
                                 }}
                                 />
                             </div>
+                       </div>
+                    
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="crNumber" 
+                                label="CR Document Number"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.document_number}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                                    }}
+                                />
+                            </div> */}
+
+                            
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
@@ -522,11 +552,8 @@ const RegisteredMembersView = () => {
                                     }}
                                     />
                             </div>
-                       </div>
-                    
 
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="companyGCP" 
                                 label="Company GCP"
@@ -552,6 +579,11 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
+                       </div>
+                    
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="mobileNo" 
@@ -564,11 +596,8 @@ const RegisteredMembersView = () => {
                                     }}
                                     />
                             </div>
-                       </div>
 
-
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="memberID" 
                                 label="Member ID"
@@ -594,7 +623,12 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                       </div>
+
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        
+                            <div className="w-[32.5%] font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="membershipType" 
                                         label="Membership Type"
@@ -609,7 +643,7 @@ const RegisteredMembersView = () => {
                        </div>
                     
 
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                       {/* <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
                         <div className="w-[32.5%] font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="GTIN" 
@@ -623,9 +657,9 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
                            
-                       </div>
+                       </div> */}
 
-                    <div className='flex justify-end'>
+                    <div className='flex justify-end mt-5'>
                         {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                         <button
                            onClick={handleShowCreatePopup} 
@@ -767,7 +801,9 @@ const RegisteredMembersView = () => {
                             <p className='text-blue-500 font-sans font-semibold'>Member Documents</p>
                             <button 
                               // onClick={handleShowCreatePopup}
-                              className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Add</button>
+                              className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
+                              <i className="fas fa-plus mr-1"></i>Add
+                            </button>
                         </div>
                         
                         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
@@ -801,6 +837,93 @@ const RegisteredMembersView = () => {
                      </div>
                    </div>
                  </div>
+
+
+
+                 {/* Sub-menus */}
+                 <div className='flex justify-center items-center bg-[#DAF2EE]'>
+                   <div className="h-auto w-[97%] px-0 pt-4">
+                     <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+                        
+                        <div className='flex justify-between'>
+                            <p className='text-blue-500 font-sans font-semibold'>Sub-Members</p>
+                            <button 
+                              // onClick={handleShowCreatePopup}
+                              className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
+                              <i className="fas fa-plus mr-1"></i>Add
+                            </button>
+                        </div>
+                        
+                        <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                          >
+                       <DataTable2 data={subMenusData} 
+                            title="Sub-Members"
+                            columnsName={submenusDataColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+                     </div>
+                   </div>
+                 </div>
+
+
+                 {/* Member History */}
+                 <div className='flex justify-center items-center bg-[#DAF2EE]'>
+                   <div className="h-auto w-[97%] px-0 pt-4">
+                     <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md mb-6">
+                          
+                        <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-20px' }}
+                          >
+                       <DataTable data={memberHistoryData} 
+                            title="Member History"
+                            columnsName={memberHistoryColumnData}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+                     </div>
+                   </div>
+                 </div>
+
 
 
                    {/* AddBrands component with handleShowCreatePopup prop */}

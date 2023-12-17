@@ -201,69 +201,6 @@ const GetBarcode = () => {
   }, 400);
 
 
-  const handleAddCR = async () => {
-    const { value: formValues } = await Swal.fire({
-      title: 'Add CR',
-      html:
-        '<input id="crNumber" class="swal2-input" placeholder="CR Number">' +
-        '<input id="crActivity" class="swal2-input" placeholder="CR Activity">',
-      showCancelButton: true,
-      focusConfirm: false,
-      preConfirm: () => {
-        return {
-          crNumber: document.getElementById('crNumber').value,
-          crActivity: document.getElementById('crActivity').value,
-        };
-      },
-      inputValidator: (form) => {
-        if (!form.crNumber || !form.crActivity) {
-          return 'CR Number and Activity are required';
-        }
-      },
-    });
-
-    if (!formValues) {
-      return; // Cancelled or invalid input
-    }
-
-    const { crNumber, crActivity } = formValues;
-
-    try {
-      // Send a request to your API to add the CR number and activity
-      const response = await newRequest.post('/crs', {
-        cr: crNumber,
-        activity: crActivity,
-        status: 1, // i pass this status in hardcoded
-      });
-
-      toast.success(`CR Number ${crNumber} with activity "${crActivity}" has been added successfully.`, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-    } catch (error) {
-      toast.error('Failed to add CR Number. Please try again.', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-    }
-  };
-
-
-
 
   return (
     <div>

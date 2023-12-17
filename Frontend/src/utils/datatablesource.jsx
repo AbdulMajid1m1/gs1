@@ -2408,3 +2408,66 @@ export const subscribedGtinColumn = [
 
 
 ]
+
+
+
+
+export const submenusDataColumn = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'Registered_Date',
+    headerName: 'Registered Date',
+    width: 180,
+  },
+  {
+    field: 'Code',
+    headerName: 'Code',
+    width: 180,
+  },
+  {
+    field: 'member_type',
+    headerName: 'Member Type',
+    width: 180,
+  },
+  {
+    field: 'Status',
+    headerName: 'Status',
+    width: 180,
+  },
+
+
+
+]
+
+
+
+export const memberHistoryColumnData = [
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'Operation_date',
+    headerName: 'Operation date',
+    width: 180,
+  },
+  {
+    field: 'created_by',
+    headerName: 'Created by',
+    width: 180,
+  },
+  
+
+
+
+]
