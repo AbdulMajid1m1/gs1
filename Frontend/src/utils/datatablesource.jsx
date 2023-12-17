@@ -2471,3 +2471,32 @@ export const memberHistoryColumnData = [
 
 
 ]
+
+
+
+export const registeredmemberColumn = [
+  {
+    field: 'product_name',
+    headerName: 'Product Name',
+    width: 180,
+  },
+  {
+    field: 'transaction_date',
+    headerName: 'Transaction date',
+    width: 180,
+  },
+  {
+    field: 'registration_date',
+    headerName: 'Registration date',
+    width: 180,
+  },
+  {
+    field: 'expiry_date',
+    headerName: 'Expiry date',
+    width: 180,
+  },
+  
+
+
+
+]

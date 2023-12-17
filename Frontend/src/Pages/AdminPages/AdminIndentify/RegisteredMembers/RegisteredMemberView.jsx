@@ -6,7 +6,7 @@ import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
 import { useNavigate } from 'react-router-dom'
-import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn, memberHistoryColumnData, submenusDataColumn } from '../../../../utils/datatablesource'
+import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn, memberHistoryColumnData, registeredmemberColumn, submenusDataColumn } from '../../../../utils/datatablesource'
 import newRequest from '../../../../utils/userRequest'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -80,6 +80,15 @@ const RegisteredMembersView = () => {
             Operation_date: '12/12/2021',
             created_by: 'Mohamed Matrudi',
         }
+    ]);
+
+    const [registeredProductsData, setRegisteredProductsData] = useState([
+        {
+            product_name: 'Product Name',
+            transaction_date: '12/12/2021',
+            registration_date: '12/12/2021',
+            expiry_date: '12/12/2021',
+        },
     ]);
 
     // useEffect(() => {
@@ -659,17 +668,60 @@ const RegisteredMembersView = () => {
                            
                        </div> */}
 
-                    <div className='flex justify-end mt-5'>
-                        {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
-                        <button
-                           onClick={handleShowCreatePopup} 
+
+                      {/* Registered Products */}
+                      <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                          >
+                       <DataTable data={registeredProductsData} 
+                            title="Registered Products"
+                            columnsName={registeredmemberColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+                                actionColumnVisibility={false}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+
+                    <div className='flex justify-between w-full mt-10'>
+                        <div className='w-full flex justify-end px-6'>
+                          {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                          <button
+                            //  onClick={handleShowCreatePopup} 
                             className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                        >
-                            Add
-                        </button>
+                            >
+                              Add
+                          </button>
+                        </div>
+
+                        <div className='w-full flex justify-end px-6'>
+                          <button
+                            onClick={handleShowCreatePopup} 
+                            className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                            >
+                              Add
+                          </button>
+                        </div>
                     </div>
                         
-                       
+                      
                      <div className='flex gap-5 flex-wrap'>
                         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                         className='sm:w-[50%] w-full'
@@ -797,8 +849,8 @@ const RegisteredMembersView = () => {
                    <div className="h-auto w-[97%] px-0 pt-4">
                      <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
                         
-                        <div className='flex justify-between'>
-                            <p className='text-blue-500 font-sans font-semibold'>Member Documents</p>
+                        <div className='flex justify-end'>
+                            {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                             <button 
                               // onClick={handleShowCreatePopup}
                               className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
