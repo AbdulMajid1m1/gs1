@@ -757,6 +757,20 @@ const AdminSideBar = () => {
                   />
                   <p className="sidebar-text">Cr Number</p>
               </div>
+              <div 
+                  className={`main-images-container ${selectedItem === '/admin/documenttype' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/documenttype')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/documenttype')
+                  }
+                  >
+                  <img
+                    src={frontend}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Document Type</p>
+              </div>
               </div>
               )}
 

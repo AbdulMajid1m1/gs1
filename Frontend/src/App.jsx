@@ -60,6 +60,7 @@ import Country from './Pages/AdminPages/MasterData/country/country';
 import MemberHelpDesk from "./Pages/MemberPages/MemberHelpDesk/MemberHelpDesk";
 import SubscribedGTIN from "./Pages/MemberPages/SubscribedGTIN/SubscribedGTIN";
 import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
+import DocumentType from './Pages/AdminPages/MasterData/documentype/documenttype';
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -202,7 +203,8 @@ const App = () => {
                             <Route path="Cities" element={<Cities />} />   
                             <Route path="State" element={<State />} /> 
                             <Route path="Country" element={<Country />} /> 
-                             <Route path="crnumber" element={<Crnumber />} /> 
+                            <Route path="crnumber" element={<Crnumber />} />
+                            <Route path="documenttype" element={<DocumentType />} /> 
                         </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>

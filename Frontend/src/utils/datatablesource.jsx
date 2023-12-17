@@ -2017,6 +2017,29 @@ export const crnumber__ = [
     width: 180,
   },
 ];
+export const document_type = [
+
+  {
+    field: 'file_name',
+    headerName: 'file_name',
+    width: 180,
+  },
+ {
+    field: 'status',
+    headerName: 'status',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+  },
+];
 export const country__ = [
 
   {
