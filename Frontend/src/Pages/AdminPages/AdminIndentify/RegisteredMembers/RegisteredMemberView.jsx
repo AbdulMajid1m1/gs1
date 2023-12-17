@@ -6,7 +6,7 @@ import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
 import { useNavigate } from 'react-router-dom'
-import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn } from '../../../../utils/datatablesource'
+import { GtinColumn, MembersBrandsColumn, MembersDocumentColumn, financeColumn, memberHistoryColumnData, registeredmemberColumn, submenusDataColumn } from '../../../../utils/datatablesource'
 import newRequest from '../../../../utils/userRequest'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -53,36 +53,74 @@ const RegisteredMembersView = () => {
 
     ]);
 
-    useEffect(() => {
-      const fetchMemberBrandData = async () => {
-        try {
-          const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
-          
-          console.log(response.data);
-    
-          // Assuming the API response contains an array of documents
-          const documents = response?.data.map(item => item.documents);
-    
-          // Update the invoice section in the state with the documents from the API response
-          setMembersDocumentsData(prevState => [
-            ...prevState.slice(0, 2),  // Keep the first two items unchanged
-            {
-              type: 'invoice',
-              document: documents.join(', '),  // Join multiple documents if there are more than one
-              date: gs1MemberData?.created_at,
-            },
-            ...prevState.slice(3),  // Keep the remaining items unchanged
-          ]);
-    
-          setIsLoading(false);
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false);
+    const [subMenusData, setSubMenusData] = useState([
+        {
+            name: 'Mohamed Matrudi',
+            email: 'hasnainbangash03@gmail.com',
+            Registered_Date: '12/12/2021',
+            Code: '123456789',
+            member_type: 'Member',
+            Status: 'Active',
+            action: 'View',
+        },
+        {
+          name: 'Mohamed Matrudi',
+          email: 'hasnainbangash03@gmail.com',
+          Registered_Date: '12/12/2021',
+          Code: '123456789',
+          member_type: 'Member',
+          Status: 'Active',
+          action: 'View',
+      },
+    ]);
+
+    const [memberHistoryData, setMemberHistoryData] = useState([
+        {
+            transaction_id: '123456789',
+            Operation_date: '12/12/2021',
+            created_by: 'Mohamed Matrudi',
         }
-      };
+    ]);
+
+    const [registeredProductsData, setRegisteredProductsData] = useState([
+        {
+            product_name: 'Product Name',
+            transaction_date: '12/12/2021',
+            registration_date: '12/12/2021',
+            expiry_date: '12/12/2021',
+        },
+    ]);
+
+    // useEffect(() => {
+    //   const fetchMemberBrandData = async () => {
+    //     try {
+    //       const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+          
+    //       console.log(response.data);
     
-      fetchMemberBrandData();
-    }, [gs1MemberData?.id]);  // Dependencies for the useEffect
+    //       // Assuming the API response contains an array of documents
+    //       const documents = response?.data.map(item => item.documents);
+    
+    //       // Update the invoice section in the state with the documents from the API response
+    //       setMembersDocumentsData(prevState => [
+    //         ...prevState.slice(0, 2),  // Keep the first two items unchanged
+    //         {
+    //           type: 'invoice',
+    //           document: documents.join(', '),  // Join multiple documents if there are more than one
+    //           date: gs1MemberData?.created_at,
+    //         },
+    //         ...prevState.slice(3),  // Keep the remaining items unchanged
+    //       ]);
+    
+    //       setIsLoading(false);
+    //     } catch (err) {
+    //       console.log(err);
+    //       setIsLoading(false);
+    //     }
+    //   };
+    
+    //   fetchMemberBrandData();
+    // }, [gs1MemberData?.id]);  // Dependencies for the useEffect
     
     
     useEffect(() => {
@@ -468,7 +506,7 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="crDocuments" 
                                         label="CR Documents"
@@ -479,24 +517,7 @@ const RegisteredMembersView = () => {
                                                 style: { fontSize: gs1MemberData?.cr_documentID ? '16px' : '16px', zIndex: '0' },
                                     }}
                                     />
-                            </div>
-                       </div>
-                    
-
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                            <TextField 
-                                id="crNumber" 
-                                label="CR Document Number"
-                                    variant="outlined" 
-                                    value={gs1MemberData?.document_number}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                               style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
-                                    }}
-                                />
-                            </div>
-
+                            </div> */}
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="companyNameEnglish" 
@@ -509,6 +530,24 @@ const RegisteredMembersView = () => {
                                 }}
                                 />
                             </div>
+                       </div>
+                    
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <TextField 
+                                id="crNumber" 
+                                label="CR Document Number"
+                                    variant="outlined" 
+                                    value={gs1MemberData?.document_number}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                                    }}
+                                />
+                            </div> */}
+
+                            
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
@@ -522,11 +561,8 @@ const RegisteredMembersView = () => {
                                     }}
                                     />
                             </div>
-                       </div>
-                    
 
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="companyGCP" 
                                 label="Company GCP"
@@ -552,6 +588,11 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
+                       </div>
+                    
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="mobileNo" 
@@ -564,11 +605,8 @@ const RegisteredMembersView = () => {
                                     }}
                                     />
                             </div>
-                       </div>
 
-
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="memberID" 
                                 label="Member ID"
@@ -594,7 +632,12 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                       </div>
+
+
+                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                        
+                            <div className="w-[32.5%] font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="membershipType" 
                                         label="Membership Type"
@@ -609,7 +652,7 @@ const RegisteredMembersView = () => {
                        </div>
                     
 
-                       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                       {/* <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
                         <div className="w-[32.5%] font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                                 id="GTIN" 
@@ -623,19 +666,62 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
                            
-                       </div>
+                       </div> */}
 
-                    <div className='flex justify-end'>
-                        {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
-                        <button
-                           onClick={handleShowCreatePopup} 
+
+                      {/* Registered Products */}
+                      <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                          >
+                       <DataTable data={registeredProductsData} 
+                            title="Registered Products"
+                            columnsName={registeredmemberColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+                                actionColumnVisibility={false}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+
+                    <div className='flex justify-between w-full mt-10'>
+                        <div className='w-full flex justify-end px-6'>
+                          {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                          <button
+                            //  onClick={handleShowCreatePopup} 
                             className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                        >
-                            Add
-                        </button>
+                            >
+                              Add
+                          </button>
+                        </div>
+
+                        <div className='w-full flex justify-end px-6'>
+                          <button
+                            onClick={handleShowCreatePopup} 
+                            className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                            >
+                              Add
+                          </button>
+                        </div>
                     </div>
                         
-                       
+                      
                      <div className='flex gap-5 flex-wrap'>
                         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                         className='sm:w-[50%] w-full'
@@ -763,11 +849,13 @@ const RegisteredMembersView = () => {
                    <div className="h-auto w-[97%] px-0 pt-4">
                      <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
                         
-                        <div className='flex justify-between'>
-                            <p className='text-blue-500 font-sans font-semibold'>Member Documents</p>
+                        <div className='flex justify-end'>
+                            {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                             <button 
                               // onClick={handleShowCreatePopup}
-                              className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Add</button>
+                              className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
+                              <i className="fas fa-plus mr-1"></i>Add
+                            </button>
                         </div>
                         
                         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
@@ -801,6 +889,93 @@ const RegisteredMembersView = () => {
                      </div>
                    </div>
                  </div>
+
+
+
+                 {/* Sub-menus */}
+                 <div className='flex justify-center items-center bg-[#DAF2EE]'>
+                   <div className="h-auto w-[97%] px-0 pt-4">
+                     <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+                        
+                        <div className='flex justify-between'>
+                            <p className='text-blue-500 font-sans font-semibold'>Sub-Members</p>
+                            <button 
+                              // onClick={handleShowCreatePopup}
+                              className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
+                              <i className="fas fa-plus mr-1"></i>Add
+                            </button>
+                        </div>
+                        
+                        <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                          >
+                       <DataTable2 data={subMenusData} 
+                            title="Sub-Members"
+                            columnsName={submenusDataColumn}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+                     </div>
+                   </div>
+                 </div>
+
+
+                 {/* Member History */}
+                 <div className='flex justify-center items-center bg-[#DAF2EE]'>
+                   <div className="h-auto w-[97%] px-0 pt-4">
+                     <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md mb-6">
+                          
+                        <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-20px' }}
+                          >
+                       <DataTable data={memberHistoryData} 
+                            title="Member History"
+                            columnsName={memberHistoryColumnData}
+                                loading={isLoading}
+                                secondaryColor="secondary"
+                                handleRowClickInParent={handleRowClickInParent}
+
+                            dropDownOptions={[
+                                {
+                                label: "View",
+                                icon: (
+                                    <VisibilityIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleView,
+                                },
+
+                            ]}
+                            uniqueId="gtinMainTableId"
+
+                            />
+                          </div>
+
+                     </div>
+                   </div>
+                 </div>
+
 
 
                    {/* AddBrands component with handleShowCreatePopup prop */}

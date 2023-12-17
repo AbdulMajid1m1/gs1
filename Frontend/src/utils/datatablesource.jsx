@@ -1276,33 +1276,33 @@ export const Gs1AllMembers = [
     editable: true,
     type: "string",
   },
-  {
-    field: 'address_image',
-    headerName: 'ADDRESS IMAGE',
-    width: 180,
-  },
   // {
-  //   field: "address_image",
-  //   headerName: "ADDRESS IMAGE",
-  //   width: 220,
-  //   editable: true,
-  //   renderCell: (params) => (
-  //     <img
-  //       src={imageLiveUrl(params.row.address_image)}
-  //       // src={backendUrl + "/" + params.row.address_image}
-  //       alt="address_image"
-  //       style={{
-  //         width: '90%',
-  //         height: '90%',
-  //         objectFit: 'contain',
-  //         cursor: 'pointer'
-  //       }}
-  //       onClick={() => {
-  //         window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
-  //       }}
-  //     />
-  //   )
+  //   field: 'address_image',
+  //   headerName: 'ADDRESS IMAGE',
+  //   width: 180,
   // },
+  {
+    field: "address_image",
+    headerName: "ADDRESS IMAGE",
+    width: 220,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.address_image)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
   {
     field: 'payment_type',
     headerName: 'PAYMENT TYPE',
@@ -2557,6 +2557,99 @@ export const subscribedGtinColumn = [
     headerName: 'Expiry date',
     width: 180,
   },
+
+
+
+]
+
+
+
+
+
+export const submenusDataColumn = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'Registered_Date',
+    headerName: 'Registered Date',
+    width: 180,
+  },
+  {
+    field: 'Code',
+    headerName: 'Code',
+    width: 180,
+  },
+  {
+    field: 'member_type',
+    headerName: 'Member Type',
+    width: 180,
+  },
+  {
+    field: 'Status',
+    headerName: 'Status',
+    width: 180,
+  },
+
+
+
+]
+
+
+
+export const memberHistoryColumnData = [
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'Operation_date',
+    headerName: 'Operation date',
+    width: 180,
+  },
+  {
+    field: 'created_by',
+    headerName: 'Created by',
+    width: 180,
+  },
+  
+
+
+
+]
+
+
+
+export const registeredmemberColumn = [
+  {
+    field: 'product_name',
+    headerName: 'Product Name',
+    width: 180,
+  },
+  {
+    field: 'transaction_date',
+    headerName: 'Transaction date',
+    width: 180,
+  },
+  {
+    field: 'registration_date',
+    headerName: 'Registration date',
+    width: 180,
+  },
+  {
+    field: 'expiry_date',
+    headerName: 'Expiry date',
+    width: 180,
+  },
+  
 
 
 

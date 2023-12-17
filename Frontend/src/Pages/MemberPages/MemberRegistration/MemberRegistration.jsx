@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import PhoneInput from 'react-phone-number-input';
-import "react-phone-number-input/style.css";
-import { Autocomplete, TextField } from '@mui/material';
+// import PhoneInput from 'react-phone-number-input';
+// import "react-phone-number-input/style.css";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { Autocomplete, Button, TextField } from '@mui/material';
 import newRequest from '../../../utils/userRequest';
 import './MemberRegistration.css';
 import Header from '../../../components/Header/Header';
@@ -56,8 +58,6 @@ const MemmberRegisteration = () => {
     const [categories, setCategories] = useState([]);
 
 
-
-
     useEffect(() => {
 
         // Search GPC Api
@@ -108,31 +108,36 @@ const MemmberRegisteration = () => {
 
 
         // all Countries Api
-        const handleGetAllCountries = async () => {
+        const handleCountryAndState = async () => {
             try {
                 const response = await newRequest.get('/address/getAllCountries');
+                const statesData = await newRequest.get(`/address/getAllStates`);
+                const getStatesdata = statesData.data;
                 const data = response.data;
+                
                 const countries = data.map((country) => ({
                     id: country.id,
                     name: country.name_en,
                 }));
+
                 setCountry(countries);
+                setState(getStatesdata);
+                // setCountry(countries);
+                const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
+                setSelectedCountry(defaultCountry);
+                const filteredStates = getStatesdata.filter((state) => state.country_id == defaultCountry?.id);
+                setFilteredStates(filteredStates);
+                
+               
             }
             catch (error) {
                 console.error('Error fetching data:', error);
             }
-        }
-        const handleGetAllStates = async () => {
-            try {
-                const response = await newRequest.get(`/address/getAllStates`);
-                const data = response.data;
+          
 
-                setState(data);
-            }
-            catch (error) {
-                console.error('Error fetching states:', error);
-            }
         }
+
+      
         const handleGetAllCities = async () => {
             try {
                 const response = await newRequest.get(`/address/getAllCities`);
@@ -148,12 +153,14 @@ const MemmberRegisteration = () => {
         // handleGetAllActivities();
         fetchIndustryTypes();
         fetchCategories()
-        handleGetAllCountries();
-        handleGetAllStates();
+        // handleGetAllCountries();
+        // handleGetAllStates();
+        handleCountryAndState();
         handleGetAllCities();
         handleOtherProductsData();
 
     }, []);
+
 
 
     const [filteredStates, setFilteredStates] = useState([]);
@@ -203,14 +210,14 @@ const MemmberRegisteration = () => {
         // setSelectProducts(joinedNames);
 
         // // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
-        // const selectedGLN = value.find(
-        //     (option) =>
-        //         option.product_name === 'GLN ( 20 Locations)' ||
-        //         option.product_name === 'GLN ( 10 Locations)' ||
-        //         option.product_name === 'GLN (30 Locations)'
-        // );
+        const selectedGLN = value.find(
+            (option) =>
+                option.product_name === 'GLN ( 20 Locations)' ||
+                option.product_name === 'GLN ( 10 Locations)' ||
+                option.product_name === 'GLN (30 Locations)'
+        );
 
-        // setSelectedGLNOption(selectedGLN);
+        setSelectedGLNOption(selectedGLN);
         setSelectedOtherProducts(value);
 
     };
@@ -270,8 +277,19 @@ const MemmberRegisteration = () => {
         setSelectedImage(event.target.files[0]);
     };
 
+    const [errorMessage, setErrorMessage] = useState('');
     const handleDocUpload = (event) => {
-        setUpload(event.target.files[0]);
+        // setUpload(event.target.files[0]);
+        const file = event.target.files[0];
+        if (file) {
+          if (file.size <= 500 * 1024) {
+              setUpload(file);
+              setErrorMessage(''); // Clear any previous error message
+          } else {
+              setErrorMessage('File size should be 500KB or less');
+              event.target.value = null;
+            }
+        }
     };
 
     const handleSubmit = (e) => {
@@ -459,6 +477,7 @@ const MemmberRegisteration = () => {
     }, [selectedCategories]);
 
 
+    // console.log("company", companyLandLine)
 
     return (
         <div>
@@ -588,7 +607,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline<span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm '>
-                                    <PhoneInput
+                                    {/* <PhoneInput
                                         international
                                         defaultCountry="SA"
                                         value={companyLandLine}
@@ -608,8 +627,25 @@ const MemmberRegisteration = () => {
                                             padding: '2px',
                                             marginBottom: '3px',
                                         }}
-                                    />
-
+                                    /> */}
+                                    <PhoneInput
+                                        international
+                                        country={'sa'}
+                                        defaultCountry={'sa'}
+                                        value={companyLandLine}
+                                        // onChange={setCompanyLandLine}
+                                        onChange={(e) => setCompanyLandLine(e)}
+                                        inputProps={{
+                                            id: 'mobile',
+                                            placeholder: 'Company Landline',
+                                        }}
+                                        
+                                        inputStyle={{
+                                            width: '100%',
+                                            borderRadius: '0px',
+                                            border: 'none'
+                                        }}
+                                        />
 
                                 </div>
                             </div>
@@ -617,9 +653,10 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Mobile Number <span>(Omit Zero)</span><span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm'>
-                                    <PhoneInput
+                                    {/* <PhoneInput
                                         international
-                                        defaultCountry="SA"
+                                        country={'sa'}
+                                        defaultCountry={'sa'}
                                         value={mobileNumber}
                                         onChange={setMobileNumber}
                                         containerStyle={{
@@ -637,7 +674,25 @@ const MemmberRegisteration = () => {
                                             padding: '2px',
                                             marginBottom: '3px',
                                         }}
-                                    />
+                                    /> */}
+                                     <PhoneInput
+                                        international
+                                        country={'sa'}
+                                        defaultCountry={'sa'}
+                                        value={mobileNumber}
+                                        onChange={setMobileNumber}
+                                        // onChange={(e) => setCompanyLandLine(e)}
+                                        inputProps={{
+                                            id: 'mobile',
+                                            placeholder: 'Mobile Number',
+                                        }}
+                                        
+                                        inputStyle={{
+                                            width: '100%',
+                                            borderRadius: '0px',
+                                            border: 'none',
+                                        }}
+                                        />
 
 
                                 </div>
@@ -1013,6 +1068,9 @@ const MemmberRegisteration = () => {
                                     type='file' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
                         </div>
+                        {errorMessage && (
+                            <p className='text-red-600'>{errorMessage}</p>
+                        )}
 
 
                         <div>
@@ -1041,8 +1099,8 @@ const MemmberRegisteration = () => {
                                             {selectedOtherProducts.map((item, index) => (
                                                 <tr key={index}>
                                                     <td>{item.product_name}</td>
+                                                    <td>0</td>
                                                     <td>{item.price}</td>
-                                                    <td>If there's a yearly fee for other products, display here</td>
                                                     <td>{item.price}</td>
                                                 </tr>
                                             ))}
@@ -1070,6 +1128,7 @@ const MemmberRegisteration = () => {
                                         // onChange={(e) => setLocationArabic(e.target.value)}
                                         id='radio'
                                         placeholder='radio'
+                                        defaultChecked
                                         type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
                                     <p className='text-secondary font-semibold'>Bank Transfer</p>
                                 </div>
@@ -1077,7 +1136,7 @@ const MemmberRegisteration = () => {
                             </div>
                         </div>
 
-                        <button onClick={handleSubmit} type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
+                        <button onClick={handleSubmit} type='button' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
                             <i className="fas fa-check-circle mr-1"></i> Submit
                         </button>
 

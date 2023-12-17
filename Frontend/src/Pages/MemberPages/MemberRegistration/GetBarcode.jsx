@@ -7,6 +7,7 @@ import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { debounce } from '@mui/material/utils';
+import AddCrNumber from './AddCrNumber'
 
 const GetBarcode = () => {
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
@@ -21,6 +22,12 @@ const GetBarcode = () => {
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [location, setLocation] = useState(""); // Default to 'Yes
   const abortControllerRef = useRef(null);
+
+  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+
+  const handleShowCreatePopup = () => {
+      setCreatePopupVisibility(true);
+    };
 
 
   const navigate = useNavigate();
@@ -194,69 +201,6 @@ const GetBarcode = () => {
   }, 400);
 
 
-  const handleAddCR = async () => {
-    const { value: formValues } = await Swal.fire({
-      title: 'Add CR',
-      html:
-        '<input id="crNumber" class="swal2-input" placeholder="CR Number">' +
-        '<input id="crActivity" class="swal2-input" placeholder="CR Activity">',
-      showCancelButton: true,
-      focusConfirm: false,
-      preConfirm: () => {
-        return {
-          crNumber: document.getElementById('crNumber').value,
-          crActivity: document.getElementById('crActivity').value,
-        };
-      },
-      inputValidator: (form) => {
-        if (!form.crNumber || !form.crActivity) {
-          return 'CR Number and Activity are required';
-        }
-      },
-    });
-
-    if (!formValues) {
-      return; // Cancelled or invalid input
-    }
-
-    const { crNumber, crActivity } = formValues;
-
-    try {
-      // Send a request to your API to add the CR number and activity
-      const response = await newRequest.post('/crs', {
-        cr: crNumber,
-        activity: crActivity,
-        status: 1, // i pass this status in hardcoded
-      });
-
-      toast.success(`CR Number ${crNumber} with activity "${crActivity}" has been added successfully.`, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-    } catch (error) {
-      toast.error('Failed to add CR Number. Please try again.', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-    }
-  };
-
-
-
 
   return (
     <div>
@@ -403,7 +347,7 @@ const GetBarcode = () => {
                     {/* If nothing is select i show that error */}
 
 
-                    <p onClick={handleAddCR} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
+                    <p onClick={handleShowCreatePopup} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
 
                   </>
                 ) : (
@@ -479,7 +423,11 @@ const GetBarcode = () => {
         </div>
       </div>
 
-
+      
+      {/* AddBrands component with handleShowCreatePopup prop */}
+      {isCreatePopupVisible && (
+          <AddCrNumber isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} />
+      )}
 
       {/* Footer */}
       <Footer />
