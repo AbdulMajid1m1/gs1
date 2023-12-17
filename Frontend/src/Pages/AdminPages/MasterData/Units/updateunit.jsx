@@ -33,7 +33,7 @@ const handleUpdateBrand = async () => {
       status: Number(status),
     });
 
-    toast.success(response?.data?.message || 'Status updated successfully', {
+    toast.success(response?.data?.message || 'units updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

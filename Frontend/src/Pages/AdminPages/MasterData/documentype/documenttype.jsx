@@ -3,35 +3,32 @@ import React, { useContext, useEffect, useState } from 'react'
 // import profileICon from "../../../Images/profileICon.png"
 import DataTable from '../../../../components/Datatable/Datatable'
 import { useNavigate } from 'react-router-dom'
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
-import { Hs_code, paymentSlipColumn } from '../../../../utils/datatablesource'
+import { document_type, paymentSlipColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
-import Addhscode from './addhscode';
-import Updatehscode from './updatehscode';
-const Hscode = () => {
+import {toast} from 'react-toastify';
+import Adddocumenttype from './adddocumenttype';
+import Updatedocumenttype from './updatedocumenttype';
+const DocumentType = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    const [brandsData, setBrandsData] = useState([]);
-    const { rowSelectionModel, setRowSelectionModel,
-      tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
-    const [filteredData, setFilteredData] = useState([]);
-const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+const [brandsData, setBrandsData] = useState([]);
+
+    const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 
     const handleShowCreatePopup = () => {
       setCreatePopupVisibility(true);
-  };
-  
+    };
 
-  const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+    const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
 
       const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
@@ -39,10 +36,14 @@ const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
         // save this row data in session storage 
         sessionStorage.setItem("updateBrandData", JSON.stringify(row));
       };
+    const { rowSelectionModel, setRowSelectionModel,
+      tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+    const [filteredData, setFilteredData] = useState([]);
+
       useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await newRequest.get("/getAllHsCode",);
+          const response = await newRequest.get("/getAlldocumentType",);
           
           console.log(response.data);
           setData(response?.data || []);
@@ -57,15 +58,10 @@ const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
-    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
-    //   const response = await newRequest.get("/bankslip",);
-    //   return response?.data || [];
-    //   console.log(response.data);
-      
-    // });
-const refreshcitiesData = async () => {
+
+    const refreshcitiesData = async () => {
       try {
-        const response = await newRequest.get("/getAllHsCode",);
+        const response = await newRequest.get("/getAlldocumentType",);
         
         console.log(response.data);
         setData(response?.data || []);
@@ -75,11 +71,19 @@ const refreshcitiesData = async () => {
         console.log(err);
         setIsLoading(false)
       }
-  };
-  const handleDelete = async (row) => {
+    };
+
+
+    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
+    //   const response = await newRequest.get("/bankslip",);
+    //   return response?.data || [];
+    //   console.log(response.data);
+      
+    // });
+const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
-          text: 'You will not be able to recover this hs code!',
+          text: 'You will not be able to recover this city!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, delete it!',
@@ -90,9 +94,9 @@ const refreshcitiesData = async () => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              const isDeleted = await newRequest.delete("/deleteHsCode/" + row?.id);
+              const isDeleted = await newRequest.delete("/deletedocumentType/" + row?.id);
               if (isDeleted) {
-                toast.success('HsCode deleted successfully', {
+                toast.success('City deleted successfully', {
                   position: "top-right",
                   autoClose: 2000,
                   hideProgressBar: false,
@@ -144,7 +148,6 @@ const refreshcitiesData = async () => {
     const handleView = (row) => {
         console.log(row);
     }
-
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
           setTableSelectedRows(data)
@@ -159,7 +162,7 @@ const refreshcitiesData = async () => {
         <div className="p-0 h-full sm:ml-72">
             <div>
                 <DashboardRightHeader 
-                    title={'Hs Code'}
+                    title={'Document Type'}
                 />
             </div>
 
@@ -167,29 +170,7 @@ const refreshcitiesData = async () => {
               <div className="h-auto w-[97%] px-0 pt-4">
                 <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-                    {/* Buttons */}
-                    {/* <div className='h-auto w-full shadow-xl'> */}
-                        {/* <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
-                            <button
-                              onClick={() => navigate('/member/bank-slip')}
-                                className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                                 <i className="fas fa-plus mr-1"></i>Update Documents
-                            </button>
-
-                            <button
-                            className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                                 Pendings <i className="fas fa-caret-down ml-1"></i>
-                            </button>
-
-                            <button
-                            className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700"
-                            // onClick={handleExportProducts}
-                            >
-                                 Rejected <i className="fas fa-caret-down ml-1"></i>
-                            </button>
-                          </div> */}
-                        {/* </div> */}
-<div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                  <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                         <button
                           onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
@@ -200,8 +181,8 @@ const refreshcitiesData = async () => {
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                     <DataTable data={data} 
-                      title="Hs Code"
-                       columnsName={Hs_code}
+                      title="Document Type"
+                       columnsName={document_type}
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}
@@ -250,14 +231,15 @@ const refreshcitiesData = async () => {
                 </div>
               </div>
             </div>
-      {/* Addhscode component with handleShowCreatePopup prop */}
-             {isCreatePopupVisible && (
-                    <Addhscode isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
-                  )}
+      
 
-{/* Updatehscode component with handleShowUpdatePopup prop */}
+             {/* Adddocumenttype component with handleShowCreatePopup prop */}
+             {isCreatePopupVisible && (
+                    <Adddocumenttype isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                  )}
+{/* Updatedocumenttype component with handleShowUpdatePopup prop */}
                   {isUpdatePopupVisible && (
-                    <Updatehscode isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                    <Updatedocumenttype isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
                   )}
 
         </div>
@@ -265,4 +247,4 @@ const refreshcitiesData = async () => {
   )
 }
 
-export default Hscode
+export default DocumentType

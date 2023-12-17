@@ -49,6 +49,7 @@ const SideBar = () => {
   const [showFirstData, setShowFirstData] = useState(false);
   const [showSecondData, setShowSecondData] = useState(false);
   const [showThirdData, setShowThirdData] = useState(false);
+  const [showFourthData, setShowFourthData] = useState(false);
   const navigate = useNavigate();
 
 
@@ -379,15 +380,16 @@ const SideBar = () => {
 
 
 
-
-
-          <div
-            className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''}`}
+          {/* className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''}`}
             onClick={() => handleItemClick('/member/member-profile')}
             onContextMenu={(event) =>
               handleContextMenu(event, '/member/member-profile')
-            }
+            } */}
 
+
+          <div
+            className="main-images-container"
+            onClick={() => setShowFourthData(!showFourthData)}   
           >
             <img
               src={profileIcon}
@@ -395,7 +397,70 @@ const SideBar = () => {
               alt=""
             />
             <p className="sidebar-text">Profile</p>
+            {showFourthData ? (
+                <i className='fas fa-solid fa-chevron-up text-white'></i>
+              ) : (
+                <i className='fas fa-solid fa-chevron-down text-white'></i>
+              )}
           </div>
+
+
+          {showFourthData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/member-profile')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/member-profile')
+                  }
+                  >
+                  <img
+                    src={profileIcon}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Member Profile</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/member-data' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/member-data')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/member-data')
+                  }
+                  >
+                  <img
+                    src={profileIcon}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Documents</p>
+                </div>
+
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/member/member-crnumber' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/member/member-crnumber')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/member/member-crnumber')
+                  }
+                  >
+                  <img
+                    src={profileIcon}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Cr Number</p>
+                </div>
+               
+               
+
+              </div>
+              )}
+
 
 
           <div

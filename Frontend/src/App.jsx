@@ -116,6 +116,11 @@ const App = () => {
                               path="upate-gtin-product/:productId"
                               element={<GTINUpdateProducts />}
                             />
+
+<Route path="front-end" element={<Frontend />} />
+                            <Route path="settings" element={<Settings />} />
+                            <Route path="master-data" element={<MasterData />} />
+                            <Route path="reports" element={<Reports />} />
                             <Route
                               path="view-gtin-product/:productId"
                               element={<GTINViewProduct />}
@@ -137,6 +142,9 @@ const App = () => {
                             <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                             <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
                             {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
+
+                          {/* <Route path="member-data" element={<MemberData />} /> */}
+                          {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
 
 
                           </Routes>
@@ -186,7 +194,7 @@ const App = () => {
                             <Route path="help-desk" element={<HelpDesk />} />
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
-
+                          
                             <Route path="front-end" element={<Frontend />} />
                             <Route path="settings" element={<Settings />} />
                             <Route path="master-data" element={<MasterData />} />

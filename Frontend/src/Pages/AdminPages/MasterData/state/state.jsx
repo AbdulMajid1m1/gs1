@@ -78,7 +78,7 @@ const refreshcitiesData = async () => {
   const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
-          text: 'You will not be able to recover this User Account!',
+          text: 'You will not be able to recover this State!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, delete it!',
@@ -91,7 +91,7 @@ const refreshcitiesData = async () => {
             try {
               const isDeleted = await newRequest.delete("/address/deleteStates/" + row?.id);
               if (isDeleted) {
-                toast.success('States deleted successfully', {
+                toast.success('State deleted successfully', {
                   position: "top-right",
                   autoClose: 2000,
                   hideProgressBar: false,
