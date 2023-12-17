@@ -643,7 +643,7 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Other products</p>
+                  <p className="sidebar-text">Other Products</p>
               </div>
                <div 
                   className={`main-images-container ${selectedItem === '/admin/Gcp_type' ? 'selected-item' : ''}`}
@@ -657,7 +657,7 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Gcp type</p>
+                  <p className="sidebar-text">Gcp Type</p>
               </div>
               <div 
                   className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''}`}
@@ -671,7 +671,7 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Country of Sales</p>
+                  <p className="sidebar-text">Country Of Sales</p>
               </div>
                <div 
                   className={`main-images-container ${selectedItem === '/admin/Hscode' ? 'selected-item' : ''}`}
@@ -685,7 +685,7 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Hs code</p>
+                  <p className="sidebar-text">Hs Code</p>
               </div>
                <div 
                   className={`main-images-container ${selectedItem === '/admin/UNSPCS' ? 'selected-item' : ''}`}
@@ -755,7 +755,7 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">crnumber</p>
+                  <p className="sidebar-text">Cr Number</p>
               </div>
               </div>
               )}

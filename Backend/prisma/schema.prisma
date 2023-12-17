@@ -2000,3 +2000,11 @@ model withdraw_logs {
   updated_at          DateTime? @db.DateTime
   WithdrawLogID       Int       @id(map: "PK__withdraw__AD995F8BC87A4506") @default(autoincrement())
 }
+model document_type {
+  id             String    @id @default(cuid())
+  file_name      String?   @db.NVarChar(Max)
+  status         String?   @db.VarChar(10)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  deleted_at     DateTime? @db.DateTime
+}
