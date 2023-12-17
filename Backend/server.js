@@ -115,35 +115,42 @@ app.get('/render', async (req, res) => {
             bank_name: 'Sample Bank',
             bank_swift_code: 'SAMPLEBANK123',
         },
-        BACKEND_URL:BACKEND_URL,
+        BACKEND_URL: BACKEND_URL,
     };
 
     // Render the EJS template with the dummy data
     res.render('pdf/customInvoice', { data });
 });
 
-app.get('/renderCertificate', (req, res) => {
+// Define your API route to render the certificate
+app.get('/renderCertificate', async (req, res) => {
     const BACKEND_URL = 'http://localhost:3000'; // Adjust this URL as needed
-
-    const currentDate = {
-        day: new Date().getDate(),
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
+    const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+    // Define your data object with missing or dynamic data
+    const data = {
+        qrCodeDataURL: qrCodeDataURL,
+        user: {
+            company_name_eng: 'Company Name', // Dummy data, replace with actual user data from your API
+        },
+        general: {
+            gcp_certificate_detail1: ['Global Trade Item Number(GTIN)', 'Certificate Detail 1'], // Dummy data, replace with actual detail data from your API
+            gcp_certificate_detail2: ['Certificate Detail 2','Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
+            gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+        },
+        userData: {
+            gcpGLNID: 'GCP GLN ID', // Dummy data, replace with actual user data from your API
+            gln: 'GLN', // Dummy data, replace with actual user data from your API
+            companyID: 'Company ID', // Dummy data, replace with actual user data from your API
+            gcp_expiry: '2023-12-31', // Dummy data, replace with actual user data from your API
+        },
+        uploadPath: '/your/upload/path/', // Dummy data, replace with actual upload path
+        backendImagePath: '/your/backend/image/path/', // Dummy data, replace with actual backend image path
+        expiryDate: '31-12-2023', // Dummy data, replace with actual user data from your API
+        explodeGPCCode: [1, 2]
     };
 
-    const memberData = {
-        company_name_eng: 'Sample Company',
-        gln: '1234567890123',
-        companyID: '1234567890',
-        // ... more data ...
-    };
-
-    const general = {
-        logo: 'company_logo.png',
-        // ... more data ...
-    };
-
-    res.render('pdf/certificate', { BACKEND_URL, currentDate, memberData, general });
+    // Render the EJS template with the data
+    res.render('pdf/certificate', { data });
 });
 
 
