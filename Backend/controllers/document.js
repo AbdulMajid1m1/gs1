@@ -148,6 +148,20 @@ export const getAlldocumentType = async (req, res, next) => {
         next(error);
     }
 };
+export const getAlldocumentTypename = async (req, res, next) => {
+    try {
+        const AllUNSPSC = await prisma.document_type.findMany({
+            select: {
+                file_name: true
+            }
+        });;
+
+
+        res.json(AllUNSPSC);
+    } catch (error) {
+        next(error);
+    }
+};
 export const getdocumentTypeById = async (req, res, next) => {
     try {
         // const { id } = req.params;

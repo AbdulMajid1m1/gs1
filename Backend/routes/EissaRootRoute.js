@@ -2,7 +2,7 @@ import express from 'express';
 
 import { createunit,getAllunit,getunitById,updateunit,deleteunit } from '../controllers/units.js';
 import { createProductPackag,getAllproductPackagSchema,getproductPackagSchemaById,updateproductPackagSchema,deleteproductPackagSchema } from '../controllers/productPackaging.js';
-import { createdocument,getAllcr_documents,getcr_documentsById,updatecr_documents,deletecr_documents,createdocumentType,getAlldocumentType,getdocumentTypeById,updatedocumentType,deletedocumentType } from '../controllers/document.js';
+import { createdocument,getAllcr_documents,getcr_documentsById,updatecr_documents,deletecr_documents,createdocumentType,getAlldocumentType,getdocumentTypeById,updatedocumentType,deletedocumentType,getAlldocumentTypename } from '../controllers/document.js';
 import { createotherproduct,getAllotherproduct,getotherproductById,updateotherproduct,deleteotherproduct } from '../controllers/otherproduct.js';
 import { creategpctype,getAllgpctype,getgpctypeById,deletegpctype,updategpctype } from '../controllers/dcp_type.js';
 import { createcountryofsale,getAllcountryofsale,getcountryof_saleById,updatecountryofsale,deletecountryofsale } from '../controllers/countryofsales.js';
@@ -62,6 +62,7 @@ router.delete('/deleteUNSPSC/:id', deleteUNSPSC);
 // Routes for documenttype
 router.post('/createdocumentType', createdocumentType);
 router.get('/getAlldocumentType', getAlldocumentType);
+router.get('/getAlldocumentTypename', getAlldocumentTypename);
 router.get('/getdocumentTypeById/:id', getdocumentTypeById);
 router.put('/updatedocumentType/:id', updatedocumentType);
 router.delete('/deletedocumentType/:id', deletedocumentType);
