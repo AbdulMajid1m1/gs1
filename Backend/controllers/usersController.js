@@ -25,7 +25,7 @@ const userSchema = Joi.object({
     slug: Joi.string(),
     location_uk: Joi.string(),
     have_cr: Joi.string(),
-    cr_documentID: Joi.number().integer(),
+    cr_documentID: Joi.string(),
     document_number: Joi.string(),
     fname: Joi.string(),
     lname: Joi.string(),
@@ -362,6 +362,13 @@ export const getUserDetails = async (req, res, next) => {
             : {};
 
         // Start a transaction to fetch users and their carts
+        // if there is no filter conditions, fetch all users without carts
+        if (!hasFilterConditions) {
+            const users = await prisma.users.findMany({
+                where: filterConditions
+            });
+            return res.json(users);
+        }
         const [users, allCarts] = await prisma.$transaction(async (prisma) => {
             // Fetch users based on filter conditions
             const users = await prisma.users.findMany({
@@ -390,8 +397,9 @@ export const getUserDetails = async (req, res, next) => {
             carts: allCarts.filter(cart => cart.user_id == user.id)
         }));
 
-        res.json(usersWithCarts);
+        return res.json(usersWithCarts);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };
