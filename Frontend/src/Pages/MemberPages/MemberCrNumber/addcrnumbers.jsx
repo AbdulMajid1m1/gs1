@@ -11,7 +11,7 @@ const Addcrnumbers = ({ isVisible, setVisibility, refreshBrandData }) => {
         setVisibility(false);
       };
     
-
+//
     const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
