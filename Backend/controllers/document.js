@@ -4,22 +4,21 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 
 
-
 const documentSchema = Joi.object({
     name: Joi.string().max(255).required(),
-    status: Joi.number().valid(0,1).required(),
-    
+    status: Joi.number().valid(0, 1).required(),
+
 });
 const document_typesSchema = Joi.object({
     file_name: Joi.string().max(255).required(),
     status: Joi.string().max(255).required(),
-    
+
 });
 export const createdocument = async (req, res, next) => {
     try {
         const { error, value } = documentSchema.validate(req.body);
         if (error) {
-            
+
 
             return res.status(400).json({ error: error.details[0].message });
         }
@@ -71,15 +70,15 @@ export const getcr_documentsById = async (req, res, next) => {
 export const updatecr_documents = async (req, res, next) => {
     try {
 
-      const schema = Joi.object({
-    id: Joi.string().required(),
-});
-const { error: idError } = schema.validate(req.params);
-if (idError) {
-    return next(createError(400, idError.details[0].message));
-}
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error: idError } = schema.validate(req.params);
+        if (idError) {
+            return next(createError(400, idError.details[0].message));
+        }
 
-const { id } = req.params;
+        const { id } = req.params;
 
         const { error } = documentSchema.validate(req.body);
         if (error) {
@@ -88,11 +87,11 @@ const { id } = req.params;
 
         const { name, status } = req.body;
         const updatedUNSPSC = await prisma.cr_documents.update({
-            where: {id: id },
+            where: { id: id },
             data: {
                 name,
                 status
-                
+
             },
         });
 
@@ -124,7 +123,7 @@ export const createdocumentType = async (req, res, next) => {
     try {
         const { error, value } = document_typesSchema.validate(req.body);
         if (error) {
-            
+
 
             return res.status(400).json({ error: error.details[0].message });
         }
@@ -190,15 +189,15 @@ export const getdocumentTypeById = async (req, res, next) => {
 export const updatedocumentType = async (req, res, next) => {
     try {
 
-      const schema = Joi.object({
-    id: Joi.string().required(),
-});
-const { error: idError } = schema.validate(req.params);
-if (idError) {
-    return next(createError(400, idError.details[0].message));
-}
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error: idError } = schema.validate(req.params);
+        if (idError) {
+            return next(createError(400, idError.details[0].message));
+        }
 
-const { id } = req.params;
+        const { id } = req.params;
 
         const { error } = document_typesSchema.validate(req.body);
         if (error) {
@@ -207,11 +206,11 @@ const { id } = req.params;
 
         const { file_name, status } = req.body;
         const updatedUNSPSC = await prisma.document_type.update({
-            where: {id: id },
+            where: { id: id },
             data: {
                 file_name,
                 status
-                
+
             },
         });
 
