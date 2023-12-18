@@ -201,7 +201,7 @@ const RegisteredMembersView = () => {
     // Refresh the Member Documents Datagrid
     const refreshDocumentsBrandData = async () => {
       try {
-        const response = await newRequest.get(`/memberDocuments?transaction_id=${gs1MemberData?.transaction_id}`);
+        const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}`);
           console.log(response.data);
           setMembersDocumentsData(response?.data || []);
           setIsLoading(false)
