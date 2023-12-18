@@ -81,7 +81,7 @@ const refreshcitiesData = async () => {
   const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
-          text: 'You will not be able to recover this User Account!',
+          text: 'You will not be able to recover this product package!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, delete it!',

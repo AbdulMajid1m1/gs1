@@ -331,7 +331,7 @@ const MemmberRegisteration = () => {
         if (selectedCr?.cr && selectedCr?.activity) {
             formData.append('cr_number', selectedCr?.cr);
             formData.append('cr_activity', selectedCr?.activity);
-            formData.append('cr_documentID', selectedCr?.crId || 0); //TODO: crs table id is srting and CrDocument_id is int check it later
+            formData.append('cr_documentID', selectedCr?.crId || '0'); 
 
         }
 

@@ -2182,7 +2182,15 @@ CREATE TABLE [dbo].[units] (
     [updated_at] DATETIME,
     
 );
-
+-- CreateTable
+CREATE TABLE [dbo].[document_type] (
+    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [file_name] nvarchar(MAX),
+    [status] varchar(10),
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    [deleted_at] DATETIME,
+);
 -- CreateTable
 CREATE TABLE [dbo].[unspscs] (
     [id] BIGINT NOT NULL IDENTITY(1,1),

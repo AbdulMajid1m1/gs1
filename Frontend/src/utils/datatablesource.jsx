@@ -1611,7 +1611,6 @@ export const AdminBrandsColumn = [
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
-
     type: 'dateTime',
     valueGetter: (params) => {
       // Convert the string date to a Date object
@@ -1774,11 +1773,21 @@ export const masterDataColumn = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 
@@ -1799,11 +1808,21 @@ export const document = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const product_packaging = [
@@ -1823,11 +1842,21 @@ export const product_packaging = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const Other_Products = [
@@ -1872,11 +1901,21 @@ export const Other_Products = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const Gcp_types = [
@@ -1896,11 +1935,21 @@ export const Gcp_types = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const counrty_sales = [
@@ -1929,11 +1978,21 @@ export const counrty_sales = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const city = [
@@ -1953,11 +2012,21 @@ export const city = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const state = [
@@ -1977,11 +2046,21 @@ export const state = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const crnumber__ = [
@@ -1996,7 +2075,7 @@ export const crnumber__ = [
     headerName: 'activity',
     width: 180,
   },
- {
+  {
     field: 'status',
     headerName: 'status',
     width: 180,
@@ -2010,11 +2089,54 @@ export const crnumber__ = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+export const document_type = [
+
+  {
+    field: 'file_name',
+    headerName: 'file_name',
+    width: 180,
+  },
+ {
+    field: 'status',
+    headerName: 'status',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+     type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const country__ = [
@@ -2043,11 +2165,21 @@ export const country__ = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const Hs_code = [
@@ -2076,11 +2208,21 @@ export const Hs_code = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 export const unspcs_ = [
@@ -2109,11 +2251,21 @@ export const unspcs_ = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 ];
 
@@ -2408,6 +2560,7 @@ export const subscribedGtinColumn = [
 
 
 ]
+
 
 
 

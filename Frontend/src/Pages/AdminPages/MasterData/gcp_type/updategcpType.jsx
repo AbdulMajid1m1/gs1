@@ -31,7 +31,7 @@ const handleUpdateBrand = async () => {
       gcp_description: gcp_description,
     });
 
-    toast.success(response?.data?.message || 'Status updated successfully', {
+    toast.success(response?.data?.message || 'GCP type updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
