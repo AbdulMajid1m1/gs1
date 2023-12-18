@@ -1030,16 +1030,15 @@ model mema_visas {
 }
 
 model member_documents {
-  id             BigInt    @id(map: "PK__member_d__3213E83F21EDA6EA") @default(autoincrement())
-  type           String    @db.NVarChar(255)
-  document       String    @db.NVarChar(Max)
-  transaction_id String    @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
-  date           DateTime  @db.DateTime
-  user_id        Int       @default(0, map: "DF__member_do__user___02B25B50")
-  admin_id       Int       @default(0, map: "DF__member_do__admin__03A67F89")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  doc_type       String?   @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
+  id             String   @id @default(cuid())
+  type           String   @db.NVarChar(255)
+  document       String   @db.NVarChar(Max)
+  transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
+  user_id        String   @db.NVarChar(255)
+  admin_id       String   @db.NVarChar(255)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
 }
 
 model member_history_logs {
