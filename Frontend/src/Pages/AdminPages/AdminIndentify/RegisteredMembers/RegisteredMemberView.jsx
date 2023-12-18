@@ -17,6 +17,7 @@ import DataTable2 from '../../../../components/Datatable/Datatable2'
 import './RegisteredMember.css'
 import AddBrands from './AddBrands'
 import UpdateBrands from './UpdateBrands'
+import AddMemberDocuments from './AddMemberDocuments'
 
 const RegisteredMembersView = () => {
     // get the sesstion data
@@ -28,7 +29,9 @@ const RegisteredMembersView = () => {
       const [filteredData, setFilteredData] = useState([]);
 
     const [allUserData, setAllUserData] = useState([]);
-
+    const [registeredProductsData, setRegisteredProductsData] = useState([]);
+    const [membersDocuemtsData, setMembersDocumentsData] = useState([]);
+    
     useEffect(() => {
         const fetchAllUserData = async () => {
           try {
@@ -42,40 +45,44 @@ const RegisteredMembersView = () => {
               console.log(err);
               setIsLoading(false)
             }
-
-
+        };
+  
+        const fetchMemberDocumentsData = async () => {
+          try {
+            const response = await newRequest.get(`/memberDocuments?transaction_id=${gs1MemberData?.user_id}`);
+              console.log(response.data);
+              setMembersDocumentsData(response?.data || []);
+              setIsLoading(false)
+        
+          }
+          catch (err) {
+              console.log(err);
+              setIsLoading(false)
+            }
         };
         
         fetchAllUserData();
+        fetchMemberDocumentsData();
 
     }, [])
 
-  
+
+    useEffect(() => {
+      const cartData = allUserData.carts || [];
+      const stringifiedCartData = [].concat(...cartData.map((item) => JSON.parse(item.cart_items))); 
+      console.log(stringifiedCartData  || []);
+    
+      // Set the registeredProductsData
+      setRegisteredProductsData(stringifiedCartData  || []);
+    }, [allUserData]);
+    
+      
+    
   
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
     const [brandsData, setBrandsData] = useState([]);
 
-    const [membersDocuemtsData, setMembersDocumentsData] = useState([
-        {
-            type: 'national_address',
-            document: gs1MemberData?.documents,
-            date: gs1MemberData?.created_at,   
-        },
-        {
-            type: 'company_documents',
-            document: gs1MemberData?.address_image,
-            date: gs1MemberData?.created_at,   
-        },
-        // {
-        //     type: 'invoice',
-        //     document: '',
-        //     date: ''   
-        // },
-          
-
-
-    ]);
 
     const [subMenusData, setSubMenusData] = useState([
         {
@@ -106,14 +113,6 @@ const RegisteredMembersView = () => {
         }
     ]);
 
-    const [registeredProductsData, setRegisteredProductsData] = useState([
-        {
-            product_name: 'Product Name',
-            transaction_date: '12/12/2021',
-            registration_date: '12/12/2021',
-            expiry_date: '12/12/2021',
-        },
-    ]);
 
     // useEffect(() => {
     //   const fetchMemberBrandData = async () => {
@@ -199,6 +198,21 @@ const RegisteredMembersView = () => {
       console.log(gs1MemberData?.id)
     }
 
+    // Refresh the Member Documents Datagrid
+    const refreshDocumentsBrandData = async () => {
+      try {
+        const response = await newRequest.get(`/memberDocuments?transaction_id=${gs1MemberData?.transaction_id}`);
+          console.log(response.data);
+          setMembersDocumentsData(response?.data || []);
+          setIsLoading(false)
+    
+      }
+      catch (err) {
+          console.log(err);
+          setIsLoading(false)
+        }
+    };
+
     const navigate = useNavigate();
     const handleView = (row) => {
         console.log(row);
@@ -228,6 +242,13 @@ const RegisteredMembersView = () => {
         // console.log(row)
         // save this row data in session storage 
         sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+      };
+
+
+      const [isAddMemberPopupVisible, setIsAddMemberPopupVisibility] = useState(false);
+
+      const handleShowAddMemberPopup = () => {
+        setIsAddMemberPopupVisibility(true);
       };
 
 
@@ -828,7 +849,7 @@ const RegisteredMembersView = () => {
                         <div className='w-full flex justify-end px-6'>
                           {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                           <button
-                            //  onClick={handleShowCreatePopup} 
+                             onClick={handleShowAddMemberPopup} 
                             className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                             >
                               Add
@@ -1118,6 +1139,12 @@ const RegisteredMembersView = () => {
                   {/* UpdateBrands component with handleShowUpdatePopup prop */}
                   {isUpdatePopupVisible && (
                     <UpdateBrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshBrandData}/>
+                  )}
+
+
+                   {/* AddMember component with Handle prop */}
+                  {isAddMemberPopupVisible && (
+                    <AddMemberDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={refreshDocumentsBrandData}/>
                   )}
 
         </div>
