@@ -59,6 +59,7 @@ const allowedColumns = {
     id: Joi.string(),
     type: Joi.string(),
     transaction_id: Joi.string(),
+    user_id: Joi.string(),
     // ... other fields
 };
 
