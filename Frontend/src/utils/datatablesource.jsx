@@ -1611,7 +1611,6 @@ export const AdminBrandsColumn = [
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
-
     type: 'dateTime',
     valueGetter: (params) => {
       // Convert the string date to a Date object
@@ -2076,7 +2075,7 @@ export const crnumber__ = [
     headerName: 'activity',
     width: 180,
   },
- {
+  {
     field: 'status',
     headerName: 'status',
     width: 180,

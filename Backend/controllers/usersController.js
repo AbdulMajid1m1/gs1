@@ -361,16 +361,40 @@ export const getUserDetails = async (req, res, next) => {
             }, {})
             : {};
 
-        const users = await prisma.users.findMany({
-            where: filterConditions
-        });
+        // Start a transaction to fetch users and their carts
+        const [users, allCarts] = await prisma.$transaction(async (prisma) => {
+            // Fetch users based on filter conditions
+            const users = await prisma.users.findMany({
+                where: filterConditions,
+            });
 
-        res.json(users);
+            // If no users are found, return early
+            if (users.length === 0) {
+                return [users, []];
+            }
+
+            // Fetch all carts for these users in one query
+            const userIds = users.map(user => user.id);
+            const allCarts = await prisma.carts.findMany({
+                where: {
+                    user_id: { in: userIds }
+                }
+            });
+
+            return [users, allCarts];
+        }, { timeout: 30000 });
+
+        // Map carts to their respective users
+        const usersWithCarts = users.map(user => ({
+            ...user,
+            carts: allCarts.filter(cart => cart.user_id == user.id)
+        }));
+
+        res.json(usersWithCarts);
     } catch (error) {
         next(error);
     }
 };
-
 
 
 
