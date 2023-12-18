@@ -98,6 +98,7 @@ const updateMemberDocumentSchema = Joi.object({
     user_id: Joi.string(),   // Assuming user_id is a positive integer
     admin_id: Joi.string(),  // Assuming admin_id is a positive integer
     doc_type: Joi.string().max(20).default('member_document'), // Assuming max length 20 and default value
+    status: Joi.string().valid('pending', 'approved', 'rejected'),
 
 
 });

@@ -1039,6 +1039,8 @@ model member_documents {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
+
+  status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
 }
 
 model member_history_logs {
