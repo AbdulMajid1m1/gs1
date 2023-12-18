@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { createMemberDocument, deleteMemberDocument, getMemberDocuments, updateMemberDocument } from '../../controllers/memberDocumentsController.js';
+import { createMemberDocument, deleteMemberDocument, getMemberDocuments, getMemberFinanceDocuments, updateMemberDocument, updateMemberDocumentStatus } from '../../controllers/memberDocumentsController.js';
 import { upload } from '../../configs/multerConfig.js';
 
 const router = express.Router();
@@ -15,6 +15,8 @@ router.post('/', upload([
 
 router.get("/", getMemberDocuments)
 
+router.get("/finance", getMemberFinanceDocuments)
+
 
 router.put('/:id',
     upload([
@@ -23,6 +25,8 @@ router.put('/:id',
             path: 'public/uploads/documents/memberDocuments',
         },
     ]), updateMemberDocument);
+
+router.put("/status/:id", updateMemberDocumentStatus)
 
 router.delete('/:id', deleteMemberDocument);
 

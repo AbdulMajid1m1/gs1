@@ -35,9 +35,9 @@ const BankSlip = () => {
         e.preventDefault();
         console.log(translationID, document, description);
 
-        if (memberData.payment_status === 0 && !selectedTranslationID) {
+        if (memberData?.payment_status === 0 && !selectedTranslationID) {
             setError('Please select a TranslationID.');
-        } else if (memberData.payment_status === 0 && !document) {
+        } else if (memberData?.payment_status === 0 && !document) {
             setError('Please upload a document.');
         } else {
             setError('');
@@ -153,7 +153,7 @@ const BankSlip = () => {
                         /> */}
 
                                     {/* {memberData.payment_status === 0 && ( */}
-                                    {memberData.payment_status === 0 && memberData.status !== 1 && (
+                                    {memberData?.payment_status === 0 && memberData.status !== 1 && (
                                         <Autocomplete
                                             id="translate"
                                             // options={[translationID]}
