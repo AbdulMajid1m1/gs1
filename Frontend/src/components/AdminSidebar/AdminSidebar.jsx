@@ -29,6 +29,9 @@ import registries from '../../Images/registries.png'
 import gcp from '../../Images/gcp.png'
 import verifiedIcon from '../../Images/verifiedIcon.png'
 import gs1 from '../../Images/gs1.png'
+import documentIcon from '../../Images/document.png'
+import gcptype from '../../Images/gcptype.png'
+import productpackaging from '../../Images/productpackaging.png'
 // import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
 // import gdsnproduct from '../../Images/gdsnproduct.png'
 // import masterdata from '../../Images/masterdata.png'
@@ -611,7 +614,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={frontend}
+                    src={documentIcon}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -625,7 +628,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={frontend}
+                    src={productpackaging}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -653,7 +656,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={frontend}
+                    src={gcptype}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
