@@ -60,6 +60,8 @@ import Country from './Pages/AdminPages/MasterData/country/country';
 import MemberHelpDesk from "./Pages/MemberPages/MemberHelpDesk/MemberHelpDesk";
 import SubscribedGTIN from "./Pages/MemberPages/SubscribedGTIN/SubscribedGTIN";
 import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
+import MemberCrNumber from "./Pages/MemberPages/MemberCrNumber/MemberCrNumber";
+import Document_type from './Pages/AdminPages/MasterData/documentype/documenttype';
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -144,7 +146,7 @@ const App = () => {
                             {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
                           {/* <Route path="member-data" element={<MemberData />} /> */}
-                          {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
+                          <Route path="member-crnumber" element={<MemberCrNumber />} />
 
 
                           </Routes>
@@ -211,6 +213,8 @@ const App = () => {
                             <Route path="Cities" element={<Cities />} />
                             <Route path="State" element={<State />} />
                             <Route path="Country" element={<Country />} />
+                            <Route path="crnumber" element={<Crnumber />} />
+                            <Route path="documenttype" element={<Document_type />} />
                           </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
