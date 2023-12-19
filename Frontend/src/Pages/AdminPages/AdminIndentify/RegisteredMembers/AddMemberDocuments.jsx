@@ -11,6 +11,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [docuements, setDocuments] = React.useState([])
     const [selectedDocuments, setSelectedDocuments] = useState("");
     const [transactionId, setTransactionId] = useState("");
+    const [selectedTransactionId, setSelectedTransactionId] = useState("")
     const [uploadDocument, setUploadDocument] = useState("");
     // get the sesstion data
     const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
@@ -33,7 +34,20 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
+
+
+        const getAllTransactionId = async () => {
+          try {
+              const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=invoice&status=pending`);
+              console.log(response.data);
+              setTransactionId(response.data);
+          } catch (error) {
+              console.log(error);
+          }
+      };
+
         getDocuments();
+        getAllTransactionId();
     }, []);
 
 
@@ -43,6 +57,11 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
       console.log(value?.file_name);
       setSelectedDocuments(value);    
      };
+
+     const handleSelectedTransactionId = (event, value) => {
+      console.log(value?.transaction_id);
+      setSelectedTransactionId(value);
+      };
      
      //  console.log("file name", selectedDocuments?.file_name)
 
@@ -99,7 +118,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
      // Create a FormData object
      const formData = new FormData();
      formData.append('type', selectedDocuments?.file_name || '');
-     formData.append('transaction_id', transactionId || '');
+     formData.append('transaction_id', selectedTransactionId?.transaction_id || '');
      formData.append('user_id', gs1MemberData?.id || ''); // Replace with the actual user ID
      formData.append('doc_type', 'member_document');
      formData.append('document', uploadDocument);
@@ -219,14 +238,57 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                  <label htmlFor="field2" className="text-secondary">Transaction Id </label>
-                                 <input
+                                 {/* <select
                                    type="text"
                                    id="field2"
-                                   value={transactionId}
-                                   onChange={(e) => setTransactionId(e.target.value)}
+                                    onChange={(e) => setTransactionId(e.target.value)}
                                    placeholder="Transaction Id"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
+                                  >
+                                      <option value="">Select Transaction Id</option>
+                                      {transactionId?.map((item, index) => (
+                                        <option key={index} value={item?.transaction_id}>{item?.transaction_id}</option>
+                                      ))}
+
+                                </select> */}
+                                   <Autocomplete
+                                    id="field2"
+                                    options={transactionId}
+                                    value={selectedTransactionId}
+                                    getOptionLabel={(option) => option?.transaction_id || ""}
+                                    onChange={handleSelectedTransactionId}
+                                    onInputChange={(event, value) => {
+                                        if (!value) {
+                                            // perform operation when input is cleared
+                                            console.log("Input cleared");
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            autoComplete="off"
+                                            {...params}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                className: "text-white",
+                                            }}
+                                            InputLabelProps={{
+                                                ...params.InputLabelProps,
+                                                style: { color: "white" },
+                                            }}
+                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                            placeholder="Select Transaction Id"
+                                        // required
+                                        />
+                                    )}
+                                    classes={{
+                                        endAdornment: "text-white",
+                                    }}
+                                    sx={{
+                                        "& .MuiAutocomplete-endAdornment": {
+                                            color: "white",
+                                        },
+                                    }}
+                                />
                                </div>
                        
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">

@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useQuery } from 'react-query'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
+import FinancePopUp from './FinancePopUp';
 
 const RegisteredMembers = () => {
     const [IsLoading, setIsLoading] = useState(true);
@@ -281,6 +282,16 @@ const RegisteredMembers = () => {
       // };
 
       
+
+      const [isFinancePopupVisible, setFinancePopupVisibility] = useState(false);
+
+      const handleShowFinancePopup = (row) => {
+        setFinancePopupVisibility(true);
+        console.log(row); 
+        // set this data in session storage
+        sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+      };
       
   return (
     <div>
@@ -297,6 +308,7 @@ const RegisteredMembers = () => {
             loading={isLoading}
             secondaryColor="secondary"
             handleRowClickInParent={handleRowClickInParent}
+            // globalSearch={false }
 
             dropDownOptions={[
                 {
@@ -310,13 +322,13 @@ const RegisteredMembers = () => {
                   ),
                   action: handleView,
                 },
-                // {
-                //   label: "Activation",
-                //   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                //   ,
-                //   action: handleStatusChange,
-  
-                // },
+                {
+                  label: "Activation",
+                  icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                  ,
+                  action: handleShowFinancePopup,
+                  
+                },
                 // {
                 // label: "Open",
                 // icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
@@ -338,6 +350,14 @@ const RegisteredMembers = () => {
 
             />
             </div>
+
+
+
+            {/* AddBrands component with handleShowCreatePopup prop */}
+            {isFinancePopupVisible && (
+                <FinancePopUp isVisible={isFinancePopupVisible} setVisibility={setFinancePopupVisibility}/>
+            )}
+
 
       </div>
     </div>
