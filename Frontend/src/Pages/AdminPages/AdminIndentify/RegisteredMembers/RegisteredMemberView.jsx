@@ -485,7 +485,7 @@ const RegisteredMembersView = () => {
 
 
   const handleMemberStatusChange = async (selectedMemberUser) => {
-    const statusOptions = ["pending", "approved"];
+    const statusOptions = ["pending", "approved", "rejected"];
     const initialStatus = selectedMemberUser.status;
     console.log(initialStatus);
 
@@ -1179,7 +1179,7 @@ const RegisteredMembersView = () => {
                                   label: "Activation",
                                   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                                   ,
-                                  action: handleStatusChange,
+                                  action: handleMemberStatusChange,
                   
                                 },
 

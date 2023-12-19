@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useQuery } from 'react-query'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
+import FinancePopUp from './FinancePopUp';
 
 const RegisteredMembers = () => {
     const [IsLoading, setIsLoading] = useState(true);
@@ -179,108 +180,118 @@ const RegisteredMembers = () => {
       }
 
 
-      const handleStatusChange = async (selectedUser) => {
-        const statusOptions = ["active", "suspend", "inactive", "reject"];
-        const initialStatus = selectedUser.status;
-        console.log(initialStatus);
+      // const handleStatusChange = async (selectedUser) => {
+      //   const statusOptions = ["active", "suspend", "inactive", "reject"];
+      //   const initialStatus = selectedUser.status;
+      //   console.log(initialStatus);
     
-        const { value: selectedStatus } = await Swal.fire({
-          title: `<strong>Update Status for (${selectedUser.company_name_eng})</strong>`,
-          html: `
-          <p><b>UserID:</b> ${selectedUser.id}</p>
-          <p><b>Email:</b> ${selectedUser.email}</p>
-        `,
-          input: 'select',
-          inputValue: initialStatus,
-          inputOptions: statusOptions.reduce((options, status) => {
-            options[status] = status;
-            return options;
-          }, {}),
-          inputPlaceholder: 'Select Status',
-          showCancelButton: true,
-          confirmButtonText: 'Update',
-          confirmButtonColor: '#1E3B8B',
-          cancelButtonColor: '#FF0032',
-        });
+      //   const { value: selectedStatus } = await Swal.fire({
+      //     title: `<strong>Update Status for (${selectedUser.company_name_eng})</strong>`,
+      //     html: `
+      //     <p><b>UserID:</b> ${selectedUser.id}</p>
+      //     <p><b>Email:</b> ${selectedUser.email}</p>
+      //   `,
+      //     input: 'select',
+      //     inputValue: initialStatus,
+      //     inputOptions: statusOptions.reduce((options, status) => {
+      //       options[status] = status;
+      //       return options;
+      //     }, {}),
+      //     inputPlaceholder: 'Select Status',
+      //     showCancelButton: true,
+      //     confirmButtonText: 'Update',
+      //     confirmButtonColor: '#1E3B8B',
+      //     cancelButtonColor: '#FF0032',
+      //   });
     
-        if (selectedStatus === undefined) { // Cancel button was pressed
-          return;
-        }
+      //   if (selectedStatus === undefined) { // Cancel button was pressed
+      //     return;
+      //   }
     
-        // if (selectedStatus === 'reject') {
-        //   handleReject(selectedUser); // Handle "reject" action
-        //   return;
-        // }
-    
-    
-        if (selectedStatus === initialStatus) {
-           // No changes were made, show a Toastify info message
-            toast.info('No changes were made', {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          return;
-        }
-    
-        try {
-          const res = await newRequest.post(
-            '/users/updateUserStatus',
-            {
-              userId : selectedUser.id,
-              status: selectedStatus,
-            }
-          );  
+      //   // if (selectedStatus === 'reject') {
+      //   //   handleReject(selectedUser); // Handle "reject" action
+      //   //   return;
+      //   // }
     
     
-          // refreshData();
-          const updatedData = data.map((item) => {
-            if (item.id === selectedUser.id) {
-              return {
-                ...item,
-                status: selectedStatus,
-              };
-            }
-            return item;
-          });
-          setGridData(updatedData)
+      //   if (selectedStatus === initialStatus) {
+      //      // No changes were made, show a Toastify info message
+      //       toast.info('No changes were made', {
+      //         position: "top-right",
+      //         autoClose: 2000,
+      //         hideProgressBar: false,
+      //         closeOnClick: true,
+      //         pauseOnHover: true,
+      //         draggable: true,
+      //         progress: undefined,
+      //         theme: "light",
+      //       });
+      //     return;
+      //   }
+    
+      //   try {
+      //     const res = await newRequest.post(
+      //       '/users/updateUserStatus',
+      //       {
+      //         userId : selectedUser.id,
+      //         status: selectedStatus,
+      //       }
+      //     );  
+    
+    
+      //     // refreshData();
+      //     const updatedData = data.map((item) => {
+      //       if (item.id === selectedUser.id) {
+      //         return {
+      //           ...item,
+      //           status: selectedStatus,
+      //         };
+      //       }
+      //       return item;
+      //     });
+      //     setGridData(updatedData)
 
 
-          toast.success(res?.data?.message || 'Status updated successfully', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+      //     toast.success(res?.data?.message || 'Status updated successfully', {
+      //       position: "top-right",
+      //       autoClose: 5000,
+      //       hideProgressBar: false,
+      //       closeOnClick: true,
+      //       pauseOnHover: true,
+      //       draggable: true,
+      //       progress: undefined,
+      //       theme: "light",
+      //     });
 
     
-        } catch (err) {
-          toast.error(err?.response?.data?.message || 'Something went wrong!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+      //   } catch (err) {
+      //     toast.error(err?.response?.data?.message || 'Something went wrong!', {
+      //       position: "top-right",
+      //       autoClose: 5000,
+      //       hideProgressBar: false,
+      //       closeOnClick: true,
+      //       pauseOnHover: true,
+      //       draggable: true,
+      //       progress: undefined,
+      //       theme: "light",
+      //     });
 
-          console.log(err); 
-        }
+      //     console.log(err); 
+      //   }
     
-      };
+      // };
 
       
+
+      const [isFinancePopupVisible, setFinancePopupVisibility] = useState(false);
+
+      const handleShowFinancePopup = (row) => {
+        setFinancePopupVisibility(true);
+        console.log(row); 
+        // set this data in session storage
+        sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+      };
       
   return (
     <div>
@@ -297,6 +308,7 @@ const RegisteredMembers = () => {
             loading={isLoading}
             secondaryColor="secondary"
             handleRowClickInParent={handleRowClickInParent}
+            // globalSearch={false }
 
             dropDownOptions={[
                 {
@@ -314,7 +326,7 @@ const RegisteredMembers = () => {
                   label: "Activation",
                   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                   ,
-                  action: handleStatusChange,
+                  action: handleShowFinancePopup,
                   
                 },
                 // {
@@ -338,6 +350,14 @@ const RegisteredMembers = () => {
 
             />
             </div>
+
+
+
+            {/* AddBrands component with handleShowCreatePopup prop */}
+            {isFinancePopupVisible && (
+                <FinancePopUp isVisible={isFinancePopupVisible} setVisibility={setFinancePopupVisibility}/>
+            )}
+
 
       </div>
     </div>
