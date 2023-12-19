@@ -1035,7 +1035,7 @@ model member_documents {
   document       String   @db.NVarChar(Max)
   transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
   user_id        String   @db.NVarChar(255)
-  // admin_id       String?   @db.NVarChar(255)
+ 
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
