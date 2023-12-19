@@ -52,13 +52,14 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
 
 
 export const sendEmail = async ({
-    // fromEmail = process.env.EMAIL,
+    fromEmail = process.env.EMAIL,
     toEmail,
     subject,
     htmlContent,
     attachments = []
 }) => {
     return new Promise(async (resolve, reject) => {
+        console.log("fromEmail", attachments)
         try {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -69,7 +70,7 @@ export const sendEmail = async ({
             });
 
             const mailOptions = {
-                from: `Gs1Ksa <${process.env.EMAIL}>`,
+                from: `Gs1Ksa <${fromEmail}>`,
                 to: toEmail,
                 subject: subject,
                 html: htmlContent,
