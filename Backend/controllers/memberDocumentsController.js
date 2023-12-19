@@ -124,23 +124,9 @@ export const getMemberFinanceDocuments = async (req, res, next) => {
         // Fetch documents based on the filter conditions
         const documents = await prisma.member_documents.findMany({ where: filterConditions });
 
-        // Combine and map documents based on transaction ID
-        const combinedDocs = {};
-        documents.forEach(doc => {
-            const key = doc.transaction_id;
-            if (!combinedDocs[key]) {
-                combinedDocs[key] = { bankSlipDocument: null, invoiceDocument: null };
-            }
-            if (doc.type === 'bank_slip') {
-                combinedDocs[key].bankSlipDocument = doc.document;
-            } else if (doc.type === 'invoice') {
-                combinedDocs[key].invoiceDocument = doc.document;
-            }
-        });
 
-        // Optional: Format combinedDocs into desired structure
 
-        res.json(combinedDocs);
+        return res.json(documents);
     } catch (error) {
         next(error);
     }
@@ -371,7 +357,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         companyID: userUpdateResult.companyID,
                         gcp_expiry: userUpdateResult.gcp_expiry,
                     },
-                    expiryDate: userUpdateResult.expiry_date,
+                    expiryDate: userUpdateResult.gcp_expiry,
                     explodeGPCCode: []
                 };
 

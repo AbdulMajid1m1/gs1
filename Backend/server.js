@@ -147,7 +147,7 @@ app.get('/renderCertificate', async (req, res) => {
         },
         uploadPath: '/your/upload/path/', // Dummy data, replace with actual upload path
         backendImagePath: '/your/backend/image/path/', // Dummy data, replace with actual backend image path
-        expiryDate: '31-12-2023', // Dummy data, replace with actual user data from your API
+        expiryDate: '31-12-2025', // Dummy data, replace with actual user data from your API
         explodeGPCCode: [1, 2]
     };
 
