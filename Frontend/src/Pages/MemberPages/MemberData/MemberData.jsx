@@ -26,8 +26,6 @@ const [brandsData, setBrandsData] = useState([]);
 
       const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
-        // console.log(row)
-        // save this row data in session storage 
         sessionStorage.setItem("updateBrandData", JSON.stringify(row));
       };
     const { rowSelectionModel, setRowSelectionModel,
