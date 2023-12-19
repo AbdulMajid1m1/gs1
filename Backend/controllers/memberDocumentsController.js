@@ -369,7 +369,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
 
                 // Save the PDF file
-                await fs.writeFile(pdfFilePath, pdfBuffer);
+                await fs1.writeFile(pdfFilePath, pdfBuffer);
                 // Send an email based on the updated status
                 await sendStatusUpdateEmail(existingUser.email, 'active', pdfBuffer);
             }, { timeout: 40000 });

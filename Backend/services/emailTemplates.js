@@ -59,6 +59,7 @@ export const sendEmail = async ({
     attachments = []
 }) => {
     return new Promise(async (resolve, reject) => {
+        console.log("fromEmail", attachments)
         try {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
