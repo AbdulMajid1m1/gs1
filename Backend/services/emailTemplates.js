@@ -52,7 +52,7 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
 
 
 export const sendEmail = async ({
-    fromEmail = process.env.EMAIL,
+    // fromEmail = process.env.EMAIL,
     toEmail,
     subject,
     htmlContent,
@@ -69,7 +69,7 @@ export const sendEmail = async ({
             });
 
             const mailOptions = {
-                from: `Gs1Ksa <${fromEmail}>`,
+                from: `Gs1Ksa <${process.env.EMAIL}>`,
                 to: toEmail,
                 subject: subject,
                 html: htmlContent,
