@@ -319,13 +319,21 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
 
+
+
                 // Send an email based on the updated status
                 await sendStatusUpdateEmail(existingUser.email, 'active');
             }, { timeout: 40000 });
 
         }
 
-        res.json({ message: 'Document status updated successfully' });
+        // Update the document status in the database
+        await prisma.member_documents.update({
+            where: { id: documentId },
+            data: { status: value.status }
+        });
+
+        return res.json({ message: 'Document status updated successfully' });
     } catch (err) {
         console.log(err);
         next(err);
