@@ -203,6 +203,23 @@ const RegisteredMembersView = () => {
         }
     };
 
+
+    const RefreshFinanceData = async () => {
+      try {
+        // const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+        const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
+
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+          }
+      };
+
+
     const navigate = useNavigate();
     const handleView = (row) => {
         console.log(row);
@@ -485,6 +502,7 @@ const RegisteredMembersView = () => {
 
 
   const handleMemberStatusChange = async (selectedMemberUser) => {
+    setIsLoading(true);
     const statusOptions = ["pending", "approved", "rejected"];
     const initialStatus = selectedMemberUser.status;
     console.log(initialStatus);
@@ -529,6 +547,7 @@ const RegisteredMembersView = () => {
           progress: undefined,
           theme: "light",
         });
+        setIsLoading(false);
       return;
     }
 
@@ -541,7 +560,8 @@ const RegisteredMembersView = () => {
       );  
 
 
-      refreshDocumentsBrandData();
+      RefreshFinanceData();
+      setIsLoading(false);
 
       toast.success(res?.data?.message || 'Status updated successfully', {
         position: "top-right",
@@ -567,6 +587,7 @@ const RegisteredMembersView = () => {
         theme: "light",
       });
 
+      setIsLoading(false);
       console.log(err); 
     }
 
