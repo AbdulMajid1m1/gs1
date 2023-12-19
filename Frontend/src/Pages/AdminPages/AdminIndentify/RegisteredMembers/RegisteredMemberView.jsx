@@ -114,38 +114,6 @@ const RegisteredMembersView = () => {
     ]);
 
 
-    // useEffect(() => {
-    //   const fetchMemberBrandData = async () => {
-    //     try {
-    //       const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
-          
-    //       console.log(response.data);
-    
-    //       // Assuming the API response contains an array of documents
-    //       const documents = response?.data.map(item => item.documents);
-    
-    //       // Update the invoice section in the state with the documents from the API response
-    //       setMembersDocumentsData(prevState => [
-    //         ...prevState.slice(0, 2),  // Keep the first two items unchanged
-    //         {
-    //           type: 'invoice',
-    //           document: documents.join(', '),  // Join multiple documents if there are more than one
-    //           date: gs1MemberData?.created_at,
-    //         },
-    //         ...prevState.slice(3),  // Keep the remaining items unchanged
-    //       ]);
-    
-    //       setIsLoading(false);
-    //     } catch (err) {
-    //       console.log(err);
-    //       setIsLoading(false);
-    //     }
-    //   };
-    
-    //   fetchMemberBrandData();
-    // }, [gs1MemberData?.id]);  // Dependencies for the useEffect
-    
-    
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -254,7 +222,7 @@ const RegisteredMembersView = () => {
 
 
 
-    //   HandleDelete
+    //Brand apis HandleDelete
     const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
@@ -422,6 +390,168 @@ const RegisteredMembersView = () => {
       // }
   
     };
+
+
+
+    // member docuemnts apis HandleDelete
+    const handleMemberDelete = async (MemberRow) => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this User Account!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+        // changes the color of the confirm button to red
+        confirmButtonColor: '#1E3B8B',
+        cancelButtonColor: '#FF0032',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const isDeleted = await newRequest.delete("/memberDocuments/" + MemberRow?.id);
+            if (isDeleted) {
+              toast.success('User deleted successfully', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+
+              
+              // filter out the deleted user from the data
+              const filteredData = membersDocuemtsData.filter((item) => item?.id !== MemberRow?.user_id);
+              setBrandsData(filteredData);
+              
+            } else {
+              // Handle any additional logic if the user was not deleted successfully
+              toast.error('Failed to delete user', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+
+            }
+          } catch (error) {
+            // Handle any error that occurred during the deletion
+            console.error("Error deleting user:", error);
+            toast.error('Something went wrong while deleting user', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          return;
+        }
+      });
+  };
+
+
+
+  const handleMemberStatusChange = async (selectedMemberUser) => {
+    const statusOptions = ["pending", "approved"];
+    const initialStatus = selectedMemberUser.status;
+    console.log(initialStatus);
+
+    const { value: selectedStatus } = await Swal.fire({
+      title: `<strong>Update Status for (${selectedMemberUser.company_name_eng})</strong>`,
+      html: `
+      <p><b>UserID:</b> ${selectedMemberUser.id}</p>
+      <p><b>Email:</b> ${selectedMemberUser.email}</p>
+    `,
+      input: 'select',
+      inputValue: initialStatus,
+      inputOptions: statusOptions.reduce((options, status) => {
+        options[status] = status;
+        return options;
+      }, {}),
+      inputPlaceholder: 'Select Status',
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      confirmButtonColor: '#1E3B8B',
+      cancelButtonColor: '#FF0032',
+    });
+
+    if (selectedStatus === undefined) { // Cancel button was pressed
+      return;
+    }
+
+    // if (selectedStatus === 'reject') {
+    //   handleReject(selectedUser); // Handle "reject" action
+    //   return;
+    // }
+
+
+    if (selectedStatus === initialStatus) {
+       // No changes were made, show a Toastify info message
+        toast.info('No changes were made', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      return;
+    }
+
+    try {
+      const res = await newRequest.put(
+        `/memberDocuments/status/${selectedMemberUser?.id}`,
+        {
+          status: selectedStatus,
+        }
+      );  
+
+
+      refreshDocumentsBrandData();
+
+      toast.success(res?.data?.message || 'Status updated successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Something went wrong!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log(err); 
+    }
+
+  };
+
+ 
 
       
   return (
@@ -878,31 +1008,30 @@ const RegisteredMembersView = () => {
                                 secondaryColor="secondary"
                                 handleRowClickInParent={handleRowClickInParent}
                                 checkboxSelection={false}
-                                actionColumnVisibility={false}
-
+                               
                             dropDownOptions={[
-                                // {
-                                // label: "Add",
-                                // icon: (
-                                //     <EditIcon
-                                //     fontSize="small"
-                                //     color="action"
-                                //     style={{ color: "rgb(37 99 235)" }}
-                                //     />
-                                // ),
-                                // action: handleView,
-                                // },
-                                // {
-                                //     label: "Delete",
-                                //     icon: (
-                                //         <DeleteIcon
-                                //         fontSize="small"
-                                //         color="action"
-                                //         style={{ color: "rgb(37 99 235)" }}
-                                //         />
-                                //     ),
-                                //     action: handleDelete,
-                                //     },
+                                {
+                                label: "Edit",
+                                icon: (
+                                    <EditIcon
+                                    fontSize="small"
+                                    color="action"
+                                    style={{ color: "rgb(37 99 235)" }}
+                                    />
+                                ),
+                                action: handleMemberStatusChange,
+                                },
+                                {
+                                    label: "Delete",
+                                    icon: (
+                                        <DeleteIcon
+                                        fontSize="small"
+                                        color="action"
+                                        style={{ color: "rgb(37 99 235)" }}
+                                        />
+                                    ),
+                                    action: handleMemberDelete,
+                                    },
     
 
                             ]}
