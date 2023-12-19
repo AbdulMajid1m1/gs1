@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import ejs from 'ejs';
 import pdf from 'html-pdf';
 import fsSync from 'fs';
+import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
@@ -45,7 +46,7 @@ export const createMemberDocument = async (req, res, next) => {
                 document: documentPath,
                 transaction_id: value.transaction_id,
                 user_id: value.user_id,
-                
+
                 doc_type: value.doc_type
             }
         });
@@ -259,13 +260,16 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
         // If the document status is approved, proceed with user status update
+        let existingUser;
+        let pdfBuffer;
+        let userUpdateResult;
         if (value.status === 'approved') {
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
 
                 // Check if the user exists
-                const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+                existingUser = await prisma.users.findUnique({ where: { id: userId } });
                 if (!existingUser) {
                     throw createError(404, 'User not found');
                 }
@@ -290,7 +294,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
                         // Update user with new information
-                        const userUpdateResult = await prisma.users.update({
+                        userUpdateResult = await prisma.users.update({
                             where: { id: userId },
                             data: {
                                 gcpGLNID: gcpGLNID,
@@ -336,31 +340,44 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     }
                 }
                 const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+                let gcpGLNID = userUpdateResult.gcpGLNID;
                 const CertificateData = {
+                    BACKEND_URL: BACKEND_URL,
                     qrCodeDataURL: qrCodeDataURL,
+
                     user: {
-                        company_name_eng: 'Company Name', // Dummy data, replace with actual user data from your API
+                        company_name_eng: userUpdateResult.company_name_eng,
                     },
                     general: {
-                        gcp_certificate_detail1: ['Global Trade Item Number(GTIN)', 'Certificate Detail 1'], // Dummy data, replace with actual detail data from your API
-                        gcp_certificate_detail2: ['Certificate Detail 2', 'Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
+                        gcp_certificate_detail1:
+                            ['Global Trade Item Number(GTIN)',
+                                'Serial Shipping Container Code (SSCC)',
+                                'Global Location Number (GLN)',
+                                'Global Document Type Identifier(GDTI)',
+                                'Global Service Relation Number(GSRN)'
+                            ], // Dummy data, replace with actual detail data from your API
+                        gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
+                            'Global Identification Number for',
+                            'Consignment(GSNC)',
+                            'Global Shipment Identification Number (GSIN)'
+                        ], // Dummy data, replace with actual detail data from your API
                         gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
                     },
+
                     userData: {
-                        gcpGLNID: 'GCP GLN ID', // Dummy data, replace with actual user data from your API
-                        gln: 'GLN', // Dummy data, replace with actual user data from your API
-                        companyID: 'Company ID', // Dummy data, replace with actual user data from your API
-                        gcp_expiry: '2023-12-31', // Dummy data, replace with actual user data from your API
+                        // add user data here
+                        gcpGLNID: gcpGLNID,
+                        gln: userUpdateResult.gln,
+                        companyID: userUpdateResult.companyID,
+                        gcp_expiry: userUpdateResult.gcp_expiry,
                     },
-                    uploadPath: '/your/upload/path/', // Dummy data, replace with actual upload path
-                    backendImagePath: '/your/backend/image/path/', // Dummy data, replace with actual backend image path
-                    expiryDate: '31-12-2023', // Dummy data, replace with actual user data from your API
-                    explodeGPCCode: [1, 2]
+                    expiryDate: userUpdateResult.expiry_date,
+                    explodeGPCCode: []
                 };
 
 
                 // Generate PDF from EJS template
-                const pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData);
+                pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData);
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
                 const pdfFilename = `Certificate-${currentDocument.transaction_id}.pdf`;
                 const pdfFilePath = path.join(pdfDirectory, pdfFilename);
@@ -371,12 +388,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Save the PDF file
                 await fs1.writeFile(pdfFilePath, pdfBuffer);
                 // Send an email based on the updated status
-                await sendStatusUpdateEmail(existingUser.email, 'active', pdfBuffer);
             }, { timeout: 40000 });
 
         }
 
         // Update the document status in the database
+        await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? pdfBuffer : null);
         await prisma.member_documents.update({
             where: { id: documentId },
             data: { status: value.status }
@@ -393,7 +410,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 // Function to send status update email
 const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer) => {
     let subject, emailContent;
-
+    console.log("status", status)
     switch (status) {
         case 'approved':
             subject = 'Your Gs1Ksa member Account is Now Approved';
@@ -410,12 +427,14 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer) => {
     }
 
     await sendEmail({
+        fromEmail: ADMIN_EMAIL,
         toEmail: userEmail,
         subject: subject,
+
         htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
         // if status is approved, attach the certificate PDF
 
-        attachments: status === 'approved' ? [{
+        attachments: status == 'approved' ? [{
             filename: 'certificate.pdf',
             content: pdfBuffer,
             contentType: 'application/pdf'
