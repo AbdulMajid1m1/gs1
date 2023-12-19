@@ -3,17 +3,21 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import fs from 'fs';
 import path from 'path';
+import fs1 from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 import { sendEmail } from '../services/emailTemplates.js';
-
+import QRCode from 'qrcode';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import ejs from 'ejs';
+import pdf from 'html-pdf';
+import fsSync from 'fs';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
         type: Joi.string().required(),
         transaction_id: Joi.string().allow(''),
         user_id: Joi.string().required(),
-        admin_id: Joi.string().allow(''),
         doc_type: Joi.string().default('member_document')
     });
 
@@ -41,7 +45,7 @@ export const createMemberDocument = async (req, res, next) => {
                 document: documentPath,
                 transaction_id: value.transaction_id,
                 user_id: value.user_id,
-                admin_id: value.admin_id || "",
+                
                 doc_type: value.doc_type
             }
         });
@@ -213,6 +217,21 @@ const updateMemberDocumentStatusSchema = Joi.object({
 });
 
 
+
+const generatePDF = async (ejsFilePath, data) => {
+    const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
+    const htmlContent = await ejs.render(ejsTemplate, { data });
+
+    return new Promise((resolve, reject) => {
+        pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
+            if (err) return reject(err);
+            resolve(buffer);
+        });
+    });
+};
+
+
+
 export const updateMemberDocumentStatus = async (req, res, next) => {
     const documentId = req.params.id;
     if (!documentId) {
@@ -316,13 +335,43 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         }
                     }
                 }
+                const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+                const CertificateData = {
+                    qrCodeDataURL: qrCodeDataURL,
+                    user: {
+                        company_name_eng: 'Company Name', // Dummy data, replace with actual user data from your API
+                    },
+                    general: {
+                        gcp_certificate_detail1: ['Global Trade Item Number(GTIN)', 'Certificate Detail 1'], // Dummy data, replace with actual detail data from your API
+                        gcp_certificate_detail2: ['Certificate Detail 2', 'Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
+                        gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+                    },
+                    userData: {
+                        gcpGLNID: 'GCP GLN ID', // Dummy data, replace with actual user data from your API
+                        gln: 'GLN', // Dummy data, replace with actual user data from your API
+                        companyID: 'Company ID', // Dummy data, replace with actual user data from your API
+                        gcp_expiry: '2023-12-31', // Dummy data, replace with actual user data from your API
+                    },
+                    uploadPath: '/your/upload/path/', // Dummy data, replace with actual upload path
+                    backendImagePath: '/your/backend/image/path/', // Dummy data, replace with actual backend image path
+                    expiryDate: '31-12-2023', // Dummy data, replace with actual user data from your API
+                    explodeGPCCode: [1, 2]
+                };
 
 
+                // Generate PDF from EJS template
+                const pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData);
+                const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
+                const pdfFilename = `Certificate-${currentDocument.transaction_id}.pdf`;
+                const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+                if (!fsSync.existsSync(pdfDirectory)) {
+                    fsSync.mkdirSync(pdfDirectory, { recursive: true });
+                }
 
-
-
+                // Save the PDF file
+                await fs.writeFile(pdfFilePath, pdfBuffer);
                 // Send an email based on the updated status
-                await sendStatusUpdateEmail(existingUser.email, 'active');
+                await sendStatusUpdateEmail(existingUser.email, 'active', pdfBuffer);
             }, { timeout: 40000 });
 
         }
@@ -342,28 +391,36 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status) => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer) => {
     let subject, emailContent;
 
     switch (status) {
-        case 'active':
-            subject = 'Your Gs1Ksa member Account is Now Active';
+        case 'approved':
+            subject = 'Your Gs1Ksa member Account is Now Approved';
             emailContent = '<p>Your account has been activated. You can now access all the features.</p>';
             break;
-        case 'inactive':
-            subject = 'Your Gs1Ksa member Account is Inactive';
-            emailContent = '<p>Your account is currently inactive. Please contact support for more details.</p>';
+        case 'pending':
+            subject = 'Your Gs1Ksa member Account is pending';
+            emailContent = '<p>Your account is currently in pending state. Please contact support for more details.</p>';
             break;
         // Add more cases for other statuses
         default:
-            subject = 'Your Gs1Ksa member Account Status Updated';
+            subject = 'Your Gs1Ksa member Account is Rejected';
             emailContent = `<p>Your account status has been updated to: ${status}.</p>`;
     }
 
     await sendEmail({
         toEmail: userEmail,
         subject: subject,
-        htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`
+        htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+        // if status is approved, attach the certificate PDF
+
+        attachments: status === 'approved' ? [{
+            filename: 'certificate.pdf',
+            content: pdfBuffer,
+            contentType: 'application/pdf'
+        }] : []
+
     });
 };
 
