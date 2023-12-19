@@ -423,8 +423,8 @@ const RegisteredMembersView = () => {
 
               
               // filter out the deleted user from the data
-              const filteredData = membersDocuemtsData.filter((item) => item?.id !== MemberRow?.user_id);
-              setBrandsData(filteredData);
+              const filteredData = membersDocuemtsData.filter((item) => item?.id !== MemberRow?.id);
+              setMembersDocumentsData(filteredData);
               
             } else {
               // Handle any additional logic if the user was not deleted successfully
@@ -468,10 +468,9 @@ const RegisteredMembersView = () => {
     console.log(initialStatus);
 
     const { value: selectedStatus } = await Swal.fire({
-      title: `<strong>Update Status for (${selectedMemberUser.company_name_eng})</strong>`,
+      title: `<strong>Update Status.</strong>`,
       html: `
       <p><b>UserID:</b> ${selectedMemberUser.id}</p>
-      <p><b>Email:</b> ${selectedMemberUser.email}</p>
     `,
       input: 'select',
       inputValue: initialStatus,

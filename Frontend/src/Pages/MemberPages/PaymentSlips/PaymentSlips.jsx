@@ -77,7 +77,7 @@ const PaymentSlips = () => {
                             <button
                               onClick={() => navigate('/member/bank-slip')}
                                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                                 <i className="fas fa-plus mr-1"></i>Update Documents
+                                 <i className="fas fa-plus mr-1"></i>Uplaod Documents
                             </button>
 
                             <button
