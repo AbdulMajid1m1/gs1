@@ -413,7 +413,7 @@ const MemmberRegisteration = () => {
                 console.log(response.data);
                 setIsLoading(false);
                 setTimeout(() => {
-                    navigate(-1);
+                    navigate('/');
                 }, 1500);
 
                 toast.success('Member Registered Successfully', {
