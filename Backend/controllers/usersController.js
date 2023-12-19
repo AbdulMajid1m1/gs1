@@ -67,7 +67,6 @@ const userSchema = Joi.object({
     online_payment: Joi.string(),
     remember_token: Joi.string(),
     parent_memberID: Joi.number().integer(),
-
     invoice_file: Joi.string(),
     otp_status: Joi.number().integer(),
     gcpGLNID: Joi.string().max(50),
@@ -88,7 +87,6 @@ const userSchema = Joi.object({
     activityID: Joi.number().integer(),
     registration_type: Joi.string().max(10),
     status: Joi.string().valid('active', 'inactive', 'reject', 'suspend'), // TODO: remove status and allow only in update
-
     industryTypes: Joi.array().items(Joi.object({
         id: Joi.string(),
         name: Joi.string()
@@ -99,7 +97,7 @@ const userSchema = Joi.object({
     cart: Joi.object({
         transaction_id: Joi.string(),
         cart_items: Joi.array().items(Joi.object({
-            productID: Joi.string(),
+            productID: Joi.string().required(),
             productName: Joi.string(),
             registration_fee: Joi.string(),
             yearly_fee: Joi.string(),
@@ -108,7 +106,6 @@ const userSchema = Joi.object({
             quotation: Joi.string()
         })),
         total: Joi.number(),
-
         request_type: Joi.string(),
         payment_type: Joi.string(),
         user_id: Joi.string(),
@@ -278,8 +275,91 @@ export const createUser = async (req, res, next) => {
                 data: cartValue
             });
 
-            return { newUser, newCart };
-        });
+
+            const cartData = JSON.parse(cartValue.cart_items)
+
+            const gtinSubscriptionData = {
+                transaction_id: transactionId,
+                user_id: newUser.id,
+                request_type: "registration",
+                status: "inactive",
+                price: parseFloat(cartData[0].price),
+                pkg_id: cartData[0].productID,
+
+            };
+
+
+            const newGtinSubscription = await prisma.gtin_subcriptions.create({
+                data: gtinSubscriptionData
+            });
+
+
+            // use map on cartValue.cart_items to construct otherProductsData skip first item
+
+            console.log("cartValue.cart_items")
+            console.log(cartValue.cart_items)
+
+            console.log("otherProductsData")
+            // console.log(otherProductsData)
+
+
+            const otherProductsData = cartData.slice(1).map(item => ({
+                transaction_id: transactionId,
+                user_id: newUser.id,
+                status: "inactive",
+                price: parseFloat(item.price),
+                product_id: item.productID,
+            }));
+            const otherProductsSubscriptions = await Promise.all(
+                otherProductsData.map(productData =>
+                    prisma.other_products_subcriptions.create({ data: productData })
+                )
+            );
+
+            // Upload documents to members_document
+            // const documentsData = [ /* construct your documents data here */];
+            // 
+
+            // add all three documents to the member_documents table
+            const documentsData = [
+                {
+                    type: "company_documents",
+                    document: documentPath,
+                    transaction_id: transactionId,
+                    user_id: newUser.id,
+                    doc_type: "member_document",
+                    status: "pending"
+                },
+                {
+                    type: "national_address",
+                    document: imagePath,
+                    transaction_id: transactionId,
+                    user_id: newUser.id,
+                    doc_type: "member_document",
+                    status: "pending"
+                },
+                {
+                    type: "invoice",
+                    document: cartValue.documents,
+                    transaction_id: transactionId,
+                    user_id: newUser.id,
+                    doc_type: "member_document",
+                    status: "pending"
+                }
+            ];
+
+            const memberDocuments = await Promise.all(
+                documentsData.map(docData =>
+                    prisma.member_documents.create({ data: docData })
+                )
+            );
+
+            return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions, memberDocuments };
+
+            // return { newUser, newCart };
+
+            // make trantion time to 40 sec
+        }, { timeout: 40000 });
 
         res.status(201).json(transaction);
     } catch (error) {

@@ -4,6 +4,8 @@ import { createError } from '../utils/createError.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
+import { sendEmail } from '../services/emailTemplates.js';
 
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
@@ -60,6 +62,7 @@ const allowedColumns = {
     type: Joi.string(),
     transaction_id: Joi.string(),
     user_id: Joi.string(),
+    type: Joi.string(),
     // ... other fields
 };
 
@@ -86,6 +89,53 @@ export const getMemberDocuments = async (req, res, next) => {
 
         const documents = await prisma.member_documents.findMany({ where: filterConditions });
         res.json(documents);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const getMemberFinanceDocuments = async (req, res, next) => {
+    try {
+        // Validate the query parameters
+        // const { error, value } = filterSchema.validate(req.query);
+        const schema = Joi.object({
+            user_id: Joi.string().required(),
+        });
+        const { error, value } = schema.validate(req.query);
+
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Build filter conditions with user ID and type
+        const filterConditions = {
+            user_id: value.user_id || "",
+            type: {
+                in: ['bank_slip', 'invoice']
+            }
+        };
+
+        // Fetch documents based on the filter conditions
+        const documents = await prisma.member_documents.findMany({ where: filterConditions });
+
+        // Combine and map documents based on transaction ID
+        const combinedDocs = {};
+        documents.forEach(doc => {
+            const key = doc.transaction_id;
+            if (!combinedDocs[key]) {
+                combinedDocs[key] = { bankSlipDocument: null, invoiceDocument: null };
+            }
+            if (doc.type === 'bank_slip') {
+                combinedDocs[key].bankSlipDocument = doc.document;
+            } else if (doc.type === 'invoice') {
+                combinedDocs[key].invoiceDocument = doc.document;
+            }
+        });
+
+        // Optional: Format combinedDocs into desired structure
+
+        res.json(combinedDocs);
     } catch (error) {
         next(error);
     }
@@ -155,6 +205,160 @@ export const updateMemberDocument = async (req, res, next) => {
         next(err);
     }
 };
+
+
+const updateMemberDocumentStatusSchema = Joi.object({
+    status: Joi.string().valid('pending', 'approved', 'rejected').required(),
+
+});
+
+
+export const updateMemberDocumentStatus = async (req, res, next) => {
+    const documentId = req.params.id;
+    if (!documentId) {
+        return next(createError(400, 'Document ID is required'));
+    }
+
+    // Validate the request body
+    const { error, value } = updateMemberDocumentStatusSchema.validate(req.body);
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+
+    try {
+        // Retrieve the current document from the database
+        const currentDocument = await prisma.member_documents.findFirst({
+            where: { id: documentId }
+        });
+
+        if (!currentDocument) {
+            console.log('Document not found');
+            console.log(currentDocument);
+            console.log(documentId);
+            return next(createError(404, 'Documents not found'));
+        }
+
+
+        // If the document status is approved, proceed with user status update
+        if (value.status === 'approved') {
+            await prisma.$transaction(async (prisma) => {
+                // Fetch the user ID from the member_documents table
+                const userId = currentDocument.user_id;
+
+                // Check if the user exists
+                const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+                if (!existingUser) {
+                    throw createError(404, 'User not found');
+                }
+
+                // Perform the updateUserStatus logic
+                const cart = await prisma.carts.findFirst({ where: { user_id: userId } });
+
+                if (cart && cart.cart_items) {
+                    const cartItems = JSON.parse(cart.cart_items);
+                    const firstCartItem = cartItems[0];
+                    const product = await prisma.gtin_products.findUnique({
+                        where: { id: firstCartItem.productID }
+                    });
+
+                    if (product) {
+                        // Generate gcpGLNID and GLN
+                        const gcpGLNID = `628${product.gcp_start_range}`;
+                        const gln = generateGTIN13(gcpGLNID);
+
+                        // Calculate expiry date (1 year from now)
+                        let expiryDate = new Date();
+                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+                        // Update user with new information
+                        const userUpdateResult = await prisma.users.update({
+                            where: { id: userId },
+                            data: {
+                                gcpGLNID: gcpGLNID,
+                                gln: gln,
+                                gcp_expiry: expiryDate,
+                                remarks: 'Registered',
+                                payment_status: 1,
+                                status: 'active'
+                            }
+                        });
+
+                        // Update GTIN subscriptions for the user
+                        await prisma.gtin_subcriptions.updateMany({
+                            // update based on the transaction ID
+                            where: { transaction_id: currentDocument.transaction_id },
+                            data: {
+                                status: 'active',
+                                expiry_date: expiryDate
+                            }
+                        });
+
+                        await prisma.gtin_products.update({
+                            where: { id: product.id },
+                            data: { gcp_start_range: (parseInt(product.gcp_start_range) + 1).toString() }
+                        });
+
+                        // Fetch and update TblSysCtrNo
+                        const tblSysNo = await prisma.tblSysNo.findFirst();
+                        if (tblSysNo) {
+                            await prisma.users.update({
+                                where: { id: userId },
+                                data: {
+                                    companyID: tblSysNo.TblSysCtrNo,
+                                    memberID: tblSysNo.TblSysCtrNo,
+                                }
+                            });
+
+                            await prisma.tblSysNo.update({
+                                where: { SysNoID: tblSysNo.SysNoID },
+                                data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
+                            });
+                        }
+                    }
+                }
+
+
+
+                // Send an email based on the updated status
+                await sendStatusUpdateEmail(existingUser.email, 'active');
+            }, { timeout: 40000 });
+
+        }
+
+        res.json({ message: 'Document status updated successfully' });
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+};
+
+
+// Function to send status update email
+const sendStatusUpdateEmail = async (userEmail, status) => {
+    let subject, emailContent;
+
+    switch (status) {
+        case 'active':
+            subject = 'Your Gs1Ksa member Account is Now Active';
+            emailContent = '<p>Your account has been activated. You can now access all the features.</p>';
+            break;
+        case 'inactive':
+            subject = 'Your Gs1Ksa member Account is Inactive';
+            emailContent = '<p>Your account is currently inactive. Please contact support for more details.</p>';
+            break;
+        // Add more cases for other statuses
+        default:
+            subject = 'Your Gs1Ksa member Account Status Updated';
+            emailContent = `<p>Your account status has been updated to: ${status}.</p>`;
+    }
+
+    await sendEmail({
+        toEmail: userEmail,
+        subject: subject,
+        htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`
+    });
+};
+
 
 
 export const deleteMemberDocument = async (req, res, next) => {
