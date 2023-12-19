@@ -194,6 +194,7 @@ export const createUser = async (req, res, next) => {
         const data1 = {
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
+                registeration: `New Registration ${new Date().toLocaleDateString()}`,
                 // Assuming $addMember->id is already known
                 company_name_eng: value.company_name_eng,
                 mobile: value.mobile,

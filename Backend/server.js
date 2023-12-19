@@ -61,6 +61,8 @@ app.get('/render', async (req, res) => {
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
         memberData: {
+            // add New Rigistriont with current date
+            registeration: `New Registration ${new Date().toLocaleDateString()}`,
             qrCodeDataURL: qrCodeDataURL,
             // Assuming $addMember->id is already known
             company_name_eng: 'Sample Company',
@@ -147,7 +149,7 @@ app.get('/renderCertificate', async (req, res) => {
         },
         uploadPath: '/your/upload/path/', // Dummy data, replace with actual upload path
         backendImagePath: '/your/backend/image/path/', // Dummy data, replace with actual backend image path
-        expiryDate: '31-12-2023', // Dummy data, replace with actual user data from your API
+        expiryDate: '31-12-2025', // Dummy data, replace with actual user data from your API
         explodeGPCCode: [1, 2]
     };
 
