@@ -1463,10 +1463,68 @@ export const MembersDocumentColumn = [
     headerName: 'Type',
     width: 180,
   },
+  // {
+  //   field: 'documents',
+  //   headerName: 'Documents',
+  //   width: 180,
+  //   renderCell: (params) => {
+  //     console.log("params");
+  //     console.log(params);
+  //     const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+  //     const docUrl = fieldUpdated
+  //       ? params?.row?.[params.field]?.dataURL
+  //       : imageLiveUrl(params.row[params.field]);
+
+  //     const onClickIcon = () => {
+  //       if (fieldUpdated) {
+  //         // removing the "data:application/pdf;base64," part
+  //         const base64 = docUrl.split(",")[1];
+  //         const binary = atob(base64);
+  //         const binaryLen = binary.length;
+  //         const buffer = new ArrayBuffer(binaryLen);
+  //         const view = new Uint8Array(buffer);
+  //         for (let i = 0; i < binaryLen; i++) {
+  //           view[i] = binary.charCodeAt(i);
+  //         }
+  //         // create Blob from ArrayBuffer
+  //         const blob = new Blob([view], { type: "application/pdf" });
+
+  //         // create an object URL from the Blob
+  //         const objectUrl = URL.createObjectURL(blob);
+
+  //         // open a link to the Object URL
+  //         const link = document.createElement("a");
+  //         link.href = objectUrl;
+  //         link.download = "file.pdf"; // you can set file name here
+  //         link.click();
+  //       } else {
+  //         window.open(docUrl, "_blank");
+  //       }
+  //     };
+
+  //     return (
+  //       <InsertDriveFileIcon
+  //         style={{
+  //           color: "black",
+  //           width: "40px",
+  //           height: "40px",
+  //           cursor: "pointer",
+  //         }}
+  //         onClick={onClickIcon}
+  //       />
+  //     );
+  //   },
+
+  //   renderEditCell: (params) =>
+  //     renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+  //   editable: true,
+  //   type: "string",
+  // },
   {
-    field: 'documents',
-    headerName: 'Documents',
+    field: 'document',
+    headerName: 'Document',
     width: 180,
+
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -1514,11 +1572,6 @@ export const MembersDocumentColumn = [
         />
       );
     },
-
-    renderEditCell: (params) =>
-      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
-    editable: true,
-    type: "string",
   },
   {
     field: 'user_id',
@@ -1562,26 +1615,26 @@ export const MembersDocumentColumn = [
     headerName: 'Doc Type',
     width: 180,
   },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 120,
-    renderCell: params => (
-      <div
-        style={{
-          padding: '5px',
-          paddingLeft: '5px',
-          paddingRight: '5px',
-          borderRadius: '10px',
-          border: '2px solid',
-          borderColor: params.row.status === 'active' ? 'green' : 'red',
-          color: params.row.status === 'active' ? 'green' : 'red',
-        }}
-      >
-        {params.row.status}
-      </div>
-    ),
-  },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 120,
+  //   renderCell: params => (
+  //     <div
+  //       style={{
+  //         padding: '5px',
+  //         paddingLeft: '5px',
+  //         paddingRight: '5px',
+  //         borderRadius: '10px',
+  //         border: '2px solid',
+  //         borderColor: params.row.status === 'active' ? 'green' : 'red',
+  //         color: params.row.status === 'active' ? 'green' : 'red',
+  //       }}
+  //     >
+  //       {params.row.status}
+  //     </div>
+  //   ),
+  // },
 
 
 
@@ -2386,29 +2439,15 @@ export const financeColumn = [
     width: 180,
   },
   {
-    field: 'transaction_id',
-    headerName: 'Transaction ID',
+    field: 'type',
+    headerName: 'Type',
     width: 180,
   },
   {
-    field: 'cart_items',
-    headerName: 'Cart Items',
+    field: 'document',
+    headerName: 'Document',
     width: 180,
-  },
-  {
-    field: 'total',
-    headerName: 'Total',
-    width: 180,
-  },
-  // {
-  //   field: 'documents',
-  //   headerName: 'Documents',
-  //   width: 180,
-  // },
-  {
-    field: 'documents',
-    headerName: 'Documents',
-    width: 180,
+
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -2456,20 +2495,10 @@ export const financeColumn = [
         />
       );
     },
-
-    renderEditCell: (params) =>
-      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
-    editable: true,
-    type: "string",
   },
   {
-    field: 'request_type',
-    headerName: 'Request Type',
-    width: 180,
-  },
-  {
-    field: 'payment_type',
-    headerName: 'Payment Type',
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
     width: 180,
   },
   {
@@ -2500,102 +2529,18 @@ export const financeColumn = [
     }
   },
   {
-    field: 'deleted_at',
-    headerName: 'Deleted At',
+    field: 'doc_type',
+    headerName: 'Doc Type',
     width: 180,
   },
   {
-    field: 'reject_reason',
-    headerName: 'Reject Reason',
+    field: 'status',
+    headerName: 'Status',
     width: 180,
   },
-  {
-    field: 'reject_by',
-    headerName: 'Reject By',
-    width: 180,
-  },
-  {
-    field: 'receipt',
-    headerName: 'Receipt',
-    width: 180,
-  },
-  // {
-  //   field: 'receipt_path',
-  //   headerName: 'Receipt Path',
-  //   width: 180,
-  // },
-  {
-    field: 'receipt_path',
-    headerName: 'Receipt Path',
-    width: 180,
-    renderCell: (params) => {
-      console.log("params");
-      console.log(params);
-      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
-      const docUrl = fieldUpdated
-        ? params?.row?.[params.field]?.dataURL
-        : imageLiveUrl(params.row[params.field]);
+  
 
-      const onClickIcon = () => {
-        if (fieldUpdated) {
-          // removing the "data:application/pdf;base64," part
-          const base64 = docUrl.split(",")[1];
-          const binary = atob(base64);
-          const binaryLen = binary.length;
-          const buffer = new ArrayBuffer(binaryLen);
-          const view = new Uint8Array(buffer);
-          for (let i = 0; i < binaryLen; i++) {
-            view[i] = binary.charCodeAt(i);
-          }
-          // create Blob from ArrayBuffer
-          const blob = new Blob([view], { type: "application/pdf" });
 
-          // create an object URL from the Blob
-          const objectUrl = URL.createObjectURL(blob);
-
-          // open a link to the Object URL
-          const link = document.createElement("a");
-          link.href = objectUrl;
-          link.download = "file.pdf"; // you can set file name here
-          link.click();
-        } else {
-          window.open(docUrl, "_blank");
-        }
-      };
-
-      return (
-        <InsertDriveFileIcon
-          style={{
-            color: "black",
-            width: "40px",
-            height: "40px",
-            cursor: "pointer",
-          }}
-          onClick={onClickIcon}
-        />
-      );
-    },
-
-    renderEditCell: (params) =>
-      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
-    editable: true,
-    type: "string",
-  },
-  {
-    field: 'admin_id',
-    headerName: 'Admin ID',
-    width: 180,
-  },
-  {
-    field: 'assign_to',
-    headerName: 'Assign To',
-    width: 180,
-  },
-  {
-    field: 'discount',
-    headerName: 'Discount',
-    width: 180,
-  },
 ];
 
 

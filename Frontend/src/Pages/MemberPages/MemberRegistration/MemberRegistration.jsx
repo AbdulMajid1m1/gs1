@@ -10,6 +10,7 @@ import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const MemmberRegisteration = () => {
@@ -19,6 +20,7 @@ const MemmberRegisteration = () => {
 
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
     const location = sessionStorage.getItem('location');
+    const navigate = useNavigate();
     // console.log("Get the Cr Number", sessionData);
     // console.log("Get the Document Data", sesstionDocumentData);
     const [country, setCountry] = React.useState([])
@@ -413,7 +415,7 @@ const MemmberRegisteration = () => {
                 console.log(response.data);
                 setIsLoading(false);
                 setTimeout(() => {
-                    navigate(-1);
+                    navigate('/');
                 }, 1500);
 
                 toast.success('Member Registered Successfully', {
@@ -424,6 +426,8 @@ const MemmberRegisteration = () => {
                     pauseOnHover: true,
                     draggable: true
                 });
+
+            
 
             })
             .catch((err) => {
@@ -449,7 +453,7 @@ const MemmberRegisteration = () => {
         console.log(value)
         setSelectedCategories(value);
         // Reset selectedGtinNumber when category changes
-        // setSelectedGtinNumber(null);
+        setSelectedGtinNumber(null);
     };
 
     const handleGtinNumberChange = (event, value) => {
@@ -980,9 +984,11 @@ const MemmberRegisteration = () => {
                                         },
                                     }}
                                 /> */}
+                                 {/* {selectedCategories ? ( // Render GTIN Autocomplete only if a category is selected */}
                                 <Autocomplete
                                     id='GTIN'
-                                    options={gtinNumber}
+                                    // options={gtinNumber}
+                                    options={selectedCategories ? gtinNumber : []}
                                     value={selectedGtinNumber}
                                     getOptionLabel={(option) => option?.member_category_description || ''}
                                     onChange={handleGtinNumberChange}
@@ -1016,6 +1022,10 @@ const MemmberRegisteration = () => {
                                         },
                                     }}
                                 />
+                                {/* // ) : (
+                                //     // You can add any placeholder or message when no category is selected
+                                //     <p>Please select a Membership category to enable GTIN selection.</p>
+                                // )} */}
                             </div>
 
 

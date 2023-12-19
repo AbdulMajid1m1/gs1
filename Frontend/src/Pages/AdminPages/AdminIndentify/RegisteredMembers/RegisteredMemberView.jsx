@@ -67,15 +67,36 @@ const RegisteredMembersView = () => {
     }, [])
 
 
-    useEffect(() => {
-      const cartData = allUserData.carts || [];
-      const stringifiedCartData = [].concat(...cartData.map((item) => JSON.parse(item.cart_items))); 
-      console.log(stringifiedCartData  || []);
+    // useEffect(() => {
+    //   const cartData = allUserData.carts || [];
+    //   const stringifiedCartData = [].concat(...cartData.map((item) => JSON.parse(item.cart_items))); 
+    //   console.log(stringifiedCartData  || []);
     
-      // Set the registeredProductsData
-      setRegisteredProductsData(stringifiedCartData  || []);
+    //   // Set the registeredProductsData
+    //   setRegisteredProductsData(stringifiedCartData  || []);
+    // }, [allUserData]);
+
+      useEffect(() => {
+        const cartData = allUserData.carts || [];
+        const stringifiedCartData = [].concat(...cartData.map((item) => {
+            try {
+                // Try parsing the JSON, and return the parsed object or null if invalid
+                return JSON.parse(item.cart_items) || null;
+            } catch (error) {
+                console.error(`Error parsing JSON in cart_items: ${error.message}`);
+                return null;
+            }
+        }));
+    
+        // Filter out null values (parsing errors) and keep only valid JSON objects
+        const filteredCartData = stringifiedCartData.filter((item) => item !== null);
+    
+        console.log(filteredCartData || []);
+    
+        // Set the registeredProductsData
+        setRegisteredProductsData(filteredCartData || []);
     }, [allUserData]);
-    
+  
       
     
   
@@ -132,7 +153,8 @@ const RegisteredMembersView = () => {
 
     const fetchFinanceData = async () => {
       try {
-        const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+        // const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+        const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
         
         console.log(response.data);
         setData(response?.data || []);
@@ -463,7 +485,7 @@ const RegisteredMembersView = () => {
 
 
   const handleMemberStatusChange = async (selectedMemberUser) => {
-    const statusOptions = ["pending", "approved"];
+    const statusOptions = ["pending", "approved", "rejected"];
     const initialStatus = selectedMemberUser.status;
     console.log(initialStatus);
 
@@ -1009,17 +1031,17 @@ const RegisteredMembersView = () => {
                                 checkboxSelection={false}
                                
                             dropDownOptions={[
-                                {
-                                label: "Edit",
-                                icon: (
-                                    <EditIcon
-                                    fontSize="small"
-                                    color="action"
-                                    style={{ color: "rgb(37 99 235)" }}
-                                    />
-                                ),
-                                action: handleMemberStatusChange,
-                                },
+                                // {
+                                // label: "Edit",
+                                // icon: (
+                                //     <EditIcon
+                                //     fontSize="small"
+                                //     color="action"
+                                //     style={{ color: "rgb(37 99 235)" }}
+                                //     />
+                                // ),
+                                // action: handleMemberStatusChange,
+                                // },
                                 {
                                     label: "Delete",
                                     icon: (
@@ -1139,6 +1161,7 @@ const RegisteredMembersView = () => {
                                 loading={isLoading}
                                 secondaryColor="secondary"
                                 handleRowClickInParent={handleRowClickInParent}
+                                buttonVisibility={false}
 
                             dropDownOptions={[
                                 {
@@ -1156,7 +1179,7 @@ const RegisteredMembersView = () => {
                                   label: "Activation",
                                   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                                   ,
-                                  action: handleStatusChange,
+                                  action: handleMemberStatusChange,
                   
                                 },
 
