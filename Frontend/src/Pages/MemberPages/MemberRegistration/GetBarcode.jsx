@@ -219,7 +219,7 @@ const GetBarcode = () => {
                 <h2 className='text-3xl font-bold font-sans text-secondary'>Welcome To GS1 </h2>
                 <p className='text-xl font-bold font-sans text-secondary'>Your Registration & Barcode journey will start here.</p>
               </div>
-
+ 
               <div className='flex flex-col font-sans py-4 gap-2'>
                 <div>
                   <p className='text-xl font-bold text-secondary'>Is your company located in the Kingdom? <span className='text-[#FF3E01]'>*</span></p>
