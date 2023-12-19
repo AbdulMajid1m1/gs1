@@ -19,7 +19,9 @@ const app = express();
 dotenv.config();
 
 const allowedOrigins = [
-    "http://localhost:3000"
+    "http://localhost:3092",
+    "http://gs1ksa.org:3092"
+
 
 ];
 
@@ -134,7 +136,7 @@ app.get('/renderCertificate', async (req, res) => {
         },
         general: {
             gcp_certificate_detail1: ['Global Trade Item Number(GTIN)', 'Certificate Detail 1'], // Dummy data, replace with actual detail data from your API
-            gcp_certificate_detail2: ['Certificate Detail 2','Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
+            gcp_certificate_detail2: ['Certificate Detail 2', 'Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
             gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
         },
         userData: {
