@@ -212,13 +212,14 @@ const GetBarcode = () => {
       <div className='flex justify-center items-center mt-5 mb-10'>
         <div className='h-auto w-[90%] border-l border-r border-b border-primary'>
           <div className='h-5 w-full bg-primary'></div>
-          <div className='flex justify-between items-center flex-wrap px-12 py-5'>
+          {/* <div className='flex justify-between items-center flex-wrap px-12 py-5'> */}
+          <div className='grid 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 items-center px-12 py-5'>
             <div>
               <div className='flex flex-col gap-1'>
                 <h2 className='text-3xl font-bold font-sans text-secondary'>Welcome To GS1 </h2>
                 <p className='text-xl font-bold font-sans text-secondary'>Your Registration & Barcode journey will start here.</p>
               </div>
-
+ 
               <div className='flex flex-col font-sans py-4 gap-2'>
                 <div>
                   <p className='text-xl font-bold text-secondary'>Is your company located in the Kingdom? <span className='text-[#FF3E01]'>*</span></p>
@@ -279,8 +280,8 @@ const GetBarcode = () => {
 
             </div>
 
-            <div>
-              <div className='flex flex-col gap-2'>
+            <div className='flex sm:justify-end sm:items-end justify-center items-center'>
+              <div className='flex flex-col gap-2 sm:w-[80%] w-full'>
                 {hasCR ? (
                   <>
                     <label htmlFor="companyName" className='text-xl font-bold font-sans text-secondary'>CR Number <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal text-lg'>(About CR Number)</span></label>
@@ -430,7 +431,9 @@ const GetBarcode = () => {
       )}
 
       {/* Footer */}
-      <Footer />
+      <div className='pt-10'>
+        <Footer />
+      </div>
       {/* End Footer */}
     </div>
   )
