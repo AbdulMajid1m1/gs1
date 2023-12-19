@@ -62,6 +62,7 @@ import SubscribedGTIN from "./Pages/MemberPages/SubscribedGTIN/SubscribedGTIN";
 import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
 import MemberCrNumber from "./Pages/MemberPages/MemberCrNumber/MemberCrNumber";
 import Document_type from './Pages/AdminPages/MasterData/documentype/documenttype';
+import MemberData from "./Pages/MemberPages/MemberData/MemberData";
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -145,7 +146,7 @@ const App = () => {
                             <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
                             {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
-                          {/* <Route path="member-data" element={<MemberData />} /> */}
+                          <Route path="member-data" element={<MemberData />} />
                           <Route path="member-crnumber" element={<MemberCrNumber />} />
 
 
