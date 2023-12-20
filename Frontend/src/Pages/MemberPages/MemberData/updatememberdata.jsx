@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
-import newRequest from '../../../../utils/userRequest';
+import newRequest from '../../../../src/utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
-
-const Updateunit = ({ isVisible, setVisibility, refreshBrandData }) => {
+const Updatememberdata = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
     console.log(updateBrandData)
-    const [unit_code, setunit_code] = useState(updateBrandData?.unit_code || '');
-    const [unit_name, setunit_name] = useState(updateBrandData?.unit_name || '');
+    const [name, setname] = useState(updateBrandData?.name || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
 
@@ -27,13 +25,12 @@ const handleUpdateBrand = async () => {
   setLoading(true);
  
   try {
-    const response = await newRequest.put(`/updateunit/${updateBrandData?.id}`, {
-        unit_code: unit_code,
-         unit_name: unit_name,
+    const response = await newRequest.put(`/updatecr_documents/${updateBrandData?.id}`, {
+      name: name,
       status: Number(status),
     });
 
-    toast.success(response?.data?.message || 'units updated successfully', {
+    toast.success(response?.data?.message || 'document updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -79,32 +76,21 @@ const handleUpdateBrand = async () => {
                      <div className="popup-container h-auto sm:w-[45%] w-full">
                        <div className="popup-form w-full">         
                           <form className='w-full'>
-                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update unit</h2>
+                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update City</h2>
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">unit code</label>
+                                <label htmlFor="field1" className="text-secondary">City name</label>
                                 <input
                                   type="text"
-                                  id="unit_code"
-                                  value={unit_code}
-                                  onChange={(e) => setunit_code(e.target.value)}
+                                  id="name"
+                                  value={name}
+                                  onChange={(e) => setname(e.target.value)}
                                 //   readOnly
-                                  placeholder="Enter unit code"
+                                  placeholder="Enter City name"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                               </div>
- <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">unit name</label>
-                                <input
-                                  type="text"
-                                  id="unit_name"
-                                  value={unit_name}
-                                  onChange={(e) => setunit_name(e.target.value)}
-                                //   readOnly
-                                  placeholder="Enter unit name"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                              </div>
+
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                               <label htmlFor="status" className="text-secondary">
                                Status
@@ -119,7 +105,6 @@ const handleUpdateBrand = async () => {
     <option value="1">1</option>
   </select>
                               </div>
-
                             </div>
 
                             
@@ -147,7 +132,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                Update unit
+                                Update City
                             </Button>
                             </div>
                           </form>
@@ -160,4 +145,4 @@ const handleUpdateBrand = async () => {
   )
 }
 
-export default Updateunit
+export default Updatememberdata

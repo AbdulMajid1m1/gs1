@@ -15,26 +15,45 @@ const PaymentSlips = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
+    // const memberDataString = sessionStorage.getItem('memberData');
+    // const memberData = JSON.parse(memberDataString);
+    // console.log(memberData?.transaction_id);
     
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
+  
 
       useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await newRequest.get("/bankslip",);
+        const fetchData = async () => {
+          try {
+            const response = await newRequest.get("/bankslip",);
+            
+            console.log(response.data);
+            setData(response?.data || []);
+            setIsLoading(false)
+
+          } catch (err) {
+            console.log(err);
+            setIsLoading(false)
+          }
+        };
+
+      // const fetchMemberbankSlipData = async () => {
+      //   try {
+      //     const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.transaction_id}&type=bank_slip`);
           
-          console.log(response.data);
-          setData(response?.data || []);
-          setIsLoading(false)
+      //     console.log(response.data);
+      //     setData(response?.data || []);
+      //     setIsLoading(false)
+  
+      //   } catch (err) {
+      //     console.log(err);
+      //     setIsLoading(false)
+      //       }
+      //   };
 
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false)
-        }
-      };
-
+      //   fetchMemberbankSlipData();
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 

@@ -28,7 +28,11 @@ export const createUNSPSC = async (req, res, next) => {
 };
 export const getAllUNSPSC = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.unspscs.findMany();
+        const AllUNSPSC = await prisma.unspscs.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);

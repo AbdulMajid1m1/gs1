@@ -10,13 +10,13 @@ import { MuiCustomTable } from "../../utils/MuiCustomTable";
 import ActionDropdown from "../../utils/ActionDropdown";
 // import newRequest from "../../../utils/userRequest";
 // import NewUserPopup from "../../NewUserPopup/NewUserPopup";
-import { DataTableContext } from "../../Contexts/DataTableContext";
+import { DataTableContext2 } from "../../Contexts/DataTableContext2";
 import CustomSnakebar from "../../utils/CustomSnackbar";
 import { SnackbarContext } from "../../Contexts/SnackbarContext";
 import Swal from "sweetalert2";
 // import * as XLSX from 'xlsx';
 
-const DataTable = ({
+const DataTable3 = ({
   columnsName = [],
   data,
   title,
@@ -45,7 +45,6 @@ const DataTable = ({
   handleAddDoc,
   handleUsers,
   handleAddUser,
-  globalSearch = false,
 }) => {
   const navigate = useNavigate();
   const [qrcodeValue, setQRCodeValue] = useState("");
@@ -58,7 +57,7 @@ const DataTable = ({
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [muiFilteredData, setMuiFilteredData] = useState([]);
-  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext2);
   //   const { openSnackbar } = useContext(SnackbarContext);
 
   const resetSnakeBarMessages = () => {
@@ -125,8 +124,7 @@ const DataTable = ({
     'purchaseOrderId',
     'gtinMainTableId',
     'ssccTableId',
-    'customerListId',
-    'memberInvoiceId',
+    'customerListId'
   ]
   const handleRowClick = (item) => {
     console.log(item)
@@ -172,32 +170,14 @@ const DataTable = ({
     setMuiFilteredData(filteredData);
   }, [filteredData]);
 
-  // const handleSearch = (e) => {
-  //   // setShipmentIdSearch(e.target.value);
-  //   e.target.name === "SHIPMENTID"
-  //     ? setShipmentIdSearch(e.target.value)
-  //     : setContainerIdSearch(e.target.value);
-  //   console.log(e.target.name, e.target.value);
-  //   console.log(shipmentIdSearch, containerIdSearch);
-  // };
-
-  const handleGlobalSearch = (e) => {
-    // when user search what ever he types filter the data and show it in the table
-    const searchValue = e.target.value;
-    console.log(searchValue);
-    const filteredData = record.filter((item) => {
-      // check if the search value is in any of the object values
-      return Object.values(item).some((value) =>
-        value.toString().toLowerCase().includes(searchValue.toLowerCase())
-      );
-    });
-    console.log(filteredData);
-    setMuiFilteredData(filteredData);
-
-   
+  const handleSearch = (e) => {
+    // setShipmentIdSearch(e.target.value);
+    e.target.name === "SHIPMENTID"
+      ? setShipmentIdSearch(e.target.value)
+      : setContainerIdSearch(e.target.value);
+    console.log(e.target.name, e.target.value);
+    console.log(shipmentIdSearch, containerIdSearch);
   };
-  
-
   // Retrieve the value with the key "myKey" from localStorage getvalue
   const myValue = localStorage.getItem("userId");
   console.log(myValue);
@@ -497,20 +477,7 @@ const DataTable = ({
       >
         <div className="datatableTitle">
           <div className="left-div">
-           
-            {/* if global search is true than show search bar instead of title */}
-            {globalSearch ?  (
-              <span>
-                <input
-                  type="text"
-                  placeholder="SEARCH"
-                  name="SHIPMENTID"
-                  className="searchInput"
-                  onChange={handleGlobalSearch}
-                />
-              </span>
-            ) :  <span>{title}</span>
-           }
+            <span>{title}</span>
 
             {ShipmentIdSearchEnable && ShipmentIdSearchEnable === true ? (
               <span>
@@ -579,15 +546,11 @@ const DataTable = ({
         )} */}
 
         <MuiCustomTable
-
-
           secondaryColor={secondaryColor ? secondaryColor : null}
           loading={loading}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }
-
-
           editMode="none" // set to row if need to edit row
           processRowUpdate={processRowUpdate ? processRowUpdate : null}
           onProcessRowUpdateError={(params, error) => {
@@ -602,14 +565,7 @@ const DataTable = ({
                 ? idColumn.concat(columnsName.concat(actionColumn))
                 : idColumn.concat(columnsName))
           }
-          initialState={{
-            pinnedColumns: {
-              // show actions column as pinned if actionColumnVisibility is false
 
-              left: idColumn.concat(columnsName),
-
-            },
-          }}
 
           pageSize={30}
           rowsPerPageOptions={[30, 50, 100]}
@@ -636,6 +592,6 @@ const DataTable = ({
   );
 };
 
-export default DataTable;
+export default DataTable3;
 
 

@@ -34,7 +34,11 @@ export const createdocument = async (req, res, next) => {
 };
 export const getAllcr_documents = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.cr_documents.findMany();
+        const AllUNSPSC = await prisma.cr_documents.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);
@@ -139,7 +143,11 @@ export const createdocumentType = async (req, res, next) => {
 };
 export const getAlldocumentType = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.document_type.findMany();
+        const AllUNSPSC = await prisma.document_type.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);

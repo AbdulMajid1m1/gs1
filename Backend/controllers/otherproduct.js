@@ -32,7 +32,11 @@ export const createotherproduct = async (req, res, next) => {
 };
 export const getAllotherproduct = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.other_products.findMany();
+        const AllUNSPSC = await prisma.other_products.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);
