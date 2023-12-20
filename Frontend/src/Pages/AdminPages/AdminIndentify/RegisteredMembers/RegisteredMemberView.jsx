@@ -18,6 +18,8 @@ import './RegisteredMember.css'
 import AddBrands from './AddBrands'
 import UpdateBrands from './UpdateBrands'
 import AddMemberDocuments from './AddMemberDocuments'
+import DataTable3 from '../../../../components/Datatable/Datatable3'
+import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 
 const RegisteredMembersView = () => {
     // get the sesstion data
@@ -66,16 +68,7 @@ const RegisteredMembersView = () => {
 
     }, [])
 
-
-    // useEffect(() => {
-    //   const cartData = allUserData.carts || [];
-    //   const stringifiedCartData = [].concat(...cartData.map((item) => JSON.parse(item.cart_items))); 
-    //   console.log(stringifiedCartData  || []);
     
-    //   // Set the registeredProductsData
-    //   setRegisteredProductsData(stringifiedCartData  || []);
-    // }, [allUserData]);
-
       useEffect(() => {
         const cartData = allUserData.carts || [];
         const stringifiedCartData = [].concat(...cartData.map((item) => {
@@ -102,6 +95,8 @@ const RegisteredMembersView = () => {
   
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [memberInovice, setMemberInovice] = useState([]);
+    const [memberBankSlip, setMemberBankSlip] = useState([]);
     const [brandsData, setBrandsData] = useState([]);
 
 
@@ -151,13 +146,28 @@ const RegisteredMembersView = () => {
     };
 
 
-    const fetchFinanceData = async () => {
+    // const fetchFinanceData = async () => {
+    //   try {
+    //     // const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
+    //     const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+        
+    //     console.log(response.data);
+    //     setData(response?.data || []);
+    //     setIsLoading(false)
+
+    //   } catch (err) {
+    //     console.log(err);
+    //     setIsLoading(false)
+    //       }
+    //   };
+
+    const fetchMemberInvoiceData = async () => {
       try {
-        // const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
-        const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+        // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+        const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=invoice`);
         
         console.log(response.data);
-        setData(response?.data || []);
+        setMemberInovice(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
@@ -166,9 +176,50 @@ const RegisteredMembersView = () => {
           }
       };
 
-      fetchFinanceData();
+
+    const fetchMemberbankSlipData = async () => {
+        try {
+          // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+          const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip`);
+          
+          console.log(response.data);
+          setMemberBankSlip(response?.data || []);
+          setFilteredMemberDetails(response?.data || []);
+          setIsLoading(false)
+  
+        } catch (err) {
+          console.log(err);
+          setIsLoading(false)
+            }
+        };
+
+      fetchMemberInvoiceData();
+      fetchMemberbankSlipData();
+    //   fetchFinanceData();
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
+
+
+
+    const [filteredMemberDetails, setFilteredMemberDetails] = useState([]);
+    const fetchFilteredMemberDetails = async (row) => {
+      console.log(row);
+      setIsLoading(true);
+      try {
+        // const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=2875842183`);
+        const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=${row?.transaction_id}`);
+        
+        console.log(response.data);
+        setFilteredMemberDetails(response?.data || []);
+        setIsLoading(false)
+
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+    }
+
+    console.log(gs1MemberData?.id)
+  }
 
     
     // For refresh the Brand Datagrid
@@ -226,12 +277,14 @@ const RegisteredMembersView = () => {
     }
 
     const handleRowClickInParent = (item) => {
-        if (!item || item?.length === 0) {
-          setTableSelectedRows(data)
-          setFilteredData(data)
-          return
-        }
-    
+      if (!item || item?.length === 0) {
+        // setTableSelectedRows(data)
+        // setFilteredData(data)
+        setFilteredMemberDetails(memberBankSlip)
+        return
+      }
+      fetchFilteredMemberDetails(item);
+      
       }
 
 
@@ -328,109 +381,6 @@ const RegisteredMembersView = () => {
         });
     };
     
-    
-    const handleStatusChange = async (selectedUser) => {
-      const statusOptions = ["active", "suspend", "inactive", "reject"];
-      const initialStatus = selectedUser.status;
-      console.log(initialStatus);
-  
-      const { value: selectedStatus } = await Swal.fire({
-        title: `<strong>Update Status for (${selectedUser.company_name_eng})</strong>`,
-        html: `
-        <p><b>UserID:</b> ${selectedUser.id}</p>
-        <p><b>Email:</b> ${selectedUser.email}</p>
-      `,
-        input: 'select',
-        inputValue: initialStatus,
-        inputOptions: statusOptions.reduce((options, status) => {
-          options[status] = status;
-          return options;
-        }, {}),
-        inputPlaceholder: 'Select Status',
-        showCancelButton: true,
-        confirmButtonText: 'Update',
-        confirmButtonColor: '#1E3B8B',
-        cancelButtonColor: '#FF0032',
-      });
-  
-      if (selectedStatus === undefined) { // Cancel button was pressed
-        return;
-      }
-  
-      // if (selectedStatus === 'reject') {
-      //   handleReject(selectedUser); // Handle "reject" action
-      //   return;
-      // }
-  
-  
-      if (selectedStatus === initialStatus) {
-         // No changes were made, show a Toastify info message
-          toast.info('No changes were made', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        return;
-      }
-  
-      // try {
-      //   const res = await newRequest.post(
-      //     '/users/updateUserStatus',
-      //     {
-      //       userId : selectedUser.id,
-      //       status: selectedStatus,
-      //     }
-      //   );  
-  
-  
-      //   // refreshData();
-      //   const updatedData = data.map((item) => {
-      //     if (item.id === selectedUser.id) {
-      //       return {
-      //         ...item,
-      //         status: selectedStatus,
-      //       };
-      //     }
-      //     return item;
-      //   });
-      //   setGridData(updatedData)
-
-
-      //   toast.success(res?.data?.message || 'Status updated successfully', {
-      //     position: "top-right",
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "light",
-      //   });
-
-  
-      // } catch (err) {
-      //   toast.error(err?.response?.data?.message || 'Something went wrong!', {
-      //     position: "top-right",
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "light",
-      //   });
-
-      //   console.log(err); 
-      // }
-  
-    };
-
-
 
     // member docuemnts apis HandleDelete
     const handleMemberDelete = async (MemberRow) => {
@@ -501,18 +451,111 @@ const RegisteredMembersView = () => {
 
 
 
+  // const handleMemberStatusChange = async (selectedMemberUser) => {
+  //   // setIsLoading(true);
+  //   const statusOptions = ["approved", "rejected"];
+  //   const initialStatus = selectedMemberUser.status;
+  //   console.log(initialStatus);
+
+  //   const { value: selectedStatus } = await Swal.fire({
+  //     title: `<strong>Update Status.</strong>`,
+  //     html: `
+  //     <p><b>UserID:</b> ${selectedMemberUser.id}</p>
+  //   `,
+  //     input: 'select',
+  //     inputValue: initialStatus,
+  //     inputOptions: statusOptions.reduce((options, status) => {
+  //       options[status] = status;
+  //       return options;
+  //     }, {}),
+  //     inputPlaceholder: 'Select Status',
+  //     showCancelButton: true,
+  //     confirmButtonText: 'Update',
+  //     confirmButtonColor: '#1E3B8B',
+  //     cancelButtonColor: '#FF0032',
+  //   });
+
+  //   if (selectedStatus === undefined) { // Cancel button was pressed
+  //     return;
+  //   }
+
+  //   // if (selectedStatus === 'reject') {
+  //   //   handleReject(selectedUser); // Handle "reject" action
+  //   //   return;
+  //   // }
+
+
+  //   if (selectedStatus === initialStatus) {
+  //      // No changes were made, show a Toastify info message
+  //       toast.info('No changes were made', {
+  //         position: "top-right",
+  //         autoClose: 2000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       setIsLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await newRequest.put(
+  //       `/memberDocuments/status/${selectedMemberUser?.id}`,
+  //       {
+  //         status: selectedStatus,
+  //       }
+  //     );  
+
+
+  //     RefreshFinanceData();
+  //     setIsLoading(false);
+
+  //     toast.success(res?.data?.message || 'Status updated successfully', {
+  //       position: "top-right",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+
+
+  //   } catch (err) {
+  //     toast.error(err?.response?.data?.message || 'Something went wrong!', {
+  //       position: "top-right",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+
+  //     setIsLoading(false);
+  //     console.log(err); 
+  //   }
+
+  // };
+
+ 
   const handleMemberStatusChange = async (selectedMemberUser) => {
-    setIsLoading(true);
-    const statusOptions = ["pending", "approved", "rejected"];
+    // setIsLoading(true);
+    const statusOptions = ["approved", "rejected"];
     const initialStatus = selectedMemberUser.status;
     console.log(initialStatus);
-
+  
     const { value: selectedStatus } = await Swal.fire({
       title: `<strong>Update Status.</strong>`,
       html: `
-      <p><b>UserID:</b> ${selectedMemberUser.id}</p>
-    `,
-      input: 'select',
+        <p><b>Comapany Name English:</b> ${gs1MemberData?.company_name_eng}</p>
+      `,
+      input: 'radio', // Change from 'select' to 'radio'
       inputValue: initialStatus,
       inputOptions: statusOptions.reduce((options, status) => {
         options[status] = status;
@@ -524,45 +567,38 @@ const RegisteredMembersView = () => {
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
     });
-
-    if (selectedStatus === undefined) { // Cancel button was pressed
+  
+    if (selectedStatus === undefined) {
+      // Cancel button was pressed
       return;
     }
-
-    // if (selectedStatus === 'reject') {
-    //   handleReject(selectedUser); // Handle "reject" action
-    //   return;
-    // }
-
-
+  
     if (selectedStatus === initialStatus) {
-       // No changes were made, show a Toastify info message
-        toast.info('No changes were made', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setIsLoading(false);
+      // No changes were made, show a Toastify info message
+      toast.info('No changes were made', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setIsLoading(false);
       return;
     }
-
+  
     try {
       const res = await newRequest.put(
         `/memberDocuments/status/${selectedMemberUser?.id}`,
         {
           status: selectedStatus,
         }
-      );  
-
-
-      RefreshFinanceData();
+      );
+  
       setIsLoading(false);
-
+  
       toast.success(res?.data?.message || 'Status updated successfully', {
         position: "top-right",
         autoClose: 5000,
@@ -573,8 +609,7 @@ const RegisteredMembersView = () => {
         progress: undefined,
         theme: "light",
       });
-
-
+  
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Something went wrong!', {
         position: "top-right",
@@ -586,39 +621,20 @@ const RegisteredMembersView = () => {
         progress: undefined,
         theme: "light",
       });
-
+  
       setIsLoading(false);
-      console.log(err); 
+      console.log(err);
     }
-
   };
-
- 
+  
 
       
   return (
     <div>
       <div className="p-0 h-full sm:ml-72">
-        <div className='h-32 w-full flex justify-end items-start p-3 bg-primary -mt-6 sm:gap-7 gap-4'>
-                <div className='flex justify-center items-center mt-1 cursor-pointer'>
-                    <img src={visitFrontend} 
-                        alt='logo'
-                        style={{ filter: 'invert(1)' }}
-                            className='h-5 w-5 text-white mr-4' />
-                    <p className='text-white font-sans font-normal text-sm'>Vist Frontend</p>
-                </div>
-
-                <div className='flex justify-center items-center'>
-                    <img src={profileICon} alt='logo' className='h-8 w-8 text-white mr-5' />
-                </div>
-            </div>
-            
-                <div className='flex justify-center items-center bg-[#DAF2EE]'>
-                    <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-start items-center px-10">
-                        <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">GS1 Member Details</p>
-                    </div>
-                </div>
-
+          <div className='bg-[#DAF2EE]'>
+            <DashboardRightHeader title={"GS1 Member Details"}/>
+          </div>
 
                 <div className='flex justify-center items-center bg-[#DAF2EE]'>
                   <div className="h-auto w-[97%] px-0 pt-4">
@@ -1173,53 +1189,91 @@ const RegisteredMembersView = () => {
                </div>
 
 
+                {/* Finance Datagrid */}
                  <div className='flex justify-center items-center bg-[#DAF2EE]'>
                    <div className="h-auto w-[97%] px-0 pt-4">
                      <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
                         
-                        <div className='flex justify-end'>
-                            {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                        {/* <div className='flex justify-end'>
                             <button 
-                              // onClick={handleShowCreatePopup}
                               className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
                               <i className="fas fa-plus mr-1"></i>Add
                             </button>
-                        </div>
-                        
-                        <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                          >
-                       <DataTable data={data} 
-                            title="Finance"
-                            columnsName={financeColumn}
-                                loading={isLoading}
-                                secondaryColor="secondary"
-                                handleRowClickInParent={handleRowClickInParent}
-                                buttonVisibility={false}
+                        </div> */}
 
-                            dropDownOptions={[
-                                {
-                                label: "View",
-                                icon: (
-                                    <VisibilityIcon
-                                    fontSize="small"
-                                    color="action"
-                                    style={{ color: "rgb(37 99 235)" }}
-                                    />
-                                ),
-                                action: handleView,
-                                },
-                                {
-                                  label: "Activation",
-                                  icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                                  ,
-                                  action: handleMemberStatusChange,
-                  
-                                },
+                        <div className='flex gap-5 flex-wrap'>
+                          <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                              className='sm:w-[50%] w-full'
+                           >
+                          <DataTable data={memberInovice} 
+                              title="Member Invoice"
+                              columnsName={financeColumn}
+                                  loading={isLoading}
+                                  secondaryColor="secondary"
+                                  handleRowClickInParent={handleRowClickInParent}
+                                  buttonVisibility={false}
 
-                            ]}
-                            uniqueId="gtinMainTableId"
+                              dropDownOptions={[
+                                  {
+                                  label: "View",
+                                  icon: (
+                                      <VisibilityIcon
+                                      fontSize="small"
+                                      color="action"
+                                      style={{ color: "rgb(37 99 235)" }}
+                                      />
+                                  ),
+                                  action: handleView,
+                                  },
+                                  {
+                                    label: "Activation",
+                                    icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                                    ,
+                                    action: handleMemberStatusChange,
+                    
+                                  },
 
-                            />
+                              ]}
+                              uniqueId="memberInvoiceId"
+
+                              />
+                            </div>
+
+                            <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                               className='sm:w-[50%] w-full'
+                            >
+                            <DataTable3 data={filteredMemberDetails} 
+                              title="Member Bank Slip"
+                              columnsName={financeColumn}
+                                  loading={isLoading}
+                                  secondaryColor="secondary"
+                                  buttonVisibility={false}
+
+                              dropDownOptions={[
+                                  {
+                                  label: "View",
+                                  icon: (
+                                      <VisibilityIcon
+                                      fontSize="small"
+                                      color="action"
+                                      style={{ color: "rgb(37 99 235)" }}
+                                      />
+                                  ),
+                                  action: handleView,
+                                  },
+                                  // {
+                                  //   label: "Activation",
+                                  //   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                                  //   ,
+                                  //   action: handleMemberStatusChange,
+                    
+                                  // },
+
+                              ]}
+                              uniqueId="gtinMainTableId"
+
+                              />
+                            </div>
                           </div>
 
                      </div>

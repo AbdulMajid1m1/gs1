@@ -30,7 +30,11 @@ export const createHsCode = async (req, res, next) => {
 
 export const getAllHsCode = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.hs_codes.findMany();
+        const AllUNSPSC = await prisma.hs_codes.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);
