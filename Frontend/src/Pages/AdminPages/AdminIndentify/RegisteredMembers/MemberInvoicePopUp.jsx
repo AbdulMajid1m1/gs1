@@ -21,13 +21,22 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const data = {
+
+    const approvedBody = {
       status: selectedStatus,
-      reject_reason: selectedStatus === "approved" ? "approved" : rejected,
     };
-    console.log(data);
+
+    const rejectBody = {
+      status: selectedStatus,
+      reject_reason: rejected,
+    };
+
+    // console.log(rejectBody);
+    // console.log(approvedBody);
     try {
-      const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, data);
+      const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, selectedStatus === "approved" ? approvedBody : rejectBody);
+
+      // const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, data);
     //   console.log(res.data);
       if (res.status === 200) {
         toast.success("Invoice Status Updated Successfully!");
