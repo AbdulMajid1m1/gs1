@@ -750,7 +750,7 @@ const RegisteredMembersView = () => {
                     </div>
 
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-4">
+                    {/* <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <TextField 
                               id="upgradationDiscount" 
@@ -776,7 +776,7 @@ const RegisteredMembersView = () => {
                                   }}
                             />
                         </div>
-                      </div>
+                      </div> */}
 
 
                       <div className='h-auto w-full mt-8 px-1'>
@@ -909,7 +909,20 @@ const RegisteredMembersView = () => {
                     
 
                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-                        
+                            
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <TextField 
+                                    id="companyId" 
+                                        label="Company ID"
+                                        variant="outlined" 
+                                        value={gs1MemberData?.companyID}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                               style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                                    }}
+                                    />
+                            </div>
+
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="mobileNo" 
@@ -936,25 +949,24 @@ const RegisteredMembersView = () => {
                                 />
                             </div>
 
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                            <TextField 
-                                id="companyLandline" 
-                                    label="Company Landline"
-                                    variant="outlined" 
-                                    value={gs1MemberData?.companyLandLine}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                           style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
-                                }}
-                                />
-                            </div>
-
                        </div>
 
 
                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                              <TextField 
+                                  id="companyLandline" 
+                                      label="Company Landline"
+                                      variant="outlined" 
+                                      value={gs1MemberData?.companyLandLine}
+                                      InputLabelProps={{
+                                          shrink: true,
+                                            style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                                  }}
+                                  />
+                            </div>
                         
-                            <div className="w-[32.5%] font-body sm:text-base text-sm flex flex-col gap-2">
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <TextField 
                                     id="membershipType" 
                                         label="Membership Type"
