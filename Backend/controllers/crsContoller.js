@@ -33,7 +33,11 @@ export const createCrs = async (req, res, next) => {
 
 export const getAllCrs = async (req, res, next) => {
     try {
-        const crs = await prisma.crs.findMany();
+        const crs = await prisma.crs.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(crs);

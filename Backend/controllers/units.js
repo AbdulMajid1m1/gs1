@@ -33,7 +33,11 @@ export const createunit = async (req, res, next) => {
 
 export const getAllunit = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.units.findMany();
+        const AllUNSPSC = await prisma.units.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);

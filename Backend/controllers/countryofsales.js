@@ -29,7 +29,11 @@ export const createcountryofsale = async (req, res, next) => {
 };
 export const getAllcountryofsale = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.country_of_sales.findMany();
+        const AllUNSPSC = await prisma.country_of_sales.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);

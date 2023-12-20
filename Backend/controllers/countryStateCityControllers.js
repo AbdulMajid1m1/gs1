@@ -20,7 +20,11 @@ const citiesSchema = Joi.object({
 //--------------------Country---------------------------------------
 export const getAllCountries = async (req, res, next) => {
     try {
-        const countries = await prisma.countries.findMany();
+        const countries = await prisma.countries.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
         res.json(countries);
     } catch (error) {
@@ -122,7 +126,11 @@ export const deleteCountries = async (req, res, next) => {
 //--------------------STATE---------------------------------------
 export const getAllStates = async (req, res, next) => {
     try {
-        const states = await prisma.states.findMany();
+        const states = await prisma.states.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
         if (states.length === 0) {
             return next(createError(404, 'No states found'));
         }
@@ -223,7 +231,11 @@ export const deleteStates = async (req, res, next) => {
 //---------------------CITIES-----------------------------------------
 export const getAllCities = async (req, res, next) => {
     try {
-        const cities = await prisma.cities.findMany();
+        const cities = await prisma.cities.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
         if (cities.length === 0) {
             return next(createError(404, 'No Cities found'));
         }
