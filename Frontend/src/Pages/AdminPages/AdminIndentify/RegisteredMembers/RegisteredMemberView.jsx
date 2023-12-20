@@ -68,7 +68,7 @@ const RegisteredMembersView = () => {
 
     }, [])
 
-    
+
       useEffect(() => {
         const cartData = allUserData.carts || [];
         const stringifiedCartData = [].concat(...cartData.map((item) => {
@@ -255,18 +255,16 @@ const RegisteredMembersView = () => {
     };
 
 
-    const RefreshFinanceData = async () => {
+    const refreshMemberInvoiceData = async () => {
       try {
-        // const response = await newRequest.get(`/users/cart?user_id=${gs1MemberData?.id}`);
-        const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+        const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=invoice`);
         
         console.log(response.data);
-        setData(response?.data || []);
-        setIsLoading(false)
-
-      } catch (err) {
+        setMemberInovice(response?.data || []);
+   
+      } 
+      catch (err) {
         console.log(err);
-        setIsLoading(false)
           }
       };
 
@@ -449,100 +447,6 @@ const RegisteredMembersView = () => {
       });
   };
 
-
-
-  // const handleMemberStatusChange = async (selectedMemberUser) => {
-  //   // setIsLoading(true);
-  //   const statusOptions = ["approved", "rejected"];
-  //   const initialStatus = selectedMemberUser.status;
-  //   console.log(initialStatus);
-
-  //   const { value: selectedStatus } = await Swal.fire({
-  //     title: `<strong>Update Status.</strong>`,
-  //     html: `
-  //     <p><b>UserID:</b> ${selectedMemberUser.id}</p>
-  //   `,
-  //     input: 'select',
-  //     inputValue: initialStatus,
-  //     inputOptions: statusOptions.reduce((options, status) => {
-  //       options[status] = status;
-  //       return options;
-  //     }, {}),
-  //     inputPlaceholder: 'Select Status',
-  //     showCancelButton: true,
-  //     confirmButtonText: 'Update',
-  //     confirmButtonColor: '#1E3B8B',
-  //     cancelButtonColor: '#FF0032',
-  //   });
-
-  //   if (selectedStatus === undefined) { // Cancel button was pressed
-  //     return;
-  //   }
-
-  //   // if (selectedStatus === 'reject') {
-  //   //   handleReject(selectedUser); // Handle "reject" action
-  //   //   return;
-  //   // }
-
-
-  //   if (selectedStatus === initialStatus) {
-  //      // No changes were made, show a Toastify info message
-  //       toast.info('No changes were made', {
-  //         position: "top-right",
-  //         autoClose: 2000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //       setIsLoading(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     const res = await newRequest.put(
-  //       `/memberDocuments/status/${selectedMemberUser?.id}`,
-  //       {
-  //         status: selectedStatus,
-  //       }
-  //     );  
-
-
-  //     RefreshFinanceData();
-  //     setIsLoading(false);
-
-  //     toast.success(res?.data?.message || 'Status updated successfully', {
-  //       position: "top-right",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-
-
-  //   } catch (err) {
-  //     toast.error(err?.response?.data?.message || 'Something went wrong!', {
-  //       position: "top-right",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-
-  //     setIsLoading(false);
-  //     console.log(err); 
-  //   }
-
-  // };
-
  
   const handleMemberStatusChange = async (selectedMemberUser) => {
     // setIsLoading(true);
@@ -594,6 +498,7 @@ const RegisteredMembersView = () => {
         `/memberDocuments/status/${selectedMemberUser?.id}`,
         {
           status: selectedStatus,
+          reject_reason: 'Reject Reason',
         }
       );
   
@@ -609,8 +514,11 @@ const RegisteredMembersView = () => {
         progress: undefined,
         theme: "light",
       });
-  
-    } catch (err) {
+      
+      refreshMemberInvoiceData();
+    } 
+    
+    catch (err) {
       toast.error(err?.response?.data?.message || 'Something went wrong!', {
         position: "top-right",
         autoClose: 5000,
