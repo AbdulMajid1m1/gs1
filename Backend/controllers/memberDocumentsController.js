@@ -391,9 +391,38 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
+            // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
+            console.log("existingUser", currentDocument);
+            let pdfBuffer2;
+            if (currentDocument.document) {
+                const userDocumentPath = currentDocument.document;
+                console.log("userDocupath", userDocumentPath);
+                // Extract the file name
+                const userDocumentName = path.basename(userDocumentPath);
 
+                console.log(userDocumentName);
+
+                // Construct the new path to read the file
+                const newFilePath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice', userDocumentName);
+
+                // Read the file into a buffer
+
+                try {
+                    pdfBuffer2 = await fs1.readFile(newFilePath);
+                } catch (readError) {
+                    console.error('Error reading second PDF:', readError.message);
+                    pdfBuffer2 = null; // Set to null if file reading fails
+                }
+
+
+
+            }
+
+
+
+          
             // Update the document status in the database
-            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? pdfBuffer : null);
+            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? pdfBuffer : null, pdfBuffer2,);
             await prisma.member_documents.update({
                 where: { id: documentId },
                 data: { status: value.status }
@@ -417,8 +446,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             });
 
+
             // Send email with optional reject reason
-            await sendStatusUpdateEmail(existingUser.email, value.status, null, value.reject_reason);
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
             return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         }
 
@@ -431,8 +461,25 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, rejectReason = '') => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '') => {
     let subject, emailContent;
+    let attachments = [];
+    if (status === 'approved') {
+        if (pdfBuffer) {
+            attachments.push({
+                filename: 'certificate.pdf',
+                content: pdfBuffer,
+                contentType: 'application/pdf'
+            });
+        }
+        if (pdfBuffer2) {
+            attachments.push({
+                filename: 'Recipient.pdf',
+                content: pdfBuffer2,
+                contentType: 'application/pdf'
+            });
+        }
+    }
 
     switch (status) {
         case 'approved':
@@ -457,12 +504,7 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, rejectReason 
 
         htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
         // if status is approved, attach the certificate PDF
-
-        attachments: status == 'approved' ? [{
-            filename: 'certificate.pdf',
-            content: pdfBuffer,
-            contentType: 'application/pdf'
-        }] : []
+        attachments: attachments
 
     });
 };

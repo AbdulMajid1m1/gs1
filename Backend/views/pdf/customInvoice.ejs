@@ -166,7 +166,7 @@
 
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
                     <tr>
-                        <td width="100%" class="text-center text-bold"><strong>Invoice</strong></td>
+                        <td width="100%" class="text-center text-bold"><strong><%= data.topHeading %></strong></td>
                     </tr>
                 </table>
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
@@ -204,7 +204,7 @@
                         <td width="50%" class="text-right">
                             <p class="p-text" style="line-height: 1rem;">
                                 <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
-                                <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br>
+                                <!-- <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br> -->
                                 <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
                                 <b>Membership Category:</b> <span><%= data.member_category %></span><br>
                             </p>
