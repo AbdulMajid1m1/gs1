@@ -20,6 +20,7 @@ import UpdateBrands from './UpdateBrands'
 import AddMemberDocuments from './AddMemberDocuments'
 import DataTable3 from '../../../../components/Datatable/Datatable3'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
+import MemberInvoicePopUp from './MemberInvoicePopUp'
 
 const RegisteredMembersView = () => {
     // get the sesstion data
@@ -310,6 +311,16 @@ const RegisteredMembersView = () => {
       };
 
 
+      const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
+
+      const handleShowMemberInvoicePopup = (row) => {
+        setIsMemberInvoicePopupVisible(true);
+
+        // save this row data in session storage
+        sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+      };
+
+
 
 
     //Brand apis HandleDelete
@@ -445,96 +456,7 @@ const RegisteredMembersView = () => {
           return;
         }
       });
-  };
-
- 
-  const handleMemberStatusChange = async (selectedMemberUser) => {
-    // setIsLoading(true);
-    const statusOptions = ["approved", "rejected"];
-    const initialStatus = selectedMemberUser.status;
-    console.log(initialStatus);
-  
-    const { value: selectedStatus } = await Swal.fire({
-      title: `<strong>Update Status.</strong>`,
-      html: `
-        <p><b>Comapany Name English:</b> ${gs1MemberData?.company_name_eng}</p>
-      `,
-      input: 'radio', // Change from 'select' to 'radio'
-      inputValue: initialStatus,
-      inputOptions: statusOptions.reduce((options, status) => {
-        options[status] = status;
-        return options;
-      }, {}),
-      inputPlaceholder: 'Select Status',
-      showCancelButton: true,
-      confirmButtonText: 'Update',
-      confirmButtonColor: '#1E3B8B',
-      cancelButtonColor: '#FF0032',
-    });
-  
-    if (selectedStatus === undefined) {
-      // Cancel button was pressed
-      return;
-    }
-  
-    if (selectedStatus === initialStatus) {
-      // No changes were made, show a Toastify info message
-      toast.info('No changes were made', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setIsLoading(false);
-      return;
-    }
-  
-    try {
-      const res = await newRequest.put(
-        `/memberDocuments/status/${selectedMemberUser?.id}`,
-        {
-          status: selectedStatus,
-          reject_reason: 'Reject Reason',
-        }
-      );
-  
-      setIsLoading(false);
-  
-      toast.success(res?.data?.message || 'Status updated successfully', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      
-      refreshMemberInvoiceData();
-    } 
-    
-    catch (err) {
-      toast.error(err?.response?.data?.message || 'Something went wrong!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-  
-      setIsLoading(false);
-      console.log(err);
-    }
-  };
-  
+  }; 
 
       
   return (
@@ -947,7 +869,7 @@ const RegisteredMembersView = () => {
                                 },
 
                             ]}
-                            uniqueId="gtinMainTableId"
+                            uniqueId="registeredProductsTableId"
 
                             />
                           </div>
@@ -1013,7 +935,7 @@ const RegisteredMembersView = () => {
     
 
                             ]}
-                            uniqueId="gtinMainTableId"
+                            uniqueId="memberDocumentsTableId"
 
                             />
                           </div>
@@ -1065,7 +987,7 @@ const RegisteredMembersView = () => {
 
 
                             ]}
-                            uniqueId="gtinMainTableId"
+                            uniqueId="brandsTableId"
 
                             />
                           </div>
@@ -1137,7 +1059,7 @@ const RegisteredMembersView = () => {
                                     label: "Activation",
                                     icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                                     ,
-                                    action: handleMemberStatusChange,
+                                    action: handleShowMemberInvoicePopup,
                     
                                   },
 
@@ -1178,7 +1100,7 @@ const RegisteredMembersView = () => {
                                   // },
 
                               ]}
-                              uniqueId="gtinMainTableId"
+                              uniqueId="memberBankSlipId"
 
                               />
                             </div>
@@ -1211,7 +1133,6 @@ const RegisteredMembersView = () => {
                             columnsName={submenusDataColumn}
                                 loading={isLoading}
                                 secondaryColor="secondary"
-                                handleRowClickInParent={handleRowClickInParent}
 
                             dropDownOptions={[
                                 {
@@ -1227,7 +1148,7 @@ const RegisteredMembersView = () => {
                                 },
 
                             ]}
-                            uniqueId="gtinMainTableId"
+                            uniqueId="subMenusTableId"
 
                             />
                           </div>
@@ -1265,7 +1186,7 @@ const RegisteredMembersView = () => {
                                 },
 
                             ]}
-                            uniqueId="gtinMainTableId"
+                            uniqueId="memberHistoryTableId"
 
                             />
                           </div>
@@ -1292,6 +1213,13 @@ const RegisteredMembersView = () => {
                   {isAddMemberPopupVisible && (
                     <AddMemberDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={refreshDocumentsBrandData}/>
                   )}
+
+
+                   {/* Member Invoice component with Handle prop */}
+                   {isMemberInvoicePopupVisible && (
+                    <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshBrandData={refreshMemberInvoiceData}/>
+                  )}
+
 
         </div>
     </div>
