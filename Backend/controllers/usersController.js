@@ -554,7 +554,16 @@ export const getUserDetails = async (req, res, next) => {
             const users = await prisma.users.findMany({
                 where: filterConditions
             });
-            return res.json(users);
+
+            //sort the users by updated_at
+
+            const sortedUsers = users.sort((a, b) => {
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            });
+
+           
+
+            return res.json(sortedUsers);
         }
         const [users, allCarts] = await prisma.$transaction(async (prisma) => {
             // Fetch users based on filter conditions
@@ -583,6 +592,7 @@ export const getUserDetails = async (req, res, next) => {
             ...user,
             carts: allCarts.filter(cart => cart.user_id == user.id)
         }));
+
 
         return res.json(usersWithCarts);
     } catch (error) {
