@@ -61,6 +61,8 @@ app.get('/render', async (req, res) => {
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
         memberData: {
+            // add New Rigistriont with current date
+            registeration: `New Registration ${new Date().toLocaleDateString()}`,
             qrCodeDataURL: qrCodeDataURL,
             // Assuming $addMember->id is already known
             company_name_eng: 'Sample Company',
