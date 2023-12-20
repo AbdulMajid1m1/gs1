@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteUser, getCarts, getCrInfo, getUserDetails, getUsersTempDetails, memberLogin, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
+import { createUser, deleteUser, generatePDF, getCarts, getCrInfo, getUserDetails, getUsersTempDetails, memberLogin, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 
@@ -18,6 +18,7 @@ userRouter.post('/', upload([
     },
 ]), createUser);
 userRouter.get('/', getUserDetails);
+userRouter.get('/pdf', generatePDF);
 
 userRouter.post('/updateUserStatus', updateUserStatus);
 

@@ -9,9 +9,11 @@ import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
+
+import pdf from 'html-pdf';
 import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
-import pdf from 'html-pdf';
+import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../configs/envConfig.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
@@ -117,20 +119,109 @@ const userSchema = Joi.object({
     })
 });
 
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+    try {
+        const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
+        const htmlContent = ejs.render(ejsTemplate, { data });
 
-// Define a function to generate a PDF from EJS template
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+        
+        const pdfOptions = {
+            path: outputFilePath,
+            format: 'Letter',
+            printBackground: true
+        };
+        
+        await page.pdf(pdfOptions);
+        await browser.close();
 
-const generatePDF = async (ejsFilePath, data) => {
-    const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
-    const htmlContent = await ejs.render(ejsTemplate, { data });
+        return outputFilePath;
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        throw error;
+    }
+}
+export const generatePDF = async (req, res) => {
+    try {
+        // Define your dummy data object
+        const BACKEND_URL = 'http://localhost:3091';
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const data = {
+            memberData: {
+                // add New Rigistriont with current date
+                registeration: `New Registration ${new Date().toLocaleDateString()}`,
+                qrCodeDataURL: qrCodeDataURL,
+                // Assuming $addMember->id is already known
+                company_name_eng: 'Sample Company',
+                mobile: '+966-123-456789',
+                address: {
+                    zip: '12345',
+                    countryName: 'Saudi Arabia',
+                    stateName: 'Riyadh',
+                    cityName: 'Riyadh City',
+                },
+                companyID: '1234567890',
+                gtin_subscription: {
+                    products: {
+                        member_category_description: 'Gold Membership',
+                    },
+                },
+            },
+            general: {
+                service_default_image: 'default_service_image.png',
+                logo: 'company_logo.png',
+            },
+            cart: {
+                request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
+                transaction_id: 'T123456789',
+                payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
+                cart_items: [
+                    // Item descriptions
+                ],
+            },
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+            custom_amount: 100, // Example custom amount
+            cart: {
+                request_type: 'registration', // or 'renew' or 'addon'
+                transaction_id: 'T123456789',
+                payment_type: 'bank_transfer', // or 'Mada/Visa'
+                cart_items: [
+                    'Item 1 Description',
+                    'Item 2 Description',
+                    'Item 3 Description',
+                ],
+            },
+            general: {
+                service_default_image: 'default_service_image.png',
+                logo: 'company_logo.png',
+            },
+            company_details: {
+                title: 'Sample Company',
+                account_no: '1234567890',
+                iban_no: 'SA1234567890123456789012',
+                bank_name: 'Sample Bank',
+                bank_swift_code: 'SAMPLEBANK123',
+            },
+            BACKEND_URL: BACKEND_URL,
+        };
+        // Render the EJS template with the dummy data
+        const pdfBuffer = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data, 'invoice1.pdf');
 
-    return new Promise((resolve, reject) => {
-        pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
-            if (err) return reject(err);
-            resolve(buffer);
-        });
-    });
+        // Set the response headers and send the PDF as a response
+        res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdfBuffer.length });
+        res.send(pdfBuffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
+
 
 
 export const createUser = async (req, res, next) => {
