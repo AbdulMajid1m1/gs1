@@ -852,7 +852,6 @@ const RegisteredMembersView = () => {
                             columnsName={registeredmemberColumn}
                                 loading={isLoading}
                                 secondaryColor="secondary"
-                                handleRowClickInParent={handleRowClickInParent}
                                 actionColumnVisibility={false}
 
                             dropDownOptions={[
@@ -906,7 +905,6 @@ const RegisteredMembersView = () => {
                             columnsName={MembersDocumentColumn}
                                 loading={isLoading}
                                 secondaryColor="secondary"
-                                handleRowClickInParent={handleRowClickInParent}
                                 checkboxSelection={false}
                                
                             dropDownOptions={[
@@ -948,7 +946,6 @@ const RegisteredMembersView = () => {
                             columnsName={MembersBrandsColumn}
                                 loading={isLoading}
                                 secondaryColor="secondary"
-                                handleRowClickInParent={handleRowClickInParent}
 
                             dropDownOptions={[
                                 // {
@@ -1170,8 +1167,7 @@ const RegisteredMembersView = () => {
                             columnsName={memberHistoryColumnData}
                                 loading={isLoading}
                                 secondaryColor="secondary"
-                                handleRowClickInParent={handleRowClickInParent}
-
+                        
                             dropDownOptions={[
                                 {
                                 label: "View",
