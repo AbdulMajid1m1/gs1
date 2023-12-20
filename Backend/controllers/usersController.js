@@ -315,7 +315,8 @@ export const createUser = async (req, res, next) => {
                 companyID: value.companyID,
                 membership_category: value.membership_category,
                 topHeading: "Invoice",
-                member_category: value.member_category,
+                member_category: value.membership_category,
+                
                 gtin_subscription: {
                     products: {
                         member_category_description: cartValue?.cart_items[0]?.productName,
