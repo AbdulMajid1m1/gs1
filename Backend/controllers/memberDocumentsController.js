@@ -10,7 +10,7 @@ import { sendEmail } from '../services/emailTemplates.js';
 import QRCode from 'qrcode';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import ejs from 'ejs';
-import pdf from 'html-pdf';
+import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 export const createMemberDocument = async (req, res, next) => {
@@ -206,18 +206,31 @@ const updateMemberDocumentStatusSchema = Joi.object({
 
 
 
-const generatePDF = async (ejsFilePath, data) => {
-    const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
-    const htmlContent = await ejs.render(ejsTemplate, { data });
 
-    return new Promise((resolve, reject) => {
-        pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
-            if (err) return reject(err);
-            resolve(buffer);
-        });
-    });
-};
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+    try {
+        const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
+        const htmlContent = ejs.render(ejsTemplate, { data });
 
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+
+        const pdfOptions = {
+            path: outputFilePath,
+            format: 'Letter',
+            printBackground: true
+        };
+
+        await page.pdf(pdfOptions);
+        await browser.close();
+
+        return outputFilePath;
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        throw error;
+    }
+}
 
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
@@ -278,8 +291,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                         // Calculate expiry date (1 year from now)
                         let expiryDate = new Date();
-                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
+                        expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
+                        console.log(expiryDate);
                         // Update user with new information
                         userUpdateResult = await prisma.users.update({
                             where: { id: userId },
@@ -358,13 +371,13 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         companyID: userUpdateResult.companyID,
                         gcp_expiry: userUpdateResult.gcp_expiry,
                     },
-                    expiryDate: userUpdateResult.gcp_expiry,
+                    // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+                    expiryDate: userUpdateResult.gcp_expiry.toISOString().split('T')[0],
                     explodeGPCCode: []
                 };
 
 
                 // Generate PDF from EJS template
-                pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData);
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
                 const pdfFilename = `Certificate-${currentDocument.transaction_id}.pdf`;
                 const pdfFilePath = path.join(pdfDirectory, pdfFilename);
@@ -372,8 +385,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
 
-                // Save the PDF file
-                await fs1.writeFile(pdfFilePath, pdfBuffer);
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath);
+                pdfBuffer = await fs1.readFile(Certificatepath);
+
                 // Send an email based on the updated status
             }, { timeout: 40000 });
 
