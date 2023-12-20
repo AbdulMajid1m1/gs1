@@ -10,7 +10,7 @@ import { sendEmail } from '../services/emailTemplates.js';
 import QRCode from 'qrcode';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import ejs from 'ejs';
-import pdf from 'html-pdf';
+import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 export const createMemberDocument = async (req, res, next) => {
@@ -199,24 +199,38 @@ export const updateMemberDocument = async (req, res, next) => {
 };
 
 
+
+
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+    try {
+        const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
+        const htmlContent = ejs.render(ejsTemplate, { data });
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+
+        const pdfOptions = {
+            path: outputFilePath,
+            format: 'Letter',
+            printBackground: true
+        };
+
+        await page.pdf(pdfOptions);
+        await browser.close();
+
+        return outputFilePath;
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        throw error;
+    }
+}
+
+
 const updateMemberDocumentStatusSchema = Joi.object({
-    status: Joi.string().valid('pending', 'approved', 'rejected').required(),
-
+    status: Joi.string().valid('approved', 'rejected').required(),
+    reject_reason: Joi.string().optional(),
 });
-
-
-
-const generatePDF = async (ejsFilePath, data) => {
-    const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
-    const htmlContent = await ejs.render(ejsTemplate, { data });
-
-    return new Promise((resolve, reject) => {
-        pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
-            if (err) return reject(err);
-            resolve(buffer);
-        });
-    });
-};
 
 
 
@@ -239,15 +253,19 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         });
 
         if (!currentDocument) {
-            console.log('Document not found');
-            console.log(currentDocument);
-            console.log(documentId);
+
             return next(createError(404, 'Documents not found'));
         }
 
 
         // If the document status is approved, proceed with user status update
-        let existingUser;
+
+        // Check if the user exists
+        let existingUser = await prisma.users.findUnique({ where: { id: currentDocument.user_id } });
+        if (!existingUser) {
+            next(createError(404, 'User not found'));
+        }
+
         let pdfBuffer;
         let userUpdateResult;
         if (value.status === 'approved') {
@@ -255,11 +273,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
 
-                // Check if the user exists
-                existingUser = await prisma.users.findUnique({ where: { id: userId } });
-                if (!existingUser) {
-                    throw createError(404, 'User not found');
-                }
 
                 // Perform the updateUserStatus logic
                 const cart = await prisma.carts.findFirst({ where: { user_id: userId } });
@@ -278,8 +291,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                         // Calculate expiry date (1 year from now)
                         let expiryDate = new Date();
-                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
+                        expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
+                        console.log(expiryDate);
                         // Update user with new information
                         userUpdateResult = await prisma.users.update({
                             where: { id: userId },
@@ -358,13 +371,14 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         companyID: userUpdateResult.companyID,
                         gcp_expiry: userUpdateResult.gcp_expiry,
                     },
-                    expiryDate: userUpdateResult.gcp_expiry,
+                    // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+                    expiryDate: userUpdateResult.gcp_expiry.toISOString().split('T')[0],
                     explodeGPCCode: []
                 };
 
 
+
                 // Generate PDF from EJS template
-                pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData);
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
                 const pdfFilename = `Certificate-${currentDocument.transaction_id}.pdf`;
                 const pdfFilePath = path.join(pdfDirectory, pdfFilename);
@@ -372,19 +386,41 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
 
-                // Save the PDF file
-                await fs1.writeFile(pdfFilePath, pdfBuffer);
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath);
+                pdfBuffer = await fs1.readFile(Certificatepath);
+
                 // Send an email based on the updated status
             }, { timeout: 40000 });
 
+            // Update the document status in the database
+            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? pdfBuffer : null);
+            await prisma.member_documents.update({
+                where: { id: documentId },
+                data: { status: value.status }
+            });
+
         }
 
-        // Update the document status in the database
-        await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? pdfBuffer : null);
-        await prisma.member_documents.update({
-            where: { id: documentId },
-            data: { status: value.status }
-        });
+        if (value.status === 'rejected') {
+            // Set the document status to pending
+            await prisma.member_documents.update({
+                where: { id: documentId },
+                data: { status: 'pending' }
+            });
+
+            // Delete all documents of type 'bank_slip'
+            await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+            });
+
+            // Send email with optional reject reason
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, value.reject_reason);
+            return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
+        }
 
         return res.json({ message: 'Document status updated successfully' });
     } catch (err) {
@@ -395,17 +431,18 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer) => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, rejectReason = '') => {
     let subject, emailContent;
-    console.log("status", status)
+
     switch (status) {
         case 'approved':
             subject = 'Your Gs1Ksa member Account is Now Approved';
             emailContent = '<p>Your account has been activated. You can now access all the features.</p>';
             break;
-        case 'pending':
-            subject = 'Your Gs1Ksa member Account is pending';
-            emailContent = '<p>Your account is currently in pending state. Please contact support for more details.</p>';
+        case 'rejected':
+            subject = 'Your Gs1Ksa member Account is Rejected';
+            let rejectionMessage = rejectReason ? `<p>Reason for rejection: ${rejectReason}</p>` : '';
+            emailContent = `<p>Your account status has been updated to: ${status}.</p>${rejectionMessage}`;
             break;
         // Add more cases for other statuses
         default:

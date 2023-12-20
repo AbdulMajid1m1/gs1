@@ -10,7 +10,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
 
-import pdf from 'html-pdf';
+
 import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
@@ -119,31 +119,8 @@ const userSchema = Joi.object({
     })
 });
 
-async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
-    try {
-        const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
-        const htmlContent = ejs.render(ejsTemplate, { data });
 
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(htmlContent);
-        
-        const pdfOptions = {
-            path: outputFilePath,
-            format: 'Letter',
-            printBackground: true
-        };
-        
-        await page.pdf(pdfOptions);
-        await browser.close();
-
-        return outputFilePath;
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        throw error;
-    }
-}
-export const generatePDF = async (req, res) => {
+export const generatePDFGen = async (req, res) => {
     try {
         // Define your dummy data object
         const BACKEND_URL = 'http://localhost:3091';
@@ -211,7 +188,7 @@ export const generatePDF = async (req, res) => {
             BACKEND_URL: BACKEND_URL,
         };
         // Render the EJS template with the dummy data
-        const pdfBuffer = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data, 'invoice1.pdf');
+        const pdfBuffer = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data, 'invoice4.pdf');
 
         // Set the response headers and send the PDF as a response
         res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdfBuffer.length });
@@ -222,6 +199,46 @@ export const generatePDF = async (req, res) => {
     }
 };
 
+
+
+
+// const generatePDF = async (ejsFilePath, data) => {
+//     const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
+//     const htmlContent = await ejs.render(ejsTemplate, { data });
+
+//     return new Promise((resolve, reject) => {
+//         pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
+//             if (err) return reject(err);
+//             resolve(buffer);
+//         });
+//     });
+// };
+
+
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+    try {
+        const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
+        const htmlContent = ejs.render(ejsTemplate, { data });
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+
+        const pdfOptions = {
+            path: outputFilePath,
+            format: 'Letter',
+            printBackground: true
+        };
+
+        await page.pdf(pdfOptions);
+        await browser.close();
+
+        return outputFilePath;
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        throw error;
+    }
+}
 
 
 export const createUser = async (req, res, next) => {
@@ -325,8 +342,6 @@ export const createUser = async (req, res, next) => {
             BACKEND_URL: BACKEND_URL
         };
 
-        // Generate PDF from EJS template
-        const pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1);
 
         // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
         const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
@@ -342,15 +357,24 @@ export const createUser = async (req, res, next) => {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        // Save the PDF file
-        await fs.writeFile(pdfFilePath, pdfBuffer);
+        // Generate PDF and save it to the specified path
+        const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+
+        // now fetch the pdf file from the path and send it as attachment
+        const invoiceBuffer = await fs.readFile(pdfFilePath);
+
+
+
+
+
+
 
         // Now you can use pdfFilePath to access or send the PDF file
         console.log(`PDF saved to: ${pdfFilePath}`);
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
         await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
 
-            , pdfBuffer, pdfBuffer2);
+            , invoiceBuffer, pdfBuffer2);
         const hashedPassword = bcrypt.hashSync(password, 10);
         userValue.password = hashedPassword;
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
@@ -386,13 +410,8 @@ export const createUser = async (req, res, next) => {
             });
 
 
-            // use map on cartValue.cart_items to construct otherProductsData skip first item
 
-            console.log("cartValue.cart_items")
-            console.log(cartValue.cart_items)
 
-            console.log("otherProductsData")
-            // console.log(otherProductsData)
 
 
             const otherProductsData = cartData.slice(1).map(item => ({
@@ -407,10 +426,6 @@ export const createUser = async (req, res, next) => {
                     prisma.other_products_subcriptions.create({ data: productData })
                 )
             );
-
-            // Upload documents to members_document
-            // const documentsData = [ /* construct your documents data here */];
-            // 
 
             // add all three documents to the member_documents table
             const documentsData = [

@@ -2533,10 +2533,30 @@ export const financeColumn = [
     headerName: 'Doc Type',
     width: 180,
   },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 180, 
+  // },
   {
     field: 'status',
     headerName: 'Status',
-    width: 180,
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'Active' ? 'green' : 'red',
+          color: params.row.status === 'Active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
   },
   
 
