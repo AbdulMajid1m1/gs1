@@ -136,7 +136,7 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                               //     },
 
                               // ]}
-                              uniqueId="memberInvoiceId"
+                              uniqueId="journalMovementClId"
 
                               />
                             </div>
@@ -172,7 +172,7 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   // },
 
                               // ]}
-                              uniqueId="gtinMainTableId"
+                              uniqueId="journalMovementClDetId"
 
                               />
                             </div>

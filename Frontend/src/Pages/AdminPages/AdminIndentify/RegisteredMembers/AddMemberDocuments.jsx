@@ -13,6 +13,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [transactionId, setTransactionId] = useState("");
     const [selectedTransactionId, setSelectedTransactionId] = useState("")
     const [uploadDocument, setUploadDocument] = useState("");
+    const [error, setError] = useState('');
     // get the sesstion data
     const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
     console.log(gs1MemberData)
@@ -65,13 +66,25 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
      
      //  console.log("file name", selectedDocuments?.file_name)
 
-     const handleDocUpload = (event) => {
-      setUploadDocument(event.target.files[0]);
-     };
+
+    const handleFileChange = (e) => {
+      // setDocument(e.target.files[0]);
+      // setError('');
+      const file = e.target.files[0];
+      if (file) {
+        if (file.size <= 500 * 1024) {
+            setUploadDocument(file);
+            setError(''); // Clear any previous error message
+        } else {
+            setError('File size should be 500KB or less');
+            e.target.value = null;
+          }
+      }
+  };
     
 
     const handleAddMemberDocuments = async () => {
-    
+     
       // Check if required fields are empty
       if (!selectedDocuments) {
         toast.error('Select Docuemts.', {
@@ -296,11 +309,12 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  <input
                                    type="file"
                                    id="field3"
-                                    onChange={handleDocUpload}
+                                    onChange={handleFileChange}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
                              </div>
+                             {error && <p className="text-red-600">{error}</p>}
 
                              <div className="w-full flex justify-center items-center gap-8 mt-5">
                                <button

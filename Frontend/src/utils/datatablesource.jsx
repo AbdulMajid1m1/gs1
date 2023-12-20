@@ -2725,16 +2725,16 @@ export const registeredmemberColumn = [
     headerName: 'Price',
     width: 180,
   },
-  {
-    field: 'product_type',
-    headerName: 'Product type',
-    width: 180,
-  },
-  {
-    field: 'quotation',
-    headerName: 'Quotation',
-    width: 180,
-  },
+  // {
+  //   field: 'product_type',
+  //   headerName: 'Product type',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'quotation',
+  //   headerName: 'Quotation',
+  //   width: 180,
+  // },
   
 
 
