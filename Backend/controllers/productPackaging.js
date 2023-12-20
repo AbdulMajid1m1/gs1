@@ -31,7 +31,11 @@ export const createProductPackag = async (req, res, next) => {
 };
 export const getAllproductPackagSchema = async (req, res, next) => {
     try {
-        const AllUNSPSC = await prisma.product_packagings.findMany();
+        const AllUNSPSC = await prisma.product_packagings.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
 
 
         res.json(AllUNSPSC);

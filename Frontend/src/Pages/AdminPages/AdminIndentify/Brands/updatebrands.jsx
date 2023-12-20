@@ -5,13 +5,15 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 
-const Updateunit = ({ isVisible, setVisibility, refreshBrandData }) => {
+const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
     console.log(updateBrandData)
-    const [unit_code, setunit_code] = useState(updateBrandData?.unit_code || '');
-    const [unit_name, setunit_name] = useState(updateBrandData?.unit_name || '');
-    const [status, setstatus] = useState(updateBrandData?.status || 0);
+    const [name, setname] = useState(updateBrandData?.name || '');
+    const [name_ar, setname_ar] = useState(updateBrandData?.name_ar || '');
+    const [user_id, setuser_id] = useState(updateBrandData?.user_id || '');
+    const [status, setstatus] = useState(updateBrandData?.status || '');
+   
     const [loading, setLoading] = useState(false);
 
 
@@ -27,13 +29,15 @@ const handleUpdateBrand = async () => {
   setLoading(true);
  
   try {
-    const response = await newRequest.put(`/updateunit/${updateBrandData?.id}`, {
-        unit_code: unit_code,
-         unit_name: unit_name,
-      status: Number(status),
+    const response = await newRequest.put(`/brands/${updateBrandData?.id}`, {
+        name: name,
+        name_ar: name_ar,
+        user_id: user_id,
+        status: status,
+     
     });
 
-    toast.success(response?.data?.message || 'units updated successfully', {
+    toast.success(response?.data?.message || 'brands updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -79,47 +83,58 @@ const handleUpdateBrand = async () => {
                      <div className="popup-container h-auto sm:w-[45%] w-full">
                        <div className="popup-form w-full">         
                           <form className='w-full'>
-                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update unit</h2>
+                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Brand</h2>
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">unit code</label>
+                                <label htmlFor="field1" className="text-secondary">name</label>
                                 <input
                                   type="text"
-                                  id="unit_code"
-                                  value={unit_code}
-                                  onChange={(e) => setunit_code(e.target.value)}
+                                  id="name"
+                                  value={name}
+                                  onChange={(e) => setname(e.target.value)}
                                 //   readOnly
-                                  placeholder="Enter unit code"
+                                  placeholder="Enter name"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                               </div>
- <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">unit name</label>
-                                <input
-                                  type="text"
-                                  id="unit_name"
-                                  value={unit_name}
-                                  onChange={(e) => setunit_name(e.target.value)}
-                                //   readOnly
-                                  placeholder="Enter unit name"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                              </div>
+
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <label htmlFor="field1" className="text-secondary">name_ar</label>
+                                <input
+                                  type="text"
+                                  id="name_ar"
+                                  value={name_ar}
+                                  onChange={(e) => setname_ar(e.target.value)}
+                                //   readOnly
+                                  placeholder="Enter name_ar"
+                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                />
+                                  </div>
+                                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                 <label htmlFor="field1" className="text-secondary">user_id</label>
+                                 <input
+                                   type="text"
+                                   id="user_id"
+                                   value={user_id}
+                                   onChange={(e) => setuser_id(e.target.value)}
+                                   placeholder="Enter user_id "
+                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                 />
+                                  </div>
+                                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                               <label htmlFor="status" className="text-secondary">
                                Status
                                 </label>
                                 <select
                                  id="status"
-    value={status}
-    onChange={(e) => setstatus(e.target.value)}
-    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-  >
-    <option value="0">0</option>
-    <option value="1">1</option>
-  </select>
+                                  value={status}
+                                      onChange={(e) => setstatus(e.target.value)}
+                                 className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                       >
+                               <option value="active">active</option>
+                                 <option value="inactive">inactive</option>
+                                  </select>
                               </div>
-
                             </div>
 
                             
@@ -147,7 +162,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                Update unit
+                                Update Brand
                             </Button>
                             </div>
                           </form>
@@ -160,4 +175,4 @@ const handleUpdateBrand = async () => {
   )
 }
 
-export default Updateunit
+export default Updatebrands

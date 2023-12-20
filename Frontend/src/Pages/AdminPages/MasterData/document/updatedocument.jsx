@@ -93,16 +93,18 @@ const handleUpdateBrand = async () => {
                               </div>
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">status</label>
-                                <input
-                                  type="number"
-                                  id="status"
-                                  value={status}
-                                  onChange={(e) => setstatus(e.target.value)}
-                                //   readOnly
-                                  placeholder="Enter status"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
+                              <label htmlFor="status" className="text-secondary">
+                               Status
+                                </label>
+                                <select
+                                 id="status"
+    value={status}
+    onChange={(e) => setstatus(e.target.value)}
+    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+  >
+    <option value="0">0</option>
+    <option value="1">1</option>
+  </select>
                               </div>
                             </div>
 
