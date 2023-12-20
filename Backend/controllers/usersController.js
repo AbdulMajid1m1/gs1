@@ -10,7 +10,6 @@ import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
 
-
 import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
@@ -186,6 +185,7 @@ export const generatePDFGen = async (req, res) => {
                 bank_swift_code: 'SAMPLEBANK123',
             },
             BACKEND_URL: BACKEND_URL,
+
         };
         // Render the EJS template with the dummy data
         const pdfBuffer = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data, 'invoice4.pdf');
@@ -313,6 +313,8 @@ export const createUser = async (req, res, next) => {
                     cityName: value.city,
                 },
                 companyID: value.companyID,
+                membership_category: value.membership_category,
+                topHeading: "Invoice",
                 member_category: value.member_category,
                 gtin_subscription: {
                     products: {
@@ -561,7 +563,7 @@ export const getUserDetails = async (req, res, next) => {
                 return new Date(b.updated_at) - new Date(a.updated_at);
             });
 
-           
+
 
             return res.json(sortedUsers);
         }
