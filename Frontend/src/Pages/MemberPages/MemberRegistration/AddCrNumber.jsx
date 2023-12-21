@@ -18,12 +18,12 @@ const AddCrNumber = ({ isVisible, setVisibility }) => {
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
-        if (inputValue.length > 10) {
+        if (inputValue.length > 9) {
           setError("Cr Number should be 10 digits or less");
         } else {
           setError("");
         }
-        setAddCrNumber(inputValue.slice(0, 10));  // Limit input to 10 characters
+        setAddCrNumber(inputValue.slice(0, 9));  // Limit input to 10 characters
     };
     
 

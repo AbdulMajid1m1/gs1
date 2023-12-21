@@ -20,7 +20,7 @@ const GetBarcode = () => {
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
   const [isDocumentAutocompleteFilled, setIsDocumentAutocompleteFilled] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
-  const [location, setLocation] = useState(""); // Default to 'Yes
+  const [location, setLocation] = useState("yes"); // Default to 'Yes
   const abortControllerRef = useRef(null);
 
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -228,7 +228,7 @@ const GetBarcode = () => {
                   <div className='flex items-center gap-2'>
                     <input type="radio" name="company" id="company-yes"
                       value='yes' onChange={(e) => setLocation(e.target.value)} checked={location === 'yes'}
-
+              
                     />
                     <label htmlFor="company-yes" className='text-secondary font-medium'>Yes</label>
                   </div>

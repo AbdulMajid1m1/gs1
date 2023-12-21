@@ -1044,8 +1044,8 @@ const MemmberRegisteration = () => {
                                         <TextField
                                             autoComplete="off"
                                             {...params}
-                                            label='Search GPC'
-                                            placeholder='Search GPC'
+                                            label='Search Other Products'
+                                            placeholder='Search Other Products'
                                             variant='outlined'
                                         />
                                     )}
