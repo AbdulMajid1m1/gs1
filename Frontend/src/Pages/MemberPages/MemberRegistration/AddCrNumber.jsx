@@ -18,18 +18,25 @@ const AddCrNumber = ({ isVisible, setVisibility }) => {
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
-        if (inputValue.length > 9) {
-          setError("Cr Number should be 10 digits or less");
+        if (inputValue.length > 10) {
+          setError("Cr Number should be 10 digits");
         } else {
           setError("");
         }
-        setAddCrNumber(inputValue.slice(0, 9));  // Limit input to 10 characters
+        setAddCrNumber(inputValue.slice(0, 10));  // Limit input to 10 characters
     };
     
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // show the error meesage if the cr number is not 10 digits
+        if (addCrNumber.length !== 10) {
+          setError("Cr Number should be 10 digits");
+          return;
+        }
+        
+
         setLoading(true);
         try {
           const response = await newRequest.post('/crs/', {

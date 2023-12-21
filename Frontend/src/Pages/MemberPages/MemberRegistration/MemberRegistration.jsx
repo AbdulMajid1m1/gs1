@@ -317,7 +317,9 @@ const MemmberRegisteration = () => {
         formData.append('state', selectedState?.name);
         formData.append('city', selectedCity?.name);
         formData.append('zip_code', zipCode);
-        formData.append('mbl_extension', extension);
+        if (extension) {
+            formData.append('mbl_extension', extension);
+        }
         if (website) {
             formData.append('website', website);
         }

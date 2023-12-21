@@ -293,6 +293,45 @@ const RegisteredMembers = () => {
 
       };
       
+      const fetchMemberInvoiceData = async (row) => {
+        try {
+          const response = await newRequest.get(`/memberDocuments?user_id=${row?.id}&type=invoice`);
+    
+          // console.log(response.data);
+        
+          if (response.data.length > 0) {
+            handleShowFinancePopup(row);
+          } else {
+            // Show an error message
+            toast.error("No invoice data available", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        } 
+        catch (err) {
+          console.log(err);
+          // show the toast message
+          toast.error(err?.response?.data?.message || 'Something went wrong!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      };
+    
+      
   return (
     <div>
       <div className="p-0 h-full sm:ml-72">
@@ -326,7 +365,7 @@ const RegisteredMembers = () => {
                   label: "Activation",
                   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                   ,
-                  action: handleShowFinancePopup,
+                  action: fetchMemberInvoiceData,
                   
                 },
                 // {
