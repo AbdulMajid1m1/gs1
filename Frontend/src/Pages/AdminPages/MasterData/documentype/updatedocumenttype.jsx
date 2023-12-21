@@ -80,14 +80,14 @@ const handleUpdateBrand = async () => {
                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Document Type</h2>
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">file name</label>
+                                <label htmlFor="field1" className="text-secondary">Document name</label>
                                 <input
                                   type="text"
                                   id="file_name"
                                   value={file_name}
                                   onChange={(e) => setfile_name(e.target.value)}
                                 //   readOnly
-                                  placeholder="Enter file name"
+                                  placeholder="Enter Document name"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                               </div>
@@ -102,8 +102,8 @@ const handleUpdateBrand = async () => {
                                       onChange={(e) => setstatus(e.target.value)}
                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                        >
-                               <option value="0">0</option>
-                                 <option value="1">1</option>
+                               <option value="0">inactive</option>
+                                 <option value="1">active</option>
                                   </select>
                               </div>
                             </div>
