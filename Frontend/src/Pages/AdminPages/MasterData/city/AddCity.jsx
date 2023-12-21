@@ -79,7 +79,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">state id</label>
+                                 <label htmlFor="field1" className="text-secondary">state</label>
                                  <input
                                    type="text"
                                    id="state_id"

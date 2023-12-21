@@ -2152,15 +2152,16 @@ export const country__ = [
     width: 180,
   },
   {
+    field: 'country_shortName',
+    headerName: 'country shortName',
+    width: 180,
+  },
+  {
     field: 'country_code',
     headerName: 'country_code',
     width: 180,
   },
-  {
-    field: 'status',
-    headerName: 'status',
-    width: 180,
-  },
+  
   {
     field: 'created_at',
     headerName: 'Created At',
