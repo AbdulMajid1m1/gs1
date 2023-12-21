@@ -88,8 +88,6 @@ export const getCrsById = async (req, res, next) => {
 
 export const getCrsByKeyword = async (req, res, next) => {
     try {
-        // const { id } = req.params;
-        // use JOi to validate the id
         const schema = Joi.object({
             keyword: Joi.string().required(),
         });
@@ -104,33 +102,34 @@ export const getCrsByKeyword = async (req, res, next) => {
             where: {
                 AND: [
                     {
-                        cr: {
-                            contains: keyword,
-                        },
+                        OR: [
+                            {
+                                cr: {
+                                    contains: keyword,
+                                },
+                            },
+                            {
+                                activity: {
+                                    contains: keyword,
+                                },
+                            },
+                        ],
                     },
                     {
                         isRegistered: 0,
                     },
                 ],
             },
-
         });
 
         if (!cr || cr.length === 0) {
             return next(createError(404, 'CR not found'));
         }
 
-        // this is json data.
-
         return res.json(cr);
-    }
-
-    catch (error) {
-
+    } catch (error) {
         next(error);
-
     }
-
 };
 
 export const getCrsByCrNo = async (req, res, next) => {

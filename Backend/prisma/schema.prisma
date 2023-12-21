@@ -1524,8 +1524,8 @@ model production_identifires {
 }
 
 model products {
-  id                 BigInt    @id(map: "PK__products__3213E83F47013034") @default(autoincrement())
-  user_id            Int       @default(0, map: "DF_products_user_id")
+  id                 String    @id @default(cuid())
+  user_id            String
   gcpGLNID           String    @db.VarChar(50)
   import_code        String?   @db.VarChar(50)
   productnameenglish String?   @db.NVarChar(Max)
@@ -1555,8 +1555,8 @@ model products {
   details_page_ar    String?   @db.NVarChar(Max)
   status             Int       @default(1, map: "DF__products__status__54968AE5") @db.TinyInt
   deleted_at         DateTime? @db.DateTime
-  created_at         DateTime? @db.DateTime
-  updated_at         DateTime  @db.DateTime
+  created_at         DateTime? @default(now()) @db.DateTime
+  updated_at         DateTime  @updatedAt @db.DateTime
   memberID           String?   @db.NVarChar(Max)
   admin_id           Int?      @default(0, map: "DF_products_admin_id")
   save_as            String?   @default("final", map: "DF_products_save_as") @db.VarChar(20)
