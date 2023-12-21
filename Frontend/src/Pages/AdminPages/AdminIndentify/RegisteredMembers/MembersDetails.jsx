@@ -133,7 +133,7 @@ const MembersDetails = ({ gs1MemberData }) => {
               <div className='h-auto w-full mt-8 px-1'>
                 <div className='flex justify-between'>
                   <p className='text-blue-500 font-sans font-semibold'>GS1 Member Details</p>
-                  <button className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Change Membership</button>
+                  {/* <button className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Change Membership</button> */}
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
