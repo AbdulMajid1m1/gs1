@@ -15,26 +15,45 @@ const PaymentSlips = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
+    // const memberDataString = sessionStorage.getItem('memberData');
+    // const memberData = JSON.parse(memberDataString);
+    // console.log(memberData?.transaction_id);
     
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
+  
 
       useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await newRequest.get("/bankslip",);
+        const fetchData = async () => {
+          try {
+            const response = await newRequest.get("/bankslip",);
+            
+            console.log(response.data);
+            setData(response?.data || []);
+            setIsLoading(false)
+
+          } catch (err) {
+            console.log(err);
+            setIsLoading(false)
+          }
+        };
+
+      // const fetchMemberbankSlipData = async () => {
+      //   try {
+      //     const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.transaction_id}&type=bank_slip`);
           
-          console.log(response.data);
-          setData(response?.data || []);
-          setIsLoading(false)
+      //     console.log(response.data);
+      //     setData(response?.data || []);
+      //     setIsLoading(false)
+  
+      //   } catch (err) {
+      //     console.log(err);
+      //     setIsLoading(false)
+      //       }
+      //   };
 
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false)
-        }
-      };
-
+      //   fetchMemberbankSlipData();
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -77,7 +96,7 @@ const PaymentSlips = () => {
                             <button
                               onClick={() => navigate('/member/bank-slip')}
                                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                                 <i className="fas fa-plus mr-1"></i>Update Documents
+                                 <i className="fas fa-plus mr-1"></i>Uplaod Documents
                             </button>
 
                             <button

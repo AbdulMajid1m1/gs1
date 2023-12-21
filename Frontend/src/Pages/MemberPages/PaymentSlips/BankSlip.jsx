@@ -26,76 +26,98 @@ const BankSlip = () => {
     }
 
     const handleFileChange = (e) => {
-        setDocument(e.target.files[0]);
-        setError('');
+        // setDocument(e.target.files[0]);
+        // setError('');
+        const file = e.target.files[0];
+        if (file) {
+          if (file.size <= 500 * 1024) {
+              setDocument(file);
+              setError(''); // Clear any previous error message
+          } else {
+              setError('File size should be 500KB or less');
+              e.target.value = null;
+            }
+        }
     };
 
 
-    const handleSubmit = (e) => {
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         console.log(translationID, document, description);
 
-        if (memberData.payment_status === 0 && !selectedTranslationID) {
-            setError('Please select a TranslationID.');
-        } else if (memberData.payment_status === 0 && !document) {
-            setError('Please upload a document.');
-        } else {
-            setError('');
+        // if (memberData?.payment_status === 0 && !selectedTranslationID) {
+        //     setError('Please select a TranslationID.');
+        // } else if (memberData?.payment_status === 0 && !document) {
+        //     setError('Please upload a document.');
+        // } else {
+        //     setError('');
 
-            // Perform the upload or submission logic here
-            console.log('Document uploaded:', document);
+        //     // Perform the upload or submission logic here
+        //     console.log('Document uploaded:', document);
 
-            setIsLoading(true);
-
-            const formData = new FormData();
-            formData.append('transaction_id', translationID);
-            formData.append('receipt', document);
-            formData.append('user_id', memberData?.id);
-            // formData.append('details', description);
-            // formData.append('status', 'pending');
-
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            };
-
-            newRequest.post('/users/receiptUpload', formData, config)
-                .then(res => {
-                    console.log(res.data);
-                    setIsLoading(false);
-
-                    toast.success('Bank Slip Upload Successfully', {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
-
-                    setTranslationID('');
-                    setDocument('');
-                    setDescription('');
-                    navigate(-1);
-
-                })
-                .catch(err => {
-                    console.log(err);
-                    setIsLoading(false);
-                    toast.error(err?.response?.data?.error || 'Error', {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
-                })
-
-        }
-
-    }
+        //     setIsLoading(true);
+        // }
+  
+       // Create a FormData object
+       const formData = new FormData();
+       formData.append('type', 'bank_slip');
+       formData.append('transaction_id', translationID || '');
+       formData.append('user_id', memberData?.id || ''); // Replace with the actual user ID
+       formData.append('doc_type', 'member_document');
+       formData.append('document', document);
+  
+  
+        try {
+        const response = await newRequest.post('/memberDocuments', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        toast.success(response?.data?.message || 'Bank Slip Upload Successfully.', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+  
+  
+        console.log(response.data);
+        setTranslationID('');
+        setDocument('');
+        setDescription('');
+        navigate(-1);
+        setIsLoading(false);
+   
+  
+      } 
+      catch (error) {
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error || 'Error', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+  
+  
+        console.log(error);
+      }
+  
+  
+    };
+  
+    
 
 
     return (
@@ -142,7 +164,7 @@ const BankSlip = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="w-full font-sans sm:text-base text-sm flex flex-col gap-2 px-4">
                                     <label htmlFor="translate">
-                                        TranslationID<span className="text-red-600"> (TransactionID is Invoice#)</span>
+                                        Transaction ID<span className="text-red-600"> (TransactionID is Invoice#)</span>
                                     </label>
                                     {/* <input
                             id="translate"
@@ -153,7 +175,7 @@ const BankSlip = () => {
                         /> */}
 
                                     {/* {memberData.payment_status === 0 && ( */}
-                                    {memberData.payment_status === 0 && memberData.status !== 1 && (
+                                    {/* {memberData?.payment_status === 0 && memberData.status !== 1 && ( */}
                                         <Autocomplete
                                             id="translate"
                                             // options={[translationID]}
@@ -192,7 +214,7 @@ const BankSlip = () => {
                                                 },
                                             }}
                                         />
-                                    )}
+                                    {/* )} */}
                                 </div>
 
 

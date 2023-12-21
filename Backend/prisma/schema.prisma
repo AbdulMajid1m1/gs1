@@ -742,20 +742,20 @@ model gtin_products {
 }
 
 model gtin_subcriptions {
-  id             BigInt    @id(map: "PK_gtin_subcriptions") @default(autoincrement())
+  id             String  @id @default(cuid())
   react_no       Int?
-  transaction_id Int?
-  pkg_id         Int?
-  pkg_date       DateTime? @db.DateTime
-  price          Float?
-  request_type   String?   @db.NVarChar(Max)
-  status         String?   @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
-  user_id        Int?      @default(0, map: "DF_gtin_subcriptions_user_id")
-  createdBy      Int?      @default(0, map: "DF_gtin_subcriptions_createdBy")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  deleted_at     DateTime? @db.DateTime
-  expiry_date    DateTime? @db.DateTime
+  transaction_id String?
+  pkg_id         String?
+
+  price        Float?
+  request_type String?   @db.NVarChar(Max)
+  status       String?   @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
+  user_id      String?
+  createdBy    String?
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @updatedAt
+  deleted_at   DateTime? @db.DateTime
+  expiry_date  DateTime? @db.DateTime
 }
 
 model gtin_subscription_histories {
@@ -1035,12 +1035,12 @@ model member_documents {
   document       String   @db.NVarChar(Max)
   transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
   user_id        String   @db.NVarChar(255)
-  admin_id       String   @db.NVarChar(255)
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
 
-  status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
+  status        String? @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
+  reject_reason String? @db.VarChar(1000)
 }
 
 model member_history_logs {
@@ -1391,17 +1391,16 @@ model other_products {
 }
 
 model other_products_subcriptions {
-  id             BigInt    @id(map: "PK_other_products_subcriptions") @default(autoincrement())
+  id             String    @id @default(cuid())
   react_no       Int?
-  transaction_id Int?
-  product_id     Int?
-  other_date     String?   @db.NVarChar(255)
+  transaction_id String
+  product_id     String?
   price          Float?
   status         String?   @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
-  user_id        Int?      @default(0, map: "DF_other_products_subcriptions_user_id")
-  createdBy      Int?      @default(0, map: "DF_other_products_subcriptions_createdBy")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
+  user_id        String?   @db.NVarChar(255)
+  createdBy      String?   @db.NVarChar(255)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
   deleted_at     DateTime? @db.DateTime
   expiry_date    DateTime? @db.DateTime
 }
@@ -2001,11 +2000,12 @@ model withdraw_logs {
   updated_at          DateTime? @db.DateTime
   WithdrawLogID       Int       @id(map: "PK__withdraw__AD995F8BC87A4506") @default(autoincrement())
 }
+
 model document_type {
-  id             String    @id @default(cuid())
-  file_name      String?   @db.NVarChar(Max)
-  status         String?   @db.VarChar(10)
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  deleted_at     DateTime? @db.DateTime
+  id         String    @id @default(cuid())
+  file_name  String?   @db.NVarChar(Max)
+  status     String?   @db.VarChar(10)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime
 }

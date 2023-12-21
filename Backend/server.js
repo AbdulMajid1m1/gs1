@@ -19,7 +19,9 @@ const app = express();
 dotenv.config();
 
 const allowedOrigins = [
-    "http://localhost:3000"
+    "http://localhost:3092",
+    "http://gs1ksa.org:3092"
+
 
 ];
 
@@ -59,6 +61,8 @@ app.get('/render', async (req, res) => {
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
         memberData: {
+            // add New Rigistriont with current date
+            registeration: `New Registration ${new Date().toLocaleDateString()}`,
             qrCodeDataURL: qrCodeDataURL,
             // Assuming $addMember->id is already known
             company_name_eng: 'Sample Company',
@@ -134,7 +138,7 @@ app.get('/renderCertificate', async (req, res) => {
         },
         general: {
             gcp_certificate_detail1: ['Global Trade Item Number(GTIN)', 'Certificate Detail 1'], // Dummy data, replace with actual detail data from your API
-            gcp_certificate_detail2: ['Certificate Detail 2','Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
+            gcp_certificate_detail2: ['Certificate Detail 2', 'Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
             gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
         },
         userData: {
@@ -145,7 +149,7 @@ app.get('/renderCertificate', async (req, res) => {
         },
         uploadPath: '/your/upload/path/', // Dummy data, replace with actual upload path
         backendImagePath: '/your/backend/image/path/', // Dummy data, replace with actual backend image path
-        expiryDate: '31-12-2023', // Dummy data, replace with actual user data from your API
+        expiryDate: '31-12-2025', // Dummy data, replace with actual user data from your API
         explodeGPCCode: [1, 2]
     };
 
@@ -164,7 +168,7 @@ app.use((err, req, res, next) => {
 
 
 
-const PORT = process.env.PORT || 3090;
+const PORT = process.env.PORT || 3091;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

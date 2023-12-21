@@ -45,6 +45,7 @@ const DataTable = ({
   handleAddDoc,
   handleUsers,
   handleAddUser,
+  globalSearch = false,
 }) => {
   const navigate = useNavigate();
   const [qrcodeValue, setQRCodeValue] = useState("");
@@ -124,7 +125,8 @@ const DataTable = ({
     'purchaseOrderId',
     'gtinMainTableId',
     'ssccTableId',
-    'customerListId'
+    'customerListId',
+    'memberInvoiceId',
   ]
   const handleRowClick = (item) => {
     console.log(item)
@@ -170,14 +172,32 @@ const DataTable = ({
     setMuiFilteredData(filteredData);
   }, [filteredData]);
 
-  const handleSearch = (e) => {
-    // setShipmentIdSearch(e.target.value);
-    e.target.name === "SHIPMENTID"
-      ? setShipmentIdSearch(e.target.value)
-      : setContainerIdSearch(e.target.value);
-    console.log(e.target.name, e.target.value);
-    console.log(shipmentIdSearch, containerIdSearch);
+  // const handleSearch = (e) => {
+  //   // setShipmentIdSearch(e.target.value);
+  //   e.target.name === "SHIPMENTID"
+  //     ? setShipmentIdSearch(e.target.value)
+  //     : setContainerIdSearch(e.target.value);
+  //   console.log(e.target.name, e.target.value);
+  //   console.log(shipmentIdSearch, containerIdSearch);
+  // };
+
+  const handleGlobalSearch = (e) => {
+    // when user search what ever he types filter the data and show it in the table
+    const searchValue = e.target.value;
+    console.log(searchValue);
+    const filteredData = record.filter((item) => {
+      // check if the search value is in any of the object values
+      return Object.values(item).some((value) =>
+        value.toString().toLowerCase().includes(searchValue.toLowerCase())
+      );
+    });
+    console.log(filteredData);
+    setMuiFilteredData(filteredData);
+
+   
   };
+  
+
   // Retrieve the value with the key "myKey" from localStorage getvalue
   const myValue = localStorage.getItem("userId");
   console.log(myValue);
@@ -477,7 +497,20 @@ const DataTable = ({
       >
         <div className="datatableTitle">
           <div className="left-div">
-            <span>{title}</span>
+           
+            {/* if global search is true than show search bar instead of title */}
+            {globalSearch ?  (
+              <span>
+                <input
+                  type="text"
+                  placeholder="SEARCH"
+                  name="SHIPMENTID"
+                  className="searchInput"
+                  onChange={handleGlobalSearch}
+                />
+              </span>
+            ) :  <span>{title}</span>
+           }
 
             {ShipmentIdSearchEnable && ShipmentIdSearchEnable === true ? (
               <span>

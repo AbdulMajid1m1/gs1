@@ -9,9 +9,10 @@ import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
+
 import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
-import pdf from 'html-pdf';
+import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../configs/envConfig.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
@@ -25,7 +26,7 @@ const userSchema = Joi.object({
     slug: Joi.string(),
     location_uk: Joi.string(),
     have_cr: Joi.string(),
-    cr_documentID: Joi.number().integer(),
+    cr_documentID: Joi.string(),
     document_number: Joi.string(),
     fname: Joi.string(),
     lname: Joi.string(),
@@ -67,7 +68,6 @@ const userSchema = Joi.object({
     online_payment: Joi.string(),
     remember_token: Joi.string(),
     parent_memberID: Joi.number().integer(),
-
     invoice_file: Joi.string(),
     otp_status: Joi.number().integer(),
     gcpGLNID: Joi.string().max(50),
@@ -88,7 +88,6 @@ const userSchema = Joi.object({
     activityID: Joi.number().integer(),
     registration_type: Joi.string().max(10),
     status: Joi.string().valid('active', 'inactive', 'reject', 'suspend'), // TODO: remove status and allow only in update
-
     industryTypes: Joi.array().items(Joi.object({
         id: Joi.string(),
         name: Joi.string()
@@ -99,7 +98,7 @@ const userSchema = Joi.object({
     cart: Joi.object({
         transaction_id: Joi.string(),
         cart_items: Joi.array().items(Joi.object({
-            productID: Joi.string(),
+            productID: Joi.string().required(),
             productName: Joi.string(),
             registration_fee: Joi.string(),
             yearly_fee: Joi.string(),
@@ -108,7 +107,6 @@ const userSchema = Joi.object({
             quotation: Joi.string()
         })),
         total: Joi.number(),
-
         request_type: Joi.string(),
         payment_type: Joi.string(),
         user_id: Joi.string(),
@@ -121,19 +119,126 @@ const userSchema = Joi.object({
 });
 
 
-// Define a function to generate a PDF from EJS template
+export const generatePDFGen = async (req, res) => {
+    try {
+        // Define your dummy data object
+        const BACKEND_URL = 'http://localhost:3091';
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const data = {
+            memberData: {
+                // add New Rigistriont with current date
+                registeration: `New Registration ${new Date().toLocaleDateString()}`,
+                qrCodeDataURL: qrCodeDataURL,
+                // Assuming $addMember->id is already known
+                company_name_eng: 'Sample Company',
+                mobile: '+966-123-456789',
+                address: {
+                    zip: '12345',
+                    countryName: 'Saudi Arabia',
+                    stateName: 'Riyadh',
+                    cityName: 'Riyadh City',
+                },
+                companyID: '1234567890',
+                gtin_subscription: {
+                    products: {
+                        member_category_description: 'Gold Membership',
+                    },
+                },
+            },
+            general: {
+                service_default_image: 'default_service_image.png',
+                logo: 'company_logo.png',
+            },
+            cart: {
+                request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
+                transaction_id: 'T123456789',
+                payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
+                cart_items: [
+                    // Item descriptions
+                ],
+            },
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+            custom_amount: 100, // Example custom amount
+            cart: {
+                request_type: 'registration', // or 'renew' or 'addon'
+                transaction_id: 'T123456789',
+                payment_type: 'bank_transfer', // or 'Mada/Visa'
+                cart_items: [
+                    'Item 1 Description',
+                    'Item 2 Description',
+                    'Item 3 Description',
+                ],
+            },
+            general: {
+                service_default_image: 'default_service_image.png',
+                logo: 'company_logo.png',
+            },
+            company_details: {
+                title: 'Sample Company',
+                account_no: '1234567890',
+                iban_no: 'SA1234567890123456789012',
+                bank_name: 'Sample Bank',
+                bank_swift_code: 'SAMPLEBANK123',
+            },
+            BACKEND_URL: BACKEND_URL,
 
-const generatePDF = async (ejsFilePath, data) => {
-    const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
-    const htmlContent = await ejs.render(ejsTemplate, { data });
+        };
+        // Render the EJS template with the dummy data
+        const pdfBuffer = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data, 'invoice4.pdf');
 
-    return new Promise((resolve, reject) => {
-        pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
-            if (err) return reject(err);
-            resolve(buffer);
-        });
-    });
+        // Set the response headers and send the PDF as a response
+        res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdfBuffer.length });
+        res.send(pdfBuffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
+
+
+
+
+// const generatePDF = async (ejsFilePath, data) => {
+//     const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
+//     const htmlContent = await ejs.render(ejsTemplate, { data });
+
+//     return new Promise((resolve, reject) => {
+//         pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
+//             if (err) return reject(err);
+//             resolve(buffer);
+//         });
+//     });
+// };
+
+
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+    try {
+        const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
+        const htmlContent = ejs.render(ejsTemplate, { data });
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+
+        const pdfOptions = {
+            path: outputFilePath,
+            format: 'Letter',
+            printBackground: true
+        };
+
+        await page.pdf(pdfOptions);
+        await browser.close();
+
+        return outputFilePath;
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        throw error;
+    }
+}
 
 
 export const createUser = async (req, res, next) => {
@@ -197,6 +302,7 @@ export const createUser = async (req, res, next) => {
         const data1 = {
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
+                registeration: `New Registration ${new Date().toLocaleDateString()}`,
                 // Assuming $addMember->id is already known
                 company_name_eng: value.company_name_eng,
                 mobile: value.mobile,
@@ -207,7 +313,10 @@ export const createUser = async (req, res, next) => {
                     cityName: value.city,
                 },
                 companyID: value.companyID,
-                member_category: value.member_category,
+                membership_category: value.membership_category,
+                topHeading: "Invoice",
+                member_category: value.membership_category,
+                
                 gtin_subscription: {
                     products: {
                         member_category_description: cartValue?.cart_items[0]?.productName,
@@ -236,8 +345,6 @@ export const createUser = async (req, res, next) => {
             BACKEND_URL: BACKEND_URL
         };
 
-        // Generate PDF from EJS template
-        const pdfBuffer = await generatePDF(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1);
 
         // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
         const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
@@ -253,15 +360,24 @@ export const createUser = async (req, res, next) => {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        // Save the PDF file
-        await fs.writeFile(pdfFilePath, pdfBuffer);
+        // Generate PDF and save it to the specified path
+        const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+
+        // now fetch the pdf file from the path and send it as attachment
+        const invoiceBuffer = await fs.readFile(pdfFilePath);
+
+
+
+
+
+
 
         // Now you can use pdfFilePath to access or send the PDF file
         console.log(`PDF saved to: ${pdfFilePath}`);
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
         await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
 
-            , pdfBuffer, pdfBuffer2);
+            , invoiceBuffer, pdfBuffer2);
         const hashedPassword = bcrypt.hashSync(password, 10);
         userValue.password = hashedPassword;
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
@@ -278,8 +394,82 @@ export const createUser = async (req, res, next) => {
                 data: cartValue
             });
 
-            return { newUser, newCart };
-        });
+
+            const cartData = JSON.parse(cartValue.cart_items)
+
+            const gtinSubscriptionData = {
+                transaction_id: transactionId,
+                user_id: newUser.id,
+                request_type: "registration",
+                status: "inactive",
+                price: parseFloat(cartData[0].price),
+                pkg_id: cartData[0].productID,
+
+            };
+
+
+            const newGtinSubscription = await prisma.gtin_subcriptions.create({
+                data: gtinSubscriptionData
+            });
+
+
+
+
+
+
+            const otherProductsData = cartData.slice(1).map(item => ({
+                transaction_id: transactionId,
+                user_id: newUser.id,
+                status: "inactive",
+                price: parseFloat(item.price),
+                product_id: item.productID,
+            }));
+            const otherProductsSubscriptions = await Promise.all(
+                otherProductsData.map(productData =>
+                    prisma.other_products_subcriptions.create({ data: productData })
+                )
+            );
+
+            // add all three documents to the member_documents table
+            const documentsData = [
+                {
+                    type: "company_documents",
+                    document: documentPath,
+                    transaction_id: transactionId,
+                    user_id: newUser.id,
+                    doc_type: "member_document",
+                    status: "pending"
+                },
+                {
+                    type: "national_address",
+                    document: imagePath,
+                    transaction_id: transactionId,
+                    user_id: newUser.id,
+                    doc_type: "member_document",
+                    status: "pending"
+                },
+                {
+                    type: "invoice",
+                    document: cartValue.documents,
+                    transaction_id: transactionId,
+                    user_id: newUser.id,
+                    doc_type: "member_document",
+                    status: "pending"
+                }
+            ];
+
+            const memberDocuments = await Promise.all(
+                documentsData.map(docData =>
+                    prisma.member_documents.create({ data: docData })
+                )
+            );
+
+            return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions, memberDocuments };
+
+            // return { newUser, newCart };
+
+            // make trantion time to 40 sec
+        }, { timeout: 40000 });
 
         res.status(201).json(transaction);
     } catch (error) {
@@ -362,6 +552,22 @@ export const getUserDetails = async (req, res, next) => {
             : {};
 
         // Start a transaction to fetch users and their carts
+        // if there is no filter conditions, fetch all users without carts
+        if (!hasFilterConditions) {
+            const users = await prisma.users.findMany({
+                where: filterConditions
+            });
+
+            //sort the users by updated_at
+
+            const sortedUsers = users.sort((a, b) => {
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            });
+
+
+
+            return res.json(sortedUsers);
+        }
         const [users, allCarts] = await prisma.$transaction(async (prisma) => {
             // Fetch users based on filter conditions
             const users = await prisma.users.findMany({
@@ -390,8 +596,10 @@ export const getUserDetails = async (req, res, next) => {
             carts: allCarts.filter(cart => cart.user_id == user.id)
         }));
 
-        res.json(usersWithCarts);
+
+        return res.json(usersWithCarts);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };

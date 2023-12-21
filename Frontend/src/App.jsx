@@ -120,7 +120,7 @@ const App = () => {
                               element={<GTINUpdateProducts />}
                             />
 
-<Route path="front-end" element={<Frontend />} />
+                            <Route path="front-end" element={<Frontend />} />
                             <Route path="settings" element={<Settings />} />
                             <Route path="master-data" element={<MasterData />} />
                             <Route path="reports" element={<Reports />} />
@@ -140,12 +140,13 @@ const App = () => {
 
                             <Route path="payment-slips" element={<PaymentSlips />} />
                             <Route path="bank-slip" element={<BankSlip />} />
-
                             <Route path="transaction-history" element={<TransactionHistory />} />
                             <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                             <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
                             {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
+                            {/* <Route path="member-data" element={<MemberData />} /> */}
+                            <Route path="member-crnumber" element={<MemberCrNumber />} />
                           <Route path="member-data" element={<MemberData />} />
                           <Route path="member-crnumber" element={<MemberCrNumber />} />
 
@@ -197,7 +198,7 @@ const App = () => {
                             <Route path="help-desk" element={<HelpDesk />} />
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
-                          
+
                             <Route path="front-end" element={<Frontend />} />
                             <Route path="settings" element={<Settings />} />
                             <Route path="master-data" element={<MasterData />} />

@@ -3,16 +3,19 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
             integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
         <style>
             body {
-                
+                position: relative;
                 font-family: DejaVu Sans, sans-serif;
                 padding: 4rem;
                 background-color: white;
+                font-size: 1rem;
+         
             }
     
             .table-suply {
@@ -125,6 +128,8 @@
             }
     
             footer {
+                position: absolute;
+                bottom: 0;
                 margin-top: 3rem;   
                 height: 70px;
                 font-size: 12px !important;
@@ -163,7 +168,7 @@
 
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
                     <tr>
-                        <td width="100%" class="text-center text-bold"><strong>Invoice</strong></td>
+                        <td width="100%" class="text-center text-bold"><strong><%= data.topHeading %></strong></td>
                     </tr>
                 </table>
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
@@ -184,7 +189,7 @@
                     </tr>
                 </table>
                 <hr style=" border: 10px solid #EF6231;"></hr>
-                <table class="" width="100%" cellspacing="0" cellpadding="0" style="border:none; font-size: 11px; line-height: 0.5 rem;">
+                <table class="" width="100%" cellspacing="0" cellpadding="0" style="border:none; font-size: 1rem; line-height: 0.5 rem;">
                     <tr>
                         <!-- Billing Information -->
                         <td width="50%">
@@ -201,7 +206,7 @@
                         <td width="50%" class="text-right">
                             <p class="p-text" style="line-height: 1rem;">
                                 <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
-                                <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br>
+                                <!-- <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br> -->
                                 <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
                                 <b>Membership Category:</b> <span><%= data.member_category %></span><br>
                             </p>
@@ -212,14 +217,18 @@
                         <td width="50%">
                             <p class="p-text">
                                 <b>Type of Payment:</b> 
-                                <% if (data.cart.payment_type === 'bank_transfer') { %>
-                                    Bank
-                                <% } else { %>
-                                    Mada/Visa
-                                <% } %>
+                                <%= data.memberData.registeration %>
                             </p>
                             <p class="p-text">
                                 <b>Membership Type:</b> <%= data.memberData.gtin_subscription.products.member_category_description %>
+                            </p>
+                            <p class="p-text">
+                                <b>Payment Method</b> 
+                                <% if (data.cart.payment_type === 'bank_transfer') { %>
+                                    Bank Transfer
+                                <% } else { %>
+                                    Bank Transfer
+                                <% } %>
                             </p>
                         </td>
                     </tr>
@@ -231,7 +240,7 @@
 
               
               <!-- Invoice Items Table -->
-              <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+              <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1rem;">
                 <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
                     <th colspan="2">#</th>
                     <th colspan="4">Description</th>
@@ -266,9 +275,11 @@
                 </div>
 
                 <!-- Bank Details Table -->
-                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1rem;">
                     <tr class="p-text text-bold" style="background-color: #003D79;">
-                        <td colspan="12" align="center" class="p-text text-left">For bank transfer to our bank account</td>
+                        <td colspan="12" align="center" class="p-text text-left"
+                        style="color: white; font-weight: bold; font-size: 1rem;" 
+                        >For transfer to our bank account</td>
                     </tr>
                     <tr>
                         <td width="40%" colspan="4" class="text-left">Name</td>
@@ -300,10 +311,13 @@
             </div>
             
         </div>
+       
     </center>
+   
+    <!----------------------------->
     <footer>
         <table class="" width="100%" cellspacing="0" cellpadding="0"
-            style="border:none; font-size: 11px; line-height: 0.5 rem;">
+            style="border:none; font-size: 1rem; line-height: 0.5 rem;">
             <tr>
                 <td width="10%" class="text-left" style="border-right-style: 1px solid; border-color: #ED7D31">
                     <img src="<%= data.memberData.qrCodeDataURL %>"
@@ -312,7 +326,7 @@
                 </td>
                 <td width="90%" class="text-left" style="margin-left: 10px;">
                     <table class="" width="100%" cellspacing="0" cellpadding="0"
-                        style="border:none; font-size: 11px; line-height: 0.5 rem;">
+                        style="border:none; font-size: 1rem; line-height: 0.5 rem;">
                         <tr>
                             <td>
                                 <i class="fas fa-phone" aria-hidden="true"></i>
@@ -345,7 +359,6 @@
             </tr>
         </table>
     </footer>
-    <!----------------------------->
 </body>
 
 </html>
