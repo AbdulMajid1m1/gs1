@@ -31,6 +31,20 @@ export const getAllCountries = async (req, res, next) => {
         next(error);
     }
 };
+export const getAllCountriesName = async (req, res, next) => {
+    try {
+        const countries = await prisma.countries.findMany({
+            select: {
+                name_en: true,
+                id: true,
+            },
+        });
+
+        res.json(countries);
+    } catch (error) {
+        next(error);
+    }
+};
 export const createCountries = async (req, res, next) => {
     try {
         const { error, value } = countrySchema.validate(req.body);

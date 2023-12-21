@@ -2,7 +2,7 @@ import express from 'express';
 import
     {
         getAllCities,createCities,getCitiesById,updateCities,deleteCities,
-        getAllCountries,createCountries,getCountriesById,updateCountries,deleteCountries,
+        getAllCountries,createCountries,getCountriesById,updateCountries,deleteCountries,getAllCountriesName,
         getAllStates,createStates,getStatesById,updateStates,deleteStates,
         getCityByStateId, getStateByCountryId
     } from '../../controllers/countryStateCityControllers.js';
@@ -14,6 +14,7 @@ import
 const router = express.Router();
 // --------------------------Country----------------
 router.get('/getAllCountries', getAllCountries); 
+router.get('/getAllCountriesName', getAllCountriesName); 
 router.get("/getCountriesById/:id", getCountriesById)
 router.put("/updateCountries/:id", updateCountries)
 router.post("/createCountries", createCountries)
