@@ -116,7 +116,7 @@ const MemmberRegisteration = () => {
                 const statesData = await newRequest.get(`/address/getAllStates`);
                 const getStatesdata = statesData.data;
                 const data = response.data;
-                
+
                 const countries = data.map((country) => ({
                     id: country.id,
                     name: country.name_en,
@@ -129,17 +129,17 @@ const MemmberRegisteration = () => {
                 setSelectedCountry(defaultCountry);
                 const filteredStates = getStatesdata.filter((state) => state.country_id == defaultCountry?.id);
                 setFilteredStates(filteredStates);
-                
-               
+
+
             }
             catch (error) {
                 console.error('Error fetching data:', error);
             }
-          
+
 
         }
 
-      
+
         const handleGetAllCities = async () => {
             try {
                 const response = await newRequest.get(`/address/getAllCities`);
@@ -284,12 +284,12 @@ const MemmberRegisteration = () => {
         // setUpload(event.target.files[0]);
         const file = event.target.files[0];
         if (file) {
-          if (file.size <= 500 * 1024) {
-              setUpload(file);
-              setErrorMessage(''); // Clear any previous error message
-          } else {
-              setErrorMessage('File size should be 500KB or less');
-              event.target.value = null;
+            if (file.size <= 500 * 1024) {
+                setUpload(file);
+                setErrorMessage(''); // Clear any previous error message
+            } else {
+                setErrorMessage('File size should be 500KB or less');
+                event.target.value = null;
             }
         }
     };
@@ -316,7 +316,7 @@ const MemmberRegisteration = () => {
         formData.append('country', selectedCountry?.name);
         formData.append('state', selectedState?.name);
         formData.append('city', selectedCity?.name);
-        formData.append('po_box', zipCode);
+        formData.append('zip_code', zipCode);
         formData.append('mbl_extension', extension);
         if (website) {
             formData.append('website', website);
@@ -333,7 +333,7 @@ const MemmberRegisteration = () => {
         if (selectedCr?.cr && selectedCr?.activity) {
             formData.append('cr_number', selectedCr?.cr);
             formData.append('cr_activity', selectedCr?.activity);
-            formData.append('cr_documentID', selectedCr?.crId || '0'); 
+            formData.append('cr_documentID', selectedCr?.crId || '0');
 
         }
 
@@ -348,6 +348,7 @@ const MemmberRegisteration = () => {
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
         // formData.append('online_payment', 'Enabled');
+        
         // formData.append('remember_token', 'TokenXYZ');
         // formData.append('parent_memberID', '100');
         formData.append('membership_category_id', selectedCategories.id)
@@ -427,7 +428,7 @@ const MemmberRegisteration = () => {
                     draggable: true
                 });
 
-            
+
 
             })
             .catch((err) => {
@@ -643,13 +644,13 @@ const MemmberRegisteration = () => {
                                             id: 'mobile',
                                             placeholder: 'Company Landline',
                                         }}
-                                        
+
                                         inputStyle={{
                                             width: '100%',
                                             borderRadius: '0px',
                                             border: 'none'
                                         }}
-                                        />
+                                    />
 
                                 </div>
                             </div>
@@ -679,7 +680,7 @@ const MemmberRegisteration = () => {
                                             marginBottom: '3px',
                                         }}
                                     /> */}
-                                     <PhoneInput
+                                    <PhoneInput
                                         international
                                         country={'sa'}
                                         defaultCountry={'sa'}
@@ -690,13 +691,13 @@ const MemmberRegisteration = () => {
                                             id: 'mobile',
                                             placeholder: 'Mobile Number',
                                         }}
-                                        
+
                                         inputStyle={{
                                             width: '100%',
                                             borderRadius: '0px',
                                             border: 'none',
                                         }}
-                                        />
+                                    />
 
 
                                 </div>
@@ -984,7 +985,7 @@ const MemmberRegisteration = () => {
                                         },
                                     }}
                                 /> */}
-                                 {/* {selectedCategories ? ( // Render GTIN Autocomplete only if a category is selected */}
+                                {/* {selectedCategories ? ( // Render GTIN Autocomplete only if a category is selected */}
                                 <Autocomplete
                                     id='GTIN'
                                     // options={gtinNumber}

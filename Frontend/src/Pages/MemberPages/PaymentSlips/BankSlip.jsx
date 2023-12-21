@@ -41,88 +41,24 @@ const BankSlip = () => {
     };
 
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     console.log(translationID, document, description);
-
-    //     if (memberData?.payment_status === 0 && !selectedTranslationID) {
-    //         setError('Please select a TranslationID.');
-    //     } else if (memberData?.payment_status === 0 && !document) {
-    //         setError('Please upload a document.');
-    //     } else {
-    //         setError('');
-
-    //         // Perform the upload or submission logic here
-    //         console.log('Document uploaded:', document);
-
-    //         setIsLoading(true);
-
-    //         const formData = new FormData();
-    //         formData.append('transaction_id', translationID);
-    //         formData.append('receipt', document);
-    //         formData.append('user_id', memberData?.id);
-    //         // formData.append('details', description);
-    //         // formData.append('status', 'pending');
-
-    //         const config = {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         };
-
-    //         newRequest.post('/users/receiptUpload', formData, config)
-    //             .then(res => {
-    //                 console.log(res.data);
-    //                 setIsLoading(false);
-
-    //                 toast.success('Bank Slip Upload Successfully', {
-    //                     position: "top-right",
-    //                     autoClose: 3000,
-    //                     hideProgressBar: false,
-    //                     closeOnClick: true,
-    //                     pauseOnHover: true,
-    //                     draggable: true
-    //                 });
-
-    //                 setTranslationID('');
-    //                 setDocument('');
-    //                 setDescription('');
-    //                 navigate(-1);
-
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //                 setIsLoading(false);
-    //                 toast.error(err?.response?.data?.error || 'Error', {
-    //                     position: "top-right",
-    //                     autoClose: 3000,
-    //                     hideProgressBar: false,
-    //                     closeOnClick: true,
-    //                     pauseOnHover: true,
-    //                     draggable: true
-    //                 });
-    //             })
-
-    //     }
-
-    // }
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         console.log(translationID, document, description);
 
-        if (memberData?.payment_status === 0 && !selectedTranslationID) {
-            setError('Please select a TranslationID.');
-        } else if (memberData?.payment_status === 0 && !document) {
-            setError('Please upload a document.');
-        } else {
-            setError('');
+        // if (memberData?.payment_status === 0 && !selectedTranslationID) {
+        //     setError('Please select a TranslationID.');
+        // } else if (memberData?.payment_status === 0 && !document) {
+        //     setError('Please upload a document.');
+        // } else {
+        //     setError('');
 
-            // Perform the upload or submission logic here
-            console.log('Document uploaded:', document);
+        //     // Perform the upload or submission logic here
+        //     console.log('Document uploaded:', document);
 
-            setIsLoading(true);
-        }
+        //     setIsLoading(true);
+        // }
   
        // Create a FormData object
        const formData = new FormData();
@@ -239,7 +175,7 @@ const BankSlip = () => {
                         /> */}
 
                                     {/* {memberData.payment_status === 0 && ( */}
-                                    {memberData?.payment_status === 0 && memberData.status !== 1 && (
+                                    {/* {memberData?.payment_status === 0 && memberData.status !== 1 && ( */}
                                         <Autocomplete
                                             id="translate"
                                             // options={[translationID]}
@@ -278,7 +214,7 @@ const BankSlip = () => {
                                                 },
                                             }}
                                         />
-                                    )}
+                                    {/* )} */}
                                 </div>
 
 
