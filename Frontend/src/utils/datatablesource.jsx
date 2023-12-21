@@ -2110,7 +2110,7 @@ export const document_type = [
 
   {
     field: 'file_name',
-    headerName: 'file_name',
+    headerName: 'Document name',
     width: 180,
   },
  {
