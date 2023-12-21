@@ -153,6 +153,22 @@ export const getAllStates = async (req, res, next) => {
         next(error);
     }
 };
+export const getAllStatesName = async (req, res, next) => {
+    try {
+        const states = await prisma.states.findMany({
+            select: {
+                name: true,
+                id: true,
+            },
+        });
+        if (states.length === 0) {
+            return next(createError(404, 'No states found'));
+        }
+        res.json(states);
+    } catch (error) {
+        next(error);
+    }
+};
 export const createStates = async (req, res, next) => {
     try {
         const { error, value } = stateSchema.validate(req.body);
