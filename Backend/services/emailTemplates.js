@@ -26,8 +26,8 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
                 <p>Your Password: ${password}</p>
                 ${footerMessage ? `<p>${footerMessage}</p>` : ''}`,
                 attachments: [{
-                    filename: 'invoice.pdf',
-                    content: pdfBuffer,
+                    filename: pdfBuffer.pdfFilename ? pdfBuffer.pdfFilename : 'Invoice.pdf',
+                    content: pdfBuffer.invoiceBuffer,
                     contentType: 'application/pdf'
                 },
                 {

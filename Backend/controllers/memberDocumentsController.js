@@ -268,6 +268,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
         let pdfBuffer;
         let userUpdateResult;
+        let pdfFilename;
+        let cart
         if (value.status === 'approved') {
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
@@ -275,7 +277,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
                 // Perform the updateUserStatus logic
-                const cart = await prisma.carts.findFirst({ where: { user_id: userId } });
+                cart = await prisma.carts.findFirst({ where: { user_id: userId } });
 
                 if (cart && cart.cart_items) {
                     const cartItems = JSON.parse(cart.cart_items);
@@ -324,7 +326,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         // Fetch and update TblSysCtrNo
                         const tblSysNo = await prisma.tblSysNo.findFirst();
                         if (tblSysNo) {
-                            await prisma.users.update({
+                            userUpdateResult = await prisma.users.update({
                                 where: { id: userId },
                                 data: {
                                     companyID: tblSysNo.TblSysCtrNo,
@@ -368,7 +370,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         // add user data here
                         gcpGLNID: gcpGLNID,
                         gln: userUpdateResult.gln,
-                        companyID: userUpdateResult.companyID,
+                        memberID: userUpdateResult.memberID,
                         gcp_expiry: userUpdateResult.gcp_expiry,
                     },
                     // userUpdateResult.gcp_expiry, update this to add only date adn remove time
@@ -380,7 +382,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Generate PDF from EJS template
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
-                const pdfFilename = `Certificate-${currentDocument.transaction_id}.pdf`;
+                pdfFilename = `${userUpdateResult.company_name_eng}-Certificate.pdf`;
                 const pdfFilePath = path.join(pdfDirectory, pdfFilename);
                 if (!fsSync.existsSync(pdfDirectory)) {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
@@ -393,36 +395,144 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }, { timeout: 40000 });
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
-            let pdfBuffer2;
-            if (currentDocument.document) {
-                const userDocumentPath = currentDocument.document;
-                console.log("userDocupath", userDocumentPath);
-                // Extract the file name
-                const userDocumentName = path.basename(userDocumentPath);
+            // let pdfBuffer2;
+            // if (currentDocument.document) {
+            //     const userDocumentPath = currentDocument.document;
+            //     console.log("userDocupath", userDocumentPath);
+            //     // Extract the file name
+            //     const userDocumentName = path.basename(userDocumentPath);
 
-                console.log(userDocumentName);
+            //     console.log(userDocumentName);
 
-                // Construct the new path to read the file
-                const newFilePath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice', userDocumentName);
+            //     // Construct the new path to read the file
+            //     const newFilePath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice', userDocumentName);
 
-                // Read the file into a buffer
+            //     // Read the file into a buffer
 
-                try {
-                    pdfBuffer2 = await fs1.readFile(newFilePath);
-                } catch (readError) {
-                    console.error('Error reading second PDF:', readError.message);
-                    pdfBuffer2 = null; // Set to null if file reading fails
-                }
+            //     try {
+            //         pdfBuffer2 = await fs1.readFile(newFilePath);
+            //     } catch (readError) {
+            //         console.error('Error reading second PDF:', readError.message);
+            //         pdfBuffer2 = null; // Set to null if file reading fails
+            //     }
 
 
 
+            // }[{"productID":"4","productName":"Category C ( 1,000 Barcodes )","registration_fee":"3000","yearly_fee":"2500","price":"5500","product_type":"gtin","quotation":"undefined"},{"productID":"9","productName":"GLN ( 20 Locations)","registration_fee":"3000","yearly_fee":"0","price":"3000","product_type":"undefined","quotation":"undefined"}]
+            let cartData = JSON.parse(cart.cart_items);
+            cart.cart_items = cartData
+            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+            const data1 = {
+                topHeading: "Recipient",
+                secondHeading: "RECEIPT FOR",
+                memberData: {
+                    qrCodeDataURL: qrCodeDataURL,
+                    registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                    // Assuming $addMember->id is already known
+                    company_name_eng: existingUser.company_name_eng,
+                    mobile: existingUser.mobile,
+                    address: {
+                        zip: existingUser.zip_code,
+                        countryName: existingUser.country,
+                        stateName: existingUser.state,
+                        cityName: existingUser.city,
+                    },
+                    companyID: existingUser.companyID,
+                    membership_otherCategory: existingUser.membership_otherCategory,
+                    gtin_subscription: {
+                        products: {
+                            member_category_description: cartData[0].productName,
+                        },
+                    },
+                },
+
+
+                cart: cart,
+
+                currentDate: {
+                    day: new Date().getDate(),
+                    month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                    year: new Date().getFullYear(),
+                },
+
+
+
+                company_details: {
+                    title: 'Federation of Saudi Chambers',
+                    account_no: '25350612000200',
+                    iban_no: 'SA90 1000 0025 3506 1200 0200',
+                    bank_name: 'Saudi National Bank - SNB',
+                    bank_swift_code: 'NCBKSAJE',
+                },
+                BACKEND_URL: BACKEND_URL,
+            };
+
+
+            const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+            const pdfFilename1 = `Receipt-${existingUser?.company_name_eng}-${currentDocument.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+
+            const pdfFilePath = path.join(pdfDirectory, pdfFilename1);
+
+            if (!fsSync.existsSync(pdfDirectory)) {
+                fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
 
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
 
 
-          
+            // read the file into a buffer
+
+            const pdfBuffer2 = await fs1.readFile(pdfFilePath);
+
+            // now  save both pdf in database in member_document table
+
+            // model member_documents {
+            //     id             String   @id @default(cuid())
+            //     type           String   @db.NVarChar(255)
+            //     document       String   @db.NVarChar(Max)
+            //     transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
+            //     user_id        String   @db.NVarChar(255)
+            //     created_at     DateTime @default(now())
+            //     updated_at     DateTime @updatedAt
+            //     doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
+
+            //     status        String? @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
+            //     reject_reason String? @db.VarChar(1000)
+            //   }
+
+            // save  both the certificate and receipt in database 
+            // 1. certificate
+            // 2. receipt
+
+            const newDocument = await prisma.member_documents.createMany({
+                data: [
+                    {
+                        type: 'certificate',
+                        document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
+                        transaction_id: currentDocument.transaction_id,
+                        user_id: currentDocument.user_id,
+                        doc_type: 'member_document',
+                        status: 'approved'
+                    },
+                    {
+                        type: 'receipt',
+                        document: `/uploads/documents/MemberRegInvoice/${pdfFilename1}`,
+                        transaction_id: currentDocument.transaction_id,
+                        user_id: currentDocument.user_id,
+                        doc_type: 'member_document',
+                        status: 'approved'
+                    }
+                ]
+            });
+
+
+
+
+
             // Update the document status in the database
-            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? pdfBuffer : null, pdfBuffer2,);
+            // document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
+            
+                await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
             await prisma.member_documents.update({
                 where: { id: documentId },
                 data: { status: value.status }
@@ -465,22 +575,22 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
     let subject, emailContent;
     let attachments = [];
     if (status === 'approved') {
-        if (pdfBuffer) {
+        if (pdfBuffer && typeof pdfBuffer === 'object') {
             attachments.push({
-                filename: 'certificate.pdf',
-                content: pdfBuffer,
+                filename: pdfBuffer.pdfFilename || 'certificate.pdf',
+                content: pdfBuffer.pdfBuffer,
                 contentType: 'application/pdf'
             });
         }
-        if (pdfBuffer2) {
+        if (pdfBuffer2 && typeof pdfBuffer2 === 'object') {
             attachments.push({
-                filename: 'Recipient.pdf',
-                content: pdfBuffer2,
+                filename: pdfBuffer2.pdfFilename1 || 'Recipient.pdf',
+                content: pdfBuffer2.pdfBuffer2,
                 contentType: 'application/pdf'
             });
         }
-    }
 
+    }
     switch (status) {
         case 'approved':
             subject = 'Your Gs1Ksa member Account is Now Approved';

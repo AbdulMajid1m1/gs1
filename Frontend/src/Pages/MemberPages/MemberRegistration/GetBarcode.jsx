@@ -20,14 +20,14 @@ const GetBarcode = () => {
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
   const [isDocumentAutocompleteFilled, setIsDocumentAutocompleteFilled] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
-  const [location, setLocation] = useState(""); // Default to 'Yes
+  const [location, setLocation] = useState("yes"); // Default to 'Yes
   const abortControllerRef = useRef(null);
 
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 
   const handleShowCreatePopup = () => {
-      setCreatePopupVisibility(true);
-    };
+    setCreatePopupVisibility(true);
+  };
 
 
   const navigate = useNavigate();
@@ -219,7 +219,7 @@ const GetBarcode = () => {
                 <h2 className='sm:text-3xl text-2xl font-bold font-sans text-secondary'>Welcome To GS1 </h2>
                 <p className='sm:text-xl text-lg font-bold font-sans text-secondary'>Your Registration & Barcode journey will start here.</p>
               </div>
- 
+
               <div className='flex flex-col font-sans py-4 gap-2'>
                 <div>
                   <p className='sm:text-xl text-lg font-bold text-secondary'>Is your company located in the Kingdom? <span className='text-[#FF3E01]'>*</span></p>
@@ -228,7 +228,7 @@ const GetBarcode = () => {
                   <div className='flex items-center gap-2'>
                     <input type="radio" name="company" id="company-yes"
                       value='yes' onChange={(e) => setLocation(e.target.value)} checked={location === 'yes'}
-
+              
                     />
                     <label htmlFor="company-yes" className='text-secondary font-medium'>Yes</label>
                   </div>
@@ -317,7 +317,7 @@ const GetBarcode = () => {
                           {...params}
                           label="Search CR Number"
                           InputProps={{
-                          ...params.InputProps,
+                            ...params.InputProps,
                             endAdornment: (
                               <React.Fragment>
                                 {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -424,10 +424,10 @@ const GetBarcode = () => {
         </div>
       </div>
 
-      
+
       {/* AddBrands component with handleShowCreatePopup prop */}
       {isCreatePopupVisible && (
-          <AddCrNumber isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} />
+        <AddCrNumber isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} />
       )}
 
       {/* Footer */}

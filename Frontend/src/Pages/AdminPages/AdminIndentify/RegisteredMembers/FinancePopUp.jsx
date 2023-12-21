@@ -99,13 +99,13 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
           {isVisible && (
                     <div className="popup-overlay">
                       <div className="popup-container h-auto sm:w-[80%] w-full">
-                        <div className="popup-form">         
-                       
+                        <div className="popup-form w-full">         
+                        <form className='w-full'>
 
                
                         <div className='flex gap-5 justify-center items-center flex-wrap'>
                           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                              className='sm:w-[28%] w-full'
+                              className='w-full sm:w-1/2'
                            >
                           <DataTable data={memberInovice} 
                               title="Member Invoice"
@@ -115,34 +115,13 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   handleRowClickInParent={handleRowClickInParent}
                                   buttonVisibility={false}
 
-                              // dropDownOptions={[
-                              //     {
-                              //     label: "View",
-                              //     icon: (
-                              //         <VisibilityIcon
-                              //         fontSize="small"
-                              //         color="action"
-                              //         style={{ color: "rgb(37 99 235)" }}
-                              //         />
-                              //     ),
-                              //     action: handleView,
-                              //     },
-                              //     {
-                              //       label: "Activation",
-                              //       icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                              //       ,
-                              //       action: handleMemberStatusChange,
-                    
-                              //     },
-
-                              // ]}
                               uniqueId="journalMovementClId"
 
                               />
                             </div>
 
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                               className='sm:w-[28%] w-full'
+                               className='w-full sm:w-1/2'
                             >
                             <DataTable3 data={filteredMemberDetails} 
                               title="Member Bank Slip"
@@ -151,27 +130,6 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   secondaryColor="secondary"
                                   buttonVisibility={false}
 
-                              // dropDownOptions={[
-                              //     {
-                              //     label: "View",
-                              //     icon: (
-                              //         <VisibilityIcon
-                              //         fontSize="small"
-                              //         color="action"
-                              //         style={{ color: "rgb(37 99 235)" }}
-                              //         />
-                              //     ),
-                              //     action: handleView,
-                              //     },
-                                  // {
-                                  //   label: "Activation",
-                                  //   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                                  //   ,
-                                  //   action: handleMemberStatusChange,
-                    
-                                  // },
-
-                              // ]}
                               uniqueId="journalMovementClDetId"
 
                               />
@@ -179,15 +137,16 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                           </div>
 
 
-                        <div className="w-full flex justify-center items-center mt-5">
+                        <div className="w-full flex justify-start items-center mt-5 px-5">
                                <button
                                  type="button"
-                                 className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
+                                 className="px-7 py-2 rounded-sm bg-primary text-white font-body text-sm"
                                  onClick={handleCloseFinacePopup}
                                >
                                  Close
                                </button>
                              </div>
+                            </form>
                          </div>
                        </div>
                      </div>

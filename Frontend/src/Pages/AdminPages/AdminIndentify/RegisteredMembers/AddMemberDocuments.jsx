@@ -306,7 +306,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field3" className="text-secondary">Uplaod Documents </label>
+                    <label htmlFor="field3" className="text-secondary">Upload Documents </label>
                     <input
                       type="file"
                       id="field3"
@@ -340,7 +340,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Uplaod Documents
+                    Upload Documents
                   </Button>
                 </div>
               </form>
