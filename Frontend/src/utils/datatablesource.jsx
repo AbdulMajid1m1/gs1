@@ -2748,3 +2748,175 @@ export const registeredmemberColumn = [
 
 
 ]
+
+
+
+export const productsColumn = [
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Operation Date',
+    width: 180,
+    valueGetter: (params) => {
+      const operationDate = new Date(params.row.created_at);
+      return operationDate.toISOString().split('T')[0];
+    },
+  },
+  {
+    field: 'admin_id',
+    headerName: 'Created By',
+    width: 180,
+    valueGetter: (params) => {
+      return params.row.admin_id ? `User ID ${params.row.admin_id}` : 'Unknown';
+    },
+  },
+  {
+    field: 'productnameenglish',
+    headerName: 'Product Name (English)',
+    width: 200,
+  },
+  {
+    field: 'productnamearabic',
+    headerName: 'Product Name (Arabic)',
+    width: 200,
+  },
+  {
+    field: 'BrandName',
+    headerName: 'Brand Name',
+    width: 150,
+  },
+  {
+    field: 'ProductType',
+    headerName: 'Product Type',
+    width: 180,
+  },
+  {
+    field: 'Origin',
+    headerName: 'Origin',
+    width: 150,
+  },
+  {
+    field: 'PackagingType',
+    headerName: 'Packaging Type',
+    width: 150,
+  },
+  {
+    field: 'unit',
+    headerName: 'Unit',
+    width: 100,
+  },
+  {
+    field: 'size',
+    headerName: 'Size',
+    width: 100,
+  },
+  {
+    field: 'front_image',
+    headerName: 'Front Image',
+    width: 150,
+    renderCell: (params) => (
+      <img
+        src={params.row.front_image}
+        alt="Front Image"
+        style={{ width: '100%', height: 'auto' }}
+      />
+    ),
+  },
+  {
+    field: 'back_image',
+    headerName: 'Back Image',
+    width: 150,
+    renderCell: (params) => (
+      <img
+        src={params.row.back_image}
+        alt="Back Image"
+        style={{ width: '100%', height: 'auto' }}
+      />
+    ),
+  },
+  {
+    field: 'quantity',
+    headerName: 'Quantity',
+    width: 100,
+  },
+  {
+    field: 'barcode',
+    headerName: 'Barcode',
+    width: 150,
+  },
+  {
+    field: 'gpc',
+    headerName: 'GPC',
+    width: 180,
+  },
+  {
+    field: 'countrySale',
+    headerName: 'Country Sale',
+    width: 150,
+  },
+  {
+    field: 'HSCODES',
+    headerName: 'HS Codes',
+    width: 150,
+  },
+  {
+    field: 'details_page',
+    headerName: 'Details (English)',
+    width: 200,
+  },
+  {
+    field: 'details_page_ar',
+    headerName: 'Details (Arabic)',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 100,
+    valueGetter: (params) => (params.row.status === 1 ? 'Active' : 'Inactive'),
+  },
+  {
+    field: 'gtin_type',
+    headerName: 'GTIN Type',
+    width: 150,
+  },
+  {
+    field: 'product_url',
+    headerName: 'Product URL',
+    width: 200,
+    renderCell: (params) => (
+      <a href={params.row.product_url} target="_blank" rel="noopener noreferrer">
+        {params.row.product_url}
+      </a>
+    ),
+  },
+  {
+    field: 'product_link_url',
+    headerName: 'Product Link URL',
+    width: 200,
+    renderCell: (params) => (
+      <a href={params.row.product_link_url} target="_blank" rel="noopener noreferrer">
+        {params.row.product_link_url}
+      </a>
+    ),
+  },
+  {
+    field: 'BrandNameAr',
+    headerName: 'Brand Name (Arabic)',
+    width: 150,
+  },
+  {
+    field: 'readyForGepir',
+    headerName: 'Ready for Gepir',
+    width: 150,
+  },
+  {
+    field: 'gepirPosted',
+    headerName: 'Gepir Posted',
+    width: 150,
+  },
+];
