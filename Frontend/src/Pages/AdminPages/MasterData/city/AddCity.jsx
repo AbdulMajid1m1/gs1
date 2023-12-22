@@ -1,16 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
-
+import { Autocomplete, TextField } from '@mui/material';
 const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [name, setName] = useState("");
-    const [state_id, setstate_id] = useState("");
+     const [docuements, setDocuments] = React.useState([])
+  const [selectedDocuments, setSelectedDocuments] = useState("");
+    const [SelectedCountryId, setSelectedCountryId] = useState("");
     
     const handleCloseCreatePopup = () => {
         setVisibility(false);
       };
     
+useEffect(() => {
+    const getDocuments = async () => {
+      try {
+        const response = await newRequest.get('/address/getAllCountriesName');
+        console.log(response.data);
+        setDocuments(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+
+
+    getDocuments();
+    
+ }, []);
+      const handleSelectedDocuments = (event, value) => {
+        console.log(value?.id);
+        setSelectedCountryId(value?.id)
+    setSelectedDocuments(value);
+  };
     const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
@@ -79,16 +101,58 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">state</label>
-                                 <input
+                    <label htmlFor="field1" className="text-secondary">Select Country</label>
+                    {/* <select
                                    type="text"
-                                   id="state_id"
-                                   value={state_id}
-                                   onChange={(e) => setstate_id(e.target.value)}
-                                   placeholder="Enter state id "
+                                   id="field1"
+                                   value={selectDocument}
+                                   onChange={(e) => setSelectDocument(e.target.value)}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                               </div>
+                                 >
+                                      <option value="1">Document 1</option>
+                                      <option value="2">Document 2</option>
+                                      <option value="3">Document 3</option>
+                                      <option value="4">Document 4</option>
+                                </select>         */}
+                    <Autocomplete
+                      id="field1"
+                      options={docuements}
+                      value={selectedDocuments}
+                      getOptionLabel={(option) => option?.name_en || ""}
+                      onChange={handleSelectedDocuments}
+                      onInputChange={(event, value) => {
+                        if (!value) {
+                          // perform operation when input is cleared
+                          console.log("Input cleared");
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          autoComplete="off"
+                          {...params}
+                          InputProps={{
+                            ...params.InputProps,
+                            className: "text-white",
+                          }}
+                          InputLabelProps={{
+                            ...params.InputLabelProps,
+                            style: { color: "white" },
+                          }}
+                          className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                          placeholder="Select Country"
+                        // required
+                        />
+                      )}
+                      classes={{
+                        endAdornment: "text-white",
+                      }}
+                      sx={{
+                        "& .MuiAutocomplete-endAdornment": {
+                          color: "white",
+                        },
+                      }}
+                    />
+                  </div>
                              </div>
 
                              <div className="w-full flex justify-center items-center gap-8 mt-5">
