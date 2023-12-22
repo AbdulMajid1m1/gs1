@@ -37,14 +37,26 @@ const [brandsData, setBrandsData] = useState([]);
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
-
-      useEffect(() => {
-      const fetchData = async () => {
+ const fetchData = async () => {
         try {
           const response = await newRequest.get("/address/getAllStates",);
-          
-          console.log(response.data);
-          setData(response?.data || []);
+          const citiesData = response?.data || [];
+
+          const statesResponse = await newRequest.get('/address/getAllCountriesName');
+          const statesData = statesResponse?.data || [];
+
+          const stateIdToNameMap = {};
+          statesData.forEach(state => {
+            stateIdToNameMap[state.id] = state.name_en;
+          });
+
+           // Replace state_id with state name in the cities data
+          const updatedCitiesData = citiesData.map(city => ({
+            ...city,
+            country_id: stateIdToNameMap[city.country_id] || "Unknown State",
+          }));
+          console.log(updatedCitiesData);
+          setData(updatedCitiesData);
           setIsLoading(false)
 
         } catch (err) {
@@ -52,6 +64,8 @@ const [brandsData, setBrandsData] = useState([]);
           setIsLoading(false)
         }
       };
+      useEffect(() => {
+     
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -228,11 +242,11 @@ const refreshcitiesData = async () => {
             </div>
        {/* AddState component with handleShowCreatePopup prop */}
              {isCreatePopupVisible && (
-                    <AddState isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                    <AddState isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData}/>
                   )}
 {/* Updatestate component with handleShowUpdatePopup prop */}
                   {isUpdatePopupVisible && (
-                    <Updatestate isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                    <Updatestate isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={fetchData}/>
                   )}
 
         </div>
