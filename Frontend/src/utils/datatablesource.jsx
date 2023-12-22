@@ -2198,7 +2198,7 @@ export const state = [
   },
   {
     field: 'country_id',
-    headerName: 'country_id',
+    headerName: 'country',
     width: 180,
   },
 
