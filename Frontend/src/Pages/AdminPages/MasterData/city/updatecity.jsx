@@ -14,7 +14,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
     const [loading, setLoading] = useState(false);
     const [docuements, setDocuments] = React.useState([])
-    const [selectedDocuments, setSelectedDocuments] = useState("");
+    const [selectedDocuments, setSelectedDocuments] = useState(updateBrandData?.state_name || 0);
     
 
     const handleCloseUpdatePopup = () => {
@@ -44,6 +44,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) => {
           setSelectedDocuments(value);
       };
     
+      console.log(selectedDocuments);
     
 
 

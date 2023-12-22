@@ -33,19 +33,51 @@ const Cities = () => {
       };
    
 
+      // const fetchData = async () => {
+      //   try {
+      //     const response = await newRequest.get("/address/getAllCities",);
+          
+      //     console.log(response.data);
+      //     setData(response?.data || []);
+      //     setIsLoading(false)
+
+      //   } catch (err) {
+      //     console.log(err);
+      //     setIsLoading(false)
+      //   }
+      // };
+
       const fetchData = async () => {
         try {
-          const response = await newRequest.get("/address/getAllCities",);
-          
-          console.log(response.data);
-          setData(response?.data || []);
-          setIsLoading(false)
-
+          // Fetch cities data
+          const citiesResponse = await newRequest.get("/address/getAllCities");
+          const citiesData = citiesResponse?.data || [];
+      
+          // Fetch states data
+          const statesResponse = await newRequest.get('/address/getAllStatesName');
+          const statesData = statesResponse?.data || [];
+      
+          // Create a mapping between state_id and state name
+          const stateIdToNameMap = {};
+          statesData.forEach(state => {
+            stateIdToNameMap[state.id] = state.name;
+          });
+      
+          // Replace state_id with state name in the cities data
+          const updatedCitiesData = citiesData.map(city => ({
+            ...city,
+            state_name: stateIdToNameMap[city.state_id] || "Unknown State",
+          }));
+      
+          console.log(updatedCitiesData);
+          setData(updatedCitiesData);
+          setIsLoading(false);
         } catch (err) {
           console.log(err);
-          setIsLoading(false)
+          setIsLoading(false);
         }
       };
+      
 
       useEffect(() => {
         fetchData();

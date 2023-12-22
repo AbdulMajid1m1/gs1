@@ -2171,7 +2171,7 @@ export const city = [
     width: 180,
   },
   {
-    field: 'state_id',
+    field: 'state_name',
     headerName: 'state',
     width: 180,
   },
