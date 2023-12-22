@@ -31,6 +31,20 @@ export const getAllCountries = async (req, res, next) => {
         next(error);
     }
 };
+export const getAllCountriesName = async (req, res, next) => {
+    try {
+        const countries = await prisma.countries.findMany({
+            select: {
+                name_en: true,
+                id: true,
+            },
+        });
+
+        res.json(countries);
+    } catch (error) {
+        next(error);
+    }
+};
 export const createCountries = async (req, res, next) => {
     try {
         const { error, value } = countrySchema.validate(req.body);
@@ -130,6 +144,22 @@ export const getAllStates = async (req, res, next) => {
             orderBy: {
                 updated_at: 'desc' // Order by updated_at in descending order
             }
+        });
+        if (states.length === 0) {
+            return next(createError(404, 'No states found'));
+        }
+        res.json(states);
+    } catch (error) {
+        next(error);
+    }
+};
+export const getAllStatesName = async (req, res, next) => {
+    try {
+        const states = await prisma.states.findMany({
+            select: {
+                name: true,
+                id: true,
+            },
         });
         if (states.length === 0) {
             return next(createError(404, 'No states found'));

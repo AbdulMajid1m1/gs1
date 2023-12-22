@@ -2172,7 +2172,7 @@ export const city = [
   },
   {
     field: 'state_id',
-    headerName: 'state_id',
+    headerName: 'state',
     width: 180,
   },
 
@@ -2206,7 +2206,7 @@ export const state = [
   },
   {
     field: 'country_id',
-    headerName: 'country_id',
+    headerName: 'country',
     width: 180,
   },
 
@@ -2278,7 +2278,7 @@ export const document_type = [
 
   {
     field: 'file_name',
-    headerName: 'file_name',
+    headerName: 'Document name',
     width: 180,
   },
  {
@@ -2320,15 +2320,16 @@ export const country__ = [
     width: 180,
   },
   {
+    field: 'country_shortName',
+    headerName: 'country shortName',
+    width: 180,
+  },
+  {
     field: 'country_code',
     headerName: 'country_code',
     width: 180,
   },
-  {
-    field: 'status',
-    headerName: 'status',
-    width: 180,
-  },
+  
   {
     field: 'created_at',
     headerName: 'Created At',

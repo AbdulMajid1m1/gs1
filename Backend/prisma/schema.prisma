@@ -284,8 +284,8 @@ model cities {
   id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   state_id   Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+   created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model classes {
@@ -1736,8 +1736,8 @@ model states {
   id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   country_id Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model subscribes {

@@ -111,7 +111,7 @@ const handleDelete = async (row) => {
                 // filter out the deleted user from the data
                 const filteredData = brandsData.filter((item) => item?.id !== row?.id);
                 setBrandsData(filteredData);
-                
+                refreshcitiesData()
               } else {
                 // Handle any additional logic if the user was not deleted successfully
                 toast.error('Failed to delete user', {
