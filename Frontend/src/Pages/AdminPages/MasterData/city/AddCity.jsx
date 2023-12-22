@@ -102,18 +102,7 @@ useEffect(() => {
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">Select Country</label>
-                    {/* <select
-                                   type="text"
-                                   id="field1"
-                                   value={selectDocument}
-                                   onChange={(e) => setSelectDocument(e.target.value)}
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 >
-                                      <option value="1">Document 1</option>
-                                      <option value="2">Document 2</option>
-                                      <option value="3">Document 3</option>
-                                      <option value="4">Document 4</option>
-                                </select>         */}
+      
                     <Autocomplete
                       id="field1"
                       options={docuements}
