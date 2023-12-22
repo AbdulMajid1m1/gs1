@@ -52,7 +52,6 @@ const [brandsData, setBrandsData] = useState([]);
           setIsLoading(false)
         }
       };
-
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
