@@ -23,11 +23,11 @@ const Products = () => {
   const [open, setOpen] = useState(false);
   const [crList, setCrList] = useState([]);
   const abortControllerRef = React.useRef(null);
+  
   const navigate = useNavigate()
   
   
   const handleGPCAutoCompleteChange = (event, value) => {
-    console.log(value);
     setSelectedCr(value);
 
 
@@ -35,7 +35,7 @@ const Products = () => {
     setIsAutocompleteFilled(value !== null && value !== '');
 
     if(value) {
-      fetchData();
+      fetchData(value);
     }
   }
 
@@ -46,7 +46,7 @@ const Products = () => {
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
       setCrList([]); // Clear the data list if there is no input
-      setSelectedCr(null);
+      // setSelectedCr(null);
       return; // Do not perform search if the input is cleared or an option is selected
     }
     if (reason === 'option') {
@@ -56,7 +56,7 @@ const Products = () => {
     if (!newInputValue || newInputValue.trim() === '') {
       // perform operation when input is cleared
       setCrList([]);
-      setSelectedCr(null);
+      // setSelectedCr(null);
       return;
     }
 
@@ -77,7 +77,7 @@ const Products = () => {
 
       const crs = res?.data?.map(item => {
         return {
-          user_id: item.user_id,
+          user_id: item.id,
           transaction_id: item.transaction_id,
           email: item.email,
           mobile: item.mobile,
@@ -100,10 +100,11 @@ const Products = () => {
   }, 400);
 
 
-  const fetchData = async () => {
+  const fetchData = async (value) => {
     setIsLoading(true);
+    console.log(value);
     try {
-      const response = await newRequest.get(`/products?user_id=${selectedCr?.user_id}`);
+      const response = await newRequest.get(`/products?user_id=${value?.user_id}`);
       console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
