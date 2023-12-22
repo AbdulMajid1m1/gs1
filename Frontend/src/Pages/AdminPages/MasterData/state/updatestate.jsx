@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
-
+import { Autocomplete, TextField } from '@mui/material';
 const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
@@ -12,15 +12,35 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [name, setname] = useState(updateBrandData?.name || '');
     const [country_id, setcountry_id] = useState(updateBrandData?.country_id || 0);
     const [loading, setLoading] = useState(false);
-
+ const [docuements, setDocuments] = React.useState([])
+    const [selectedDocuments, setSelectedDocuments] = useState(updateBrandData?.state_name || 0);
 
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
       };
     
 
-
-
+ useEffect(() => {
+        const getDocuments = async () => {
+          try {
+            const response = await newRequest.get('/address/getAllCountriesName');
+            console.log(response.data);
+            setDocuments(response.data);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+    
+    
+    
+        getDocuments();
+        
+     }, []);
+ const handleSelectedDocuments = (event, value) => {
+            console.log(value?.id);
+          setSelectedDocuments(value);
+      };
+    
 const handleUpdateBrand = async () => {
   // console.log(brandUserId);
   setLoading(true);
@@ -28,7 +48,7 @@ const handleUpdateBrand = async () => {
   try {
     const response = await newRequest.put(`/address/updateStates/${updateBrandData?.id}`, {
       name: name,
-      country_id: Number(country_id),
+      country_id: Number(selectedDocuments?.id),
     });
 
     toast.success(response?.data?.message || 'State updated successfully', {
@@ -92,16 +112,45 @@ const handleUpdateBrand = async () => {
                                 />
                               </div>
 
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">country id</label>
-                                <input
-                                  type="number"
-                                  id="country_id"
-                                  value={country_id}
-                                  onChange={(e) => setcountry_id(e.target.value)}
-                                //   readOnly
-                                  placeholder="Enter country id"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <label htmlFor="field1" className="text-secondary">Country</label>
+                                <Autocomplete
+                                  id="field1"
+                                  options={docuements}
+                                  value={selectedDocuments}
+                                  getOptionLabel={(option) => option?.name_en || ""}
+                                  onChange={handleSelectedDocuments}
+                                  onInputChange={(event, value) => {
+                                    if (!value) {
+                                      // perform operation when input is cleared
+                                      console.log("Input cleared");
+                                    }
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      autoComplete="off"
+                                      {...params}
+                                      InputProps={{
+                                        ...params.InputProps,
+                                        className: "text-white",
+                                      }}
+                                      InputLabelProps={{
+                                        ...params.InputLabelProps,
+                                        style: { color: "white" },
+                                      }}
+                                      className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                      placeholder="Select Country"
+                                    // required
+                                    />
+                                  )}
+                                  classes={{
+                                    endAdornment: "text-white",
+                                  }}
+                                  sx={{
+                                    "& .MuiAutocomplete-endAdornment": {
+                                      color: "white",
+                                    },
+                                  }}
                                 />
                               </div>
                             </div>
