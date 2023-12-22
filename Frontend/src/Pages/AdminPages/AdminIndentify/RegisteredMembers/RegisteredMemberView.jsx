@@ -563,7 +563,7 @@ const RegisteredMembersView = () => {
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
-                    handleRowClickInParent={handleRowClickInParent}
+                    // handleRowClickInParent={handleRowClickInParent}
                     // checkboxSelection='disabled'
                     buttonVisibility={false}
                     dropDownOptions={[
