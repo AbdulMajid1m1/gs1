@@ -2004,7 +2004,7 @@ model withdraw_logs {
 model document_type {
   id         String    @id @default(cuid())
   file_name  String?   @db.NVarChar(Max)
-  status     String?   @db.VarChar(10)
+  status     Int?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime? @db.DateTime

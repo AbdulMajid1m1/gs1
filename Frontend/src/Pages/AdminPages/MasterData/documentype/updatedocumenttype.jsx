@@ -28,7 +28,7 @@ const handleUpdateBrand = async () => {
   try {
     const response = await newRequest.put(`/updatedocumentType/${updateBrandData?.id}`, {
       file_name: file_name,
-      status: status,
+      status: Number(status),
     });
 
     toast.success(response?.data?.message || 'Document Type updated successfully', {
