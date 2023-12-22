@@ -15,7 +15,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) => {
 useEffect(() => {
     const getDocuments = async () => {
       try {
-        const response = await newRequest.get('/address/getAllCountriesName');
+        const response = await newRequest.get('/address/getAllStatesName');
         console.log(response.data);
         setDocuments(response.data);
       } catch (error) {
@@ -38,7 +38,7 @@ useEffect(() => {
     try {
       const response = await newRequest.post('/address/createCities/', {
         name: name,
-        state_id: state_id,
+        state_id: SelectedCountryId,
       });
 
       toast.success(`name ${name} has been added successfully.`, {
@@ -118,7 +118,7 @@ useEffect(() => {
                       id="field1"
                       options={docuements}
                       value={selectedDocuments}
-                      getOptionLabel={(option) => option?.name_en || ""}
+                      getOptionLabel={(option) => option?.name || ""}
                       onChange={handleSelectedDocuments}
                       onInputChange={(event, value) => {
                         if (!value) {
