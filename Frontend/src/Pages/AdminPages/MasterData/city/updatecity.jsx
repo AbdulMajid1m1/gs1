@@ -122,7 +122,7 @@ const handleUpdateBrand = async () => {
                               </div>
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">state id</label>
+                                <label htmlFor="field1" className="text-secondary">state</label>
                                 <Autocomplete
                                   id="field1"
                                   options={docuements}
@@ -148,7 +148,7 @@ const handleUpdateBrand = async () => {
                                         style: { color: "white" },
                                       }}
                                       className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                      placeholder="Select Product"
+                                      placeholder="Select state"
                                     // required
                                     />
                                   )}
