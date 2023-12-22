@@ -1051,14 +1051,49 @@ export const ViewSsccColumn = [
 ];
 
 export const Gs1AllMembers = [
+  // {
+  //   field: 'gs1_id',
+  //   headerName: 'GS1 ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'company_name',
+  //   headerName: 'COMPANY NAME',
+  //   width: 180,
+  // },
   {
-    field: 'gs1_id',
-    headerName: 'GS1 ID',
+    field: 'company_name_eng',
+    headerName: 'COMPANY NAME (ENGLISH)',
     width: 180,
   },
   {
-    field: 'company_name',
-    headerName: 'COMPANY NAME',
+    field: 'memberID',
+    headerName: 'MEMBER ID',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'MOBILE',
+    width: 180,
+  },
+  {
+    field: 'code',
+    headerName: 'CODE',
+    width: 180,
+  },
+  {
+    field: 'member_category',
+    headerName: 'MEMBER CATEGORY',
+    width: 180,
+  }, 
+  {
+    field: 'email',
+    headerName: 'EMAIL',
+    width: 220,
+  },
+  {
+    field: 'remarks',
+    headerName: 'REMARKS',
     width: 180,
   },
   {
@@ -1081,380 +1116,350 @@ export const Gs1AllMembers = [
       </div>
     ),
   },
-  {
-    field: 'user_type',
-    headerName: 'USER TYPE',
-    width: 180,
-  },
-  {
-    field: 'location_uk',
-    headerName: 'LOCATION (UK)',
-    width: 180,
-  },
-  {
-    field: 'have_cr',
-    headerName: 'HAVE CR',
-    width: 180,
-  },
-  {
-    field: 'cr_number',
-    headerName: 'CR NUMBER',
-    width: 180,
-  },
-  {
-    field: 'email',
-    headerName: 'EMAIL',
-    width: 180,
-  },
-  {
-    field: 'mobile',
-    headerName: 'MOBILE',
-    width: 180,
-  },
-  {
-    field: 'image',
-    headerName: 'IMAGE',
-    width: 180,
-  },
   // {
-  //   field: "address",
-  //   headerName: "ADDRESS",
-  //   width: 180,
-  //   renderCell: (params) => (
-  //     <div>
-  //       <p>Country: {params.row.address.countryName}</p>
-  //       <p>City: {params.row.address.cityName}</p>
-  //       <p>State: {params.row.address.stateName}</p>
-  //       <p>Zip: {params.row.address.zip}</p>
-  //     </div>
-  //   ),
-  // },
-  {
-    field: 'website',
-    headerName: 'WEBSITE',
-    width: 180,
-  },
-  {
-    field: 'district',
-    headerName: 'DISTRICT',
-    width: 180,
-  },
-  {
-    field: 'building_no',
-    headerName: 'BUILDING NUMBER',
-    width: 180,
-  },
-  {
-    field: 'unit_number',
-    headerName: 'UNIT NUMBER',
-    width: 180,
-  },
-  {
-    field: 'qr_corde',
-    headerName: 'QR CODE',
-    width: 180,
-  },
-  {
-    field: 'email_verified_at',
-    headerName: 'EMAIL VERIFIED AT',
-    width: 180,
-  },
-  {
-    field: 'password',
-    headerName: 'PASSWORD',
-    width: 180,
-  },
-  {
-    field: 'code',
-    headerName: 'CODE',
-    width: 180,
-  },
-  {
-    field: 'verification_code',
-    headerName: 'VERIFICATION CODE',
-    width: 180,
-  },
-  {
-    field: 'cr_activity',
-    headerName: 'CR ACTIVITY',
-    width: 180,
-  },
-  {
-    field: 'company_name_eng',
-    headerName: 'COMPANY NAME (ENGLISH)',
-    width: 180,
-  },
-  {
-    field: 'company_name_arabic',
-    headerName: 'COMPANY NAME (ARABIC)',
-    width: 180,
-  },
-  {
-    field: 'member_category',
-    headerName: 'MEMBER CATEGORY',
-    width: 180,
-  },
-  {
-    field: 'gpc',
-    headerName: 'GPC',
-    width: 180,
-  },
-  {
-    field: 'total',
-    headerName: 'TOTAL',
-    width: 180,
-  },
-  {
-    field: 'contactPerson',
-    headerName: 'CONTACT PERSON',
-    width: 180,
-  },
-  {
-    field: 'companyLandLine',
-    headerName: 'COMPANY LANDLINE',
-    width: 180,
-  },
-  // {
-  //   field: "documents",
-  //   headerName: "DOCUMENTS",
+  //   field: 'user_type',
+  //   headerName: 'USER TYPE',
   //   width: 180,
   // },
-  {
-    field: 'documents',
-    headerName: 'DOCUMENTS',
-    width: 180,
-    renderCell: (params) => {
-      console.log("params");
-      console.log(params);
-      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
-      const docUrl = fieldUpdated
-        ? params?.row?.[params.field]?.dataURL
-        : imageLiveUrl(params.row[params.field]);
-
-      const onClickIcon = () => {
-        if (fieldUpdated) {
-          // removing the "data:application/pdf;base64," part
-          const base64 = docUrl.split(",")[1];
-          const binary = atob(base64);
-          const binaryLen = binary.length;
-          const buffer = new ArrayBuffer(binaryLen);
-          const view = new Uint8Array(buffer);
-          for (let i = 0; i < binaryLen; i++) {
-            view[i] = binary.charCodeAt(i);
-          }
-          // create Blob from ArrayBuffer
-          const blob = new Blob([view], { type: "application/pdf" });
-
-          // create an object URL from the Blob
-          const objectUrl = URL.createObjectURL(blob);
-
-          // open a link to the Object URL
-          const link = document.createElement("a");
-          link.href = objectUrl;
-          link.download = "file.pdf"; // you can set file name here
-          link.click();
-        } else {
-          window.open(docUrl, "_blank");
-        }
-      };
-
-      return (
-        <InsertDriveFileIcon
-          style={{
-            color: "black",
-            width: "40px",
-            height: "40px",
-            cursor: "pointer",
-          }}
-          onClick={onClickIcon}
-        />
-      );
-    },
-
-    renderEditCell: (params) =>
-      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
-    editable: true,
-    type: "string",
-  },
   // {
-  //   field: 'address_image',
-  //   headerName: 'ADDRESS IMAGE',
+  //   field: 'location_uk',
+  //   headerName: 'LOCATION (UK)',
   //   width: 180,
   // },
-  {
-    field: "address_image",
-    headerName: "ADDRESS IMAGE",
-    width: 220,
-    editable: true,
-    renderCell: (params) => (
-      <img
-        src={imageLiveUrl(params.row.address_image)}
-        // src={backendUrl + "/" + params.row.address_image}
-        alt="address_image"
-        style={{
-          width: '90%',
-          height: '90%',
-          objectFit: 'contain',
-          cursor: 'pointer'
-        }}
-        onClick={() => {
-          window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
-        }}
-      />
-    )
-  },
-  {
-    field: 'payment_type',
-    headerName: 'PAYMENT TYPE',
-    width: 180,
-  },
-  {
-    field: 'payment_status',
-    headerName: 'PAYMENT STATUS',
-    width: 180,
-  },
-  {
-    field: 'online_payment',
-    headerName: 'ONLINE PAYMENT',
-    width: 180,
-  },
-  {
-    field: 'remember_token',
-    headerName: 'REMEMBER TOKEN',
-    width: 180,
-  },
-  {
-    field: 'parent_memberID',
-    headerName: 'PARENT MEMBER ID',
-    width: 180,
-  },
-  {
-    field: 'member_type',
-    headerName: 'MEMBER TYPE',
-    width: 180,
-  },
-  {
-    field: 'invoice_file',
-    headerName: 'INVOICE FILE',
-    width: 180,
-  },
-  {
-    field: 'otp_status',
-    headerName: 'OTP STATUS',
-    width: 180,
-  },
-  {
-    field: 'transaction_id',
-    headerName: 'TRANSACTION ID',
-    width: 180,
-  },
-  {
-    field: 'created_at',
-    headerName: 'CREATED AT',
-    width: 180,
-    type: 'dateTime',
+  // {
+  //   field: 'have_cr',
+  //   headerName: 'HAVE CR',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'cr_number',
+  //   headerName: 'CR NUMBER',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'image',
+  //   headerName: 'IMAGE',
+  //   width: 180,
+  // },
+  // // {
+  // //   field: "address",
+  // //   headerName: "ADDRESS",
+  // //   width: 180,
+  // //   renderCell: (params) => (
+  // //     <div>
+  // //       <p>Country: {params.row.address.countryName}</p>
+  // //       <p>City: {params.row.address.cityName}</p>
+  // //       <p>State: {params.row.address.stateName}</p>
+  // //       <p>Zip: {params.row.address.zip}</p>
+  // //     </div>
+  // //   ),
+  // // },
+  // {
+  //   field: 'website',
+  //   headerName: 'WEBSITE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'district',
+  //   headerName: 'DISTRICT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'building_no',
+  //   headerName: 'BUILDING NUMBER',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'unit_number',
+  //   headerName: 'UNIT NUMBER',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'qr_corde',
+  //   headerName: 'QR CODE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'email_verified_at',
+  //   headerName: 'EMAIL VERIFIED AT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'password',
+  //   headerName: 'PASSWORD',
+  //   width: 180,
+  // },
+  
+  // {
+  //   field: 'verification_code',
+  //   headerName: 'VERIFICATION CODE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'cr_activity',
+  //   headerName: 'CR ACTIVITY',
+  //   width: 180,
+  // },
 
-    valueGetter: (params) => {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }
-  },
-  {
-    field: 'updated_at',
-    headerName: 'UPDATED AT',
-    width: 180,
-    type: 'dateTime',
+  // {
+  //   field: 'company_name_arabic',
+  //   headerName: 'COMPANY NAME (ARABIC)',
+  //   width: 180,
+  // },
+  
+  // {
+  //   field: 'gpc',
+  //   headerName: 'GPC',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'total',
+  //   headerName: 'TOTAL',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'contactPerson',
+  //   headerName: 'CONTACT PERSON',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'companyLandLine',
+  //   headerName: 'COMPANY LANDLINE',
+  //   width: 180,
+  // },
+  // // {
+  // //   field: "documents",
+  // //   headerName: "DOCUMENTS",
+  // //   width: 180,
+  // // },
+  // {
+  //   field: 'documents',
+  //   headerName: 'DOCUMENTS',
+  //   width: 180,
+  //   renderCell: (params) => {
+  //     console.log("params");
+  //     console.log(params);
+  //     const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+  //     const docUrl = fieldUpdated
+  //       ? params?.row?.[params.field]?.dataURL
+  //       : imageLiveUrl(params.row[params.field]);
 
-    valueGetter: (params) => {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }
-  },
-  {
-    field: 'gcpGLNID',
-    headerName: 'GCP GLN ID',
-    width: 180,
-  },
-  {
-    field: 'gln',
-    headerName: 'GLN',
-    width: 180,
-  },
-  {
-    field: 'gcp_type',
-    headerName: 'GCP TYPE',
-    width: 180,
-  },
-  {
-    field: 'deleted_at',
-    headerName: 'DELETED AT',
-    width: 180,
-  },
-  {
-    field: 'gcp_expiry',
-    headerName: 'GCP EXPIRY',
-    width: 180,
-  },
-  {
-    field: 'memberID',
-    headerName: 'MEMBER ID',
-    width: 180,
-  },
-  {
-    field: 'user_id',
-    headerName: 'USER ID',
-    width: 180,
-  },
-  {
-    field: 'remarks',
-    headerName: 'REMARKS',
-    width: 180,
-  },
-  {
-    field: 'assign_to',
-    headerName: 'ASSIGN TO',
-    width: 180,
-  },
-  {
-    field: 'membership_category',
-    headerName: 'MEMBERSHIP CATEGORY',
-    width: 180,
-  },
-  {
-    field: 'upgradation_disc',
-    headerName: 'UPGRADATION DISCOUNT',
-    width: 180,
-  },
-  {
-    field: 'upgradation_disc_amount',
-    headerName: 'UPGRADATION DISCOUNT AMOUNT',
-    width: 180,
-  },
-  {
-    field: 'renewal_disc',
-    headerName: 'RENEWAL DISCOUNT',
-    width: 180,
-  },
-  {
-    field: 'renewal_disc_amount',
-    headerName: 'RENEWAL DISCOUNT AMOUNT',
-    width: 180,
-  },
-  {
-    field: 'membership_otherCategory',
-    headerName: 'MEMBERSHIP OTHER CATEGORY',
-    width: 180,
-  },
-  {
-    field: 'activityID',
-    headerName: 'ACTIVITY ID',
-    width: 180,
-  },
-  {
-    field: 'registration_type',
-    headerName: 'REGISTRATION TYPE',
-    width: 180,
-  },
+  //     const onClickIcon = () => {
+  //       if (fieldUpdated) {
+  //         // removing the "data:application/pdf;base64," part
+  //         const base64 = docUrl.split(",")[1];
+  //         const binary = atob(base64);
+  //         const binaryLen = binary.length;
+  //         const buffer = new ArrayBuffer(binaryLen);
+  //         const view = new Uint8Array(buffer);
+  //         for (let i = 0; i < binaryLen; i++) {
+  //           view[i] = binary.charCodeAt(i);
+  //         }
+  //         // create Blob from ArrayBuffer
+  //         const blob = new Blob([view], { type: "application/pdf" });
+
+  //         // create an object URL from the Blob
+  //         const objectUrl = URL.createObjectURL(blob);
+
+  //         // open a link to the Object URL
+  //         const link = document.createElement("a");
+  //         link.href = objectUrl;
+  //         link.download = "file.pdf"; // you can set file name here
+  //         link.click();
+  //       } else {
+  //         window.open(docUrl, "_blank");
+  //       }
+  //     };
+
+  //     return (
+  //       <InsertDriveFileIcon
+  //         style={{
+  //           color: "black",
+  //           width: "40px",
+  //           height: "40px",
+  //           cursor: "pointer",
+  //         }}
+  //         onClick={onClickIcon}
+  //       />
+  //     );
+  //   },
+
+  //   renderEditCell: (params) =>
+  //     renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+  //   editable: true,
+  //   type: "string",
+  // },
+  // // {
+  // //   field: 'address_image',
+  // //   headerName: 'ADDRESS IMAGE',
+  // //   width: 180,
+  // // },
+  // {
+  //   field: "address_image",
+  //   headerName: "ADDRESS IMAGE",
+  //   width: 220,
+    // editable: true,
+    // renderCell: (params) => (
+    //   <img
+    //     src={imageLiveUrl(params.row.address_image)}
+    //     // src={backendUrl + "/" + params.row.address_image}
+    //     alt="address_image"
+    //     style={{
+    //       width: '90%',
+    //       height: '90%',
+    //       objectFit: 'contain',
+    //       cursor: 'pointer'
+    //     }}
+    //     onClick={() => {
+    //       window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
+    //     }}
+    //   />
+    // )
+  // },
+  // {
+  //   field: 'payment_type',
+  //   headerName: 'PAYMENT TYPE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'payment_status',
+  //   headerName: 'PAYMENT STATUS',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'online_payment',
+  //   headerName: 'ONLINE PAYMENT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'remember_token',
+  //   headerName: 'REMEMBER TOKEN',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'parent_memberID',
+  //   headerName: 'PARENT MEMBER ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'member_type',
+  //   headerName: 'MEMBER TYPE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'invoice_file',
+  //   headerName: 'INVOICE FILE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'otp_status',
+  //   headerName: 'OTP STATUS',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'transaction_id',
+  //   headerName: 'TRANSACTION ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'created_at',
+  //   headerName: 'CREATED AT',
+  //   width: 180,
+  //   type: 'dateTime',
+
+  //   valueGetter: (params) => {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+  // {
+  //   field: 'updated_at',
+  //   headerName: 'UPDATED AT',
+  //   width: 180,
+  //   type: 'dateTime',
+
+  //   valueGetter: (params) => {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+  // {
+  //   field: 'gcpGLNID',
+  //   headerName: 'GCP GLN ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gln',
+  //   headerName: 'GLN',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gcp_type',
+  //   headerName: 'GCP TYPE',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'deleted_at',
+  //   headerName: 'DELETED AT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gcp_expiry',
+  //   headerName: 'GCP EXPIRY',
+  //   width: 180,
+  // },
+ 
+  // {
+  //   field: 'user_id',
+  //   headerName: 'USER ID',
+  //   width: 180,
+  // },
+  
+  // {
+  //   field: 'assign_to',
+  //   headerName: 'ASSIGN TO',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'membership_category',
+  //   headerName: 'MEMBERSHIP CATEGORY',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'upgradation_disc',
+  //   headerName: 'UPGRADATION DISCOUNT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'upgradation_disc_amount',
+  //   headerName: 'UPGRADATION DISCOUNT AMOUNT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'renewal_disc',
+  //   headerName: 'RENEWAL DISCOUNT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'renewal_disc_amount',
+  //   headerName: 'RENEWAL DISCOUNT AMOUNT',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'membership_otherCategory',
+  //   headerName: 'MEMBERSHIP OTHER CATEGORY',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'activityID',
+  //   headerName: 'ACTIVITY ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'registration_type',
+  //   headerName: 'REGISTRATION TYPE',
+  //   width: 180,
+  // },
 ];
 
 export const MembersDocumentColumn = [
@@ -1557,7 +1562,7 @@ export const MembersDocumentColumn = [
           link.click();
         } else {
           window.open(docUrl, "_blank");
-        }
+        } 
       };
 
       return (
@@ -1572,6 +1577,9 @@ export const MembersDocumentColumn = [
         />
       );
     },
+
+
+    
   },
   {
     field: 'user_id',
@@ -2709,7 +2717,7 @@ export const registeredmemberColumn = [
   {
     field: 'productName',
     headerName: 'Product Name',
-    width: 180,
+    width: 280,
   },
   {
     field: 'registration_fee',
@@ -2741,3 +2749,175 @@ export const registeredmemberColumn = [
 
 
 ]
+
+
+
+export const productsColumn = [
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Operation Date',
+    width: 180,
+    valueGetter: (params) => {
+      const operationDate = new Date(params.row.created_at);
+      return operationDate.toISOString().split('T')[0];
+    },
+  },
+  {
+    field: 'admin_id',
+    headerName: 'Created By',
+    width: 180,
+    valueGetter: (params) => {
+      return params.row.admin_id ? `User ID ${params.row.admin_id}` : 'Unknown';
+    },
+  },
+  {
+    field: 'productnameenglish',
+    headerName: 'Product Name (English)',
+    width: 200,
+  },
+  {
+    field: 'productnamearabic',
+    headerName: 'Product Name (Arabic)',
+    width: 200,
+  },
+  {
+    field: 'BrandName',
+    headerName: 'Brand Name',
+    width: 150,
+  },
+  {
+    field: 'ProductType',
+    headerName: 'Product Type',
+    width: 180,
+  },
+  {
+    field: 'Origin',
+    headerName: 'Origin',
+    width: 150,
+  },
+  {
+    field: 'PackagingType',
+    headerName: 'Packaging Type',
+    width: 150,
+  },
+  {
+    field: 'unit',
+    headerName: 'Unit',
+    width: 100,
+  },
+  {
+    field: 'size',
+    headerName: 'Size',
+    width: 100,
+  },
+  {
+    field: 'front_image',
+    headerName: 'Front Image',
+    width: 150,
+    renderCell: (params) => (
+      <img
+        src={params.row.front_image}
+        alt="Front Image"
+        style={{ width: '100%', height: 'auto' }}
+      />
+    ),
+  },
+  {
+    field: 'back_image',
+    headerName: 'Back Image',
+    width: 150,
+    renderCell: (params) => (
+      <img
+        src={params.row.back_image}
+        alt="Back Image"
+        style={{ width: '100%', height: 'auto' }}
+      />
+    ),
+  },
+  {
+    field: 'quantity',
+    headerName: 'Quantity',
+    width: 100,
+  },
+  {
+    field: 'barcode',
+    headerName: 'Barcode',
+    width: 150,
+  },
+  {
+    field: 'gpc',
+    headerName: 'GPC',
+    width: 180,
+  },
+  {
+    field: 'countrySale',
+    headerName: 'Country Sale',
+    width: 150,
+  },
+  {
+    field: 'HSCODES',
+    headerName: 'HS Codes',
+    width: 150,
+  },
+  {
+    field: 'details_page',
+    headerName: 'Details (English)',
+    width: 200,
+  },
+  {
+    field: 'details_page_ar',
+    headerName: 'Details (Arabic)',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 100,
+    valueGetter: (params) => (params.row.status === 1 ? 'Active' : 'Inactive'),
+  },
+  {
+    field: 'gtin_type',
+    headerName: 'GTIN Type',
+    width: 150,
+  },
+  {
+    field: 'product_url',
+    headerName: 'Product URL',
+    width: 200,
+    renderCell: (params) => (
+      <a href={params.row.product_url} target="_blank" rel="noopener noreferrer">
+        {params.row.product_url}
+      </a>
+    ),
+  },
+  {
+    field: 'product_link_url',
+    headerName: 'Product Link URL',
+    width: 200,
+    renderCell: (params) => (
+      <a href={params.row.product_link_url} target="_blank" rel="noopener noreferrer">
+        {params.row.product_link_url}
+      </a>
+    ),
+  },
+  {
+    field: 'BrandNameAr',
+    headerName: 'Brand Name (Arabic)',
+    width: 150,
+  },
+  {
+    field: 'readyForGepir',
+    headerName: 'Ready for Gepir',
+    width: 150,
+  },
+  {
+    field: 'gepirPosted',
+    headerName: 'Gepir Posted',
+    width: 150,
+  },
+];

@@ -13,6 +13,7 @@ import EissaRootRoute from './EissaRootRoute.js';
 import brandRoutes from './subRoutes/brandRoutes.js';
 import bankslipRoutes from './subRoutes/bankslipRoutes.js';
 import memberDocumentsRoutes from './subRoutes/memberDocumentsRoutes.js';
+import productsRoutes from './subRoutes/productsRoutes.js';
 
 const router = express.Router();
 
@@ -45,5 +46,7 @@ router.use('/brands', brandRoutes);
 router.use('/bankslip', bankslipRoutes);
 
 router.use('/memberDocuments', memberDocumentsRoutes);
+
+router.use('/products', productsRoutes);
 
 export default router;

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { Autocomplete, TextField } from '@mui/material';
 
 const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -12,11 +13,37 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [name, setname] = useState(updateBrandData?.name || '');
     const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
     const [loading, setLoading] = useState(false);
-
+    const [docuements, setDocuments] = React.useState([])
+    const [selectedDocuments, setSelectedDocuments] = useState("");
+    
 
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
       };
+
+
+      useEffect(() => {
+        const getDocuments = async () => {
+          try {
+            const response = await newRequest.get('/address/getAllStatesName');
+            console.log(response.data);
+            setDocuments(response.data);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+    
+    
+    
+        getDocuments();
+        
+     }, []);
+          
+      const handleSelectedDocuments = (event, value) => {
+            console.log(value?.id);
+          setSelectedDocuments(value);
+      };
+    
     
 
 
@@ -28,7 +55,8 @@ const handleUpdateBrand = async () => {
   try {
     const response = await newRequest.put(`/address/updateCities/${updateBrandData?.id}`, {
       name: name,
-      state_id: Number(state_id),
+      // state_id: Number(state_id),
+      state_id: selectedDocuments?.id,
     });
 
     toast.success(response?.data?.message || 'City updated successfully', {
@@ -94,14 +122,43 @@ const handleUpdateBrand = async () => {
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field1" className="text-secondary">state id</label>
-                                <input
-                                  type="number"
-                                  id="state_id"
-                                  value={state_id}
-                                  onChange={(e) => setstate_id(e.target.value)}
-                                //   readOnly
-                                  placeholder="Enter state id"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                <Autocomplete
+                                  id="field1"
+                                  options={docuements}
+                                  value={selectedDocuments}
+                                  getOptionLabel={(option) => option?.name || ""}
+                                  onChange={handleSelectedDocuments}
+                                  onInputChange={(event, value) => {
+                                    if (!value) {
+                                      // perform operation when input is cleared
+                                      console.log("Input cleared");
+                                    }
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      autoComplete="off"
+                                      {...params}
+                                      InputProps={{
+                                        ...params.InputProps,
+                                        className: "text-white",
+                                      }}
+                                      InputLabelProps={{
+                                        ...params.InputLabelProps,
+                                        style: { color: "white" },
+                                      }}
+                                      className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                      placeholder="Select Product"
+                                    // required
+                                    />
+                                  )}
+                                  classes={{
+                                    endAdornment: "text-white",
+                                  }}
+                                  sx={{
+                                    "& .MuiAutocomplete-endAdornment": {
+                                      color: "white",
+                                    },
+                                  }}
                                 />
                               </div>
                             </div>

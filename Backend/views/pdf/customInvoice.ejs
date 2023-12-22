@@ -193,7 +193,7 @@
                     <tr>
                         <!-- Billing Information -->
                         <td width="50%">
-                            <p style="line-height: 1rem;"><b>BILL TO,</b><br><span><%= data.memberData.company_name_eng %></span></p>
+                            <p style="line-height: 1rem;"><b><%= data.memberData.secondHeading %></b><br><span><%= data.memberData.company_name_eng %></span></p>
                             <address>
                                 <p style="line-height: 1rem;">
                                     POBOX: <span><%= data.memberData.address.zip %></span><br>
@@ -208,7 +208,7 @@
                                 <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
                                 <!-- <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br> -->
                                 <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
-                                <b>Membership Category:</b> <span><%= data.member_category %></span><br>
+                                <b>Membership Category:</b> <span><%= data.memberData.membership_otherCategory %></span><br>
                             </p>
                         </td>
                     </tr>

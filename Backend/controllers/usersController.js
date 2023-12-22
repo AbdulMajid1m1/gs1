@@ -119,85 +119,7 @@ const userSchema = Joi.object({
 });
 
 
-export const generatePDFGen = async (req, res) => {
-    try {
-        // Define your dummy data object
-        const BACKEND_URL = 'http://localhost:3091';
-        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-        const data = {
-            memberData: {
-                // add New Rigistriont with current date
-                registeration: `New Registration ${new Date().toLocaleDateString()}`,
-                qrCodeDataURL: qrCodeDataURL,
-                // Assuming $addMember->id is already known
-                company_name_eng: 'Sample Company',
-                mobile: '+966-123-456789',
-                address: {
-                    zip: '12345',
-                    countryName: 'Saudi Arabia',
-                    stateName: 'Riyadh',
-                    cityName: 'Riyadh City',
-                },
-                companyID: '1234567890',
-                gtin_subscription: {
-                    products: {
-                        member_category_description: 'Gold Membership',
-                    },
-                },
-            },
-            general: {
-                service_default_image: 'default_service_image.png',
-                logo: 'company_logo.png',
-            },
-            cart: {
-                request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
-                transaction_id: 'T123456789',
-                payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
-                cart_items: [
-                    // Item descriptions
-                ],
-            },
-            currentDate: {
-                day: new Date().getDate(),
-                month: new Date().getMonth() + 1, // getMonth() returns 0-11
-                year: new Date().getFullYear(),
-            },
-            custom_amount: 100, // Example custom amount
-            cart: {
-                request_type: 'registration', // or 'renew' or 'addon'
-                transaction_id: 'T123456789',
-                payment_type: 'bank_transfer', // or 'Mada/Visa'
-                cart_items: [
-                    'Item 1 Description',
-                    'Item 2 Description',
-                    'Item 3 Description',
-                ],
-            },
-            general: {
-                service_default_image: 'default_service_image.png',
-                logo: 'company_logo.png',
-            },
-            company_details: {
-                title: 'Sample Company',
-                account_no: '1234567890',
-                iban_no: 'SA1234567890123456789012',
-                bank_name: 'Sample Bank',
-                bank_swift_code: 'SAMPLEBANK123',
-            },
-            BACKEND_URL: BACKEND_URL,
 
-        };
-        // Render the EJS template with the dummy data
-        const pdfBuffer = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data, 'invoice4.pdf');
-
-        // Set the response headers and send the PDF as a response
-        res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdfBuffer.length });
-        res.send(pdfBuffer);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
 
 
 
@@ -263,6 +185,10 @@ export const createUser = async (req, res, next) => {
         // Handle file uploads, generate password, etc.
         const uploadedDocument = req.files.document;
         const uploadedImage = req.files.image;
+        console.log("uploadedDocument")
+        console.log(uploadedDocument)
+        console.log("uploadedImage")
+        console.log(uploadedImage)
         let documentPath = '';
         let imagePath = '';
 
@@ -300,23 +226,22 @@ export const createUser = async (req, res, next) => {
         console.log(cartValue)
 
         const data1 = {
+            topHeading: "Invoice",
+            secondHeading: "BILL TO",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `New Registration ${new Date().toLocaleDateString()}`,
+                registeration: `New Registration for the year ${new Date().getFullYear()}`,
                 // Assuming $addMember->id is already known
                 company_name_eng: value.company_name_eng,
                 mobile: value.mobile,
                 address: {
-                    zip: value.code,
+                    zip: value.zip_code,
                     countryName: value.country,
                     stateName: value.state,
                     cityName: value.city,
                 },
                 companyID: value.companyID,
-                membership_category: value.membership_category,
-                topHeading: "Invoice",
-                member_category: value.membership_category,
-                
+                membership_otherCategory: value.membership_otherCategory,
                 gtin_subscription: {
                     products: {
                         member_category_description: cartValue?.cart_items[0]?.productName,
@@ -352,7 +277,7 @@ export const createUser = async (req, res, next) => {
 
         // Define the directory and filename for the PDF
         const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-        const pdfFilename = `Invoice-${value?.company_name_eng}-${cartValue.transaction_id}.pdf`;
+        const pdfFilename = `Invoice-${value?.company_name_eng}-${cartValue.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
         const pdfFilePath = path.join(pdfDirectory, pdfFilename);
         cartValue.documents = `/uploads/documents/MemberRegInvoice/${pdfFilename}`
         // Ensure the directory exists
@@ -377,7 +302,7 @@ export const createUser = async (req, res, next) => {
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
         await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
 
-            , invoiceBuffer, pdfBuffer2);
+            , { invoiceBuffer, pdfFilename }, pdfBuffer2);
         const hashedPassword = bcrypt.hashSync(password, 10);
         userValue.password = hashedPassword;
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
@@ -521,8 +446,6 @@ export const getUserDetails = async (req, res, next) => {
             user_type: Joi.string(),
             slug: Joi.string(),
             email: Joi.string().email(),
-            fname: Joi.string(),
-            lname: Joi.string(),
             // ... define validation for other allowed columns
         };
 
@@ -600,6 +523,45 @@ export const getUserDetails = async (req, res, next) => {
         return res.json(usersWithCarts);
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+};
+
+
+export const searchUsers = async (req, res, next) => {
+    try {
+        const { keyword } = req.query; // Get the search keyword from the query parameters
+
+        // Define the searchable columns
+        const searchableColumns = [
+            'email',
+            'cr_number',
+            'cr_activity',
+            'company_name_eng',
+            'transaction_id',
+            'gcpGLNID',
+            'gln',
+        ];
+
+        // Construct the search conditions for Prisma query
+        const searchConditions = {
+            OR: searchableColumns.map(column => ({
+                [column]: {
+                    contains: keyword.toLowerCase(), // Convert keyword to lowercase
+                },
+            })),
+        };
+
+        // Fetch the top 30 latest records that match the search conditions
+        const users = await prisma.users.findMany({
+            where: searchConditions,
+            orderBy: { created_at: 'desc' }, // Sort by created_at in descending order
+            take: 30, // Limit to 30 records
+        });
+
+        return res.json(users);
+    } catch (error) {
+        console.error(error);
         next(error);
     }
 };

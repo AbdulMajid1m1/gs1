@@ -1,26 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
-// import visitFrontend from "../../../Images/visitFrontend.png"
-// import profileICon from "../../../Images/profileICon.png"
+import React, { useEffect, useState } from 'react'
 import DataTable from '../../../../components/Datatable/Datatable'
-import { useNavigate } from 'react-router-dom'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { DataTableContext } from '../../../../Contexts/DataTableContext'
-import { city, paymentSlipColumn } from '../../../../utils/datatablesource'
+import { city } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
-import { useQuery } from 'react-query'
 import Swal from 'sweetalert2';
 import {toast} from 'react-toastify';
 import AddCity from './AddCity';
 import Updatecity from './updatecity';
+
 const Cities = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
-    const navigate = useNavigate();
-const [brandsData, setBrandsData] = useState([]);
+    const [brandsData, setBrandsData] = useState([]);
 
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 
@@ -36,11 +31,8 @@ const [brandsData, setBrandsData] = useState([]);
         // save this row data in session storage 
         sessionStorage.setItem("updateBrandData", JSON.stringify(row));
       };
-    const { rowSelectionModel, setRowSelectionModel,
-      tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
-    const [filteredData, setFilteredData] = useState([]);
+   
 
-      useEffect(() => {
       const fetchData = async () => {
         try {
           const response = await newRequest.get("/address/getAllCities",);
@@ -55,32 +47,12 @@ const [brandsData, setBrandsData] = useState([]);
         }
       };
 
-      fetchData(); // Calling the function within useEffect, not inside itself
-    }, []); // Empty array dependency ensures this useEffect runs once on component mount
+      useEffect(() => {
+        fetchData();
+      }, []);
 
 
-    const refreshcitiesData = async () => {
-      try {
-        const response = await newRequest.get("/address/getAllCities",);
-        
-        console.log(response.data);
-        setData(response?.data || []);
-        setIsLoading(false)
-
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false)
-      }
-    };
-
-
-    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
-    //   const response = await newRequest.get("/bankslip",);
-    //   return response?.data || [];
-    //   console.log(response.data);
-      
-    // });
-const handleDelete = async (row) => {
+    const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
           text: 'You will not be able to recover this city!',
@@ -145,17 +117,21 @@ const handleDelete = async (row) => {
           }
         });
     };
+    
     const handleView = (row) => {
         console.log(row);
     }
+
     const handleRowClickInParent = (item) => {
-        if (!item || item?.length === 0) {
-          setTableSelectedRows(data)
-          setFilteredData(data)
-          return
-        }
-    
-      }
+      // if (!item || item?.length === 0) {
+      //   setTableSelectedRows(data)
+      //   setFilteredData(data)
+      //   return
+      // }
+  
+    }
+
+
 
   return (
     <div>
@@ -186,7 +162,7 @@ const handleDelete = async (row) => {
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}
-
+                   
                     dropDownOptions={[
                         {
                         label: "View",
@@ -235,12 +211,13 @@ const handleDelete = async (row) => {
 
              {/* AddCity component with handleShowCreatePopup prop */}
              {isCreatePopupVisible && (
-                    <AddCity isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
-                  )}
-{/* Updatecity component with handleShowUpdatePopup prop */}
-                  {isUpdatePopupVisible && (
-                    <Updatecity isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
-                  )}
+                <AddCity isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData}/>
+              )}
+            
+            {/* Updatecity component with handleShowUpdatePopup prop */}
+            {isUpdatePopupVisible && (
+              <Updatecity isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={fetchData}/>
+            )}
 
         </div>
     </div>

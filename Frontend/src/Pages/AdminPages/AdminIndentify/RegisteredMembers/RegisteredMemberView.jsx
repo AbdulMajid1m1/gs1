@@ -543,6 +543,17 @@ const RegisteredMembersView = () => {
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
+
+              <div className='w-full flex justify-end px-6'>
+                    {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                    <button
+                      onClick={handleShowAddMemberPopup}
+                      className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                    >
+                      Add
+                    </button>
+              </div>
+              
               <div className='flex gap-5 flex-wrap'>
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                   className='sm:w-[50%] w-full'

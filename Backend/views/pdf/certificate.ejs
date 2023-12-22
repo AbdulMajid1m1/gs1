@@ -159,7 +159,7 @@
                             let _2DVal = data.userData.gcpGLNID + data.expiryDate + Date.now();
                             let _2DBarCode = 'GCP=' + data.userData.gcpGLNID + ',EXP=' + data.expiryDate + ',HASH=' + _2DVal; // You'll need to generate the QR code in your Node.js backend
                         %>
-                        <tr>
+                        <!-- <tr>
                             <td>
                                 <p style="margin-bottom:0; padding-top:0;"><strong>Legal Entity GPC: </strong></p>
                                 <p><strong><span style="color: #F26334;">
@@ -168,10 +168,10 @@
                                     <% }); %>
                                     </span></strong></p>
                             </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td>
-                                <p style="margin-bottom:0; padding-top:0;"><%= data.general.gcp_legal_detail %></p>
+                                <!-- <p style="margin-bottom:0; padding-top:0;"><%= data.general.gcp_legal_detail %></p> -->
                             </td>
                             <td width="10%" class="text-left" style="border-right-style: 1px solid; border-color: #ED7D31">
                                 <span>
@@ -181,9 +181,10 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <div style="margin-top: 20px;">hello</div> -->
+                        <tr >
                             <td class="text-left">
-                                <span>MemberID: </span>&nbsp;&nbsp;<span><%= data.userData.companyID %></span>
+                                <span>MemberID: </span>&nbsp;&nbsp;<span><%= data.userData.memberID %></span>
                             </td>
                             <td class="text-left">
                                 <span>Valid Until: </span>&nbsp;&nbsp;<span><%= data.expiryDate %></span>
