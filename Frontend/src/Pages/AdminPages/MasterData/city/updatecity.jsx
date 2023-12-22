@@ -57,7 +57,7 @@ const handleUpdateBrand = async () => {
     const response = await newRequest.put(`/address/updateCities/${updateBrandData?.id}`, {
       name: name,
       // state_id: Number(state_id),
-      state_id: selectedDocuments?.id,
+      state_id: Number(selectedDocuments?.id),
     });
 
     toast.success(response?.data?.message || 'City updated successfully', {
