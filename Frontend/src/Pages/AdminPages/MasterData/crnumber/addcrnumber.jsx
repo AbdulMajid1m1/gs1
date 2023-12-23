@@ -69,25 +69,26 @@ const Addcrnumber = ({ isVisible, setVisibility, refreshBrandData }) => {
                              <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Cr number</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">cr</label>
+                                 <label htmlFor="field1" className="text-secondary">cr Number</label>
                                  <input
                                    type="text"
                                    id="cr"
                                    value={cr}
                                    onChange={(e) => setcr(e.target.value)}
-                                   placeholder="Enter cr "
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                   placeholder="Enter cr Number"
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">activity</label>
+                                 <label htmlFor="field1" className="text-secondary">cr activity</label>
                                  <input
                                    type="text"
                                    id="activity"
                                    value={activity}
                                    onChange={(e) => setactivity(e.target.value)}
-                                   placeholder="Enter activity "
+                                   placeholder="Enter cr activity "
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                   </div>
