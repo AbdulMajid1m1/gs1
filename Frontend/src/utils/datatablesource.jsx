@@ -2259,6 +2259,9 @@ export const crnumber__ = [
     field: 'status',
     headerName: 'status',
     width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
   {
     field: 'isRegistered',
