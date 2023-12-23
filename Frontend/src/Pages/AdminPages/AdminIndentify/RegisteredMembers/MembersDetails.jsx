@@ -16,6 +16,7 @@ const MembersDetails = ({ gs1MemberData }) => {
     city: gs1MemberData?.city || '',
     zipCode: gs1MemberData?.zip_code || '',
     mobileNo: gs1MemberData?.mbl_extension || '',
+    contactPerson: gs1MemberData?.contactPerson || '',
 
   });
   const [IsLoading, setIsLoading] = useState(false);
@@ -60,6 +61,7 @@ const MembersDetails = ({ gs1MemberData }) => {
     formData.append('city', editableData.city);
     formData.append('zip_code', editableData.zipCode);
     formData.append('mobile', editableData.mobileNo);
+    formData.append('contactPerson', editableData.contactPerson);
     // Add other editable fields as needed
   
     // formData.append('document', document); // Assuming document is a file input
@@ -367,7 +369,7 @@ const MembersDetails = ({ gs1MemberData }) => {
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <TextField
+                    {/* <TextField
                       id="contactPerson"
                       label="Contact Person"
                       variant="outlined"
@@ -376,7 +378,14 @@ const MembersDetails = ({ gs1MemberData }) => {
                         shrink: true,
                         style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
                       }}
-                    />
+                    /> */}
+                      <TextField
+                          id="contactPerson"
+                          label="Contact Person"
+                          variant="outlined"
+                          value={editableData.contactPerson}
+                          onChange={(e) => handleInputChange('contactPerson', e.target.value)}
+                        />
                   </div>
 
                 </div>
