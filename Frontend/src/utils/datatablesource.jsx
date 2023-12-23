@@ -2442,11 +2442,11 @@ export const unspcs_ = [
 
 
 export const financeColumn = [
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 180,
+  // },
   {
     field: 'type',
     headerName: 'Type',
@@ -2510,11 +2510,11 @@ export const financeColumn = [
     headerName: 'Transaction ID',
     width: 180,
   },
-  {
-    field: 'user_id',
-    headerName: 'User ID',
-    width: 180,
-  },
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
   {
     field: 'created_at',
     headerName: 'Created At',
