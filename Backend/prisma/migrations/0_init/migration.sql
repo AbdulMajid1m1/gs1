@@ -2186,7 +2186,7 @@ CREATE TABLE [dbo].[units] (
 CREATE TABLE [dbo].[document_type] (
     [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
     [file_name] nvarchar(MAX),
-    [status] varchar(10),
+    [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
     [deleted_at] DATETIME,

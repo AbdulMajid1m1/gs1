@@ -83,7 +83,19 @@ const Cities = () => {
         fetchData();
       }, []);
 
+const refreshcitiesData = async () => {
+      try {
+        const response = await newRequest.get("/address/getAllCities",);
+        
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
 
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+  };
     const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
