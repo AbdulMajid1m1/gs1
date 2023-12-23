@@ -1,9 +1,10 @@
-import { TextField } from '@mui/material'
-import React, { useState } from 'react'
+import { Autocomplete, TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
+import PhoneInput from 'react-phone-input-2';
 
 const MembersDetails = ({ gs1MemberData }) => {
    // Use state to manage editable values
@@ -20,7 +21,16 @@ const MembersDetails = ({ gs1MemberData }) => {
 
   });
   const [IsLoading, setIsLoading] = useState(false);
-
+  const [country, setCountry] = React.useState([])
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [state, setState] = React.useState([])
+  const [city, setCity] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [filteredStates, setFilteredStates] = useState([]);
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [mobileNumber, setMobileNumber] = React.useState(gs1MemberData?.mobile || '')
+    
   const handleInputChange = (field, value) => {
     setEditableData((prevData) => ({
       ...prevData,
@@ -56,11 +66,11 @@ const MembersDetails = ({ gs1MemberData }) => {
     // Extract editable fields from editableData state and add them to FormData
     formData.append('company_name_eng', editableData.companyNameEnglish);
     formData.append('company_name_arabic', editableData.companyNameArabic);
-    // formData.append('countryShortName', editableData.countryShortName);
-    formData.append('state', editableData.state);
-    formData.append('city', editableData.city);
+    formData.append('country', selectedCountry?.name);
+    formData.append('state', selectedState?.name);
+    formData.append('city', selectedCity?.name);
     formData.append('zip_code', editableData.zipCode);
-    formData.append('mobile', editableData.mobileNo);
+    formData.append('mobile', mobileNumber);
     formData.append('contactPerson', editableData.contactPerson);
     // Add other editable fields as needed
   
@@ -86,6 +96,86 @@ const MembersDetails = ({ gs1MemberData }) => {
     }
 
   };
+
+
+   // Handle country selection
+   const handleCountryName = (event, value) => {
+    setSelectedCountry(value);
+    console.log(value)
+    const filteredStates = state.filter((state) => state.country_id == value?.id);
+    setFilteredStates(filteredStates);
+    setSelectedState(null);
+    setFilteredCities([]);
+    // setSelectedCity(null);
+    // console.log(filteredStates)
+    };
+
+
+    // Handle state selection
+    const handleState = (event, value) => {
+      setSelectedState(value);
+      const filteredCities = city.filter((city) => city.state_id == value?.id);
+      setFilteredCities(filteredCities);
+      // setSelectedCity(null);
+  };
+
+
+  const handleCity = (event, value) => {
+      setSelectedCity(value);
+      console.log('Selected State ID:', value.id);
+  };
+
+
+   // all Countries Api
+   const handleCountryAndState = async () => {
+    try {
+        const response = await newRequest.get('/address/getAllCountries');
+        const statesData = await newRequest.get(`/address/getAllStates`);
+        const getStatesdata = statesData.data;
+        const data = response.data;
+
+        const countries = data.map((country) => ({
+            id: country.id,
+            name: country.name_en,
+        }));
+
+        setCountry(countries);
+        setState(getStatesdata);
+        // setCountry(countries);
+        // const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
+        // setSelectedCountry(defaultCountry);
+        // const filteredStates = getStatesdata.filter((state) => state.country_id == defaultCountry?.id);
+        // setFilteredStates(filteredStates);
+
+
+    }
+    catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
+
+}
+
+
+const handleGetAllCities = async () => {
+    try {
+        const response = await newRequest.get(`/address/getAllCities`);
+        const data = response.data;
+        setCity(data);
+    }
+    catch (error) {
+        console.error('Error fetching states:', error);
+    }
+}
+
+
+
+
+  useEffect(() => {
+    handleCountryAndState();
+    handleGetAllCities();
+  }
+  , []);
   
 
   return (
@@ -132,16 +222,6 @@ const MembersDetails = ({ gs1MemberData }) => {
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  {/* <TextField
-                    id="companyNameArabic"
-                    label="Company Name Arabic"
-                    variant="outlined"
-                    value={gs1MemberData?.company_name_arabic}
-                    InputLabelProps={{
-                      shrink: Boolean(gs1MemberData?.company_name_arabic),
-                      style: { fontSize: gs1MemberData?.company_name_arabic ? '16px' : '16px', zIndex: '0' },
-                    }}
-                  /> */}
                    <TextField
                       id="companyNameArabic"
                       label="Company Name Arabic"
@@ -152,23 +232,21 @@ const MembersDetails = ({ gs1MemberData }) => {
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  {/* <TextField
-                    id="Country"
-                    label="Country"
-                    variant="outlined"
-                    value={gs1MemberData?.country}
-                    InputLabelProps={{
-                      shrink: Boolean(gs1MemberData?.country),
-                      style: { fontSize: gs1MemberData?.country ? '16px' : '16px', zIndex: '0' },
-                    }}
-                  /> */}
-                   <TextField
+                   {/* <TextField
                       id="Country"
                       label="Country"
                       variant="outlined"
                       value={editableData.country}
                       onChange={(e) => handleInputChange('country', e.target.value)}
+                    /> */}
+                     <TextField
+                      id="CountryShortName"
+                      label="Country Short Name"
+                      variant="outlined"
+                      value={editableData.countryShortName}
+                      onChange={(e) => handleInputChange('countryShortName', e.target.value)}
                     />
+                      
                 </div>
               </div>
 
@@ -185,53 +263,144 @@ const MembersDetails = ({ gs1MemberData }) => {
                       style: { fontSize: gs1MemberData?.country ? '16px' : '16px', zIndex: '0' },
                     }}
                   /> */}
-                   <TextField
-                      id="CountryShortName"
-                      label="Country Short Name"
-                      variant="outlined"
-                      value={editableData.countryShortName}
-                      onChange={(e) => handleInputChange('countryShortName', e.target.value)}
-                    />
+                  <Autocomplete
+                          id="country"
+                          options={country}
+                          value={selectedCountry}
+                          required
+                          getOptionLabel={(option) => option?.name || ""}
+                          onChange={handleCountryName}
+                          onInputChange={(event, value) => {
+                          if (!value) {
+                            // perform operation when input is cleared
+                            console.log("Input cleared");
+                          }
+                          }}
+                          renderInput={(params) => (
+                          <TextField
+                            autoComplete="off"
+                            {...params}
+                            InputProps={{
+                            ...params.InputProps,
+                            className: "text-white",
+                            }}
+                            InputLabelProps={{
+                            ...params.InputLabelProps,
+                              style: { color: "white" },
+                            }}
+                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                            placeholder={gs1MemberData?.country || "Country"}
+                            // required
+                            />
+                            )}
+                            classes={{
+                              endAdornment: "text-white",
+                            }}
+                            sx={{
+                              "& .MuiAutocomplete-endAdornment": {
+                                  color: "white",
+                              },
+                            }}
+                        />
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  {/* <TextField
-                    id="State"
-                    label="State"
-                    variant="outlined"
-                    value={gs1MemberData?.state}
-                    InputLabelProps={{
-                      shrink: Boolean(gs1MemberData?.state),
-                      style: { fontSize: gs1MemberData?.state ? '16px' : '16px', zIndex: '0' },
-                    }}
-                  /> */}
-                    <TextField
+                    {/* <TextField
                         id="State"
                         label="State"
                         variant="outlined"
                         value={editableData.state}
                         onChange={(e) => handleInputChange('state', e.target.value)}
-                      />
+                      /> */}
+                      <Autocomplete
+                                    id="state"
+                                    options={filteredStates}
+                                    value={selectedState}
+                                    required
+                                    getOptionLabel={(option) => option?.name || ""}
+                                    onChange={handleState}
+                                    onInputChange={(event, value) => {
+                                        if (!value) {
+                                            // perform operation when input is cleared
+                                            console.log("Input cleared");
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            autoComplete="off"
+                                            {...params}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                className: "text-white",
+                                            }}
+                                            InputLabelProps={{
+                                                ...params.InputLabelProps,
+                                                style: { color: "white" },
+                                            }}
+                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                            placeholder={gs1MemberData?.state || "State"}
+                                        // required
+                                        />
+                                    )}
+                                    classes={{
+                                        endAdornment: "text-white",
+                                    }}
+                                    sx={{
+                                        "& .MuiAutocomplete-endAdornment": {
+                                            color: "white",
+                                        },
+                                    }}
+                                />
+
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  {/* <TextField
-                    id="City"
-                    label="City"
-                    variant="outlined"
-                    value={gs1MemberData?.city}
-                    InputLabelProps={{
-                      shrink: Boolean(gs1MemberData?.city),
-                      style: { fontSize: gs1MemberData?.city ? '16px' : '16px', zIndex: '0' },
-                    }}
-                  /> */}
-                    <TextField
+                    {/* <TextField
                         id="City"
                         label="City"
                         variant="outlined"
                         value={editableData.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
-                      />
+                      /> */}
+                       <Autocomplete
+                                    id="city"
+                                    options={filteredCities}
+                                    value={selectedCity}
+                                    required
+                                    getOptionLabel={(option) => option?.name || ""}
+                                    onChange={handleCity}
+                                    onInputChange={(event, value) => {
+                                        if (!value) {
+                                            // perform operation when input is cleared
+                                            console.log("Input cleared");
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            autoComplete="off"
+                                            {...params}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                className: "text-white",
+                                            }}
+                                            InputLabelProps={{
+                                                ...params.InputLabelProps,
+                                                style: { color: "white" },
+                                            }}
+                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                            placeholder={gs1MemberData?.city || "City"}
+                                        // required
+                                        />
+                                    )}
+                                    classes={{
+                                        endAdornment: "text-white",
+                                    }}
+                                    sx={{
+                                        "& .MuiAutocomplete-endAdornment": {
+                                            color: "white",
+                                        },
+                                    }}
+                                />
                 </div>
               </div>
 
@@ -258,6 +427,8 @@ const MembersDetails = ({ gs1MemberData }) => {
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                  <div className='flex items-center border-2 w-full h-14 rounded-md'>
+                             
                   {/* <TextField
                     id="mobile"
                     label="Mobile No (omit zero)"
@@ -268,13 +439,33 @@ const MembersDetails = ({ gs1MemberData }) => {
                       style: { fontSize: gs1MemberData?.mbl_extension ? '16px' : '16px', zIndex: '0' },
                     }}
                   /> */}
-                    <TextField
+                    {/* <TextField
                         id="mobile"
                         label="Mobile No (omit zero)"
                         variant="outlined"
                         value={editableData.mobileNo}
                         onChange={(e) => handleInputChange('mobileNo', e.target.value)}
+                      /> */}
+                        <PhoneInput
+                            international
+                            country={'sa'}
+                            defaultCountry={'sa'}
+                            value={mobileNumber}
+                            onChange={setMobileNumber}
+                            // onChange={(e) => setCompanyLandLine(e)}
+                            inputProps={{
+                                id: 'mobile',
+                                placeholder: 'Mobile Number',
+                            }}
+
+                            inputStyle={{
+                              width: '100%',
+                              borderRadius: '0px',
+                              border: 'none',
+                            }}
+                            required
                       />
+                    </div>
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
