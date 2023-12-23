@@ -486,25 +486,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             const pdfBuffer2 = await fs1.readFile(pdfFilePath);
 
-            // now  save both pdf in database in member_document table
 
-            // model member_documents {
-            //     id             String   @id @default(cuid())
-            //     type           String   @db.NVarChar(255)
-            //     document       String   @db.NVarChar(Max)
-            //     transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
-            //     user_id        String   @db.NVarChar(255)
-            //     created_at     DateTime @default(now())
-            //     updated_at     DateTime @updatedAt
-            //     doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
-
-            //     status        String? @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
-            //     reject_reason String? @db.VarChar(1000)
-            //   }
-
-            // save  both the certificate and receipt in database 
-            // 1. certificate
-            // 2. receipt
 
             const newDocument = await prisma.member_documents.createMany({
                 data: [
@@ -525,7 +507,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         transaction_id: currentDocument.transaction_id,
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
-                        status: 'approved', 
+                        status: 'approved',
                         // TODO: take email form current admin token
                         // uploaded_by: req.admin.email, // Assuming the admin is logged in
                         uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
@@ -545,6 +527,22 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 where: { id: documentId },
                 data: { status: value.status }
             });
+
+
+
+            // Insert Member History log
+            const logData = {
+                subject: 'Member Approved',
+                // user user memberId
+                member_id: existingUser.memberID,
+                // TODO: take email form current admin token
+                admin_id: 'admin@gs1sa.link',
+
+            }
+
+            await createMemberLogs(logData);
+
+
 
         }
 

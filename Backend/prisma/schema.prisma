@@ -1044,13 +1044,12 @@ model member_documents {
 }
 
 model member_history_logs {
-  id         BigInt    @id(map: "PK__member_h__3213E83FE53CC71F") @default(autoincrement())
+  id         String    @id @default(cuid())
   subject    String    @db.NVarChar(255)
-  member_id  Int?
-  date       DateTime? @db.DateTime
-  admin_id   Int       @default(0, map: "DF__member_hi__admin__78F3E6EC")
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  member_id  String?
+  admin_id   String?
+  created_at DateTime? @default(now()) @db.DateTime
+  updated_at DateTime? @updatedAt @db.DateTime
 }
 
 model member_important_notifications {
