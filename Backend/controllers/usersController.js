@@ -105,7 +105,7 @@ const userSchema = Joi.object({
             price: Joi.string(),
             product_type: Joi.string(),
             quotation: Joi.string()
-        })),
+        })).min(1).required(),
         total: Joi.number(),
         request_type: Joi.string(),
         payment_type: Joi.string(),

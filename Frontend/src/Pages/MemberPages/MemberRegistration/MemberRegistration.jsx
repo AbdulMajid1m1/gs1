@@ -389,7 +389,7 @@ const MemmberRegisteration = () => {
             formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, item.yearlyFee); // Adjust as per your actual property
             formData.append(`cart[cart_items][${currentIndex}][price]`, item.price); // Adjust as per your actual property
             formData.append(`cart[cart_items][${currentIndex}][product_type]`, item.productType); // Adjust as per your actual property
-            formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); // Adjust as per your actual property
+            // formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); // Adjust as per your actual property
             currentIndex++;
         });
 
@@ -400,7 +400,7 @@ const MemmberRegisteration = () => {
             formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.yearly_fee || 0); // Adjust if there's a separate yearly fee
             formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
             formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type); // Adjust as per your actual property
-            formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); // Adjust as per your actual property
+            // formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); // Adjust as per your actual property
             currentIndex++;
         });
 
