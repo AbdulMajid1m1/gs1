@@ -355,8 +355,8 @@ model crs {
   activity     String?   @db.NVarChar(Max)
   status       Int?
   isRegistered Int       @default(0, map: "DF_crs_isRegistered")
-  created_at   DateTime? @db.DateTime
-  updated_at   DateTime? @db.DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model email_reminders {
