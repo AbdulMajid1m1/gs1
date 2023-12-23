@@ -10,7 +10,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   // const [selectDocument, setSelectDocument] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
-  const [transactionId, setTransactionId] = useState("");
+  const [transactionId, setTransactionId] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
   const [error, setError] = useState('');
@@ -136,6 +136,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
     formData.append('user_id', gs1MemberData?.id || ''); // Replace with the actual user ID
     formData.append('doc_type', 'member_document');
     formData.append('document', uploadDocument);
+    formData.append('uploaded_by', gs1MemberData?.email || '');
 
 
     try {

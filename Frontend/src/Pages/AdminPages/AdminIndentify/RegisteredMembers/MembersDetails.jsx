@@ -22,7 +22,7 @@ const MembersDetails = ({ gs1MemberData }) => {
   });
   const [IsLoading, setIsLoading] = useState(false);
   const [country, setCountry] = React.useState([])
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(gs1MemberData?.country || '');
   const [state, setState] = React.useState([])
   const [city, setCity] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
@@ -102,12 +102,11 @@ const MembersDetails = ({ gs1MemberData }) => {
    const handleCountryName = (event, value) => {
     setSelectedCountry(value);
     console.log(value)
+    
     const filteredStates = state.filter((state) => state.country_id == value?.id);
     setFilteredStates(filteredStates);
     setSelectedState(null);
     setFilteredCities([]);
-    // setSelectedCity(null);
-    // console.log(filteredStates)
     };
 
 
@@ -141,12 +140,6 @@ const MembersDetails = ({ gs1MemberData }) => {
 
         setCountry(countries);
         setState(getStatesdata);
-        // setCountry(countries);
-        // const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
-        // setSelectedCountry(defaultCountry);
-        // const filteredStates = getStatesdata.filter((state) => state.country_id == defaultCountry?.id);
-        // setFilteredStates(filteredStates);
-
 
     }
     catch (error) {
@@ -253,55 +246,43 @@ const handleGetAllCities = async () => {
 
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  {/* <TextField
-                    id="CountryShortName"
-                    label="Country Short Name"
-                    variant="outlined"
-                    value={gs1MemberData?.country}
-                    InputLabelProps={{
-                      shrink: Boolean(gs1MemberData?.country),
-                      style: { fontSize: gs1MemberData?.country ? '16px' : '16px', zIndex: '0' },
-                    }}
-                  /> */}
                   <Autocomplete
-                          id="country"
-                          options={country}
-                          value={selectedCountry}
-                          required
-                          getOptionLabel={(option) => option?.name || ""}
-                          onChange={handleCountryName}
-                          onInputChange={(event, value) => {
+                        id="zone"
+                        options={country}
+                        getOptionLabel={(option) => option?.name || ""}
+                        onChange={handleCountryName}
+                        value={selectedCountry}
+                        onInputChange={(event, value) => {
                           if (!value) {
                             // perform operation when input is cleared
                             console.log("Input cleared");
                           }
-                          }}
-                          renderInput={(params) => (
+                        }}
+                        renderInput={(params) => (
                           <TextField
-                            autoComplete="off"
                             {...params}
                             InputProps={{
-                            ...params.InputProps,
-                            className: "text-white",
+                              ...params.InputProps,
+                              className: "text-white",
                             }}
                             InputLabelProps={{
-                            ...params.InputLabelProps,
+                              ...params.InputLabelProps,
                               style: { color: "white" },
                             }}
-                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
                             placeholder={gs1MemberData?.country || "Country"}
-                            // required
-                            />
-                            )}
-                            classes={{
-                              endAdornment: "text-white",
-                            }}
-                            sx={{
-                              "& .MuiAutocomplete-endAdornment": {
-                                  color: "white",
-                              },
-                            }}
-                        />
+                            required
+                          />
+                        )}
+                        classes={{
+                          endAdornment: "text-white",
+                        }}
+                        sx={{
+                          "& .MuiAutocomplete-endAdornment": {
+                            color: "white",
+                          },
+                        }}
+                      />
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
