@@ -12,7 +12,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [cr, setcr] = useState(updateBrandData?.cr || '');
     const [activity, setactivity] = useState(updateBrandData?.activity || '');
     const [status, setstatus] = useState(updateBrandData?.status || '');
-   
+   const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
 
@@ -22,9 +22,22 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) => {
     
 
 
-
-const handleUpdateBrand = async () => {
-  // console.log(brandUserId);
+const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        if (inputValue.length > 10) {
+          setError("Cr Number should be 10 digits");
+        } else {
+          setError("");
+        }
+        setcr(inputValue.slice(0, 10));  // Limit input to 10 characters
+    };
+const handleUpdateBrand = async (e) => {
+   e.preventDefault();
+        // show the error meesage if the cr number is not 10 digits
+        if (cr.length !== 10) {
+          setError("Cr Number should be 10 digits");
+          return;
+        }
   setLoading(true);
  
   try {
@@ -89,11 +102,12 @@ const handleUpdateBrand = async () => {
                                   type="text"
                                   id="cr"
                                   value={cr}
-                                  onChange={(e) => setcr(e.target.value)}
+                                 onChange={handleInputChange}
                                 //   readOnly
                                   placeholder="Enter cr"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
+                    />
+                     {error && <p className="text-red-500 text-xs">{error}</p>}
                               </div>
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -106,7 +120,8 @@ const handleUpdateBrand = async () => {
                                 //   readOnly
                                   placeholder="Enter activity"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
+                    />
+                    
                   </div>
                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                               <label htmlFor="status" className="text-secondary">
