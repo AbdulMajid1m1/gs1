@@ -58,8 +58,10 @@ const RegisteredMembersView = () => {
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
     try {
+      console.log(gs1MemberData?.memberID);
       const response = await newRequest.get(`/logs/memberLogs/?member_id=${gs1MemberData?.memberID}`);
-      // console.log(response.data);
+      console.log("member history");
+      console.log(response.data);
       setMemberHistoryData(response?.data || []);
       setMemberHistoryLoader(false);
 
