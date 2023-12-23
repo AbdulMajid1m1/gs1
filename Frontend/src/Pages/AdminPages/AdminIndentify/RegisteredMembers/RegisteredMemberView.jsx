@@ -47,13 +47,28 @@ const RegisteredMembersView = () => {
   const [brandsData, setBrandsData] = useState([]);
   const [subMenusData, setSubMenusData] = useState([]);
   const [memberHistoryData, setMemberHistoryData] = useState([]);
-  
+
   // popUp States
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
   const [isAddMemberPopupVisible, setIsAddMemberPopupVisibility] = useState(false);
   const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
+
+  const fetchMemberHistoryData = async () => {
+    setMemberHistoryLoader(true);
+    try {
+      const response = await newRequest.get(`/logs/memberLogs/?member_id=${gs1MemberData?.memberID}`);
+      // console.log(response.data);
+      setMemberHistoryData(response?.data || []);
+      setMemberHistoryLoader(false);
+
+    } catch (err) {
+      console.log(err);
+      setMemberHistoryLoader(false);
+    }
+  };
+
 
 
   const fetchAllUserData = async () => {
@@ -77,7 +92,7 @@ const RegisteredMembersView = () => {
       // console.log(response.data);
       setMembersDocumentsData(response?.data || []);
       setMemberDocumentsLoader(false);
-      
+
     }
     catch (err) {
       console.log(err);
@@ -161,12 +176,12 @@ const RegisteredMembersView = () => {
     setSubMembersLoader(true);
     try {
       const response = await newRequest.get(`/users?parent_memberID=${gs1MemberData?.memberID}`);
-      
+
       // console.log(response.data);
       setSubMenusData(response?.data || []);
       setSubMembersLoader(false)
 
-    } 
+    }
     catch (err) {
       console.log(err);
       setSubMembersLoader(false)
@@ -178,7 +193,7 @@ const RegisteredMembersView = () => {
 
     fetchAllUserData();
     fetchMemberDocumentsData();
-
+    fetchMemberHistoryData();
     fetchMemberInvoiceData();
     fetchMemberbankSlipData();
     fetchSubMembersData();
@@ -186,7 +201,7 @@ const RegisteredMembersView = () => {
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-  
+
   useEffect(() => {
     const cartData = allUserData.carts || [];
     const stringifiedCartData = [].concat(...cartData.map((item) => {
@@ -202,7 +217,7 @@ const RegisteredMembersView = () => {
     // Filter out null values (parsing errors) and keep only valid JSON objects
     const filteredCartData = stringifiedCartData.filter((item) => item !== null);
     // console.log(filteredCartData || []);
-    
+
     // Set the registeredProductsData
     setRegisteredProductsData(filteredCartData || []);
     setRegisteredProductsLoader(false);
@@ -210,7 +225,7 @@ const RegisteredMembersView = () => {
 
 
 
-  
+
 
   const handleView = (row) => {
     console.log(row);
@@ -406,155 +421,155 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={gs1MemberData}/>
+              <MembersDetails gs1MemberData={gs1MemberData} />
 
 
-                {/* Registered Products */}
+              {/* Registered Products */}
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+              >
+                <DataTable data={registeredProductsData}
+                  title="Registered Products"
+                  columnsName={registeredmemberColumn}
+                  loading={registeredProductsLoader}
+                  secondaryColor="secondary"
+                  actionColumnVisibility={false}
+                  checkboxSelection={"disabled"}
+
+                  dropDownOptions={[
+                    {
+                      label: "View",
+                      icon: (
+                        <VisibilityIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleView,
+                    },
+
+                  ]}
+                  uniqueId="registeredProductsTableId"
+
+                />
+              </div>
+
+
+              <div className='flex justify-between w-full mt-10'>
+                <div className='w-full flex justify-end px-6'>
+                  {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                  <button
+                    onClick={handleShowAddMemberPopup}
+                    className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Add
+                  </button>
+                </div>
+
+                <div className='w-full flex justify-end px-6'>
+                  <button
+                    onClick={handleShowCreatePopup}
+                    className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+
+              <div className='flex gap-5 flex-wrap'>
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                  className='sm:w-[50%] w-full'
                 >
-                  <DataTable data={registeredProductsData}
-                    title="Registered Products"
-                    columnsName={registeredmemberColumn}
-                    loading={registeredProductsLoader}
+                  <DataTable2 data={membersDocuemtsData}
+                    title="Member'z Documents"
+                    columnsName={MembersDocumentColumn}
+                    loading={memberDocumentsLoader}
                     secondaryColor="secondary"
-                    actionColumnVisibility={false}
-                    checkboxSelection={"disabled"}
+                    checkboxSelection={false}
 
                     dropDownOptions={[
+                      // {
+                      // label: "Edit",
+                      // icon: (
+                      //     <EditIcon
+                      //     fontSize="small"
+                      //     color="action"
+                      //     style={{ color: "rgb(37 99 235)" }}
+                      //     />
+                      // ),
+                      // action: handleMemberStatusChange,
+                      // },
                       {
-                        label: "View",
+                        label: "Delete",
                         icon: (
-                          <VisibilityIcon
+                          <DeleteIcon
                             fontSize="small"
                             color="action"
                             style={{ color: "rgb(37 99 235)" }}
                           />
                         ),
-                        action: handleView,
+                        action: handleMemberDelete,
                       },
 
+
                     ]}
-                    uniqueId="registeredProductsTableId"
+                    uniqueId="memberDocumentsTableId"
 
                   />
                 </div>
 
+                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                  className='sm:w-[50%] w-full'
+                >
+                  <DataTable data={brandsData}
+                    title="Brands"
+                    columnsName={MembersBrandsColumn}
+                    loading={brandsLoader}
+                    secondaryColor="secondary"
 
-                <div className='flex justify-between w-full mt-10'>
-                  <div className='w-full flex justify-end px-6'>
-                    {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
-                    <button
-                      onClick={handleShowAddMemberPopup}
-                      className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                    >
-                      Add
-                    </button>
-                  </div>
+                    dropDownOptions={[
+                      // {
+                      // label: "Add",
+                      // icon: (
+                      //     <VisibilityIcon
+                      //     fontSize="small"
+                      //     color="action"
+                      //     style={{ color: "rgb(37 99 235)" }}
+                      //     />
+                      // ),
+                      // action: handleView,
+                      // },
+                      {
+                        label: "Edit",
+                        icon: (
+                          <EditIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        action: handleShowUpdatePopup,
+                      },
+                      {
+                        label: "Delete",
+                        icon: (
+                          <DeleteIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        action: handleDelete,
+                      },
 
-                  <div className='w-full flex justify-end px-6'>
-                    <button
-                      onClick={handleShowCreatePopup}
-                      className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                    >
-                      Add
-                    </button>
-                  </div>
+
+                    ]}
+                    uniqueId="brandsTableId"
+
+                  />
                 </div>
-
-
-                <div className='flex gap-5 flex-wrap'>
-                  <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                    className='sm:w-[50%] w-full'
-                  >
-                    <DataTable2 data={membersDocuemtsData}
-                      title="Member'z Documents"
-                      columnsName={MembersDocumentColumn}
-                      loading={memberDocumentsLoader}
-                      secondaryColor="secondary"
-                      checkboxSelection={false}
-
-                      dropDownOptions={[
-                        // {
-                        // label: "Edit",
-                        // icon: (
-                        //     <EditIcon
-                        //     fontSize="small"
-                        //     color="action"
-                        //     style={{ color: "rgb(37 99 235)" }}
-                        //     />
-                        // ),
-                        // action: handleMemberStatusChange,
-                        // },
-                        {
-                          label: "Delete",
-                          icon: (
-                            <DeleteIcon
-                              fontSize="small"
-                              color="action"
-                              style={{ color: "rgb(37 99 235)" }}
-                            />
-                          ),
-                          action: handleMemberDelete,
-                        },
-
-
-                      ]}
-                      uniqueId="memberDocumentsTableId"
-
-                    />
-                  </div>
-
-                  <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                    className='sm:w-[50%] w-full'
-                  >
-                    <DataTable data={brandsData}
-                      title="Brands"
-                      columnsName={MembersBrandsColumn}
-                      loading={brandsLoader}
-                      secondaryColor="secondary"
-
-                      dropDownOptions={[
-                        // {
-                        // label: "Add",
-                        // icon: (
-                        //     <VisibilityIcon
-                        //     fontSize="small"
-                        //     color="action"
-                        //     style={{ color: "rgb(37 99 235)" }}
-                        //     />
-                        // ),
-                        // action: handleView,
-                        // },
-                        {
-                          label: "Edit",
-                          icon: (
-                            <EditIcon
-                              fontSize="small"
-                              color="action"
-                              style={{ color: "rgb(37 99 235)" }}
-                            />
-                          ),
-                          action: handleShowUpdatePopup,
-                        },
-                        {
-                          label: "Delete",
-                          icon: (
-                            <DeleteIcon
-                              fontSize="small"
-                              color="action"
-                              style={{ color: "rgb(37 99 235)" }}
-                            />
-                          ),
-                          action: handleDelete,
-                        },
-
-
-                      ]}
-                      uniqueId="brandsTableId"
-
-                    />
-                  </div>
-                </div>
+              </div>
 
 
               {/* </div> */}
@@ -570,15 +585,15 @@ const RegisteredMembersView = () => {
 
 
               <div className='w-full flex justify-end px-6'>
-                    {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
-                    <button
-                      onClick={handleShowAddMemberPopup}
-                      className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                    >
-                      Add
-                    </button>
+                {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                <button
+                  onClick={handleShowAddMemberPopup}
+                  className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                >
+                  Add
+                </button>
               </div>
-              
+
               <div className='flex gap-5 flex-wrap'>
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                   className='sm:w-[50%] w-full'
@@ -771,7 +786,7 @@ const RegisteredMembersView = () => {
 
         {/* Add Sub Menus component with Handle prop */}
         {isSubMenusPopupVisible && (
-          <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData}/>
+          <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
         )}
 
 
