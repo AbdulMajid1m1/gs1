@@ -281,11 +281,11 @@ model chats {
 }
 
 model cities {
-  id         String    @id @default(cuid())
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
   state_id   Int?
-   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model classes {
@@ -1038,19 +1038,18 @@ model member_documents {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
-
-  status        String? @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
-  reject_reason String? @db.VarChar(1000)
+  uploaded_by    String?
+  status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
+  reject_reason  String?  @db.VarChar(1000)
 }
 
 model member_history_logs {
-  id         BigInt    @id(map: "PK__member_h__3213E83FE53CC71F") @default(autoincrement())
+  id         String    @id @default(cuid())
   subject    String    @db.NVarChar(255)
-  member_id  Int?
-  date       DateTime? @db.DateTime
-  admin_id   Int       @default(0, map: "DF__member_hi__admin__78F3E6EC")
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  member_id  String?
+  admin_id   String?
+  created_at DateTime? @default(now()) @db.DateTime
+  updated_at DateTime? @updatedAt @db.DateTime
 }
 
 model member_important_notifications {
@@ -1733,11 +1732,11 @@ model staff_help_desks {
 }
 
 model states {
-  id         String    @id @default(cuid())
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
   country_id Int?
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model subscribes {
@@ -1938,7 +1937,7 @@ model users {
   payment_status      Int?      @default(0, map: "DF_users_payment_status")
   online_payment      String?   @db.NVarChar(Max)
   remember_token      String?   @db.NVarChar(Max)
-  parent_memberID     Int?
+  parent_memberID     String?   @db.NVarChar(Max)
   industryTypes       String?   @db.NVarChar(Max)
   invoice_file        String?   @db.NVarChar(Max)
   otp_status          Int?

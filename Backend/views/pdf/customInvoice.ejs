@@ -14,7 +14,7 @@
                 font-family: DejaVu Sans, sans-serif;
                 padding: 4rem;
                 background-color: white;
-                font-size: 1rem;
+                font-size: 1.2rem;
          
             }
     
@@ -130,7 +130,7 @@
             footer {
                 position: absolute;
                 bottom: 0;
-                margin-top: 3rem;   
+                /* margin-top: 3rem;    */
                 height: 70px;
                 font-size: 12px !important;
     
@@ -140,21 +140,22 @@
                 text-align: center;
             }
     
-            .content-container:before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                background-image: url("<%= data.BACKEND_URL %>/gs1Images/invoice_tree.png");
-                background-size: 500px;
-                background-position: center;
-                background-repeat: no-repeat;
-                width: 100%;
-                height: 100%;
-                opacity: .1;
-                z-index: 2;
-            }
-        </style>
+                    .content-container:before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        /* transform: translate(-50%, -50%); */
+                        background-image: url("<%= data.BACKEND_URL %>/gs1Images/invoice_tree.png");
+                        background-size: 500px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        width: 100%;
+                        height: 100%;
+                        opacity: .1;
+                        z-index: 2;
+                    }
+                </style>
     
     </head>
 
@@ -168,7 +169,7 @@
 
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
                     <tr>
-                        <td width="100%" class="text-center text-bold"><strong><%= data.topHeading %></strong></td>
+                        <td width="100%" class="text-center text-bold" style="font-size:1.5rem;"><strong><%= data.topHeading %></strong></td>
                     </tr>
                 </table>
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
@@ -176,26 +177,26 @@
                         <td width="50%">
                             <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/service_default_image.jpeg"
                          
-                                alt="logo" style="width: 116.64px; height: 58px;">
+                                alt="logo" style="width: 250px; height: 115px; object-fit: contain;">
                         </td>
                         <td width="50%" class="text-right">
 
                                 <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/logo.png"
 
-                                style="width: 135.64px; height: 58px; padding-bottom: 5px;">
+                                style="width: 250px; height: 115px; object-fit: contain; padding-bottom: 5px;">
 
 
                         </td>
                     </tr>
                 </table>
                 <hr style=" border: 10px solid #EF6231;"></hr>
-                <table class="" width="100%" cellspacing="0" cellpadding="0" style="border:none; font-size: 1rem; line-height: 0.5 rem;">
+                <table class="" width="100%" cellspacing="0" cellpadding="0" style="border:none; font-size: 1.2rem; line-height: 0.5 rem;">
                     <tr>
                         <!-- Billing Information -->
                         <td width="50%">
-                            <p style="line-height: 1rem;"><b><%= data.memberData.secondHeading %></b><br><span><%= data.memberData.company_name_eng %></span></p>
+                            <p style="line-height: 1.5rem;"><b><%= data.secondHeading %></b><br><span><%= data.memberData.company_name_eng %></span></p>
                             <address>
-                                <p style="line-height: 1rem;">
+                                <p style="line-height: 1.5rem;">
                                     POBOX: <span><%= data.memberData.address.zip %></span><br>
                                     Mobile: <span><%= data.memberData.mobile %></span><br>
                                     <span><%= data.memberData.address.countryName %>, <%= data.memberData.address.stateName %>, <%= data.memberData.address.cityName %></span>
@@ -204,7 +205,7 @@
                         </td>
                         <!-- Date and Transaction Information -->
                         <td width="50%" class="text-right">
-                            <p class="p-text" style="line-height: 1rem;">
+                            <p class="p-text" style="line-height: 1.5rem;">
                                 <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
                                 <!-- <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br> -->
                                 <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
@@ -240,7 +241,7 @@
 
               
               <!-- Invoice Items Table -->
-              <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1rem;">
+              <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1.2rem;">
                 <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
                     <th colspan="2">#</th>
                     <th colspan="4">Description</th>
@@ -275,10 +276,10 @@
                 </div>
 
                 <!-- Bank Details Table -->
-                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1rem;">
+                <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1.2rem;">
                     <tr class="p-text text-bold" style="background-color: #003D79;">
                         <td colspan="12" align="center" class="p-text text-left"
-                        style="color: white; font-weight: bold; font-size: 1rem;" 
+                        style="color: white; font-weight: bold; font-size: 1.2rem;" 
                         >For transfer to our bank account</td>
                     </tr>
                     <tr>
@@ -317,7 +318,7 @@
     <!----------------------------->
     <footer>
         <table class="" width="100%" cellspacing="0" cellpadding="0"
-            style="border:none; font-size: 1rem; line-height: 0.5 rem;">
+            style="border:none; font-size: 1.2rem; line-height: 0.5 rem;">
             <tr>
                 <td width="10%" class="text-left" style="border-right-style: 1px solid; border-color: #ED7D31">
                     <img src="<%= data.memberData.qrCodeDataURL %>"
@@ -326,7 +327,7 @@
                 </td>
                 <td width="90%" class="text-left" style="margin-left: 10px;">
                     <table class="" width="100%" cellspacing="0" cellpadding="0"
-                        style="border:none; font-size: 1rem; line-height: 0.5 rem;">
+                        style="border:none; font-size: 1.2rem; line-height: 0.5 rem;">
                         <tr>
                             <td>
                                 <i class="fas fa-phone" aria-hidden="true"></i>

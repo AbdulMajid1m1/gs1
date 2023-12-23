@@ -10,6 +10,9 @@ export const getProducts = async (req, res, next) => {
             id: Joi.string(),
             user_id: Joi.string(),
             gcpGLNID: Joi.string(),
+            memberID: Joi.string(),
+
+
             // ... define validation for other allowed columns for products
         };
 

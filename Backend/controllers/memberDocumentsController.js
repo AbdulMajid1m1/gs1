@@ -13,13 +13,15 @@ import ejs from 'ejs';
 import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
+import { createMemberLogs } from '../utils/functions/historyLogs.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
         type: Joi.string().required(),
         transaction_id: Joi.string().allow(''),
         user_id: Joi.string().required(),
-        doc_type: Joi.string().default('member_document')
+        doc_type: Joi.string().default('member_document'),
+        uploaded_by: Joi.string(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -201,7 +203,7 @@ export const updateMemberDocument = async (req, res, next) => {
 
 
 
-async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath, landscapeMode = false) {
     try {
         const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
         const htmlContent = ejs.render(ejsTemplate, { data });
@@ -212,8 +214,9 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
 
         const pdfOptions = {
             path: outputFilePath,
-            format: 'Letter',
-            printBackground: true
+            format: 'A4',
+            printBackground: true,
+            landscape: landscapeMode,
         };
 
         await page.pdf(pdfOptions);
@@ -388,42 +391,18 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
 
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath);
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
                 pdfBuffer = await fs1.readFile(Certificatepath);
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
-            // let pdfBuffer2;
-            // if (currentDocument.document) {
-            //     const userDocumentPath = currentDocument.document;
-            //     console.log("userDocupath", userDocumentPath);
-            //     // Extract the file name
-            //     const userDocumentName = path.basename(userDocumentPath);
-
-            //     console.log(userDocumentName);
-
-            //     // Construct the new path to read the file
-            //     const newFilePath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice', userDocumentName);
-
-            //     // Read the file into a buffer
-
-            //     try {
-            //         pdfBuffer2 = await fs1.readFile(newFilePath);
-            //     } catch (readError) {
-            //         console.error('Error reading second PDF:', readError.message);
-            //         pdfBuffer2 = null; // Set to null if file reading fails
-            //     }
-
-
-
-            // }[{"productID":"4","productName":"Category C ( 1,000 Barcodes )","registration_fee":"3000","yearly_fee":"2500","price":"5500","product_type":"gtin","quotation":"undefined"},{"productID":"9","productName":"GLN ( 20 Locations)","registration_fee":"3000","yearly_fee":"0","price":"3000","product_type":"undefined","quotation":"undefined"}]
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
-                topHeading: "Recipient",
+                topHeading: "RECEIPT",
                 secondHeading: "RECEIPT FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
@@ -484,25 +463,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             const pdfBuffer2 = await fs1.readFile(pdfFilePath);
 
-            // now  save both pdf in database in member_document table
 
-            // model member_documents {
-            //     id             String   @id @default(cuid())
-            //     type           String   @db.NVarChar(255)
-            //     document       String   @db.NVarChar(Max)
-            //     transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
-            //     user_id        String   @db.NVarChar(255)
-            //     created_at     DateTime @default(now())
-            //     updated_at     DateTime @updatedAt
-            //     doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
-
-            //     status        String? @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
-            //     reject_reason String? @db.VarChar(1000)
-            //   }
-
-            // save  both the certificate and receipt in database 
-            // 1. certificate
-            // 2. receipt
 
             const newDocument = await prisma.member_documents.createMany({
                 data: [
@@ -512,7 +473,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         transaction_id: currentDocument.transaction_id,
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
-                        status: 'approved'
+                        status: 'approved',
+                        // TODO: take email form current admin token
+                        // uploaded_by: req.admin.email, // Assuming the admin is logged in
+                        uploaded_by: 'admin@gs1sa.link',
                     },
                     {
                         type: 'receipt',
@@ -520,7 +484,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         transaction_id: currentDocument.transaction_id,
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
-                        status: 'approved'
+                        status: 'approved',
+                        // TODO: take email form current admin token
+                        // uploaded_by: req.admin.email, // Assuming the admin is logged in
+                        uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
                     }
                 ]
             });
@@ -531,12 +498,28 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Update the document status in the database
             // document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
-            
-                await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
+
+            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
             await prisma.member_documents.update({
                 where: { id: documentId },
                 data: { status: value.status }
             });
+
+
+
+            // Insert Member History log
+            const logData = {
+                subject: 'Member Approved',
+                // user user memberId
+                member_id: existingUser.memberID,
+                // TODO: take email form current admin token
+                admin_id: 'admin@gs1sa.link',
+
+            }
+
+            await createMemberLogs(logData);
+
+
 
         }
 
@@ -547,14 +530,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
-            // Delete all documents of type 'bank_slip'
-            await prisma.member_documents.deleteMany({
-                where: {
-                    user_id: currentDocument.user_id,
-                    transaction_id: currentDocument.transaction_id,
-                    type: 'bank_slip',
-                }
-            });
+
 
 
             // Send email with optional reject reason
@@ -562,6 +538,35 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         }
 
+        // Delete all documents of type 'bank_slip'
+        const bankSlipDocuments = await prisma.member_documents.findMany({
+            where: {
+                user_id: currentDocument.user_id,
+                transaction_id: currentDocument.transaction_id,
+                type: 'bank_slip',
+            }
+        });
+        // bankslip path in doucment table is like this \uploads\documents\memberDocuments\document-1703229100646.pdf
+        for (const document of bankSlipDocuments) {
+            const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
+            console.log("deletingDocumentPath");
+            console.log(deletingDocumentPath);
+            try {
+                if (fsSync.existsSync(deletingDocumentPath)) {
+                    fsSync.unlinkSync(deletingDocumentPath);
+                }
+            } catch (err) {
+                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
+            }
+        }
+
+        await prisma.member_documents.deleteMany({
+            where: {
+                user_id: currentDocument.user_id,
+                transaction_id: currentDocument.transaction_id,
+                type: 'bank_slip',
+            }
+        });
         return res.json({ message: 'Document status updated successfully' });
     } catch (err) {
         console.log(err);

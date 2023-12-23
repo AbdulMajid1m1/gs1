@@ -16,8 +16,7 @@ import { useNavigate } from 'react-router-dom';
 const MemmberRegisteration = () => {
     // const sessionData = sessionStorage.getItem('saveCrNumberData');
     const selectedCr = JSON.parse(sessionStorage.getItem('selectedCr'));
-
-
+  
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
     const location = sessionStorage.getItem('location');
     const navigate = useNavigate();
@@ -350,7 +349,7 @@ const MemmberRegisteration = () => {
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
         // formData.append('online_payment', 'Enabled');
-        
+
         // formData.append('remember_token', 'TokenXYZ');
         // formData.append('parent_memberID', '100');
         formData.append('membership_category_id', selectedCategories.id)
@@ -389,18 +388,18 @@ const MemmberRegisteration = () => {
             formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, item.yearlyFee); // Adjust as per your actual property
             formData.append(`cart[cart_items][${currentIndex}][price]`, item.price); // Adjust as per your actual property
             formData.append(`cart[cart_items][${currentIndex}][product_type]`, item.productType); // Adjust as per your actual property
-            formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); // Adjust as per your actual property
+            // formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); // Adjust as per your actual property
             currentIndex++;
         });
 
         selectedOtherProducts.forEach((otherProduct) => {
             formData.append(`cart[cart_items][${currentIndex}][productID]`, otherProduct.id); // Adjust as per your actual property
             formData.append(`cart[cart_items][${currentIndex}][productName]`, otherProduct.product_name); // Adjust as per your actual property
-            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, otherProduct.price); // Assuming 'price' is already calculated based on the selected category
-            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.yearly_fee || 0); // Adjust if there's a separate yearly fee
+            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, 0); // Assuming 'price' is already calculated based on the selected category
+            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.price || 0); // Adjust if there's a separate yearly fee
             formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
             formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type); // Adjust as per your actual property
-            formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); // Adjust as per your actual property
+            // formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); // Adjust as per your actual property
             currentIndex++;
         });
 
@@ -514,13 +513,14 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col justify-center items-center">
                 <div className='h-auto sm:w-[85%] w-full border-l border-r border-primary'>
                     <div className='h-5 w-full bg-primary rounded-t-md'></div>
-                    <div className='h-16 w-full flex justify-between items-center px-5'>
-                        <p className='sm:text-2xl font-semibold text-sm text-secondary'>Member Registration</p>
+                    <div className='h-auto w-full flex justify-between items-center px-5 py-2'>
+                        <p className='sm:text-2xl w-full font-semibold text-sm text-secondary'>Member Registration</p>
+                        <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p>
                     </div>
                 </div>
 
-                <div className='h-auto sm:w-[85%] w-full p-6 shadow-xl border-l border-r border-primary'>
-                    <form>
+                <div className='h-auto sm:w-[85%] w-full p-6 shadow-xl border-l border-r border-b border-primary'>
+                    <form onSubmit={handleSubmit}>
                         {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                             <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label>
@@ -572,6 +572,7 @@ const MemmberRegisteration = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     id='email'
                                     placeholder='Email'
+                                    required
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
                         </div>
@@ -584,6 +585,7 @@ const MemmberRegisteration = () => {
                                     onChange={(e) => setCompanyEnglish(e.target.value)}
                                     id='companyEnglish'
                                     placeholder='Company Name English'
+                                    required
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
 
@@ -594,6 +596,7 @@ const MemmberRegisteration = () => {
                                     onChange={(e) => setCompanyArabic(e.target.value)}
                                     id='companyArabic'
                                     placeholder='Company Name Arabic'
+                                    required
                                     type='text' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
 
@@ -604,6 +607,7 @@ const MemmberRegisteration = () => {
                                     onChange={(e) => setContactPerson(e.target.value)}
                                     id='contactperson'
                                     placeholder='Contact Person'
+                                    required
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
 
@@ -652,6 +656,7 @@ const MemmberRegisteration = () => {
                                             borderRadius: '0px',
                                             border: 'none'
                                         }}
+                                        required
                                     />
 
                                 </div>
@@ -699,6 +704,7 @@ const MemmberRegisteration = () => {
                                             borderRadius: '0px',
                                             border: 'none',
                                         }}
+                                        required
                                     />
 
 
@@ -724,6 +730,7 @@ const MemmberRegisteration = () => {
                                     onChange={(e) => setZipCode(e.target.value)}
                                     id='zipcode'
                                     placeholder='Zip Code*'
+                                    required
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
 
@@ -760,6 +767,7 @@ const MemmberRegisteration = () => {
                                             variant='outlined'
                                         />
                                     )}
+                                    required
                                 />
                             </div>
 
@@ -775,6 +783,7 @@ const MemmberRegisteration = () => {
                                     id="country"
                                     options={country}
                                     value={selectedCountry}
+                                    required
                                     getOptionLabel={(option) => option?.name || ""}
                                     onChange={handleCountryName}
                                     onInputChange={(event, value) => {
@@ -818,6 +827,7 @@ const MemmberRegisteration = () => {
                                     id="state"
                                     options={filteredStates}
                                     value={selectedState}
+                                    required
                                     getOptionLabel={(option) => option?.name || ""}
                                     onChange={handleState}
                                     onInputChange={(event, value) => {
@@ -861,6 +871,7 @@ const MemmberRegisteration = () => {
                                     id="city"
                                     options={filteredCities}
                                     value={selectedCity}
+                                    required
                                     getOptionLabel={(option) => option?.name || ""}
                                     onChange={handleCity}
                                     onInputChange={(event, value) => {
@@ -907,6 +918,7 @@ const MemmberRegisteration = () => {
                                     id="category"
                                     options={categories}
                                     value={selectedCategories}
+                                    required
                                     getOptionLabel={(option) => option.name || ""}
                                     onChange={handleCategoryChange}
                                     onInputChange={(event, value) => {
@@ -1016,6 +1028,7 @@ const MemmberRegisteration = () => {
                                             placeholder='GTIN'
                                         />
                                     )}
+                                    required
                                     classes={{
                                         endAdornment: 'text-white',
                                     }}
@@ -1038,6 +1051,7 @@ const MemmberRegisteration = () => {
                                     multiple
                                     id='other'
                                     options={otherProductsOptions}
+                                    required
                                     getOptionLabel={(option) => option.product_name}
                                     value={selectedOtherProducts}
                                     onChange={handleOtherProductsChange}
@@ -1066,6 +1080,7 @@ const MemmberRegisteration = () => {
                                     id='upload'
                                     accept=".pdf,.doc,.docx"
                                     placeholder='Upload Company Documents'
+                                    required
                                     type='file' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div>
 
@@ -1075,7 +1090,7 @@ const MemmberRegisteration = () => {
                                 <input
                                     onChange={handleImageChange}
                                     accept="image/*"
-
+                                    required
                                     // onChange={(e) => setUploadNationalAddress(e.target.value)}
                                     id='uploadNational'
                                     type='file' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
@@ -1149,7 +1164,7 @@ const MemmberRegisteration = () => {
                             </div>
                         </div>
 
-                        <button onClick={handleSubmit} type='button' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
+                        <button type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
                             <i className="fas fa-check-circle mr-1"></i> Submit
                         </button>
 

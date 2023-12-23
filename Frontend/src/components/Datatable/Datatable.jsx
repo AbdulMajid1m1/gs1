@@ -612,7 +612,8 @@ const DataTable = ({
           }}
 
           pageSize={30}
-          rowsPerPageOptions={[30, 50, 100]}
+          // rowsPerPageOptions={[300, 500, 1000]}
+          pageSizeOptions={[100, 500, 1000]} 
           checkboxSelection={checkboxSelectionValue}
           filterModel={filterModel}
           onFilterModelChange={handleFilterModelChange}

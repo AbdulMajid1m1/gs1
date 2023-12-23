@@ -1,0 +1,135 @@
+.member-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .member-popup-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    /* width: auto;  */
+    /* height: auto; */
+    position: relative;
+    /* max-width: 400px; Set a maximum width if desired */
+  }
+  
+  .member-popup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    /* position: absolute; */
+    /* left: 50%; */
+    /* Add any other styling as needed */
+  }
+
+
+
+  .table-member-inoive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    max-height: 500px;
+    min-height: 180px;
+    overflow-x: auto;
+    overflow-y: auto;
+    /* border: 1px solid #021F69; */
+    border-radius: 3px;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-member-inoive table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 7px;
+  }
+  
+  .table-member-inoive table thead {
+    background-color: #021F69;
+    color: white;
+  }
+  
+  .table-member-inoive table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    font-size: 12px;
+  }
+  
+  .table-member-inoive table thead {
+    background-color: #021F69;
+    color: white;
+  }
+  .table-member-inoive table thead tr th {
+    padding: 10px;
+    color: white;
+    font-weight: 500;
+    font-size: 10px;
+    /* border: 1px solid #ccc; */
+  }
+  
+  .table-member-inoive table tbody tr td {
+    font-size: 10px; /* adjust font size as desired */
+    padding: 10px;
+    border: 1px solid black;
+    /* min height should be 30 */
+    color: #00006A;
+    font-weight: 500;
+    text-align: center;
+    /* height: 35px; */
+  }
+
+  .table-member-inoive thead tr th:nth-child(1),
+  .table-member-inoive thead tr th:nth-child(2),
+  .table-member-inoive thead tr th:nth-child(3),
+  .table-member-inoive thead tr th:nth-child(4),
+  .table-member-inoive thead tr th:nth-child(5) {
+    max-width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .table-member-inoive tbody tr td:nth-child(1),
+  .table-member-inoive tbody tr td:nth-child(2),
+  .table-member-inoive tbody tr td:nth-child(3),
+  .table-member-inoive tbody tr td:nth-child(4),
+  .table-member-inoive tbody tr td:nth-child(5) {
+    max-width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* change table row background */
+  .table-member-inoive tbody tr:nth-child(even) {
+    background-color: rgb(242, 242, 221);
+  }
+  
+
+  .table-member-inoive tfoot {
+    background-color: white;
+    color: #00006A;
+  }
+  
+  .table-member-inoive tfoot tr td {
+    padding: 10px;
+    font-weight: 500;
+    font-size: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
