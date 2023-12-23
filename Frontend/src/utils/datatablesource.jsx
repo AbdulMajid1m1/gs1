@@ -1592,8 +1592,8 @@ export const MembersDocumentColumn = [
     width: 180,
   },
   {
-    field: 'admin_id',
-    headerName: 'Admin ID',
+    field: 'uploaded_by',
+    headerName: 'Uploaded By',
     width: 180,
   },
   {

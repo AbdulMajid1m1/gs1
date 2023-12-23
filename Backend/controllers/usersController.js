@@ -226,7 +226,7 @@ export const createUser = async (req, res, next) => {
         console.log(cartValue)
 
         const data1 = {
-            topHeading: "Invoice",
+            topHeading: "INVOICE",
             secondHeading: "BILL TO",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -350,7 +350,8 @@ export const createUser = async (req, res, next) => {
                     transaction_id: transactionId,
                     user_id: newUser.id,
                     doc_type: "member_document",
-                    status: "pending"
+                    status: "pending",
+                    uploaded_by: newUser.email
                 },
                 {
                     type: "national_address",
@@ -358,7 +359,8 @@ export const createUser = async (req, res, next) => {
                     transaction_id: transactionId,
                     user_id: newUser.id,
                     doc_type: "member_document",
-                    status: "pending"
+                    status: "pending",
+                    uploaded_by: newUser.email
                 },
                 {
                     type: "invoice",
@@ -366,7 +368,8 @@ export const createUser = async (req, res, next) => {
                     transaction_id: transactionId,
                     user_id: newUser.id,
                     doc_type: "member_document",
-                    status: "pending"
+                    status: "pending",
+                    uploaded_by: newUser.email
                 }
             ];
 

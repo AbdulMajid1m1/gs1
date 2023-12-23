@@ -30,18 +30,18 @@ const BankSlip = () => {
         // setError('');
         const file = e.target.files[0];
         if (file) {
-          if (file.size <= 500 * 1024) {
-              setDocument(file);
-              setError(''); // Clear any previous error message
-          } else {
-              setError('File size should be 500KB or less');
-              e.target.value = null;
+            if (file.size <= 500 * 1024) {
+                setDocument(file);
+                setError(''); // Clear any previous error message
+            } else {
+                setError('File size should be 500KB or less');
+                e.target.value = null;
             }
         }
     };
 
 
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -59,65 +59,67 @@ const BankSlip = () => {
 
         //     setIsLoading(true);
         // }
-  
-       // Create a FormData object
-       const formData = new FormData();
-       formData.append('type', 'bank_slip');
-       formData.append('transaction_id', translationID || '');
-       formData.append('user_id', memberData?.id || ''); // Replace with the actual user ID
-       formData.append('doc_type', 'member_document');
-       formData.append('document', document);
-  
-  
+
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append('type', 'bank_slip');
+        formData.append('transaction_id', translationID || '');
+        formData.append('user_id', memberData?.id || ''); // Replace with the actual user ID
+        formData.append('doc_type', 'member_document');
+        formData.append('document', document);
+       
+        formData.append('uploaded_by', memberData.email);
+
+
         try {
-        const response = await newRequest.post('/memberDocuments', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-  
-        toast.success(response?.data?.message || 'Bank Slip Upload Successfully.', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-  
-  
-        console.log(response.data);
-        setTranslationID('');
-        setDocument('');
-        setDescription('');
-        navigate(-1);
-        setIsLoading(false);
-   
-  
-      } 
-      catch (error) {
-        setIsLoading(false);
-        toast.error(error?.response?.data?.error || 'Error', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-  
-  
-        console.log(error);
-      }
-  
-  
+            const response = await newRequest.post('/memberDocuments', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            toast.success(response?.data?.message || 'Bank Slip Upload Successfully.', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+
+
+            console.log(response.data);
+            setTranslationID('');
+            setDocument('');
+            setDescription('');
+            navigate(-1);
+            setIsLoading(false);
+
+
+        }
+        catch (error) {
+            setIsLoading(false);
+            toast.error(error?.response?.data?.error || 'Error', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+
+
+            console.log(error);
+        }
+
+
     };
-  
-    
+
+
 
 
     return (
@@ -176,44 +178,44 @@ const BankSlip = () => {
 
                                     {/* {memberData.payment_status === 0 && ( */}
                                     {/* {memberData?.payment_status === 0 && memberData.status !== 1 && ( */}
-                                        <Autocomplete
-                                            id="translate"
-                                            // options={[translationID]}
-                                            options={[{ transaction_id: memberData?.transaction_id }]}
-                                            value={selectedTranslationID}
-                                            getOptionLabel={(option) => option?.transaction_id || ''}
-                                            onChange={handleTranslationID}
-                                            onInputChange={(event, value) => {
-                                                if (!value) {
-                                                    // perform operation when input is cleared
-                                                    console.log("Input cleared");
-                                                }
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    InputProps={{
-                                                        ...params.InputProps,
-                                                        className: "text-white",
-                                                    }}
-                                                    InputLabelProps={{
-                                                        ...params.InputLabelProps,
-                                                        style: { color: "white" },
-                                                    }}
-                                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="-select-"
-                                                // required
-                                                />
-                                            )}
-                                            classes={{
-                                                endAdornment: "text-white",
-                                            }}
-                                            sx={{
-                                                "& .MuiAutocomplete-endAdornment": {
-                                                    color: "white",
-                                                },
-                                            }}
-                                        />
+                                    <Autocomplete
+                                        id="translate"
+                                        // options={[translationID]}
+                                        options={[{ transaction_id: memberData?.transaction_id }]}
+                                        value={selectedTranslationID}
+                                        getOptionLabel={(option) => option?.transaction_id || ''}
+                                        onChange={handleTranslationID}
+                                        onInputChange={(event, value) => {
+                                            if (!value) {
+                                                // perform operation when input is cleared
+                                                console.log("Input cleared");
+                                            }
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    className: "text-white",
+                                                }}
+                                                InputLabelProps={{
+                                                    ...params.InputLabelProps,
+                                                    style: { color: "white" },
+                                                }}
+                                                className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                                placeholder="-select-"
+                                            // required
+                                            />
+                                        )}
+                                        classes={{
+                                            endAdornment: "text-white",
+                                        }}
+                                        sx={{
+                                            "& .MuiAutocomplete-endAdornment": {
+                                                color: "white",
+                                            },
+                                        }}
+                                    />
                                     {/* )} */}
                                 </div>
 
