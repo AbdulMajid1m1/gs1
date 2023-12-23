@@ -66,7 +66,10 @@ export const getBrands = async (req, res, next) => {
             : {};
 
         const brands = await prisma.brands.findMany({
-            where: filterConditions
+            where: filterConditions,
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
         });
 
         res.json(brands);

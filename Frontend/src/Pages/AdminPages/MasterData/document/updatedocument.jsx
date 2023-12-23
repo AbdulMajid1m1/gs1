@@ -77,10 +77,10 @@ const handleUpdateBrand = async () => {
                      <div className="popup-container h-auto sm:w-[45%] w-full">
                        <div className="popup-form w-full">         
                           <form className='w-full'>
-                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update City</h2>
+                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Document</h2>
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">City name</label>
+                                <label htmlFor="field1" className="text-secondary">Document name</label>
                                 <input
                                   type="text"
                                   id="name"
@@ -102,8 +102,8 @@ const handleUpdateBrand = async () => {
     onChange={(e) => setstatus(e.target.value)}
     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
   >
-    <option value="0">0</option>
-    <option value="1">1</option>
+<option value="0">inactive</option>
+<option value="1">active</option>
   </select>
                               </div>
                             </div>
@@ -133,7 +133,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                Update City
+                                Update Document
                             </Button>
                             </div>
                           </form>

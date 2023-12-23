@@ -16,7 +16,7 @@ const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) => {
     try {
       const response = await newRequest.post('/createdocumentType/', {
         file_name: file_name,
-        status: status,
+        status: 1,
       });
 
       toast.success(`file_name ${file_name} has been added successfully.`, {
@@ -67,28 +67,18 @@ const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) => {
                              <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Document Type</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">file name</label>
+                                 <label htmlFor="field1" className="text-secondary">Document name</label>
                                  <input
                                    type="text"
                                    id="file_name"
                                    value={file_name}
                                    onChange={(e) => setfile_name(e.target.value)}
-                                   placeholder="Enter file name "
+                                   placeholder="Enter Document name "
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
-                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">status</label>
-                                 <input
-                                   type="text"
-                                   id="status"
-                                   value={status}
-                                   onChange={(e) => setstatus(e.target.value)}
-                                   placeholder="Enter status "
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                               </div>
+                             
                              </div>
 
                              <div className="w-full flex justify-center items-center gap-8 mt-5">

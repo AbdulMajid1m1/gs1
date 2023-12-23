@@ -105,7 +105,7 @@ const userSchema = Joi.object({
             price: Joi.string(),
             product_type: Joi.string(),
             quotation: Joi.string()
-        })),
+        })).min(1).required(),
         total: Joi.number(),
         request_type: Joi.string(),
         payment_type: Joi.string(),
@@ -226,7 +226,7 @@ export const createUser = async (req, res, next) => {
         console.log(cartValue)
 
         const data1 = {
-            topHeading: "Invoice",
+            topHeading: "INVOICE",
             secondHeading: "BILL TO",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -241,7 +241,7 @@ export const createUser = async (req, res, next) => {
                     cityName: value.city,
                 },
                 companyID: value.companyID,
-                membership_otherCategory: value.membership_otherCategory,
+                membership_otherCategory: value.membership_category,
                 gtin_subscription: {
                     products: {
                         member_category_description: cartValue?.cart_items[0]?.productName,
@@ -291,14 +291,6 @@ export const createUser = async (req, res, next) => {
         // now fetch the pdf file from the path and send it as attachment
         const invoiceBuffer = await fs.readFile(pdfFilePath);
 
-
-
-
-
-
-
-        // Now you can use pdfFilePath to access or send the PDF file
-        console.log(`PDF saved to: ${pdfFilePath}`);
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
         await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
 
@@ -337,11 +329,6 @@ export const createUser = async (req, res, next) => {
                 data: gtinSubscriptionData
             });
 
-
-
-
-
-
             const otherProductsData = cartData.slice(1).map(item => ({
                 transaction_id: transactionId,
                 user_id: newUser.id,
@@ -363,7 +350,8 @@ export const createUser = async (req, res, next) => {
                     transaction_id: transactionId,
                     user_id: newUser.id,
                     doc_type: "member_document",
-                    status: "pending"
+                    status: "pending",
+                    uploaded_by: newUser.email
                 },
                 {
                     type: "national_address",
@@ -371,7 +359,8 @@ export const createUser = async (req, res, next) => {
                     transaction_id: transactionId,
                     user_id: newUser.id,
                     doc_type: "member_document",
-                    status: "pending"
+                    status: "pending",
+                    uploaded_by: newUser.email
                 },
                 {
                     type: "invoice",
@@ -379,7 +368,8 @@ export const createUser = async (req, res, next) => {
                     transaction_id: transactionId,
                     user_id: newUser.id,
                     doc_type: "member_document",
-                    status: "pending"
+                    status: "pending",
+                    uploaded_by: newUser.email
                 }
             ];
 
@@ -399,6 +389,77 @@ export const createUser = async (req, res, next) => {
         res.status(201).json(transaction);
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+};
+
+
+// create sub user schema
+const subUserSchema = Joi.object({
+    user_type: Joi.string().max(20),
+    password: Joi.string().min(6).max(50).required(),
+    parent_memberID: Joi.string().max(50).required(),
+    fname: Joi.string(),
+    lname: Joi.string(),
+    email: Joi.string().email().required(),
+    mobile: Joi.string(),
+    cr_number: Joi.string(),
+    cr_activity: Joi.string(),
+    status: Joi.string().valid('active', 'inactive').default('active'),
+
+
+});
+
+
+
+export const createSubUser = async (req, res, next) => {
+
+    try {
+        const { error, value } = subUserSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const userData = { ...value };
+
+
+        // Check for duplicate email
+        const existingUser = await prisma.users.findFirst({
+            where: {
+                email: userData.email
+            },
+        });
+
+        if (existingUser) {
+            return res.status(409).json({ error: 'User with this email already exists' });
+        }
+
+        const hashedPassword = bcrypt.hashSync(userData.password, 10);
+        userData.password = hashedPassword;
+        // Insert new user
+        const newUser = await prisma.users.create({
+            data: userData,
+        });
+
+
+
+        // Send OTP Email
+        const emailSubject = `Welcome to GS1Ksa - Your Sub Admin Role`;
+        const emailContent = `
+        <h1>Welcome to GS1Ksa</h1>
+        <p>You have been assigned with the role: ${userData.user_type}</p>
+        <p>Your Password: <strong>${value.password}</strong></p>
+        <p>Please use this  email and Password to login.</p>
+      `;
+
+        await sendEmail({
+            toEmail: userData.email,
+            subject: emailSubject,
+            htmlContent: emailContent,
+        });
+
+        res.status(201).json(newUser);
+    } catch (error) {
         next(error);
     }
 };
@@ -446,6 +507,7 @@ export const getUserDetails = async (req, res, next) => {
             user_type: Joi.string(),
             slug: Joi.string(),
             email: Joi.string().email(),
+            parent_memberID: Joi.string(),
             // ... define validation for other allowed columns
         };
 
@@ -541,6 +603,9 @@ export const searchUsers = async (req, res, next) => {
             'transaction_id',
             'gcpGLNID',
             'gln',
+            'companyID',
+            'gpc',
+            'memberID'
         ];
 
         // Construct the search conditions for Prisma query

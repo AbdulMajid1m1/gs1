@@ -107,8 +107,8 @@ const handleUpdateBrand = async () => {
                                   placeholder="Enter activity"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
-                                  </div>
-                                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                  </div>
+                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                               <label htmlFor="status" className="text-secondary">
                                Status
                                 </label>
@@ -118,10 +118,11 @@ const handleUpdateBrand = async () => {
                                       onChange={(e) => setstatus(e.target.value)}
                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                        >
-                               <option value="0">0</option>
-                                 <option value="1">1</option>
+                               <option value="0">inactive</option>
+                                 <option value="1">active</option>
                                   </select>
                               </div>
+                                 
                             </div>
 
                             
@@ -149,7 +150,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                Update City
+                                Update Cr number
                             </Button>
                             </div>
                           </form>

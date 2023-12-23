@@ -210,7 +210,7 @@ export const updateCrs = async (req, res, next) => {
 export const deleteCrs = async (req, res, next) => {
     try {
         const schema = Joi.object({
-            id: Joi.number().integer().required(),
+            id: Joi.string().required(),
         });
         const { error } = schema.validate(req.params);
         if (error) {

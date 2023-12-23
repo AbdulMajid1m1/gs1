@@ -2,8 +2,8 @@ import express from 'express';
 import
     {
         getAllCities,createCities,getCitiesById,updateCities,deleteCities,
-        getAllCountries,createCountries,getCountriesById,updateCountries,deleteCountries,
-        getAllStates,createStates,getStatesById,updateStates,deleteStates,
+        getAllCountries,createCountries,getCountriesById,updateCountries,deleteCountries,getAllCountriesName,
+        getAllStates,createStates,getStatesById,updateStates,deleteStates,getAllStatesName,
         getCityByStateId, getStateByCountryId
     } from '../../controllers/countryStateCityControllers.js';
 
@@ -14,12 +14,14 @@ import
 const router = express.Router();
 // --------------------------Country----------------
 router.get('/getAllCountries', getAllCountries); 
+router.get('/getAllCountriesName', getAllCountriesName); 
 router.get("/getCountriesById/:id", getCountriesById)
 router.put("/updateCountries/:id", updateCountries)
 router.post("/createCountries", createCountries)
 router.delete("/deleteCountries/:id", deleteCountries)
 //-------------STATE----------------------------------
 router.get("/getAllStates", getAllStates);
+router.get("/getAllStatesName", getAllStatesName);
 router.get("/getStatesById/:id", getStatesById)
 router.put("/updateStates/:id", updateStates)
 router.post("/createStates", createStates)

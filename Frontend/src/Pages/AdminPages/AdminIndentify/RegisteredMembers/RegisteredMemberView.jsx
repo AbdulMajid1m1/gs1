@@ -19,6 +19,7 @@ import DataTable3 from '../../../../components/Datatable/Datatable3'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import MemberInvoicePopUp from './MemberInvoicePopUp'
 import MembersDetails from './MembersDetails';
+import SubMenusAddPopUp from './SubMenusAddPopUp';
 
 const RegisteredMembersView = () => {
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
@@ -37,7 +38,7 @@ const RegisteredMembersView = () => {
   const [brandsLoader, setBrandsLoader] = useState(true);
   const [memberInvoiceLoader, setMemberInvoiceLoader] = useState(true);
   const [memberBankSlipLoader, setMemberBankSlipLoader] = useState(true);
-  const [subMembersLoader, setSubMembersLoader] = useState(false);
+  const [subMembersLoader, setSubMembersLoader] = useState(true);
   const [memberHistoryLoader, setMemberHistoryLoader] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -52,6 +53,7 @@ const RegisteredMembersView = () => {
   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
   const [isAddMemberPopupVisible, setIsAddMemberPopupVisibility] = useState(false);
   const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
+  const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
 
 
   const fetchAllUserData = async () => {
@@ -75,7 +77,7 @@ const RegisteredMembersView = () => {
       // console.log(response.data);
       setMembersDocumentsData(response?.data || []);
       setMemberDocumentsLoader(false);
-
+      
     }
     catch (err) {
       console.log(err);
@@ -155,6 +157,23 @@ const RegisteredMembersView = () => {
   }
 
 
+  const fetchSubMembersData = async () => {
+    setSubMembersLoader(true);
+    try {
+      const response = await newRequest.get(`/users?parent_memberID=${gs1MemberData?.memberID}`);
+      
+      // console.log(response.data);
+      setSubMenusData(response?.data || []);
+      setSubMembersLoader(false)
+
+    } 
+    catch (err) {
+      console.log(err);
+      setSubMembersLoader(false)
+    }
+  };
+
+
   useEffect(() => {
 
     fetchAllUserData();
@@ -162,6 +181,7 @@ const RegisteredMembersView = () => {
 
     fetchMemberInvoiceData();
     fetchMemberbankSlipData();
+    fetchSubMembersData();
     fetchData(); // Calling the function within useEffect, not inside itself
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -181,7 +201,6 @@ const RegisteredMembersView = () => {
 
     // Filter out null values (parsing errors) and keep only valid JSON objects
     const filteredCartData = stringifiedCartData.filter((item) => item !== null);
-
     // console.log(filteredCartData || []);
     
     // Set the registeredProductsData
@@ -229,6 +248,12 @@ const RegisteredMembersView = () => {
 
     sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
+
+
+  const handleShowSubMenusPopup = () => {
+    setIsSubMenusPopupVisible(true);
+  };
+
 
 
 
@@ -644,7 +669,7 @@ const RegisteredMembersView = () => {
               <div className='flex justify-between'>
                 <p className='text-blue-500 font-sans font-semibold'>Sub-Members</p>
                 <button
-                  // onClick={handleShowCreatePopup}
+                  onClick={handleShowSubMenusPopup}
                   className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
                   <i className="fas fa-plus mr-1"></i>Add
                 </button>
@@ -673,7 +698,7 @@ const RegisteredMembersView = () => {
                     },
 
                   ]}
-                  uniqueId="subMenusTableId"
+                  uniqueId="customerListId"
 
                 />
               </div>
@@ -742,6 +767,11 @@ const RegisteredMembersView = () => {
         {/* Member Invoice component with Handle prop */}
         {isMemberInvoicePopupVisible && (
           <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshBrandData={fetchMemberInvoiceData} />
+        )}
+
+        {/* Add Sub Menus component with Handle prop */}
+        {isSubMenusPopupVisible && (
+          <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData}/>
         )}
 
 
