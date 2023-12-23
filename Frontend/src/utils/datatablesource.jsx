@@ -1076,13 +1076,13 @@ export const Gs1AllMembers = [
     headerName: 'MOBILE',
     width: 180,
   },
+  // {
+  //   field: 'code',
+  //   headerName: 'CODE',
+  //   width: 180,
+  // },
   {
-    field: 'code',
-    headerName: 'CODE',
-    width: 180,
-  },
-  {
-    field: 'member_category',
+    field: 'membership_category',
     headerName: 'MEMBER CATEGORY',
     width: 180,
   }, 
