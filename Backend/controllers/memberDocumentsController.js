@@ -13,6 +13,7 @@ import ejs from 'ejs';
 import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
+import { createMemberLogs } from '../utils/functions/historyLogs.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
@@ -213,7 +214,7 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath, landscapeMode 
 
         const pdfOptions = {
             path: outputFilePath,
-            format: 'Letter',
+            format: 'A4',
             printBackground: true,
             landscape: landscapeMode,
         };
@@ -390,37 +391,13 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
 
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, landscapeMode = true);
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
                 pdfBuffer = await fs1.readFile(Certificatepath);
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
-            // let pdfBuffer2;
-            // if (currentDocument.document) {
-            //     const userDocumentPath = currentDocument.document;
-            //     console.log("userDocupath", userDocumentPath);
-            //     // Extract the file name
-            //     const userDocumentName = path.basename(userDocumentPath);
-
-            //     console.log(userDocumentName);
-
-            //     // Construct the new path to read the file
-            //     const newFilePath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice', userDocumentName);
-
-            //     // Read the file into a buffer
-
-            //     try {
-            //         pdfBuffer2 = await fs1.readFile(newFilePath);
-            //     } catch (readError) {
-            //         console.error('Error reading second PDF:', readError.message);
-            //         pdfBuffer2 = null; // Set to null if file reading fails
-            //     }
-
-
-
-            // }[{"productID":"4","productName":"Category C ( 1,000 Barcodes )","registration_fee":"3000","yearly_fee":"2500","price":"5500","product_type":"gtin","quotation":"undefined"},{"productID":"9","productName":"GLN ( 20 Locations)","registration_fee":"3000","yearly_fee":"0","price":"3000","product_type":"undefined","quotation":"undefined"}]
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');

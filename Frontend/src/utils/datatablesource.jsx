@@ -3048,23 +3048,41 @@ export const submenusDataColumn = [
 
 
 
+
+
 export const memberHistoryColumnData = [
+  // {
+  //   field: 'transaction_id',
+  //   headerName: 'Transaction ID',
+  //   width: 180,
+  // },
   {
-    field: 'transaction_id',
-    headerName: 'Transaction ID',
+    field: 'subject',
+    headerName: 'Subject',
     width: 180,
   },
   {
-    field: 'Operation_date',
-    headerName: 'Operation date',
+    field: 'member_id',
+    headerName: 'Member ID',
     width: 180,
   },
   {
-    field: 'created_by',
-    headerName: 'Created by',
+    field: 'admin_id',
+    headerName: 'Admin ID',
     width: 180,
   },
-  
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    valueGetter: (params) => new Date(params.getValue('created_at')).toLocaleString(),
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    valueGetter: (params) => new Date(params.getValue('updated_at')).toLocaleString(),
+  },
 
 
 
