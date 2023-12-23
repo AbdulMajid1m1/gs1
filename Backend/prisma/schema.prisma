@@ -1938,7 +1938,7 @@ model users {
   payment_status      Int?      @default(0, map: "DF_users_payment_status")
   online_payment      String?   @db.NVarChar(Max)
   remember_token      String?   @db.NVarChar(Max)
-  parent_memberID     Int?
+  parent_memberID     String?   @db.NVarChar(Max)
   industryTypes       String?   @db.NVarChar(Max)
   invoice_file        String?   @db.NVarChar(Max)
   otp_status          Int?

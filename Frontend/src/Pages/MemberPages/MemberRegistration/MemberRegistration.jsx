@@ -350,7 +350,7 @@ const MemmberRegisteration = () => {
         formData.append('contactPerson', contactPerson);
         formData.append('companyLandLine', companyLandLine);
         // formData.append('online_payment', 'Enabled');
-        
+
         // formData.append('remember_token', 'TokenXYZ');
         // formData.append('parent_memberID', '100');
         formData.append('membership_category_id', selectedCategories.id)
@@ -396,8 +396,8 @@ const MemmberRegisteration = () => {
         selectedOtherProducts.forEach((otherProduct) => {
             formData.append(`cart[cart_items][${currentIndex}][productID]`, otherProduct.id); // Adjust as per your actual property
             formData.append(`cart[cart_items][${currentIndex}][productName]`, otherProduct.product_name); // Adjust as per your actual property
-            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, otherProduct.price); // Assuming 'price' is already calculated based on the selected category
-            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.yearly_fee || 0); // Adjust if there's a separate yearly fee
+            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, 0); // Assuming 'price' is already calculated based on the selected category
+            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.price || 0); // Adjust if there's a separate yearly fee
             formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
             formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type); // Adjust as per your actual property
             // formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); // Adjust as per your actual property
