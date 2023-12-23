@@ -2267,6 +2267,9 @@ export const crnumber__ = [
     field: 'isRegistered',
     headerName: 'isRegistered',
     width: 180,
+     valueGetter: (params) => {
+      return params.value === 1 ? 'Yes' : 'No';
+    },
   },
   {
     field: 'created_at',
