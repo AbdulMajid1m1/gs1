@@ -1936,6 +1936,9 @@ export const masterDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
   {
     field: 'created_at',
@@ -1970,6 +1973,9 @@ export const document = [
     field: 'status',
     headerName: 'status',
     width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
 
   {
@@ -2004,6 +2010,9 @@ export const product_packaging = [
     field: 'status',
     headerName: 'status',
     width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
 
   {
@@ -2049,6 +2058,9 @@ export const Other_Products = [
     field: 'status',
     headerName: 'status',
     width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
   {
     field: 'code',
@@ -2247,6 +2259,9 @@ export const crnumber__ = [
     field: 'status',
     headerName: 'status',
     width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
   {
     field: 'isRegistered',
@@ -2284,7 +2299,10 @@ export const document_type = [
  {
     field: 'status',
     headerName: 'status',
-    width: 180,
+   width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
   {
     field: 'created_at',

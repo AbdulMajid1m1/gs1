@@ -11,7 +11,7 @@ const documentSchema = Joi.object({
 });
 const document_typesSchema = Joi.object({
     file_name: Joi.string().max(255).required(),
-    status: Joi.string().max(255).required(),
+    status: Joi.number().valid(0, 1).required(),
 
 });
 export const createdocument = async (req, res, next) => {
