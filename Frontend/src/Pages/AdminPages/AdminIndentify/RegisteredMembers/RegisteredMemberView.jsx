@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TextField } from '@mui/material'
 import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
@@ -259,14 +258,44 @@ const RegisteredMembersView = () => {
   };
 
   const handleShowMemberInvoicePopup = (row) => {
-    setIsMemberInvoicePopupVisible(true);
-
-    sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    if (row.status === 'approved') {
+      toast.info('No any pending invoice', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      // If status is not 'approved', proceed with showing the popup
+      setIsMemberInvoicePopupVisible(true);
+      sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    }
+    // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
 
 
   const handleShowSubMenusPopup = () => {
-    setIsSubMenusPopupVisible(true);
+    // setIsSubMenusPopupVisible(true);
+    // console.log(gs1MemberData)
+    if (gs1MemberData?.memberID === null) {
+      toast.info('User is not active', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      setIsSubMenusPopupVisible(true);
+    }
+
   };
 
 

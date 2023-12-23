@@ -35,7 +35,7 @@ const handleUpdateBrand = async () => {
       user_id: brandUserId,
     });
 
-    toast.success(response?.data?.message || 'Status updated successfully', {
+    toast.success(response?.data?.message || 'Brand updated successfully', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -164,7 +164,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                Update Brand
+                                SAVE CHANGES
                             </Button>
                             </div>
                           </form>
