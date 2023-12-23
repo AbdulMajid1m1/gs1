@@ -281,11 +281,11 @@ model chats {
 }
 
 model cities {
-  id         String    @id @default(cuid())
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
   state_id   Int?
-   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model classes {
@@ -1038,9 +1038,9 @@ model member_documents {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
-
-  status        String? @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
-  reject_reason String? @db.VarChar(1000)
+  uploaded_by    String?
+  status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
+  reject_reason  String?  @db.VarChar(1000)
 }
 
 model member_history_logs {
@@ -1733,11 +1733,11 @@ model staff_help_desks {
 }
 
 model states {
-  id         String    @id @default(cuid())
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
   country_id Int?
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model subscribes {

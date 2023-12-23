@@ -77,7 +77,7 @@ const RegisteredMembersView = () => {
       // console.log(response.data);
       setMembersDocumentsData(response?.data || []);
       setMemberDocumentsLoader(false);
-
+      
     }
     catch (err) {
       console.log(err);

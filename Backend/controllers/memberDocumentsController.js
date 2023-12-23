@@ -19,7 +19,8 @@ export const createMemberDocument = async (req, res, next) => {
         type: Joi.string().required(),
         transaction_id: Joi.string().allow(''),
         user_id: Joi.string().required(),
-        doc_type: Joi.string().default('member_document')
+        doc_type: Joi.string().default('member_document'),
+        uploaded_by: Joi.string(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -201,7 +202,7 @@ export const updateMemberDocument = async (req, res, next) => {
 
 
 
-async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
+async function convertEjsToPdf(ejsFilePath, data, outputFilePath, landscapeMode = false) {
     try {
         const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
         const htmlContent = ejs.render(ejsTemplate, { data });
@@ -213,7 +214,8 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
         const pdfOptions = {
             path: outputFilePath,
             format: 'Letter',
-            printBackground: true
+            printBackground: true,
+            landscape: landscapeMode,
         };
 
         await page.pdf(pdfOptions);
@@ -388,7 +390,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
 
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath);
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, landscapeMode = true);
                 pdfBuffer = await fs1.readFile(Certificatepath);
 
                 // Send an email based on the updated status
@@ -423,7 +425,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             cart.cart_items = cartData
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
-                topHeading: "Recipient",
+                topHeading: "RECEIPT",
                 secondHeading: "RECEIPT FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
@@ -512,7 +514,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         transaction_id: currentDocument.transaction_id,
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
-                        status: 'approved'
+                        status: 'approved',
+                        // TODO: take email form current admin token
+                        // uploaded_by: req.admin.email, // Assuming the admin is logged in
+                        uploaded_by: 'admin@gs1sa.link',
                     },
                     {
                         type: 'receipt',
@@ -520,7 +525,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         transaction_id: currentDocument.transaction_id,
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
-                        status: 'approved'
+                        status: 'approved', 
+                        // TODO: take email form current admin token
+                        // uploaded_by: req.admin.email, // Assuming the admin is logged in
+                        uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
                     }
                 ]
             });
@@ -531,8 +539,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Update the document status in the database
             // document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
-            
-                await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
+
+            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
             await prisma.member_documents.update({
                 where: { id: documentId },
                 data: { status: value.status }
@@ -547,14 +555,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
-            // Delete all documents of type 'bank_slip'
-            await prisma.member_documents.deleteMany({
-                where: {
-                    user_id: currentDocument.user_id,
-                    transaction_id: currentDocument.transaction_id,
-                    type: 'bank_slip',
-                }
-            });
+
 
 
             // Send email with optional reject reason
@@ -562,6 +563,35 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         }
 
+        // Delete all documents of type 'bank_slip'
+        const bankSlipDocuments = await prisma.member_documents.findMany({
+            where: {
+                user_id: currentDocument.user_id,
+                transaction_id: currentDocument.transaction_id,
+                type: 'bank_slip',
+            }
+        });
+        // bankslip path in doucment table is like this \uploads\documents\memberDocuments\document-1703229100646.pdf
+        for (const document of bankSlipDocuments) {
+            const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
+            console.log("deletingDocumentPath");
+            console.log(deletingDocumentPath);
+            try {
+                if (fsSync.existsSync(deletingDocumentPath)) {
+                    fsSync.unlinkSync(deletingDocumentPath);
+                }
+            } catch (err) {
+                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
+            }
+        }
+
+        await prisma.member_documents.deleteMany({
+            where: {
+                user_id: currentDocument.user_id,
+                transaction_id: currentDocument.transaction_id,
+                type: 'bank_slip',
+            }
+        });
         return res.json({ message: 'Document status updated successfully' });
     } catch (err) {
         console.log(err);
