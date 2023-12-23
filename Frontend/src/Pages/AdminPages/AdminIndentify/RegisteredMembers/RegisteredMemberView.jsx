@@ -3,7 +3,7 @@ import { TextField } from '@mui/material'
 import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
-import { MembersBrandsColumn, MembersDocumentColumn, financeColumn, memberHistoryColumnData, registeredmemberColumn, submenusDataColumn } from '../../../../utils/datatablesource'
+import { MembersBrandsColumn, MembersDocumentColumn, bankSlipColumn, financeColumn, memberHistoryColumnData, registeredmemberColumn, submenusDataColumn } from '../../../../utils/datatablesource'
 import newRequest from '../../../../utils/userRequest'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -58,8 +58,10 @@ const RegisteredMembersView = () => {
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
     try {
+      console.log(gs1MemberData?.memberID);
       const response = await newRequest.get(`/logs/memberLogs/?member_id=${gs1MemberData?.memberID}`);
-      // console.log(response.data);
+      console.log("member history");
+      console.log(response.data);
       setMemberHistoryData(response?.data || []);
       setMemberHistoryLoader(false);
 
@@ -608,17 +610,6 @@ const RegisteredMembersView = () => {
                     buttonVisibility={false}
                     dropDownOptions={[
                       {
-                        label: "View",
-                        icon: (
-                          <VisibilityIcon
-                            fontSize="small"
-                            color="action"
-                            style={{ color: "rgb(37 99 235)" }}
-                          />
-                        ),
-                        action: handleView,
-                      },
-                      {
                         label: "Activation",
                         icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                         ,
@@ -637,11 +628,12 @@ const RegisteredMembersView = () => {
                 >
                   <DataTable3 data={filteredMemberDetails}
                     title="Member Bank Slip"
-                    columnsName={financeColumn}
+                    columnsName={bankSlipColumn}
                     loading={memberBankSlipLoader}
                     secondaryColor="secondary"
                     buttonVisibility={false}
                     checkboxSelection={"disabled"}
+                    actionColumnVisibility={false}
 
                     dropDownOptions={[
                       {
