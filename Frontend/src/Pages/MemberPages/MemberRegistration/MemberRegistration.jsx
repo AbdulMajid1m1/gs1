@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 const MemmberRegisteration = () => {
     // const sessionData = sessionStorage.getItem('saveCrNumberData');
     const selectedCr = JSON.parse(sessionStorage.getItem('selectedCr'));
-  
+
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
     const location = sessionStorage.getItem('location');
     const navigate = useNavigate();
@@ -963,45 +963,9 @@ const MemmberRegisteration = () => {
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2'>
                                 <label className='text-secondary font-semibold' htmlFor='GTIN'>GTIN<span className='text-red-600'>*</span></label>
-                                {/* <Autocomplete
-                                    id="GTIN"
-                                    options={gtinNumber}
-                                    value={selectedGtinNumber}
-                                    getOptionLabel={(option) => option?.member_category_description || ""}
-                                    onChange={handleGtinNumber}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            console.log("Input cleared");
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: "text-white",
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: "white" },
-                                            }}
-                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="GTIN"
-                                        // required
-                                        />
-                                    )}
-                                    classes={{
-                                        endAdornment: "text-white",
-                                    }}
-                                    sx={{
-                                        "& .MuiAutocomplete-endAdornment": {
-                                            color: "white",
-                                        },
-                                    }}
-                                /> */}
-                                {/* {selectedCategories ? ( // Render GTIN Autocomplete only if a category is selected */}
                                 <Autocomplete
                                     id='GTIN'
+                                    disabled={!selectedCategories}
                                     // options={gtinNumber}
                                     options={selectedCategories ? gtinNumber : []}
                                     value={selectedGtinNumber}
@@ -1015,6 +979,7 @@ const MemmberRegisteration = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             autoComplete="off"
+                                 
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
@@ -1038,10 +1003,7 @@ const MemmberRegisteration = () => {
                                         },
                                     }}
                                 />
-                                {/* // ) : (
-                                //     // You can add any placeholder or message when no category is selected
-                                //     <p>Please select a Membership category to enable GTIN selection.</p>
-                                // )} */}
+
                             </div>
 
 
@@ -1050,6 +1012,7 @@ const MemmberRegisteration = () => {
                                 <Autocomplete
                                     multiple
                                     id='other'
+                                    disabled={!selectedGtinNumber || selectedGtinNumber.length === 0}
                                     options={otherProductsOptions}
                                     required
                                     getOptionLabel={(option) => option.product_name}
