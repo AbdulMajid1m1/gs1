@@ -72,7 +72,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
         fetchAllUserData();
 
         // Close the popup
-        setVisibility(false);
+        handleCloseInvoicePopup();
       }
     } catch (err) {
       console.log(err);

@@ -281,7 +281,7 @@ const RegisteredMembersView = () => {
   const handleShowSubMenusPopup = () => {
     // setIsSubMenusPopupVisible(true);
     // console.log(gs1MemberData)
-    if (gs1MemberData?.memberID === null) {
+    if (allUserData?.memberID === null) {
       toast.info('User is not active', {
         position: "top-right",
         autoClose: 2000,
@@ -450,7 +450,7 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={gs1MemberData} />
+              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} />
 
 
               {/* Registered Products */}
@@ -800,7 +800,9 @@ const RegisteredMembersView = () => {
 
         {/* Member Invoice component with Handle prop */}
         {isMemberInvoicePopupVisible && (
-          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshBrandData={fetchMemberInvoiceData} />
+          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData} 
+            fetchAllUserData={fetchAllUserData}
+          />
         )}
 
         {/* Add Sub Menus component with Handle prop */}
