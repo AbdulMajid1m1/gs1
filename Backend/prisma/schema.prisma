@@ -207,14 +207,15 @@ model bookings {
 }
 
 model brands {
-  id         String   @id @default(cuid())
-  name       String   @db.NVarChar(255)
-  name_ar    String   @db.NVarChar(255)
-  status     String   @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
-  user_id    String
-  // use default value for created_at
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id                String   @id @default(cuid())
+  name              String   @db.NVarChar(255)
+  name_ar           String   @db.NVarChar(255)
+  status            String   @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
+  user_id           String
+  companyID         String?
+  brand_certificate String?  @db.NVarChar(Max)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
 }
 
 model brandsForApproval {
@@ -350,13 +351,13 @@ model cr_documents {
 }
 
 model crs {
-  id           String    @id @default(cuid())
-  cr           String?   @db.NVarChar(Max)
-  activity     String?   @db.NVarChar(Max)
+  id           String   @id @default(cuid())
+  cr           String?  @db.NVarChar(Max)
+  activity     String?  @db.NVarChar(Max)
   status       Int?
-  isRegistered Int       @default(0, map: "DF_crs_isRegistered")
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  isRegistered Int      @default(0, map: "DF_crs_isRegistered")
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
 }
 
 model email_reminders {

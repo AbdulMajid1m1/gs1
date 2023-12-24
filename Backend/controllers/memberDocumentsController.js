@@ -272,7 +272,20 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let pdfBuffer;
         let userUpdateResult;
         let pdfFilename;
-        let cart
+        let cart;
+
+        const bankSlipDocuments = await prisma.member_documents.findMany({
+            where: {
+                user_id: currentDocument.user_id,
+                transaction_id: currentDocument.transaction_id,
+                type: 'bank_slip',
+            }
+        });
+        if (bankSlipDocuments.length === 0) {
+            return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
+        }
+
+
         if (value.status === 'approved') {
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
@@ -539,13 +552,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         }
 
         // Delete all documents of type 'bank_slip'
-        const bankSlipDocuments = await prisma.member_documents.findMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
-            }
-        });
+
+
+
         // bankslip path in doucment table is like this \uploads\documents\memberDocuments\document-1703229100646.pdf
         for (const document of bankSlipDocuments) {
             const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
