@@ -11,7 +11,7 @@ const Adddocumment = ({ isVisible, setVisibility, refreshBrandData }) => {
     
 
     const handleAddCompany = async () => {
-    //  integrate the post api in try catch blcck
+    
     try {
       const response = await newRequest.post('/createdocument/', {
         name: name,
@@ -57,7 +57,7 @@ const Adddocumment = ({ isVisible, setVisibility, refreshBrandData }) => {
    
   return (
     <div>
-          {/* create the post api popup */}
+         
           {isVisible && (
                     <div className="popup-overlay">
                       <div className="popup-container h-auto sm:w-[45%] w-full">

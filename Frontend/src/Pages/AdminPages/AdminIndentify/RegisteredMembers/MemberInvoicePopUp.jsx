@@ -75,7 +75,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
         toast.success("User Activated Successfully");
         setLoading(false);
         refreshMemberInoviceData();
-        MemberbankSlip();
+        // MemberbankSlip();
         fetchAllUserData();
         fetchMemberbankSlipData()
 
