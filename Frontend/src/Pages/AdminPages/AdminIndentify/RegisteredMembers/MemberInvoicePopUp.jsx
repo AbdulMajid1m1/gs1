@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData }) => {
+const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
   //   const [status, setStatus] = useState("");
@@ -70,9 +70,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
       //   console.log(res.data);
       if (res.status === 200) {
-        toast.success("Invoice Status Updated Successfully!");
+        toast.success("User Activated Successfully");
         setLoading(false);
         refreshMemberInoviceData();
+        MemberbankSlip();
         fetchAllUserData();
 
         // Close the popup

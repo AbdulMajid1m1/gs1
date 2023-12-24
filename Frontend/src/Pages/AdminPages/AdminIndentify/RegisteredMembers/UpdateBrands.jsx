@@ -12,27 +12,51 @@ const UpdateBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [brandName, setBrandName] = useState(updateBrandData?.name || '');
     const [brandNameArabic, setBrandNameArabic] = useState(updateBrandData?.name_ar || '');
     const [brandStatus, setBrandStatus] = useState(updateBrandData?.status || '');
-    const [brandUserId, setBrandUserId] = useState(updateBrandData?.user_id || '');
+    // const [brandUserId, setBrandUserId] = useState(updateBrandData?.user_id || '');
+    const [updateBrandCertificate, setUpdateBrandCertificate] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
 
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
       };
+
     
+    const handleFileChange = (e) => {
+      // setError('');
+      const file = e.target.files[0];
+        if (file) {
+          if (file.size <= 500 * 1024) {
+            setUpdateBrandCertificate(file);
+              setError(''); // Clear any previous error message
+          } else {
+            setError('File size should be 500KB or less');
+            e.target.value = null;
+          }
+        }
+      };
 
 
 
 const handleUpdateBrand = async () => {
   // console.log(brandUserId);
   setLoading(true);
+
+  const formData = new FormData();
+  formData.append('name', brandName);
+  formData.append('name_ar', brandNameArabic);
+  formData.append('status', 'active');
+  formData.append('user_id', updateBrandData?.id);
+  formData.append('companyID', updateBrandData?.companyID);
+  formData.append('brandCertificate', updateBrandCertificate);
+
  
   try {
-    const response = await newRequest.put(`/brands/${updateBrandData?.id}`, {
-      name: brandName,
-      name_ar: brandNameArabic,
-      status: brandStatus,
-      user_id: brandUserId,
+    const response = await newRequest.put(`/brands/${updateBrandData?.id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     toast.success(response?.data?.message || 'Brand updated successfully', {
@@ -112,10 +136,10 @@ const handleUpdateBrand = async () => {
 
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">Status</label>
+                                <label htmlFor="field3" className="text-secondary">Status</label>
                                 <select
                                   type="text"
-                                  id="field1"
+                                  id="field3"
                                   value={brandStatus}
                                   onChange={(e) => setBrandStatus(e.target.value)}
                                 //   readOnly
@@ -128,16 +152,14 @@ const handleUpdateBrand = async () => {
                               </div>
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary">User Id</label>
-                                <input
-                                  type="text"
-                                  id="field2"
-                                  value={brandUserId}
-                                  onChange={(e) => setBrandUserId(e.target.value)}
-                                  placeholder="User Id"
-                                //   readOnly
+                                <label htmlFor="field4" className="text-secondary">Documents</label>
+                                  <input
+                                  type="file"
+                                  id="field4"
+                                  onChange={handleFileChange}
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
+                                {error && <p className="text-red-500">{error}</p>}
                               </div>
                             </div>
 
