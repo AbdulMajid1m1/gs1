@@ -45,7 +45,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
         user_id: gs1MemberData?.id, // Replace with the actual user ID
       });
 
-      toast.success(`Company ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
+      toast.success(`Brand ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -140,7 +140,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                 >
-                                  Update Brand
+                                  SAVE
                               </Button>
                              </div>
                            </form>

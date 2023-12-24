@@ -6,7 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
+const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData
+}) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
   //   const [status, setStatus] = useState("");
@@ -72,15 +73,18 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
       if (res.status === 200) {
         toast.success("Invoice Status Updated Successfully!");
         setLoading(false);
-        refreshBrandData();
+        refreshMemberInoviceData();
+        fetchAllUserData();
+        fetchMemberbankSlipData()
 
+        fetchMemberHistoryData();
         // Close the popup
-        setVisibility(false);
+        handleCloseInvoicePopup();
       }
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.error || "Something went wrong!");
     }
   };
 

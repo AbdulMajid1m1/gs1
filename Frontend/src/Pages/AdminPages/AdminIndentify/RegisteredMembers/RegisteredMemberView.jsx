@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TextField } from '@mui/material'
 import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
@@ -20,15 +19,13 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import MemberInvoicePopUp from './MemberInvoicePopUp'
 import MembersDetails from './MembersDetails';
 import SubMenusAddPopUp from './SubMenusAddPopUp';
-
+import { useParams } from 'react-router-dom';
 const RegisteredMembersView = () => {
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
 
-  const { rowSelectionModel, setRowSelectionModel,
-    tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
-  const [filteredData, setFilteredData] = useState([]);
-
+  const { Id } = useParams();
+  console.log(Id)
   const [allUserData, setAllUserData] = useState([]);
   const [registeredProductsData, setRegisteredProductsData] = useState([]);
   const [membersDocuemtsData, setMembersDocumentsData] = useState([]);
@@ -71,13 +68,47 @@ const RegisteredMembersView = () => {
     }
   };
 
+  const [editableData, setEditableData] = useState({
+    companyNameEnglish: '',
+    companyNameArabic: '',
+    country: '',
+    countryShortName: '', // Change this to the correct property
+    state: '',
+    city: '',
+    zipCode: '',
+    mobileNo: '',
+    contactPerson: '',
 
+  });
+
+  const handleInputChange = (field, value) => {
+    setEditableData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
 
   const fetchAllUserData = async () => {
     try {
       const response = await newRequest.get(`/users?id=${gs1MemberData?.id}`);
       // console.log(response.data[0]);
-      setAllUserData(response?.data[0] || []);
+      const data = response?.data[0] || [];
+      setAllUserData(data);
+      setEditableData(
+        {
+          companyNameEnglish: data?.company_name_eng,
+          companyNameArabic: data?.company_name_arabic,
+          country: data?.country,
+          countryShortName: data?.country,
+          state: data?.state,
+          city: data?.city,
+          zipCode: data?.zip_code,
+          mobileNo: data?.mobile,
+          contactPerson: data?.contactPerson,
+        }
+      )
+
+
       setIsLoading(false)
 
     }
@@ -261,14 +292,44 @@ const RegisteredMembersView = () => {
   };
 
   const handleShowMemberInvoicePopup = (row) => {
-    setIsMemberInvoicePopupVisible(true);
-
-    sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    if (row.status === 'approved') {
+      toast.info('No any pending invoice', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      // If status is not 'approved', proceed with showing the popup
+      setIsMemberInvoicePopupVisible(true);
+      sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    }
+    // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
 
 
   const handleShowSubMenusPopup = () => {
-    setIsSubMenusPopupVisible(true);
+    // setIsSubMenusPopupVisible(true);
+    // console.log(gs1MemberData)
+    if (allUserData?.memberID === null) {
+      toast.info('User is not active', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      setIsSubMenusPopupVisible(true);
+    }
+
   };
 
 
@@ -423,7 +484,7 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={gs1MemberData} />
+              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
 
 
               {/* Registered Products */}
@@ -773,7 +834,9 @@ const RegisteredMembersView = () => {
 
         {/* Member Invoice component with Handle prop */}
         {isMemberInvoicePopupVisible && (
-          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshBrandData={fetchMemberInvoiceData} />
+          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
+            fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
+          />
         )}
 
         {/* Add Sub Menus component with Handle prop */}
