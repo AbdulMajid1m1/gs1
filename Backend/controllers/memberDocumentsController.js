@@ -524,11 +524,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             const logData = {
                 subject: 'Member Approved',
                 // user user memberId
-                member_id: existingUser.memberID,
+                member_id: userUpdateResult.memberID,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
             }
+            console.log("logData", logData);
 
             await createMemberLogs(logData);
 
