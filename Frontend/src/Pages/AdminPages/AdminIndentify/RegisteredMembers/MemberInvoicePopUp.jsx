@@ -6,10 +6,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
+// const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
+const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData
+}) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
-//   const [status, setStatus] = useState("");
+  //   const [status, setStatus] = useState("");
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(gs1MemberInvoiceData?.status); // Default to "Approved"
   const [loading, setLoading] = useState(false);
@@ -25,18 +27,18 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
       const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
-  
+
       let total = 0;
       const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
       cartItems.forEach((item) => {
         total += parseInt(item.price); // Make sure to parse the price as an integer
       });
       setTotalPrice(total);
-    } 
+    }
     catch (err) {
       console.log(err);
     }
-  
+
 
   }
 
@@ -61,22 +63,30 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     // console.log(rejectBody);
     // console.log(approvedBody);
     try {
-      const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, selectedStatus === "approved" ? approvedBody : rejectBody);
+      // const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`,
+      //   { selectedStatus === "approved" ? approvedBody : rejectBody,
+      // });
 
-      // const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, data);
-    //   console.log(res.data);
+      const body = selectedStatus === "approved" ? approvedBody : rejectBody;
+      console.log(status);
+      const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
+      //   console.log(res.data);
       if (res.status === 200) {
-        toast.success("Invoice Status Updated Successfully!");
+        toast.success("User Activated Successfully");
         setLoading(false);
-        refreshBrandData();
+        refreshMemberInoviceData();
+        MemberbankSlip();
+        fetchAllUserData();
+        fetchMemberbankSlipData()
 
+        fetchMemberHistoryData();
         // Close the popup
-        setVisibility(false);
+        handleCloseInvoicePopup();
       }
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.error || "Something went wrong!");
     }
   };
 
@@ -152,25 +162,25 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                     </thead>
                     <tbody>
                       {memberInoviceData.map((item, index) => {
-                          const cartItems = JSON.parse(item.cart_items);
-                          return cartItems.map((cartItem, cartIndex) => (
-                            <tr key={cartIndex}>
-                              <td>{cartItem.productName}</td>
-                              <td>{cartItem.registration_fee}</td>
-                              <td>{cartItem.yearly_fee}</td>
-                              <td>{cartItem.price}</td>
-                            </tr>
-                          ));
-                        })}                      
-                    </tbody>
-                      <tfoot>
-                          <tr>
-                            <td colSpan="3" className="text-right font-bold">Total:</td>
-                            <td>{totalPrice}</td>
+                        const cartItems = JSON.parse(item.cart_items);
+                        return cartItems.map((cartItem, cartIndex) => (
+                          <tr key={cartIndex}>
+                            <td>{cartItem.productName}</td>
+                            <td>{cartItem.registration_fee}</td>
+                            <td>{cartItem.yearly_fee}</td>
+                            <td>{cartItem.price}</td>
                           </tr>
-                      </tfoot>
-                </table>
-            </div>
+                        ));
+                      })}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colSpan="3" className="text-right font-bold">Total:</td>
+                        <td>{totalPrice}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
 
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                   <button

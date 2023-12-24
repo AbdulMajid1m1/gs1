@@ -63,6 +63,9 @@ import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
 import MemberCrNumber from "./Pages/MemberPages/MemberCrNumber/MemberCrNumber";
 import Document_type from './Pages/AdminPages/MasterData/documentype/documenttype';
 import MemberData from "./Pages/MemberPages/MemberData/MemberData";
+import MemberProfileData from "./Contexts/MemberProfileData";
+import UpdateProducts from "./Pages/AdminPages/AdminIndentify/Products/UpdateProducts";
+
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -174,6 +177,10 @@ const App = () => {
 
                             <Route path="registered-members" element={<RegisteredMembers />} />
 
+                            {/* <Route
+                              path="registered-members/view-registered-member/:Id"
+                              element={<MemberProfileData><RegisteredMembersView /></MemberProfileData>}
+                            /> */}
                             <Route
                               path="registered-members/view-registered-member/:Id"
                               element={<RegisteredMembersView />}
@@ -186,6 +193,7 @@ const App = () => {
 
                             <Route path="brands" element={<Brands />} />
                             <Route path="products" element={<Products />} />
+                            <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
                             <Route path="member-products" element={<MemberProducts />} />
                             <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />

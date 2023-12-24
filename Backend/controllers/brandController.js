@@ -2,14 +2,14 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
-
-
-
+import path from 'path';
+import fs from 'fs';
 const brandSchema = Joi.object({
     name: Joi.string().max(255).required(),
     name_ar: Joi.string().max(255).required(),
     status: Joi.string().valid('active', 'inactive').required(),
     user_id: Joi.string().required(),
+    companyID: Joi.string().required(),
 });
 
 export const createBrand = async (req, res, next) => {
@@ -19,8 +19,24 @@ export const createBrand = async (req, res, next) => {
             return res.status(400).json({ error: error.details[0].message });
         }
 
+        const uploadedCertificate = req.files?.brandCertificate;
+        if (!uploadedCertificate) {
+            return next(createError(400, 'Brand Certificate is required'));
+        }
+
+        const certificate = uploadedCertificate[0];
+        const certificateName = certificate.filename;
+        certificate.destination = certificate.destination.replace('public', '');
+        const certificatePath = path.join(certificate.destination, certificateName);
+
+        let brandData = {
+            ...value,
+            brand_certificate: certificatePath,
+        };
+
+
         const brand = await prisma.brands.create({
-            data: value,
+            data: brandData,
         });
 
         res.status(201).json(brand);
@@ -35,6 +51,7 @@ const allowedColumns = {
     name: Joi.string(),
     status: Joi.string(),
     user_id: Joi.string(),
+    companyID: Joi.string(),
     // Add more columns as needed
 };
 
@@ -79,13 +96,50 @@ export const getBrands = async (req, res, next) => {
 };
 
 
+const updateBrandSchema = Joi.object({
+    name: Joi.string().max(255),
+    name_ar: Joi.string().max(255),
+    status: Joi.string().valid('active', 'inactive'),
+    user_id: Joi.string(),
+    companyID: Joi.string(),
+});
+
+
 export const updateBrand = async (req, res, next) => {
     try {
         const { id } = req.params;
-        if (!id) return res.status(400).json({ error: 'id is required' });
-        const { error, value } = brandSchema.validate(req.body);
+        if (!id) return res.status(400).json({ error: 'Brand id is required' });
+
+        const { error, value } = updateBrandSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
+        }
+
+        // Retrieve the current brand data
+        const currentBrand = await prisma.brands.findUnique({
+            where: { id: id },
+        });
+
+        if (!currentBrand) {
+            return res.status(404).json({ error: 'Brand not found' });
+        }
+
+        const uploadedCertificate = req.files?.brandCertificate;
+        if (uploadedCertificate) {
+            const certificate = uploadedCertificate[0];
+            const certificateName = certificate.filename;
+            certificate.destination = certificate.destination.replace('public', '');
+            const certificatePath = path.join(certificate.destination, certificateName);
+
+            // Delete the existing file if it exists
+            if (currentBrand.brand_certificate) {
+                const existingFilePath = path.join('public', currentBrand.brand_certificate);
+                if (fs.existsSync(existingFilePath)) {
+                    fs.unlinkSync(existingFilePath);
+                }
+            }
+
+            value.brand_certificate = certificatePath;
         }
 
         const updatedBrand = await prisma.brands.update({

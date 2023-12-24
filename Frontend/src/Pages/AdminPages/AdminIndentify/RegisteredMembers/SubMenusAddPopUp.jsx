@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import PhoneInput from 'react-phone-input-2';
 
 const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
     // get the sesstion data
@@ -130,29 +131,54 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field4" className="text-secondary">Mobile <span className='text-red-500'>*</span></label>
-                                 <input
+                                 <label htmlFor="field4" className="text-secondary">Mobile (must omit 0) <span className='text-red-500'>*</span></label>
+                                 {/* <input
                                    type="number"
                                    id="field4"
                                         value={mobileNumber}
                                         onChange={(e) => setMobileNumber(e.target.value)}
                                    placeholder="Last Name"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
+                                 /> */}
+                                 <div className='border-1 border-t border-r border-b border-l w-full rounded-sm border-[#8E9CAB] mb-3'>
+                                  <PhoneInput
+                                      id="field4"
+                                      international
+                                      country={'sa'}
+                                      defaultCountry={'sa'}
+                                      value={mobileNumber}
+                                      onChange={setMobileNumber}
+                                      // onChange={(e) => setCompanyLandLine(e)}
+                                      inputProps={{
+                                          id: 'mobile',
+                                          placeholder: 'Mobile Number',
+                                      }}
+
+                                      inputStyle={{
+                                        width: '100%',
+                                        borderRadius: '0px',
+                                        border: 'none',
+                                      }}
+                                      required
+                                  />
+                                      </div>
                                </div>
                              </div>
 
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                                  <label htmlFor="field5" className="text-secondary">Member Type</label>
-                                 <input
+                                 <select
                                    type="text"
                                    id="field5"
                                         value={memberType}
                                         onChange={(e) => setMemberType(e.target.value)}
                                    placeholder="Member Type"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
+                                 >
+                                    <option value="operator">Operator</option>
+                                    <option value="moderator">Moderator</option>
+                                  </select>
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
@@ -171,14 +197,17 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                                  <label htmlFor="field7" className="text-secondary">Member Status</label>
-                                 <input
+                                 <select
                                    type="text"
                                    id="field7"
                                         value={memberStatus}
                                         onChange={(e) => setMemberStatus(e.target.value)}
                                    placeholder="Member Status"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
+                                  >
+                                    <option value="active">Active</option>
+                                    <option value="inactive">InActive</option>
+                                  </select>
                                </div>
                               </div>
 

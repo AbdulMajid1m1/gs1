@@ -8,16 +8,31 @@ import SendIcon from '@mui/icons-material/Send';
 const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [companyName, setCompanyName] = useState("");
     const [companyNameArabic, setCompanyNameArabic] = useState("");
+    const [brandCertificate, setBrandCertificate] = useState("");
     // get the sesstion data
     const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
     console.log(gs1MemberData)
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     
     const handleCloseCreatePopup = () => {
         setVisibility(false);
       };
     
+    const handleFileChange = (e) => {
+      // setError('');
+      const file = e.target.files[0];
+        if (file) {
+          if (file.size <= 500 * 1024) {
+              setBrandCertificate(file);
+              setError(''); // Clear any previous error message
+          } else {
+              setError('File size should be 500KB or less');
+              e.target.value = null;
+            }
+        }
+      };
 
     const handleAddCompany = async () => {
     
@@ -37,15 +52,24 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     }
     
     setLoading(true);
-    try {
-      const response = await newRequest.post('/brands/', {
-        name: companyName,
-        name_ar: companyNameArabic,
-        status: 'active', // You may want to modify this based on your requirements
-        user_id: gs1MemberData?.id, // Replace with the actual user ID
-      });
 
-      toast.success(`Company ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
+    // create the formData object
+    const formData = new FormData();
+    formData.append('name', companyName);
+    formData.append('name_ar', companyNameArabic);
+    formData.append('status', 'active');
+    formData.append('user_id', gs1MemberData?.id);
+    formData.append('companyID', gs1MemberData?.companyID);
+    formData.append('brandCertificate', brandCertificate);
+
+    try {
+      const response = await newRequest.post('/brands', formData , {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        });
+
+      toast.success(`Brand ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -74,7 +98,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
         theme: 'light',
       });
 
-
+      setLoading(false);
       console.log(error);
     }
 
@@ -117,6 +141,17 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                </div>
                              </div>
 
+                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                              <label htmlFor="field3" className="text-secondary">Upload Documents </label>
+                              <input
+                                type="file"
+                                id="field3"
+                                onChange={handleFileChange}
+                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                              />
+                              {error && <p className="text-red-500">{error}</p>}
+                            </div>
+
                              <div className="w-full flex justify-center items-center gap-8 mt-5">
                                <button
                                  type="button"
@@ -140,7 +175,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                 >
-                                  Update Brand
+                                  SAVE
                               </Button>
                              </div>
                            </form>

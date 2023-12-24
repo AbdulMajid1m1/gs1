@@ -1581,11 +1581,11 @@ export const MembersDocumentColumn = [
 
     
   },
-  {
-    field: 'user_id',
-    headerName: 'User ID',
-    width: 180,
-  },
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
   {
     field: 'transaction_id',
     headerName: 'Transaction ID',
@@ -1660,6 +1660,62 @@ export const MembersBrandsColumn = [
     width: 180,
   },
   {
+    field: 'document',
+    headerName: 'Document',
+    width: 180,
+
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        } 
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+
+    
+  },
+  {
     field: 'name_ar',
     headerName: 'Name Arabic',
     width: 180,
@@ -1689,11 +1745,11 @@ export const MembersBrandsColumn = [
       </div>
     ),
   },
-  {
-    field: 'user_id',
-    headerName: 'User ID',
-    width: 180,
-  },
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -2595,6 +2651,104 @@ export const financeColumn = [
 
 
 
+export const bankSlipColumn = [
+  {
+    field: 'type',
+    headerName: 'Type',
+    width: 180,
+  },
+  {
+    field: 'document',
+    headerName: 'Document',
+    width: 180,
+
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'doc_type',
+    headerName: 'Doc Type',
+    width: 180,
+  },
+  
+
+
+];
+
+
+
 
 export const helpDeskColumn = [
   {
@@ -2667,11 +2821,11 @@ export const subscribedGtinColumn = [
 
 
 export const submenusDataColumn = [
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 180,
+  // },
   {
     field: 'user_type',
     headerName: 'User Type',
@@ -3078,13 +3232,13 @@ export const memberHistoryColumnData = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
-    valueGetter: (params) => new Date(params.getValue('created_at')).toLocaleString(),
+    // valueGetter: (params) => new Date(params.getValue('created_at')).toLocaleString(),
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
-    valueGetter: (params) => new Date(params.getValue('updated_at')).toLocaleString(),
+    // valueGetter: (params) => new Date(params.getValue('updated_at')).toLocaleString(),
   },
 
 

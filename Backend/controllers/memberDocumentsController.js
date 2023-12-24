@@ -272,7 +272,20 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let pdfBuffer;
         let userUpdateResult;
         let pdfFilename;
-        let cart
+        let cart;
+
+        const bankSlipDocuments = await prisma.member_documents.findMany({
+            where: {
+                user_id: currentDocument.user_id,
+                transaction_id: currentDocument.transaction_id,
+                type: 'bank_slip',
+            }
+        });
+        if (bankSlipDocuments.length === 0) {
+            return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
+        }
+
+
         if (value.status === 'approved') {
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
@@ -345,13 +358,13 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     }
                 }
                 const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-                let gcpGLNID = userUpdateResult.gcpGLNID;
+                let gcpGLNID = userUpdateResult?.gcpGLNID;
                 const CertificateData = {
                     BACKEND_URL: BACKEND_URL,
                     qrCodeDataURL: qrCodeDataURL,
 
                     user: {
-                        company_name_eng: userUpdateResult.company_name_eng,
+                        company_name_eng: userUpdateResult?.company_name_eng,
                     },
                     general: {
                         gcp_certificate_detail1:
@@ -372,12 +385,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     userData: {
                         // add user data here
                         gcpGLNID: gcpGLNID,
-                        gln: userUpdateResult.gln,
-                        memberID: userUpdateResult.memberID,
-                        gcp_expiry: userUpdateResult.gcp_expiry,
+                        gln: userUpdateResult?.gln,
+                        memberID: userUpdateResult?.memberID,
+                        gcp_expiry: userUpdateResult?.gcp_expiry,
                     },
                     // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-                    expiryDate: userUpdateResult.gcp_expiry.toISOString().split('T')[0],
+                    expiryDate: userUpdateResult?.gcp_expiry.toISOString().split('T')[0],
                     explodeGPCCode: []
                 };
 
@@ -511,11 +524,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             const logData = {
                 subject: 'Member Approved',
                 // user user memberId
-                member_id: existingUser.memberID,
+                member_id: userUpdateResult.memberID,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
             }
+            console.log("logData", logData);
 
             await createMemberLogs(logData);
 
@@ -539,13 +553,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         }
 
         // Delete all documents of type 'bank_slip'
-        const bankSlipDocuments = await prisma.member_documents.findMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
-            }
-        });
+
+
+
         // bankslip path in doucment table is like this \uploads\documents\memberDocuments\document-1703229100646.pdf
         for (const document of bankSlipDocuments) {
             const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
