@@ -89,7 +89,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
       refreshAllUserData();
 
     }
-    catch (error) {
+    catch (error) {    
       console.log(error);
       setIsLoading(false);
 
