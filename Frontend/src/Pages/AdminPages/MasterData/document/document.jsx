@@ -200,20 +200,42 @@ const handleFileUpload = (e) => {
                 <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
                   
-  <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3 '>
-                        <button
-                          onClick={handleShowCreatePopup}
-                            className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                              <i className="fas fa-plus mr-2"></i>Add
-                </button>
-                 <label type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"  htmlFor="Importdata">
-                                       
-                                        Import <GetAppIcon />
-                                    <input type="file" accept=".xlsx" onChange={handleFileUpload}  htmlFor="Importdata"/>
-                </label>
-                <CSVLink data={data} type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
-                                    </CSVLink>
-                    </div>
+                <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3 '>
+                  <button
+                    onClick={handleShowCreatePopup}
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                      <i className="fas fa-plus mr-2"></i>Add
+                  </button>
+                 
+                 {/* <label type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"  htmlFor="Importdata">
+                    Import <GetAppIcon />
+                  <input 
+                    type="file" 
+                      accept=".xlsx" 
+                        onChange={handleFileUpload}  
+                          htmlFor="Importdata"
+                  />
+                </label> */}
+                <div className="relative">
+                    <button
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
+                    >
+                      <i className="fas fa-file-import mr-1"></i> Import
+                    </button>
+                    <input
+                      type="file"
+                      accept=".xlsx"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={handleFileUpload}
+                    />
+                  </div>
+
+
+                  <CSVLink data={data} 
+                    type="button" 
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  </CSVLink>
+                </div>
                    
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 

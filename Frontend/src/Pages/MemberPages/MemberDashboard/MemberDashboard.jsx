@@ -10,7 +10,7 @@ import CountdownTimer from './CountdownTimer'
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
-  // console.log('memberData', memberData);
+  console.log('memberData', memberData);
   const [totalCategory, setTotalCategory] = useState('');
   const [totalRange, setTotalRange] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
