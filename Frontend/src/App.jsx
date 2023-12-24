@@ -63,6 +63,8 @@ import Crnumber from './Pages/AdminPages/MasterData/crnumber/crnumber';
 import MemberCrNumber from "./Pages/MemberPages/MemberCrNumber/MemberCrNumber";
 import Document_type from './Pages/AdminPages/MasterData/documentype/documenttype';
 import MemberData from "./Pages/MemberPages/MemberData/MemberData";
+import MemberProfileData from "./Contexts/MemberProfileData";
+
 const queryClient = new QueryClient()
 
 const App = () => {
@@ -174,6 +176,10 @@ const App = () => {
 
                             <Route path="registered-members" element={<RegisteredMembers />} />
 
+                            {/* <Route
+                              path="registered-members/view-registered-member/:Id"
+                              element={<MemberProfileData><RegisteredMembersView /></MemberProfileData>}
+                            /> */}
                             <Route
                               path="registered-members/view-registered-member/:Id"
                               element={<RegisteredMembersView />}

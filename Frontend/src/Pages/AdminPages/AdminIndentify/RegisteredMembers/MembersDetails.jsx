@@ -6,7 +6,8 @@ import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 
-const MembersDetails = ({ gs1MemberData }) => {
+const MembersDetails = ({ gs1MemberData, refreshAllUserData }) => {
+  console.log(gs1MemberData);
    // Use state to manage editable values
    const [editableData, setEditableData] = useState({
     companyNameEnglish: gs1MemberData?.company_name_eng || '',
@@ -84,6 +85,9 @@ const MembersDetails = ({ gs1MemberData }) => {
       
       // add api message to toast
       toast.success(response?.data?.message || 'User updated successfully');
+
+      // refresh all user data
+      refreshAllUserData();
 
     } 
     catch (error) {

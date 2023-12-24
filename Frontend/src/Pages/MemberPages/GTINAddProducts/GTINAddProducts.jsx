@@ -504,7 +504,7 @@ const GTINAddProducts = () => {
               <div className="flex flex-col justify-center items-center p-4">
                 {" "}
                 <div className="h-auto w-full p-5 bg-white">
-                    <div className="popup-header">
+                    <div className="">
                     <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
                         <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
                         <p className="font-semibold">Complete Data</p>
@@ -545,7 +545,7 @@ const GTINAddProducts = () => {
 
                   <div className="w-full h-[2px] bg-primary mb-6 mt-6"></div>
             
-                  <div className="popup-form">
+                  <div className="">
                     <form onSubmit={handleFormSubmit}>
                       <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
