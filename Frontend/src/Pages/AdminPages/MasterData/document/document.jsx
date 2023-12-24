@@ -159,7 +159,7 @@ const handleFileUpload = (e) => {
                 json.forEach((item) => {
                     newRequest.post(`/createdocument`, {
                         name: item.name, // Adjust property names as needed
-                        status: item.status,
+                        status: 1,
                     })
                         .then((res) => {
                             console.log('Add', res.data);
@@ -200,18 +200,18 @@ const handleFileUpload = (e) => {
                 <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
                   
-  <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+  <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3 '>
                         <button
                           onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
                 </button>
-                 <label type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" style={{zIndex:0}} htmlFor="Importdata">
+                 <label type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"  htmlFor="Importdata">
                                        
                                         Import <GetAppIcon />
-                                    <input type="file" accept=".xlsx" onChange={handleFileUpload} style={{zIndex:1}} />
+                                    <input type="file" accept=".xlsx" onChange={handleFileUpload}  htmlFor="Importdata"/>
                 </label>
-                <CSVLink data={data} type="button" className="btn btn-outline-primary color2" >  Export  <FileUploadIcon />
+                <CSVLink data={data} type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
                                     </CSVLink>
                     </div>
                    
