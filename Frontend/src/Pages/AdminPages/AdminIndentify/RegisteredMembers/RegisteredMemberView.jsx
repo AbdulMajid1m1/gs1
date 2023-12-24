@@ -835,7 +835,7 @@ const RegisteredMembersView = () => {
         {/* Member Invoice component with Handle prop */}
         {isMemberInvoicePopupVisible && (
           <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
-            fetchAllUserData={fetchAllUserData}
+            fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
           />
         )}
 
