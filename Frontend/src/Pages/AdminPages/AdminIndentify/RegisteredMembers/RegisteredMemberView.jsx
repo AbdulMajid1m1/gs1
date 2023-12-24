@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TextField } from '@mui/material'
 import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
@@ -261,14 +260,44 @@ const RegisteredMembersView = () => {
   };
 
   const handleShowMemberInvoicePopup = (row) => {
-    setIsMemberInvoicePopupVisible(true);
-
-    sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    if (row.status === 'approved') {
+      toast.info('No any pending invoice', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      // If status is not 'approved', proceed with showing the popup
+      setIsMemberInvoicePopupVisible(true);
+      sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    }
+    // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
 
 
   const handleShowSubMenusPopup = () => {
-    setIsSubMenusPopupVisible(true);
+    // setIsSubMenusPopupVisible(true);
+    // console.log(gs1MemberData)
+    if (allUserData?.memberID === null) {
+      toast.info('User is not active', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      setIsSubMenusPopupVisible(true);
+    }
+
   };
 
 
@@ -423,7 +452,7 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={gs1MemberData} />
+              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} />
 
 
               {/* Registered Products */}
@@ -773,7 +802,9 @@ const RegisteredMembersView = () => {
 
         {/* Member Invoice component with Handle prop */}
         {isMemberInvoicePopupVisible && (
-          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshBrandData={fetchMemberInvoiceData} />
+          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData} 
+            fetchAllUserData={fetchAllUserData}
+          />
         )}
 
         {/* Add Sub Menus component with Handle prop */}

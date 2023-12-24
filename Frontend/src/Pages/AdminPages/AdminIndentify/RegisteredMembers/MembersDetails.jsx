@@ -6,7 +6,8 @@ import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 
-const MembersDetails = ({ gs1MemberData }) => {
+const MembersDetails = ({ gs1MemberData, refreshAllUserData }) => {
+  console.log(gs1MemberData);
    // Use state to manage editable values
    const [editableData, setEditableData] = useState({
     companyNameEnglish: gs1MemberData?.company_name_eng || '',
@@ -84,6 +85,9 @@ const MembersDetails = ({ gs1MemberData }) => {
       
       // add api message to toast
       toast.success(response?.data?.message || 'User updated successfully');
+
+      // refresh all user data
+      refreshAllUserData();
 
     } 
     catch (error) {
@@ -408,25 +412,14 @@ const handleGetAllCities = async () => {
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <div className='flex items-center border-2 w-full h-14 rounded-md'>
-                             
-                  {/* <TextField
-                    id="mobile"
-                    label="Mobile No (omit zero)"
-                    variant="outlined"
-                    value={gs1MemberData?.mbl_extension}
-                    InputLabelProps={{
-                      shrink: Boolean(gs1MemberData?.mbl_extension),
-                      style: { fontSize: gs1MemberData?.mbl_extension ? '16px' : '16px', zIndex: '0' },
-                    }}
-                  /> */}
-                    {/* <TextField
-                        id="mobile"
-                        label="Mobile No (omit zero)"
-                        variant="outlined"
-                        value={editableData.mobileNo}
-                        onChange={(e) => handleInputChange('mobileNo', e.target.value)}
-                      /> */}
+                  <div className='relative w-full'>
+                    <label
+                      htmlFor='mobile'
+                      className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
+                    >
+                      Landline Number
+                    </label>
+                    <div className='flex items-center border-2 w-full h-14 rounded-md'>             
                         <PhoneInput
                             international
                             country={'sa'}
@@ -447,6 +440,7 @@ const handleGetAllCities = async () => {
                             required
                       />
                     </div>
+                  </div>
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -579,7 +573,7 @@ const handleGetAllCities = async () => {
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <TextField
+                    {/* <TextField
                       id="mobileNo"
                       label="Mobile No (omit zero)"
                       variant="outlined"
@@ -588,7 +582,37 @@ const handleGetAllCities = async () => {
                         shrink: true,
                         style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
                       }}
-                    />
+                    /> */}
+                     <div className='relative w-full'>
+                      <label
+                        htmlFor='mobile'
+                        className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
+                      >
+                        Mobile No (omit zero)
+                      </label>
+                      <div className='flex items-center border-2 w-full h-14 rounded-md'>             
+                          <PhoneInput
+                              international
+                              country={'sa'}
+                              defaultCountry={'sa'}
+                              value={gs1MemberData?.mobile}
+                              // onChange={setMobileNumber}
+                              // onChange={(e) => setCompanyLandLine(e)}
+                              disabled
+                              inputProps={{
+                                  id: 'mobile',
+                                  placeholder: 'Mobile Number',
+                              }}
+
+                              inputStyle={{
+                                width: '100%',
+                                borderRadius: '0px',
+                                border: 'none',
+                              }}
+                             
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">

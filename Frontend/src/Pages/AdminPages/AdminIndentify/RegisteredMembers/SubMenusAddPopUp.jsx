@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import PhoneInput from 'react-phone-input-2';
 
 const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
     // get the sesstion data
@@ -130,15 +131,37 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field4" className="text-secondary">Mobile <span className='text-red-500'>*</span></label>
-                                 <input
+                                 <label htmlFor="field4" className="text-secondary">Mobile (must omit 0) <span className='text-red-500'>*</span></label>
+                                 {/* <input
                                    type="number"
                                    id="field4"
                                         value={mobileNumber}
                                         onChange={(e) => setMobileNumber(e.target.value)}
                                    placeholder="Last Name"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
+                                 /> */}
+                                 <div className='border-1 border-t border-r border-b border-l w-full rounded-sm border-[#8E9CAB] mb-3'>
+                                  <PhoneInput
+                                      id="field4"
+                                      international
+                                      country={'sa'}
+                                      defaultCountry={'sa'}
+                                      value={mobileNumber}
+                                      onChange={setMobileNumber}
+                                      // onChange={(e) => setCompanyLandLine(e)}
+                                      inputProps={{
+                                          id: 'mobile',
+                                          placeholder: 'Mobile Number',
+                                      }}
+
+                                      inputStyle={{
+                                        width: '100%',
+                                        borderRadius: '0px',
+                                        border: 'none',
+                                      }}
+                                      required
+                                  />
+                                      </div>
                                </div>
                              </div>
 
