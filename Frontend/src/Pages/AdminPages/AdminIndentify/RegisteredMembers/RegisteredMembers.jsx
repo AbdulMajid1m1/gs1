@@ -100,7 +100,7 @@ const RegisteredMembers = () => {
     sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
     navigate("view-registered-member/" + row?.id);
   };
-
+ 
 
   const handleDelete = async (row) => {
     Swal.fire({
