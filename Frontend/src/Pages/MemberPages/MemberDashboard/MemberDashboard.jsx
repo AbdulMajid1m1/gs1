@@ -1,14 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
 import categorybarcode from '../../../Images/categorybarcode.png'
 import rangebarcode from '../../../Images/rangebarcode.png'
 import barcodeIssued from '../../../Images/barcodeIssued.png'
 import barcoderemain from '../../../Images/barcoderemain.png'
 import dashboardchart from '../../../Images/dashboardchart.png'
+import newRequest from '../../../utils/userRequest'
+import CountdownTimer from './CountdownTimer'
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
-  console.log('memberData', memberData);
+  // console.log('memberData', memberData);
+  const [totalCategory, setTotalCategory] = useState('');
+  const [totalRange, setTotalRange] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  
+  useEffect(() => {
+   const fetchMemberProducts = async () => {
+      try {
+        const response = await newRequest.get(`/gtinProducts/gtinSubcriptions?status=active&user_id=${memberData?.id}`);
+        // console.log(response.data);
+        setTotalCategory(response?.data[0]?.gtinProduct?.member_category_description);
+        setTotalRange(response?.data[0]?.gtinProduct?.total_no_of_barcodes);
+        setExpiryDate(response?.data[0]?.expiry_date);
+     
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchMemberProducts();
+  }, []) 
+
   return (
     <div>
        <div className="h-full sm:ml-72 bg-slate-100">
@@ -26,10 +48,12 @@ const MemberDashboard = () => {
                     <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>Member ID: <span>{memberData?.memberID}</span></p>
                 </div>
 
-                <div className='w-full flex flex-col gap-1 justify-end items-end'>
+                <CountdownTimer expiryDate={expiryDate} />
+
+                {/* <div className='w-full flex flex-col gap-1 justify-end items-end'>
                     <p className='sm:text-3xl text-lg text-white font-body font-normal'>365d 19h 49m 31s</p>
                     <p className='sm:text-xl text-lg text-gray-200 font-body font-normal'>Your Subscription Will Expire On</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -40,10 +64,10 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-4xl text-white -mt-4'>10</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-lg text-gray-200' style={{ whiteSpace: 'nowrap' }}>Category A (10 Barcodes)</p>
+                      <p className='font-sans font-normal text-sm text-gray-200'>{totalCategory}</p>
                     </div>
                   </div>
               </div>
@@ -51,10 +75,11 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={rangebarcode} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-4xl text-white -mt-4'>1 to 9</p>
+                      {/* <p className='font-sans font-semibold text-4xl text-white -mt-4'>1 to 9</p> */}
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>1 to {totalRange -  1}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-xl text-gray-200'>Range of Barcodes</p>
+                      <p className='font-sans font-normal text-md text-gray-200'>Range of Barcodes</p>
                     </div>
                   </div>
               </div>
@@ -62,10 +87,10 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcoderemain} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-4xl text-white -mt-4'>0</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-xl text-gray-200'>Barcodes Issued</p>
+                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
                     </div>
                   </div>
               </div>
@@ -73,10 +98,11 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-4xl text-white -mt-4'>9</p>
+                      {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>9</p> */}
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRange}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-xl text-gray-200'>Barcodes remaining</p>
+                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>
                     </div>
                   </div>
               </div>

@@ -292,10 +292,14 @@ const MemmberRegisteration = () => {
             }
         }
     };
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
+
+        console.log(selectedCountry?.name)
+        console.log(selectedState?.name)
+        console.log(selectedCity?.name)
 
         const formData = new FormData();
 
