@@ -481,7 +481,7 @@ export const memberLogin = async (req, res, next) => {
             return res.status(401).json({ error: 'User not found' });
         }
 
-        const passwordMatch = bcrypt.compareSync(password, user.password);
+        const passwordMatch = password.trim().toLowerCase() === user.password.trim().toLowerCase();
 
         if (!passwordMatch) {
             return res.status(401).json({ error: 'Incorrect password' });
