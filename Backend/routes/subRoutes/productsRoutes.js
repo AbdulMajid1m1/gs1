@@ -1,7 +1,17 @@
 import express from 'express';
-import { getProducts } from '../../controllers/productsController.js';
+import { createProduct, getProducts } from '../../controllers/productsController.js';
+import { upload } from '../../configs/multerConfig.js';
 
-const router = express.Router();    
+const router = express.Router();
 router.get('/', getProducts);
+
+
+router.post('/', upload([
+    { name: 'front_image', path: 'public/uploads/products/memberProductsImages' },
+    { name: 'back_image', path: 'public/uploads/products/memberProductsImages' },
+    { name: 'image_1', path: 'public/uploads/products/memberProductsImages' },
+    { name: 'image_2', path: 'public/uploads/products/memberProductsImages' },
+    { name: 'image_3', path: 'public/uploads/products/memberProductsImages' },
+]), createProduct);
 
 export default router;
