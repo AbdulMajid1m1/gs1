@@ -383,12 +383,12 @@ export const createUser = async (req, res, next) => {
             const logData = {
                 subject: 'Member Registration',
                 // user user memberId
-                member_id: userUpdateResult.memberID,
+                // member_id: userUpdateResult.memberID,
+                user_id: userUpdateResult.id,
                 // TODO: take email form current admin token
                 // admin_id: 'admin@gs1sa.link',
 
             }
-            console.log("logData", logData);
 
             await createMemberLogs(logData);
 
@@ -420,7 +420,7 @@ const subUserSchema = Joi.object({
     email: Joi.string().email().required(),
     mobile: Joi.string(),
     cr_number: Joi.string(),
-    cr_activity: Joi.string(),
+    cr_activity: Joi.string(),  
     status: Joi.string().valid('active', 'inactive').default('active'),
 
 
@@ -650,6 +650,7 @@ export const searchUsers = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 

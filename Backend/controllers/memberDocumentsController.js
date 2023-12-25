@@ -24,6 +24,7 @@ export const createMemberDocument = async (req, res, next) => {
         uploaded_by: Joi.string(),
     });
 
+
     const { error, value } = schema.validate(req.body);
     if (error) {
         return next(createError(400, error.details[0].message));
@@ -52,6 +53,26 @@ export const createMemberDocument = async (req, res, next) => {
                 doc_type: value.doc_type
             }
         });
+
+
+
+        // Insert Member History log
+        const logData = {
+            subject: 'Member Document Upload',
+            // user user memberId
+            member_id: userUpdateResult.memberID,
+            user_id: userUpdateResult.id,
+            // TODO: add middleware for current admin token 
+
+
+        }
+
+        if (req.admin.id) {
+            logData.admin_id = admin_id;
+        }
+
+        await createMemberLogs(logData);
+
 
         res.status(201).json({
             message: 'Document uploaded successfully.',
@@ -531,9 +552,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Insert Member History log
             const logData = {
-                subject: 'Member Approved',
+                subject: 'Member Account Approved',
                 // user user memberId
                 member_id: userUpdateResult.memberID,
+                user_id: userUpdateResult.id,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
