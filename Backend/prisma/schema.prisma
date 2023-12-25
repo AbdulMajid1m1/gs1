@@ -249,6 +249,7 @@ model carts {
   request_type   String?   @db.NVarChar(Max)
   payment_type   String?   @db.NVarChar(Max)
   user_id        String
+  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
   deleted_at     DateTime? @db.DateTime
@@ -1969,6 +1970,7 @@ model users {
   state                    String? @db.NVarChar(Max)
   zip_code                 String? @db.VarChar(50)
   old_member_recheck       Int?    @default(0, map: "DF_users_old_member_recheck")
+  carts                    carts[] // Define the one-to-many relationship
 }
 
 model withdraw_gateways {
