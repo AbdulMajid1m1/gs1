@@ -1659,7 +1659,7 @@ export const MembersBrandsColumn = [
     width: 180,
   },
   {
-    field: 'document',
+    field: 'brand_certificate',
     headerName: 'Document',
     width: 180,
 
@@ -1774,11 +1774,11 @@ export const MembersBrandsColumn = [
 ];
 
 export const AdminBrandsColumn = [
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 180,
+  // },
   {
     field: 'name',
     headerName: 'Name',
@@ -1814,11 +1814,11 @@ export const AdminBrandsColumn = [
       </div>
     ),
   },
-  {
-    field: 'user_id',
-    headerName: 'User ID',
-    width: 180,
-  },
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -1843,40 +1843,23 @@ export const AdminBrandsColumn = [
 ];
 
 export const paymentSlipColumn = [
-  {
-    field: 'admin_id',
-    headerName: 'Admin ID',
-    width: 180,
-  },
-  {
-    field: 'created_at',
-    headerName: 'Created At',
-    // make it date time type
-    type: 'dateTime',
-
-    width: 180,
-    valueGetter: (params) => {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }
-  },
-  {
-    field: 'deleted_at',
-    headerName: 'Deleted At',
-    width: 180,
-  },
-  {
-    field: 'details',
-    headerName: 'Details',
-    width: 180,
-  },
+  // {
+  //   field: 'admin_id',
+  //   headerName: 'Admin ID',
+  //   width: 180,
+  // },
   // {
   //   field: "documents",
   //   headerName: "Documents",
   //   width: 180,
   // },
   {
-    field: 'documents',
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'document',
     headerName: 'Documents',
     width: 180,
     renderCell: (params) => {
@@ -1932,16 +1915,16 @@ export const paymentSlipColumn = [
     editable: true,
     type: "string",
   },
-  {
-    field: 'transaction_id',
-    headerName: 'Transaction ID',
-    width: 180,
-  },
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
+  // {
+  //   field: 'transaction_id',
+  //   headerName: 'Transaction ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 180,
+  // },
   {
     field: 'reject_reason',
     headerName: 'Reject Reason',
@@ -1953,9 +1936,16 @@ export const paymentSlipColumn = [
     width: 180,
   },
   {
-    field: 'transaction_id',
-    headerName: 'Transaction ID',
+    field: 'created_at',
+    headerName: 'Created At',
+    // make it date time type
+    type: 'dateTime',
+
     width: 180,
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
@@ -1969,10 +1959,24 @@ export const paymentSlipColumn = [
     }
   },
   {
-    field: 'user_id',
-    headerName: 'User ID',
+    field: 'deleted_at',
+    headerName: 'Deleted At',
     width: 180,
   },
+  {
+    field: 'details',
+    headerName: 'Details',
+    width: 180,
+  },
+  
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
+
+
+  
 ];
 
 export const masterDataColumn = [
@@ -2650,6 +2654,114 @@ export const financeColumn = [
 
 
 
+export const financePopUpMemberBankSlipColumn = [
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 180,
+  // },
+  {
+    field: 'type',
+    headerName: 'Type',
+    width: 180,
+  },
+  {
+    field: 'document',
+    headerName: 'Document',
+    width: 180,
+
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'doc_type',
+    headerName: 'Doc Type',
+    width: 180,
+  },
+  
+
+
+];
+
+
+
 export const bankSlipColumn = [
   {
     field: 'type',
@@ -2830,31 +2942,31 @@ export const submenusDataColumn = [
     headerName: 'User Type',
     width: 180,
   },
-  {
-    field: 'slug',
-    headerName: 'Slug',
-    width: 180,
-  },
-  {
-    field: 'location_uk',
-    headerName: 'Location UK',
-    width: 180,
-  },
-  {
-    field: 'have_cr',
-    headerName: 'Have CR',
-    width: 180,
-  },
-  {
-    field: 'cr_documentID',
-    headerName: 'CR Document ID',
-    width: 180,
-  },
-  {
-    field: 'document_number',
-    headerName: 'Document Number',
-    width: 180,
-  },
+  // {
+  //   field: 'slug',
+  //   headerName: 'Slug',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'location_uk',
+  //   headerName: 'Location UK',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'have_cr',
+  //   headerName: 'Have CR',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'cr_documentID',
+  //   headerName: 'CR Document ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'document_number',
+  //   headerName: 'Document Number',
+  //   width: 180,
+  // },
   {
     field: 'fname',
     headerName: 'First Name',
@@ -2875,206 +2987,206 @@ export const submenusDataColumn = [
     headerName: 'Mobile',
     width: 180,
   },
-  {
-    field: 'image',
-    headerName: 'Image',
-    width: 180,
-  },
-  {
-    field: 'po_box',
-    headerName: 'PO Box',
-    width: 180,
-  },
-  {
-    field: 'mbl_extension',
-    headerName: 'Mobile Extension',
-    width: 180,
-  },
-  {
-    field: 'website',
-    headerName: 'Website',
-    width: 180,
-  },
-  {
-    field: 'no_of_staff',
-    headerName: 'Number of Staff',
-    width: 180,
-  },
-  {
-    field: 'companyID',
-    headerName: 'Company ID',
-    width: 180,
-  },
-  {
-    field: 'district',
-    headerName: 'District',
-    width: 180,
-  },
-  {
-    field: 'building_no',
-    headerName: 'Building Number',
-    width: 180,
-  },
-  {
-    field: 'additional_number',
-    headerName: 'Additional Number',
-    width: 180,
-  },
-  {
-    field: 'other_landline',
-    headerName: 'Other Landline',
-    width: 180,
-  },
-  {
-    field: 'unit_number',
-    headerName: 'Unit Number',
-    width: 180,
-  },
-  {
-    field: 'qr_corde',
-    headerName: 'QR Code',
-    width: 180,
-  },
-  {
-    field: 'email_verified_at',
-    headerName: 'Email Verified At',
-    width: 180,
-  },
-  {
-    field: 'password',
-    headerName: 'Password',
-    width: 180,
-  },
-  {
-    field: 'verification_code',
-    headerName: 'Verification Code',
-    width: 180,
-  },
-  {
-    field: 'cr_number',
-    headerName: 'CR Number',
-    width: 180,
-  },
-  {
-    field: 'cr_activity',
-    headerName: 'CR Activity',
-    width: 180,
-  },
-  {
-    field: 'company_name_eng',
-    headerName: 'Company Name (English)',
-    width: 180,
-  },
-  {
-    field: 'company_name_arabic',
-    headerName: 'Company Name (Arabic)',
-    width: 180,
-  },
-  {
-    field: 'bussiness_activity',
-    headerName: 'Business Activity',
-    width: 180,
-  },
-  {
-    field: 'member_category',
-    headerName: 'Member Category',
-    width: 180,
-  },
-  {
-    field: 'other_products',
-    headerName: 'Other Products',
-    width: 180,
-  },
-  {
-    field: 'gpc',
-    headerName: 'GPC',
-    width: 180,
-  },
-  {
-    field: 'product_addons',
-    headerName: 'Product Add-ons',
-    width: 180,
-  },
-  {
-    field: 'total',
-    headerName: 'Total',
-    width: 180,
-  },
-  {
-    field: 'contactPerson',
-    headerName: 'Contact Person',
-    width: 180,
-  },
-  {
-    field: 'companyLandLine',
-    headerName: 'Company Landline',
-    width: 180,
-  },
-  {
-    field: 'documents',
-    headerName: 'Documents',
-    width: 180,
-  },
-  {
-    field: 'address_image',
-    headerName: 'Address Image',
-    width: 180,
-  },
+  // {
+  //   field: 'image',
+  //   headerName: 'Image',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'po_box',
+  //   headerName: 'PO Box',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'mbl_extension',
+  //   headerName: 'Mobile Extension',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'website',
+  //   headerName: 'Website',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'no_of_staff',
+  //   headerName: 'Number of Staff',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'companyID',
+  //   headerName: 'Company ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'district',
+  //   headerName: 'District',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'building_no',
+  //   headerName: 'Building Number',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'additional_number',
+  //   headerName: 'Additional Number',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'other_landline',
+  //   headerName: 'Other Landline',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'unit_number',
+  //   headerName: 'Unit Number',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'qr_corde',
+  //   headerName: 'QR Code',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'email_verified_at',
+  //   headerName: 'Email Verified At',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'password',
+  //   headerName: 'Password',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'verification_code',
+  //   headerName: 'Verification Code',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'cr_number',
+  //   headerName: 'CR Number',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'cr_activity',
+  //   headerName: 'CR Activity',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'company_name_eng',
+  //   headerName: 'Company Name (English)',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'company_name_arabic',
+  //   headerName: 'Company Name (Arabic)',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'bussiness_activity',
+  //   headerName: 'Business Activity',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'member_category',
+  //   headerName: 'Member Category',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'other_products',
+  //   headerName: 'Other Products',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gpc',
+  //   headerName: 'GPC',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'product_addons',
+  //   headerName: 'Product Add-ons',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'total',
+  //   headerName: 'Total',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'contactPerson',
+  //   headerName: 'Contact Person',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'companyLandLine',
+  //   headerName: 'Company Landline',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'documents',
+  //   headerName: 'Documents',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'address_image',
+  //   headerName: 'Address Image',
+  //   width: 180,
+  // },
   {
     field: 'status',
     headerName: 'Status',
     width: 180,
   },
-  {
-    field: 'is_login',
-    headerName: 'Is Login',
-    width: 180,
-  },
-  {
-    field: 'payment_type',
-    headerName: 'Payment Type',
-    width: 180,
-  },
-  {
-    field: 'payment_status',
-    headerName: 'Payment Status',
-    width: 180,
-  },
-  {
-    field: 'online_payment',
-    headerName: 'Online Payment',
-    width: 180,
-  },
-  {
-    field: 'remember_token',
-    headerName: 'Remember Token',
-    width: 180,
-  },
-  {
-    field: 'parent_memberID',
-    headerName: 'Parent Member ID',
-    width: 180,
-  },
-  {
-    field: 'industryTypes',
-    headerName: 'Industry Types',
-    width: 180,
-  },
-  {
-    field: 'invoice_file',
-    headerName: 'Invoice File',
-    width: 180,
-  },
-  {
-    field: 'otp_status',
-    headerName: 'OTP Status',
-    width: 180,
-  },
-  {
-    field: 'transaction_id',
-    headerName: 'Transaction ID',
-    width: 180,
-  },
+  // {
+  //   field: 'is_login',
+  //   headerName: 'Is Login',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'payment_type',
+  //   headerName: 'Payment Type',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'payment_status',
+  //   headerName: 'Payment Status',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'online_payment',
+  //   headerName: 'Online Payment',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'remember_token',
+  //   headerName: 'Remember Token',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'parent_memberID',
+  //   headerName: 'Parent Member ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'industryTypes',
+  //   headerName: 'Industry Types',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'invoice_file',
+  //   headerName: 'Invoice File',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'otp_status',
+  //   headerName: 'OTP Status',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'transaction_id',
+  //   headerName: 'Transaction ID',
+  //   width: 180,
+  // },
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -3085,121 +3197,125 @@ export const submenusDataColumn = [
     headerName: 'Updated At',
     width: 180,
   },
-  {
-    field: 'gcpGLNID',
-    headerName: 'GCP GLN ID',
-    width: 180,
-  },
-  {
-    field: 'gln',
-    headerName: 'GLN',
-    width: 180,
-  },
-  {
-    field: 'gcp_type',
-    headerName: 'GCP Type',
-    width: 180,
-  },
-  {
-    field: 'deleted_at',
-    headerName: 'Deleted At',
-    width: 180,
-  },
-  {
-    field: 'gcp_expiry',
-    headerName: 'GCP Expiry',
-    width: 180,
-  },
-  {
-    field: 'memberID',
-    headerName: 'Member ID',
-    width: 180,
-  },
-  {
-    field: 'user_id',
-    headerName: 'User ID',
-    width: 180,
-  },
-  {
-    field: 'remarks',
-    headerName: 'Remarks',
-    width: 180,
-  },
-  {
-    field: 'assign_to',
-    headerName: 'Assign To',
-    width: 180,
-  },
-  {
-    field: 'membership_category',
-    headerName: 'Membership Category',
-    width: 180,
-  },
-  {
-    field: 'membership_category_id',
-    headerName: 'Membership Category ID',
-    width: 180,
-  },
-  {
-    field: 'upgradation_disc',
-    headerName: 'Upgradation Discount',
-    width: 180,
-  },
-  {
-    field: 'upgradation_disc_amount',
-    headerName: 'Upgradation Discount Amount',
-    width: 180,
-  },
-  {
-    field: 'renewal_disc',
-    headerName: 'Renewal Discount',
-    width: 180,
-  },
-  {
-    field: 'renewal_disc_amount',
-    headerName: 'Renewal Discount Amount',
-    width: 180,
-  },
-  {
-    field: 'membership_otherCategory',
-    headerName: 'Membership Other Category',
-    width: 180,
-  },
-  {
-    field: 'activityID',
-    headerName: 'Activity ID',
-    width: 180,
-  },
-  {
-    field: 'registration_type',
-    headerName: 'Registration Type',
-    width: 180,
-  },
-  {
-    field: 'city',
-    headerName: 'City',
-    width: 180,
-  },
-  {
-    field: 'country',
-    headerName: 'Country',
-    width: 180,
-  },
-  {
-    field: 'state',
-    headerName: 'State',
-    width: 180,
-  },
-  {
-    field: 'zip_code',
-    headerName: 'Zip Code',
-    width: 180,
-  },
-  {
-    field: 'old_member_recheck',
-    headerName: 'Old Member Recheck',
-    width: 180,
-  },
+  // {
+  //   field: 'gcpGLNID',
+  //   headerName: 'GCP GLN ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gln',
+  //   headerName: 'GLN',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gcp_type',
+  //   headerName: 'GCP Type',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'deleted_at',
+  //   headerName: 'Deleted At',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'gcp_expiry',
+  //   headerName: 'GCP Expiry',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'memberID',
+  //   headerName: 'Member ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'user_id',
+  //   headerName: 'User ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'remarks',
+  //   headerName: 'Remarks',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'assign_to',
+  //   headerName: 'Assign To',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'membership_category',
+  //   headerName: 'Membership Category',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'membership_category_id',
+  //   headerName: 'Membership Category ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'upgradation_disc',
+  //   headerName: 'Upgradation Discount',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'upgradation_disc_amount',
+  //   headerName: 'Upgradation Discount Amount',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'renewal_disc',
+  //   headerName: 'Renewal Discount',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'renewal_disc_amount',
+  //   headerName: 'Renewal Discount Amount',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'membership_otherCategory',
+  //   headerName: 'Membership Other Category',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'activityID',
+  //   headerName: 'Activity ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'registration_type',
+  //   headerName: 'Registration Type',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'city',
+  //   headerName: 'City',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'country',
+  //   headerName: 'Country',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'state',
+  //   headerName: 'State',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'zip_code',
+  //   headerName: 'Zip Code',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'old_member_recheck',
+  //   headerName: 'Old Member Recheck',
+  //   width: 180,
+  // },
+
+
+
+  
 ];
 
 

@@ -5,6 +5,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { AdminBrandsColumn } from '../../../../utils/datatablesource';
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import { useNavigate } from 'react-router-dom';
+import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import newRequest from '../../../../utils/userRequest';
@@ -12,51 +13,128 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import Addbrands from './addbrands';
 import Updatebrands from './updatebrands';
+import { debounce } from '@mui/material/utils';
 const Brands = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
-    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-    console.log(gs1MemberData)
-   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
 
+    const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
     const handleShowCreatePopup = () => {
       setCreatePopupVisibility(true);
     };
-    const navigate = useNavigate();
-    const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
 
+    const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
       const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
         // console.log(row)
-        // save this row data in session storage 
         sessionStorage.setItem("updateBrandData", JSON.stringify(row));
       };
-    const { rowSelectionModel, setRowSelectionModel,
-      tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
-    const [filteredData, setFilteredData] = useState([]);
+ 
 
-      useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await newRequest.get(`/brands`,);
-          
-          console.log(response.data);
-          setData(response?.data || []);
-          setIsLoading(false)
-
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false)
+    
+      const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+      const [selectedCr, setSelectedCr] = useState(null);
+      const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
+      const [autocompleteLoading, setAutocompleteLoading] = useState(false);
+      const [open, setOpen] = useState(false);
+      const [brandList, setBrandList] = useState([]);
+      const abortControllerRef = React.useRef(null);
+      
+      const navigate = useNavigate()
+      
+      
+      const handleGPCAutoCompleteChange = (event, value) => {
+        setSelectedCr(value);
+    
+    
+        // Update the state variable when Autocomplete field is filled
+        setIsAutocompleteFilled(value !== null && value !== '');
+    
+        if(value) {
+          fetchData(value);
         }
-      };
+      }
+    
+    
+      // Use debounce to wrap the handleAutoCompleteInputChange function
+      const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
+        console.log(reason);
+        setIsSubmitClicked(false);
+        if (reason === 'reset' || reason === 'clear') {
+          setBrandList([]); // Clear the data list if there is no input
+          // setSelectedCr(null);
+          return; // Do not perform search if the input is cleared or an option is selected
+        }
+        if (reason === 'option') {
+          return; // Do not perform search if the option is selected
+        }
+    
+        if (!newInputValue || newInputValue.trim() === '') {
+          // perform operation when input is cleared
+          setBrandList([]);
+          // setSelectedCr(null);
+          return;
+        }
+    
+        console.log(newInputValue);
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort(); // Abort previous request
+        }
+        abortControllerRef.current = new AbortController(); // Create a new controller for the new request
+    
+        try {
+          setAutocompleteLoading(true);
+          setOpen(true);
+    
+          const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+            signal: abortControllerRef.current.signal
+          });
+          console.log(res);
+    
+          const crs = res?.data?.map(item => {
+            return {
+              user_id: item.id,
+              transaction_id: item.transaction_id,
+              email: item.email,
+              mobile: item.mobile,
+            };
+          });
+    
+          setBrandList(crs);
+     
+          setOpen(true);
+          setAutocompleteLoading(false);
+    
+          // fetchData();
+    
+        } catch (error) {
+          console.error(error);
+          setBrandList([]); // Clear the data list if an error occurs
+          setOpen(false);
+          setAutocompleteLoading(false);
+        }
+      }, 400);
+    
+    
+      // const fetchData = async (value) => {
+      //   setIsLoading(true);
+      //   console.log(value);
+      //   try {
+      //     const response = await newRequest.get(`/products?user_id=${value?.user_id}`);
+      //     console.log(response.data);
+      //     setData(response?.data || []);
+      //     setIsLoading(false)
+    
+      //   } catch (err) {
+      //     console.log(err);
+      //     setIsLoading(false)
+      //   }
+      // };
+    
 
-      fetchData(); // Calling the function within useEffect, not inside itself
-    }, []); // Empty array dependency ensures this useEffect runs once on component mount
-
-    // refreshData
-     const refreshcitiesData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await newRequest.get("/brands",);
+        const response = await newRequest.get(`/brands`,);
         
         console.log(response.data);
         setData(response?.data || []);
@@ -67,10 +145,17 @@ const Brands = () => {
         setIsLoading(false)
       }
     };
-const handleView = (row) => {
+
+    useEffect(() => {
+      fetchData(); // Calling the function within useEffect, not inside itself
+      }, []); // Empty array dependency ensures this useEffect runs once on component mount
+
+ 
+    const handleView = (row) => {
         console.log(row);
     }
-const handleDelete = async (row) => {
+
+    const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
           text: 'You will not be able to recover this cr number!',
@@ -99,8 +184,8 @@ const handleDelete = async (row) => {
   
                 
                 // filter out the deleted user from the data
-                const filteredData = brandsData.filter((item) => item?.id !== row?.id);
-                setBrandsData(filteredData);
+                const filteredData = data.filter((item) => item?.id !== row?.id);
+                setData(filteredData);
                 
               } else {
                 // Handle any additional logic if the user was not deleted successfully
@@ -135,96 +220,9 @@ const handleDelete = async (row) => {
           }
         });
     };
-    const handleEdit = (row) => {
-      console.log(row);
-    }
-
-   
-
-  const handleRowClickInParent = (item) => {
-      if (!item || item?.length === 0) {
-        setTableSelectedRows(data)
-        setFilteredData(data)
-        return
-      }
   
-    }
-
     
-    const handleAddCompany = async () => {
-      const { value: formValues } = await Swal.fire({
-        title: 'Create Brand',
-        html:
-          '<input id="companyName" class="swal2-input" placeholder="Company Name">' +
-          '<input id="companyNameArabic" class="swal2-input" placeholder="Company Arabic Name">',
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Create Brand',
-          confirmButtonAriaLabel: 'Create',
-          cancelButtonText: '<i class="fa fa-thumbs-down"></i> Cancel',
-          cancelButtonAriaLabel: 'Cancel',  
-          confirmButtonColor: '#021F69',
-
-        preConfirm: () => {
-          return {
-            companyName: document.getElementById('companyName').value,
-            companyNameArabic: document.getElementById('companyNameArabic').value,
-          };
-        },
-        inputValidator: (form) => {
-          if (!form.companyName || !form.companyNameArabic) {
-            return 'Both Company Name and Company Arabic Name are required';
-          }
-        },
-      });
   
-      if (!formValues) {
-        return; // Cancelled or invalid input
-      }
-  
-      const { companyName, companyNameArabic } = formValues;
-  
-      try {
-        // Send a request to your API to add the company
-        const response = await newRequest.post('/brands/', {
-          name: companyName,
-          name_ar: companyNameArabic,
-          status: 'active', // You may want to modify this based on your requirements
-          user_id: gs1MemberData?.id, // Replace with the actual user ID
-        });
-  
-        toast.success(`Company ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-
-        });
-
-        refreshData();
-        console.log(response.data);
-  
-      } catch (error) {
-        toast.error(error?.response?.data?.error || 'Error', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        console.log(error);
-      }
-    };
-  
-
   return (
     <div>
         <div className="p-0 h-full sm:ml-72">
@@ -236,7 +234,71 @@ const handleDelete = async (row) => {
 
             <div className='flex justify-center items-center'>
               <div className="h-auto w-[97%] px-0 pt-4">
-                <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+                <div className="h-auto w-full p-3 bg-white shadow-xl rounded-md">
+
+                  {/*  */}
+                  <div className='pt-3 px-3'>
+                    <Autocomplete
+                        id="companyName"
+                        required
+                        options={brandList}
+                        getOptionLabel={(option) => (option && option.user_id) ? `${option?.user_id} - ${option?.transaction_id} - ${option?.email} - ${option?.mobile} ` : ''}
+                        onChange={handleGPCAutoCompleteChange}
+                        value={selectedCr?.cr}
+                        onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
+                        loading={autocompleteLoading}
+                        sx={{ marginTop: '10px' }}
+                        open={open}
+                        onOpen={() => {
+                          // setOpen(true);
+                        }}
+                        onClose={() => {
+                          setOpen(false);
+                        }}
+                        renderOption={(props, option) => (
+                          <li key={option.user_id} {...props}>
+                            {option ? `${option.user_id} - ${option.transaction_id} - ${option.email} - ${option.mobile}` : 'No options'}
+                          </li>
+                        )} 
+
+
+                        renderInput={(params) => (
+                          <TextField
+                            // required
+                            error={isSubmitClicked && !selectedCr?.cr}
+                            helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
+                            {...params}
+                            label="Search Brands"
+                            InputProps={{
+                              ...params.InputProps,
+                              endAdornment: (
+                                <React.Fragment>
+                                  {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                  {params.InputProps.endAdornment}
+                                </React.Fragment>
+                              ),
+                            }}
+                            sx={{
+                              '& label.Mui-focused': {
+                                color: '#00006A',
+                              },
+                              '& .MuiInput-underline:after': {
+                                borderBottomColor: '#00006A',
+                              },
+                              '& .MuiOutlinedInput-root': {
+                                '&:hover fieldset': {
+                                  borderColor: '#000000',
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: '#000000',
+                                },
+                              },
+                            }}
+                          />
+                        )}
+
+                      />
+                    </div>  
 
                     <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                         <button
@@ -253,8 +315,7 @@ const handleDelete = async (row) => {
                         columnsName={AdminBrandsColumn}
                         loading={isLoading}
                         secondaryColor="secondary"
-                        handleRowClickInParent={handleRowClickInParent}
-
+                      
                         dropDownOptions={[
                         {
                         label: "View",
@@ -301,11 +362,11 @@ const handleDelete = async (row) => {
         </div>
         {/* Addbrands component with handleShowCreatePopup prop */}
              {isCreatePopupVisible && (
-                    <Addbrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                    <Addbrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData}/>
         )}
         {/* Updatebrands component with handleShowUpdatePopup prop */}
                   {isUpdatePopupVisible && (
-                    <Updatebrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData}/>
+                    <Updatebrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={fetchData}/>
                   )}
         </div>
     </div>

@@ -78,7 +78,10 @@ const RegisteredMembersView = () => {
     zipCode: '',
     mobileNo: '',
     contactPerson: '',
+    cr_number: '',
+    cr_activity: '',
     companyLandline: '',
+    password: '',
 
   });
 
@@ -92,7 +95,7 @@ const RegisteredMembersView = () => {
   const fetchAllUserData = async () => {
     try {
       const response = await newRequest.get(`/users?id=${gs1MemberData?.id}`);
-      // console.log(response.data[0]);
+      console.log(response.data[0]);
       const data = response?.data[0] || [];
       setAllUserData(data);
       setEditableData(
@@ -104,9 +107,12 @@ const RegisteredMembersView = () => {
           state: data?.state,
           city: data?.city,
           zipCode: data?.zip_code,
-          mobileNo: data?.mobile,
           companyLandline: data?.companyLandLine,
+          cr_number: data?.cr_number,
+          cr_activity: data?.cr_activity,
+          mobileNo: data?.mobile,
           contactPerson: data?.contactPerson,
+          password: data?.password,
         }
       )
 
@@ -551,7 +557,8 @@ const RegisteredMembersView = () => {
                     columnsName={MembersDocumentColumn}
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
-                    checkboxSelection={false}
+                    checkboxSelection={"disabled"}
+                    
 
                     dropDownOptions={[
                       // {
@@ -791,7 +798,8 @@ const RegisteredMembersView = () => {
                   loading={memberHistoryLoader}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
-
+                  actionColumnVisibility={false}
+                  
                   dropDownOptions={[
                     {
                       label: "View",

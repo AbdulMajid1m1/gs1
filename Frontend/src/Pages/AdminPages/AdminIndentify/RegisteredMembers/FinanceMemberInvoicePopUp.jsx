@@ -6,8 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
-// const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData
+const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData,
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
@@ -71,22 +70,16 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       console.log(status);
       const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
       //   console.log(res.data);
-      
-        if (res.status === 200) {
-          if (selectedStatus === "rejected") {
-              toast.info("Member Account Rejected Successfully");
-          } else {
-              toast.success("User Activated Successfully");
-          }
+   
+      if (res.status === 200) {
+        if (selectedStatus === "rejected") {
+            toast.info("Member Account Rejected Successfully");
+        } else {
+            toast.success("User Activated Successfully");
+        }
 
         setLoading(false);
         refreshMemberInoviceData();
-        // MemberbankSlip();
-        fetchAllUserData();
-        fetchMemberbankSlipData()
-
-        fetchMemberHistoryData();
-        // Close the popup
         handleCloseInvoicePopup();
       }
     } catch (err) {
@@ -216,4 +209,4 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   );
 }
 
-export default MemberInvoicePopUp;
+export default FinanceMemberInvoicePopUp;
