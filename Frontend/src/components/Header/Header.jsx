@@ -20,7 +20,7 @@ const Header = () => {
 
             {/* Buttons */}
             <div>
-              <div className='flex justify-end items-end px-1'>
+              <div className='flex justify-end items-end px-1 gap-3 font-sans font-semibold'>
                 <p className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Verified By GS1</p>
                  | 
                 <span onClick={() => navigate('/admin-login')} className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Staff Login</span>

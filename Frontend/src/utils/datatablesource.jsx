@@ -1076,11 +1076,16 @@ export const Gs1AllMembers = [
     headerName: 'MOBILE',
     width: 180,
   },
-  // {
-  //   field: 'code',
-  //   headerName: 'CODE',
-  //   width: 180,
-  // },
+  {
+    field: 'code',
+    headerName: 'CODE',
+    width: 180,
+  },
+  {
+    field: 'password',
+    headerName: 'PASSWORD',
+    width: 180,
+  },
   {
     field: 'membership_category',
     headerName: 'MEMBER CATEGORY',
@@ -1184,12 +1189,6 @@ export const Gs1AllMembers = [
   //   headerName: 'EMAIL VERIFIED AT',
   //   width: 180,
   // },
-  // {
-  //   field: 'password',
-  //   headerName: 'PASSWORD',
-  //   width: 180,
-  // },
-  
   // {
   //   field: 'verification_code',
   //   headerName: 'VERIFICATION CODE',

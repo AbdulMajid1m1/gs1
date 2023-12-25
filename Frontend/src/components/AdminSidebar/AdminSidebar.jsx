@@ -71,10 +71,28 @@ const AdminSideBar = () => {
   const navigate = useNavigate();
 
 
+  // const handleItemClick = (path) => {
+  //   setSelectedItem(path);
+  //   navigate(path);
+  // };
+  // const handleItemClick = (path, event) => {
+  //   setSelectedItem(path);
+  
+  //   // Check if the "Ctrl" key (or "Command" key on Mac) is pressed
+  //   const isNewTab = event.ctrlKey || event.metaKey;
+  
+  //   if (isNewTab) {
+  //     window.open(path, '_blank');
+  //   } else {
+  //     navigate(path);
+  //   }
+  // };
   const handleItemClick = (path) => {
     setSelectedItem(path);
-    navigate(path);
+    window.open(path, '_blank');
   };
+  
+  
 
   const handleContextMenu = (event, path) => {
     event.preventDefault();
@@ -220,13 +238,23 @@ const AdminSideBar = () => {
                 className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
                 onClick={toggleSidebar}
               >
-                <div 
+                {/* <div 
                   className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/admin/registered-members')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/admin/registered-members')
                   }
-                  >
+                  > */}
+                  {/* <div
+                      className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
+                      onClick={(event) => handleItemClick('/admin/registered-members', event)}
+                      onContextMenu={(event) => handleContextMenu(event, '/admin/registered-members')}
+                    > */}
+                    <div
+                      className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
+                      onClick={() => handleItemClick('/admin/registered-members')}
+                      onContextMenu={(event) => handleContextMenu(event, '/admin/registered-members')}
+                    >
                   <img
                     src={registeredMembers}
                     className="main-inside-image bg-white rounded-full"
