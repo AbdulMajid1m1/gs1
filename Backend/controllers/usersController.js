@@ -295,8 +295,9 @@ export const createUser = async (req, res, next) => {
         await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
 
             , { invoiceBuffer, pdfFilename }, pdfBuffer2);
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        userValue.password = hashedPassword;
+        // const hashedPassword = bcrypt.hashSync(password, 10);
+        // userValue.password = hashedPassword;
+        userValue.password = password;
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
 
         // Start a transaction to ensure both user and cart are inserted
@@ -434,8 +435,9 @@ export const createSubUser = async (req, res, next) => {
             return res.status(409).json({ error: 'User with this email already exists' });
         }
 
-        const hashedPassword = bcrypt.hashSync(userData.password, 10);
-        userData.password = hashedPassword;
+        // const hashedPassword = bcrypt.hashSync(userData.password, 10);
+        // userData.password = hashedPassword;
+
         // Insert new user
         const newUser = await prisma.users.create({
             data: userData,
@@ -479,7 +481,7 @@ export const memberLogin = async (req, res, next) => {
             return res.status(401).json({ error: 'User not found' });
         }
 
-        const passwordMatch = bcrypt.compareSync(password, user.password);
+        const passwordMatch = password.trim().toLowerCase() === user.password.trim().toLowerCase();
 
         if (!passwordMatch) {
             return res.status(401).json({ error: 'Incorrect password' });
@@ -617,11 +619,14 @@ export const searchUsers = async (req, res, next) => {
             })),
         };
 
-        // Fetch the top 30 latest records that match the search conditions
+        // Fetch the top 30 latest records that match the search conditions along with associated carts
         const users = await prisma.users.findMany({
             where: searchConditions,
             orderBy: { created_at: 'desc' }, // Sort by created_at in descending order
             take: 30, // Limit to 30 records
+            include: {
+                carts: true, // Assuming carts is the name of the relation between users and carts
+            },
         });
 
         return res.json(users);
@@ -630,7 +635,6 @@ export const searchUsers = async (req, res, next) => {
         next(error);
     }
 };
-
 
 
 

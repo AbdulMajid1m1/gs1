@@ -57,30 +57,27 @@ export const getGtinSubscriptions = async (req, res, next) => {
             }, {})
             : {};
 
-        // Fetch gtin_subcriptions from the database
-        const gtinSubcriptions = await prisma.gtin_subcriptions.findMany({
-            where: filterConditions,
-        });
+        // Fetch gtin_subcriptions and include related gtin_products
+        const [gtinSubscriptions, otherProductSubscriptions] = await prisma.$transaction([
+            prisma.gtin_subcriptions.findMany({
+                where: filterConditions,
+                include: {
+                    gtin_product: true,
+                },
+            }),
+            prisma.other_products_subcriptions.findMany({
+                where: filterConditions,
+                include: {
+                    product: true,
+                },
+            }),
+        ]);
 
-        // Collect all pkg_ids from the subscriptions
-        const pkgIds = gtinSubcriptions.map(sub => sub.pkg_id).filter(id => id != null);
 
-        // Fetch all relevant gtin_products in a single query
-        const relevantGtinProducts = await prisma.gtin_products.findMany({
-            where: {
-                id: { in: pkgIds },
-            },
-        });
-
-        // Map gtin_products to their respective subscriptions
-        const combinedData = gtinSubcriptions.map(subscription => ({
-            ...subscription,
-            gtinProduct: relevantGtinProducts.find(product => product.id === subscription.pkg_id) || null,
-        }));
-
-        return res.json(combinedData);
+        // Return the fetched data
+        return res.json({ gtinSubscriptions, otherProductSubscriptions });
     } catch (error) {
-        console.log(error);
-        next(error);
+        console.error(error);
+        next(createError(500, 'Server error occurred'));
     }
 };
