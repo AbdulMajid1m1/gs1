@@ -18,6 +18,7 @@ import { ADMIN_EMAIL, BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../
 import { generateRandomTransactionId } from '../utils/utils.js';
 import { cookieOptions } from '../utils/authUtilities.js';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
+import { createMemberLogs } from '../utils/functions/historyLogs.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -379,6 +380,19 @@ export const createUser = async (req, res, next) => {
                     prisma.member_documents.create({ data: docData })
                 )
             );
+            const logData = {
+                subject: 'Member Registration',
+                // user user memberId
+                member_id: userUpdateResult.memberID,
+                // TODO: take email form current admin token
+                // admin_id: 'admin@gs1sa.link',
+
+            }
+            console.log("logData", logData);
+
+            await createMemberLogs(logData);
+
+
 
             return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions, memberDocuments };
 
@@ -386,6 +400,7 @@ export const createUser = async (req, res, next) => {
 
             // make trantion time to 40 sec
         }, { timeout: 40000 });
+
 
         res.status(201).json(transaction);
     } catch (error) {
