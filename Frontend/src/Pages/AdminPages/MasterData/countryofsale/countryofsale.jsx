@@ -15,6 +15,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {toast} from 'react-toastify';
 import Addcountryofsale from './addcounrtyofsale';
 import Updatecountryofsale from './updatecountryofsale';
+import * as XLSX from 'xlsx';
+import { CSVLink } from "react-csv";
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 const CountryofSales = () => {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -147,7 +150,50 @@ const handleDelete = async (row) => {
         }
     
       }
+const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            console.log(file.type);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0]; // Assuming you have data in the first sheet
+                const sheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(sheet);
+                json.forEach((item) => {
+                    newRequest.post(`/createcountryofsale`, {
+                        Alpha2: item.Alpha2, // Adjust property names as needed
+                      Alpha3: item.Alpha3,
+                      country_code_numeric3: item.country_code_numeric3,
+                      country_name: item.country_name,
+                     
+                    })
+                        .then((res) => {
+                            console.log('Add', res.data);
+                            
+                            Swal.fire(
+                                'Add!',
+                                `Country of sales has been created`,
+                                'success'
+                            )
+                           refreshcitiesData()
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            Swal.fire(
+                                'Error!',
+                                `Some Country of sales already exist`,
+                                'error'
+                            )
+                            // Handle errors
+                        });
+                });
+            };
+            reader.readAsArrayBuffer(file);
 
+        }
+    };
   return (
     <div>
         <div className="p-0 h-full sm:ml-72">
@@ -188,7 +234,27 @@ const handleDelete = async (row) => {
                           onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
-                        </button>
+                </button>
+                  <div className="relative">
+                    <button
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
+                    >
+                      <i className="fas fa-file-import mr-1"></i> Import
+                    </button>
+                    <input
+                      type="file"
+                      accept=".xlsx"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={handleFileUpload}
+                    />
+                  </div>
+
+
+                <CSVLink data={data}
+                  
+                    type="button" 
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  </CSVLink>
                     </div>
                     {/* DataGrid */}
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
