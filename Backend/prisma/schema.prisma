@@ -1055,8 +1055,10 @@ model member_history_logs {
   subject    String    @db.NVarChar(255)
   member_id  String?
   admin_id   String?
+  user_id    String
   created_at DateTime? @default(now()) @db.DateTime
   updated_at DateTime? @updatedAt @db.DateTime
+  user       users     @relation(fields: [user_id], references: [id])
 }
 
 model member_important_notifications {
@@ -1384,16 +1386,16 @@ model old_users {
 }
 
 model other_products {
-  id                           String                         @id @default(cuid())
-  product_name                 String?                        @db.NVarChar(Max)
-  total_no_of_barcodes         Float?
-  product_subscription_fee     Float?
-  code                         String?                        @db.NVarChar(Max)
-  status                       Int?
-  created_at                   DateTime                       @default(now())
-  updated_at                   DateTime                       @updatedAt
-  med_subscription_fee         Float?
-  variant                      String?                        @db.NVarChar(10)
+  id                          String                        @id @default(cuid())
+  product_name                String?                       @db.NVarChar(Max)
+  total_no_of_barcodes        Float?
+  product_subscription_fee    Float?
+  code                        String?                       @db.NVarChar(Max)
+  status                      Int?
+  created_at                  DateTime                      @default(now())
+  updated_at                  DateTime                      @updatedAt
+  med_subscription_fee        Float?
+  variant                     String?                       @db.NVarChar(10)
   // Define a one-to-many relationship with other_products_subscriptions
   other_products_subcriptions other_products_subcriptions[]
 }
@@ -1981,6 +1983,9 @@ model users {
   zip_code                 String? @db.VarChar(50)
   old_member_recheck       Int?    @default(0, map: "DF_users_old_member_recheck")
   carts                    carts[] // Define the one-to-many relationship
+
+  // create a one-to-many relationship with member_history_logs
+  member_history_logs member_history_logs[]
 }
 
 model withdraw_gateways {
