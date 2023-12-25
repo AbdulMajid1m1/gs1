@@ -86,17 +86,15 @@ const Brands = () => {
           setAutocompleteLoading(true);
           setOpen(true);
     
-          const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+          const res = await newRequest.get(`/brands/search?keyword=${newInputValue}`, {
             signal: abortControllerRef.current.signal
           });
           console.log(res);
     
           const crs = res?.data?.map(item => {
             return {
-              user_id: item.id,
-              transaction_id: item.transaction_id,
-              email: item.email,
-              mobile: item.mobile,
+              name_ar: item.name_ar,
+              companyID: item.companyID,
             };
           });
     
@@ -242,7 +240,7 @@ const Brands = () => {
                         id="companyName"
                         required
                         options={brandList}
-                        getOptionLabel={(option) => (option && option.user_id) ? `${option?.user_id} - ${option?.transaction_id} - ${option?.email} - ${option?.mobile} ` : ''}
+                        getOptionLabel={(option) => (option && option.name_ar) ? `${option?.name_ar} - ${option?.companyID}` : ''}
                         onChange={handleGPCAutoCompleteChange}
                         value={selectedCr?.cr}
                         onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -256,8 +254,8 @@ const Brands = () => {
                           setOpen(false);
                         }}
                         renderOption={(props, option) => (
-                          <li key={option.user_id} {...props}>
-                            {option ? `${option.user_id} - ${option.transaction_id} - ${option.email} - ${option.mobile}` : 'No options'}
+                          <li key={option.name_ar} {...props}>
+                            {option ? `${option.name_ar} - ${option.companyID}` : 'No options'}
                           </li>
                         )} 
 
