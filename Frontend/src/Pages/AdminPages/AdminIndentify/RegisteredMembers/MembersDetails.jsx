@@ -34,8 +34,8 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
   const [selectedState, setSelectedState] = useState("");
   const [filteredStates, setFilteredStates] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]);
-  const [mobileNumber, setMobileNumber] = React.useState(gs1MemberData?.mobile || '')
-
+  const [mobileNumber, setMobileNumber] = React.useState('');
+  
 
 
   // const handleUpdate = () => {
@@ -66,11 +66,17 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     // Extract editable fields from editableData state and add them to FormData
     formData.append('company_name_eng', editableData.companyNameEnglish);
     formData.append('company_name_arabic', editableData.companyNameArabic);
-    formData.append('country', selectedCountry?.name);
-    formData.append('state', selectedState?.name);
-    formData.append('city', selectedCity?.name);
+    // if user not change that field then send old value
+    formData.append('country', selectedCountry?.name || gs1MemberData?.country);
+    formData.append('state', selectedState?.name || gs1MemberData?.state);
+    formData.append('city', selectedCity?.name || gs1MemberData?.city);
+    // formData.append('zip_code', editableData.zipCode);
+    // formData.append('companyLandLine', mobileNumber);
+    // formData.append('country', selectedCountry?.name);
+    // formData.append('state', selectedState?.name);
+    // formData.append('city', selectedCity?.name);
     formData.append('zip_code', editableData.zipCode);
-    formData.append('mobile', mobileNumber);
+    formData.append('companyLandLine', mobileNumber);
     formData.append('contactPerson', editableData.contactPerson);
     // Add other editable fields as needed
 
@@ -89,7 +95,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
       refreshAllUserData();
 
     }
-    catch (error) {
+    catch (error) {    
       console.log(error);
       setIsLoading(false);
 
@@ -170,6 +176,9 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
   useEffect(() => {
     handleCountryAndState();
     handleGetAllCities();
+
+
+    setMobileNumber(gs1MemberData?.mobile || '');
   }
     , []);
 
@@ -420,13 +429,11 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               Landline Number
             </label>
             <div className='flex items-center border-2 w-full h-14 rounded-md'>
-              <PhoneInput
+              {/* <PhoneInput
                 international
                 country={'sa'}
                 defaultCountry={'sa'}
-                value={mobileNumber}
-                onChange={(e) => setMobileNumber(e.target.value)}
-                // onChange={(e) => setCompanyLandLine(e)}
+                value={gs1MemberData?.companyLandLine}
                 inputProps={{
                   id: 'mobile',
                   placeholder: 'Mobile Number',
@@ -438,7 +445,25 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   border: 'none',
                 }}
                 required
-              />
+              /> */}
+              <PhoneInput
+                    international
+                    country={'sa'}
+                    defaultCountry={'sa'}
+                    value={editableData?.companyLandline}
+                    inputProps={{
+                      id: 'mobile',
+                      placeholder: 'Mobile Number',
+                    }}
+                    inputStyle={{
+                      width: '100%',
+                      borderRadius: '0px',
+                      border: 'none',
+                    }}
+                    required
+                    onChange={(value) => setMobileNumber(value)}
+                  />
+
             </div>
           </div>
         </div>
@@ -595,12 +620,12 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   international
                   country={'sa'}
                   defaultCountry={'sa'}
-                  value={gs1MemberData?.mobile}
+                  value={gs1MemberData?.mobile || ''}
                   // onChange={setMobileNumber}
                   // onChange={(e) => setCompanyLandLine(e)}
                   disabled
                   inputProps={{
-                    id: 'mobile',
+                    id: 'mobileomit',
                     placeholder: 'Mobile Number',
                   }}
 

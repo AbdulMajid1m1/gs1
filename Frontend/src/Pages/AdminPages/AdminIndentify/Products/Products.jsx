@@ -117,6 +117,12 @@ const Products = () => {
 
 
 
+  const handleEdit = (row) => {
+    console.log(row);
+    navigate("edit-products/" + row?.id);
+  }
+
+
   
 
  
@@ -227,7 +233,7 @@ const Products = () => {
                       label: "Edit",
                       icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
-                      // action: handleEdit
+                      action: handleEdit
 
                     },
                     {
