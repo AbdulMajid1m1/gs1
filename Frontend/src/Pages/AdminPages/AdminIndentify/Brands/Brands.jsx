@@ -250,7 +250,7 @@ const Brands = () => {
                         onOpen={() => {
                           // setOpen(true);
                         }}
-                        onClose={() => {
+                          onClose={() => {
                           setOpen(false);
                         }}
                         renderOption={(props, option) => (
