@@ -35,9 +35,9 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
   const [filteredStates, setFilteredStates] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]);
   const [mobileNumber, setMobileNumber] = React.useState('');
+  const [userPassword, setUserPassword] = React.useState('');
+  const [error, setError] = useState(false);
   
-
-
   // const handleUpdate = () => {
   //   // Handle the update logic here, e.g., dispatch an action to update data
   //   console.log('Updated data:', editableData);
@@ -77,6 +77,9 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     // formData.append('city', selectedCity?.name);
     formData.append('zip_code', editableData.zipCode);
     formData.append('companyLandLine', mobileNumber);
+    formData.append('cr_number', editableData.cr_number);
+    formData.append('cr_activity', editableData.cr_activity);
+    formData.append('password', editableData.password);
     formData.append('contactPerson', editableData.contactPerson);
     // Add other editable fields as needed
 
@@ -179,9 +182,26 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
 
     setMobileNumber(gs1MemberData?.mobile || '');
+    setUserPassword(editableData?.password || '');
   }
-    , []);
+  , []);
 
+  useEffect(() => {
+  if (editableData) {
+    setUserPassword(editableData.password || '');
+  }
+  }, [editableData]);
+
+  
+  const handlePassword = (e) => {
+    const value = e.target.value;
+    if (value.length <= 6) {
+      setUserPassword(value);
+      setError(false);
+    } else {
+      setError(true);
+    }
+  } 
 
   return (
     <div>
@@ -495,10 +515,11 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               id="crNumber"
               label="Cr Number"
               variant="outlined"
-              value={gs1MemberData?.cr_number}
+              value={editableData?.cr_number}
+              onChange={(e) => handleInputChange('cr_number', e.target.value)}
               InputLabelProps={{
-                shrink: Boolean(gs1MemberData?.cr_number),
-                style: { fontSize: gs1MemberData?.cr_number ? '16px' : '16px', zIndex: '0' },
+                shrink: Boolean(editableData?.cr_number),
+                style: { fontSize: editableData?.cr_number ? '16px' : '16px', zIndex: '0' },
               }}
             />
           </div>
@@ -508,10 +529,11 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               id="crActivity"
               label="Cr Activity"
               variant="outlined"
-              value={gs1MemberData?.cr_activity}
+              value={editableData?.cr_activity}
+              onChange={(e) => handleInputChange('cr_activity', e.target.value)}
               InputLabelProps={{
-                shrink: Boolean(gs1MemberData?.cr_activity),
-                style: { fontSize: gs1MemberData?.cr_activity ? '16px' : '16px', zIndex: '0' },
+                shrink: Boolean(editableData?.cr_activity),
+                style: { fontSize: editableData?.cr_activity ? '16px' : '16px', zIndex: '0' },
               }}
             />
           </div>
@@ -668,6 +690,21 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                 style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
               }}
             />
+          </div>
+
+          <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+            <TextField
+              id="password"
+              label="Password"
+              variant="outlined"
+              value={userPassword}
+              onChange={handlePassword}
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+              }}
+            />
+            {error && <p className='text-red-500 text-xs'>Password must be 6 digit</p>}
           </div>
 
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
