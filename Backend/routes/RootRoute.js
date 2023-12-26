@@ -16,6 +16,7 @@ import memberDocumentsRoutes from './subRoutes/memberDocumentsRoutes.js';
 import productsRoutes from './subRoutes/productsRoutes.js';
 import historyLogsRoutes from './subRoutes/historyLogsRoutes.js';
 import gpcRoutes from './subRoutes/gpcRoutes.js';
+import hsCodesRouter from './subRoutes/hsCodesRouter.js';
 const router = express.Router();
 
 
@@ -53,5 +54,7 @@ router.use('/products', productsRoutes);
 router.use('/logs', historyLogsRoutes);
 
 router.use('/gpc', gpcRoutes);
+
+router.use('/hsCode', hsCodesRouter);
 
 export default router;
