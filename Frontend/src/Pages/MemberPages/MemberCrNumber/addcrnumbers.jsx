@@ -18,7 +18,7 @@ const Addcrnumbers = ({ isVisible, setVisibility, refreshBrandData }) => {
       const response = await newRequest.post('/crs/', {
         cr: cr,
         activity: activity,
-        status: Number(status),
+        status: 1,
       });
 
       toast.success(`cr ${cr} has been added successfully.`, {
@@ -91,17 +91,7 @@ const Addcrnumbers = ({ isVisible, setVisibility, refreshBrandData }) => {
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                   </div>
-                                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">status</label>
-                                 <input
-                                   type="number"
-                                   id="status"
-                                   value={status}
-                                   onChange={(e) => setstatus(e.target.value)}
-                                   placeholder="Enter state id "
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                               </div>
+                                  
                              </div>
 
                              <div className="w-full flex justify-center items-center gap-8 mt-5">

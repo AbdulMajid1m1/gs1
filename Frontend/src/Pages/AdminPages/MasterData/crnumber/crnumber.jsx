@@ -172,10 +172,11 @@ const handleFileUpload = (e) => {
                 const json = XLSX.utils.sheet_to_json(sheet);
               json.forEach((item) =>
               {
-                   const cr = String(item.cr);
+                const cr = String(item.cr);
+                const activity = String(item.activity);
                     newRequest.post(`/crs`, {
                         cr: cr , // Adjust property names as needed
-                      activity: item.activity,
+                      activity: activity,
                      
                       status: 1,
                      
