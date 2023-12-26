@@ -77,8 +77,8 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     // formData.append('city', selectedCity?.name);
     formData.append('zip_code', editableData.zipCode);
     formData.append('companyLandLine', mobileNumber);
-    formData.append('cr_number', editableData.cr_number);
-    formData.append('cr_activity', editableData.cr_activity);
+    // formData.append('cr_number', editableData.cr_number);
+    // formData.append('cr_activity', editableData.cr_activity);
     formData.append('password', userPassword);
     formData.append('contactPerson', editableData.contactPerson);
     // Add other editable fields as needed
@@ -201,7 +201,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     } else {
       setError(true);
     }
-  }
+  } 
 
   return (
     <div>
@@ -515,11 +515,10 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               id="crNumber"
               label="Cr Number"
               variant="outlined"
-              value={editableData?.cr_number}
-              onChange={(e) => handleInputChange('cr_number', e.target.value)}
+              value={gs1MemberData?.cr_number}
               InputLabelProps={{
-                shrink: Boolean(editableData?.cr_number),
-                style: { fontSize: editableData?.cr_number ? '16px' : '16px', zIndex: '0' },
+                shrink: Boolean(gs1MemberData?.cr_number),
+                style: { fontSize: gs1MemberData?.cr_number ? '16px' : '16px', zIndex: '0' },
               }}
             />
           </div>
@@ -529,11 +528,10 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               id="crActivity"
               label="Cr Activity"
               variant="outlined"
-              value={editableData?.cr_activity}
-              onChange={(e) => handleInputChange('cr_activity', e.target.value)}
+              value={gs1MemberData?.cr_activity}
               InputLabelProps={{
-                shrink: Boolean(editableData?.cr_activity),
-                style: { fontSize: editableData?.cr_activity ? '16px' : '16px', zIndex: '0' },
+                shrink: Boolean(gs1MemberData?.cr_activity),
+                style: { fontSize: gs1MemberData?.cr_activity ? '16px' : '16px', zIndex: '0' },
               }}
             />
           </div>
