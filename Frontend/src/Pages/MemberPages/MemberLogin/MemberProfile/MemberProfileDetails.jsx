@@ -6,7 +6,7 @@ import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 import { useParams } from 'react-router-dom';
-const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange }) => {
+const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange }) => {
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
@@ -726,4 +726,4 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
   )
 }
 
-export default MembersDetails
+export default MemberProfileDetails
