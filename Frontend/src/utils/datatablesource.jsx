@@ -2939,7 +2939,7 @@ export const submenusDataColumn = [
   // },
   {
     field: 'user_type',
-    headerName: 'User Type',
+    headerName: 'Member Type',
     width: 180,
   },
   // {
