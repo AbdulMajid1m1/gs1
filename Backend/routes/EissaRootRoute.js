@@ -7,7 +7,8 @@ import { createotherproduct,getAllotherproduct,getotherproductById,updateotherpr
 import { creategpctype,getAllgpctype,getgpctypeById,deletegpctype,updategpctype } from '../controllers/dcp_type.js';
 import { createcountryofsale,getAllcountryofsale,getcountryof_saleById,updatecountryofsale,deletecountryofsale } from '../controllers/countryofsales.js';
 import { createHsCode,getAllHsCode,getHsCodeById,updateHsCode,deleteHsCode } from '../controllers/hscodes.js';
-import { createUNSPSC, getAllUNSPSC,getUNSPSCById,updateUNSPSC,deleteUNSPSC } from '../controllers/UNSPSC.js';
+import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC } from '../controllers/UNSPSC.js';
+import {getAllprod_desc_languages} from "../controllers/productsController.js"
 const router = express.Router();
 
 // Routes for unite
@@ -66,7 +67,8 @@ router.get('/getAlldocumentTypename', getAlldocumentTypename);
 router.get('/getdocumentTypeById/:id', getdocumentTypeById);
 router.put('/updatedocumentType/:id', updatedocumentType);
 router.delete('/deletedocumentType/:id', deletedocumentType);
-
+// Routes for getAllprod_desc_languages
+router.get('/getAllprod_desc_languages', getAllprod_desc_languages);
 
 
 export default router;
