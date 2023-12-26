@@ -69,7 +69,7 @@ const userSchema = Joi.object({
     payment_type: Joi.string(),
     online_payment: Joi.string(),
     remember_token: Joi.string(),
-    parent_memberID: Joi.number().integer(),
+    parent_memberID: Joi.string(),
     invoice_file: Joi.string(),
     otp_status: Joi.number().integer(),
     gcpGLNID: Joi.string().max(50),
