@@ -59,7 +59,7 @@ const userSchema = Joi.object({
     other_products: Joi.string().optional(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
-    password: Joi.string().min(6).max(6),
+    password: Joi.string(),
     // total: Joi.number(),
     contactPerson: Joi.string(),
     companyLandLine: Joi.string(),
@@ -385,7 +385,7 @@ export const createUser = async (req, res, next) => {
                 subject: 'Member Registration',
                 // user user memberId
                 // member_id: userUpdateResult.memberID,
-                user_id: userUpdateResult.id,
+                user_id: newUser.id,
                 // TODO: take email form current admin token
                 // admin_id: 'admin@gs1sa.link',
 
