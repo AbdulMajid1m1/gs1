@@ -103,7 +103,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
       setIsLoading(false);
 
       // add api message to toast
-      toast.error(error?.response?.data?.message || 'Something went wrong');
+      toast.error(error?.response?.data?.error || 'Something went wrong');
 
     }
 
