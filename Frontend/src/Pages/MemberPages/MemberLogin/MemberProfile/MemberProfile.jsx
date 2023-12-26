@@ -1,784 +1,878 @@
-import React, { useState } from 'react'
-import visitFrontend from "../../../../Images/visitFrontend.png"
-import profileICon from "../../../../Images/profileICon.png"
-import { Autocomplete, TextField } from "@mui/material";
-
+import React, { useContext, useEffect, useState } from 'react'
+import DataTable from '../../../../components/Datatable/Datatable'
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { DataTableContext } from '../../../../Contexts/DataTableContext'
+import { MembersBrandsColumn, MembersDocumentColumn, bankSlipColumn, financeColumn, memberHistoryColumnData, registeredmemberColumn, submenusDataColumn } from '../../../../utils/datatablesource'
+import newRequest from '../../../../utils/userRequest'
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
+import DataTable2 from '../../../../components/Datatable/Datatable2'
+import './MemberProfile.css'
+import AddMemberBrands from './AddMemberBrands'
+import UpdateMemberBrands from './UpdateMemberBrands'
+import AddMemberProfileDocuments from './AddMemberProfileDocuments'
+import DataTable3 from '../../../../components/Datatable/Datatable3'
+import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
+import MemberInvoicePopUp from './MemberInvoicePopUp'
+import MembersProfileDetails from './MemberProfileDetails';
+import MemberSubMenusAddPopUp from './MemberSubMenusAddPopUp';
+import { useParams } from 'react-router-dom';
+import MemberUpdateSubMenusPopUp from './MemberUpdateSubMenusPop';
 const MemberProfile = () => {
-    const [selectedImage, setSelectedImage] = useState(null);
-    // const { currentUser, updateCurrentUser } = useContext(CurrentUserContext);
-    // const [selectedBackImage, setSelectedBackImage] = useState(null);
-    const [selectedImageFile, setSelectedImageFile] = useState(null);
-    // const [selectedBackImageFile, setSelectedBackImageFile] = useState(null);
-    const [selectedBackImageFile, setSelectedBackImageFile] = useState(null);
-    const [selectedBackImage, setSelectedBackImage] = useState(null);
+  // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  // console.log(gs1MemberData)
   
-    const [country, setCountry] = useState([]);
-    const [companyNameEnglish, setCompanyNameEnglish] = useState("");
-    const [companyNameArabic, setCompanyNameArabic] = useState("");
-    const [mobile, setMobile] = useState("");
-    const [extension, setExtension] = useState("");
-    const [countryShortName, setCountryShortName] = useState("");
-    const [countryShortNameList, setCountryShortNameList] = useState([]);
-    const [state, setState] = useState([]);
-    const [city, setCity] = useState([]);
-    const [zip, setZip] = useState("");
-    const [addressLine1, setAddressLine1] = useState("");
-    const [addressLine2, setAddressLine2] = useState("");
-    const [otherMobileNumber, setOtherMobileNumber] = useState("");
-    const [otherLandlineNumber, setOtherLandlineNumber] = useState("");
-    const [district, setDistrict] = useState("");
-    const [website, setwebsite] = useState("");
-    const [staff, setStaff] = useState("");
-    const [building, setBuilding] = useState("");
-    const [unit, setUnit] = useState("");
-    const [qrcode, setQrcode] = useState("");
-    const [company, setCompany] = useState("");
-  
-    const [selectedCountry, setSelectedCountry] = useState("");
-    const [selectedCity, setSelectedCity] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-  
-    // const { openSnackbar } = useContext(SnackbarContext);
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const handleImageChange = (event) => {
-      const imageFile = event.target.files[0];
-      setSelectedImageFile(imageFile);
-      const imageUrl = URL.createObjectURL(imageFile);
-      setSelectedImage(imageUrl);
-    };
-  
-    const handleBackImageChange = (event) => {
-      const backImageFile = event.target.files[0];
-      setSelectedBackImageFile(backImageFile);
-      const backImageUrl = URL.createObjectURL(backImageFile);
-      setSelectedBackImage(backImageUrl);
-    };
-  
-  
-  
-    const handleCountryName = (event, value) => {
-      console.log(value);
-      setSelectedCountry(value);
-    };
-  
-    const handleCountryShortName = (event, value) => {
-      console.log(value);
-      setCountryShortName(value);
-    };
-  
-    const handleCity = (event, value) => {
-      console.log(value);
-      setSelectedCity(value);
-    };
-  
-    const handleState = (event, value) => {
-      console.log(value);
-      setSelectedState(value);
-    };
-  
-    // all get Apis
-    // useEffect(() => {
-    //   phpRequest
-    //     .get("/countries/list")
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       const countryNames = response.data.countries.map(
-    //         (country) => country.name_en
-    //       );
-    //       setCountry(countryNames);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-  
-    //   phpRequest
-    //     .get("/countries/list")
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       const countryShortNamesValues = response.data.countries.map(
-    //         (countryShort) => countryShort.country_shortName
-    //       );
-    //       setCountryShortNameList(countryShortNamesValues);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }, []);
-  
-    // useEffect(() => {
-    //   const dataBody = {
-    //     country_id: 17,
-    //   };
-  
-    //   phpRequest
-    //     .post("/states/by/country", dataBody)
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       const stateNames = response.data.states.map((state) => state.name);
-    //       setState(stateNames);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-  
-    //   const citiesStateBody = {
-    //     state_id: 28,
-    //   };
-  
-    //   phpRequest
-    //     .post("/cities/by/state", citiesStateBody)
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       const cityNames = response.data.city.map((city) => city.name);
-    //       setCity(cityNames);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }, []);
-  
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  console.log(memberData);
+
+  const { Id } = useParams();
+  // console.log(Id)
+  const [allUserData, setAllUserData] = useState([]);
+  const [registeredProductsData, setRegisteredProductsData] = useState([]);
+  const [membersDocuemtsData, setMembersDocumentsData] = useState([]);
+  const [registeredProductsLoader, setRegisteredProductsLoader] = useState(true);
+  const [memberDocumentsLoader, setMemberDocumentsLoader] = useState(true);
+  const [filteredMemberDetails, setFilteredMemberDetails] = useState([]);
+  const [brandsLoader, setBrandsLoader] = useState(true);
+  const [memberInvoiceLoader, setMemberInvoiceLoader] = useState(true);
+  const [memberBankSlipLoader, setMemberBankSlipLoader] = useState(true);
+  const [subMembersLoader, setSubMembersLoader] = useState(true);
+  const [memberHistoryLoader, setMemberHistoryLoader] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [memberInovice, setMemberInovice] = useState([]);
+  const [memberBankSlip, setMemberBankSlip] = useState([]);
+  const [brandsData, setBrandsData] = useState([]);
+  const [subMenusData, setSubMenusData] = useState([]);
+  const [memberHistoryData, setMemberHistoryData] = useState([]);
+
+  // popUp States
+  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+  const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+  const [isAddMemberPopupVisible, setIsAddMemberPopupVisibility] = useState(false);
+  const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
+  const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
+  const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
+
+  const fetchMemberHistoryData = async () => {
+    setMemberHistoryLoader(true);
+    try {
+      console.log(memberData?.id);
+      const response = await newRequest.get(`/logs/memberLogs/?member_id=${memberData?.id}`);
+      console.log("member history");
+      console.log(response.data);
+      setMemberHistoryData(response?.data || []);
+      setMemberHistoryLoader(false);
+
+    } catch (err) {
+      console.log(err);
+      setMemberHistoryLoader(false);
     }
-    // const handleSubmit = (e) => {
-    //   e.preventDefault();
-    //   setIsLoading(true);
-    //   console.log(
-    //     currentUser,
-    //     selectedCountry,
-    //     countryShortName,
-    //     selectedCity,
-    //     selectedState,
-    //     zip,
-    //     addressLine1,
-    //     addressLine2,
-    //     district,
-    //     building,
-    //     otherMobileNumber,
-    //     otherLandlineNumber,
-    //     website,
-    //     staff,
-    //     unit,
-    //     qrcode,
-    //     mobile,
-    //     extension,
-    //     companyNameEnglish,
-    //     companyNameArabic,
-    //     selectedImageFile,
-    //     selectedBackImageFile
-    //   );
+  };
+
+  const [editableData, setEditableData] = useState({
+    companyNameEnglish: '',
+    companyNameArabic: '',
+    country: '',
+    countryShortName: '', // Change this to the correct property
+    state: '',
+    city: '',
+    zipCode: '',
+    mobileNo: '',
+    contactPerson: '',
+    cr_number: '',
+    cr_activity: '',
+    companyLandline: '',
+    password: '',
+
+  });
+
+  const handleInputChange = (field, value) => {
+    setEditableData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  const fetchAllUserData = async () => {
+    try {
+      const response = await newRequest.get(`/users?id=${memberData?.id}`);
+      console.log(response.data[0]);
+      const data = response?.data[0] || [];
+      setAllUserData(data);
+      setEditableData(
+        {
+          companyNameEnglish: data?.company_name_eng,
+          companyNameArabic: data?.company_name_arabic,
+          country: data?.country,
+          countryShortName: data?.country,
+          state: data?.state,
+          city: data?.city,
+          zipCode: data?.zip_code,
+          companyLandline: data?.companyLandLine,
+          cr_number: data?.cr_number,
+          cr_activity: data?.cr_activity,
+          mobileNo: data?.mobile,
+          contactPerson: data?.contactPerson,
+          password: data?.password,
+        }
+      )
+
+
+      setIsLoading(false)
+
+    }
+    catch (err) {
+      console.log(err);
+      setIsLoading(false)
+    }
+  };
+
+  const fetchMemberDocumentsData = async () => {
+    setMemberDocumentsLoader(true);
+    try {
+      const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.id}`);
+      // console.log(response.data);
+      setMembersDocumentsData(response?.data || []);
+      setMemberDocumentsLoader(false);
+
+    }
+    catch (err) {
+      console.log(err);
+      setMemberDocumentsLoader(false);
+    }
+  };
+
+
+  const fetchData = async () => {
+    setBrandsLoader(true);
+    try {
+      const response = await newRequest.get(`/brands?user_id=${memberData?.id}`);
+
+      // console.log(response.data);
+      setBrandsData(response?.data || []);
+      setBrandsLoader(false)
+
+    } catch (err) {
+      console.log(err);
+      setBrandsLoader(false)
+    }
+  };
+
+
+  const fetchMemberInvoiceData = async () => {
+    setMemberInvoiceLoader(true);
+    try {
+      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.id}&type=invoice`);
+
+      // console.log(response.data);
+      setMemberInovice(response?.data || []);
+      setMemberInvoiceLoader(false);
+
+    } catch (err) {
+      console.log(err);
+      setMemberInvoiceLoader(false);
+    }
+  };
+
+
+  const fetchMemberbankSlipData = async () => {
+    setMemberBankSlipLoader(true);
+    try {
+      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.id}&type=bank_slip`);
+
+      // console.log(response.data);
+      setMemberBankSlip(response?.data || []);
+      setFilteredMemberDetails(response?.data || []);
+      setMemberBankSlipLoader(false);
+
+    } catch (err) {
+      console.log(err);
+      setMemberBankSlipLoader(false);
+    }
+  };
+
+
+  const fetchFilteredMemberDetails = async (row) => {
+    console.log(row);
+    // set(true);
+    try {
+      // const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=2875842183`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.id}&type=bank_slip&transaction_id=${row[0]?.transaction_id}`);
+
+      // console.log(response.data);
+      setFilteredMemberDetails(response?.data || []);
+      setIsLoading(false)
+
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false)
+    }
+
+    // console.log(gs1MemberData?.id)
+  }
+
+
+  const fetchSubMembersData = async () => {
+    setSubMembersLoader(true);
+    try {
+      const response = await newRequest.get(`/users?parent_memberID=${memberData?.id}`);
+
+      // console.log(response.data);
+      setSubMenusData(response?.data || []);
+      setSubMembersLoader(false)
+
+    }
+    catch (err) {
+      console.log(err);
+      setSubMembersLoader(false)
+    }
+  };
+
+
+  useEffect(() => {
+
+    fetchAllUserData();
+    fetchMemberDocumentsData();
+    fetchMemberHistoryData();
+    fetchMemberInvoiceData();
+    fetchMemberbankSlipData();
+    fetchSubMembersData();
+    fetchData(); // Calling the function within useEffect, not inside itself
+  }, []); // Empty array dependency ensures this useEffect runs once on component mount
+
+
+
+  useEffect(() => {
+    const cartData = allUserData.carts || [];
+    const stringifiedCartData = [].concat(...cartData.map((item) => {
+      try {
+        // Try parsing the JSON, and return the parsed object or null if invalid
+        return JSON.parse(item.cart_items) || null;
+      } catch (error) {
+        console.error(`Error parsing JSON in cart_items: ${error.message}`);
+        return null;
+      }
+    }));
+
+    // Filter out null values (parsing errors) and keep only valid JSON objects
+    const filteredCartData = stringifiedCartData.filter((item) => item !== null);
+    // console.log(filteredCartData || []);
+
+    // Set the registeredProductsData
+    setRegisteredProductsData(filteredCartData || []);
+    setRegisteredProductsLoader(false);
+  }, [allUserData]);
+
+
+
+
+
+  const handleView = (row) => {
+    console.log(row);
+  }
+
+  const handleRowClickInParent = (item) => {
+    console.log(item);
+    if (!item || item?.length === 0) {
+      // setTableSelectedRows(data)
+      // setFilteredData(data)
+      setFilteredMemberDetails(memberBankSlip)
+      return
+    }
+    fetchFilteredMemberDetails(item);
+
+  }
+
+
+  const handleShowCreatePopup = () => {
+    setCreatePopupVisibility(true);
+  };
+
+  const handleShowUpdatePopup = (row) => {
+    setUpdatePopupVisibility(true);
+    // console.log(row)
+    sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+  };
+
+  const handleShowAddMemberPopup = () => {
+    setIsAddMemberPopupVisibility(true);
+  };
+
+  const handleShowMemberInvoicePopup = (row) => {
+    if (row.status === 'approved') {
+      toast.info('No any pending invoice', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      // If status is not 'approved', proceed with showing the popup
+      setIsMemberInvoicePopupVisible(true);
+      sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+    }
+    // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+  };
   
-    //   // Create a FormData object to store the form data including the image files
-    //   const formData = new FormData();
-    //   formData.append("user_id", currentUser?.user?.id);
-    //   formData.append("country", selectedCountry);
-    //   formData.append("country_shortName", countryShortName);
-    //   formData.append("city", selectedCity);
-    //   formData.append("state", selectedState);
-    //   formData.append("zip", zip);
-    //   formData.append("address1", addressLine1);
-    //   formData.append("address2", addressLine2);
-    //   formData.append("district", district);
-    //   formData.append("building_no", building);
-    //   formData.append("additional_number", otherMobileNumber);
-    //   formData.append("mbl_extension", extension);
-    //   formData.append("other_landline", otherLandlineNumber);
-    //   formData.append("website", website);
-    //   formData.append("no_of_staff", staff);
-    //   formData.append("unit_number", unit);
-    //   formData.append("qr_corde", qrcode);
-    //   formData.append("mobile", mobile);
-    //   formData.append("company_name_eng", companyNameEnglish);
-    //   formData.append("company_name_arabic", companyNameArabic);
-    //   if (selectedImageFile !== null) {
-  
-    //     formData.append("image", selectedImageFile);
-    //   }
-    //   if (selectedBackImageFile !== null) {
-    //     formData.append("address_image", selectedBackImageFile);
-    //   }
-  
-    //   phpRequest
-    //     .post("/member/profile/update", formData)
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       openSnackbar(response.data.message);
-    //       sessionStorage.setItem("currentUser", JSON.stringify(response?.data?.memberData));
-    //       updateCurrentUser(response?.data?.memberData);
-  
-    //       setIsLoading(false);
-    //       e.target.reset();
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       openSnackbar("Something is Wrong");
-    //       setIsLoading(false);
-    //     });
-    // };
-  
-    // useEffect(() => {
-    //   setIsLoading(true);
-  
-    //   const fetchData = async () => {
-    //     try {
-    //       const response = await phpRequest.post("/member/profile", {
-    //         user_id: currentUser?.user?.id,
-    //       });
-  
-    //       const { memberProfile } = response.data;
-    //       console.log(memberProfile);
-  
-    //       setSelectedImage(
-    //         memberProfile?.image_path + "/" + memberProfile?.image
-    //       );
-    //       setSelectedBackImage(
-    //         memberProfile?.image_path + "/" + memberProfile.address_image
-    //       );
-    //       setCompanyNameEnglish(memberProfile.company_name_eng);
-    //       setCompanyNameArabic(memberProfile.company_name_arabic);
-    //       setMobile(memberProfile.mobile);
-    //       setExtension(memberProfile.mbl_extension);
-    //       setCountryShortName(memberProfile.address.country_shortName);
-    //       setSelectedCountry(memberProfile?.address?.countryName);
-    //       setSelectedState(memberProfile?.address?.stateName)
-    //       setSelectedCity(memberProfile?.address?.cityName)
-    //       setZip(memberProfile.address.zip);
-    //       setAddressLine1(memberProfile.address1);
-    //       setAddressLine2(memberProfile.address2);
-    //       setOtherMobileNumber(memberProfile.additional_number);
-    //       setOtherLandlineNumber(memberProfile.other_landline);
-    //       setDistrict(memberProfile.district);
-    //       setwebsite(memberProfile.website);
-    //       setStaff(memberProfile.no_of_staff);
-    //       setBuilding(memberProfile.building_no);
-    //       setUnit(memberProfile.unit_number);
-    //       setQrcode(memberProfile.qr_corde);
-    //       setCompany(memberProfile.companyID);
-  
-    //       setIsLoading(false);
-  
-    //     } catch (error) {
-    //       console.log("Error fetching API data:", error);
-    //       setIsLoading(false);
-  
-    //     }
-    //   };
-  
-    //   fetchData();
-    // }, []);
-  
+
+  const handleShowSubMenusPopup = () => {
+    // setIsSubMenusPopupVisible(true);
+    // console.log(gs1MemberData)
+    if (allUserData?.memberID === null) {
+      toast.info('User is not active', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      setIsSubMenusPopupVisible(true);
+    }
+
+  };
+
+
+  const handleShowUpdateSubMenusPopup = (row) => {
+      setIsUpdateSubMenusPopupVisible(true);
+      sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
+  };
+
+
+
+
+
+  //Brand apis HandleDelete
+  const handleDelete = async (row) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this User Account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      // changes the color of the confirm button to red
+      confirmButtonColor: '#1E3B8B',
+      cancelButtonColor: '#FF0032',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const isDeleted = await newRequest.delete("/brands/" + row?.id);
+          if (isDeleted) {
+            toast.success('User deleted successfully', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+
+
+            // filter out the deleted user from the data
+            const filteredData = brandsData.filter((item) => item?.id !== row?.id);
+            setBrandsData(filteredData);
+
+          } else {
+            // Handle any additional logic if the user was not deleted successfully
+            toast.error('Failed to delete user', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+
+          }
+        } catch (error) {
+          // Handle any error that occurred during the deletion
+          console.error("Error deleting user:", error);
+          toast.error('Something went wrong while deleting user', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        return;
+      }
+    });
+  };
+
+
+  // member docuemnts apis HandleDelete
+  const handleMemberDelete = async (MemberRow) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this User Account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      // changes the color of the confirm button to red
+      confirmButtonColor: '#1E3B8B',
+      cancelButtonColor: '#FF0032',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const isDeleted = await newRequest.delete("/memberDocuments/" + MemberRow?.id);
+          if (isDeleted) {
+            toast.success('User deleted successfully', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+
+
+            // filter out the deleted user from the data
+            const filteredData = membersDocuemtsData.filter((item) => item?.id !== MemberRow?.id);
+            setMembersDocumentsData(filteredData);
+
+          } else {
+            // Handle any additional logic if the user was not deleted successfully
+            toast.error('Failed to delete user', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+
+          }
+        } catch (error) {
+          // Handle any error that occurred during the deletion
+          console.error("Error deleting user:", error);
+          toast.error('Something went wrong while deleting user', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        return;
+      }
+    });
+  };
+
+
   return (
     <div>
-      <div className="p-1 h-full sm:ml-72 bg-[#DAF2EE]">
-          <div className='h-32 w-full flex justify-end items-start p-3 bg-primary -mt-3 sm:gap-7 gap-4'>
-            <div className='flex justify-center items-center mt-1 cursor-pointer'>
-                <img src={visitFrontend} 
-                    alt='logo'
-                      style={{ filter: 'invert(1)' }}
-                         className='h-7 w-7 text-white mr-4' />
-                <p className='text-white font-sans font-normal sm:text-2xl text-sm'>Vist Frontend</p>
-            </div>
+      <div className="p-0 h-full sm:ml-72">
+        <div className='bg-[#DAF2EE]'>
+          <DashboardRightHeader title={"GS1 Member Profile"} />
+        </div>
 
-            <div className='flex justify-center items-center'>
-                <img src={profileICon} alt='logo' className='h-10 w-10 text-white mr-5' />
+        <div className='flex justify-center items-center bg-[#DAF2EE]'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+
+              {/* All TextFeild comming from Props */}
+              <MembersProfileDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
+
+
+              {/* Registered Products */}
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+              >
+                <DataTable data={registeredProductsData}
+                  title="Registered Products"
+                  columnsName={registeredmemberColumn}
+                  loading={registeredProductsLoader}
+                  secondaryColor="secondary"
+                  actionColumnVisibility={false}
+                  checkboxSelection={"disabled"}
+
+                  dropDownOptions={[
+                    {
+                      label: "View",
+                      icon: (
+                        <VisibilityIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleView,
+                    },
+
+                  ]}
+                  uniqueId="registeredProductsTableId"
+
+                />
+              </div>
+
+
+              <div className='flex justify-between w-full mt-10'>
+                <div className='w-full flex justify-end px-6'>
+                  {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
+                  <button
+                    onClick={handleShowAddMemberPopup}
+                    className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Add
+                  </button>
+                </div>
+
+                <div className='w-full flex justify-end px-6'>
+                  <button
+                    onClick={handleShowCreatePopup}
+                    className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+
+              <div className='flex gap-5 flex-wrap'>
+                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                  className='sm:w-[50%] w-full'
+                >
+                  <DataTable2 data={membersDocuemtsData}
+                    title="Member'z Documents"
+                    columnsName={MembersDocumentColumn}
+                    loading={memberDocumentsLoader}
+                    secondaryColor="secondary"
+                    checkboxSelection={"disabled"}
+                    
+
+                    dropDownOptions={[
+                      // {
+                      // label: "Edit",
+                      // icon: (
+                      //     <EditIcon
+                      //     fontSize="small"
+                      //     color="action"
+                      //     style={{ color: "rgb(37 99 235)" }}
+                      //     />
+                      // ),
+                      // action: handleMemberStatusChange,
+                      // },
+                      {
+                        label: "Delete",
+                        icon: (
+                          <DeleteIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        action: handleMemberDelete,
+                      },
+
+
+                    ]}
+                    uniqueId="memberDocumentsTableId"
+
+                  />
+                </div>
+
+                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                  className='sm:w-[50%] w-full'
+                >
+                  <DataTable data={brandsData}
+                    title="Brands"
+                    columnsName={MembersBrandsColumn}
+                    loading={brandsLoader}
+                    secondaryColor="secondary"
+
+                    dropDownOptions={[
+                      // {
+                      // label: "Add",
+                      // icon: (
+                      //     <VisibilityIcon
+                      //     fontSize="small"
+                      //     color="action"
+                      //     style={{ color: "rgb(37 99 235)" }}
+                      //     />
+                      // ),
+                      // action: handleView,
+                      // },
+                      {
+                        label: "Edit",
+                        icon: (
+                          <EditIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        action: handleShowUpdatePopup,
+                      },
+                      {
+                        label: "Delete",
+                        icon: (
+                          <DeleteIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        action: handleDelete,
+                      },
+
+
+                    ]}
+                    uniqueId="brandsTableId"
+
+                  />
+                </div>
+              </div>
+
+
+              {/* </div> */}
             </div>
           </div>
-          
-            <div className='flex justify-center items-center'>
-                <div className="h-20 w-[97%] bg-white shadow-xl rounded-md -mt-10 flex justify-start items-center px-10">
-                    <p className="sm:text-2xl text-secondary text-sm font-sans font-semibold">Profile</p>
-                </div>
-            </div>
+        </div>
 
 
-
-            {/* Profile Phase */}
+        {/* Finance Datagrid */}
         <div className='flex justify-center items-center bg-[#DAF2EE]'>
-         <div className="h-auto w-[97%] px-0 pt-4">
-          <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
-            <form onSubmit={handleSubmit}>
-              Image
-              <div className="flex justify-between items-center flex-wrap gap-5 mb-6">
-                {/* Image container */}
-                <div className="flex justify-center items-center gap-7 flex-wrap mb-4">
-                  <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
-                    <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-[#345ECC] text-white font-sans rounded-sm">
-                      <label
-                        htmlFor="imageInput"
-                        className="cursor-pointer whitespace-nowrap"
-                      >
-                        Choose File
-                        <input
-                          type="file"
-                          id="imageInput"
-                          // accept="image/*"
-                          onChange={handleImageChange}
-                          style={{ display: "none" }}
-                        />
-                      </label>
-                    </div>
-                    {selectedImage && (
-                      <div className="h-56 flex justify-center items-center object-contain w-auto">
-                        <img
-                          src={selectedImage}
-                          className="h-56 w-56"
-                          alt="Selected Image"
-                        />
-                      </div>
-                    )}
-                    
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="companyname">
-                    Company Name[English]<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={companyNameEnglish}
-                    onChange={(e) => setCompanyNameEnglish(e.target.value)}
-                    id="companyname"
-                    type="text"
-                    readOnly
-                    className="border-2 bg-[#C3E2DC] border-[#DAF2EE] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="companyarabic">
-                    Company Name[Arabic]<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={companyNameArabic}
-                    onChange={(e) => setCompanyNameArabic(e.target.value)}
-                    id="companyarabic"
-                    type="text"
-                    readOnly
-                    className="border-2 bg-[#C3E2DC] border-[#DAF2EE] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="mobile">
-                    Mobile<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value)}
-                    id="mobile"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
 
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="entension">
-                    Extension<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={extension}
-                    onChange={(e) => setExtension(e.target.value)}
-                    id="entension"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="country">
-                    Country<span className="text-red-600">*</span>
-                  </label>
-                  <Autocomplete
-                    id="country"
-                    options={country}
-                    value={selectedCountry}
-                    getOptionLabel={(option) => option}
-                    onChange={handleCountryName}
-                    onInputChange={(event, value) => {
-                      if (!value) {
-                        // perform operation when input is cleared
-                        console.log("Input cleared");
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        InputProps={{
-                          ...params.InputProps,
-                          className: "text-white",
-                        }}
-                        InputLabelProps={{
-                          ...params.InputLabelProps,
-                          style: { color: "white" },
-                        }}
-                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                        placeholder="Country"
-                      // required
-                      />
-                    )}
-                    classes={{
-                      endAdornment: "text-white",
-                    }}
-                    sx={{
-                      "& .MuiAutocomplete-endAdornment": {
-                        color: "white",
-                      },
-                    }}
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="short">
-                    Country Short Name<span className="text-red-600">*</span>
-                  </label>
-                  <Autocomplete
-                    id="short"
-                    options={countryShortNameList}
-                    value={countryShortName}
-                    getOptionLabel={(option) => option}
-                    onChange={handleCountryShortName}
-                    onInputChange={(event, value) => {
-                      if (!value) {
-                        // perform operation when input is cleared
-                        console.log("Input cleared");
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        InputProps={{
-                          ...params.InputProps,
-                          className: "text-white",
-                        }}
-                        InputLabelProps={{
-                          ...params.InputLabelProps,
-                          style: { color: "white" },
-                        }}
-                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                        placeholder="Country Short Name"
-                      // required
-                      />
-                    )}
-                    classes={{
-                      endAdornment: "text-white",
-                    }}
-                    sx={{
-                      "& .MuiAutocomplete-endAdornment": {
-                        color: "white",
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-5">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="state">
-                    State<span className="text-red-600">*</span>
-                  </label>
-                  <Autocomplete
-                    id="state"
-                    options={state}
-                    value={selectedState}
-                    getOptionLabel={(option) => option}
-                    onChange={handleState}
-                    onInputChange={(event, value) => {
-                      if (!value) {
-                        // perform operation when input is cleared
-                        console.log("Input cleared");
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        InputProps={{
-                          ...params.InputProps,
-                          className: "text-white",
-                        }}
-                        InputLabelProps={{
-                          ...params.InputLabelProps,
-                          style: { color: "white" },
-                        }}
-                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                        placeholder="State"
-                      // required
-                      />
-                    )}
-                    classes={{
-                      endAdornment: "text-white",
-                    }}
-                    sx={{
-                      "& .MuiAutocomplete-endAdornment": {
-                        color: "white",
-                      },
-                    }}
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="short">
-                    City<span className="text-red-600">*</span>
-                  </label>
-                  <Autocomplete
-                    id="city"
-                    options={city}
-                    value={selectedCity}
-                    getOptionLabel={(option) => option}
-                    onChange={handleCity}
-                    onInputChange={(event, value) => {
-                      if (!value) {
-                        // perform operation when input is cleared
-                        console.log("Input cleared");
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        InputProps={{
-                          ...params.InputProps,
-                          className: "text-white",
-                        }}
-                        InputLabelProps={{
-                          ...params.InputLabelProps,
-                          style: { color: "white" },
-                        }}
-                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                        placeholder="City"
-                      // required
-                      />
-                    )}
-                    classes={{
-                      endAdornment: "text-white",
-                    }}
-                    sx={{
-                      "& .MuiAutocomplete-endAdornment": {
-                        color: "white",
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="zip">
-                    Zip<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={zip}
-                    onChange={(e) => setZip(e.target.value)}
-                    id="zip"
-                    // disabled
-                    type="text"
-                    placeholder="37000"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="address1">
-                    Address Line1<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={addressLine1}
-                    onChange={(e) => setAddressLine1(e.target.value)}
-                    id="address1"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="address2">
-                    Address Line2
-                  </label>
-                  <input
-                    value={addressLine2}
-                    onChange={(e) => setAddressLine2(e.target.value)}
-                    id="address2"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="mobile">
-                    Other Mobile Number<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={otherMobileNumber}
-                    onChange={(e) => setOtherMobileNumber(e.target.value)}
-                    id="mobile"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="othernumber">
-                    Other Landline Number<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={otherLandlineNumber}
-                    onChange={(e) => setOtherLandlineNumber(e.target.value)}
-                    id="othernumber"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="district">
-                    District<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={district}
-                    onChange={(e) => setDistrict(e.target.value)}
-                    id="district"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="website">
-                    Website<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={website}
-                    onChange={(e) => setwebsite(e.target.value)}
-                    id="website"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="staff">
-                    No Of Staff<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={staff}
-                    onChange={(e) => setStaff(e.target.value)}
-                    id="staff"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="building">
-                    Building No<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={building}
-                    onChange={(e) => setBuilding(e.target.value)}
-                    id="building"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="unitnumber">
-                    Unit Number<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={unit}
-                    onChange={(e) => setUnit(e.target.value)}
-                    id="unitnumber"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="qrcode">
-                    QR Code No<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={qrcode}
-                    onChange={(e) => setQrcode(e.target.value)}
-                    id="qrcode"
-                    type="text"
-                    className="border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="compnayid">
-                    Company ID<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    id="compnayid"
-                    placeholder="companyID"
-                    type="text"
-                    readOnly
-                    className="border-2 bg-gray-200 border-[#e4e4e4] w-full rounded-lg p-2 mb-3"
-                  />
-                </div>
-              </div>
-              {/* Image  */}
-              <div className="flex justify-between items-center flex-wrap gap-5 mt-6">
-                {/* Image container  */}
-                <div className="flex justify-center items-center gap-7 flex-wrap mb-4">
-                  <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
-                    <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-[#345ECC] text-white font-sans rounded-sm">
-                      <label
-                        htmlFor="backImageInput"
-                        className="cursor-pointer whitespace-nowrap"
-                      >
-                        Select Image
-                        <input
-                          type="file"
-                          id="backImageInput"
-                          onChange={handleBackImageChange}
-                          style={{ display: "none" }}
-                        // value={backImageFile}
-                        />
-                      </label>
-                    </div>
-                    {selectedBackImage && (
-                      <div className="h-56 flex justify-center items-center object-contain w-auto">
-                        <img
-                          src={selectedBackImage}
-                          className="h-56 w-56"
-                          alt="Selected Image"
-                        />
-                      </div>
-                    )}
-                  
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-end">
-                {/* <button
-                  type="button"
-                  className="rounded-full bg-[#e49515] font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700"
-                >
-                  <i className="fas fa-download mr-1"></i> Download
-                </button> */}
-
+              <div className='w-full flex justify-end px-6'>
+                {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                 <button
-                  type="submit"
-                  className="rounded-full bg-[#1E3B8B] font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700"
+                  onClick={handleShowAddMemberPopup}
+                  className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                 >
-                  <i className="fas fa-check-circle mr-1"></i> Submit
+                  Add
                 </button>
               </div>
-            </form>
+
+              <div className='flex gap-5 flex-wrap'>
+                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                  className='sm:w-[50%] w-full'
+                >
+                  <DataTable data={memberInovice}
+                    title="Member Invoice"
+                    columnsName={financeColumn}
+                    loading={memberInvoiceLoader}
+                    secondaryColor="secondary"
+                    handleRowClickInParent={handleRowClickInParent}
+                    // checkboxSelection='disabled'
+                    buttonVisibility={false}
+                    dropDownOptions={[
+                      {
+                        label: "Activation",
+                        icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                        ,
+                        action: handleShowMemberInvoicePopup,
+
+                      },
+
+                    ]}
+                    uniqueId="memberInvoiceId"
+
+                  />
+                </div>
+
+                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                  className='sm:w-[50%] w-full'
+                >
+                  <DataTable3 data={filteredMemberDetails}
+                    title="Member Bank Slip"
+                    columnsName={bankSlipColumn}
+                    loading={memberBankSlipLoader}
+                    secondaryColor="secondary"
+                    buttonVisibility={false}
+                    checkboxSelection={"disabled"}
+                    actionColumnVisibility={false}
+
+                    dropDownOptions={[
+                      {
+                        label: "View",
+                        icon: (
+                          <VisibilityIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        action: handleView,
+                      },
+                      // {
+                      //   label: "Activation",
+                      //   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      //   ,
+                      //   action: handleMemberStatusChange,
+
+                      // },
+
+                    ]}
+                    uniqueId="memberBankSlipId"
+
+                  />
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
+
+
+
+        {/* Sub-menus */}
+        <div className='flex justify-center items-center bg-[#DAF2EE]'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+
+              <div className='flex justify-between'>
+                <p className='text-blue-500 font-sans font-semibold'>Sub-Members</p>
+                <button
+                  onClick={handleShowSubMenusPopup}
+                  className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
+                  <i className="fas fa-plus mr-1"></i>Add
+                </button>
+              </div>
+
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+              >
+                <DataTable2 data={subMenusData}
+                  title="Sub-Members"
+                  columnsName={submenusDataColumn}
+                  loading={subMembersLoader}
+                  secondaryColor="secondary"
+                  checkboxSelection={"disabled"}
+
+                  dropDownOptions={[
+                    {
+                      label: "Edit",
+                      icon: (
+                        <EditIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleShowUpdateSubMenusPopup,
+                    },
+
+                  ]}
+                  uniqueId="customerListId"
+
+                />
+              </div>
+
+            </div>
+          </div>
         </div>
+
+
+        {/* Member History */}
+        <div className='flex justify-center items-center bg-[#DAF2EE]'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md mb-6">
+
+              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-20px' }}
+              >
+                <DataTable data={memberHistoryData}
+                  title="Member History"
+                  columnsName={memberHistoryColumnData}
+                  loading={memberHistoryLoader}
+                  secondaryColor="secondary"
+                  checkboxSelection={"disabled"}
+                  actionColumnVisibility={false}
+                  
+                  dropDownOptions={[
+                    {
+                      label: "View",
+                      icon: (
+                        <VisibilityIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleView,
+                    },
+
+                  ]}
+                  uniqueId="memberHistoryTableId"
+
+                />
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        {/* AddMemberBrands component with handleShowCreatePopup prop */}
+        {isCreatePopupVisible && (
+          <AddMemberBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData} />
+        )}
+
+        {/* UpdateBrands component with handleShowUpdatePopup prop */}
+        {isUpdatePopupVisible && (
+          <UpdateMemberBrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={fetchData} />
+        )}
+
+        {/* AddMember component with Handle prop */}
+        {isAddMemberPopupVisible && (
+          <AddMemberProfileDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
+            fetchMemberbankSlipData={fetchMemberbankSlipData} />
+
+        )}
+
+        {/* Member Invoice component with Handle prop */}
+        {isMemberInvoicePopupVisible && (
+          <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
+            // fetchAllUserData={fetchAllUserData} MemberbankSlip={fetchMemberbankSlipData}
+            fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
+          />
+        )}
+
+        {/* Add Sub Menus component with Handle prop */}
+        {isSubMenusPopupVisible && (
+          <MemberSubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
+        )}
+
+        {/* Update Sub Menus component with Handle prop */}
+        {isUpdateSubMenusPopupVisible && (
+          <MemberUpdateSubMenusPopUp isVisible={isUpdateSubMenusPopupVisible} setVisibility={setIsUpdateSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
+        )}
+
+
       </div>
     </div>
   )

@@ -59,7 +59,7 @@ const userSchema = Joi.object({
     other_products: Joi.string().optional(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
-    password: Joi.string().min(6).max(6),
+    password: Joi.string(),
     // total: Joi.number(),
     contactPerson: Joi.string(),
     companyLandLine: Joi.string(),
@@ -69,7 +69,7 @@ const userSchema = Joi.object({
     payment_type: Joi.string(),
     online_payment: Joi.string(),
     remember_token: Joi.string(),
-    parent_memberID: Joi.number().integer(),
+    parent_memberID: Joi.string(),
     invoice_file: Joi.string(),
     otp_status: Joi.number().integer(),
     gcpGLNID: Joi.string().max(50),
@@ -155,7 +155,7 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
         };
 
         await page.pdf(pdfOptions);
-        await browser.close();
+        await browser.close(); // Close the browser instance
 
         return outputFilePath;
     } catch (error) {
@@ -385,7 +385,7 @@ export const createUser = async (req, res, next) => {
                 subject: 'Member Registration',
                 // user user memberId
                 // member_id: userUpdateResult.memberID,
-                user_id: userUpdateResult.id,
+                user_id: newUser.id,
                 // TODO: take email form current admin token
                 // admin_id: 'admin@gs1sa.link',
 

@@ -763,6 +763,7 @@ model gtin_subcriptions {
 
   // Define a foreign key relationship with gtin_products
   gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  
 }
 
 model gtin_subscription_histories {
