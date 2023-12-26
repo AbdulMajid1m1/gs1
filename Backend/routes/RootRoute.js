@@ -15,7 +15,7 @@ import bankslipRoutes from './subRoutes/bankslipRoutes.js';
 import memberDocumentsRoutes from './subRoutes/memberDocumentsRoutes.js';
 import productsRoutes from './subRoutes/productsRoutes.js';
 import historyLogsRoutes from './subRoutes/historyLogsRoutes.js';
-
+import gpcRoutes from './subRoutes/gpcRoutes.js';
 const router = express.Router();
 
 
@@ -51,5 +51,7 @@ router.use('/memberDocuments', memberDocumentsRoutes);
 router.use('/products', productsRoutes);
 
 router.use('/logs', historyLogsRoutes);
+
+router.use('/gpc', gpcRoutes);
 
 export default router;
