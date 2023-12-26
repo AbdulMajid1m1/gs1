@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import DataTable from '../../../../components/Datatable/Datatable';
-import { financeColumn } from '../../../../utils/datatablesource';
+import { financeColumn, financePopUpMemberBankSlipColumn } from '../../../../utils/datatablesource';
 import newRequest from '../../../../utils/userRequest';
 import DataTable3 from '../../../../components/Datatable/Datatable3';
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import FinanceMemberInvoicePopUp from './FinanceMemberInvoicePopUp';
 
 const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -36,39 +38,42 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     console.log(gs1MemberData?.id)
   }
 
+
+
+  const fetchMemberInvoiceData = async () => {
+    try {
+      const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=invoice`);
+    
+      console.log(response.data);
+      setMemberInovice(response?.data || []);
+      setIsLoading(false)
+
+    } 
+    catch (err) {
+      console.log(err);
+      setIsLoading(false)
+      }
+  };
+
+
+  const fetchMemberbankSlipData = async () => {
+    try {
+      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=bank_slip`);
+      
+      console.log(response.data);
+      setMemberBankSlip(response?.data || []);
+      setFilteredMemberDetails(response?.data || []);
+      setIsLoading(false)
+
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false)
+        }
+    };
+
+
     useEffect(() => {
-      const fetchMemberInvoiceData = async () => {
-        try {
-          const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=invoice`);
-        
-          console.log(response.data);
-          setMemberInovice(response?.data || []);
-          setIsLoading(false)
-
-        } 
-        catch (err) {
-          console.log(err);
-          setIsLoading(false)
-          }
-      };
-
-
-    const fetchMemberbankSlipData = async () => {
-        try {
-          // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
-          const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=bank_slip`);
-          
-          console.log(response.data);
-          setMemberBankSlip(response?.data || []);
-          setFilteredMemberDetails(response?.data || []);
-          setIsLoading(false)
-  
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false)
-            }
-        };
-
       fetchMemberInvoiceData();
       fetchMemberbankSlipData();
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
@@ -91,6 +96,27 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
         
         }
   
+      const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
+ 
+      const handleShowMemberInvoicePopup = (row) => {
+        if (row.status === 'approved') {
+          toast.info('No any pending invoice', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          // If status is not 'approved', proceed with showing the popup
+          setIsMemberInvoicePopupVisible(true);
+          sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+        }
+        // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+      };
     
    
   return (
@@ -114,8 +140,17 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   secondaryColor="secondary"
                                   handleRowClickInParent={handleRowClickInParent}
                                   buttonVisibility={false}
-
-                              uniqueId="journalMovementClId"
+                                  dropDownOptions={[
+                                    {
+                                      label: "Activation",
+                                      icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                                      ,
+                                      action: handleShowMemberInvoicePopup,
+              
+                                    },
+              
+                                  ]}
+                                  uniqueId="journalMovementClId"
 
                               />
                             </div>
@@ -125,10 +160,11 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                             >
                             <DataTable3 data={filteredMemberDetails} 
                               title="Member Bank Slip"
-                              columnsName={financeColumn}
+                              columnsName={financePopUpMemberBankSlipColumn}
                                   loading={isLoading}
                                   secondaryColor="secondary"
                                   buttonVisibility={false}
+                                  actionColumnVisibility={false}
 
                               uniqueId="journalMovementClDetId"
 
@@ -151,6 +187,13 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                        </div>
                      </div>
                    )}
+
+                {/* Member Invoice component with Handle prop */}
+                {isMemberInvoicePopupVisible && (
+                  <FinanceMemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
+                  />
+                )}
+
                     
     </div>
   )

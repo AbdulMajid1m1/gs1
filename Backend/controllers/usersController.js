@@ -18,6 +18,7 @@ import { ADMIN_EMAIL, BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../
 import { generateRandomTransactionId } from '../utils/utils.js';
 import { cookieOptions } from '../utils/authUtilities.js';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
+import { createMemberLogs } from '../utils/functions/historyLogs.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -58,6 +59,7 @@ const userSchema = Joi.object({
     other_products: Joi.string().optional(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
+    password: Joi.string().min(6).max(6),
     // total: Joi.number(),
     contactPerson: Joi.string(),
     companyLandLine: Joi.string(),
@@ -295,8 +297,9 @@ export const createUser = async (req, res, next) => {
         await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
 
             , { invoiceBuffer, pdfFilename }, pdfBuffer2);
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        userValue.password = hashedPassword;
+        // const hashedPassword = bcrypt.hashSync(password, 10);
+        // userValue.password = hashedPassword;
+        userValue.password = password;
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
 
         // Start a transaction to ensure both user and cart are inserted
@@ -378,6 +381,19 @@ export const createUser = async (req, res, next) => {
                     prisma.member_documents.create({ data: docData })
                 )
             );
+            const logData = {
+                subject: 'Member Registration',
+                // user user memberId
+                // member_id: userUpdateResult.memberID,
+                user_id: userUpdateResult.id,
+                // TODO: take email form current admin token
+                // admin_id: 'admin@gs1sa.link',
+
+            }
+
+            await createMemberLogs(logData);
+
+
 
             return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions, memberDocuments };
 
@@ -385,6 +401,7 @@ export const createUser = async (req, res, next) => {
 
             // make trantion time to 40 sec
         }, { timeout: 40000 });
+
 
         res.status(201).json(transaction);
     } catch (error) {
@@ -434,8 +451,9 @@ export const createSubUser = async (req, res, next) => {
             return res.status(409).json({ error: 'User with this email already exists' });
         }
 
-        const hashedPassword = bcrypt.hashSync(userData.password, 10);
-        userData.password = hashedPassword;
+        // const hashedPassword = bcrypt.hashSync(userData.password, 10);
+        // userData.password = hashedPassword;
+
         // Insert new user
         const newUser = await prisma.users.create({
             data: userData,
@@ -479,7 +497,7 @@ export const memberLogin = async (req, res, next) => {
             return res.status(401).json({ error: 'User not found' });
         }
 
-        const passwordMatch = bcrypt.compareSync(password, user.password);
+        const passwordMatch = password.trim().toLowerCase() === user.password.trim().toLowerCase();
 
         if (!passwordMatch) {
             return res.status(401).json({ error: 'Incorrect password' });
@@ -617,11 +635,14 @@ export const searchUsers = async (req, res, next) => {
             })),
         };
 
-        // Fetch the top 30 latest records that match the search conditions
+        // Fetch the top 30 latest records that match the search conditions along with associated carts
         const users = await prisma.users.findMany({
             where: searchConditions,
             orderBy: { created_at: 'desc' }, // Sort by created_at in descending order
             take: 30, // Limit to 30 records
+            include: {
+                carts: true, // Assuming carts is the name of the relation between users and carts
+            },
         });
 
         return res.json(users);

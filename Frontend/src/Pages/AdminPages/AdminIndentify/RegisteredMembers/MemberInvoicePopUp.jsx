@@ -71,8 +71,14 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       console.log(status);
       const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
       //   console.log(res.data);
-      if (res.status === 200) {
-        toast.success("User Activated Successfully");
+      
+        if (res.status === 200) {
+          if (selectedStatus === "rejected") {
+              toast.info("Member Account Rejected Successfully");
+          } else {
+              toast.success("User Activated Successfully");
+          }
+
         setLoading(false);
         refreshMemberInoviceData();
         // MemberbankSlip();

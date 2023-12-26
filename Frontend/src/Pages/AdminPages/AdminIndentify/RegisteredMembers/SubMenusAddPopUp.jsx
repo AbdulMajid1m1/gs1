@@ -30,7 +30,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
         setLoading(true);
         try {
         const response = await newRequest.post('/users/subuser',{
-            "user_type": "sub_member",
+            "user_type": memberType,
             "password": password,
             "parent_memberID": gs1MemberData?.memberID,
             "fname": firstName,

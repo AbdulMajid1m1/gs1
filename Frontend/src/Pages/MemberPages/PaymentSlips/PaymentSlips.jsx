@@ -15,9 +15,9 @@ const PaymentSlips = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    // const memberDataString = sessionStorage.getItem('memberData');
-    // const memberData = JSON.parse(memberDataString);
-    // console.log(memberData?.transaction_id);
+    const memberDataString = sessionStorage.getItem('memberData');
+    const memberData = JSON.parse(memberDataString);
+    // console.log(memberData);
     
     const { rowSelectionModel, setRowSelectionModel,
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
@@ -27,7 +27,8 @@ const PaymentSlips = () => {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await newRequest.get("/bankslip",);
+            // const response = await newRequest.get("/bankslip",);
+            const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.id}&type=bank_slip`);
             
             console.log(response.data);
             setData(response?.data || []);
@@ -39,21 +40,6 @@ const PaymentSlips = () => {
           }
         };
 
-      // const fetchMemberbankSlipData = async () => {
-      //   try {
-      //     const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.transaction_id}&type=bank_slip`);
-          
-      //     console.log(response.data);
-      //     setData(response?.data || []);
-      //     setIsLoading(false)
-  
-      //   } catch (err) {
-      //     console.log(err);
-      //     setIsLoading(false)
-      //       }
-      //   };
-
-      //   fetchMemberbankSlipData();
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 

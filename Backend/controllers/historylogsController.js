@@ -8,6 +8,7 @@ export const getMemberHistoryLogs = async (req, res, next) => {
         const allowedColumns = {
             member_id: Joi.string(),
             admin_id: Joi.string(),
+            user_id: Joi.string(),
             // ... define validation for other allowed columns
         };
 
@@ -29,13 +30,18 @@ export const getMemberHistoryLogs = async (req, res, next) => {
         const filterConditions = Object.keys(value).length > 0
             ? Object.fromEntries(
                 Object.entries(value).map(([key, val]) => [key, { equals: val }])
-              )
+            )
             : {};
 
         // Fetch member history logs from the database
         const memberHistoryLogs = await prisma.member_history_logs.findMany({
             where: filterConditions,
-            orderBy: { created_at: 'desc' } // Ordering by the creation date
+
+            orderBy: { created_at: 'desc' }, // Ordering by the creation date
+            include: {
+                user: true,
+
+            },
         });
 
         // Return the fetched logs

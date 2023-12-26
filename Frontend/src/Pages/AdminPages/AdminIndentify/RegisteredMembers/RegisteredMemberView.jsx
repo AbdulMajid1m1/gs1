@@ -20,6 +20,7 @@ import MemberInvoicePopUp from './MemberInvoicePopUp'
 import MembersDetails from './MembersDetails';
 import SubMenusAddPopUp from './SubMenusAddPopUp';
 import { useParams } from 'react-router-dom';
+import UpdateSubMenusPopUp from './UpdateSubMenusPop';
 const RegisteredMembersView = () => {
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
@@ -51,6 +52,7 @@ const RegisteredMembersView = () => {
   const [isAddMemberPopupVisible, setIsAddMemberPopupVisibility] = useState(false);
   const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
+  const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
 
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
@@ -78,7 +80,10 @@ const RegisteredMembersView = () => {
     zipCode: '',
     mobileNo: '',
     contactPerson: '',
+    cr_number: '',
+    cr_activity: '',
     companyLandline: '',
+    password: '',
 
   });
 
@@ -92,7 +97,7 @@ const RegisteredMembersView = () => {
   const fetchAllUserData = async () => {
     try {
       const response = await newRequest.get(`/users?id=${gs1MemberData?.id}`);
-      // console.log(response.data[0]);
+      console.log(response.data[0]);
       const data = response?.data[0] || [];
       setAllUserData(data);
       setEditableData(
@@ -104,9 +109,12 @@ const RegisteredMembersView = () => {
           state: data?.state,
           city: data?.city,
           zipCode: data?.zip_code,
-          mobileNo: data?.mobile,
           companyLandline: data?.companyLandLine,
+          cr_number: data?.cr_number,
+          cr_activity: data?.cr_activity,
+          mobileNo: data?.mobile,
           contactPerson: data?.contactPerson,
+          password: data?.password,
         }
       )
 
@@ -335,6 +343,12 @@ const RegisteredMembersView = () => {
   };
 
 
+  const handleShowUpdateSubMenusPopup = (row) => {
+      setIsUpdateSubMenusPopupVisible(true);
+      sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
+  };
+
+
 
 
 
@@ -551,7 +565,8 @@ const RegisteredMembersView = () => {
                     columnsName={MembersDocumentColumn}
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
-                    checkboxSelection={false}
+                    checkboxSelection={"disabled"}
+                    
 
                     dropDownOptions={[
                       // {
@@ -756,15 +771,15 @@ const RegisteredMembersView = () => {
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: "Edit",
                       icon: (
-                        <VisibilityIcon
+                        <EditIcon
                           fontSize="small"
                           color="action"
                           style={{ color: "rgb(37 99 235)" }}
                         />
                       ),
-                      action: handleView,
+                      action: handleShowUpdateSubMenusPopup,
                     },
 
                   ]}
@@ -791,7 +806,8 @@ const RegisteredMembersView = () => {
                   loading={memberHistoryLoader}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
-
+                  actionColumnVisibility={false}
+                  
                   dropDownOptions={[
                     {
                       label: "View",
@@ -845,6 +861,11 @@ const RegisteredMembersView = () => {
         {/* Add Sub Menus component with Handle prop */}
         {isSubMenusPopupVisible && (
           <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
+        )}
+
+        {/* Update Sub Menus component with Handle prop */}
+        {isUpdateSubMenusPopupVisible && (
+          <UpdateSubMenusPopUp isVisible={isUpdateSubMenusPopupVisible} setVisibility={setIsUpdateSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
         )}
 
 
