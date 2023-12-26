@@ -1483,7 +1483,7 @@ model password_resets {
 }
 
 model prod_desc_languages {
-  id            BigInt    @id(map: "PK__prod_des__3213E83FBCC24090") @default(autoincrement())
+   id         String   @id @default(cuid())
   language_code String    @db.NVarChar(255)
   alpha3        String    @db.NVarChar(255)
   iso639_2B     String    @db.NVarChar(255)

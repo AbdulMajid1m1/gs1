@@ -1678,14 +1678,14 @@ CREATE TABLE [dbo].[password_resets] (
 
 -- CreateTable
 CREATE TABLE [dbo].[prod_desc_languages] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+   [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
     [language_code] NVARCHAR(255) NOT NULL,
     [alpha3] NVARCHAR(255) NOT NULL,
     [iso639_2B] NVARCHAR(255) NOT NULL,
     [language_name] NVARCHAR(255) NOT NULL,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK__prod_des__3213E83FBCC24090] PRIMARY KEY CLUSTERED ([id])
+   
 );
 
 -- CreateTable
