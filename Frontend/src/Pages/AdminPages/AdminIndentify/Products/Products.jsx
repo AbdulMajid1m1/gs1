@@ -203,6 +203,12 @@ const Products = () => {
                     />
           
               <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-6'>
+                <button 
+                  onClick={() => navigate("add-products")}
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
+                    Add Products
+                </button>
+
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
                   GCP {details?.gcpGLNID}
