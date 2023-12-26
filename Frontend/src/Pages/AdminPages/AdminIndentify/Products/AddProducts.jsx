@@ -4,9 +4,6 @@ import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
-import Identify from '../../../../Images/Identify.png';
-import capture from '../../../../Images/capture.png';
-import share from '../../../../Images/share.png';
 import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
@@ -32,16 +29,6 @@ const AddProducts = () => {
     const [autocompleteLoading, setAutocompleteLoading] = useState(false);
     const [autocompleteLoadingForHsCode, setAutocompleteLoadingForHsCode] = useState(false);
     const navigate = useNavigate();
-
-    // const { currentUser } = useContext(CurrentUserContext);
-    const [error, setError] = useState(false);
-    const [message, setMessage] = useState("");
-    const resetSnakeBarMessages = () => {
-        setError(null);
-        setMessage(null);
-
-    };
-
     
 
     // set the all state values
@@ -97,101 +84,101 @@ const AddProducts = () => {
     };
 
 
-    // useEffect(() => {
-    //     // All Countries Api
-    //     userRequest.get('/getAllCountries')
-    //         .then((response) => {
-    //             console.log(response.data)
-    //             const data = response.data;
-    //             const country = data.map((country) => country.name_en);
+     // All Countries Api
+    //  userRequest.get('/getAllCountries')
+    //  .then((response) => {
+    //      console.log(response.data)
+    //      const data = response.data;
+    //      const country = data.map((country) => country.name_en);
 
-    //             setAllCountryName(country);
-    //             console.log(country);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         }
-    //         );
-
-
-    //     // All Countries of Sales Api
-    //     userRequest.get('/getAlCountriesOfSales')
-    //         .then((response) => {
-    //             console.log(response.data)
-    //             const data = response.data;
-    //             const countryName = data.map((country) => country.country_name);
-    //             setRegion(countryName);
-    //             console.log(countryName);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         }
-    //         );
+    //      setAllCountryName(country);
+    //      console.log(country);
+    //  })
+    //  .catch((error) => {
+    //      console.log(error);
+    //  }
+    //  );
 
 
-    //     // Product Description Language Api
-    //     userRequest.get('/getAllProdDescLanguages')
-    //         .then((response) => {
-    //             console.log(response.data)
-    //             const data = response.data;
-    //             const productlanguage = data.map((country) => country.language_name);
-    //             setProductDescriptionLanguage(productlanguage);
-    //             console.log(productlanguage);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         }
-    //         );
-
-
-
-    //     // Product type Api
-    //     userRequest.get('/getAllProductTypesFromGs1ProdDb')
-    //         .then((response) => {
-    //             console.log(response.data)
-    //             const data = response.data;
-    //             const name = data.map((country) => country.name);
-    //             setProductType(name);
-    //             console.log(name);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         }
-    //         );
-
-
-    //     // Package type Api
-    //     userRequest.get('/getAllProductPackagings')
-    //         .then((response) => {
-    //             console.log(response.data)
-    //             const data = response.data;
-    //             const PackageName = data.map((country) => country.name);
-    //             setPackageType(PackageName);
-    //             console.log(PackageName);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         }
-    //         );
-    //     phpRequest.get('/get/units')
-    //         .then((response) => {
-    //             console.log(response.data)
-    //             const data = response?.data?.units;
-    //             const unitNameList = data.map((unitData) => unitData?.unit_name);
-    //             setUnitCode(unitNameList)
-
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-
-    //         }
-    //         );
+//  // Product Description Language Api
+//  userRequest.get('/getAllProdDescLanguages')
+//      .then((response) => {
+//          console.log(response.data)
+//          const data = response.data;
+//          const productlanguage = data.map((country) => country.language_name);
+//          setProductDescriptionLanguage(productlanguage);
+//          console.log(productlanguage);
+//      })
+//      .catch((error) => {
+//          console.log(error);
+//      }
+//      );
 
 
 
 
 
-    // }, []);
+//  // Package type Api
+//  userRequest.get('/getAllProductPackagings')
+//      .then((response) => {
+//          console.log(response.data)
+//          const data = response.data;
+//          const PackageName = data.map((country) => country.name);
+//          setPackageType(PackageName);
+//          console.log(PackageName);
+//      })
+//      .catch((error) => {
+//          console.log(error);
+//      }
+//      );
+
+
+    const handleCountryOfSales = async () => {
+        try {
+            const response = await newRequest.get('/getAllcountryofsale');
+            console.log(response.data);
+            const data = response.data;
+            const countryName = data.map((country) => country.country_name);
+            setAllCountryName(countryName);
+            console.log(countryName);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    const handleUnitCode = async () => {
+        try {
+            const response = await newRequest.get('/getAllunit');
+            console.log(response.data);
+            const data = response?.data;
+            const unitNameList = data.map((unitData) => unitData?.unit_name);
+            setUnitCode(unitNameList);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    //  // Product type Api
+    const handleProductTypeData = async () => {
+        try {
+            const response = await newRequest.get('/productTypes');
+            console.log(response.data);
+            const data = response.data;
+            const name = data.map((country) => country.name);
+            setProductType(name);
+            console.log(name);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        handleUnitCode();
+        handleCountryOfSales();
+        handleProductTypeData();
+    }, []);
 
 
 
@@ -869,72 +856,130 @@ const AddProducts = () => {
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field9" className="text-secondary">Package Type</label>
-                            <Autocomplete
-                                id="field9"
-                                options={packageType}
-                                getOptionLabel={(option) => option}
-                                onChange={handlePackageType}
-                                value={selectedPackageType}
-                                onInputChange={(event, value) => {
-                                if (!value) {
-                                    // perform operation when input is cleared
-                                    console.log("Input cleared");
-                                }
-                                }}
-                                renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    InputProps={{
-                                    ...params.InputProps,
-                                    className: "text-white",
+                                <Autocomplete
+                                    id="field9"
+                                    options={packageType}
+                                    getOptionLabel={(option) => option}
+                                    onChange={handlePackageType}
+                                    value={selectedPackageType}
+                                    onInputChange={(event, value) => {
+                                    if (!value) {
+                                        // perform operation when input is cleared
+                                        console.log("Input cleared");
+                                    }
                                     }}
-                                    InputLabelProps={{
-                                    ...params.InputLabelProps,
-                                    style: { color: "white" },
+                                    renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        InputProps={{
+                                        ...params.InputProps,
+                                        className: "text-white",
+                                        }}
+                                        InputLabelProps={{
+                                        ...params.InputLabelProps,
+                                        style: { color: "white" },
+                                        }}
+                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                        placeholder="Enter/ Package Type"
+                                        required
+                                    />
+                                    )}
+                                    classes={{
+                                    endAdornment: "text-white",
                                     }}
-                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/ Package Type"
-                                    required
+                                    sx={{
+                                    "& .MuiAutocomplete-endAdornment": {
+                                        color: "white",
+                                    },
+                                    }}
                                 />
-                                )}
-                                classes={{
-                                endAdornment: "text-white",
-                                }}
-                                sx={{
-                                "& .MuiAutocomplete-endAdornment": {
-                                    color: "white",
-                                },
-                                }}
-                            />
-                        </div>
+                            </div>
 
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field10" className="text-secondary">GPC</label>
-                            <input
-                            type="text"
-                            id="field10"
-                            value={gpc}
-                            onChange={(e) => setGpc(e.target.value)}
-                            placeholder="GPC"
-                            className='px-3'
-                            />
-                        </div>
+
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                                <label htmlFor="field10" className="text-secondary">GPC</label>
+                                <Autocomplete
+                                    id="field10"
+                                    required
+                                    options={gpcList}
+                                    getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
+                                    onChange={handleGPCAutoCompleteChange}
+                                    value={gpc}
+                                    onInputChange={(event, newInputValue, params) => handleAutoCompleteInputChange(event, newInputValue, params)}
+                                    loading={autocompleteLoading}
+                                    // sx={{ marginTop: '10px' }}
+                                    open={open}
+                                    onOpen={() => {
+                                        // setOpen(true);
+                                    }}
+                                    onClose={() => {
+                                        setOpen(false);
+                                    }}
+                                    renderOption={(props, option) => (
+                                        <li {...props}>
+                                            {option ? `${option?.value}` : 'No options'}
+                                        </li>
+                                    )}
+
+                                    renderInput={(params) => (
+                                        <TextField
+                                            // required
+                                            {...params}
+                                            label="Search GPC here"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                endAdornment: (
+                                                    <React.Fragment>
+                                                        {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                        {params.InputProps.endAdornment}
+                                                    </React.Fragment>
+                                                ),
+                                            }}
+                                            sx={{
+                                                '& label.Mui-focused': {
+                                                    color: '#00006A',
+                                                },
+                                                '& .MuiInput-underline:after': {
+                                                    borderBottomColor: '#00006A',
+                                                },
+                                                '& .MuiOutlinedInput-root': {
+                                                    '&:hover fieldset': {
+                                                        borderColor: '#000000',
+                                                    },
+                                                    '&.Mui-focused fieldset': {
+                                                        borderColor: '#000000',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    )}
+
+                                />
+
+                            </div>
+
+
+                            
                         </div>
 
 
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
-                        <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field11" className="text-secondary">HS-Code</label>
-                            <input
-                            type="text"
-                            id="field11"
-                            onChange={(e) => setHsCode(e.target.value)}
-                            value={hsCode}
-                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                            placeholder="HS-Code"
-                            />
+                            <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                                <label htmlFor="field11" className="text-secondary">HS-Code</label>
+                                <input
+                                type="text"
+                                id="field11"
+                                onChange={(e) => setHsCode(e.target.value)}
+                                value={hsCode}
+                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                placeholder="HS-Code"
+                                />
+                            </div>
                         </div>
-                        </div>
+
+
+                       
+                        {/* </div> */}
                         
                         {/* <div>
                         
