@@ -6,21 +6,21 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import PhoneInput from 'react-phone-input-2';
 
-const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
+const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
     // get the sesstion data
-    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-    console.log(gs1MemberData)
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [emailAddress, setEmailAddress] = useState('');
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [memberType, setMemberType] = useState('');
+    const subMenusMemberDetails = JSON.parse(sessionStorage.getItem("updateSubMenusData"));
+    console.log(subMenusMemberDetails)
+    const [firstName, setFirstName] = useState(subMenusMemberDetails?.fname);
+    const [lastName, setLastName] = useState(subMenusMemberDetails?.lname);
+    const [emailAddress, setEmailAddress] = useState(subMenusMemberDetails?.email);
+    const [mobileNumber, setMobileNumber] = useState(subMenusMemberDetails?.mobile);
+    const [memberType, setMemberType] = useState(subMenusMemberDetails?.user_type);
     const [password, setPassword] = useState('');
-    const [memberStatus, setMemberStatus] = useState('');
+    const [memberStatus, setMemberStatus] = useState(subMenusMemberDetails?.status);
     const [loading, setLoading] = useState(false);
 
     
-    const handleCloseSubMenusPopup = () => {
+    const handleCloseUpdateSubMenusPopup = () => {
         setVisibility(false);
       };
     
@@ -56,7 +56,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
         console.log(response.data);
         refreshSubMenus();
-        handleCloseSubMenusPopup();
+        handleCloseUpdateSubMenusPopup();
 
 
         } catch (error) {
@@ -87,8 +87,9 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                     <div className="popup-overlay">
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
-                           <form className='w-full' onSubmit={handleAddSubMenus}>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Sub Member</h2>
+                           {/* <form className='w-full' onSubmit={handleAddSubMenus}> */}
+                           <form className='w-full'>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Sub Member</h2>
                              
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
@@ -215,7 +216,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                <button
                                  type="button"
                                  className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                                 onClick={handleCloseSubMenusPopup}
+                                 onClick={handleCloseUpdateSubMenusPopup}
                                >
                                  Close
                                </button>
@@ -234,7 +235,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                 >
-                                  Submit
+                                  Save Changes
                               </Button>
                              </div>
                            </form>
@@ -247,4 +248,4 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
   )
 }
 
-export default SubMenusAddPopUp
+export default UpdateSubMenusPopUp

@@ -20,6 +20,7 @@ import MemberInvoicePopUp from './MemberInvoicePopUp'
 import MembersDetails from './MembersDetails';
 import SubMenusAddPopUp from './SubMenusAddPopUp';
 import { useParams } from 'react-router-dom';
+import UpdateSubMenusPopUp from './UpdateSubMenusPop';
 const RegisteredMembersView = () => {
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
@@ -51,6 +52,7 @@ const RegisteredMembersView = () => {
   const [isAddMemberPopupVisible, setIsAddMemberPopupVisibility] = useState(false);
   const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
+  const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
 
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
@@ -338,6 +340,12 @@ const RegisteredMembersView = () => {
       setIsSubMenusPopupVisible(true);
     }
 
+  };
+
+
+  const handleShowUpdateSubMenusPopup = (row) => {
+      setIsUpdateSubMenusPopupVisible(true);
+      sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
   };
 
 
@@ -763,15 +771,15 @@ const RegisteredMembersView = () => {
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: "Edit",
                       icon: (
-                        <VisibilityIcon
+                        <EditIcon
                           fontSize="small"
                           color="action"
                           style={{ color: "rgb(37 99 235)" }}
                         />
                       ),
-                      action: handleView,
+                      action: handleShowUpdateSubMenusPopup,
                     },
 
                   ]}
@@ -853,6 +861,11 @@ const RegisteredMembersView = () => {
         {/* Add Sub Menus component with Handle prop */}
         {isSubMenusPopupVisible && (
           <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
+        )}
+
+        {/* Update Sub Menus component with Handle prop */}
+        {isUpdateSubMenusPopupVisible && (
+          <UpdateSubMenusPopUp isVisible={isUpdateSubMenusPopupVisible} setVisibility={setIsUpdateSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
         )}
 
 
