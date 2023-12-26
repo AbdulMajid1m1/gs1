@@ -155,7 +155,7 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
         };
 
         await page.pdf(pdfOptions);
-        await browser.close();
+        await browser.close(); // Close the browser instance
 
         return outputFilePath;
     } catch (error) {
