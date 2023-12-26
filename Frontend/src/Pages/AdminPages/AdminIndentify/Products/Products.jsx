@@ -39,6 +39,7 @@ const Products = () => {
     }
   }
 
+  const [details, setDetails] = useState([])
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
@@ -85,6 +86,7 @@ const Products = () => {
       });
 
       setCrList(crs);
+      setDetails(res?.data[0]);
 
       setOpen(true);
       setAutocompleteLoading(false);
@@ -201,20 +203,26 @@ const Products = () => {
                     />
           
               <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-6'>
+                <button 
+                  onClick={() => navigate("add-products")}
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
+                    Add Products
+                </button>
+
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                  GCP {data[0]?.gcpGLNID}
+                  GCP {details?.gcpGLNID}
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
                   {/* {data?.CompanyDetails?.Membership} */}
-                  {data[0]?.productnameenglish ? data[0]?.productnameenglish : 'Category C'}
+                  {details?.membership_category ? details?.membership_category : 'Category C'}
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                  Member ID {data[0]?.memberID}
+                  Member ID {details?.memberID}
                   {/* Member ID */}
                 </button>
 

@@ -8,7 +8,7 @@ const router = express.Router();
 // Routes
 router.get('/', getAllgtinProducts); // Get all CRs
 
-router.get('/gtinSubcriptions', getGtinSubscriptions); // Get all CRs
+router.get('/subcriptionsProducts', getGtinSubscriptions); // Get all CRs
 
 
 export default router;

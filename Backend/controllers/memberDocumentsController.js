@@ -24,6 +24,7 @@ export const createMemberDocument = async (req, res, next) => {
         uploaded_by: Joi.string(),
     });
 
+
     const { error, value } = schema.validate(req.body);
     if (error) {
         return next(createError(400, error.details[0].message));
@@ -52,6 +53,26 @@ export const createMemberDocument = async (req, res, next) => {
                 doc_type: value.doc_type
             }
         });
+
+
+
+        // Insert Member History log
+        const logData = {
+            subject: 'Member Document Upload',
+            // user user memberId
+            member_id: userUpdateResult.memberID,
+            user_id: userUpdateResult.id,
+            // TODO: add middleware for current admin token 
+
+
+        }
+
+        if (req.admin.id) {
+            logData.admin_id = admin_id;
+        }
+
+        await createMemberLogs(logData);
+
 
         res.status(201).json({
             message: 'Document uploaded successfully.',
@@ -333,6 +354,15 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 expiry_date: expiryDate
                             }
                         });
+                        // also update other_products_subcriptions table
+                        await prisma.other_products_subcriptions.updateMany({
+                            // update based on the transaction ID
+                            where: { transaction_id: currentDocument.transaction_id },
+                            data: {
+                                status: 'active',
+                                expiry_date: expiryDate
+                            }
+                        });
 
                         await prisma.gtin_products.update({
                             where: { id: product.id },
@@ -522,9 +552,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Insert Member History log
             const logData = {
-                subject: 'Member Approved',
+                subject: 'Member Account Approved',
                 // user user memberId
                 member_id: userUpdateResult.memberID,
+                user_id: userUpdateResult.id,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
@@ -549,7 +580,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Send email with optional reject reason
             await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
-            return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         }
 
         // Delete all documents of type 'bank_slip'
@@ -570,14 +600,22 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }
         }
 
-        await prisma.member_documents.deleteMany({
+        const deletedResult = await prisma.member_documents.deleteMany({
             where: {
                 user_id: currentDocument.user_id,
                 transaction_id: currentDocument.transaction_id,
                 type: 'bank_slip',
             }
         });
-        return res.json({ message: 'Document status updated successfully' });
+
+        // return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
+        if (value.status === 'approved') {
+            return res.json({ message: 'Document status updated to approved' });
+        }
+        else {
+            return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
+        }
+
     } catch (err) {
         console.log(err);
         next(err);

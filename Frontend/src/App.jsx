@@ -65,6 +65,7 @@ import Document_type from './Pages/AdminPages/MasterData/documentype/documenttyp
 import MemberData from "./Pages/MemberPages/MemberData/MemberData";
 import MemberProfileData from "./Contexts/MemberProfileData";
 import UpdateProducts from "./Pages/AdminPages/AdminIndentify/Products/UpdateProducts";
+import AddProducts from "./Pages/AdminPages/AdminIndentify/Products/AddProducts";
 
 const queryClient = new QueryClient()
 
@@ -193,6 +194,7 @@ const App = () => {
 
                             <Route path="brands" element={<Brands />} />
                             <Route path="products" element={<Products />} />
+                            <Route path="products/add-products" element={<AddProducts />} />
                             <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
                             <Route path="member-products" element={<MemberProducts />} />

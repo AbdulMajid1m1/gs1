@@ -15,6 +15,9 @@ import Swal from 'sweetalert2';
 import {toast} from 'react-toastify';
 import Addunit from './addunit';
 import Updateunit from './updateunit';
+import * as XLSX from 'xlsx';
+import { CSVLink } from "react-csv";
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 const Units = () => {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -38,23 +41,7 @@ const [brandsData, setBrandsData] = useState([]);
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
-      useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await newRequest.get("/getAllunit",);
-          
-          console.log(response.data);
-          setData(response?.data || []);
-          setIsLoading(false)
-
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false)
-        }
-      };
-
-      fetchData(); // Calling the function within useEffect, not inside itself
-    }, []); // Empty array dependency ensures this useEffect runs once on component mount
+      // Empty array dependency ensures this useEffect runs once on component mount
 
     // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
     //   const response = await newRequest.get("/bankslip",);
@@ -74,7 +61,11 @@ const [brandsData, setBrandsData] = useState([]);
         console.log(err);
         setIsLoading(false)
       }
-    };
+  };
+   useEffect(() => {
+      
+     refreshcitiesData() // Calling the function within useEffect, not inside itself
+    }, []);
 const handleDelete = async (row) => {
         Swal.fire({
           title: 'Are you sure?',
@@ -223,7 +214,48 @@ const handleAddCompany = async () => {
         }
     
       }
+const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            console.log(file.type);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0]; // Assuming you have data in the first sheet
+                const sheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(sheet);
+                json.forEach((item) => {
+                    newRequest.post(`/units`, {
+                        unit_code: item.unit_code, // Adjust property names as needed
+                      unit_name: item.unit_name,
+                         status:1
+                    })
+                        .then((res) => {
+                            console.log('Add', res.data);
+                            
+                            Swal.fire(
+                                'Add!',
+                                `Unit has been created`,
+                                'success'
+                            )
+                           refreshcitiesData()
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            Swal.fire(
+                                'Error!',
+                                `Some Unit code already exist`,
+                                'error'
+                            )
+                            // Handle errors
+                        });
+                });
+            };
+            reader.readAsArrayBuffer(file);
 
+        }
+    };
   return (
     <div>
         <div className="p-0 h-full sm:ml-72">
@@ -264,7 +296,27 @@ const handleAddCompany = async () => {
                           onClick={handleShowCreatePopup}
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                               <i className="fas fa-plus mr-2"></i>Add
-                        </button>
+                </button>
+                <div className="relative">
+                    <button
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
+                    >
+                      <i className="fas fa-file-import mr-1"></i> Import
+                    </button>
+                    <input
+                      type="file"
+                      accept=".xlsx"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={handleFileUpload}
+                    />
+                  </div>
+
+
+                <CSVLink data={data}
+                  
+                    type="button" 
+                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  </CSVLink>
                     </div>
                     {/* DataGrid */}
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
