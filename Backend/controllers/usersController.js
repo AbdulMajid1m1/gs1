@@ -59,6 +59,7 @@ const userSchema = Joi.object({
     other_products: Joi.string().optional(),
     gpc: Joi.string(),
     product_addons: Joi.string(),
+    password: Joi.string().min(6).max(6),
     // total: Joi.number(),
     contactPerson: Joi.string(),
     companyLandLine: Joi.string(),
@@ -420,7 +421,7 @@ const subUserSchema = Joi.object({
     email: Joi.string().email().required(),
     mobile: Joi.string(),
     cr_number: Joi.string(),
-    cr_activity: Joi.string(),  
+    cr_activity: Joi.string(),
     status: Joi.string().valid('active', 'inactive').default('active'),
 
 
