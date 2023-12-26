@@ -138,7 +138,7 @@ const handleDelete = async (row) => {
     const handleEdit = (row) => {
       console.log(row);
     }
-
+  
    
 
   const handleRowClickInParent = (item) => {
