@@ -324,7 +324,7 @@ const MemberProfile = () => {
     }
     // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
-
+  
 
   const handleShowSubMenusPopup = () => {
     // setIsSubMenusPopupVisible(true);
