@@ -201,7 +201,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     } else {
       setError(true);
     }
-  }
+  } 
 
   return (
     <div>
