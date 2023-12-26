@@ -10,19 +10,33 @@ import CountdownTimer from './CountdownTimer'
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
-  console.log('memberData', memberData);
+  // console.log('memberData', memberData);
+  const [expiryDate, setExpiryDate] = useState('');
+
+  const [gtinSubscriptions, setGtinSubscriptions] = useState([]);
   const [totalCategory, setTotalCategory] = useState('');
   const [totalRange, setTotalRange] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
+
+  const [otherProductSubscriptions, setOtherProductSubscriptions] = useState([]);
+  const [totalCategoryOther, setTotalCategoryOther] = useState('');
+  const [totalRangeOther, setTotalRangeOther] = useState('');
+
   
   useEffect(() => {
    const fetchMemberProducts = async () => {
       try {
-        const response = await newRequest.get(`/gtinProducts/gtinSubcriptions?status=active&user_id=${memberData?.id}`);
-        // console.log(response.data);
-        setTotalCategory(response?.data[0]?.gtinProduct?.member_category_description);
-        setTotalRange(response?.data[0]?.gtinProduct?.total_no_of_barcodes);
-        setExpiryDate(response?.data[0]?.expiry_date);
+        // const response = await newRequest.get(`/gtinProducts/gtinSubcriptions?status=active&user_id=${memberData?.id}`);
+        const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}`);
+        console.log(response.data);
+        setExpiryDate(response?.data?.gtinSubscriptions[0]?.expiry_date);
+
+        setGtinSubscriptions(response?.data?.gtinSubscriptions);
+        setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+        setTotalRange(response?.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+        
+        setOtherProductSubscriptions(response?.data?.otherProductSubscriptions);
+        setTotalCategoryOther(response?.data?.otherProductSubscriptions[0]?.product?.product_name);
+        setTotalRangeOther(response?.data?.otherProductSubscriptions[0]?.product?.total_no_of_barcodes);
      
       } catch (err) {
         console.log(err);
@@ -59,8 +73,10 @@ const MemberDashboard = () => {
           </div>
 
             {/* Four Cards */}
-            <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 p-4 -mt-2'>
-              <div className='h-auto w-full bg-[#345ECC] rounded-lg'>
+            <div>
+            {gtinSubscriptions?.map((item, index) => (
+             <div key={index} className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 p-4 -mt-2'>
+               <div className='h-auto w-full bg-[#345ECC] rounded-lg'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
@@ -75,7 +91,6 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={rangebarcode} alt="" className='h-16 w-16 object-contain'/>
-                      {/* <p className='font-sans font-semibold text-4xl text-white -mt-4'>1 to 9</p> */}
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>1 to {totalRange -  1}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
@@ -98,7 +113,6 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
-                      {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>9</p> */}
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRange}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
@@ -106,7 +120,64 @@ const MemberDashboard = () => {
                     </div>
                   </div>
               </div>
+              </div>
+              ))}
             </div>
+
+
+
+            {/* Four Cards */}
+            <div>
+            {otherProductSubscriptions?.map((item, index) => (
+             <div key={index} className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 p-4 -mt-2'>
+               <div className='h-auto w-full bg-[#345ECC] rounded-lg'>
+                  <div>
+                    <div className='flex justify-between items-center px-3 py-3'>
+                      <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                    </div>
+                    <div className='w-full text-end -mt-1 px-2'>
+                      <p className='font-sans font-normal text-sm text-gray-200'>{totalCategoryOther}</p>
+                    </div>
+                  </div>
+              </div>
+              <div className='h-auto w-full bg-[#F73F3F] rounded-lg'>
+                  <div>
+                    <div className='flex justify-between items-center px-3 py-3'>
+                      <img src={rangebarcode} alt="" className='h-16 w-16 object-contain'/>
+                      <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {totalRangeOther -  1}</p>
+                    </div>
+                    <div className='w-full text-end -mt-1 px-2'>
+                      <p className='font-sans font-normal text-md text-gray-200'>Range of Barcodes</p>
+                    </div>
+                  </div>
+              </div>
+              <div className='h-auto w-full bg-[#1CC085] rounded-md'>
+                  <div>
+                    <div className='flex justify-between items-center px-3 py-3'>
+                      <img src={barcoderemain} alt="" className='h-16 w-16 object-contain'/>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                    </div>
+                    <div className='w-full text-end -mt-1 px-2'>
+                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
+                    </div>
+                  </div>
+              </div>
+              <div className='h-auto w-full bg-[#01A6BC] rounded-md'>
+                  <div>
+                    <div className='flex justify-between items-center px-3 py-3'>
+                      <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRangeOther}</p>
+                    </div>
+                    <div className='w-full text-end -mt-1 px-2'>
+                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>
+                    </div>
+                  </div>
+              </div>
+              </div>
+              ))}
+            </div>
+            
             
             <div className='h-auto w-full px-5 py-4'>
                 <p className='text-secondary font-sans text-3xl font-semibold mt-5'>Member Products</p>

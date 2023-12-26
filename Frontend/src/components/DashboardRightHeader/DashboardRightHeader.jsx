@@ -1,8 +1,10 @@
 import React from 'react'
 import visitFrontend from "../../Images/visitFrontend.png"
 import profileICon from "../../Images/profileICon.png"
+import { useNavigate } from 'react-router-dom'
 
 const DashboardRightHeader = ({ title, member, gcp }) => {
+  const navigate = useNavigate();
   return (
     <div>
         <div className='h-32 w-full flex justify-end items-start p-3 bg-primary -mt-6 sm:gap-7 gap-4'>
@@ -11,7 +13,7 @@ const DashboardRightHeader = ({ title, member, gcp }) => {
                     alt='logo'
                       style={{ filter: 'invert(1)' }}
                          className='h-5 w-5 text-white mr-2 -mt-[2px]' />
-                <p className='text-white font-sans font-normal sm:text-base text-sm'>Vist Frontend</p>
+                <p className='text-white font-sans font-normal sm:text-base text-sm transition hover:text-secondary' onClick={() => navigate('/')}>Vist Frontend</p>
             </div>
 
             <div className='flex justify-center items-center'>
