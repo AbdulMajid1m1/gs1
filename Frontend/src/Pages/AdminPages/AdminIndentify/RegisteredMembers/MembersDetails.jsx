@@ -79,7 +79,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     formData.append('companyLandLine', mobileNumber);
     formData.append('cr_number', editableData.cr_number);
     formData.append('cr_activity', editableData.cr_activity);
-    formData.append('password', editableData.password);
+    formData.append('password', userPassword);
     formData.append('contactPerson', editableData.contactPerson);
     // Add other editable fields as needed
 
