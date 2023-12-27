@@ -277,6 +277,10 @@ export const getAllprod_desc_languages = async (req, res, next) => {
 
 
         res.json(AllUNSPSC);
-    } catch (error) {
+    }
+    catch (error) {
         next(error);
     }
+}
+
+
