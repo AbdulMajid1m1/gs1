@@ -49,6 +49,13 @@
   font-size: 14px;
 }
 
+.popup-close-addGtin {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .header-gtincenter {
   display: flex;
   align-items: center;
