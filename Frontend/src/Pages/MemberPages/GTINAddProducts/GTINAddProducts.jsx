@@ -325,7 +325,7 @@ const GTINAddProducts = () => {
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true
-            });
+            }); 
 
             setTimeout(() => {
                 navigate(-1);
