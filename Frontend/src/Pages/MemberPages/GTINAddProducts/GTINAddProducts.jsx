@@ -1302,7 +1302,7 @@ const GTINAddProducts = () => {
 
                     <div className="popup-footer">
                         <button type='button' onClick={() => navigate(-1)} className="bg-secondary text-white py-2 px-3 rounded-sm">Back</button>
-                        <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Add</button>
+                        <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Create Barcode</button>
                     </div>
                 </div>
             </form>
