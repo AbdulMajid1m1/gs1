@@ -353,8 +353,10 @@ export const updateProduct = async (req, res, next) => {
                             fs.unlinkSync(oldImagePath);
                         }
                     }
+                    // before saving the new path, remove the public from the path
 
-                    value[field] = newImagePath; // Update path in the object to be saved
+
+                    value[field] = newImagePath.replace('public', '');
                 }
             }
         });
