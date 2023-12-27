@@ -8,18 +8,18 @@ datasource db {
 }
 
 model add_member_gln_products {
-  id                             BigInt    @id(map: "PK_add_member_gln_products") @default(autoincrement())
-  product_id                     Int?
-  reference_id                   Int?
+  id                             String    @id @default(cuid())
+  product_id                     String?
+  reference_id                   String?
   locationNameEn                 String?   @db.NVarChar(Max)
   locationNameAr                 String?   @db.NVarChar(Max)
   AddressEn                      String?   @db.NVarChar(Max)
   AddressAr                      String?   @db.NVarChar(Max)
   pobox                          String?   @db.NVarChar(Max)
   postal_code                    String?   @db.NVarChar(Max)
-  country_id                     Int?
-  state_id                       Int?
-  city_id                        Int?
+  country_id                     String?
+  state_id                       String?
+  city_id                        String?
   licence_no                     String?   @db.NVarChar(Max)
   locationCRNumber               String?   @db.NVarChar(Max)
   office_tel                     String?   @db.NVarChar(Max)
@@ -38,12 +38,12 @@ model add_member_gln_products {
   GLNBarcodeNumber               String?   @db.NVarChar(Max)
   GLNBarcodeNumber_without_check String?   @db.NVarChar(Max)
   status                         Int?
-  user_id                        Int?
-  created_at                     DateTime? @db.DateTime
-  updated_at                     DateTime? @db.DateTime
+  user_id                        String?
+  created_at                     DateTime  @default(now())
+  updated_at                     DateTime  @updatedAt
   gcpGLNID                       String?   @db.NChar(20)
   deleted_at                     DateTime? @db.DateTime
-  admin_id                       Int?      @default(0, map: "DF_add_member_gln_products_admin_id")
+  admin_id                       String?   @default("0", map: "DF_add_member_gln_products_admin_id") @db.VarChar(10)
 }
 
 model add_member_sscc_products {
@@ -763,7 +763,6 @@ model gtin_subcriptions {
 
   // Define a foreign key relationship with gtin_products
   gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  
 }
 
 model gtin_subscription_histories {
@@ -1115,7 +1114,7 @@ model member_migration_temp {
 }
 
 model member_other_products {
-  id                BigInt    @id(map: "PK_member_other_products") @default(autoincrement())
+  id                String    @id @default(cuid())
   product_id        String?   @db.NVarChar(Max)
   prodcutName       String?   @db.NVarChar(Max)
   location_name_en  String?   @db.NVarChar(Max)
@@ -1131,9 +1130,9 @@ model member_other_products {
   OrderQty          String?   @db.NVarChar(Max)
   SSCCBarcodeNumber String?   @db.NVarChar(Max)
   total             Float?
-  user_id           Int?
-  created_at        DateTime? @db.DateTime
-  updated_at        DateTime? @db.DateTime
+  user_id           String?
+  created_at        DateTime? @default(now()) @db.DateTime
+  updated_at        DateTime? @updatedAt @db.DateTime
 }
 
 model MemberDocumentOld {
@@ -1484,7 +1483,7 @@ model password_resets {
 }
 
 model prod_desc_languages {
-   id         String   @id @default(cuid())
+  id            String    @id @default(cuid())
   language_code String    @db.NVarChar(255)
   alpha3        String    @db.NVarChar(255)
   iso639_2B     String    @db.NVarChar(255)
