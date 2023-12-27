@@ -181,7 +181,7 @@ const GTINAddProducts = () => {
         } catch (error) {
             console.log(error);
         }
-    }; 
+    };  
 
 
     const handleRegion = async () => {
