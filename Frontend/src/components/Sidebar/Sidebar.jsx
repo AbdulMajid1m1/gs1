@@ -19,6 +19,7 @@ import transactionhistory from '../../Images/transactionhistory.png';
 import share from '../../Images/share.png';
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png';
 import helpdesk1 from '../../Images/helpdesk1.png';
+import newRequest from "../../utils/userRequest";
 
 const SideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -50,6 +51,10 @@ const SideBar = () => {
   const [showSecondData, setShowSecondData] = useState(false);
   const [showThirdData, setShowThirdData] = useState(false);
   const [showFourthData, setShowFourthData] = useState(false);
+  const [apiResponse, setApiResponse] = useState([]);
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  console.log(memberData);
   const navigate = useNavigate();
 
 
@@ -79,6 +84,22 @@ const SideBar = () => {
     setSelectedItem(null);
     navigate('/member/dashboard') // Navigate to the "track" component
   };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await newRequest.get(`/gtinProducts/getUserSubscribedProductsNames?userId=${memberData?.id}`);
+        setApiResponse(response.data);
+        console.log(response.data)
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
 
   return (
@@ -202,6 +223,7 @@ const SideBar = () => {
                 className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
                 onClick={toggleSidebar}
               >
+                {/* {apiResponse.length === 0 && ( */}
                 <div
                   className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''}`}
                   onClick={() => handleItemClick('/member/gtin')}
@@ -216,7 +238,12 @@ const SideBar = () => {
                   />
                   <p className="sidebar-text">GTIN</p>
                 </div>
+                 {/* )} */}
 
+
+              {apiResponse.length > 0 && (
+               <>
+                {apiResponse.includes('GLN (10 Location)') && (
                 <div
                   className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''}`}
                   onClick={() => handleItemClick('/member/gln')}
@@ -231,7 +258,9 @@ const SideBar = () => {
                   />
                   <p className="sidebar-text">GLN</p>
                 </div>
+                 )}
 
+              {apiResponse.includes('SSCC') && (
                 <div
                   className={`main-images-container ${selectedItem === '/member/viewsscc' ? 'selected-item' : ''}`}
                   onClick={() => handleItemClick('/member/viewsscc')}
@@ -246,6 +275,9 @@ const SideBar = () => {
                   />
                   <p className="sidebar-text">SSCC</p>
                 </div>
+                )}
+                 </>
+                )}
 
                 <div 
                   className={`main-images-container ${selectedItem === '/member/member-brands' ? 'selected-item' : ''}`}
