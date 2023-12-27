@@ -58,7 +58,7 @@ const RegisteredMembersView = () => {
     setMemberHistoryLoader(true);
     try {
       console.log(gs1MemberData?.memberID);
-      const response = await newRequest.get(`/logs/memberLogs/?member_id=${gs1MemberData?.memberID}`);
+      const response = await newRequest.get(`/logs/memberLogs/?user_id=${gs1MemberData?.id}`);
       console.log("member history");
       console.log(response.data);
       setMemberHistoryData(response?.data || []);
