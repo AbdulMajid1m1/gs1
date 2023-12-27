@@ -21,10 +21,7 @@ const GTINAddProducts = () => {
     const [imageOptional2, setImageOptional2] = useState(null);
     const [imageOptional3, setImageOptional3] = useState(null);
     const [unitCode, setUnitCode] = useState([]);
-    const [region, setRegion] = useState([
-        'Asia',
-        'Europe',
-    ]);
+    const [region, setRegion] = useState([]);
     const [allCountryName, setAllCountryName] = useState([]);
     const [productDescriptionLanguage, setProductDescriptionLanguage] = useState([]);
     const [gpcList, setGpcList] = useState([]); // gpc list
@@ -98,19 +95,7 @@ const GTINAddProducts = () => {
 
 
      // All Countries Api
-    //  userRequest.get('/getAllCountries')
-    //  .then((response) => {
-    //      console.log(response.data)
-    //      const data = response.data;
-    //      const country = data.map((country) => country.name_en);
-
-    //      setAllCountryName(country);
-    //      console.log(country);
-    //  })
-    //  .catch((error) => {
-    //      console.log(error);
-    //  }
-    //  );
+   
 
 //  // Package type Api
 //  userRequest.get('/getAllProductPackagings')
@@ -199,12 +184,27 @@ const GTINAddProducts = () => {
     };
 
 
+    const handleRegion = async () => {
+        try {
+            const response = await newRequest.get('/getAllcountryofsale');
+            console.log(response.data);
+            const data = response.data;
+            const countryName = data.map((country) => country.country_name);
+            setRegion(countryName);
+            console.log(countryName);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     useEffect(() => {
         handleUnitCode();
         handleCountryOfSales();
         handleProductTypeData();
         handleBrandNamesEnglishArabic();
         handleProductDescriptionLanguages();
+        handleRegion();
     }, []);
 
 
