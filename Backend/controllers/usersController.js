@@ -193,7 +193,7 @@ export const createUser = async (req, res, next) => {
         console.log(uploadedImage)
         let documentPath = '';
         let imagePath = '';
-
+        let newUser;
         if (!uploadedDocument) {
             return next(createError(400, 'Document is required'));
         }
@@ -304,7 +304,7 @@ export const createUser = async (req, res, next) => {
 
         // Start a transaction to ensure both user and cart are inserted
         const transaction = await prisma.$transaction(async (prisma) => {
-            const newUser = await prisma.users.create({
+            newUser = await prisma.users.create({
                 data: userValue
             });
 
@@ -381,17 +381,6 @@ export const createUser = async (req, res, next) => {
                     prisma.member_documents.create({ data: docData })
                 )
             );
-            const logData = {
-                subject: 'Member Registration',
-                // user user memberId
-                // member_id: userUpdateResult.memberID,
-                user_id: newUser.id,
-                // TODO: take email form current admin token
-                // admin_id: 'admin@gs1sa.link',
-
-            }
-
-            await createMemberLogs(logData);
 
 
 
@@ -401,6 +390,28 @@ export const createUser = async (req, res, next) => {
 
             // make trantion time to 40 sec
         }, { timeout: 40000 });
+
+
+        const logData = {
+            subject: 'Member Registration',
+            // user user memberId
+            // member_id: userUpdateResult.memberID,
+            user_id: newUser.id,
+            // TODO: take email form current admin token
+            // admin_id: 'admin@gs1sa.link',
+
+        }
+        console.log("newUser.id", newUser.id)
+        try {
+
+            await createMemberLogs(logData);
+        }
+        catch (error) {
+            console.log("error in member logs")
+            console.log(error)
+
+        }
+
 
 
         res.status(201).json(transaction);
