@@ -114,11 +114,15 @@ export const createProduct = async (req, res, next) => {
     // Construct data object for database entry
 
     const userId = value.user_id;
+    console.log(userId)
+    if (!userId) {
+        return next(createError(400, 'User ID is required'));
+    }
     try {
 
         // Start a transaction
         const result = await prisma.$transaction(async (prisma) => {
-            let user = await prisma.users.findUnique({ where: { id: userId } });
+            let user = await prisma.users.findFirst({ where: { id: userId } });
             if (!user) {
                 return next(createError(404, 'User not found'));
             }
@@ -284,3 +288,50 @@ export const getAllprod_desc_languages = async (req, res, next) => {
 }
 
 
+
+export const deleteProduct = async (req, res, next) => {
+    // const productId = req.params.id;
+    // use JOi to validate the id
+    const schema = Joi.object({
+        id: Joi.string().required()
+    });
+
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+        return next(createError(400, `Invalid product ID: ${error.details[0].message}`));
+    }
+
+    const productId = value.id;
+
+    try {
+        // Retrieve the current product from the database
+        const currentProduct = await prisma.products.findUnique({
+            where: { id: productId }
+        });
+
+        if (!currentProduct) {
+            return next(createError(404, 'Product not found'));
+        }
+
+        // Process and delete existing images
+        const imageFields = ['front_image', 'back_image', 'image_1', 'image_2', 'image_3'];
+        const dirname = path.dirname(fileURLToPath(import.meta.url));
+        imageFields.forEach(field => {
+            const imagePath = currentProduct[field];
+            if (imagePath) {
+                const absoluteImagePath = path.join(dirname, '..', imagePath);
+                if (fs.existsSync(absoluteImagePath)) {
+                    fs.unlinkSync(absoluteImagePath);
+                }
+            }
+        });
+
+        // Delete the product from the database
+        await prisma.products.delete({ where: { id: productId } });
+
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
