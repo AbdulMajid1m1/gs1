@@ -114,15 +114,12 @@ export const createProduct = async (req, res, next) => {
     // Construct data object for database entry
 
     const userId = value.user_id;
-    console.log(userId)
-    if (!userId) {
-        return next(createError(400, 'User ID is required'));
-    }
+
     try {
 
         // Start a transaction
         const result = await prisma.$transaction(async (prisma) => {
-            let user = await prisma.users.findFirst({ where: { id: userId } });
+            let user = await prisma.users.findUnique({ where: { id: userId } });
             if (!user) {
                 return next(createError(404, 'User not found'));
             }
@@ -244,19 +241,25 @@ export const updateProduct = async (req, res, next) => {
         // Process new images and delete old ones if necessary
         const imageFields = ['front_image', 'back_image', 'image_1', 'image_2', 'image_3'];
         const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+
         imageFields.forEach(field => {
             if (req.files[field]) {
                 const imageFile = req.files[field][0];
-                const newImagePath = path.join(imageFile.destination, imageFile.filename);
-                const oldImagePath = path.join(dirname, '..', currentProduct[field]);
+                if (imageFile) { // Check if the file exists
+                    const newImagePath = path.join(imageFile.destination, imageFile.filename);
+                    if (currentProduct[field]) {
+                        const oldImagePath = path.join(dirname, '..', currentProduct[field]);
+                        if (fs.existsSync(oldImagePath)) {
+                            fs.unlinkSync(oldImagePath);
+                        }
+                    }
 
-                if (fs.existsSync(oldImagePath)) {
-                    fs.unlinkSync(oldImagePath);
+                    value[field] = newImagePath; // Update path in the object to be saved
                 }
-
-                value[field] = newImagePath; // Update path in the object to be saved
             }
         });
+
 
         // Update the product in the database
         const updatedProduct = await prisma.products.update({
@@ -266,6 +269,7 @@ export const updateProduct = async (req, res, next) => {
 
         res.json(updatedProduct);
     } catch (err) {
+        console.error(err);
         next(err);
     }
 };
