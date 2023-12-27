@@ -170,10 +170,13 @@ const handleFileUpload = (e) => {
                 const sheetName = workbook.SheetNames[0]; // Assuming you have data in the first sheet
                 const sheet = workbook.Sheets[sheetName];
                 const json = XLSX.utils.sheet_to_json(sheet);
-                json.forEach((item) => {
+              json.forEach((item) =>
+              {
+                const cr = String(item.cr);
+                const activity = String(item.activity);
                     newRequest.post(`/crs`, {
-                        cr: item.cr, // Adjust property names as needed
-                      activity: item.activity,
+                        cr: cr , // Adjust property names as needed
+                      activity: activity,
                      
                       status: 1,
                      

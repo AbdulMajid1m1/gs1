@@ -118,8 +118,8 @@ const handleUpdateBrand = async () => {
                                       onChange={(e) => setstatus(e.target.value)}
                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                        >
-                               <option value="0">0</option>
-                                 <option value="1">1</option>
+                               <option value="0">Inactive</option>
+                                 <option value="1">Active</option>
                                   </select>
                               </div>
                             </div>
@@ -149,7 +149,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                Update City
+                                Update Cr number
                             </Button>
                             </div>
                           </form>
