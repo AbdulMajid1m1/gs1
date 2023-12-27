@@ -62,7 +62,7 @@ const Gtin = () => {
 
   const handleView = (row) => {
     console.log(row);
-    navigate("/member/view-gtin-product/" + row?.product_id);
+    navigate("/member/view-gtin-product/" + row?.id);
   };
   const handleUpdate = (row) => {
     console.log(row);
