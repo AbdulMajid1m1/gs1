@@ -96,7 +96,8 @@ const GLN = () => {
 
   const handleEdit = (row) => {
     console.log(row);
-    navigate("/upate-gln-product/" + row?.gln_id)
+    // navigate("/member/update-gln/" + row?.gln_id)
+    navigate("/member/update-gln")
   }
 
 
@@ -213,15 +214,15 @@ const GLN = () => {
 
         <div className='h-auto w-full shadow-xl'>
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-10 px-3'>
-            <button onClick={() => navigate(-1)} className="rounded-full bg-[#1E3B8B] font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700">
+            <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-arrow-left mr-1"></i> Back
             </button>
 
-            <button onClick={() => navigate('/addgln')} className="rounded-full bg-[#1E3B8B] font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700">
+            <button onClick={() => navigate('/member/add-gln')} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-plus mr-1"></i> Add GLN
             </button>
 
-            <button onClick={handleGlnPage} className="rounded-full bg-[#1E3B8B] font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700">
+            <button onClick={handleGlnPage} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-print mr-1"></i> Print GLN
             </button>
           </div>

@@ -17,7 +17,7 @@ import GTINViewProduct from "./Pages/MemberPages/GTINAddProducts/GTINViewProduct
 import EmailAddress from "./Pages/MemberPages/MemberLogin/EmailAddress/EmailAddress";
 import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/SelectActivity";
 import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
-import GLN from "./Pages/AdminPages/GLN/GLN";
+import GLN from "./Pages/MemberPages/GLN/GLN";
 import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
 import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
 import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
@@ -66,6 +66,8 @@ import MemberData from "./Pages/MemberPages/MemberData/MemberData";
 import MemberProfileData from "./Contexts/MemberProfileData";
 import UpdateProducts from "./Pages/AdminPages/AdminIndentify/Products/UpdateProducts";
 import AddProducts from "./Pages/AdminPages/AdminIndentify/Products/AddProducts";
+import AddGLN from "./Pages/MemberPages/GLN/AddGLN";
+import UpdateGLN from "./Pages/MemberPages/GLN/UpdateGLN";
 
 const queryClient = new QueryClient()
 
@@ -133,6 +135,8 @@ const App = () => {
                               element={<GTINViewProduct />}
                             />
                             <Route path="gln" element={<GLN />} />
+                            <Route path="add-gln" element={<AddGLN />} />
+                            <Route path="update-gln" element={<UpdateGLN />} />
                             <Route path="gs1-members" element={<Gs1Members />} />
 
                             <Route path="member-profile" element={<MemberProfile />} />
