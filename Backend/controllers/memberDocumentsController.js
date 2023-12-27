@@ -60,16 +60,16 @@ export const createMemberDocument = async (req, res, next) => {
         const logData = {
             subject: 'Member Document Upload',
             // user user memberId
-            member_id: userUpdateResult.memberID,
-            user_id: userUpdateResult.id,
+            // member_id: value.memberID,
+            user_id: value.user_id
             // TODO: add middleware for current admin token 
 
 
         }
 
-        if (req.admin.id) {
-            logData.admin_id = admin_id;
-        }
+        // if (req?.admin.id) {
+        //     logData.admin_id = admin_id;
+        // }
 
         await createMemberLogs(logData);
 
