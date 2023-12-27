@@ -15,53 +15,14 @@ import * as XLSX from "xlsx";
 import { QRCodeSVG } from "qrcode.react";
 import logo from "../../../Images/gs1logowhite.png"
 import { DataTableContext } from "../../../Contexts/DataTableContext";
+import newRequest from "../../../utils/userRequest";
 
 
 const Gtin = () => {
-  const [data, setData] = useState([
+  const [data, setData] = useState([]);
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
 
-     {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-      {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-      {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-      {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-
-  ]);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
 
@@ -80,25 +41,22 @@ const Gtin = () => {
 
   };
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await phpRequest.post("/member/gtin/list", {
-//           user_id: currentUser?.user?.id
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await newRequest.get(`/products?user_id=${memberData?.id}`);
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
 
-//         });
-//         console.log(response.data);
-//         setData(response?.data?.products || []);
-//         setIsLoading(false)
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
 
-//       } catch (err) {
-//         console.log(err);
-//         setIsLoading(false)
-//       }
-//     };
-
-//     fetchData(); // Calling the function within useEffect, not inside itself
-//   }, []); // Empty array dependency ensures this useEffect runs once on component mount
+    fetchData(); // Calling the function within useEffect, not inside itself
+  }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
   const handleEdit = (row) => {

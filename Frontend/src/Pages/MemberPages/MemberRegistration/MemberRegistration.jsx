@@ -355,7 +355,7 @@ const MemmberRegisteration = () => {
         // formData.append('online_payment', 'Enabled');
 
         // formData.append('remember_token', 'TokenXYZ');
-        // formData.append('parent_memberID', '100');
+       
         formData.append('membership_category_id', selectedCategories.id)
         // formData.append('invoice_file', 'https://example.com/invoice.pdf');
         // formData.append('otp_status', '1');

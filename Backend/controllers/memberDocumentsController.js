@@ -352,7 +352,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             data: {
                                 status: 'active',
                                 expiry_date: expiryDate,
-                                limit: parseInt(product.gcp_start_range)
+
                             }
                         });
                         // also update other_products_subcriptions table
@@ -365,7 +365,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             }
                         });
 
-                        
+
 
                         await prisma.gtin_products.update({
                             where: { id: product.id },

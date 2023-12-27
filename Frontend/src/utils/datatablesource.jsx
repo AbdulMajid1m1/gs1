@@ -906,57 +906,290 @@ export const inventoryColumn = [
   },
 ];
 
+// export const GtinColumn = [
+//   // {
+//   //   field: 'id',
+//   //   headerName: 'ID',
+//   //   width: 80,
+//   // },
+//   // {
+//   //   field: 'user_id',
+//   //   headerName: 'User ID',
+//   //   width: 100,
+//   // },
+//   {
+//     field: 'gcpGLNID',
+//     headerName: 'GCP GLN ID',
+//     width: 150,
+//   },
+//   {
+//     field: 'import_code',
+//     headerName: 'Import Code',
+//     width: 120,
+//   },
+//   {
+//     field: 'productnameenglish',
+//     headerName: 'Product Name English',
+//     width: 200,
+//   },
+//   {
+//     field: 'productnamearabic',
+//     headerName: 'Product Name Arabic',
+//     width: 200,
+//   },
+//   {
+//     field: 'BrandName',
+//     headerName: 'Brand Name',
+//     width: 120,
+//   },
+//   {
+//     field: 'ProductType',
+//     headerName: 'Product Type',
+//     width: 150,
+//   },
+//   {
+//     field: 'Origin',
+//     headerName: 'Origin',
+//     width: 120,
+//   },
+//   {
+//     field: 'PackagingType',
+//     headerName: 'Packaging Type',
+//     width: 120,
+//   },
+//   {
+//     field: 'MnfCode',
+//     headerName: 'Manufacturer Code',
+//     width: 150,
+//   },
+//   {
+//     field: 'MnfGLN',
+//     headerName: 'Manufacturer GLN',
+//     width: 150,
+//   },
+//   {
+//     field: 'ProvGLN',
+//     headerName: 'Province GLN',
+//     width: 150,
+//   },
+//   {
+//     field: 'unit',
+//     headerName: 'Unit',
+//     width: 80,
+//   },
+//   {
+//     field: 'size',
+//     headerName: 'Size',
+//     width: 80,
+//   },
+//   {
+//     field: 'front_image',
+//     headerName: 'Front Image',
+//     width: 120,
+//   },
+//   {
+//     field: 'back_image',
+//     headerName: 'Back Image',
+//     width: 120,
+//   },
+//   {
+//     field: 'image_1',
+//     headerName: 'Image 1',
+//     width: 120,
+//   },
+//   {
+//     field: 'image_2',
+//     headerName: 'Image 2',
+//     width: 120,
+//   },
+//   {
+//     field: 'image_3',
+//     headerName: 'Image 3',
+//     width: 120,
+//   },
+//   {
+//     field: 'childProduct',
+//     headerName: 'Child Product',
+//     width: 120,
+//   },
+//   {
+//     field: 'quantity',
+//     headerName: 'Quantity',
+//     width: 80,
+//   },
+//   {
+//     field: 'barcode',
+//     headerName: 'Barcode',
+//     renderCell: GTINCell,
+//     width: 150,
+//   },
+//   {
+//     field: 'gpc',
+//     headerName: 'GPC',
+//     width: 150,
+//   },
+//   {
+//     field: 'gpc_code',
+//     headerName: 'GPC Code',
+//     width: 120,
+//   },
+//   {
+//     field: 'countrySale',
+//     headerName: 'Country Sale',
+//     width: 120,
+//   },
+//   {
+//     field: 'HSCODES',
+//     headerName: 'HS Codes',
+//     width: 120,
+//   },
+//   {
+//     field: 'HsDescription',
+//     headerName: 'HS Description',
+//     width: 200,
+//   },
+//   {
+//     field: 'gcp_type',
+//     headerName: 'GCP Type',
+//     width: 120,
+//   },
+//   {
+//     field: 'prod_lang',
+//     headerName: 'Product Language',
+//     width: 120,
+//   },
+//   {
+//     field: 'details_page',
+//     headerName: 'Details Page',
+//     width: 200,
+//   },
+//   {
+//     field: 'details_page_ar',
+//     headerName: 'Details Page (Arabic)',
+//     width: 200,
+//   },
+//   {
+//     field: 'status',
+//     headerName: 'Status',
+//     width: 120,
+//     renderCell: params => (
+//       <div
+//         style={{
+//           padding: '5px',
+//           paddingLeft: '10px',
+//           paddingRight: '10px',
+//           borderRadius: '20px',
+//           border: '2px solid',
+//           borderColor: params.row.status === 'Active' ? 'green' : 'red',
+//           color: params.row.status === 'Active' ? 'green' : 'red',
+//         }}
+//       >
+//         {params.row.status}
+//       </div>
+//     ),
+//   },
+//   {
+//     field: 'deleted_at',
+//     headerName: 'Deleted At',
+//     width: 150,
+//   },
+//   {
+//     field: 'created_at',
+//     headerName: 'Created At',
+//     width: 150,
+//   },
+//   {
+//     field: 'updated_at',
+//     headerName: 'Updated At',
+//     width: 150,
+//   },
+//   {
+//     field: 'memberID',
+//     headerName: 'Member ID',
+//     width: 100,
+//   },
+//   {
+//     field: 'admin_id',
+//     headerName: 'Admin ID',
+//     width: 100,
+//   },
+//   {
+//     field: 'save_as',
+//     headerName: 'Save As',
+//     width: 120,
+//   },
+//   {
+//     field: 'gtin_type',
+//     headerName: 'GTIN Type',
+//     width: 120,
+//   },
+//   {
+//     field: 'product_url',
+//     headerName: 'Product URL',
+//     width: 180,
+//   },
+//   {
+//     field: 'product_link_url',
+//     headerName: 'Product Link URL',
+//     width: 200,
+//   },
+//   {
+//     field: 'BrandNameAr',
+//     headerName: 'Brand Name (Arabic)',
+//     width: 150,
+//   },
+//   {
+//     field: 'digitalInfoType',
+//     headerName: 'Digital Info Type',
+//     width: 150,
+//   },
+//   {
+//     field: 'readyForGepir',
+//     headerName: 'Ready for Gepir',
+//     width: 150,
+//   },
+//   {
+//     field: 'gepirPosted',
+//     headerName: 'Gepir Posted',
+//     width: 150,
+//   },
+// ];
+
 export const GtinColumn = [
   {
-    field: 'product_id',
-    headerName: 'Product ID',
+    field: "product_id",
+    headerName: "Product ID",
     width: 100,
   },
   {
-    field: 'productnameenglish',
-    headerName: 'Product Name English',
+    field: "productnameenglish",
+    headerName: "Product Name English",
     width: 180,
   },
   {
-    field: 'BrandName',
-    headerName: 'Brand Name',
+    field: "BrandName",
+    headerName: "Brand Name",
     width: 180,
   },
 
   {
-    field: 'qrcode',
-    headerName: 'QRCode',
-    renderCell: params => <QRCodeCell value={params.row.barcode} />,
+    field: "qrcode",
+    headerName: "QRCode",
+    renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
     // width: 50, // Adjust this width as needed
   },
   {
-    field: 'barcode',
-    headerName: 'Barcode',
+    field: "barcode",
+    headerName: "Barcode",
     renderCell: GTINCell,
     width: 150,
   },
 
   {
-    field: 'product_url',
-    headerName: 'Product URL',
+    field: "product_url",
+    headerName: "Product URL",
     width: 180,
-    renderCell: params => {
-      let url = params.value;
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'http://' + url;
-      }
-      return (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          {params.value}
-        </a>
-      );
-    },
-  },
-  {
-    field: 'product_link_url',
-    headerName: 'Product Link URL',
-    width: 200,
-    renderCell: params => {
+    renderCell: (params) => {
       let url = params.value;
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
@@ -969,34 +1202,15 @@ export const GtinColumn = [
     },
   },
 
-  // {
-  //   field: "status",
-  //   headerName: "Status",
-  //   width: 120,
-  // },
 
-  // add the border color of this column
   {
-    field: 'status',
-    headerName: 'Status',
+    field: "status",
+    headerName: "Status",
     width: 120,
-    renderCell: params => (
-      <div
-        style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
-          border: '2px solid',
-          borderColor: params.row.status === 'Active' ? 'green' : 'red',
-          color: params.row.status === 'Active' ? 'green' : 'red',
-        }}
-      >
-        {params.row.status}
-      </div>
-    ),
   },
 ];
+
+
 
 export const GlnColumn = [
   {
