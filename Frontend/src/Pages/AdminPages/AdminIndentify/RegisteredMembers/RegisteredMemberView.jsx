@@ -21,6 +21,7 @@ import MembersDetails from './MembersDetails';
 import SubMenusAddPopUp from './SubMenusAddPopUp';
 import { useParams } from 'react-router-dom';
 import UpdateSubMenusPopUp from './UpdateSubMenusPop';
+import AddMemberBankSlipPopUp from './AddMemberBankSlipPopUp';
 const RegisteredMembersView = () => {
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
@@ -53,6 +54,8 @@ const RegisteredMembersView = () => {
   const [isMemberInvoicePopupVisible, setIsMemberInvoicePopupVisible] = useState(false);
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
+  const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
+
 
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
@@ -346,6 +349,11 @@ const RegisteredMembersView = () => {
   const handleShowUpdateSubMenusPopup = (row) => {
       setIsUpdateSubMenusPopupVisible(true);
       sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
+  };
+
+
+  const handleShowAddMemberBankSlipPopup = () => {
+    setIsAddMemberBankSlipPopupVisible(true);
   };
 
 
@@ -667,7 +675,7 @@ const RegisteredMembersView = () => {
               <div className='w-full flex justify-end px-6'>
                 {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                 <button
-                  onClick={handleShowAddMemberPopup}
+                  onClick={handleShowAddMemberBankSlipPopup}
                   className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                 >
                   Add
@@ -866,6 +874,14 @@ const RegisteredMembersView = () => {
         {/* Update Sub Menus component with Handle prop */}
         {isUpdateSubMenusPopupVisible && (
           <UpdateSubMenusPopUp isVisible={isUpdateSubMenusPopupVisible} setVisibility={setIsUpdateSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
+        )}
+
+
+        {/* AddMember component with Handle prop */}
+        {isAddMemberBankSlipPopupVisible && (
+          <AddMemberBankSlipPopUp isVisible={isAddMemberBankSlipPopupVisible} setVisibility={setIsAddMemberBankSlipPopupVisible} refreshBrandData={fetchMemberDocumentsData}
+            fetchMemberbankSlipData={fetchMemberbankSlipData} />
+
         )}
 
 
