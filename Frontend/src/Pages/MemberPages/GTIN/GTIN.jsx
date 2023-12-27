@@ -5,72 +5,28 @@ import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import LinkIcon from '@mui/icons-material/Link';
-import { SnackbarContext } from "../../../Contexts/SnackbarContext";
 import CustomSnakebar from '../../../utils/CustomSnackbar';
 import { saveAs } from "file-saver";
-import { RiseLoader } from 'react-spinners';
 import * as XLSX from "xlsx";
-// import { CurrentUserContext } from "../../Contexts/CurrentUserContext";
 import { QRCodeSVG } from "qrcode.react";
 import logo from "../../../Images/gs1logowhite.png"
 import { DataTableContext } from "../../../Contexts/DataTableContext";
+import newRequest from "../../../utils/userRequest";
+import { toast } from "react-toastify";
 
 
 const Gtin = () => {
-  const [data, setData] = useState([
+  const [data, setData] = useState([]);
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  console.log(memberData);
 
-     {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-      {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-      {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-      {
-        product_id: 'Initial Product ID',
-        productnameenglish: 'Initial Product Name',
-        BrandName: 'Initial Brand',
-        qrcode: 'Initial QRCode',
-        barcode: 'Initial Barcode',
-        product_url: 'http://example.com/initial',
-        product_link_url: 'http://example.com/link/initial',
-        status: 'Initial Status',
-      },
-
-  ]);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
 
-  const { openSnackbar } = useContext(SnackbarContext);
   const [isLoading, setIsLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
-//   const { currentUser } = useContext(CurrentUserContext);
   const navigate = useNavigate()
-//   console.log(currentUser)
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
@@ -80,32 +36,30 @@ const Gtin = () => {
 
   };
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await phpRequest.post("/member/gtin/list", {
-//           user_id: currentUser?.user?.id
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await newRequest.get(`/products?user_id=${memberData?.id}`);
+        console.log(response.data);
+        setData(response?.data || []);
+        setIsLoading(false)
 
-//         });
-//         console.log(response.data);
-//         setData(response?.data?.products || []);
-//         setIsLoading(false)
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
 
-//       } catch (err) {
-//         console.log(err);
-//         setIsLoading(false)
-//       }
-//     };
-
-//     fetchData(); // Calling the function within useEffect, not inside itself
-//   }, []); // Empty array dependency ensures this useEffect runs once on component mount
+    fetchData(); // Calling the function within useEffect, not inside itself
+  }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
   const handleEdit = (row) => {
     console.log(row);
-    navigate("/member/upate-gtin-product/" + row?.product_id);
+    navigate("/member/upate-gtin-product/" + row?.id);
     // navigate("/upate-gtin-product/" + row?.id);
   };
+
   const handleView = (row) => {
     console.log(row);
     navigate("/member/view-gtin-product/" + row?.product_id);
@@ -117,35 +71,38 @@ const Gtin = () => {
     sessionStorage.setItem("selectedGtinData", JSON.stringify(row));
     navigate("/digitalurl")
   }
-  // const handleDelete = (row) => {
-  //   console.log(row);
-  // }
 
-//   const handleDelete = async (row) => {
-//     try {
-//       const deleteResponse = await phpRequest.delete('/delete/GTIN', {
-//         data: {
-//           user_id: currentUser?.user?.id, // TODO: change it to currentUser?.user?.id
-//           // user_id: "3", // TODO: change it to currentUser?.user?.id
-//           product_id: row?.product_id,
-//         },
-//       });
-//       console.log(deleteResponse.data);
-//       // Handle the success message or update the data accordingly
-//       const successMessage = deleteResponse.data.message;
-//       openSnackbar(successMessage);
+  const handleDelete = async (row) => {
+    try {
+      const deleteResponse = await newRequest.delete(`/products/gtin/${row?.id}`);
+      console.log(deleteResponse.data);
+      toast.success('The product has been deleted successfully.', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
 
-
-//       // Update the datagrid Table after deletion
-//       setData(prevData => prevData.filter(item => item.product_id !== row?.product_id));
+      // Update the datagrid Table after deletion
+      setData(prevData => prevData.filter(item => item.id !== row?.id));
 
 
-//     } catch (err) {
-//       console.log(err);
-//       // Handle the error message or error case
-//       openSnackbar('Something Is Wrong The Data not deleted.')
-//     }
-//   };
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.error || 'Error', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+    }
+  };
 
   const handleExportProducts = () => {
     // Convert data to Excel format
@@ -327,19 +284,18 @@ const Gtin = () => {
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-              GCP {data?.CompanyDetails?.GCP}
+              GCP {data[0]?.gcpGLNID}
             </button>
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
               {/* {data?.CompanyDetails?.Membership} */}
-              {data?.CompanyDetails?.Membership ? data.CompanyDetails.Membership : 'Category C'}
+              {data?.[0]?.Membership ? data[0]?.Membership : 'Category C'}
             </button>
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-              {/* Member ID {currentUser?.user?.companyID} */}
-              Member ID
+              Member ID {memberData?.memberID}
             </button>
 
             <button
@@ -392,7 +348,7 @@ const Gtin = () => {
                   label: "Delete",
                   icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                   ,
-                //   action: handleDelete,
+                  action: handleDelete,
                 }
 
               ]}

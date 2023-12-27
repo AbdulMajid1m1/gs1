@@ -24,6 +24,8 @@ const AddProducts = () => {
     const [gpcList, setGpcList] = useState([]); // gpc list
     const [productType, setProductType] = useState([]);
     const [packageType, setPackageType] = useState([]);
+    const [brandNameEnglish, setBrandNameEnglish] = useState([]);
+    const [brandNameArabic, setBrandNameArabic] = useState([]);
     const [open, setOpen] = useState(false);
     const [hsLoaderOpen, setHsLoaderOpen] = useState(false);
     const [autocompleteLoading, setAutocompleteLoading] = useState(false);
@@ -34,8 +36,8 @@ const AddProducts = () => {
     // set the all state values
     const [productNameEnglish, setProductNameEnglish] = useState('');
     const [productNameArabic, setProductNameArabic] = useState('');
-    const [brandNameEnglish, setBrandNameEnglish] = useState('');
-    const [brandNameArabic, setBrandNameArabic] = useState('');
+    // const [brandNameEnglish, setBrandNameEnglish] = useState('');
+    // const [brandNameArabic, setBrandNameArabic] = useState('');
     const [size, setSize] = useState('');
     const [gpc, setGpc] = useState(null);
     const [gpcCode, setGpcCode] = useState('');
@@ -44,6 +46,8 @@ const AddProducts = () => {
     const [descriptionEnglish, setDescriptionEnglish] = useState('');
     const [descriptionArabic, setDescriptionArabic] = useState('');
     const [productUrl, setProductUrl] = useState('');
+    const [selectedBrandNameEnglish, setSelectedBrandNameEnglish] = useState('');
+    const [selectedBrandNameArabic, setSelectedBrandNameArabic] = useState('');
     const [selectedUnitCode, setSelectedUnitCode] = useState('');
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedCountry, setSelectedCountry] = useState('');
@@ -174,10 +178,27 @@ const AddProducts = () => {
         }
     };
 
+
+    const handleBrandNamesEnglishArabic = async () => {
+        try {
+            const response = await newRequest.get(`/brands?user_id=901`);
+            console.log(response.data);
+            const data = response.data;
+            const name = data.map((country) => country.name);
+            const name_ar = data.map((country) => country.name_ar);
+            setBrandNameEnglish(name);
+            setBrandNameArabic(name_ar);
+            console.log(name);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         handleUnitCode();
         handleCountryOfSales();
         handleProductTypeData();
+        handleBrandNamesEnglishArabic();
     }, []);
 
 
@@ -196,24 +217,24 @@ const AddProducts = () => {
         formData.append('user_id', '1');
         formData.append('gcpGLNID', 'clqkvxbx20002o5l8z2hpijjp');
         formData.append('import_code', '12345');
-        formData.append('productnameenglish', 'Sample Product');
-        formData.append('productnamearabic', 'منتج ع');
-        formData.append('BrandName', 'Sample Brand');
-        formData.append('ProductType', 'Electronics');
+        formData.append('productnameenglish', productNameEnglish);
+        formData.append('productnamearabic', productNameArabic);
+        formData.append('BrandName', brandNameEnglish);
+        formData.append('ProductType', selectedProductType);
         formData.append('Origin', 'USA');
         formData.append('PackagingType', 'Box');
         formData.append('MnfCode', 'MNF123');
         formData.append('MnfGLN', 'GLN123');
         formData.append('ProvGLN', 'GLN321');
-        formData.append('unit', 'pcs');
-        formData.append('size', 'M');
+        formData.append('unit', selectedUnitCode);
+        formData.append('size', size);
         formData.append('childProduct', 'childProd123');
         formData.append('quantity', '10');
         formData.append('barcode', '0123456789012');
         formData.append('gpc', 'GPC123');
         formData.append('gpc_code', 'GPC456');
-        formData.append('countrySale', 'USA');
-        formData.append('HSCODES', '1234.56.78');
+        formData.append('countrySale', selectedCountry);
+        formData.append('HSCODES', hsCode);
         formData.append('HsDescription', 'Sample HS Description');
         formData.append('gcp_type', '1');
         formData.append('prod_lang', 'en');
@@ -355,6 +376,16 @@ const AddProducts = () => {
         setSelectedPackageType(value);
     };
 
+    const handleBrandNameEnglish = (event, value) => {
+        console.log(value);
+        setSelectedBrandNameEnglish(value);
+    };
+
+    const handleBrandNameArabic = (event, value) => {
+        console.log(value);
+        setSelectedBrandNameArabic(value);
+    };
+
     const handleDigitalInformationType = (event, value) => {
         console.log(value);
         setSelectedDigitalInformationType(value);
@@ -362,145 +393,140 @@ const AddProducts = () => {
 
 
     // Testing add
-    const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        // console.log(reason)
-    }
-
     // const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-    //     console.log(reason)
-    //     if (reason === 'reset' || reason === 'clear') {
-    //         setGpcList([]); // Clear the data list if there is no input
-    //         return; // Do not perform search if the input is cleared or an option is selected
-    //     }
-    //     if (reason === 'option') {
-    //         return // Do not perform search if the option is selected
-    //     }
-
-    //     if (!newInputValue || newInputValue.trim() === '') {
-    //         // perform operation when input is cleared
-    //         setGpcList([]);
-    //         return;
-    //     }
-
-
-    //     setAutocompleteLoading(true);
-    //     setOpen(true);
-
-
-    //     console.log(newInputValue);
-    //     // setSearchText(newInputValue);
-    //     console.log("querying...")
-    //     try {
-
-    //         // Cancel any pending requests
-    //         if (abortControllerRef.current) {
-    //             abortControllerRef.current.abort();
-    //         }
-
-    //         // Create a new AbortController
-    //         abortControllerRef.current = new AbortController();
-    //         const res = await phpRequest.post("/search/gpc", {
-
-    //             "term": newInputValue
-    //         }, {
-
-    //             signal: abortControllerRef.current.signal
-    //         })
-
-    //         console.log(res);
-    //         setGpcList(res?.data?.gpc ?? []);
-    //         setOpen(true);
-    //         setAutocompleteLoading(false);
-    //     }
-    //     catch (error) {
-    //         if (error?.name === 'CanceledError') {
-    //             // Ignore abort errors
-    //             setGpcList([]); // Clear the data list if there is no input
-    //             setAutocompleteLoading(true);
-    //             console.log(error)
-    //             return;
-    //         }
-    //         console.error(error);
-    //         console.log(error)
-    //         setGpcList([]); // Clear the data list if an error occurs
-    //         setOpen(false);
-    //         setAutocompleteLoading(false);
-    //     }
-
+    //     // console.log(reason)
     // }
+
+    const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
+        console.log(reason)
+        if (reason === 'reset' || reason === 'clear') {
+            setGpcList([]); // Clear the data list if there is no input
+            return; // Do not perform search if the input is cleared or an option is selected
+        }
+        if (reason === 'option') {
+            return // Do not perform search if the option is selected
+        }
+
+        if (!newInputValue || newInputValue.trim() === '') {
+            // perform operation when input is cleared
+            setGpcList([]);
+            return;
+        }
+
+
+        setAutocompleteLoading(true);
+        setOpen(true);
+
+
+        console.log(newInputValue);
+        // setSearchText(newInputValue);
+        console.log("querying...")
+        try {
+
+            // Cancel any pending requests
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+
+            // Create a new AbortController
+            abortControllerRef.current = new AbortController();
+            const res = await newRequest.get(`/gpc/search?term=${newInputValue}`, 
+            {
+                signal: abortControllerRef.current.signal
+            })
+
+            console.log(res);
+            setGpcList(res?.data);
+            setOpen(true);
+            setAutocompleteLoading(false);
+        }
+        catch (error) {
+            if (error?.name === 'CanceledError') {
+                // Ignore abort errors
+                setGpcList([]); // Clear the data list if there is no input
+                setAutocompleteLoading(true);
+                console.log(error)
+                return;
+            }
+            console.error(error);
+            console.log(error)
+            setGpcList([]); // Clear the data list if an error occurs
+            setOpen(false);
+            setAutocompleteLoading(false);
+        }
+
+    }
 
     const handleGPCAutoCompleteChange = (event, value) => {
         console.log(value);
         setGpc(value);
-        setGpcCode(value?.gpcCode);
+        setGpcCode(value);
     }
 
     // testing add 
-    const handleHsCodeAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        // console.log(reason)
-    }
     // const handleHsCodeAutoCompleteInputChange = async (event, newInputValue, reason) => {
-    //     console.log(reason)
-    //     if (reason === 'reset' || reason === 'clear') {
-    //         setHsCodeList([]); // Clear the data list if there is no input
-    //         return; // Do not perform search if the input is cleared or an option is selected
-    //     }
-    //     if (reason === 'option') {
-    //         return // Do not perform search if the option is selected
-    //     }
-
-    //     if (!newInputValue || newInputValue.trim() === '') {
-    //         // perform operation when input is cleared
-    //         setHsCodeList([]);
-    //         return;
-    //     }
-
-
-    //     setAutocompleteLoadingForHsCode(true);
-    //     setHsLoaderOpen(true);
-
-
-    //     console.log(newInputValue);
-    //     // setSearchText(newInputValue);
-    //     try {
-
-    //         // Cancel any pending requests
-    //         if (abortControllerRef.current) {
-    //             abortControllerRef.current.abort();
-    //         }
-
-    //         // Create a new AbortController
-    //         abortControllerRef.current = new AbortController();
-    //         const res = await phpRequest.get("/search/hs/codes", {
-
-    //             "term": newInputValue
-    //         }, {
-
-    //             signal: abortControllerRef.current.signal
-    //         })
-
-    //         console.log(res);
-    //         console.log(res?.data?.hsCodes);
-    //         setHsCodeList(res?.data?.hsCodes ?? []);
-    //         setHsLoaderOpen(true);
-    //         setAutocompleteLoadingForHsCode(false);
-    //     }
-    //     catch (error) {
-    //         if (error?.name === 'CanceledError') {
-    //             // Ignore abort errors
-    //             setHsCodeList([]); // Clear the data list if there is no input
-    //             setAutocompleteLoadingForHsCode(true);
-    //             console.log(error)
-    //             return;
-    //         }
-    //         console.error(error);
-    //         console.log(error)
-    //         setHsCodeList([]); // Clear the data list if an error occurs
-    //         setHsLoaderOpen(false);
-    //         setAutocompleteLoadingForHsCode(false);
-    //     }
-
+    //     // console.log(reason)
     // }
+
+    const handleHsCodeAutoCompleteInputChange = async (event, newInputValue, reason) => {
+        console.log(reason)
+        if (reason === 'reset' || reason === 'clear') {
+            setHsCodeList([]); // Clear the data list if there is no input
+            return; // Do not perform search if the input is cleared or an option is selected
+        }
+        if (reason === 'option') {
+            return // Do not perform search if the option is selected
+        }
+
+        if (!newInputValue || newInputValue.trim() === '') {
+            // perform operation when input is cleared
+            setHsCodeList([]);
+            return;
+        }
+
+
+        setAutocompleteLoadingForHsCode(true);
+        setHsLoaderOpen(true);
+
+
+        console.log(newInputValue);
+        // setSearchText(newInputValue);
+        try {
+
+            // Cancel any pending requests
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+
+            // Create a new AbortController
+            abortControllerRef.current = new AbortController();
+            const res = await newRequest.get(`/hsCode/searchHsCodes?term=${newInputValue}`,
+            {
+                signal: abortControllerRef.current.signal
+            })
+
+            console.log(res);
+            console.log(res?.data);
+            setHsCodeList(res?.data);
+            setHsLoaderOpen(true);
+            setAutocompleteLoadingForHsCode(false);
+        }
+        catch (error) {
+            if (error?.name === 'CanceledError') {
+                // Ignore abort errors
+                setHsCodeList([]); // Clear the data list if there is no input
+                setAutocompleteLoadingForHsCode(true);
+                console.log(error)
+                return;
+            }
+            console.error(error);
+            console.log(error)
+            setHsCodeList([]); // Clear the data list if an error occurs
+            setHsLoaderOpen(false);
+            setAutocompleteLoadingForHsCode(false);
+        }
+
+    }
 
     const handleHsCodeAutoCompleteChange = (event, value) => {
         console.log(value);
@@ -589,30 +615,86 @@ const AddProducts = () => {
                   <div className="w-full h-[2px] bg-primary mb-6 mt-6"></div>
             
                    <div className="">
-                      <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
+                      <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mb-3">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field1" className="text-secondary">Brand Name [English] </label>
-                            <input
-                            type="text"
-                            id="field1"
-                            onChange={(e) => setBrandNameEnglish(e.target.value)}
-                            value={brandNameEnglish}
-                            placeholder="Brand Name [English]"
-                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-
+                            <Autocomplete
+                                id="field1"
+                                options={brandNameEnglish}
+                                getOptionLabel={(option) => option}
+                                onChange={handleBrandNameEnglish}
+                                value={selectedBrandNameEnglish}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Brand Name English"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
                             />
                         </div>
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field2" className="text-secondary">Brand Name [Arabic] </label>
-                            <input
-                            type="text"
-                            id="field2"
-                            onChange={(e) => setBrandNameArabic(e.target.value)}
-                            value={brandNameArabic}
-                            placeholder="Brand Name [Arabic]"
-                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-
+                            <Autocomplete
+                                id="field2"
+                                options={brandNameArabic}
+                                getOptionLabel={(option) => option}
+                                onChange={handleBrandNameArabic}
+                                value={selectedBrandNameArabic}
+                                onInputChange={(event, value) => {
+                                if (!value) {
+                                    // perform operation when input is cleared
+                                    console.log("Input cleared");
+                                }
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white",
+                                    }}
+                                    InputLabelProps={{
+                                    ...params.InputLabelProps,
+                                    style: { color: "white" },
+                                    }}
+                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
+                                    placeholder="Brand Name Arabic"
+                                    required
+                                />
+                                )}
+                                classes={{
+                                endAdornment: "text-white",
+                                }}
+                                sx={{
+                                "& .MuiAutocomplete-endAdornment": {
+                                    color: "white",
+                                },
+                                }}
                             />
                         </div>
                     </div>
@@ -966,14 +1048,72 @@ const AddProducts = () => {
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                             <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
                                 <label htmlFor="field11" className="text-secondary">HS-Code</label>
-                                <input
+                                {/* <input
                                 type="text"
                                 id="field11"
                                 onChange={(e) => setHsCode(e.target.value)}
                                 value={hsCode}
                                 className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                 placeholder="HS-Code"
+                                /> */}
+                                  <Autocomplete
+                                    id="serachGpc"
+                                    required
+                                    options={hsCodeList}
+                                    getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
+                                    onChange={handleHsCodeAutoCompleteChange}
+                                    value={hsCode}
+                                    onInputChange={(event, newInputValue, params) => handleHsCodeAutoCompleteInputChange(event, newInputValue, params)}
+                                    loading={autocompleteLoadingForHsCode}
+                                    sx={{ marginTop: '10px' }}
+                                    open={hsLoaderOpen}
+                                    onOpen={() => {
+                                        // setOpen(true);
+                                    }}
+                                    onClose={() => {
+                                        setHsLoaderOpen(false);
+                                    }}
+                                    renderOption={(props, option) => (
+                                        <li {...props}>
+                                            {option ? `${option?.DescriptionEN}` : 'No options'}
+                                        </li>
+                                    )}
+
+                                    renderInput={(params) => (
+                                        <TextField
+                                            // required
+                                            {...params}
+                                            label="Search HS-Code here"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                endAdornment: (
+                                                    <React.Fragment>
+                                                        {autocompleteLoadingForHsCode ? <CircularProgress color="inherit" size={20} /> : null}
+                                                        {params.InputProps.endAdornment}
+                                                    </React.Fragment>
+                                                ),
+                                            }}
+                                            sx={{
+                                                '& label.Mui-focused': {
+                                                    color: '#00006A',
+                                                },
+                                                '& .MuiInput-underline:after': {
+                                                    borderBottomColor: '#00006A',
+                                                },
+                                                '& .MuiOutlinedInput-root': {
+                                                    '&:hover fieldset': {
+                                                        borderColor: '#000000',
+                                                    },
+                                                    '&.Mui-focused fieldset': {
+                                                        borderColor: '#000000',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    )}
+
                                 />
+
                             </div>
                         </div>
 
