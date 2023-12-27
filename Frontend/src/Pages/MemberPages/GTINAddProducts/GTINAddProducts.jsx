@@ -13,6 +13,7 @@ const GTINAddProducts = () => {
     const abortControllerRef = useRef(null);
     const memberDataString = sessionStorage.getItem('memberData');
     const memberData = JSON.parse(memberDataString);
+    // console.log(memberData);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedBackImage, setSelectedBackImage] = useState(null);
@@ -213,7 +214,6 @@ const GTINAddProducts = () => {
     //     event.preventDefault();
     // }
 
-    console.log(memberData);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -221,29 +221,43 @@ const GTINAddProducts = () => {
 
         const formData = new FormData();
         formData.append('user_id', memberData?.id);
-        formData.append('gcpGLNID', memberData?.gcpGLNID);
+        // formData.append('gcpGLNID', memberData?.gcpGLNID);
+        // formData.append('import_code', '12345');
         formData.append('productnameenglish', productNameEnglish);
         formData.append('productnamearabic', productNameArabic);
         formData.append('BrandName', selectedBrandNameEnglish);
         formData.append('ProductType', selectedProductType);
         formData.append('Origin', selectedRegion);
         formData.append('PackagingType', selectedPackageType);
+        // formData.append('MnfCode', 'MNF123');
+        // formData.append('MnfGLN', 'GLN123');
         formData.append('ProvGLN', memberData?.gln);
         formData.append('unit', selectedUnitCode);
         formData.append('size', size);
+        // formData.append('childProduct', 'childProd123');
+        // formData.append('quantity', '10');
+        // formData.append('barcode', '0123456789012');
         formData.append('gpc', gpc?.value);
-        formData.append('gpc_code', gpcCode);
+        // formData.append('gpc_code', 'GPC456');
         formData.append('countrySale', selectedCountry);
         formData.append('HSCODES', hsCode?.value);
-        formData.append('HsDescription', hsCode?.DescriptionEN);
+        formData.append('HsDescription', descriptionEnglish);
         formData.append('gcp_type',  memberData.gcp_type || 'GCP');
-        formData.append('prod_lang', selectedProductDescription);
-        formData.append('memberID', memberData?.id);
+        formData.append('prod_lang', productNameEnglish);
         formData.append('details_page', descriptionEnglish);
         formData.append('details_page_ar', descriptionArabic);
+        // formData.append('status', '1');
+        formData.append('memberID', memberData?.id);
+        // formData.append('admin_id', '1');
+        // formData.append('save_as', 'final');
+        // formData.append('gtin_type', 'gtin');
         formData.append('product_url', productUrl);
+        // formData.append('product_link_url', 'http://productlink.example.com');
         formData.append('BrandNameAr', selectedBrandNameArabic);
-      
+        // formData.append('digitalInfoType', '1');
+        // formData.append('readyForGepir', '1');
+        // formData.append('gepirPosted', '1');
+
         // Append back image file
         const backImageInput = document.querySelector('#backImageInput');
         if (backImageInput.files && backImageInput.files[0]) {
@@ -320,7 +334,7 @@ const GTINAddProducts = () => {
         }
         catch (error) {
             console.log(error);
-            toast.error(err?.response?.data?.error || "Error", {
+            toast.error(error?.response?.data?.error || "Error", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,

@@ -265,3 +265,22 @@ export const updateProduct = async (req, res, next) => {
         next(err);
     }
 };
+
+
+export const getAllprod_desc_languages = async (req, res, next) => {
+    try {
+        const AllUNSPSC = await prisma.prod_desc_languages.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            }
+        });
+
+
+        res.json(AllUNSPSC);
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+
