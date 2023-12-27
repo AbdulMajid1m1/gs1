@@ -81,3 +81,38 @@ export const getGtinSubscriptions = async (req, res, next) => {
         next(createError(500, 'Server error occurred'));
     }
 };
+
+
+export const getUserSubscribedProductsNames = async (req, res, next) => {
+    const schema = Joi.object({
+        userId: Joi.string().required(),
+    });
+    const { error, value } = schema.validate(req.query);
+    if (error) {
+        return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+    }
+    const userId = value.userId;
+
+    try {
+        const subscribedProducts = await prisma.other_products_subcriptions.findMany({
+            where: {
+                user_id: userId,
+                status: 'active'
+            },
+            include: {
+                product: {
+                    select: {
+                        product_name: true
+                    }
+                }
+            }
+        });
+
+        // Extract product names
+        const productNames = subscribedProducts.map(sub => sub.product.product_name);
+        res.status(200).json(productNames);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error occurred');
+    }
+};
