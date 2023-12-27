@@ -1184,6 +1184,116 @@ export const GtinColumn = [
     renderCell: GTINCell,
     width: 150,
   },
+  {
+    field: "front_image",
+    headerName: "Front Image",
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.front_image)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.front_image), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+  {
+    field: "back_image",
+    headerName: "Back Image",
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.back_image)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.back_image), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+  {
+    field: "image_1",
+    headerName: "Optional Image 1",
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.image_1)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image_1), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+  {
+    field: "image_2",
+    headerName: "Optional Image 2",
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.image_2)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image_2), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+  {
+    field: "image_3",
+    headerName: "Optional Image 3",
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.image_3)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image_3), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
 
   {
     field: "product_url",
@@ -1201,13 +1311,48 @@ export const GtinColumn = [
       );
     },
   },
-
-
-  {
-    field: "status",
-    headerName: "Status",
-    width: 120,
+{
+  field: 'productnamearabic',
+    headerName: 'Product Name Arabic',
+    width: 180,
   },
+  {
+    field: 'BrandName',
+    headerName: 'Brand Name',
+    width: 180,
+  },
+  {
+    field: 'ProductType',
+    headerName: 'Product Type',
+    width: 180,
+  },
+  {
+    field: 'Origin',
+    headerName: 'Origin',
+    width: 180,
+  },
+  {
+    field: 'PackagingType',
+    headerName: 'Packaging Type',
+    width: 180,
+  },
+  {
+    field: 'unit',
+    headerName: 'Unit',
+    width: 180,
+  },
+  {
+    field: 'size',
+    headerName: 'Size',
+    width: 180,
+  },
+
+
+  // {
+  //   field: "status",
+  //   headerName: "Status",
+  //   width: 120,
+  // },
 ];
 
 
