@@ -3690,7 +3690,7 @@ export const memberHistoryColumnData = [
   {
     field: 'subject',
     headerName: 'Subject',
-    width: 180,
+    width: 280,
   },
   {
     field: 'member_id',
