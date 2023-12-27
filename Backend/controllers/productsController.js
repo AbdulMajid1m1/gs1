@@ -1,10 +1,13 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
-import fs from 'fs';
+import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
+
 import { generateProdcutGTIN } from '../utils/functions/barcodesGenerator.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const getProducts = async (req, res, next) => {
     try {
         // Define allowable columns for filtering (for products)
@@ -167,6 +170,98 @@ export const createProduct = async (req, res, next) => {
         });
     } catch (err) {
         console.error(err);
+        next(err);
+    }
+};
+
+
+export const updateProduct = async (req, res, next) => {
+    const productId = req.params.id;
+    if (!productId) {
+        return next(createError(400, 'Product ID is required'));
+    }
+
+    // Joi schema for product validation
+    const productSchema = Joi.object({
+        user_id: Joi.string(),
+        import_code: Joi.string().max(50).allow('', null),
+        productnameenglish: Joi.string().allow('', null),
+        productnamearabic: Joi.string().required(),
+        BrandName: Joi.string().max(255).allow('', null),
+        ProductType: Joi.string().max(50).allow('', null),
+        Origin: Joi.string().max(50).allow('', null),
+        PackagingType: Joi.string().max(50).allow('', null),
+        MnfCode: Joi.string().max(50).allow('', null),
+        MnfGLN: Joi.string().max(50).allow('', null),
+        ProvGLN: Joi.string().max(50).allow('', null),
+        unit: Joi.string().max(50).allow('', null),
+        size: Joi.string().max(50).allow('', null),
+        childProduct: Joi.string().max(255).allow('', null),
+        quantity: Joi.string().max(10).allow('', null),
+        gpc: Joi.string().max(255).allow('', null),
+        gpc_code: Joi.string().max(50).allow('', null),
+        countrySale: Joi.string().max(50).allow('', null),
+        HSCODES: Joi.string().allow('', null),
+        HsDescription: Joi.string().allow('', null),
+        gcp_type: Joi.string().max(50).allow('', null),
+        prod_lang: Joi.string().max(50).required(),
+        details_page: Joi.string().allow('', null),
+        details_page_ar: Joi.string().allow('', null),
+        status: Joi.number().integer(),
+        memberID: Joi.string().allow('', null),
+        admin_id: Joi.number().integer().allow('', null),
+        save_as: Joi.string().max(20).allow('', null),
+        gtin_type: Joi.string().max(4).allow('', null),
+        product_url: Joi.string().max(255).allow('', null),
+        product_link_url: Joi.string().max(255).allow('', null),
+        BrandNameAr: Joi.string().allow('', null),
+        digitalInfoType: Joi.number().integer().allow('', null),
+        readyForGepir: Joi.string().max(10).allow('', null),
+        gepirPosted: Joi.string().max(10).allow('', null),
+
+    });
+
+    // Validate request body
+    const { error, value } = productSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    try {
+        // Retrieve the current product from the database
+        const currentProduct = await prisma.products.findUnique({
+            where: { id: productId }
+        });
+
+        if (!currentProduct) {
+            return next(createError(404, 'Product not found'));
+        }
+
+        // Process new images and delete old ones if necessary
+        const imageFields = ['front_image', 'back_image', 'image_1', 'image_2', 'image_3'];
+        const dirname = path.dirname(fileURLToPath(import.meta.url));
+        imageFields.forEach(field => {
+            if (req.files[field]) {
+                const imageFile = req.files[field][0];
+                const newImagePath = path.join(imageFile.destination, imageFile.filename);
+                const oldImagePath = path.join(dirname, '..', currentProduct[field]);
+
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath);
+                }
+
+                value[field] = newImagePath; // Update path in the object to be saved
+            }
+        });
+
+        // Update the product in the database
+        const updatedProduct = await prisma.products.update({
+            where: { id: productId },
+            data: value
+        });
+
+        res.json(updatedProduct);
+    } catch (err) {
         next(err);
     }
 };
