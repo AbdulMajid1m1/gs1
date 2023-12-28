@@ -55,14 +55,14 @@ export const createGLNs = async (req, res, next) => {
         const result = await prisma.$transaction(async (prisma) => {
             let user = await prisma.users.findUnique({ where: { id: userId } });
             if (!user) {
-                return next(createError(404, 'User not found'));
+                throw createError(404, 'User not found');
             }
 
             if (user.parent_memberID !== '0') {
                 if (user.parent_memberID === null) return next(createError(404, 'User not found'));
                 user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
                 if (!user) {
-                    return next(createError(404, 'User not found'));
+                    throw createError(404, 'User not found');
                 }
             }
 
@@ -70,41 +70,53 @@ export const createGLNs = async (req, res, next) => {
             const otherProductSubscriptions = await prisma.other_products_subcriptions.findMany({
                 where: {
                     user_id: user.id,
-                    status: 'active'
+                    status: 'active',
+                    product_identifier_name: "gln"
                 },
                 include: {
                     product: {
                         select: {
                             product_name: true,
-                            total_no_of_barcodes: true
+                            total_no_of_barcodes: true,
                         }
                     }
                 }
             });
 
+
+          
+
             if (otherProductSubscriptions.length === 0) {
-                return next(createError(404, 'User has no GTIN subscriptions'));
+                throw createError(400, 'No active subscription found');
             }
-            console.log(gtinSubscriptions)
-            const totalNoOfBarcodes = gtinSubscriptions?.gtin_product.total_no_of_barcodes;
-            const productsCount = await prisma.products.count({
-                where: { user_id: user.id, gcpGLNID: user.gcpGLNID }
+            console.log(otherProductSubscriptions)
+
+
+
+            const productsCount = otherProductSubscriptions?.other_products_subscription_counter;
+
+            if (otherProductSubscriptions?.oter_products_subscription_limit == 0) {
+                throw createError(403, 'Subscription limit exceeded');
+            }
+
+            // const gln = await generateGLN(user.gcpGLNID, productsCount);
+            // console.log(gln)
+            const newGLN = await prisma.gln.create({
+                data: {
+                    gcpGLNID: user.gcpGLNID,
+                    user_id: user.id,
+                    locationNameEn: value.locationNameEn,
+                    locationNameAr: value.locationNameAr,
+                    AddressEn: value.AddressEn,
+                    AddressAr: value.AddressAr,
+                    pobox: value.pobox,
+                    postal_code: value.postal_code,
+                    longitude: value.longitude,
+                    latitude: value.latitude,
+                    status: value.status,
+                    // GLNBarcodeNumber: barcodeNumber,
+                },
             });
-
-
-            if (productsCount + 1 >= totalNoOfBarcodes) {
-                return next(createError(400, 'Barcodes limit exceeded'));
-            }
-
-            const gtin = await generateProdcutGTIN(user.gcpGLNID, productsCount);
-            console.log(gtin)
-            value.user_id = user.id;
-            const productData = {
-                ...value,
-                ...images,
-                gcpGLNID: user.gcpGLNID,
-                barcode: gtin,
-            };
 
             const newProduct = await prisma.products.create({ data: productData });
             return { newProduct };

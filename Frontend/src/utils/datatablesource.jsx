@@ -1156,22 +1156,31 @@ export const inventoryColumn = [
 // ];
 
 export const GtinColumn = [
-  {
-    field: "product_id",
-    headerName: "Product ID",
-    width: 100,
-  },
+  // {
+  //   field: "product_id",
+  //   headerName: "Product ID",
+  //   width: 100,
+  // },
   {
     field: "productnameenglish",
     headerName: "Product Name English",
     width: 180,
   },
   {
-    field: "BrandName",
-    headerName: "Brand Name",
+    field: "productnamearabic",
+    headerName: "Product Name Arabic",
     width: 180,
   },
-
+  {
+    field: "BrandName",
+    headerName: "Brand Name English",
+    width: 180,
+  },
+  {
+    field: "BrandNameAr",
+    headerName: "Brand Name Arabic",
+    width: 180,
+  },
   {
     field: "qrcode",
     headerName: "QRCode",

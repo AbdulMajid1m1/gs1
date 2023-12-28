@@ -13,6 +13,7 @@ import logo from "../../../Images/logo.png";
 // import MapEvents from '../../Components/Maps/MapEvents'
 import { QRCodeSVG } from 'qrcode.react'
 import { DataTableContext } from '../../../Contexts/DataTableContext';
+import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
 
 const GLN = () => {
   const [data, setData] = useState([
@@ -201,19 +202,21 @@ const GLN = () => {
 
   return (
     <div>
-
-      {message && <CustomSnakebar message={message} severity="success" onClose={resetSnakeBarMessages} />}
-      {error && <CustomSnakebar message={error} severity="error" onClose={resetSnakeBarMessages} />}
-
-      <div className="p-3 h-full sm:ml-72">
-        <div className='h-auto w-full'>
+      <div className="p-0 h-full sm:ml-72">
+        {/* <div className='h-auto w-full'>
           <div className='h-16 w-full shadow-xl flex justify-start items-center px-5 border-l-2 border-t-2 border-r-2 border-[#e49515]'>
             <p className='sm:text-2xl text-sm font-body'>View GLN</p>
           </div>
+        </div> */}
+        <div>
+          <DashboardRightHeader title={"GLN"}/>
         </div>
 
-        <div className='h-auto w-full shadow-xl'>
-          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-10 px-3'>
+        <div className='flex justify-center items-center'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+
+          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
             <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-arrow-left mr-1"></i> Back
             </button>
@@ -226,9 +229,6 @@ const GLN = () => {
               <i className="fas fa-print mr-1"></i> Print GLN
             </button>
           </div>
-        </div>
-
-
 
 
         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
@@ -274,6 +274,11 @@ const GLN = () => {
           </div>
 
           {/* <MapEvents locations={filteredData} /> */}
+        </div>
+      </div>
+
+
+          </div>
         </div>
       </div>
     </div>
