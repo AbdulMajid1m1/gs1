@@ -10,6 +10,7 @@ import { DataTableContext } from '../../../Contexts/DataTableContext';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
 import newRequest from '../../../utils/userRequest';
 import MapEvents from '../../../components/Maps/MapEvents';
+import { toast } from 'react-toastify';
 
 const GLN = () => {
   const [data, setData] = useState([]);
@@ -47,37 +48,49 @@ const GLN = () => {
 
   const handleEdit = (row) => {
     console.log(row);
-    // navigate("/member/update-gln/" + row?.gln_id)
-    navigate("/member/update-gln")
+    navigate("/member/update-gln/" + row?.id)
+    // navigate("/member/update-gln")
+    // save the response in session 
+    sessionStorage.setItem('glnData', JSON.stringify(row));
   }
 
 
-  // const handleDelete = (row) => {
-  //     console.log(row);
-  // }
+  const handleDelete = async (row) => {
+    try {
+      const deleteResponse = await newRequest.delete(`/gln/${row.id}`);
+      console.log(deleteResponse.data);
 
-//   const handleDelete = async (row) => {
-//     try {
-//       const deleteResponse = await phpRequest.delete('/delete/GLN', {
-//         data: {
-//           user_id: currentUser?.user?.id, // TODO: change it to currentUser?.user?.id
-//           product_id: row?.gln_id,
-//         },
-//       });
-//       console.log(deleteResponse.data);
-//       const successMessage = deleteResponse.data.message;
-//       openSnackbar(successMessage);
+      toast.success(deleteResponse?.data?.message || 'GLN deleted successfully', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
 
-//       // Update the datagrid Table after deletion
-//       setData(prevData => prevData.filter(item => item.gln_id !== row.gln_id));
+   
+      // Update the datagrid Table after deletion
+      setData(prevData => prevData.filter(item => item.id !== row.id));
 
-//       // Handle the success message or update the data accordingly
-//     } catch (err) {
-//       console.log(err);
-//       openSnackbar('Something Is Wrong The Data not deleted.')
-//       // Handle the error message or error case
-//     }
-//   };
+    } 
+    catch (err) {
+      console.log(err);
+
+      toast.error(err?.response?.data?.error || 'Error', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+  };
 
    const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
@@ -90,10 +103,6 @@ const GLN = () => {
     console.log(barcodes); // This will log an array of barcodes
     // setSelectedRow(barcodes);
     setTableSelectedRows(barcodes);
-  }
-
-  const handleDelete = async (row) => {
-    console.log(row);
   }
 
 

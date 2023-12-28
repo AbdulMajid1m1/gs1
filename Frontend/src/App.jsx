@@ -137,7 +137,7 @@ const App = () => {
                             />
                             <Route path="gln" element={<GLN />} />
                             <Route path="add-gln" element={<AddGLN />} />
-                            <Route path="update-gln" element={<UpdateGLN />} />
+                            <Route path="update-gln/:Id" element={<UpdateGLN />} />
                             <Route path="gs1-members" element={<Gs1Members />} />
 
                             <Route path="member-profile" element={<MemberProfile />} />
