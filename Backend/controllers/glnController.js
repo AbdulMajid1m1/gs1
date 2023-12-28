@@ -4,6 +4,7 @@ import { createError } from '../utils/createError.js';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import { calculateGLN } from '../utils/functions/barcodesGenerator.js';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -26,7 +27,7 @@ const glnSchema = Joi.object({
 });
 
 
-export const createGLNs = async (req, res, next) => {
+export const createGLN = async (req, res, next) => {
 
 
     // Validate request body
@@ -67,7 +68,7 @@ export const createGLNs = async (req, res, next) => {
             }
 
 
-            const otherProductSubscriptions = await prisma.other_products_subcriptions.findMany({
+            const otherProductSubscriptions = await prisma.other_products_subcriptions.findFirst({
                 where: {
                     user_id: user.id,
                     status: 'active',
@@ -84,25 +85,34 @@ export const createGLNs = async (req, res, next) => {
             });
 
 
-          
 
-            if (otherProductSubscriptions.length === 0) {
+
+            if (!otherProductSubscriptions) {
                 throw createError(400, 'No active subscription found');
             }
             console.log(otherProductSubscriptions)
 
 
 
-            const productsCount = otherProductSubscriptions?.other_products_subscription_counter;
 
-            if (otherProductSubscriptions?.oter_products_subscription_limit == 0) {
+            if (otherProductSubscriptions?.other_products_subscription_limit == 0) {
                 throw createError(403, 'Subscription limit exceeded');
             }
 
-            // const gln = await generateGLN(user.gcpGLNID, productsCount);
-            // console.log(gln)
-            const newGLN = await prisma.gln.create({
+            const productsCount = otherProductSubscriptions?.other_products_subscription_counter;
+            // const total_no_of_barcodes = otherProductSubscriptions?.product?.total_no_of_barcodes;
+            const gln = await calculateGLN(productsCount, user.gcpGLNID);
+            console.log(gln)
+            if (gln === "false") {
+                throw createError(400, 'Invalid GLN calculation');
+            }
+
+
+
+
+            const newGLN = await prisma.add_member_gln_products.create({
                 data: {
+                    product_id: otherProductSubscriptions?.product_id,
                     gcpGLNID: user.gcpGLNID,
                     user_id: user.id,
                     locationNameEn: value.locationNameEn,
@@ -114,119 +124,87 @@ export const createGLNs = async (req, res, next) => {
                     longitude: value.longitude,
                     latitude: value.latitude,
                     status: value.status,
-                    // GLNBarcodeNumber: barcodeNumber,
+                    GLNBarcodeNumber: gln,
+                    image: images.gln_image,
                 },
             });
 
-            const newProduct = await prisma.products.create({ data: productData });
-            return { newProduct };
+            //  update other_products_subcriptions table
+            await prisma.other_products_subcriptions.update({
+                where: {
+                    id: otherProductSubscriptions.id,
+                },
+                data: {
+                    other_products_subscription_counter: productsCount + 1,
+                    other_products_subscription_limit: otherProductSubscriptions.other_products_subscription_limit - 1,
+                },
+            });
+
+            return { newGLN, otherProductSubscriptions };
         });
 
+        console.log(result);
 
         res.status(201).json({
-            message: 'Product created successfully.',
-            product: result.newProduct,
+            message: 'GLN created successfully.',
+            product: result.newGLN,
         });
     } catch (err) {
         console.error(err);
         next(err);
     }
 };
-export const createGLN = async (req, res, next) => {
+
+
+
+
+
+export const getGLNProductsDetails = async (req, res, next) => {
     try {
-        // Validate request body for GLN
-        const { error, value } = glnSchema.validate(req.body);
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            product_id: Joi.string(),
+            user_id: Joi.string(),
+            locationNameEn: Joi.string(),
+            locationNameAr: Joi.string(),
+           
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false); // Disallows any keys that are not defined in the schema
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
         if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
         }
 
-        const { user_id, product_id } = value;
-
-        // Fetch the user
-        const user = await prisma.user.findUnique({ where: { id: user_id } });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+        // Construct filter conditions for Prisma query
+        const filterConditions = {};
+        if (Object.keys(value).length > 0) {
+            Object.entries(value).forEach(([key, val]) => {
+                filterConditions[key] = val;
+            });
         }
 
-        // Fetch the product
-        const product = await prisma.add_member_gln_products.findUnique({ where: { id: product_id } });
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        // Count member products
-        const memberProductCount = await prisma.add_member_gln_products.count({
-            where: {
-                user_id: user_id,
-                gcpGLNID: user.gcpGLNID,
-            },
+        // Fetch GLN products based on filter conditions
+        const glnProducts = await prisma.add_member_gln_products.findMany({
+            where: filterConditions,
+            // include: { ... } // include related models if necessary
         });
 
-        const productRange = memberProductCount + 1;
-        const ssccBarcodeLimit = product.total_no_of_barcodes;
+        // Optionally, sort the results
+        // Example: Sorting by a certain field (if required)
 
-        if (productRange >= ssccBarcodeLimit) {
-            return res.status(400).json({ message: 'Limit Exceeded' });
-        }
-
-        const gcpGLNID = user.gcpGLNID;
-        const gcpLength = gcpGLNID.toString().length;
-
-        if (gcpLength < 7 || gcpLength > 11) {
-            return res.status(400).json({ message: 'Invalid GLN calculation' });
-        }
-
-        let barcodeNumber = 0;
-
-        switch (gcpLength) {
-            case 7:
-                // Call your lengthSeven function here
-                break;
-            case 8:
-                // Call your lengthEight function here
-                break;
-            case 9:
-                // Call your lengthNine function here
-                break;
-            case 10:
-                // Call your lengthTen function here
-                break;
-            case 11:
-                // Call your lengthEleven function here
-                break;
-            default:
-                return res.status(400).json({ message: 'Invalid GLN calculation' });
-        }
-
-        // Call your checkGLNTrashed function here
-        // Calculate ean13_checkDigit here
-
-        // Save GLN data to the database
-        const newGLN = await prisma.gln.create({
-            data: {
-                gcpGLNID: user.gcpGLNID,
-                user_id: user.id,
-                locationNameEn: value.locationNameEn,
-                locationNameAr: value.locationNameAr,
-                AddressEn: value.AddressEn,
-                AddressAr: value.AddressAr,
-                pobox: value.pobox,
-                postal_code: value.postal_code,
-                longitude: value.longitude,
-                latitude: value.latitude,
-                status: value.status,
-                GLNBarcodeNumber: barcodeNumber,
-            },
-        });
-
-        // Log the action
-        console.log(`${user.fname || user.company_name_eng} Add New GLN.`);
-
-        return res.status(201).json({ message: 'GLN created successfully' });
+        return res.json(glnProducts);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Internal server error' });
-    } finally {
-        await prisma.$disconnect();
+        console.log(error);
+        next(error);
     }
-}
+};

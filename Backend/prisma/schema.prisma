@@ -37,7 +37,7 @@ model add_member_gln_products {
   image                          String?   @db.NVarChar(Max)
   GLNBarcodeNumber               String?   @db.NVarChar(Max)
   GLNBarcodeNumber_without_check String?   @db.NVarChar(Max)
-  status                         Int?
+  status                         String?
   user_id                        String?
   created_at                     DateTime  @default(now())
   updated_at                     DateTime  @updatedAt
