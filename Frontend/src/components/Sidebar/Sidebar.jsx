@@ -139,6 +139,11 @@ const SideBar = () => {
             className="flex justify-center items-center cursor-pointer mt-1 px-4"
           >
            <div className='flex justify-end items-center px-0 mr-4'>
+                <span>
+                  <p className="text-white font-sans mr-5 hover:text-primary" 
+                    onClick={() => navigate('/')}
+                  >GS1 Website</p>
+                </span>
                   <span onClick={() => navigate(-1)} className='cursor-pointer'
                   >
                   <img src={backarrow}
@@ -149,14 +154,14 @@ const SideBar = () => {
                 </span>
               </div>
             <img
-              onClick={() => navigate("/update-vendor")}
+              onClick={() => navigate("/member/member-profile")}
               src={
                 // currentUser?.user?.image
                 //   ? imagePath + currentUser?.user?.image
                 //   : memberprofile
                 profile
                 }
-              className="h-7 w-7 bg-white rounded-full"
+              className="h-7 w-7 bg-white rounded-full transition transform hover:scale-125"
               alt=""
             />
 
@@ -243,7 +248,7 @@ const SideBar = () => {
 
               {apiResponse.length > 0 && (
                <>
-                {apiResponse.includes('GLN (10 Location)') && (
+                {apiResponse.includes('GLN (10 Location) || GLN (20 Location) || GLN (30 Location)') && (
                 <div
                   className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''}`}
                   onClick={() => handleItemClick('/member/gln')}
