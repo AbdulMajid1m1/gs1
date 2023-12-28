@@ -142,7 +142,7 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Add Cr
+                    Add Cr Number
                   </Button>
                 </div>
               </form>
