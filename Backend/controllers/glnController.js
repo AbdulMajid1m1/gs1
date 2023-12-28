@@ -283,3 +283,48 @@ export const updateGLN = async (req, res, next) => {
         next(err);
     }
 };
+
+export const deleteGLN = async (req, res, next) => {
+
+
+    // Use Joi to validate the id
+    const schema = Joi.object({
+        id: Joi.string().required()
+    });
+
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+        return next(createError(400, `Invalid GLN ID: ${error.details[0].message}`));
+    }
+
+    const glnId = value.id;
+    try {
+        // Retrieve the current GLN from the database
+        const currentGLN = await prisma.add_member_gln_products.findUnique({
+            where: { id: glnId }
+        });
+
+        if (!currentGLN) {
+            return next(createError(404, 'GLN not found'));
+        }
+
+        // Process and delete existing GLN image
+        const imageField = 'image'; // Adjust this to your GLN schema
+        const dirname = path.dirname(fileURLToPath(import.meta.url));
+        const imagePath = currentGLN[imageField];
+        if (imagePath) {
+            const absoluteImagePath = path.join(dirname, '..', 'public', imagePath);
+            if (fs.existsSync(absoluteImagePath)) {
+                fs.unlinkSync(absoluteImagePath);
+            }
+        }
+
+        // Delete the GLN from the database
+        await prisma.add_member_gln_products.delete({ where: { id: glnId } });
+
+        res.status(200).json({ message: 'GLN deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
