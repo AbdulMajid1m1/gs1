@@ -248,7 +248,8 @@ const SideBar = () => {
 
               {apiResponse.length > 0 && (
                <>
-                {apiResponse.includes('GLN (10 Location) || GLN (20 Location) || GLN (30 Location)') && (
+                {/* {apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)') && ( */}
+                {(apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)')) && (
                 <div
                   className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''}`}
                   onClick={() => handleItemClick('/member/gln')}
@@ -279,6 +280,23 @@ const SideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">SSCC</p>
+                </div>
+                )}
+
+                {apiResponse.includes('UDI') && (
+                <div
+                  className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/udi')}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, '/member/udi')
+                  }
+                >
+                  <img
+                    src={nsscc}
+                    className="main-inside-sidebar bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">UDI</p>
                 </div>
                 )}
                  </>

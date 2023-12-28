@@ -68,6 +68,7 @@ import UpdateProducts from "./Pages/AdminPages/AdminIndentify/Products/UpdatePro
 import AddProducts from "./Pages/AdminPages/AdminIndentify/Products/AddProducts";
 import AddGLN from "./Pages/MemberPages/GLN/AddGLN";
 import UpdateGLN from "./Pages/MemberPages/GLN/UpdateGLN";
+import UDI from "./Pages/MemberPages/UDI/UDI";
 
 const queryClient = new QueryClient()
 
@@ -151,12 +152,14 @@ const App = () => {
                             <Route path="transaction-history" element={<TransactionHistory />} />
                             <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                             <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
+
+                            <Route path="udi" element={<UDI />} />
                             {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
                             {/* <Route path="member-data" element={<MemberData />} /> */}
                             <Route path="member-crnumber" element={<MemberCrNumber />} />
-                          <Route path="member-data" element={<MemberData />} />
-                          <Route path="member-crnumber" element={<MemberCrNumber />} />
+                            <Route path="member-data" element={<MemberData />} />
+                            <Route path="member-crnumber" element={<MemberCrNumber />} />
 
 
                           </Routes>
