@@ -1368,8 +1368,8 @@ export const GtinColumn = [
 
 export const GlnColumn = [
   {
-    field: 'gln_id',
-    headerName: 'GLN ID',
+    field: 'product_id',
+    headerName: 'Product ID',
     width: 180,
   },
   {

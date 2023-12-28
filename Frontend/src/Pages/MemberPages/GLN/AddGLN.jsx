@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { GoogleMap, Marker, StandaloneSearchBox } from '@react-google-maps/api';
-import { RiseLoader } from 'react-spinners';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import { toast } from 'react-toastify';
+import newRequest from '../../../utils/userRequest';
+import { DotLoader } from 'react-spinners'
 
 const AddGLN = () => {
+    const memberDataString = sessionStorage.getItem('memberData');
+    const memberData = JSON.parse(memberDataString);
+    // console.log(memberData);
     const [locationEnglish, setLocationEnglish] = React.useState('')
     const [locationArabic, setLocationArabic] = React.useState('')
     const [addressEnglish, setAddressEnglish] = React.useState('')
@@ -22,47 +27,71 @@ const AddGLN = () => {
 
   
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
   
-  //   const longitude = document.getElementById('longitude').value;
-  //   const latitude = document.getElementById('Latitude').value;
+    const longitude = document.getElementById('longitude').value;
+    const latitude = document.getElementById('Latitude').value;
   
-  //   const imageFile = document.getElementById('imageInput').files[0];
+    const imageFile = document.getElementById('imageInput').files[0];
   
-  //   const formData = new FormData();
-  //   formData.append('product_id', '1');
-  //   // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
-  //   formData.append('locationNameEn', locationEnglish);
-  //   formData.append('locationNameAr', locationArabic);
-  //   formData.append('AddressEn', selectedLocation ? selectedLocation.address : '');
-  //   formData.append('AddressAr', selectedLocation ? selectedLocation.address : '');
-  //   formData.append('pobox', po);
-  //   formData.append('postal_code', postal);
-  //   formData.append('longitude', longitude);
-  //   formData.append('latitude', latitude);
-  //   // formData.append('user_id', currentUser?.user?.id);
-  //   formData.append('status', status);
-  //   formData.append('image', imageFile);
+    const formData = new FormData();
+    // formData.append('product_id', '1');
+    formData.append('user_id', memberData?.id);
+    // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
+    formData.append('locationNameEn', locationEnglish);
+    // formData.append('locationNameAr', locationArabic);
+    formData.append('AddressEn', selectedLocation ? selectedLocation.address : '');
+    formData.append('AddressAr', selectedLocation ? selectedLocation.address : '');
+    formData.append('pobox', po);
+    formData.append('postal_code', postal);
+    formData.append('longitude', longitude);
+    formData.append('latitude', latitude);
+    // formData.append('user_id', currentUser?.user?.id);
+    formData.append('status', status);
+    formData.append('gln_image', imageFile);
   
-  //   phpRequest
-  //     .post("/member/create/GLN", formData)
-  //     .then((response) => {
-  //       console.log(response.data);
+    newRequest
+      .post("/gln", formData)
+      .then((response) => {
+        console.log(response.data);
      
-  //       setIsLoading(false);
-  //       setTimeout(() => {
-  //         navigate(-1);
-  //       }, 1500);
+        setIsLoading(false);
+        setTimeout(() => {
+          navigate(-1);
+        }, 1500);
+
+        toast.success(response?.data?.message || 'GLN Added Successfully', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+
   
-  //       e.target.reset();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setIsLoading(false);
-  //     });
-  // };
+        e.target.reset();
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+
+        toast.error(err.response.data.error, {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      });
+  };
   
 
     
@@ -158,24 +187,24 @@ const AddGLN = () => {
   return (
     <div>
 
-            {isLoading &&
+        {isLoading &&
 
-            <div className='loading-spinner-background'
+        <div className='loading-spinner-background'
             style={{
                 zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
 
 
             }}
-            >
-            <RiseLoader
-                size={18}
-                color={"#6439ff"}
+        >
+            <DotLoader
+                size={45}
+                color={"#FF693A"}
                 // height={4}
                 loading={isLoading}
             />
-            </div>
-            }
+        </div>
+        }
 
 
         <div className="p-0 h-full sm:ml-72 bg-slate-100">
@@ -193,8 +222,8 @@ const AddGLN = () => {
                         <p className="font-semibold">Complete Data</p>
                         <p>
                             This number is registered to company: :{" "}
-                            {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
-                            <span className="font-semibold">Hasnain, Majid</span>
+                            <span className="font-semibold">{memberData?.company_name_eng}</span>
+                            {/* <span className="font-semibold">Hasnain, Majid</span> */}
                         </p>
                         </div>
                     </div>
@@ -299,8 +328,8 @@ const AddGLN = () => {
                                 value={status}
                                 >
                                 <option value=''>-select-</option>
-                                <option value='1'>Active</option>
-                                <option value='0'>Inactive</option>
+                                <option value='active'>Active</option>
+                                <option value='inactive'>Inactive</option>
                             </select>
                         </div>
                     </div>
@@ -408,11 +437,11 @@ const AddGLN = () => {
         </>
       )}
 
-            {/* <form onSubmit={handleSubmit}> */}
+            <form onSubmit={handleSubmit}>
                 <button type='submit' className="rounded-sm bg-secondary font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-primary">
                     <i className="fas fa-check-circle mr-1"></i> Submit
                 </button>
-            {/* </form> */}
+            </form>
            </div>
         </div>
 

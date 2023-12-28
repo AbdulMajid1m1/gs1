@@ -2,96 +2,46 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import DataTable from '../../../components/Datatable/Datatable'
 import { GlnColumn } from '../../../utils/datatablesource'
-import CustomSnakebar from '../../../utils/CustomSnackbar';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import { SnackbarContext } from '../../../Contexts/SnackbarContext';
 import logo from "../../../Images/logo.png";
-
-// import { RiseLoader } from 'react-spinners'
-// import { CurrentUserContext } from '../../Contexts/CurrentUserContext'
-// import MapEvents from '../../Components/Maps/MapEvents'
 import { QRCodeSVG } from 'qrcode.react'
 import { DataTableContext } from '../../../Contexts/DataTableContext';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import newRequest from '../../../utils/userRequest';
+import MapEvents from '../../../components/Maps/MapEvents';
 
 const GLN = () => {
-  const [data, setData] = useState([
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-       
-
-  ]);
+  const [data, setData] = useState([]);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  // console.log(memberData);
 
   const [isLoading, setIsLoading] = useState(false);
-//   const { openSnackbar } = useContext(SnackbarContext);
-//   const { currentUser } = useContext(CurrentUserContext);
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
-  const resetSnakeBarMessages = () => {
-    setError(null);
-    setMessage(null);
-
-};
+ 
   const navigate = useNavigate()
   
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         // /member/gln/list
-//         const response = await phpRequest.post("/member/gln/list", {
-//           user_id: currentUser?.user?.id 
-//         });
-//         console.log(response.data);
-//         setData(response?.data?.GlnProducts || []);
-//         setFilteredData(response?.data?.GlnProducts ?? [])
-//         setIsLoading(false)
-//       }
-//       catch (err) {
-//         console.log(err);
-//         setIsLoading(false)
-//       }
-//     };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await newRequest.get(`/gln?user_id=${memberData?.id}`);
+        console.log(response.data);
 
-//     fetchData(); // Calling the function within useEffect, not inside itself
-//   }, []); // Empty array dependency ensures this useEffect runs once on component mount
+        setData(response?.data);
+        setFilteredData(response?.data ?? [])
+        setIsLoading(false)
+      }
+      catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
+
+    fetchData(); // Calling the function within useEffect, not inside itself
+  }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
 
@@ -101,15 +51,6 @@ const GLN = () => {
     navigate("/member/update-gln")
   }
 
-
-//   const handleUpdate = (row) => {
-//     console.log(row);
-//   }
-
-//   const handleDigitalUrlInfo = (row) => {
-//     navigate("/digitalurl")
-//     // sessionStorage.setItem("selectedGlnData", row);
-//   }
 
   // const handleDelete = (row) => {
   //     console.log(row);
@@ -138,7 +79,7 @@ const GLN = () => {
 //     }
 //   };
 
-  const handleRowClickInParent = (item) => {
+   const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
       setFilteredData(data)
       return
@@ -273,7 +214,7 @@ const GLN = () => {
             ))}
           </div>
 
-          {/* <MapEvents locations={filteredData} /> */}
+          <MapEvents locations={filteredData} />
         </div>
       </div>
 
