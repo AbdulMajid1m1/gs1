@@ -92,7 +92,7 @@ const MemberDashboard = () => {
                       <p className='font-sans font-normal text-sm text-gray-200'>{totalCategory}</p>
                     </div>
                   </div> 
-              </div>
+              </div> 
               <div className='h-auto w-full bg-[#F73F3F] rounded-lg'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
