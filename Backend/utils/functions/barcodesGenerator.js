@@ -150,3 +150,65 @@ export async function generateProdcutGTIN(gcpGLNID, productsCount) {
     return gtinWithCheckDigit;
 }
 
+
+
+
+/// SSCC ....
+
+
+
+
+function formatSSCC(productRange, totalLength) {
+    let range = parseInt(productRange, 10).toString();
+    if (range.length > totalLength) return "false";
+    return range.padStart(totalLength, '0');
+}
+
+function ssccLengthEight(productRange) {
+    return formatSSCC(productRange, 8);
+}
+
+function ssccLengthNine(productRange) {
+    return formatSSCC(productRange, 9);
+}
+
+function ssccLengthTen(productRange) {
+    return formatSSCC(productRange, 10);
+}
+
+function ssccLengthEleven(productRange) {
+    return formatSSCC(productRange, 11);
+}
+
+function ssccLengthTwelve(productRange) {
+    return formatSSCC(productRange, 12);
+}
+
+
+// SSCC Barcode generation function (convert from PHP to JavaScript)
+
+export async function generateSSCCBarcode(gcpGLNID, productCount) {
+    const gcpLength = gcpGLNID.toString().length;
+    if (gcpLength < 8 || gcpLength > 12) return "false";
+
+    let barcodeNumber;
+    switch (gcpLength) {
+        case 8: barcodeNumber = gcpGLNID + ssccLengthEight(productCount); break;
+        case 9: barcodeNumber = gcpGLNID + ssccLengthNine(productCount); break;
+        case 10: barcodeNumber = gcpGLNID + ssccLengthTen(productCount); break;
+        case 11: barcodeNumber = gcpGLNID + ssccLengthEleven(productCount); break;
+        case 12: barcodeNumber = gcpGLNID + ssccLengthTwelve(productCount); break;
+        default: return "false";
+    }
+
+    if (barcodeNumber === "false") return "false";
+
+    // // Check for trashed SSCC (assuming you have a function for this)
+    // const trashedSSCC = await checkSSCCTrashed(user); // Adjust as needed for your application
+    // if (trashedSSCC) {
+    //     // Handle trashed SSCC case
+    //     // Implement logic as needed based on your application's requirements
+    // }
+
+    return barcodeNumber + calculateCheckDigit(barcodeNumber);
+}
