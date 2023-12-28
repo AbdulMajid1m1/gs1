@@ -761,6 +761,10 @@ model gtin_subcriptions {
   deleted_at   DateTime? @db.DateTime
   expiry_date  DateTime? @db.DateTime
 
+  gtin_subscription_limit       Int @default(0)
+  gtin_subscription_counter       Int @default(0)
+  gtin_subscription_total_price Int @default(0)
+
   // Define a foreign key relationship with gtin_products
   gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
@@ -1401,18 +1405,19 @@ model other_products {
 }
 
 model other_products_subcriptions {
-  id             String    @id @default(cuid())
-  react_no       Int?
-  transaction_id String
-  product_id     String
-  price          Float?
-  status         String?   @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
-  user_id        String?   @db.NVarChar(255)
-  createdBy      String?   @db.NVarChar(255)
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  deleted_at     DateTime? @db.DateTime
-  expiry_date    DateTime? @db.DateTime
+  id                   String    @id @default(cuid())
+  react_no             Int?
+  transaction_id       String
+  product_id           String
+  price                Float?
+  status               String?   @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
+  user_id              String?   @db.NVarChar(255)
+  createdBy            String?   @db.NVarChar(255)
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+  deleted_at           DateTime? @db.DateTime
+  expiry_date          DateTime? @db.DateTime
+  prod_limit_increment Int?      @default(0, map: "DF_other_products_subcriptions_prod_limit_increment")
 
   // Define the relationship to other_products based on product_id
   product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)

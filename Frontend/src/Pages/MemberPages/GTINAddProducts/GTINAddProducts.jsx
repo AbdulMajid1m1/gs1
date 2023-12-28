@@ -181,7 +181,7 @@ const GTINAddProducts = () => {
         } catch (error) {
             console.log(error);
         }
-    };
+    };  
 
 
     const handleRegion = async () => {
@@ -325,7 +325,7 @@ const GTINAddProducts = () => {
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true
-            });
+            }); 
 
             setTimeout(() => {
                 navigate(-1);
