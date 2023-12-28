@@ -86,18 +86,18 @@ const SideBar = () => {
   };
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await newRequest.get(`/gtinProducts/getUserSubscribedProductsNames?userId=${memberData?.id}`);
-        setApiResponse(response.data);
-        console.log(response.data)
-      } 
-      catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await newRequest.get(`/gtinProducts/getUserSubscribedProductsNames?userId=${memberData?.id}`);
+      setApiResponse(response.data);
+      console.log(response.data)
+    } 
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
