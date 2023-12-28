@@ -17,8 +17,6 @@ export const getProducts = async (req, res, next) => {
             gcpGLNID: Joi.string(),
             memberID: Joi.string(),
 
-
-            // ... define validation for other allowed columns for products
         };
 
         // Create a dynamic schema based on the allowed columns for products
@@ -220,13 +218,13 @@ export const createProduct = async (req, res, next) => {
         const result = await prisma.$transaction(async (prisma) => {
             let user = await prisma.users.findUnique({ where: { id: userId } });
             if (!user) {
-                return next(createError(404, 'User not found'));
+                throw createError(404, 'User not found');
             }
 
             if (user.parent_memberID !== '0') {
                 user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
                 if (!user) {
-                    return next(createError(404, 'User not found'));
+                    throw createError(404, 'User not found');
                 }
             }
 
@@ -236,18 +234,16 @@ export const createProduct = async (req, res, next) => {
             });
 
             if (gtinSubscriptions.length === 0) {
-                return next(createError(404, 'User has no GTIN subscriptions'));
+                throw createError(404, 'Subscription not found');
             }
             console.log(gtinSubscriptions)
-            const totalNoOfBarcodes = gtinSubscriptions?.gtin_product.total_no_of_barcodes;
-            const productsCount = await prisma.products.count({
-                where: { user_id: user.id, gcpGLNID: user.gcpGLNID }
-            });
+            if (gtinSubscriptions?.gtin_subscription_limit === 0) {
+                throw createError(403, 'Subscription limit exceeded, please upgrade your subscription');
 
-
-            if (productsCount + 1 >= totalNoOfBarcodes) {
-                return next(createError(400, 'Barcodes limit exceeded'));
             }
+            const productsCount = gtinSubscriptions?.gtin_subscription_counter;
+            console.log(productsCount)
+
 
             const gtin = await generateProdcutGTIN(user.gcpGLNID, productsCount);
             console.log(gtin)
@@ -260,11 +256,22 @@ export const createProduct = async (req, res, next) => {
             };
 
             const newProduct = await prisma.products.create({ data: productData });
-            return { newProduct };
+
+            // update the gtin_subcription table with new limit and counter
+            const updatedGtinSubscription = await prisma.gtin_subcriptions.update({
+                where: { id: gtinSubscriptions.id },
+                data: {
+                    gtin_subscription_counter: productsCount + 1,
+                    gtin_subscription_limit: gtinSubscriptions.gtin_subscription_limit - 1
+                }
+            });
+
+
+            return { newProduct, updatedGtinSubscription };
         });
+        console.log(result)
 
-
-        res.status(201).json({
+        return res.status(201).json({
             message: 'Product created successfully.',
             product: result.newProduct,
         });
