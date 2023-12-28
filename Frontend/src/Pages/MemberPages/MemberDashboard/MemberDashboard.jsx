@@ -94,7 +94,7 @@ const MemberDashboard = () => {
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-sm text-gray-200'>{totalCategory}</p>
                     </div>
-                  </div>
+                  </div> 
               </div>
               <div className='h-auto w-full bg-[#F73F3F] rounded-lg'>
                   <div>
