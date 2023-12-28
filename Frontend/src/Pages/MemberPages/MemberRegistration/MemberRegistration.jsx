@@ -11,6 +11,7 @@ import Footer from '../../../components/Footer/Footer';
 import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import barcodeImage from "../../../Images/barcodeImage.png"
 
 
 const MemmberRegisteration = () => {
@@ -965,8 +966,15 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
 
-                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2'>
-                                <label className='text-secondary font-semibold' htmlFor='GTIN'>GTIN<span className='text-red-600'>*</span></label>
+                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2 mt-2'>
+                                <label 
+                                    className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
+                                >GTIN
+                                    <span className='text-red-600'>*</span>
+                                    (Barcode)
+                                    <img src={barcodeImage} className='h-10 w-auto' alt='' />
+                                </label>
+                                
                                 <Autocomplete
                                     id='GTIN'
                                     disabled={!selectedCategories}

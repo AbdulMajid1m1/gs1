@@ -86,18 +86,18 @@ const SideBar = () => {
   };
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await newRequest.get(`/gtinProducts/getUserSubscribedProductsNames?userId=${memberData?.id}`);
-        setApiResponse(response.data);
-        console.log(response.data)
-      } 
-      catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await newRequest.get(`/gtinProducts/getUserSubscribedProductsNames?userId=${memberData?.id}`);
+      setApiResponse(response.data);
+      console.log(response.data)
+    } 
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -139,6 +139,11 @@ const SideBar = () => {
             className="flex justify-center items-center cursor-pointer mt-1 px-4"
           >
            <div className='flex justify-end items-center px-0 mr-4'>
+                <span>
+                  <p className="text-white font-sans mr-5 hover:text-primary" 
+                    onClick={() => navigate('/')}
+                  >GS1 Website</p>
+                </span>
                   <span onClick={() => navigate(-1)} className='cursor-pointer'
                   >
                   <img src={backarrow}
@@ -149,14 +154,14 @@ const SideBar = () => {
                 </span>
               </div>
             <img
-              onClick={() => navigate("/update-vendor")}
+              onClick={() => navigate("/member/member-profile")}
               src={
                 // currentUser?.user?.image
                 //   ? imagePath + currentUser?.user?.image
                 //   : memberprofile
                 profile
                 }
-              className="h-7 w-7 bg-white rounded-full"
+              className="h-7 w-7 bg-white rounded-full transition transform hover:scale-125"
               alt=""
             />
 
@@ -243,7 +248,8 @@ const SideBar = () => {
 
               {apiResponse.length > 0 && (
                <>
-                {apiResponse.includes('GLN (10 Location)') && (
+                {/* {apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)') && ( */}
+                {(apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)')) && (
                 <div
                   className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''}`}
                   onClick={() => handleItemClick('/member/gln')}
@@ -274,6 +280,23 @@ const SideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">SSCC</p>
+                </div>
+                )}
+
+                {apiResponse.includes('UDI') && (
+                <div
+                  className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/udi')}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, '/member/udi')
+                  }
+                >
+                  <img
+                    src={nsscc}
+                    className="main-inside-sidebar bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">UDI</p>
                 </div>
                 )}
                  </>

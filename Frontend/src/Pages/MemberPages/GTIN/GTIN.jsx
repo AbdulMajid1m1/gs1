@@ -352,7 +352,7 @@ const Gtin = () => {
                 }
 
               ]}
-              uniqueId="gtinMainTableId"
+              uniqueId="customerListId"
 
             />
           </div>

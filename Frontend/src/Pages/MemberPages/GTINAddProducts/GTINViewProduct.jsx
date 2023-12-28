@@ -8,6 +8,7 @@ import { saveAs } from 'file-saver';
 import DashboardRightHeader from "../../../components/DashboardRightHeader/DashboardRightHeader";
 import newRequest from "../../../utils/userRequest";
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
+import { BarcodeGenerator, DataMatrixGenerator } from "../../../utils/Barcodes/Barcodes";
 
 const GTINViewProduct = () => {
   const memberDataString = sessionStorage.getItem('memberData');
@@ -55,6 +56,7 @@ const GTINViewProduct = () => {
   const [descriptionEnglish, setDescriptionEnglish] = useState('');
   const [descriptionArabic, setDescriptionArabic] = useState('');
   const [productUrl, setProductUrl] = useState('');
+  const [barcode, setBarcode] = useState('');
   const [selectedBrandNameEnglish, setSelectedBrandNameEnglish] = useState('');
   const [selectedBrandNameArabic, setSelectedBrandNameArabic] = useState('');
   const [selectedUnitCode, setSelectedUnitCode] = useState('');
@@ -82,6 +84,7 @@ const GTINViewProduct = () => {
         setSelectedPackageType(productData?.PackagingType);
         setSelectedUnitCode(productData?.unit);
         setSize(productData?.size);
+        setBarcode(productData?.barcode);
         setSelectedCountry(productData?.countrySale);
         setGpcCode(productData?.gpc_code);
         setDescriptionEnglish(productData?.details_page);
@@ -237,7 +240,7 @@ const handleDigitalInformationType = (event, value) => {
     <>
           <div className="p-0 h-full sm:ml-72  bg-slate-100">
               <div>
-                <DashboardRightHeader title="Update GTIN Products"
+                <DashboardRightHeader title="View GTIN Products"
                 />
               </div>
 
@@ -245,16 +248,25 @@ const handleDigitalInformationType = (event, value) => {
                 {" "}
                 <div className="h-auto w-full p-5 bg-white">
                     <div className="">
-                    <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
-                        <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                        <p className="font-semibold">Complete Data</p>
-                        <p>
-                            This number is registered to company: :{" "}
-                            {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
-                            {/* <span className="font-semibold">Hasnain, Majid</span> */}
-                        </p>
+                        <div className="flex justify-between sm:flex-row flex-wrap w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
+                            <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
+                                <p className="font-semibold">Complete Data</p>
+                                <p>
+                                    This number is registered to company: :{" "}
+                                    <span className="font-semibold">{memberData?.company_name_eng}</span>
+                                    {/* <span className="font-semibold">Hasnain, Majid</span> */}
+                                </p>
+                            </div>
+
+                            <div className="flex gap-10" style={{ height: '60px'}}>
+                                <div>
+                                    <BarcodeGenerator text={barcode} />
+                                </div>
+                                <DataMatrixGenerator
+                                    text={barcode}
+                                    />
+                            </div>
                         </div>
-                    </div>
                     </div>
 
                     {/* <form onSubmit={handleFormSubmit}> */}
@@ -670,7 +682,8 @@ const handleDigitalInformationType = (event, value) => {
                                     options={gpcList}
                                     getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
                                     onChange={handleGPCAutoCompleteChange}
-                                    value={gpc}
+                                    // value={gpc}
+                                    value={gpc ? { label: gpc, value: gpc } : null}
                                     onInputChange={(event, newInputValue, params) => handleAutoCompleteInputChange(event, newInputValue, params)}
                                     loading={autocompleteLoading}
                                     // sx={{ marginTop: '10px' }}
@@ -747,7 +760,8 @@ const handleDigitalInformationType = (event, value) => {
                                     options={hsCodeList}
                                     getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
                                     onChange={handleHsCodeAutoCompleteChange}
-                                    value={hsCode}
+                                    // value={hsCode}
+                                    value={hsCode ? { label: hsCode, value: hsCode } : null}
                                     onInputChange={(event, newInputValue, params) => handleHsCodeAutoCompleteInputChange(event, newInputValue, params)}
                                     loading={autocompleteLoadingForHsCode}
                                     sx={{ marginTop: '10px' }}
