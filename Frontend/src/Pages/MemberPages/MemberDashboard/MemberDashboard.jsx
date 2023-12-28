@@ -16,10 +16,14 @@ const MemberDashboard = () => {
   const [gtinSubscriptions, setGtinSubscriptions] = useState([]);
   const [totalCategory, setTotalCategory] = useState('');
   const [totalRange, setTotalRange] = useState('');
+  const [gtinBarcodeIssued, setGtinBarcodeIssued] = useState('');
+  const [gtinBarcodeRemaining, setGtinBarcodeRemaining] = useState('');
 
   const [otherProductSubscriptions, setOtherProductSubscriptions] = useState([]);
-  const [totalCategoryOther, setTotalCategoryOther] = useState('');
-  const [totalRangeOther, setTotalRangeOther] = useState('');
+  // const [totalCategoryOther, setTotalCategoryOther] = useState('');
+  // const [totalRangeOther, setTotalRangeOther] = useState('');
+  // const [gtinBarcodeIssuedOther, setGtinBarcodeIssuedOther] = useState('');
+  // const [gtinBarcodeRemainingOther, setGtinBarcodeRemainingOther] = useState('');
 
   
   useEffect(() => {
@@ -32,19 +36,12 @@ const MemberDashboard = () => {
         setGtinSubscriptions(response?.data?.gtinSubscriptions);
         setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
         setTotalRange(response?.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+        setGtinBarcodeIssued(response?.data?.gtinSubscriptions[0]?.gtin_subscription_counter);
+        setGtinBarcodeRemaining(response?.data?.gtinSubscriptions[0]?.gtin_subscription_limit);
         
 
         setOtherProductSubscriptions(response?.data?.otherProductSubscriptions);
 
-        const otherProductSubscriptions = response?.data?.otherProductSubscriptions;
-        if (Array.isArray(otherProductSubscriptions)) {
-          otherProductSubscriptions.forEach((subscription, index) => {
-            setTotalCategoryOther(subscription?.product?.product_name);
-            setTotalRangeOther(subscription?.product?.total_no_of_barcodes);
-
-            console.log('productNames', subscription?.product?.product_name);
-          });
-        }
 
      
       } catch (err) {
@@ -89,7 +86,7 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRange}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-sm text-gray-200'>{totalCategory}</p>
@@ -100,7 +97,7 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={rangebarcode} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>1 to {totalRange -  1}</p>
+                      <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {totalRange -  1}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>Range of Barcodes</p>
@@ -111,7 +108,7 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcoderemain} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeIssued}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
@@ -122,7 +119,7 @@ const MemberDashboard = () => {
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRange}</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeRemaining}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>
@@ -133,59 +130,7 @@ const MemberDashboard = () => {
               ))}
             </div>
 
-
-
-            {/* Four Cards */}
-            {/* <div>
-            {otherProductSubscriptions?.map((item, index) => (
-             <div key={index} className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 p-4 -mt-2'>
-               <div className='h-auto w-full bg-[#345ECC] rounded-lg'>
-                  <div>
-                    <div className='flex justify-between items-center px-3 py-3'>
-                      <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
-                    </div>
-                    <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-sm text-gray-200'>{totalCategoryOther}</p>
-                    </div>
-                  </div>
-              </div>
-              <div className='h-auto w-full bg-[#F73F3F] rounded-lg'>
-                  <div>
-                    <div className='flex justify-between items-center px-3 py-3'>
-                      <img src={rangebarcode} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {totalRangeOther -  1}</p>
-                    </div>
-                    <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Range of Barcodes</p>
-                    </div>
-                  </div>
-              </div>
-              <div className='h-auto w-full bg-[#1CC085] rounded-md'>
-                  <div>
-                    <div className='flex justify-between items-center px-3 py-3'>
-                      <img src={barcoderemain} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
-                    </div>
-                    <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
-                    </div>
-                  </div>
-              </div>
-              <div className='h-auto w-full bg-[#01A6BC] rounded-md'>
-                  <div>
-                    <div className='flex justify-between items-center px-3 py-3'>
-                      <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRangeOther}</p>
-                    </div>
-                    <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>
-                    </div>
-                  </div>
-              </div>
-              </div>
-              ))}
-            </div> */}
+            {/* Other Products */}
             <div>
               {otherProductSubscriptions?.map((item, index) => (
                 <div key={index} className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 p-4 -mt-2'>
@@ -193,7 +138,7 @@ const MemberDashboard = () => {
                     <div>
                       <div className='flex justify-between items-center px-3 py-3'>
                         <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
-                        <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                        <p className='font-sans font-semibold text-3xl text-white -mt-4'>{item.product.total_no_of_barcodes}</p>
                       </div>
                       <div className='w-full text-end -mt-1 px-2'>
                         <p className='font-sans font-normal text-sm text-gray-200'>{item.product.product_name}</p>
@@ -217,7 +162,7 @@ const MemberDashboard = () => {
                     <div>
                       <div className='flex justify-between items-center px-3 py-3'>
                         <img src={barcoderemain} alt="" className='h-16 w-16 object-contain'/>
-                        <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                        <p className='font-sans font-semibold text-3xl text-white -mt-4'>{item.other_products_subscription_counter}</p>
                       </div>
                       <div className='w-full text-end -mt-1 px-2'>
                         <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
@@ -229,7 +174,7 @@ const MemberDashboard = () => {
                     <div>
                       <div className='flex justify-between items-center px-3 py-3'>
                         <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
-                        <p className='font-sans font-semibold text-3xl text-white -mt-4'>{item.product.total_no_of_barcodes}</p>
+                        <p className='font-sans font-semibold text-3xl text-white -mt-4'>{item.other_products_subscription_limit}</p>
                       </div>
                       <div className='w-full text-end -mt-1 px-2'>
                         <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>

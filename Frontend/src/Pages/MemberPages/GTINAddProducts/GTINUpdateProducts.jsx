@@ -92,7 +92,7 @@ const GTINUpdateProducts = () => {
           setSelectedDigitalInformationType(productData?.digitalInfoType);
           setSelectedProductDescription(productData?.prod_lang);
         //   setGpc(productData?.gpc);
-        setGpc({
+          setGpc({
             value: productData?.gpc,
             codeTitle: productData?.gpc,
             gpcCode: productData?.gpc_code,
