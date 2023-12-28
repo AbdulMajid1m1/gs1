@@ -765,7 +765,7 @@ const GTINAddProducts = () => {
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                     
-                            <label htmlFor="field5" className="text-secondary">Region</label>
+                            <label htmlFor="field5" className="text-secondary">Origin</label>
                             <Autocomplete
                                 id="field5"
                                 options={region}
@@ -791,7 +791,7 @@ const GTINAddProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/Region"
+                                    placeholder="Enter/Origin"
                                     required
                                 />
                                 )}
