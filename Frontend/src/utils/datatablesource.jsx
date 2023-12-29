@@ -1407,7 +1407,7 @@ export const ViewSsccColumn = [
     width: 180,
   },
   {
-    field: 'Type',
+    field: 'sscc_type',
     headerName: 'Type',
     width: 180,
   },

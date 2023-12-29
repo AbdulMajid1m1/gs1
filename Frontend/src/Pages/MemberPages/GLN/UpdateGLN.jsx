@@ -46,12 +46,12 @@ const UpdateGLN = () => {
 
         const fetchProductDetails = async () => {
             try {
-                // const response = await newRequest.get(`/gln?product_id=${productId}`)
+                // const response = await newRequest.get(`/gln?id=${productId}`)
                 // console.log(response.data[0]);
 
+                // const productData = response.data[0];
                 const productData = glnData;
-                // const imagePath = response.data?.image_path;
-
+                
                 // Set the state variables with the fetched data
                 setLocationEnglish(productData?.locationNameEn);
                 setLocationArabic(productData?.locationNameAr);
@@ -95,18 +95,17 @@ const UpdateGLN = () => {
       // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
       formData.append('locationNameEn', locationEnglish);
       // formData.append('locationNameAr', locationArabic);
-      formData.append('AddressEn', selectedLocation ? selectedLocation.address : '');
-      formData.append('AddressAr', selectedLocation ? selectedLocation.address : '');
+      formData.append('AddressEn', addressEnglish);
+      formData.append('AddressAr', addressArabic);
       formData.append('pobox', po);
       formData.append('postal_code', postal);
       formData.append('longitude', longitude);
       formData.append('latitude', latitude);
-      // formData.append('user_id', currentUser?.user?.id);
       formData.append('status', status);
       formData.append('gln_image', imageFile);
     
       newRequest
-        .put(`/gln/${productId}`, formData)
+        .put(`/gln/${glnData?.id}`, formData)
         .then((response) => {
           console.log(response.data);
        
@@ -263,6 +262,7 @@ const UpdateGLN = () => {
   const handleInputLongitudeChange = (e) => {
     setLongitude(e.target.value);
   }
+
 
 
 

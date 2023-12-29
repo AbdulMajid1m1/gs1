@@ -268,10 +268,10 @@ const SideBar = () => {
 
               {apiResponse.includes('SSCC') && (
                 <div
-                  className={`main-images-container ${selectedItem === '/member/viewsscc' ? 'selected-item' : ''}`}
-                  onClick={() => handleItemClick('/member/viewsscc')}
+                  className={`main-images-container ${selectedItem === '/member/sscc' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/sscc')}
                   onContextMenu={(event) =>
-                    handleContextMenu(event, '/member/viewsscc')
+                    handleContextMenu(event, '/member/sscc')
                   }
                 >
                   <img

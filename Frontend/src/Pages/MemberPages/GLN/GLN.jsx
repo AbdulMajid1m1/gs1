@@ -49,7 +49,6 @@ const GLN = () => {
   const handleEdit = (row) => {
     console.log(row);
     navigate("/member/update-gln/" + row?.id)
-    // navigate("/member/update-gln")
     // save the response in session 
     sessionStorage.setItem('glnData', JSON.stringify(row));
   }
