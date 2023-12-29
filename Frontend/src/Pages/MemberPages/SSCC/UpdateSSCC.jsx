@@ -11,9 +11,7 @@ const UpdateSSCC = () => {
   
   const navigate = useNavigate();
     let { sscc_id } = useParams();
-    const glnDataString = sessionStorage.getItem('ssccData');
-    const ssccData = JSON.parse(glnDataString);
-    console.log(ssccData);
+    // console.log(sscc_id)
     
     // const [palletForm, setShowPalletForm] = React.useState(false);
     // const [labelForm, setShowLabelForm] = React.useState(false);
@@ -64,11 +62,10 @@ const UpdateSSCC = () => {
       setIsLoading(true)
       const fetchProductDetails = async () => {
           try {
-            //   const response = await phpRequest.post("/member/edit/SSCC", bodyData)
+              const response = await newRequest.get(`/sscc/?id=${sscc_id}`)
 
-            //   const productData = response.data?.SSCCProduct;
-
-              const productData = ssccData;
+              const productData = response.data[0];
+            //   console.log(productData)
 
               // Set the state variables with the fetched data
               setSSCCType(productData?.sscc_type);
@@ -159,7 +156,7 @@ const UpdateSSCC = () => {
     
       if (ssccType === 'pallet') {
         newRequest
-          .put(`/sscc/${ssccData?.id}`, apiRequestBody)
+          .put(`/sscc/${sscc_id}`, apiRequestBody)
           .then((response) => {
             const data = response.data;
             console.log('Pallet API Response:', data);
@@ -236,7 +233,7 @@ const UpdateSSCC = () => {
         console.log(labelApiRequestBody)
 
         newRequest
-          .put(`/sscc/${ssccData?.id}`, labelApiRequestBody)
+          .put(`/sscc/${sscc_id}`, labelApiRequestBody)
           .then((response) => {
             // Handle success response from Label API
             const data = response.data;

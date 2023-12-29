@@ -144,7 +144,7 @@ const App = () => {
 
                             <Route path="sscc" element={<SSCC />} />
                             <Route path="addsscc" element={<AddSSCC />} />
-                            <Route path="update-sscc/:Id" element={<UpdateSSCC />} />
+                            <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
 
                             <Route path="gs1-members" element={<Gs1Members />} />
                             <Route path="member-profile" element={<MemberProfile />} />
