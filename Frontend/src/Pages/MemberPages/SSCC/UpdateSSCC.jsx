@@ -11,7 +11,7 @@ const UpdateSSCC = () => {
   
   const navigate = useNavigate();
     let { sscc_id } = useParams();
-    // console.log(sscc_id)
+    // console.log(sscc_id)   
     
     // const [palletForm, setShowPalletForm] = React.useState(false);
     // const [labelForm, setShowLabelForm] = React.useState(false);
