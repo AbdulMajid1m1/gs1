@@ -12,7 +12,7 @@ export const BarcodeGenerator = ({ text }) => {
           text: text, // Text to encode
         //   scaleX: 0.7, // Barcode width,
           scale: 2, // Scale factor
-          height: 10, // Bar height, in millimeters
+          height: 9, // Bar height, in millimeters
           width: 10,
           includetext: true, // Show human-readable text
           textxalign: "center", // Always good to set this

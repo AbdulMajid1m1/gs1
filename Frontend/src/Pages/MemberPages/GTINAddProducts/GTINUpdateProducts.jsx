@@ -91,8 +91,20 @@ const GTINUpdateProducts = () => {
           setProductUrl(productData?.product_url);
           setSelectedDigitalInformationType(productData?.digitalInfoType);
           setSelectedProductDescription(productData?.prod_lang);
-          setGpc(productData?.gpc);
-          setHsCode(productData?.HSCODES);
+        //   setGpc(productData?.gpc);
+          setGpc({
+            value: productData?.gpc,
+            codeTitle: productData?.gpc,
+            gpcCode: productData?.gpc_code,
+  
+          });
+          setHsCode({
+            HSCODES: productData?.HSCODES,
+            DescriptionEN: productData?.HsDescription,
+            HSID: productData,
+            value: productData?.HsDescription,
+  
+          });
           // setSelectedImage(productData?.front_image);
           // setSelectedBackImage(productData?.back_image);
           // setImageOptional1(productData?.image_1);
@@ -1319,7 +1331,7 @@ const GTINUpdateProducts = () => {
 
                     <div className="popup-footer">
                         <button type='button' onClick={() => navigate(-1)} className="bg-secondary text-white py-2 px-3 rounded-sm">Back</button>
-                        <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Add</button>
+                        <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Update Changes</button>
                     </div>
                 </div>
             </form>

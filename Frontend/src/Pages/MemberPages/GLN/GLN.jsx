@@ -2,142 +2,96 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import DataTable from '../../../components/Datatable/Datatable'
 import { GlnColumn } from '../../../utils/datatablesource'
-import CustomSnakebar from '../../../utils/CustomSnackbar';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import { SnackbarContext } from '../../../Contexts/SnackbarContext';
 import logo from "../../../Images/logo.png";
-
-// import { RiseLoader } from 'react-spinners'
-// import { CurrentUserContext } from '../../Contexts/CurrentUserContext'
-// import MapEvents from '../../Components/Maps/MapEvents'
 import { QRCodeSVG } from 'qrcode.react'
 import { DataTableContext } from '../../../Contexts/DataTableContext';
+import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import newRequest from '../../../utils/userRequest';
+import MapEvents from '../../../components/Maps/MapEvents';
+import { toast } from 'react-toastify';
 
 const GLN = () => {
-  const [data, setData] = useState([
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-    {
-        "gln_id": "4",
-        "gcpGLNID": "1234567890126",
-        "locationNameEn": "LMN",
-        "locationNameAr": "LMN Address",
-        "GLNBarcodeNumber": "LMN Person",
-        "status": "1234567890",
-        // "GLNEmail": ""
-    },
-       
-
-  ]);
+  const [data, setData] = useState([]);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  // console.log(memberData);
 
   const [isLoading, setIsLoading] = useState(false);
-//   const { openSnackbar } = useContext(SnackbarContext);
-//   const { currentUser } = useContext(CurrentUserContext);
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
-  const resetSnakeBarMessages = () => {
-    setError(null);
-    setMessage(null);
-
-};
+ 
   const navigate = useNavigate()
   
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         // /member/gln/list
-//         const response = await phpRequest.post("/member/gln/list", {
-//           user_id: currentUser?.user?.id 
-//         });
-//         console.log(response.data);
-//         setData(response?.data?.GlnProducts || []);
-//         setFilteredData(response?.data?.GlnProducts ?? [])
-//         setIsLoading(false)
-//       }
-//       catch (err) {
-//         console.log(err);
-//         setIsLoading(false)
-//       }
-//     };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await newRequest.get(`/gln?user_id=${memberData?.id}`);
+        console.log(response.data);
 
-//     fetchData(); // Calling the function within useEffect, not inside itself
-//   }, []); // Empty array dependency ensures this useEffect runs once on component mount
+        setData(response?.data);
+        setFilteredData(response?.data ?? [])
+        setIsLoading(false)
+      }
+      catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
+
+    fetchData(); // Calling the function within useEffect, not inside itself
+  }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
 
   const handleEdit = (row) => {
     console.log(row);
-    // navigate("/member/update-gln/" + row?.gln_id)
-    navigate("/member/update-gln")
+    navigate("/member/update-gln/" + row?.id)
+    // save the response in session 
+    sessionStorage.setItem('glnData', JSON.stringify(row));
   }
 
 
-//   const handleUpdate = (row) => {
-//     console.log(row);
-//   }
+  const handleDelete = async (row) => {
+    try {
+      const deleteResponse = await newRequest.delete(`/gln/${row.id}`);
+      console.log(deleteResponse.data);
 
-//   const handleDigitalUrlInfo = (row) => {
-//     navigate("/digitalurl")
-//     // sessionStorage.setItem("selectedGlnData", row);
-//   }
+      toast.success(deleteResponse?.data?.message || 'GLN deleted successfully', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
 
-  // const handleDelete = (row) => {
-  //     console.log(row);
-  // }
+   
+      // Update the datagrid Table after deletion
+      setData(prevData => prevData.filter(item => item.id !== row.id));
 
-//   const handleDelete = async (row) => {
-//     try {
-//       const deleteResponse = await phpRequest.delete('/delete/GLN', {
-//         data: {
-//           user_id: currentUser?.user?.id, // TODO: change it to currentUser?.user?.id
-//           product_id: row?.gln_id,
-//         },
-//       });
-//       console.log(deleteResponse.data);
-//       const successMessage = deleteResponse.data.message;
-//       openSnackbar(successMessage);
+    } 
+    catch (err) {
+      console.log(err);
 
-//       // Update the datagrid Table after deletion
-//       setData(prevData => prevData.filter(item => item.gln_id !== row.gln_id));
+      toast.error(err?.response?.data?.error || 'Error', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+  };
 
-//       // Handle the success message or update the data accordingly
-//     } catch (err) {
-//       console.log(err);
-//       openSnackbar('Something Is Wrong The Data not deleted.')
-//       // Handle the error message or error case
-//     }
-//   };
-
-  const handleRowClickInParent = (item) => {
+   const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
       setFilteredData(data)
       return
@@ -148,10 +102,6 @@ const GLN = () => {
     console.log(barcodes); // This will log an array of barcodes
     // setSelectedRow(barcodes);
     setTableSelectedRows(barcodes);
-  }
-
-  const handleDelete = async (row) => {
-    console.log(row);
   }
 
 
@@ -201,19 +151,21 @@ const GLN = () => {
 
   return (
     <div>
-
-      {message && <CustomSnakebar message={message} severity="success" onClose={resetSnakeBarMessages} />}
-      {error && <CustomSnakebar message={error} severity="error" onClose={resetSnakeBarMessages} />}
-
-      <div className="p-3 h-full sm:ml-72">
-        <div className='h-auto w-full'>
+      <div className="p-0 h-full sm:ml-72">
+        {/* <div className='h-auto w-full'>
           <div className='h-16 w-full shadow-xl flex justify-start items-center px-5 border-l-2 border-t-2 border-r-2 border-[#e49515]'>
             <p className='sm:text-2xl text-sm font-body'>View GLN</p>
           </div>
+        </div> */}
+        <div>
+          <DashboardRightHeader title={"GLN"}/>
         </div>
 
-        <div className='h-auto w-full shadow-xl'>
-          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-10 px-3'>
+        <div className='flex justify-center items-center'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+
+          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
             <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-arrow-left mr-1"></i> Back
             </button>
@@ -226,9 +178,6 @@ const GLN = () => {
               <i className="fas fa-print mr-1"></i> Print GLN
             </button>
           </div>
-        </div>
-
-
 
 
         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
@@ -273,7 +222,12 @@ const GLN = () => {
             ))}
           </div>
 
-          {/* <MapEvents locations={filteredData} /> */}
+          <MapEvents locations={filteredData} />
+        </div>
+      </div>
+
+
+          </div>
         </div>
       </div>
     </div>

@@ -37,7 +37,7 @@ model add_member_gln_products {
   image                          String?   @db.NVarChar(Max)
   GLNBarcodeNumber               String?   @db.NVarChar(Max)
   GLNBarcodeNumber_without_check String?   @db.NVarChar(Max)
-  status                         Int?
+  status                         String?
   user_id                        String?
   created_at                     DateTime  @default(now())
   updated_at                     DateTime  @updatedAt
@@ -47,10 +47,10 @@ model add_member_gln_products {
 }
 
 model add_member_sscc_products {
-  id                              BigInt    @id(map: "PK_add_member_sscc_products") @default(autoincrement())
+  id                              String    @id @default(cuid())
   sscc_type                       String?   @db.NVarChar(Max)
-  product_id                      Int?
-  reference_id                    Int?
+  product_id                      String?
+  reference_id                    String?
   VendorID                        String?   @db.NVarChar(Max)
   VendorName                      String?   @db.NVarChar(Max)
   productID                       String?   @db.NVarChar(Max)
@@ -72,9 +72,9 @@ model add_member_sscc_products {
   carton                          String?   @db.NVarChar(Max)
   SSCCBarcodeNumber               String?   @db.NVarChar(Max)
   SSCCBarcodeNumber_without_check String?   @db.NVarChar(Max)
-  user_id                         Int?
-  created_at                      DateTime? @db.DateTime
-  updated_at                      DateTime? @db.DateTime
+  user_id                         String?
+  created_at                      DateTime  @default(now())
+  updated_at                      DateTime  @updatedAt
   gcpGLNID                        String?   @db.Char(20)
   deleted_at                      DateTime? @db.DateTime
 }
@@ -761,6 +761,10 @@ model gtin_subcriptions {
   deleted_at   DateTime? @db.DateTime
   expiry_date  DateTime? @db.DateTime
 
+  gtin_subscription_limit       Float @default(0)
+  gtin_subscription_counter     Float @default(0)
+  gtin_subscription_total_price Float @default(0)
+
   // Define a foreign key relationship with gtin_products
   gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
@@ -1401,21 +1405,24 @@ model other_products {
 }
 
 model other_products_subcriptions {
-  id             String    @id @default(cuid())
-  react_no       Int?
-  transaction_id String
-  product_id     String
-  price          Float?
-  status         String?   @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
-  user_id        String?   @db.NVarChar(255)
-  createdBy      String?   @db.NVarChar(255)
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  deleted_at     DateTime? @db.DateTime
-  expiry_date    DateTime? @db.DateTime
-
+  id                                      String         @id @default(cuid())
+  react_no                                Int?
+  transaction_id                          String
+  product_id                              String
+  price                                   Float?
+  status                                  String?        @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
+  user_id                                 String?        @db.NVarChar(255)
+  createdBy                               String?        @db.NVarChar(255)
+  created_at                              DateTime       @default(now())
+  updated_at                              DateTime       @updatedAt
+  deleted_at                              DateTime?      @db.DateTime
+  expiry_date                             DateTime?      @db.DateTime
+  other_products_subscription_limit       Float          @default(0)
+  other_products_subscription_counter     Float          @default(0)
+  other_products_subscription_total_price Float          @default(0)
+  product_identifier_name                 String?        @db.NVarChar(255) // to store product name like gln for gln sscc for sscc for query purpose
   // Define the relationship to other_products based on product_id
-  product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product                                 other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model other_products_subscription_histories {

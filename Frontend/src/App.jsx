@@ -68,6 +68,10 @@ import UpdateProducts from "./Pages/AdminPages/AdminIndentify/Products/UpdatePro
 import AddProducts from "./Pages/AdminPages/AdminIndentify/Products/AddProducts";
 import AddGLN from "./Pages/MemberPages/GLN/AddGLN";
 import UpdateGLN from "./Pages/MemberPages/GLN/UpdateGLN";
+import UDI from "./Pages/MemberPages/UDI/UDI";
+import SSCC from "./Pages/MemberPages/SSCC/SSCC";
+import AddSSCC from "./Pages/MemberPages/SSCC/AddSSCC";
+import UpdateSSCC from "./Pages/MemberPages/SSCC/UpdateSSCC";
 
 const queryClient = new QueryClient()
 
@@ -136,9 +140,13 @@ const App = () => {
                             />
                             <Route path="gln" element={<GLN />} />
                             <Route path="add-gln" element={<AddGLN />} />
-                            <Route path="update-gln" element={<UpdateGLN />} />
-                            <Route path="gs1-members" element={<Gs1Members />} />
+                            <Route path="update-gln/:Id" element={<UpdateGLN />} />
 
+                            <Route path="sscc" element={<SSCC />} />
+                            <Route path="addsscc" element={<AddSSCC />} />
+                            <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
+
+                            <Route path="gs1-members" element={<Gs1Members />} />
                             <Route path="member-profile" element={<MemberProfile />} />
 
                             {/* <Route
@@ -151,12 +159,14 @@ const App = () => {
                             <Route path="transaction-history" element={<TransactionHistory />} />
                             <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                             <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
+
+                            <Route path="udi" element={<UDI />} />
                             {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
                             {/* <Route path="member-data" element={<MemberData />} /> */}
                             <Route path="member-crnumber" element={<MemberCrNumber />} />
-                          <Route path="member-data" element={<MemberData />} />
-                          <Route path="member-crnumber" element={<MemberCrNumber />} />
+                            <Route path="member-data" element={<MemberData />} />
+                            <Route path="member-crnumber" element={<MemberCrNumber />} />
 
 
                           </Routes>
