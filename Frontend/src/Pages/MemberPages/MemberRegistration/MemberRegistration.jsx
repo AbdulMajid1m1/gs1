@@ -293,7 +293,7 @@ const MemmberRegisteration = () => {
             }
         }
     };
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -356,7 +356,7 @@ const MemmberRegisteration = () => {
         // formData.append('online_payment', 'Enabled');
 
         // formData.append('remember_token', 'TokenXYZ');
-       
+
         formData.append('membership_category_id', selectedCategories.id)
         // formData.append('invoice_file', 'https://example.com/invoice.pdf');
         // formData.append('otp_status', '1');
@@ -967,14 +967,14 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2 mt-2'>
-                                <label 
+                                <label
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
                                 >GTIN
                                     <span className='text-red-600'>*</span>
                                     (Barcode)
                                     <img src={barcodeImage} className='h-10 w-auto' alt='' />
                                 </label>
-                                
+
                                 <Autocomplete
                                     id='GTIN'
                                     disabled={!selectedCategories}
@@ -991,7 +991,7 @@ const MemmberRegisteration = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             autoComplete="off"
-                                 
+
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,

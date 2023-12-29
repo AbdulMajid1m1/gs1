@@ -352,20 +352,62 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             data: {
                                 status: 'active',
                                 expiry_date: expiryDate,
+                                gtin_subscription_limit: product.total_no_of_barcodes,
+                                gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
 
                             }
                         });
-                        // also update other_products_subcriptions table
-                        await prisma.other_products_subcriptions.updateMany({
-                            // update based on the transaction ID
-                            where: { transaction_id: currentDocument.transaction_id },
+                        // // also update other_products_subcriptions table
+                        // await prisma.other_products_subcriptions.updateMany({
+                        //     // update based on the transaction ID
+                        //     where: { transaction_id: currentDocument.transaction_id },
+                        //     data: {
+                        //         status: 'active',
+                        //         expiry_date: expiryDate
+                        //     }
+                        // });
+
+                        // Fetch the necessary data from other_products table
+                        const products = await prisma.other_products.findMany({
+                            select: {
+                                id: true,
+                                total_no_of_barcodes: true,
+                                product_subscription_fee: true,
+                                med_subscription_fee: true,
+                            }
+                        });
+
+                        // Update other_products_subcriptions table for each product
+                        for (const product of products) {
+                            let subscriptionFee = userUpdateResult.membership_category === 'non_med_category'
+                                ? product.product_subscription_fee
+                                : product.med_subscription_fee;
+
+                            await prisma.other_products_subcriptions.updateMany({
+                                where: {
+                                    product_id: product.id,
+                                    transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
+                                },
+                                data: {
+                                    other_products_subscription_limit: product.total_no_of_barcodes,
+                                    other_products_subscription_total_price: subscriptionFee,
+                                    status: 'active',  // Update the status
+                                    expiry_date: expiryDate // Update the expiry date
+                                }
+                            });
+                        }
+
+
+                        // update isRegistered in crs to 1 by  cr_number and cr_activity
+                        await prisma.crs.updateMany({
+                            where: {
+                                cr: existingUser.cr_number,
+                                activity: existingUser.cr_activity
+                            },
                             data: {
-                                status: 'active',
-                                expiry_date: expiryDate
+                                isRegistered: 1
                             }
                         });
-
-
 
                         await prisma.gtin_products.update({
                             where: { id: product.id },
