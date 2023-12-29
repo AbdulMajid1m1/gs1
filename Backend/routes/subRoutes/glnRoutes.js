@@ -21,4 +21,5 @@ router.get('/', getGLNProductsDetails);
 
 router.delete('/:id', deleteGLN);
 
+
 export default router;
