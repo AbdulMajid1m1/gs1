@@ -47,10 +47,10 @@ model add_member_gln_products {
 }
 
 model add_member_sscc_products {
-  id                              BigInt    @id(map: "PK_add_member_sscc_products") @default(autoincrement())
+  id                              String    @id @default(cuid())
   sscc_type                       String?   @db.NVarChar(Max)
-  product_id                      Int?
-  reference_id                    Int?
+  product_id                      String?
+  reference_id                    String?
   VendorID                        String?   @db.NVarChar(Max)
   VendorName                      String?   @db.NVarChar(Max)
   productID                       String?   @db.NVarChar(Max)
@@ -72,9 +72,9 @@ model add_member_sscc_products {
   carton                          String?   @db.NVarChar(Max)
   SSCCBarcodeNumber               String?   @db.NVarChar(Max)
   SSCCBarcodeNumber_without_check String?   @db.NVarChar(Max)
-  user_id                         Int?
-  created_at                      DateTime? @db.DateTime
-  updated_at                      DateTime? @db.DateTime
+  user_id                         String?
+  created_at                      DateTime  @default(now())
+  updated_at                      DateTime  @updatedAt
   gcpGLNID                        String?   @db.Char(20)
   deleted_at                      DateTime? @db.DateTime
 }

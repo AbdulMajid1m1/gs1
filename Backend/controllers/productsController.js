@@ -355,7 +355,8 @@ export const updateProduct = async (req, res, next) => {
                 if (imageFile) { // Check if the file exists
                     const newImagePath = path.join(imageFile.destination, imageFile.filename);
                     if (currentProduct[field]) {
-                        const oldImagePath = path.join(dirname, '..', currentProduct[field]);
+                        const oldImagePath = path.join(dirname, '..', 'public', currentProduct[field]);
+                        console.log(oldImagePath)
                         if (fs.existsSync(oldImagePath)) {
                             fs.unlinkSync(oldImagePath);
                         }

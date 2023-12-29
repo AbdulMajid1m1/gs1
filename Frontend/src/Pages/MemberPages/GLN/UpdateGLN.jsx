@@ -4,12 +4,23 @@ import { GoogleMap, Marker, StandaloneSearchBox } from '@react-google-maps/api';
 import { RiseLoader } from 'react-spinners';
 import { useParams } from 'react-router-dom';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import newRequest from '../../../utils/userRequest';
+import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
+import { toast } from 'react-toastify';
 
 
 
 const UpdateGLN = () => {
     const navigate = useNavigate()
     let { productId } = useParams();
+    // console.log(productId);
+    const memberDataString = sessionStorage.getItem('memberData');
+    const memberData = JSON.parse(memberDataString);
+    // console.log(memberData);
+    const glnDataString = sessionStorage.getItem('glnData');
+    const glnData = JSON.parse(glnDataString);
+    // console.log(glnData);
+
 
     const [locationEnglish, setLocationEnglish] = React.useState('')
     const [locationArabic, setLocationArabic] = React.useState('')
@@ -30,88 +41,108 @@ const UpdateGLN = () => {
 
 
     
-    // useEffect(() => {
-    //   setIsLoading(true);
+    useEffect(() => {
+      setIsLoading(true);
 
-    //     const fetchProductDetails = async () => {
-    //       const bodyData = {
-    //           gln_id: productId,
-    //           user_id: currentUser?.user?.id
-    //       }
-    //         try {
-    //             const response = await phpRequest.post("/member/edit/GLN", bodyData)
-    //             console.log(response.data);
+        const fetchProductDetails = async () => {
+            try {
+                // const response = await newRequest.get(`/gln?id=${productId}`)
+                // console.log(response.data[0]);
 
-    //             const productData = response.data?.GLNProduct;
-    //             const imagePath = response.data?.image_path;
-
-    //             // Set the state variables with the fetched data
-    //             setLocationEnglish(productData?.locationNameEn);
-    //             setLocationArabic(productData?.locationNameAr);
-    //             setAddressEnglish(productData?.AddressEn);
-    //             setAddressArabic(productData?.AddressAr);
-    //             setPo(productData?.pobox);
-    //             setPostal(productData?.postal_code);
-    //             setStatus(productData?.status);
-    //             setLatitude(productData?.latitude);
-    //             setLongitude(productData?.longitude);
-    //             setNationalAddress(productData?.nationalAddress);
-    //             const frontImg = imagePath + "/" + productData?.image
-    //             setSelectedImage(frontImg);
+                // const productData = response.data[0];
+                const productData = glnData;
+                
+                // Set the state variables with the fetched data
+                setLocationEnglish(productData?.locationNameEn);
+                setLocationArabic(productData?.locationNameAr);
+                setAddressEnglish(productData?.AddressEn);
+                setAddressArabic(productData?.AddressAr);
+                setPo(productData?.pobox);
+                setPostal(productData?.postal_code);
+                setStatus(productData?.status);
+                setLatitude(productData?.latitude);
+                setLongitude(productData?.longitude);
+                setNationalAddress(productData?.nationalAddress);
+                // const frontImg = imagePath + "/" + productData?.image
+                // setSelectedImage(frontImg);
+                setSelectedImage(imageLiveUrl(productData?.front_image));
               
-    //             setIsLoading(false);
+                setIsLoading(false);
 
 
-    //         } catch (error) {
-    //             console.log(error);
-    //             setIsLoading(false);
-    //         }
-    //     }
-    //     fetchProductDetails();
-    // }, [productId]);
+            } catch (error) {
+                console.log(error);
+                setIsLoading(false);
+            }
+        }
+        fetchProductDetails();
+    }, [productId]);
 
 
     
-    // const handleSubmit = (e) => {
-    //   e.preventDefault();
-    //   setIsLoading(true);
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setIsLoading(true);
     
-    //   const longitude = document.getElementById('longitude').value;
-    //   const latitude = document.getElementById('Latitude').value;
-    //   const imageFile = document.getElementById('imageInput').files[0];
+      const longitude = document.getElementById('longitude').value;
+      const latitude = document.getElementById('Latitude').value;
     
-    //   const formData = new FormData();
-    //   formData.append('product_id', '1');
-    // //   formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
-    //   formData.append('locationNameEn', locationEnglish);
-    //   formData.append('locationNameAr', locationArabic);
-    //   formData.append('AddressEn', addressEnglish);
-    //   formData.append('AddressAr', addressArabic);
-    //   formData.append('pobox', po);
-    //   formData.append('postal_code', postal);
-    //   formData.append('longitude', longitude);
-    //   formData.append('latitude', latitude);
-    // //   formData.append('user_id', currentUser?.user?.id);
-    //   formData.append('status', status);
-    //   formData.append('image', imageFile);
+      const imageFile = document.getElementById('imageInput').files[0];
     
-    //   phpRequest
-    //     .post(`/member/update/GLN/${productId}`, formData)
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       setIsLoading(false);
+      const formData = new FormData();
+      // formData.append('product_id', '1');
+      formData.append('user_id', memberData?.id);
+      // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
+      formData.append('locationNameEn', locationEnglish);
+      // formData.append('locationNameAr', locationArabic);
+      formData.append('AddressEn', addressEnglish);
+      formData.append('AddressAr', addressArabic);
+      formData.append('pobox', po);
+      formData.append('postal_code', postal);
+      formData.append('longitude', longitude);
+      formData.append('latitude', latitude);
+      formData.append('status', status);
+      formData.append('gln_image', imageFile);
     
-    //       setTimeout(() => {
-    //         navigate(-1);
-    //       }, 1500);
+      newRequest
+        .put(`/gln/${glnData?.id}`, formData)
+        .then((response) => {
+          console.log(response.data);
+       
+          setIsLoading(false);
+          setTimeout(() => {
+            navigate(-1);
+          }, 1500);
+  
+          toast.success(response?.data?.message || 'GLN Updated Successfully', {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+  
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+  
+          toast.error(err.response.data.error, {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        });
+    };
     
-    //       e.target.reset();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       setIsLoading(false);
-    //     });
-    // };
 
     
     // Image section
@@ -231,6 +262,7 @@ const UpdateGLN = () => {
   const handleInputLongitudeChange = (e) => {
     setLongitude(e.target.value);
   }
+
 
 
 
@@ -385,8 +417,8 @@ const UpdateGLN = () => {
                                 value={status}
                                 >
                                 <option value=''>-select-</option>
-                                <option value='1'>Active</option>
-                                <option value='0'>Inactive</option>
+                                <option value='active'>Active</option>
+                                <option value='inactive'>Inactive</option>
                             </select>
                         </div>
                     </div>
@@ -492,11 +524,11 @@ const UpdateGLN = () => {
               )}
 
                 {/* Submit Button */}     
-                {/* <form onSubmit={handleSubmit}> */}
+                <form onSubmit={handleSubmit}>
                     <button type='submit' className="rounded-sm bg-secondary font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-primary">
                           <i className="fas fa-check-circle mr-1"></i> Save Changes
                     </button>
-                {/* </form>              */}
+                </form>             
 
             </div>
         </div>

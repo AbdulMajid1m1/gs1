@@ -4,6 +4,7 @@ import { createError } from '../utils/createError.js';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+
 import { calculateGLN } from '../utils/functions/barcodesGenerator.js';
 
 
@@ -168,7 +169,7 @@ export const getGLNProductsDetails = async (req, res, next) => {
             user_id: Joi.string(),
             locationNameEn: Joi.string(),
             locationNameAr: Joi.string(),
-           
+
         };
 
         // Create a dynamic schema based on the allowed columns
@@ -208,3 +209,124 @@ export const getGLNProductsDetails = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+export const updateGLN = async (req, res, next) => {
+    const glnId = req.params.id;
+    if (!glnId) {
+        return next(createError(400, 'GLN ID is required'));
+    }
+
+    // Joi schema for GLN validation
+    const glnSchema = Joi.object({
+        user_id: Joi.string(),
+        locationNameEn: Joi.string(),
+        locationNameAr: Joi.string(),
+        AddressEn: Joi.string(),
+        AddressAr: Joi.string(),
+        pobox: Joi.string(),
+        postal_code: Joi.string(),
+        longitude: Joi.string(),
+        latitude: Joi.string(),
+        status: Joi.string().valid('active', 'inactive'),
+        // ... define validation for other GLN fields
+    });
+
+    // Validate request body
+    const { error, value } = glnSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    try {
+        // Retrieve the current GLN from the database
+        const currentGLN = await prisma.add_member_gln_products.findUnique({
+            where: { id: glnId }
+        });
+
+        if (!currentGLN) {
+            return next(createError(404, 'GLN not found'));
+        }
+
+        // Process new GLN fields and image uploads
+        const imageField = 'image'; // Adjust this to your GLN schema
+        const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+        if (req.files && req.files.gln_image) {
+            const imageFile = req.files.gln_image[0];
+            if (imageFile) {
+                // Check if the file exists
+                const newImagePath = path.join(imageFile.destination, imageFile.filename);
+                if (currentGLN[imageField]) {
+                    // Delete the old image if it exists
+                    const oldImagePath = path.join(dirname, '..', 'public', currentGLN[imageField]);
+                    console.log(oldImagePath);
+                    if (fs.existsSync(oldImagePath)) {
+                        fs.unlinkSync(oldImagePath);
+                    }
+                }
+                // Update the GLN image path
+                value[imageField] = newImagePath.replace('public', '');
+            }
+        }
+
+        // Update the GLN data in the database
+        const updatedGLN = await prisma.add_member_gln_products.update({
+            where: { id: glnId },
+            data: value
+        });
+
+        res.json(updatedGLN);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+export const deleteGLN = async (req, res, next) => {
+
+
+    // Use Joi to validate the id
+    const schema = Joi.object({
+        id: Joi.string().required()
+    });
+
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+        return next(createError(400, `Invalid GLN ID: ${error.details[0].message}`));
+    }
+
+    const glnId = value.id;
+    try {
+        // Retrieve the current GLN from the database
+        const currentGLN = await prisma.add_member_gln_products.findUnique({
+            where: { id: glnId }
+        });
+
+        if (!currentGLN) {
+            return next(createError(404, 'GLN not found'));
+        }
+
+        // Process and delete existing GLN image
+        const imageField = 'image'; // Adjust this to your GLN schema
+        const dirname = path.dirname(fileURLToPath(import.meta.url));
+        const imagePath = currentGLN[imageField];
+        if (imagePath) {
+            const absoluteImagePath = path.join(dirname, '..', 'public', imagePath);
+            if (fs.existsSync(absoluteImagePath)) {
+                fs.unlinkSync(absoluteImagePath);
+            }
+        }
+
+        // Delete the GLN from the database
+        await prisma.add_member_gln_products.delete({ where: { id: glnId } });
+
+        res.status(200).json({ message: 'GLN deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+
