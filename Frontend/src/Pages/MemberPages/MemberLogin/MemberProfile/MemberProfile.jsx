@@ -64,7 +64,8 @@ const MemberProfile = () => {
     setMemberHistoryLoader(true);
     try {
       console.log(memberData?.id);
-      const response = await newRequest.get(`/logs/memberLogs/?member_id=${memberData?.id}`);
+      // const response = await newRequest.get(`/logs/memberLogs/?member_id=${memberData?.id}`);
+      const response = await newRequest.get(`/logs/memberLogs/?user_id=${memberData?.id}`);
       console.log("member history");
       console.log(response.data);
       setMemberHistoryData(response?.data || []);
