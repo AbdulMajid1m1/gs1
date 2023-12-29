@@ -53,7 +53,9 @@ const SSCC = () => {
   
     const handleEdit = (row) => {
       console.log(row);
-      navigate("/sscc-update/" + row?.sscc_id)
+      navigate("/member/update-sscc/" + row?.id)
+      sessionStorage.setItem('ssccData', JSON.stringify(row));
+
     }
     
     const handleDelete = async (row) => {
