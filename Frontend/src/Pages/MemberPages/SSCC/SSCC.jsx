@@ -55,7 +55,7 @@ const SSCC = () => {
     //   console.log(row);
       navigate("/member/update-sscc/" + row?.id)
     }
-    
+            
     const handleDelete = async (row) => {
         try {
           const deleteResponse = await newRequest.delete(`/sscc/${row?.id}`);
