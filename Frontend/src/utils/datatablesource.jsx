@@ -1445,15 +1445,15 @@ export const Gs1AllMembers = [
     width: 180,
   },
   {
-    field: 'code',
+    field: 'password',
     headerName: 'CODE',
     width: 180,
   },
-  {
-    field: 'password',
-    headerName: 'PASSWORD',
-    width: 180,
-  },
+  // {
+  //   field: 'password',
+  //   headerName: 'PASSWORD',
+  //   width: 180,
+  // },
   {
     field: 'membership_category',
     headerName: 'MEMBER CATEGORY',
@@ -3715,13 +3715,23 @@ export const memberHistoryColumnData = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
-    // valueGetter: (params) => new Date(params.getValue('created_at')).toLocaleString(),
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
-    // valueGetter: (params) => new Date(params.getValue('updated_at')).toLocaleString(),
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 
 

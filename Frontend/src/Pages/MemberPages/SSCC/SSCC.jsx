@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AccountCircleIcon from '@mui/icons-material/Print';
 import BulkSSCCPopup from './BulkSSCCPopup'; // Import the popup component
 import Barcode from "react-barcode";
 import { QRCodeSVG } from "qrcode.react";

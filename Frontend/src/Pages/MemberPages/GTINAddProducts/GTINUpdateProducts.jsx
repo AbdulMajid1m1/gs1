@@ -8,7 +8,8 @@ import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
 import newRequest from '../../../utils/userRequest';
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
-
+import { BarcodeGenerator, DataMatrixGenerator } from '../../../utils/Barcodes/Barcodes';
+import DownloadButton from '../../../utils/Buttons/DownloadBtn';
 
 const GTINUpdateProducts = () => {
     const abortControllerRef = useRef(null);
@@ -16,24 +17,19 @@ const GTINUpdateProducts = () => {
     const memberData = JSON.parse(memberDataString);
     // console.log(memberData);
     const [isLoading, setIsLoading] = useState(false);
+    const [barcode, setBarcode] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedBackImage, setSelectedBackImage] = useState(null);
     const [imageOptional1, setImageOptional1] = useState(null);
     const [imageOptional2, setImageOptional2] = useState(null);
     const [imageOptional3, setImageOptional3] = useState(null);
     const [unitCode, setUnitCode] = useState([]);
-    const [region, setRegion] = useState([
-        'Asia',
-        'Europe',
-    ]);
+    const [region, setRegion] = useState([]);
     const [allCountryName, setAllCountryName] = useState([]);
     const [productDescriptionLanguage, setProductDescriptionLanguage] = useState([]);
     const [gpcList, setGpcList] = useState([]); // gpc list
     const [productType, setProductType] = useState([]);
-    const [packageType, setPackageType] = useState([
-        'Box',
-        'Carton',
-    ]);
+    const [packageType, setPackageType] = useState([]);
     const [brandNameEnglish, setBrandNameEnglish] = useState([]);
     const [brandNameArabic, setBrandNameArabic] = useState([]);
     const [open, setOpen] = useState(false);
@@ -84,6 +80,7 @@ const GTINUpdateProducts = () => {
           setSelectedPackageType(productData?.PackagingType);
           setSelectedUnitCode(productData?.unit);
           setSize(productData?.size);
+          setBarcode(productData?.barcode);
           setSelectedCountry(productData?.countrySale);
           setGpcCode(productData?.gpc_code);
           setDescriptionEnglish(productData?.details_page);
@@ -248,12 +245,43 @@ const GTINUpdateProducts = () => {
     };
 
 
+    const handleRegion = async () => {
+        try {
+            const response = await newRequest.get('/getAllcountryofsale');
+            console.log(response.data);
+            const data = response.data;
+            const countryName = data.map((country) => country.country_name);
+            setRegion(countryName);
+            console.log(countryName);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    const handleAllPackageType = async () => {
+        try {
+            const response = await newRequest.get('/productTypes');
+            console.log(response.data);
+            const data = response.data;
+            const PackageName = data.map((country) => country.name);
+            setPackageType(PackageName);
+            console.log(PackageName);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+
     useEffect(() => {
         handleUnitCode();
         handleCountryOfSales();
         handleProductTypeData();
         handleBrandNamesEnglishArabic();
         handleProductDescriptionLanguages();
+        handleRegion();
+        handleAllPackageType();
     }, []);
 
 
@@ -606,16 +634,37 @@ const GTINUpdateProducts = () => {
                 {" "}
                 <div className="h-auto w-full p-5 bg-white">
                     <div className="">
-                    <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
-                        <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                        <p className="font-semibold">Complete Data</p>
-                        <p>
-                            This number is registered to company: :{" "}
-                            <span className="font-semibold">{memberData?.company_name_eng}</span>
-                            {/* <span className="font-semibold">Hasnain, Majid</span> */}
-                        </p>
+                        <div className="flex justify-between sm:flex-row flex-wrap w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
+                            <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
+                                <p className="font-semibold">Complete Data</p>
+                                <p>
+                                    This number is registered to company: :{" "}
+                                    <span className="font-semibold">{memberData?.company_name_eng}</span>
+                                    {/* <span className="font-semibold">Hasnain, Majid</span> */}
+                                </p>
+                            </div>
+
+                            {/* <div className="flex justify-center items-center gap-10" style={{ height: '60px'}}>
+                                <div className='flex flex-col items-center gap-2'>
+                                    <div>
+                                        <BarcodeGenerator text={barcode} />
+                                    </div>
+                                    <div>
+                                        <DownloadButton id="barcodeCanvas" name="barcode" />
+                                    </div>
+                                </div>
+                                <div className='flex flex-col items-center gap-2'>
+                                    <div>
+                                        <DataMatrixGenerator
+                                            text={barcode}
+                                            />
+                                    </div>
+                                    <div>
+                                        <DownloadButton id="dataMatrixCanvas" name="datamatrix" />
+                                    </div>
+                                </div>
+                            </div> */}
                         </div>
-                    </div>
                     </div>
 
                     <form onSubmit={handleFormSubmit}>
@@ -1326,6 +1375,36 @@ const GTINUpdateProducts = () => {
 
 
                   </div>
+
+
+                    <div className="form-row flex items-center justify-between gap-7 flex-wrap mt-16">
+                        <div
+                            style={{ width: "50%" }}
+                            className=" flex items-center justify-start gap-7 flex-wrap"
+                        >
+                        <label htmlFor="field12">1D Barcode</label>
+                          <BarcodeGenerator text={barcode} />
+                        </div>
+                        <div>
+                          <DownloadButton id="barcodeCanvas" name="1Dbarcode" />
+                        </div>
+                    </div>
+
+                    <div className="form-row flex items-center justify-between gap-7 flex-wrap mt-10">
+                      <div
+                        style={{ width: "50%" }}
+                        className=" flex items-center justify-start gap-7 flex-wrap"
+                        >
+                        <label htmlFor="field12">2D Barcode</label>
+                            <DataMatrixGenerator
+                                text={barcode}
+                            />
+                      </div>
+                      <div>
+                        <DownloadButton id="dataMatrixCanvas" name="2Dbarcode" />
+                      </div>
+                    </div>
+
 
                     <div className='footer-line'></div>
 

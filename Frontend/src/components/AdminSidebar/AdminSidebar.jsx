@@ -32,9 +32,9 @@ import gs1 from '../../Images/gs1.png'
 import documentIcon from '../../Images/document.png'
 import gcptype from '../../Images/gcptype.png'
 import productpackaging from '../../Images/productpackaging.png'
-// import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
-// import gdsnproduct from '../../Images/gdsnproduct.png'
-// import masterdata from '../../Images/masterdata.png'
+import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
+import gdsnproduct from '../../Images/gdsnproduct.png'
+import masterdata from '../../Images/masterdata.png'
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -154,6 +154,11 @@ const AdminSideBar = () => {
             className="flex justify-center items-center cursor-pointer mt-1 px-4"
           >
            <div className='flex justify-end items-center px-0 mr-4'>
+                <span>
+                  <p className="text-white font-sans mr-5 hover:text-primary" 
+                    onClick={() => navigate('/')}
+                  >GS1 Website</p>
+                </span>
                   <span onClick={() => navigate(-1)} className='cursor-pointer'
                   >
                   <img src={backarrow}
@@ -260,7 +265,7 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Registered Members</p>
+                  <p className="sidebar-text">Members</p>
                 </div>
 
                 <div 
@@ -279,10 +284,10 @@ const AdminSideBar = () => {
                 </div>
 
                 <div 
-                  className={`main-images-container ${selectedItem === '/admin/products' ? 'selected-item' : ''}`}
-                    onClick={() => handleItemClick('/admin/products')}
+                  className={`main-images-container ${selectedItem === '/admin/gtin' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/gtin')}
                       onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/products')
+                         handleContextMenu(event, '/admin/gtin')
                   }
                   >
                   <img
@@ -290,7 +295,52 @@ const AdminSideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Products</p>
+                  <p className="sidebar-text">GTIN</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/gln' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/gln')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/gln')
+                  }
+                  >
+                  <img
+                    src={products}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">GLN</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/sscc' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/sscc')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/sscc')
+                  }
+                  >
+                  <img
+                    src={products}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">SSCC</p>
+                </div>
+
+                <div 
+                  className={`main-images-container ${selectedItem === '/admin/foreign-gtin' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/foreign-gtin')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/foreign-gtin')
+                  }
+                  >
+                  <img
+                    src={products}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Foreign GTIN</p>
                 </div>
 
               </div>
@@ -332,21 +382,6 @@ const AdminSideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">Member Products</p>
-                </div>
-
-                <div 
-                  className={`main-images-container ${selectedItem === '/admin/verified-by-gs1' ? 'selected-item' : ''}`}
-                    onClick={() => handleItemClick('/admin/verified-by-gs1')}
-                      onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/verified-by-gs1')
-                  }
-                  >
-                  <img
-                    src={gcp}
-                    className="main-inside-image bg-white rounded-full"
-                    alt=""
-                  />
-                  <p className="sidebar-text">Verified by GS1</p>
                 </div>
 
                 <div 
@@ -407,6 +442,21 @@ const AdminSideBar = () => {
                 </div>
 
                 <div 
+                  className={`main-images-container ${selectedItem === '/admin/verified-by-gs1' ? 'selected-item' : ''}`}
+                    onClick={() => handleItemClick('/admin/verified-by-gs1')}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/verified-by-gs1')
+                  }
+                  >
+                  <img
+                    src={verifiedbyGs1}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Verified by GS1</p>
+                </div>
+
+                <div 
                   className={`main-images-container ${selectedItem === '/admin/gs1-registries' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/admin/gs1-registries')}
                       onContextMenu={(event) =>
@@ -414,7 +464,7 @@ const AdminSideBar = () => {
                   }
                   >
                   <img
-                    src={gcp}
+                    src={gdsnproduct}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -603,7 +653,7 @@ const AdminSideBar = () => {
                    onClick={() => setShowSixthData(!showSixthData)}
                   >
                   <img
-                    src={gcp}
+                    src={masterdata}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
