@@ -172,25 +172,31 @@ const DataTable = ({
     setMuiFilteredData(filteredData);
   }, [filteredData]);
 
-  // const handleSearch = (e) => {
-  //   // setShipmentIdSearch(e.target.value);
-  //   e.target.name === "SHIPMENTID"
-  //     ? setShipmentIdSearch(e.target.value)
-  //     : setContainerIdSearch(e.target.value);
-  //   console.log(e.target.name, e.target.value);
-  //   console.log(shipmentIdSearch, containerIdSearch);
-  // };
+  const handleSearch = (e) => {
+    // setShipmentIdSearch(e.target.value);
+    e.target.name === "SHIPMENTID"
+      ? setShipmentIdSearch(e.target.value)
+      : setContainerIdSearch(e.target.value);
+    console.log(e.target.name, e.target.value);
+    console.log(shipmentIdSearch, containerIdSearch);
+  };
 
   const handleGlobalSearch = (e) => {
     // when user search what ever he types filter the data and show it in the table
     const searchValue = e.target.value;
     console.log(searchValue);
+    // const filteredData = record.filter((item) => {
+    //   // check if the search value is in any of the object values
+    //   return Object.values(item).some((value) =>
+    //     value.toString().toLowerCase().includes(searchValue.toLowerCase())
+    //   );
+    // });
     const filteredData = record.filter((item) => {
-      // check if the search value is in any of the object values
       return Object.values(item).some((value) =>
-        value.toString().toLowerCase().includes(searchValue.toLowerCase())
+        value && value.toString().toLowerCase().includes(searchValue.toLowerCase())
       );
     });
+    
     console.log(filteredData);
     setMuiFilteredData(filteredData);
 
@@ -503,9 +509,9 @@ const DataTable = ({
               <span>
                 <input
                   type="text"
-                  placeholder="SEARCH"
+                  placeholder="SEARCH REGISTERED MEMBERS"
                   name="SHIPMENTID"
-                  className="searchInput"
+                  className="searchInput w-[75%]"
                   onChange={handleGlobalSearch}
                 />
               </span>
@@ -594,7 +600,8 @@ const DataTable = ({
             console.log(error);
           }}
           slots={{ toolbar: GridToolbar }}
-          rows={filteredData}
+          // rows={filteredData}
+          rows={muiFilteredData}
           columns={
             uniqueId === "customerListId"
               ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
