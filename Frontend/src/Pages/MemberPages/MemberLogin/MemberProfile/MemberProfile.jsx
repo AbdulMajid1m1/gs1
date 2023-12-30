@@ -779,6 +779,7 @@ const MemberProfile = () => {
                   title="Sub-Members"
                   columnsName={submenusDataColumn}
                   loading={subMembersLoader}
+                  handleRowClickInParent={handleRowClickInParent}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
 
