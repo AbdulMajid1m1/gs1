@@ -62,7 +62,7 @@ const RegisteredMembersView = () => {
     try {
       console.log(gs1MemberData?.memberID);
       const response = await newRequest.get(`/logs/memberLogs/?user_id=${gs1MemberData?.id}`);
-      console.log("member history");
+
       console.log(response.data);
       setMemberHistoryData(response?.data || []);
       setMemberHistoryLoader(false);
@@ -347,8 +347,8 @@ const RegisteredMembersView = () => {
 
 
   const handleShowUpdateSubMenusPopup = (row) => {
-      setIsUpdateSubMenusPopupVisible(true);
-      sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
+    setIsUpdateSubMenusPopupVisible(true);
+    sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
   };
 
 
@@ -574,7 +574,7 @@ const RegisteredMembersView = () => {
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
                     checkboxSelection={"disabled"}
-                    
+
 
                     dropDownOptions={[
                       // {
@@ -815,7 +815,7 @@ const RegisteredMembersView = () => {
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
                   actionColumnVisibility={false}
-                  
+
                   dropDownOptions={[
                     {
                       label: "View",

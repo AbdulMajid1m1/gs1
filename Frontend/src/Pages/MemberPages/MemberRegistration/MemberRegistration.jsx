@@ -46,7 +46,7 @@ const MemmberRegisteration = () => {
     const [upload, setUpload] = useState('')
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedCategories, setSelectedCategories] = useState(null);
-
+    const [otherProductChange, setOtherProductChange] = useState(false);
 
 
     // multple select 
@@ -203,6 +203,7 @@ const MemmberRegisteration = () => {
 
 
     const handleOtherProductsChange = (event, value) => {
+        setOtherProductChange(!otherProductChange);
         // setSelectedOtherProducts(value);
 
         // const names = value.map((option) => option.product_name);
@@ -220,6 +221,7 @@ const MemmberRegisteration = () => {
         );
 
         setSelectedGLNOption(selectedGLN);
+        console.log(value);
         setSelectedOtherProducts(value);
 
     };
@@ -257,6 +259,7 @@ const MemmberRegisteration = () => {
         }
 
         if (selectedOtherProducts.length) {
+            console.log(selectedOtherProducts)
             newSelectedOtherProducts = selectedOtherProducts.map(product => ({
                 ...product,
                 price: selectedCategories?.name === "medical"
@@ -267,7 +270,7 @@ const MemmberRegisteration = () => {
 
         setSubscriptionData(newSubscriptionData);
         setSelectedOtherProducts(newSelectedOtherProducts);
-    }, [selectedCategories, selectedGtinNumber, selectedOtherProducts]);
+    }, [selectedCategories, selectedGtinNumber,otherProductChange]);
 
 
     // Calculate total price

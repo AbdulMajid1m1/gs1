@@ -7,16 +7,16 @@ import { createError } from '../utils/createError.js';
 
 const productPackagSchema = Joi.object({
     name: Joi.string().max(255).required(),
-    status: Joi.number().valid(0,1).required(),
-    
+    status: Joi.number().valid(0, 1).required(),
+
 });
 
 export const createProductPackag = async (req, res, next) => {
     try {
         const { error, value } = productPackagSchema.validate(req.body);
         if (error) {
-            
-           
+
+
             return res.status(400).json({ error: error.details[0].message });
         }
 
@@ -71,15 +71,15 @@ export const getproductPackagSchemaById = async (req, res, next) => {
 export const updateproductPackagSchema = async (req, res, next) => {
     try {
 
-      const schema = Joi.object({
-    id: Joi.string().required(),
-});
-const { error: idError } = schema.validate(req.params);
-if (idError) {
-    return next(createError(400, idError.details[0].message));
-}
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error: idError } = schema.validate(req.params);
+        if (idError) {
+            return next(createError(400, idError.details[0].message));
+        }
 
-const { id } = req.params;
+        const { id } = req.params;
 
         const { error } = productPackagSchema.validate(req.body);
         if (error) {
@@ -88,11 +88,11 @@ const { id } = req.params;
 
         const { name, status } = req.body;
         const updatedUNSPSC = await prisma.product_packagings.update({
-            where: {id: id },
+            where: { id: id },
             data: {
                 name,
                 status
-                
+
             },
         });
 

@@ -58,17 +58,17 @@ export const createMemberDocument = async (req, res, next) => {
 
         // Insert Member History log
         const logData = {
-            subject: 'Member Document Upload',
+            // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
+            subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
             // user user memberId
             // member_id: value.memberID,
-            user_id: value.user_id
+            user_id: value.user_id,
             // TODO: add middleware for current admin token 
-
-
         }
-
+        TODO: // chec this
         // if (req?.admin.id) {
-        //     logData.admin_id = admin_id;
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
         // }
 
         await createMemberLogs(logData);
@@ -379,6 +379,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                         // Update other_products_subcriptions table for each product
                         for (const product of products) {
+                            console.log("product", product);
                             let subscriptionFee = userUpdateResult.membership_category === 'non_med_category'
                                 ? product.product_subscription_fee
                                 : product.med_subscription_fee;
@@ -494,7 +495,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 secondHeading: "RECEIPT FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                    registeration: `New Registration`,
                     // Assuming $addMember->id is already known
                     company_name_eng: existingUser.company_name_eng,
                     mobile: existingUser.mobile,
@@ -594,17 +595,36 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             });
 
 
+            // Insert Member History log
+            // const logData = {
+            //     // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
+            //     subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
+            //     // user user memberId
+            //     // member_id: value.memberID,
+            //     user_id: value.user_id,
+            //     // TODO: add middleware for current admin token 
+            // }
+
+
 
             // Insert Member History log
             const logData = {
-                subject: 'Member Account Approved',
+                subject: 'Member Account Approved by Admin',
                 // user user memberId
-                member_id: userUpdateResult.memberID,
+                // member_id: userUpdateResult.memberID,
                 user_id: userUpdateResult.id,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
             }
+
+
+            TODO: // chec this
+            // if (req?.admin.id) {
+            //     logData.admin_id = admin_email;
+            // logData.created_by_admin = 1;
+            // }
+
             console.log("logData", logData);
 
             await createMemberLogs(logData);

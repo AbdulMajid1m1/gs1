@@ -609,14 +609,14 @@ const DataTable = ({
                 ? idColumn.concat(columnsName.concat(actionColumn))
                 : idColumn.concat(columnsName))
           }
-          initialState={{
-            pinnedColumns: {
-              // show actions column as pinned if actionColumnVisibility is false
+          // initialState={{
+          //   pinnedColumns: {
+          //     // show actions column as pinned if actionColumnVisibility is false
 
-              left: idColumn.concat(columnsName),
+          //     left: idColumn.concat(columnsName),
 
-            },
-          }}
+          //   },
+          // }}
 
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
