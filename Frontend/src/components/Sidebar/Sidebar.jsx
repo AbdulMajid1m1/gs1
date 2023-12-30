@@ -63,6 +63,12 @@ const SideBar = () => {
     navigate(path);
   };
 
+  const handleItemClickGs1website = (path) => {
+    setSelectedItem(path);
+    window.open(path, '_blank');
+  };
+  
+
   const handleContextMenu = (event, path) => {
     event.preventDefault();
     const clickX = event.clientX;
@@ -141,7 +147,10 @@ const SideBar = () => {
            <div className='flex justify-end items-center px-0 mr-4'>
                 <span>
                   <p className="text-white font-sans mr-5 hover:text-primary" 
-                    onClick={() => navigate('/')}
+                     onClick={() => handleItemClickGs1website('/member/dashboard')}
+                     onContextMenu={(event) =>
+                       handleContextMenu(event, '/member/dashboard')
+                     }
                   >GS1 Website</p>
                 </span>
                   <span onClick={() => navigate(-1)} className='cursor-pointer'
@@ -154,7 +163,7 @@ const SideBar = () => {
                 </span>
               </div>
             <img
-              onClick={() => navigate("/member/member-profile")}
+              // onClick={() => navigate("/member/member-profile")}
               src={
                 // currentUser?.user?.image
                 //   ? imagePath + currentUser?.user?.image

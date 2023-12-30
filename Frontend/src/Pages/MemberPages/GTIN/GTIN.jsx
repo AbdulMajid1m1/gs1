@@ -107,7 +107,7 @@ const Gtin = () => {
   const handleExportProducts = () => {
     // Convert data to Excel format
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(data.products); // Assuming `data.products` is the array containing the API response data
+    const worksheet = XLSX.utils.json_to_sheet(data); // Assuming `data.products` is the array containing the API response data
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Products');
 
     // Generate Excel file
@@ -247,7 +247,7 @@ const Gtin = () => {
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700"
               onClick={handleExportProducts}
             >
-              Export Products <i className="fas fa-caret-down ml-1"></i>
+              Export in Excel <i className="fas fa-caret-down ml-1"></i>
             </button>
 
 
@@ -272,11 +272,11 @@ const Gtin = () => {
               Download Template <i className="fas fa-caret-down ml-1"></i>
             </button>
 
-            <button
+            {/* <button
               onClick={handleExportProducts}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
               <i className="fas fa-download mr-1"></i> Download
-            </button>
+            </button> */}
           </div>
 
 

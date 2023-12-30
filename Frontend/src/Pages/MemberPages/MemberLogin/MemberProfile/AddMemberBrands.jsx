@@ -10,8 +10,11 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [companyNameArabic, setCompanyNameArabic] = useState("");
     const [brandCertificate, setBrandCertificate] = useState("");
     // get the sesstion data
-    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-    console.log(gs1MemberData)
+    // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+    // console.log(gs1MemberData)
+    const memberDataString = sessionStorage.getItem('memberData');
+    const memberData = JSON.parse(memberDataString);
+    console.log(memberData);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -58,8 +61,8 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     formData.append('name', companyName);
     formData.append('name_ar', companyNameArabic);
     formData.append('status', 'active');
-    formData.append('user_id', gs1MemberData?.id);
-    formData.append('companyID', gs1MemberData?.companyID);
+    formData.append('user_id', memberData?.id);
+    formData.append('companyID', memberData?.companyID);
     formData.append('brandCertificate', brandCertificate);
 
     try {

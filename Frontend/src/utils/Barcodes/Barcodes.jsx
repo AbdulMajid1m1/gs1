@@ -36,7 +36,7 @@ export const DataMatrixGenerator = ({ text }) => {
           bcid: "datamatrix", // Barcode type
           text: text, // Text to encode
           scale: 3, // Scale factor
-          height: 10, // Bar height, in millimeters
+          height: 9, // Bar height, in millimeters
           includetext: true, // Show human-readable text
           textxalign: "center", // Always good to set this
           width: 10,
