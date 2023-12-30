@@ -242,6 +242,7 @@ const RegisteredMembers = () => {
           <DataTable data={data} title="Registered Members" columnsName={Gs1AllMembers}
             loading={IsLoading}
             secondaryColor="secondary"
+            globalSearch={true}
             handleRowClickInParent={handleRowClickInParent}
             // globalSearch={false }
 

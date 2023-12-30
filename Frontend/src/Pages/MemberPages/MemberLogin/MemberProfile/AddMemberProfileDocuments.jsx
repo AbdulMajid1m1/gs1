@@ -10,15 +10,21 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   // const [selectDocument, setSelectDocument] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
+  const [isBankSlip, setIsBankSlip] = useState(true);
   const [transactionId, setTransactionId] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
   const [error, setError] = useState('');
-  // get the sesstion data
-  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  console.log(gs1MemberData)
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  // console.log(memberData);
+    
   const [loading, setLoading] = useState(false);
 
+
+  const handleRadioChange = (event) => {
+    setIsBankSlip(event.target.value === 'bankSlip');
+  };
 
   const handleCloseMemberPopup = () => {
     setVisibility(false);
@@ -133,10 +139,10 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
     const formData = new FormData();
     formData.append('type', selectedDocuments?.file_name || '');
     formData.append('transaction_id', selectedTransactionId?.transaction_id || '');
-    formData.append('user_id', gs1MemberData?.id || ''); // Replace with the actual user ID
+    formData.append('user_id', memberData?.id || ''); // Replace with the actual user ID
     formData.append('doc_type', 'member_document');
     formData.append('document', uploadDocument);
-    formData.append('uploaded_by', gs1MemberData?.email || '');
+    formData.append('uploaded_by', memberData?.email || '');
 
 
     try {
@@ -187,6 +193,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
 
 
+
   return (
     <div>
       {/* create the post api popup */}
@@ -199,18 +206,6 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">Select Documents</label>
-                    {/* <select
-                                   type="text"
-                                   id="field1"
-                                   value={selectDocument}
-                                   onChange={(e) => setSelectDocument(e.target.value)}
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 >
-                                      <option value="1">Document 1</option>
-                                      <option value="2">Document 2</option>
-                                      <option value="3">Document 3</option>
-                                      <option value="4">Document 4</option>
-                                </select>         */}
                     <Autocomplete
                       id="field1"
                       options={docuements}
@@ -251,21 +246,36 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                     />
                   </div>
 
+
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label className="text-secondary">Document Type</label>
+                    <div className="flex w-full justify-center gap-4">
+                      <label>
+                        <input
+                          type="radio"
+                          name="documentType"
+                          value="bankSlip"
+                          checked={isBankSlip}
+                          onChange={handleRadioChange}
+                        />
+                        <span className='ml-2'>Is Bank Slip</span>
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="documentType"
+                          value="notBankSlip"
+                          checked={!isBankSlip}
+                          onChange={handleRadioChange}
+                        />
+                        <span className='ml-2'>Is Not Bank Slip</span>
+                      </label>
+                    </div>
+                  </div>
+
+                {isBankSlip && (
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field2" className="text-secondary">Transaction Id </label>
-                    {/* <select
-                                   type="text"
-                                   id="field2"
-                                    onChange={(e) => setTransactionId(e.target.value)}
-                                   placeholder="Transaction Id"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                  >
-                                      <option value="">Select Transaction Id</option>
-                                      {transactionId?.map((item, index) => (
-                                        <option key={index} value={item?.transaction_id}>{item?.transaction_id}</option>
-                                      ))}
-
-                                </select> */}
                     <Autocomplete
                       id="field2"
                       options={transactionId}
@@ -305,6 +315,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                       }}
                     />
                   </div>
+                )}
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field3" className="text-secondary">Upload Documents </label>
