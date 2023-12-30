@@ -16,11 +16,11 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
   const [error, setError] = useState('');
-  // get the sesstion data
-  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  console.log(gs1MemberData)
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  // console.log(memberData);
   const [loading, setLoading] = useState(false);
-
+  
 
   const handleCloseMemberPopup = () => {
     setVisibility(false);
@@ -122,10 +122,10 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
     const formData = new FormData();
     formData.append('type', 'bank_slip');
     formData.append('transaction_id', selectedTransactionId?.transaction_id || '');
-    formData.append('user_id', gs1MemberData?.id || ''); // Replace with the actual user ID
+    formData.append('user_id', memberData?.id || ''); // Replace with the actual user ID
     formData.append('doc_type', 'member_document');
     formData.append('document', uploadDocument);
-    formData.append('uploaded_by', gs1MemberData?.email || '');
+    formData.append('uploaded_by', memberData?.email || '');
 
 
     try {

@@ -7,9 +7,9 @@ import SendIcon from '@mui/icons-material/Send';
 import PhoneInput from 'react-phone-input-2';
 
 const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
-    // get the sesstion data
-    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-    console.log(gs1MemberData)
+    const memberDataString = sessionStorage.getItem('memberData');
+    const memberData = JSON.parse(memberDataString);
+    // console.log(memberData);  
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
@@ -32,13 +32,13 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
         const response = await newRequest.post('/users/subuser',{
             "user_type": memberType,
             "password": password,
-            "parent_memberID": gs1MemberData?.memberID,
+            "parent_memberID": memberData?.memberID,
             "fname": firstName,
             "lname": lastName,
             "email": emailAddress,
             "mobile": mobileNumber,
-            "cr_number": gs1MemberData?.cr_number,
-            "cr_activity": gs1MemberData?.cr_activity,
+            "cr_number": memberData?.cr_number,
+            "cr_activity": memberData?.cr_activity,
         });
 
             toast.success(response?.data?.message || 'Sub Member Added Successfully', {

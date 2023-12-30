@@ -696,7 +696,6 @@ const MemberProfile = () => {
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
-                    handleRowClickInParent={handleRowClickInParent}
                     // checkboxSelection='disabled'
                     buttonVisibility={false}
                     dropDownOptions={[
@@ -779,6 +778,7 @@ const MemberProfile = () => {
                   title="Sub-Members"
                   columnsName={submenusDataColumn}
                   loading={subMembersLoader}
+                  handleRowClickInParent={handleRowClickInParent}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
 
