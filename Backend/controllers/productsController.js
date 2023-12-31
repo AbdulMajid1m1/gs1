@@ -2,10 +2,15 @@ import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import { fileURLToPath } from 'url';
+
+import XLSX from 'xlsx';
 import path from 'path';
+import fs1 from 'fs/promises';
 import fs from 'fs';
 
 import { generateProdcutGTIN } from '../utils/functions/barcodesGenerator.js';
+import { ADMIN_EMAIL } from '../configs/envConfig.js';
+import { sendEmail } from '../services/emailTemplates.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const getProducts = async (req, res, next) => {
@@ -48,151 +53,57 @@ export const getProducts = async (req, res, next) => {
         next(error);
     }
 };
+// Joi schema for product validation
+const productSchema = Joi.object({
+    user_id: Joi.string().required(),
+    import_code: Joi.string().max(50).allow('', null),
+    productnameenglish: Joi.string().allow('', null),
+    productnamearabic: Joi.string().required(),
+    BrandName: Joi.string().max(255).allow('', null),
+    ProductType: Joi.string().max(50).allow('', null),
+    Origin: Joi.string().max(50).allow('', null),
+    PackagingType: Joi.string().max(50).allow('', null),
+    MnfCode: Joi.string().max(50).allow('', null),
+    MnfGLN: Joi.string().max(50).allow('', null),
+    ProvGLN: Joi.string().max(50).allow('', null),
+    unit: Joi.string().max(50).allow('', null),
+    size: Joi.string().max(50).allow('', null),
+    childProduct: Joi.string().max(255).allow('', null),
+    quantity: Joi.string().max(10).allow('', null),
+    gpc: Joi.string().max(255).allow('', null),
+    gpc_code: Joi.string().max(50).allow('', null),
+    countrySale: Joi.string().max(50).allow('', null),
+    HSCODES: Joi.string().allow('', null),
+    HsDescription: Joi.string().allow('', null),
+    gcp_type: Joi.string().max(50).allow('', null),
+    prod_lang: Joi.string().max(50).required(),
+    details_page: Joi.string().allow('', null),
+    details_page_ar: Joi.string().allow('', null),
+    status: Joi.number().integer(),
+    memberID: Joi.string().allow('', null),
+    admin_id: Joi.number().integer().allow('', null),
+    save_as: Joi.string().max(20).allow('', null),
+    gtin_type: Joi.string().max(4).allow('', null),
+    product_url: Joi.string().max(255).allow('', null),
+    product_link_url: Joi.string().max(255).allow('', null),
+    BrandNameAr: Joi.string().allow('', null),
+    digitalInfoType: Joi.number().integer().allow('', null),
+    readyForGepir: Joi.string().max(10).allow('', null),
+    gepirPosted: Joi.string().max(10).allow('', null),
+});
 
-export const createGLN = async (req, res, next) => {
-    try {
-        // Validate request body for GLN
-        const { error, value } = glnSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
-        }
-
-        const { user_id, product_id } = value;
-
-        // Fetch the user
-        const user = await prisma.user.findUnique({ where: { id: user_id } });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Fetch the product
-        const product = await prisma.add_member_gln_products.findUnique({ where: { id: product_id } });
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        // Count member products
-        const memberProductCount = await prisma.add_member_gln_products.count({
-            where: {
-                user_id: user_id,
-                gcpGLNID: user.gcpGLNID,
-            },
-        });
-
-        const productRange = memberProductCount + 1;
-        const ssccBarcodeLimit = product.total_no_of_barcodes;
-
-        if (productRange >= ssccBarcodeLimit) {
-            return res.status(400).json({ message: 'Limit Exceeded' });
-        }
-
-        const gcpGLNID = user.gcpGLNID;
-        const gcpLength = gcpGLNID.toString().length;
-
-        if (gcpLength < 7 || gcpLength > 11) {
-            return res.status(400).json({ message: 'Invalid GLN calculation' });
-        }
-
-        let barcodeNumber = 0;
-
-        switch (gcpLength) {
-            case 7:
-                // Call your lengthSeven function here
-                break;
-            case 8:
-                // Call your lengthEight function here
-                break;
-            case 9:
-                // Call your lengthNine function here
-                break;
-            case 10:
-                // Call your lengthTen function here
-                break;
-            case 11:
-                // Call your lengthEleven function here
-                break;
-            default:
-                return res.status(400).json({ message: 'Invalid GLN calculation' });
-        }
-
-        // Call your checkGLNTrashed function here
-        // Calculate ean13_checkDigit here
-
-        // Save GLN data to the database
-        const newGLN = await prisma.gln.create({
-            data: {
-                gcpGLNID: user.gcpGLNID,
-                user_id: user.id,
-                locationNameEn: value.locationNameEn,
-                locationNameAr: value.locationNameAr,
-                AddressEn: value.AddressEn,
-                AddressAr: value.AddressAr,
-                pobox: value.pobox,
-                postal_code: value.postal_code,
-                longitude: value.longitude,
-                latitude: value.latitude,
-                status: value.status,
-                GLNBarcodeNumber: barcodeNumber,
-            },
-        });
-
-        // Log the action
-        console.log(`${user.fname || user.company_name_eng} Add New GLN.`);
-
-        return res.status(201).json({ message: 'GLN created successfully' });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Internal server error' });
-    } finally {
-        await prisma.$disconnect();
-    }
-}
 
 export const createProduct = async (req, res, next) => {
-    // Joi schema for product validation
-    const productSchema = Joi.object({
-        user_id: Joi.string().required(),
-        import_code: Joi.string().max(50).allow('', null),
-        productnameenglish: Joi.string().allow('', null),
-        productnamearabic: Joi.string().required(),
-        BrandName: Joi.string().max(255).allow('', null),
-        ProductType: Joi.string().max(50).allow('', null),
-        Origin: Joi.string().max(50).allow('', null),
-        PackagingType: Joi.string().max(50).allow('', null),
-        MnfCode: Joi.string().max(50).allow('', null),
-        MnfGLN: Joi.string().max(50).allow('', null),
-        ProvGLN: Joi.string().max(50).allow('', null),
-        unit: Joi.string().max(50).allow('', null),
-        size: Joi.string().max(50).allow('', null),
-        childProduct: Joi.string().max(255).allow('', null),
-        quantity: Joi.string().max(10).allow('', null),
-        gpc: Joi.string().max(255).allow('', null),
-        gpc_code: Joi.string().max(50).allow('', null),
-        countrySale: Joi.string().max(50).allow('', null),
-        HSCODES: Joi.string().allow('', null),
-        HsDescription: Joi.string().allow('', null),
-        gcp_type: Joi.string().max(50).allow('', null),
-        prod_lang: Joi.string().max(50).required(),
-        details_page: Joi.string().allow('', null),
-        details_page_ar: Joi.string().allow('', null),
-        status: Joi.number().integer(),
-        memberID: Joi.string().allow('', null),
-        admin_id: Joi.number().integer().allow('', null),
-        save_as: Joi.string().max(20).allow('', null),
-        gtin_type: Joi.string().max(4).allow('', null),
-        product_url: Joi.string().max(255).allow('', null),
-        product_link_url: Joi.string().max(255).allow('', null),
-        BrandNameAr: Joi.string().allow('', null),
-        digitalInfoType: Joi.number().integer().allow('', null),
-        readyForGepir: Joi.string().max(10).allow('', null),
-        gepirPosted: Joi.string().max(10).allow('', null),
-    });
+
 
     // Validate request body
     const { error, value } = productSchema.validate(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
+
+
+
     const getImagePath = (image) => {
         if (!image || image.length === 0) return null;
         const imageFile = image[0];
@@ -213,6 +124,19 @@ export const createProduct = async (req, res, next) => {
     const userId = value.user_id;
 
     try {
+
+        const existingProduct = await prisma.products.findFirst({
+            where: {
+                BrandName: value.BrandName,
+                BrandNameAr: value.BrandNameAr,
+                productnameenglish: value.productnameenglish,
+                productnamearabic: value.productnamearabic
+            }
+        });
+
+        if (existingProduct) {
+            throw createError(409, 'A product with the same brand names and product names already exists');
+        }
 
         // Start a transaction
         const result = await prisma.$transaction(async (prisma) => {
@@ -280,6 +204,238 @@ export const createProduct = async (req, res, next) => {
         next(err);
     }
 };
+
+
+
+const readExcelFile = (filePath) => {
+    const workbook = XLSX.readFile(filePath);
+    const sheetName = workbook.SheetNames[0];
+    return XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+};
+
+const writeErrorsToExcel = (filePath, records) => {
+    const workbook = XLSX.readFile(filePath);
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    // Determine the last column
+    const ref = XLSX.utils.decode_range(worksheet['!ref']);
+    const lastCol = ref.e.c;
+
+    // Convert last column number to letter and set the error header
+    const errorHeaderCell = XLSX.utils.encode_col(lastCol + 1) + '1'; // '1' for the first row
+    worksheet[errorHeaderCell] = { v: 'Error' };
+
+    // Write errors to the new "Error" column
+    records.forEach((record, index) => {
+        if (record.error) {
+            const errorCellRef = XLSX.utils.encode_col(lastCol + 1) + (index + 2); // +2 to account for header row and 0-based index
+            worksheet[errorCellRef] = { v: record.error };
+        }
+    });
+
+    // Update the worksheet range to include the new column
+    ref.e.c = lastCol + 1;
+    worksheet['!ref'] = XLSX.utils.encode_range(ref);
+
+    XLSX.writeFile(workbook, filePath);
+};
+
+const insertProduct = async (productData) => {
+    try {
+        // Check for existing product
+        const existingProduct = await prisma.products.findFirst({
+            where: {
+                BrandName: productData.BrandName,
+                BrandNameAr: productData.BrandNameAr,
+                productnameenglish: productData.productnameenglish,
+                productnamearabic: productData.productnamearabic
+            }
+        });
+
+        if (existingProduct) {
+            throw new Error('A product with the same brand names and product names already exists');
+        }
+
+        let user = await prisma.users.findUnique({ where: { id: productData.user_id } });
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        if (user.parent_memberID !== '0') {
+            user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
+            if (!user) {
+                throw new Error('User not found');
+            }
+        }
+
+        const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
+            where: { user_id: user.id },
+            include: { gtin_product: true }
+        });
+
+        if (!gtinSubscriptions || gtinSubscriptions.length === 0) {
+            throw new Error('Subscription not found');
+        }
+
+        if (gtinSubscriptions?.gtin_subscription_limit === 0) {
+            throw new Error('Subscription limit exceeded, please upgrade your subscription');
+        }
+
+        const productsCount = gtinSubscriptions?.gtin_subscription_counter;
+
+        const gtin = await generateProdcutGTIN(user.gcpGLNID, productsCount);
+        productData.gcpGLNID = user.gcpGLNID;
+        productData.barcode = gtin;
+
+        const newProduct = await prisma.products.create({ data: productData });
+
+        // update the gtin_subcription table with new limit and counter
+        const updatedGtinSubscription = await prisma.gtin_subcriptions.update({
+            where: { id: gtinSubscriptions.id },
+            data: {
+                gtin_subscription_counter: productsCount + 1,
+                gtin_subscription_limit: gtinSubscriptions.gtin_subscription_limit - 1
+            }
+        });
+
+        return newProduct;
+
+    } catch (err) {
+        console.error(err);
+        throw new Error(err.message);
+    }
+};
+
+
+export const bulkCreateProduct = async (req, res) => {
+    const productSchema = Joi.object({
+        user_id: Joi.string(),
+
+        productnameenglish: Joi.string().allow('', null),
+        productnamearabic: Joi.string().required(),
+        BrandName: Joi.string().max(255).allow('', null),
+        ProductType: Joi.string().max(50).allow('', null),
+        Origin: Joi.string().max(50).allow('', null),
+        PackagingType: Joi.string().max(50).allow('', null),
+        MnfCode: Joi.string().max(50).allow('', null),
+        MnfGLN: Joi.string().max(50).allow('', null),
+        ProvGLN: Joi.string().max(50).allow('', null),
+        // gpc: Joi.string().max(255).allow('', null),
+        gpc_code: Joi.string().max(50).allow('', null),
+        countrySale: Joi.string().max(50).allow('', null),
+        HSCODES: Joi.string().allow('', null),
+
+        memberID: Joi.string().allow('', null),
+        admin_id: Joi.number().integer().allow('', null),
+        save_as: Joi.string().max(20).allow('', null),
+        // product_url: Joi.string().max(255).allow('', null),
+        // product_link_url: Joi.string().max(255).allow('', null),
+        BrandNameAr: Joi.string().allow('', null),
+        prod_lang: Joi.string().max(50),
+        // digitalInfoType: Joi.number().integer().allow('', null),
+        // readyForGepir: Joi.string().max(10).allow('', null),
+        // gepirPosted: Joi.string().max(10).allow('', null),
+    });
+    try {
+
+        const getImagePath = (image) => {
+            if (!image || image.length === 0) return null;
+            const imageFile = image[0];
+            imageFile.destination = imageFile.destination.replace('public', '');
+            return path.join(imageFile.destination, imageFile.filename);
+        };
+
+        const images = {
+            file: getImagePath(req.files.file),
+
+        };
+
+        console.log(req.files)
+
+
+        const filePath = req.files.file[0].path;
+        const records = readExcelFile(filePath);
+        console.log(records)
+        const errorRecords = [];
+
+        await prisma.$transaction(async (transaction) => {
+            for (let record of records) {
+                console.log(record)
+                // Map Excel columns to schema fields
+                record = {
+                    user_id: req.body.user_id, // Assuming user_id comes from somewhere else like req.body
+                    productnameenglish: record.ProductNameEnglish,
+                    productnamearabic: record.ProductNameArabic,
+                    BrandName: record.BrandName,
+                    BrandNameAr: record.BrandNameAr,
+                    ProductType: record.ProductType,
+                    Origin: record['Country Of Origin'],
+                    countrySale: record['Country of Sale'],
+                    PackagingType: record.PackagingType,
+                    MnfCode: record.MnfCode,
+                    MnfGLN: record.MnfGLN,
+                    ProvGLN: record.ProvGLN,
+                    gpc_code: record['GPC Code'],
+                    memberID: record.memberID, 
+                    admin_id: record.admin_id, 
+                    save_as: record.save_as, 
+                    BrandNameAr: record.BrandNameAr,
+                    prod_lang: record['Product Language Code']
+                    // Add other fields as necessary
+                };
+
+                const { error, value } = productSchema.validate(record);
+                if (error) {
+                    errorRecords.push({ ...record, error: error.details[0].message });
+                } else {
+                    try {
+                        let data = value;
+                        data.user_id = req.body.user_id;
+                        await insertProduct(data, transaction);
+                    } catch (insertError) {
+                        errorRecords.push({ ...record, error: insertError.message });
+                    }
+                }
+            }
+        }, { timeout: 40000 });
+
+        if (errorRecords.length > 0) {
+            // also add autogenerated barcode for writing in GTIN column
+            // writeErrorsToExcel(req.files.file[0].path, errorRecords);
+
+        let combine 
+        }
+
+
+
+        res.status(200).json({ message: 'Bulk upload processed', errors: errorRecords });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    } finally {
+        const pdfBuffer = await fs1.readFile(req.files.file[0].path);
+        const emailContent = `Dear User, <br><br> Your bulk upload file has been processed. Please find the attached file for the processed records. <br><br> Regards, <br> GS1 KSA`;
+        const attachments = [{
+            filename: req.files.file[0].filename,
+            content: pdfBuffer,
+            contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }];
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: req.body.email,
+            subject: 'GTIN Bulk Upload Processed file',
+
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+            // if status is approved, attach the certificate PDF
+            attachments: attachments
+        });
+    }
+};
+
+
+
 
 
 export const updateProduct = async (req, res, next) => {

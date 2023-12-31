@@ -35,6 +35,7 @@ import productpackaging from '../../Images/productpackaging.png'
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
 import gdsnproduct from '../../Images/gdsnproduct.png'
 import masterdata from '../../Images/masterdata.png'
+import logout from '../../Images/logout.png'
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -855,6 +856,18 @@ const AdminSideBar = () => {
               </div>
               )}
 
+          
+          <div
+            className={`main-images-container`}
+            onClick={() => navigate('/admin-login')}
+          >
+            <img
+              src={logout}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">Log-out</p>
+          </div>
 
 
           {/* Implement Any Icon above the Hide Icons */}

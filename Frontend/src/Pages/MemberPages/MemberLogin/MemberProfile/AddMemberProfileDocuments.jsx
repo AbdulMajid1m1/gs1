@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 
-const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData }) => {
+const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, refreshHistoryData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
@@ -168,6 +168,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       fetchMemberbankSlipData();
       refreshBrandData();
       handleCloseMemberPopup();
+      refreshHistoryData();
 
 
     }

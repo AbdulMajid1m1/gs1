@@ -859,7 +859,7 @@ const MemberProfile = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberPopupVisible && (
           <AddMemberProfileDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} />
+            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData}/>
 
         )}
 
