@@ -64,7 +64,7 @@ export const createSSCC = async (req, res, next) => {
                 where: {
                     user_id: user.id,
                     status: 'active',
-                    product_identifier_name: "sscc" // Changed to SSCC
+                    product_identifier_name: "SSCC" // Changed to SSCC
                 },
                 include: {
                     product: true // Assuming you need the product details

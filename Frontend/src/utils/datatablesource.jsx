@@ -1320,8 +1320,8 @@ export const GtinColumn = [
       );
     },
   },
-{
-  field: 'productnamearabic',
+  {
+    field: 'productnamearabic',
     headerName: 'Product Name Arabic',
     width: 180,
   },
@@ -1445,20 +1445,20 @@ export const Gs1AllMembers = [
     width: 180,
   },
   {
-    field: 'code',
+    field: 'password',
     headerName: 'CODE',
     width: 180,
   },
-  {
-    field: 'password',
-    headerName: 'PASSWORD',
-    width: 180,
-  },
+  // {
+  //   field: 'password',
+  //   headerName: 'PASSWORD',
+  //   width: 180,
+  // },
   {
     field: 'membership_category',
     headerName: 'MEMBER CATEGORY',
     width: 180,
-  }, 
+  },
   {
     field: 'email',
     headerName: 'EMAIL',
@@ -1573,7 +1573,7 @@ export const Gs1AllMembers = [
   //   headerName: 'COMPANY NAME (ARABIC)',
   //   width: 180,
   // },
-  
+
   // {
   //   field: 'gpc',
   //   headerName: 'GPC',
@@ -1665,23 +1665,23 @@ export const Gs1AllMembers = [
   //   field: "address_image",
   //   headerName: "ADDRESS IMAGE",
   //   width: 220,
-    // editable: true,
-    // renderCell: (params) => (
-    //   <img
-    //     src={imageLiveUrl(params.row.address_image)}
-    //     // src={backendUrl + "/" + params.row.address_image}
-    //     alt="address_image"
-    //     style={{
-    //       width: '90%',
-    //       height: '90%',
-    //       objectFit: 'contain',
-    //       cursor: 'pointer'
-    //     }}
-    //     onClick={() => {
-    //       window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
-    //     }}
-    //   />
-    // )
+  // editable: true,
+  // renderCell: (params) => (
+  //   <img
+  //     src={imageLiveUrl(params.row.address_image)}
+  //     // src={backendUrl + "/" + params.row.address_image}
+  //     alt="address_image"
+  //     style={{
+  //       width: '90%',
+  //       height: '90%',
+  //       objectFit: 'contain',
+  //       cursor: 'pointer'
+  //     }}
+  //     onClick={() => {
+  //       window.open(imageLiveUrl(params.row.address_image), '_blank', 'width=400,height=300,top=0,left=0');
+  //     }}
+  //   />
+  // )
   // },
   // {
   //   field: 'payment_type',
@@ -1775,13 +1775,13 @@ export const Gs1AllMembers = [
   //   headerName: 'GCP EXPIRY',
   //   width: 180,
   // },
- 
+
   // {
   //   field: 'user_id',
   //   headerName: 'USER ID',
   //   width: 180,
   // },
-  
+
   // {
   //   field: 'assign_to',
   //   headerName: 'ASSIGN TO',
@@ -1929,7 +1929,7 @@ export const MembersDocumentColumn = [
           link.click();
         } else {
           window.open(docUrl, "_blank");
-        } 
+        }
       };
 
       return (
@@ -1946,7 +1946,7 @@ export const MembersDocumentColumn = [
     },
 
 
-    
+
   },
   // {
   //   field: 'user_id',
@@ -2063,7 +2063,7 @@ export const MembersBrandsColumn = [
           link.click();
         } else {
           window.open(docUrl, "_blank");
-        } 
+        }
       };
 
       return (
@@ -2080,7 +2080,7 @@ export const MembersBrandsColumn = [
     },
 
 
-    
+
   },
   {
     field: 'name_ar',
@@ -2336,7 +2336,7 @@ export const paymentSlipColumn = [
     headerName: 'Details',
     width: 180,
   },
-  
+
   // {
   //   field: 'user_id',
   //   headerName: 'User ID',
@@ -2344,7 +2344,7 @@ export const paymentSlipColumn = [
   // },
 
 
-  
+
 ];
 
 export const masterDataColumn = [
@@ -2694,7 +2694,7 @@ export const crnumber__ = [
     field: 'isRegistered',
     headerName: 'isRegistered',
     width: 180,
-     valueGetter: (params) => {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Yes' : 'No';
     },
   },
@@ -2726,10 +2726,10 @@ export const document_type = [
     headerName: 'Document name',
     width: 280,
   },
- {
+  {
     field: 'status',
     headerName: 'status',
-   width: 180,
+    width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
@@ -2738,7 +2738,7 @@ export const document_type = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
-     type: 'dateTime',
+    type: 'dateTime',
     valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
@@ -2777,7 +2777,7 @@ export const country__ = [
     headerName: 'country_code',
     width: 180,
   },
-  
+
   {
     field: 'created_at',
     headerName: 'Created At',
@@ -3015,7 +3015,7 @@ export const financeColumn = [
       </div>
     ),
   },
-  
+
 
 
 ];
@@ -3123,7 +3123,7 @@ export const financePopUpMemberBankSlipColumn = [
     headerName: 'Doc Type',
     width: 180,
   },
-  
+
 
 
 ];
@@ -3221,7 +3221,7 @@ export const bankSlipColumn = [
     headerName: 'Doc Type',
     width: 180,
   },
-  
+
 
 
 ];
@@ -3683,7 +3683,7 @@ export const submenusDataColumn = [
 
 
 
-  
+
 ];
 
 
@@ -3701,28 +3701,55 @@ export const memberHistoryColumnData = [
     headerName: 'Subject',
     width: 280,
   },
+
   {
-    field: 'member_id',
-    headerName: 'Member ID',
+    field: 'user.email',
+    headerName: 'User Email',
     width: 180,
+    valueGetter: (params) => {
+      // Access the 'email' property within the 'user' object
+      const userEmail = params.row.user ? params.row.user.email : '';
+      return userEmail;
+    },
   },
+
   {
     field: 'admin_id',
-    headerName: 'Admin ID',
+    headerName: 'Admin Email',
     width: 180,
   },
   {
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
-    // valueGetter: (params) => new Date(params.getValue('created_at')).toLocaleString(),
+    type: 'dateTime',
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
-    // valueGetter: (params) => new Date(params.getValue('updated_at')).toLocaleString(),
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
+
+  {
+    field: 'created_by_admin',
+    // if value is 1 show yes else no
+    headerName: 'Created By Admin',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Yes' : 'No';
+    },
+  }
 
 
 
@@ -3766,7 +3793,7 @@ export const registeredmemberColumn = [
   //   headerName: 'Quotation',
   //   width: 180,
   // },
-  
+
 
 
 

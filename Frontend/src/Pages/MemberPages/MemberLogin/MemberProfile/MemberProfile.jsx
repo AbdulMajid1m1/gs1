@@ -64,7 +64,8 @@ const MemberProfile = () => {
     setMemberHistoryLoader(true);
     try {
       console.log(memberData?.id);
-      const response = await newRequest.get(`/logs/memberLogs/?member_id=${memberData?.id}`);
+      // const response = await newRequest.get(`/logs/memberLogs/?member_id=${memberData?.id}`);
+      const response = await newRequest.get(`/logs/memberLogs/?user_id=${memberData?.id}`);
       console.log("member history");
       console.log(response.data);
       setMemberHistoryData(response?.data || []);
@@ -224,7 +225,7 @@ const MemberProfile = () => {
   const fetchSubMembersData = async () => {
     setSubMembersLoader(true);
     try {
-      const response = await newRequest.get(`/users?parent_memberID=${memberData?.id}`);
+      const response = await newRequest.get(`/users?parent_memberID=${memberData?.memberID}`);
 
       // console.log(response.data);
       setSubMenusData(response?.data || []);
@@ -695,7 +696,6 @@ const MemberProfile = () => {
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
-                    handleRowClickInParent={handleRowClickInParent}
                     // checkboxSelection='disabled'
                     buttonVisibility={false}
                     dropDownOptions={[
@@ -778,6 +778,7 @@ const MemberProfile = () => {
                   title="Sub-Members"
                   columnsName={submenusDataColumn}
                   loading={subMembersLoader}
+                  handleRowClickInParent={handleRowClickInParent}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
 

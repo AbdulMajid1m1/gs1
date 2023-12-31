@@ -31,8 +31,8 @@ const Gtin = () => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
   const resetSnakeBarMessages = () => {
-      setError(null);
-      setMessage(null);
+    setError(null);
+    setMessage(null);
 
   };
 
@@ -107,7 +107,7 @@ const Gtin = () => {
   const handleExportProducts = () => {
     // Convert data to Excel format
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(data.products); // Assuming `data.products` is the array containing the API response data
+    const worksheet = XLSX.utils.json_to_sheet(data); // Assuming `data.products` is the array containing the API response data
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Products');
 
     // Generate Excel file
@@ -128,38 +128,38 @@ const Gtin = () => {
     fileInputRef.current.click();
   };
 
-//   const handleFileInputChange = (event) => {
-//     const selectedFile = event.target.files[0];
-//     setIsLoading(true);
+  //   const handleFileInputChange = (event) => {
+  //     const selectedFile = event.target.files[0];
+  //     setIsLoading(true);
 
 
-//     if (selectedFile) {
-//       const formData = new FormData();
-//       formData.append('user_id', currentUser?.user?.id);
-//       formData.append('file', selectedFile);
+  //     if (selectedFile) {
+  //       const formData = new FormData();
+  //       formData.append('user_id', currentUser?.user?.id);
+  //       formData.append('file', selectedFile);
 
-//       phpRequest.post('/member/GTIN/Bulk/Import', formData)
-//         .then((response) => {
-//           // Handle the successful response
-//           console.log(response.data);
-//           openSnackbar("The data has been imported successfully");
-//           setIsLoading(false)
+  //       phpRequest.post('/member/GTIN/Bulk/Import', formData)
+  //         .then((response) => {
+  //           // Handle the successful response
+  //           console.log(response.data);
+  //           openSnackbar("The data has been imported successfully");
+  //           setIsLoading(false)
 
-//         })
-//         .catch((error) => {
-//           // Handle the error
-//           console.error(error);
-//           openSnackbar('Something is Wrong')
-//           setIsLoading(false)
+  //         })
+  //         .catch((error) => {
+  //           // Handle the error
+  //           console.error(error);
+  //           openSnackbar('Something is Wrong')
+  //           setIsLoading(false)
 
-//         });
-//     }
-//   };
+  //         });
+  //     }
+  //   };
 
 
   // Gtin Page Print
   const handleGtinPage = () => {
-     if (tableSelectedRows.length === 0) {
+    if (tableSelectedRows.length === 0) {
       setError('Please select a row to print.');
       return;
     }
@@ -191,11 +191,11 @@ const Gtin = () => {
       // printWindow.document.getElementById('imglogo').src = logoImg.src;
       printWindow.print();
       printWindow.close();
-        setTimeout(() => {
-          setTableSelectedRows([]);
-          setRowSelectionModel([]);
-         }, 500);
-        
+      setTimeout(() => {
+        setTableSelectedRows([]);
+        setRowSelectionModel([]);
+      }, 500);
+
     };
   }
 
@@ -203,17 +203,17 @@ const Gtin = () => {
 
 
 
-  
+
   const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
       // setTableSelectedRows(data)
-      setFilteredData(data)
+      // setFilteredData(data)
       return
     }
 
     const barcodes = item.map((row) => row.barcode);
     console.log(barcodes); // This will log an array of barcodes
-    setTableSelectedRows(barcodes);
+    // setTableSelectedRows(barcodes);
   }
 
 
@@ -247,7 +247,7 @@ const Gtin = () => {
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700"
               onClick={handleExportProducts}
             >
-              Export Products <i className="fas fa-caret-down ml-1"></i>
+              Export in Excel <i className="fas fa-caret-down ml-1"></i>
             </button>
 
 
@@ -256,7 +256,7 @@ const Gtin = () => {
                 type="file"
                 ref={fileInputRef}
                 style={{ display: 'none' }}
-                // onChange={handleFileInputChange}
+              // onChange={handleFileInputChange}
               />
               <button
                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700"
@@ -272,11 +272,11 @@ const Gtin = () => {
               Download Template <i className="fas fa-caret-down ml-1"></i>
             </button>
 
-            <button
+            {/* <button
               onClick={handleExportProducts}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
               <i className="fas fa-download mr-1"></i> Download
-            </button>
+            </button> */}
           </div>
 
 
@@ -299,9 +299,9 @@ const Gtin = () => {
             </button>
 
             <button
-               onClick={handleGtinPage} 
+              onClick={handleGtinPage}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                  Print GTIN
+              Print GTIN
             </button>
           </div>
 
@@ -312,6 +312,7 @@ const Gtin = () => {
               loading={isLoading}
               secondaryColor="secondary"
               handleRowClickInParent={handleRowClickInParent}
+              uniqueId="meberGtinId"
 
               dropDownOptions={[
                 {
@@ -352,26 +353,25 @@ const Gtin = () => {
                 }
 
               ]}
-              uniqueId="customerListId"
 
             />
           </div>
 
 
-          
+
           <div id="barcode">
-          {tableSelectedRows.map((barcode, index) => (
-            <div id="Qrcodeserails" className="hidden" key={index}>
+            {tableSelectedRows?.map((barcode, index) => (
+              <div id="Qrcodeserails" className="hidden" key={index}>
                 <div id="header">
-                    <div>
-                      <img src={logo} id="imglogo" alt="" />
-                    </div>
+                  <div>
+                    <img src={logo} id="imglogo" alt="" />
+                  </div>
                 </div>
                 <div id="inside-BRCode">
-                    <QRCodeSVG value={barcode} width="170" height="70" />
+                  <QRCodeSVG value={barcode} width="170" height="70" />
                 </div>
                 <div id="itemSerialNo">
-                    <p>{barcode}</p>
+                  {/* {barcode} */}
                 </div>
               </div>
             ))}

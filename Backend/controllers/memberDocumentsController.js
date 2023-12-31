@@ -58,17 +58,17 @@ export const createMemberDocument = async (req, res, next) => {
 
         // Insert Member History log
         const logData = {
-            subject: 'Member Document Upload',
+            // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
+            subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
             // user user memberId
             // member_id: value.memberID,
-            user_id: value.user_id
+            user_id: value.user_id,
             // TODO: add middleware for current admin token 
-
-
         }
-
+        TODO: // chec this
         // if (req?.admin.id) {
-        //     logData.admin_id = admin_id;
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
         // }
 
         await createMemberLogs(logData);
@@ -352,20 +352,63 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             data: {
                                 status: 'active',
                                 expiry_date: expiryDate,
+                                gtin_subscription_limit: product.total_no_of_barcodes,
+                                gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
 
                             }
                         });
-                        // also update other_products_subcriptions table
-                        await prisma.other_products_subcriptions.updateMany({
-                            // update based on the transaction ID
-                            where: { transaction_id: currentDocument.transaction_id },
+                        // // also update other_products_subcriptions table
+                        // await prisma.other_products_subcriptions.updateMany({
+                        //     // update based on the transaction ID
+                        //     where: { transaction_id: currentDocument.transaction_id },
+                        //     data: {
+                        //         status: 'active',
+                        //         expiry_date: expiryDate
+                        //     }
+                        // });
+
+                        // Fetch the necessary data from other_products table
+                        const products = await prisma.other_products.findMany({
+                            select: {
+                                id: true,
+                                total_no_of_barcodes: true,
+                                product_subscription_fee: true,
+                                med_subscription_fee: true,
+                            }
+                        });
+
+                        // Update other_products_subcriptions table for each product
+                        for (const product of products) {
+                            console.log("product", product);
+                            let subscriptionFee = userUpdateResult.membership_category === 'non_med_category'
+                                ? product.product_subscription_fee
+                                : product.med_subscription_fee;
+
+                            await prisma.other_products_subcriptions.updateMany({
+                                where: {
+                                    product_id: product.id,
+                                    transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
+                                },
+                                data: {
+                                    other_products_subscription_limit: product.total_no_of_barcodes,
+                                    other_products_subscription_total_price: subscriptionFee,
+                                    status: 'active',  // Update the status
+                                    expiry_date: expiryDate // Update the expiry date
+                                }
+                            });
+                        }
+
+
+                        // update isRegistered in crs to 1 by  cr_number and cr_activity
+                        await prisma.crs.updateMany({
+                            where: {
+                                cr: existingUser.cr_number,
+                                activity: existingUser.cr_activity
+                            },
                             data: {
-                                status: 'active',
-                                expiry_date: expiryDate
+                                isRegistered: 1
                             }
                         });
-
-
 
                         await prisma.gtin_products.update({
                             where: { id: product.id },
@@ -452,7 +495,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 secondHeading: "RECEIPT FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                    registeration: `New Registration`,
                     // Assuming $addMember->id is already known
                     company_name_eng: existingUser.company_name_eng,
                     mobile: existingUser.mobile,
@@ -552,17 +595,36 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             });
 
 
+            // Insert Member History log
+            // const logData = {
+            //     // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
+            //     subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
+            //     // user user memberId
+            //     // member_id: value.memberID,
+            //     user_id: value.user_id,
+            //     // TODO: add middleware for current admin token 
+            // }
+
+
 
             // Insert Member History log
             const logData = {
-                subject: 'Member Account Approved',
+                subject: 'Member Account Approved by Admin',
                 // user user memberId
-                member_id: userUpdateResult.memberID,
+                // member_id: userUpdateResult.memberID,
                 user_id: userUpdateResult.id,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
             }
+
+
+            TODO: // chec this
+            // if (req?.admin.id) {
+            //     logData.admin_id = admin_email;
+            // logData.created_by_admin = 1;
+            // }
+
             console.log("logData", logData);
 
             await createMemberLogs(logData);

@@ -232,7 +232,8 @@ export const createUser = async (req, res, next) => {
             secondHeading: "BILL TO",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                // registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                registeration: `New Registration`,
                 // Assuming $addMember->id is already known
                 company_name_eng: value.company_name_eng,
                 mobile: value.mobile,
@@ -338,6 +339,9 @@ export const createUser = async (req, res, next) => {
                 status: "inactive",
                 price: parseFloat(item.price),
                 product_id: item.productID,
+                product_identifier_name: item.productName,
+
+
             }));
             const otherProductsSubscriptions = await Promise.all(
                 otherProductsData.map(productData =>
@@ -393,7 +397,7 @@ export const createUser = async (req, res, next) => {
 
 
         const logData = {
-            subject: 'Member Registration',
+            subject: 'New Member Registration',
             // user user memberId
             // member_id: userUpdateResult.memberID,
             user_id: newUser.id,
@@ -401,7 +405,11 @@ export const createUser = async (req, res, next) => {
             // admin_id: 'admin@gs1sa.link',
 
         }
+
+
         console.log("newUser.id", newUser.id)
+
+
         try {
 
             await createMemberLogs(logData);

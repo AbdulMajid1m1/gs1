@@ -186,7 +186,7 @@ const MemberDashboard = () => {
               ))}
             </div>
             
-            
+                
             <div className='h-auto w-full px-5 py-4'>
                 <p className='text-secondary font-sans text-3xl font-semibold mt-5'>Member Products</p>
                 <img src={dashboardchart} alt='' />
