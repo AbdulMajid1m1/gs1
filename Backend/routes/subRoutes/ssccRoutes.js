@@ -1,10 +1,12 @@
 import express from 'express';
 import { upload } from '../../configs/multerConfig.js';
-import { createSSCC, deleteSSCC, getSSCCProductsDetails, updateSSCC } from '../../controllers/ssccController.js';
+import { createBulkSSCC, createSSCC, deleteSSCC, getSSCCProductsDetails, updateSSCC } from '../../controllers/ssccController.js';
 const router = express.Router();
-// Adjust as per your upload middleware
+
 
 router.post('/', createSSCC);
+
+router.post('/bulk', createBulkSSCC);
 
 router.put('/:ssccId', updateSSCC);
 
