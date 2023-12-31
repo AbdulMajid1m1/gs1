@@ -302,7 +302,7 @@ const handleRowClickInParent = (item) => {
 
                 {/* Add Bulk popup component with handlebulkCreatePopup prop */}
                 {isBulkPopupVisible && (
-                  <BulkPopUp isVisible={isBulkPopupVisible} setVisibility={setBulkPopupVisibility} refreshBrandData={fetchData} />
+                  <BulkPopUp isVisible={isBulkPopupVisible} setVisibility={setBulkPopupVisibility} refreshSsccData={fetchData}/>
                 )}
 
 
