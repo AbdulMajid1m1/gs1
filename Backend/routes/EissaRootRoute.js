@@ -8,7 +8,9 @@ import { creategpctype,getAllgpctype,getgpctypeById,deletegpctype,updategpctype 
 import { createcountryofsale,getAllcountryofsale,getcountryof_saleById,updatecountryofsale,deletecountryofsale } from '../controllers/countryofsales.js';
 import { createHsCode,getAllHsCode,getHsCodeById,updateHsCode,deleteHsCode } from '../controllers/hscodes.js';
 import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC } from '../controllers/UNSPSC.js';
-import {getAllprod_desc_languages} from "../controllers/productsController.js"
+import { getAllprod_desc_languages } from "../controllers/productsController.js"
+
+import {getAllmega_menu,createmega_menus,getmega_menusById,updatemega_menus,deletemega_menus} from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -69,6 +71,10 @@ router.put('/updatedocumentType/:id', updatedocumentType);
 router.delete('/deletedocumentType/:id', deletedocumentType);
 // Routes for getAllprod_desc_languages
 router.get('/getAllprod_desc_languages', getAllprod_desc_languages);
-
-
+// Routes for mega_menus
+router.get('/getAllmega_menu', getAllmega_menu);
+router.post('/createmega_menus', createmega_menus);
+router.get('/getmega_menusById/:id', getmega_menusById);
+router.put('/updatemega_menus/:id', updatemega_menus);
+router.delete('/deletemega_menus/:id', deletemega_menus);
 export default router;

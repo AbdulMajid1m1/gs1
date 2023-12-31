@@ -1013,7 +1013,7 @@ CREATE TABLE [dbo].[mega_menu_categories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[mega_menus] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name_en] NVARCHAR(max),
     [name_ar] NVARCHAR(max),
     [status] INT NOT NULL,
