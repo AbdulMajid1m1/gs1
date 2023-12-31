@@ -49,7 +49,7 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
     });
 }
 
-
+// helo
 
 export const sendEmail = async ({
     fromEmail = process.env.EMAIL,
