@@ -225,7 +225,7 @@ const MemberProfile = () => {
   const fetchSubMembersData = async () => {
     setSubMembersLoader(true);
     try {
-      const response = await newRequest.get(`/users?parent_memberID=${memberData?.id}`);
+      const response = await newRequest.get(`/users?parent_memberID=${memberData?.memberID}`);
 
       // console.log(response.data);
       setSubMenusData(response?.data || []);
@@ -859,7 +859,7 @@ const MemberProfile = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberPopupVisible && (
           <AddMemberProfileDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} />
+            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData}/>
 
         )}
 

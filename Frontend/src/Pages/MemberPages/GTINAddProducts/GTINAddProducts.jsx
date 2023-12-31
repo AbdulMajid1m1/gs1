@@ -26,10 +26,7 @@ const GTINAddProducts = () => {
     const [productDescriptionLanguage, setProductDescriptionLanguage] = useState([]);
     const [gpcList, setGpcList] = useState([]); // gpc list
     const [productType, setProductType] = useState([]);
-    const [packageType, setPackageType] = useState([
-        'Box',
-        'Carton',
-    ]);
+    const [packageType, setPackageType] = useState([]);
     const [brandNameEnglish, setBrandNameEnglish] = useState([]);
     const [brandNameArabic, setBrandNameArabic] = useState([]);
     const [open, setOpen] = useState(false);
@@ -92,24 +89,6 @@ const GTINAddProducts = () => {
         const imageOptional3Url = URL.createObjectURL(imageOptional3File);
         setImageOptional3(imageOptional3Url);
     };
-
-
-     // All Countries Api
-   
-
-//  // Package type Api
-//  userRequest.get('/getAllProductPackagings')
-//      .then((response) => {
-//          console.log(response.data)
-//          const data = response.data;
-//          const PackageName = data.map((country) => country.name);
-//          setPackageType(PackageName);
-//          console.log(PackageName);
-//      })
-//      .catch((error) => {
-//          console.log(error);
-//      }
-//      );
 
 
     const handleCountryOfSales = async () => {
@@ -198,6 +177,20 @@ const GTINAddProducts = () => {
     };
 
 
+    const handleAllPackageType = async () => {
+        try {
+            const response = await newRequest.get('/productTypes');
+            console.log(response.data);
+            const data = response.data;
+            const PackageName = data.map((country) => country.name);
+            setPackageType(PackageName);
+            console.log(PackageName);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     useEffect(() => {
         handleUnitCode();
         handleCountryOfSales();
@@ -205,6 +198,7 @@ const GTINAddProducts = () => {
         handleBrandNamesEnglishArabic();
         handleProductDescriptionLanguages();
         handleRegion();
+        handleAllPackageType();
     }, []);
 
 

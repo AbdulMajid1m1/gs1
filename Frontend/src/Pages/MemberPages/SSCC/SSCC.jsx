@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AccountCircleIcon from '@mui/icons-material/Print';
-import BulkSSCCPopup from './BulkSSCCPopup'; // Import the popup component
 import Barcode from "react-barcode";
 import { QRCodeSVG } from "qrcode.react";
 import logo from "../../../Images/logo.png";
@@ -13,6 +11,7 @@ import { DataTableContext } from '../../../Contexts/DataTableContext';
 import newRequest from '../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import BulkPopUp from './BulkPopUp';
 
 
 const SSCC = () => {
@@ -23,29 +22,29 @@ const SSCC = () => {
     const memberData = JSON.parse(memberDataString);
     // console.log(memberData);
   
-    const [showBulkPopup, setShowBulkPopup] = useState(false); // State to control the visibility of the popup
     const [updatedRows, setUpdatedRows] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [filteredData, setFilteredData] = useState([]); // for the map markers
     const navigate = useNavigate()
     
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-            // /member/sscc/list
-          const response = await newRequest.get(`/sscc?user_id=${memberData?.id}`)
-          console.log(response.data);
-          setData(response?.data);
 
-          setFilteredData(response?.data)
-          setIsLoading(false)
-        } 
-        catch (err) {
-          console.log(err);
-          setIsLoading(false)
-        }
-      };
-  
+    const fetchData = async () => {
+      try {
+          // /member/sscc/list
+        const response = await newRequest.get(`/sscc?user_id=${memberData?.id}`)
+        console.log(response.data);
+        setData(response?.data);
+
+        setFilteredData(response?.data)
+        setIsLoading(false)
+      } 
+      catch (err) {
+        console.log(err);
+        setIsLoading(false)
+      }
+    };
+    
+    useEffect(() => {
       fetchData(); // Calling the function within useEffect, not inside itself
     }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -95,15 +94,10 @@ const SSCC = () => {
         }
       };
 
-
-      const handleBulkSSCC = () => {
-        setShowBulkPopup(true); // Show the bulk SSCC popup
+      const [isBulkPopupVisible, setBulkPopupVisibility] = useState(false);
+      const handleShowBulkPopup = () => {
+        setBulkPopupVisibility(true);
       };
-    
-      const handleClosePopup = () => {
-        setShowBulkPopup(false); // Hide the bulk SSCC popup
-      };
-
 
       
       // Print Page
@@ -259,7 +253,7 @@ const handleRowClickInParent = (item) => {
                         </button>
 
                         <button 
-                        onClick={handleBulkSSCC} // Show the bulk SSCC popup on click
+                        onClick={handleShowBulkPopup} // Show the bulk SSCC popup on click
                           className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                             <i className="fas fa-archive mr-1"></i> Bulk SSCC
                         </button>
@@ -306,10 +300,11 @@ const handleRowClickInParent = (item) => {
                 </div>
 
 
-                 {/* Show the bulk SSCC popup if the state is true */}
-                  {showBulkPopup && (
-                    <BulkSSCCPopup onClose={handleClosePopup} />
-                  )}
+                {/* Add Bulk popup component with handlebulkCreatePopup prop */}
+                {isBulkPopupVisible && (
+                  <BulkPopUp isVisible={isBulkPopupVisible} setVisibility={setBulkPopupVisibility} refreshSsccData={fetchData}/>
+                )}
+
 
 
 

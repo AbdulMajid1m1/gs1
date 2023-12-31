@@ -72,6 +72,11 @@ import UDI from "./Pages/MemberPages/UDI/UDI";
 import SSCC from "./Pages/MemberPages/SSCC/SSCC";
 import AddSSCC from "./Pages/MemberPages/SSCC/AddSSCC";
 import UpdateSSCC from "./Pages/MemberPages/SSCC/UpdateSSCC";
+import ForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/ForeignGTIN";
+import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/GTIN";
+import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/SSCC";
+import Gln from "./Pages/AdminPages/AdminIndentify/GLN/GLN";
+import DigitalUrlInfo from "./Pages/MemberPages/DigitalUrlInfo/DigitalUrlInfo";
 
 const queryClient = new QueryClient()
 
@@ -138,6 +143,8 @@ const App = () => {
                               path="view-gtin-product/:productId"
                               element={<GTINViewProduct />}
                             />
+                            <Route path="digitalurl" element={<DigitalUrlInfo />} />
+                            
                             <Route path="gln" element={<GLN />} />
                             <Route path="add-gln" element={<AddGLN />} />
                             <Route path="update-gln/:Id" element={<UpdateGLN />} />
@@ -222,6 +229,11 @@ const App = () => {
                             <Route path="help-desk" element={<HelpDesk />} />
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
+
+                            <Route path="gtin" element={<Gtin />} />
+                            <Route path="gln" element={<Gln />} />
+                            <Route path="sscc" element={<Sscc />} />
+                            <Route path="foreign-gtin" element={<ForeignGTIN />} />
 
                             <Route path="front-end" element={<Frontend />} />
                             <Route path="settings" element={<Settings />} />

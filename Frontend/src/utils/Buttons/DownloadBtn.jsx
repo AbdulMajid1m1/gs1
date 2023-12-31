@@ -34,7 +34,7 @@ export default function DownloadButton({ id, name }) {
     <Button
       variant="contained"
       style={{
-        backgroundColor: "rgb(59, 130, 246)",
+        backgroundColor: "#021F69",
         color: "white",
       }}
       startIcon={<DownloadIcon />}

@@ -19,6 +19,7 @@ import transactionhistory from '../../Images/transactionhistory.png';
 import share from '../../Images/share.png';
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png';
 import helpdesk1 from '../../Images/helpdesk1.png';
+import logout from '../../Images/logout.png';
 import newRequest from "../../utils/userRequest";
 
 const SideBar = () => {
@@ -62,6 +63,12 @@ const SideBar = () => {
     setSelectedItem(path);
     navigate(path);
   };
+
+  const handleItemClickGs1website = (path) => {
+    setSelectedItem(path);
+    window.open(path, '_blank');
+  };
+  
 
   const handleContextMenu = (event, path) => {
     event.preventDefault();
@@ -141,7 +148,10 @@ const SideBar = () => {
            <div className='flex justify-end items-center px-0 mr-4'>
                 <span>
                   <p className="text-white font-sans mr-5 hover:text-primary" 
-                    onClick={() => navigate('/')}
+                     onClick={() => handleItemClickGs1website('/member/dashboard')}
+                     onContextMenu={(event) =>
+                       handleContextMenu(event, '/member/dashboard')
+                     }
                   >GS1 Website</p>
                 </span>
                   <span onClick={() => navigate(-1)} className='cursor-pointer'
@@ -154,7 +164,7 @@ const SideBar = () => {
                 </span>
               </div>
             <img
-              onClick={() => navigate("/member/member-profile")}
+              // onClick={() => navigate("/member/member-profile")}
               src={
                 // currentUser?.user?.image
                 //   ? imagePath + currentUser?.user?.image
@@ -480,7 +490,7 @@ const SideBar = () => {
                   <p className="sidebar-text">Member Profile</p>
                 </div>
 
-                <div 
+                {/* <div 
                   className={`main-images-container ${selectedItem === '/member/member-data' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/member/member-data')}
                       onContextMenu={(event) =>
@@ -509,7 +519,7 @@ const SideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">Cr Number</p>
-                </div>
+                </div> */}
                
                
 
@@ -549,6 +559,18 @@ const SideBar = () => {
               alt=""
             />
             <p className="sidebar-text">Subscribed GTIN</p>
+          </div>
+
+          <div
+            className={`main-images-container`}
+            onClick={() => navigate('/')}
+          >
+            <img
+              src={logout}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">Log-out</p>
           </div>
 
 

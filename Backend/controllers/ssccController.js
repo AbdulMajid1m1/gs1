@@ -33,7 +33,7 @@ const ssccSchema = Joi.object({
     carton: Joi.string().max(255),
     SSCCBarcodeNumber: Joi.string().max(255),
     SSCCBarcodeNumber_without_check: Joi.string().max(255),
-    user_id: Joi.string(),
+    user_id: Joi.string().required(),
 });
 
 export const createSSCC = async (req, res, next) => {
@@ -64,7 +64,7 @@ export const createSSCC = async (req, res, next) => {
                 where: {
                     user_id: user.id,
                     status: 'active',
-                    product_identifier_name: "sscc" // Changed to SSCC
+                    product_identifier_name: "SSCC" // Changed to SSCC
                 },
                 include: {
                     product: true // Assuming you need the product details
@@ -141,6 +141,162 @@ export const createSSCC = async (req, res, next) => {
         next(err);
     }
 };
+
+
+const ssccBulkSchema = Joi.object({
+    preDigit: Joi.string().max(255),
+    user_id: Joi.string().required(),
+    quantity: Joi.number().required(),
+});
+
+
+export const createBulkSSCC = async (req, res, next) => {
+    // Validate request body
+    const { error, value } = ssccBulkSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const userId = value.user_id;
+
+    try {
+        const result = await prisma.$transaction(async (prisma) => {
+            let user = await prisma.users.findUnique({ where: { id: userId } });
+            if (!user) throw createError(404, 'User not found');
+
+
+            if (user.parent_memberID !== '0') {
+                if (user.parent_memberID === null) return next(createError(404, 'User not found'));
+                user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
+                if (!user) {
+                    throw createError(404, 'User not found');
+                }
+            }
+
+
+            const otherProductSubscriptions = await prisma.other_products_subcriptions.findFirst({
+                where: {
+                    user_id: user.id,
+                    status: 'active',
+                    product_identifier_name: "SSCC" // Changed to SSCC
+                },
+                include: {
+                    product: true // Assuming you need the product details
+                }
+            });
+
+
+
+            if (!otherProductSubscriptions) throw createError(400, 'No active subscription found');
+
+            // if (otherProductSubscriptions.other_products_subscription_limit === 0) {
+            //     throw createError(403, 'Subscription limit exceeded');
+            // }
+
+            // check  if quantity is greater than subscription limit
+            if (value.quantity > otherProductSubscriptions.other_products_subscription_limit) {
+                throw createError(403, 'Subscription limit exceeded');
+            }
+
+            // const productsCount = otherProductSubscriptions.other_products_subscription_counter;
+            // const preDigitGcpGlnId = value.preDigit + user.gcpGLNID;
+            // const sscc = await generateSSCCBarcode(preDigitGcpGlnId, productsCount);
+
+            // if (sscc === "false") {
+            //     throw createError(400, 'Invalid SSCC calculation');
+            // }
+
+            // const newSSCCData = {
+            //     SSCCBarcodeNumber: sscc,
+
+            //     user_id: user.id,
+            //     // Add other fields here
+            //     ...(value.sscc_type && { sscc_type: value.sscc_type }),
+            //     ...(value.product_id && { product_id: value.product_id }),
+            //     ...(value.reference_id && { reference_id: value.reference_id }),
+            //     ...(value.VendorID && { VendorID: value.VendorID }),
+            //     ...(value.VendorName && { VendorName: value.VendorName }),
+            //     ...(value.productID && { productID: value.productID }),
+            //     ...(value.description && { description: value.description }),
+            //     ...(value.SerialNumber && { SerialNumber: value.SerialNumber }),
+            //     ...(value.ItemCode && { ItemCode: value.ItemCode }),
+            //     ...(value.Qty && { Qty: value.Qty }),
+            //     ...(value.UseBy && { UseBy: value.UseBy }),
+            //     ...(value.BatchNo && { BatchNo: value.BatchNo }),
+            //     ...(value.Boxof && { Boxof: value.Boxof }),
+            //     ...(value.hsn_sku && { hsn_sku: value.hsn_sku }),
+            //     ...(value.po_no && { po_no: value.po_no }),
+            //     ...(value.expiraton_date && { expiraton_date: value.expiraton_date }),
+            //     ...(value.ship_to && { ship_to: value.ship_to }),
+            //     ...(value.ship_date && { ship_date: value.ship_date }),
+            //     ...(value.vendor_item_no && { vendor_item_no: value.vendor_item_no }),
+            //     ...(value.short_qty_code && { short_qty_code: value.short_qty_code }),
+            //     ...(value.country_id && { country_id: value.country_id }),
+            //     ...(value.carton && { carton: value.carton }),
+            //     ...(value.SSCCBarcodeNumber_without_check && { SSCCBarcodeNumber_without_check: value.SSCCBarcodeNumber_without_check }),
+            //     ...(value.user_id && { user_id: value.user_id }),
+            //     ...(value.gcpGLNID && { gcpGLNID: value.gcpGLNID }),
+            // };
+
+            // const newSSCC = await prisma.add_member_sscc_products.create({
+            //     data: newSSCCData,
+            // });
+
+            // Update counter in other_products_subcriptions
+            // await prisma.other_products_subcriptions.update({
+            //     where: { id: otherProductSubscriptions.id },
+            //     data: {
+            //         other_products_subscription_counter: productsCount + 1,
+            //         other_products_subscription_limit: otherProductSubscriptions.other_products_subscription_limit - 1,
+            //     },
+            // });
+
+            // return { newSSCC, otherProductSubscriptions };
+
+            // generate SSCC barcodes for bulk and save in database using batch insert
+            const ssccs = [];
+            const preDigitGcpGlnId = value.preDigit + user.gcpGLNID;
+            for (let i = 0; i < value.quantity; i++) {
+                const sscc = await generateSSCCBarcode(preDigitGcpGlnId, i);
+                if (sscc === "false") {
+                    throw createError(400, 'Invalid SSCC calculation');
+                }
+                ssccs.push({
+                    sscc_type: "Bulk Barcode",
+                    SSCCBarcodeNumber: sscc,
+                    user_id: user.id,
+                    gcpGLNID: user.gcpGLNID,
+                    product_id: otherProductSubscriptions.product.id,
+                });
+            }
+            const newSSCC = await prisma.add_member_sscc_products.createMany({
+                data: ssccs,
+            });
+
+
+            // Update counter in other_products_subcriptions
+            await prisma.other_products_subcriptions.update({
+                where: { id: otherProductSubscriptions.id },
+                data: {
+                    other_products_subscription_counter: otherProductSubscriptions.other_products_subscription_counter + value.quantity,
+                    other_products_subscription_limit: otherProductSubscriptions.other_products_subscription_limit - value.quantity,
+                },
+            });
+
+
+            return { newSSCC, otherProductSubscriptions };
+        });
+
+        res.status(201).json({
+            message: 'SSCC created successfully.',
+            product: result.newSSCC,
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
 
 
 export const getSSCCProductsDetails = async (req, res, next) => {
