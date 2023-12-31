@@ -68,12 +68,13 @@ export const createGLN = async (req, res, next) => {
                 }
             }
 
-
             const otherProductSubscriptions = await prisma.other_products_subcriptions.findFirst({
                 where: {
                     user_id: user.id,
                     status: 'active',
-                    product_identifier_name: "gln"
+                    product_identifier_name: {
+                        in: ["GLN (20 Locations)", "GLN (10 Locations)", "GLN (30 Locations)"]
+                    }
                 },
                 include: {
                     product: {

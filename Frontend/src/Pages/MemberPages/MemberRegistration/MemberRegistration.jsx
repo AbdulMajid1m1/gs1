@@ -46,7 +46,7 @@ const MemmberRegisteration = () => {
     const [upload, setUpload] = useState('')
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedCategories, setSelectedCategories] = useState(null);
-
+    const [otherProductChange, setOtherProductChange] = useState(false);
 
 
     // multple select 
@@ -203,6 +203,7 @@ const MemmberRegisteration = () => {
 
 
     const handleOtherProductsChange = (event, value) => {
+        setOtherProductChange(!otherProductChange);
         // setSelectedOtherProducts(value);
 
         // const names = value.map((option) => option.product_name);
@@ -220,6 +221,7 @@ const MemmberRegisteration = () => {
         );
 
         setSelectedGLNOption(selectedGLN);
+        console.log(value);
         setSelectedOtherProducts(value);
 
     };
@@ -257,6 +259,7 @@ const MemmberRegisteration = () => {
         }
 
         if (selectedOtherProducts.length) {
+            console.log(selectedOtherProducts)
             newSelectedOtherProducts = selectedOtherProducts.map(product => ({
                 ...product,
                 price: selectedCategories?.name === "medical"
@@ -267,7 +270,7 @@ const MemmberRegisteration = () => {
 
         setSubscriptionData(newSubscriptionData);
         setSelectedOtherProducts(newSelectedOtherProducts);
-    }, [selectedCategories, selectedGtinNumber, selectedOtherProducts]);
+    }, [selectedCategories, selectedGtinNumber,otherProductChange]);
 
 
     // Calculate total price
@@ -293,7 +296,7 @@ const MemmberRegisteration = () => {
             }
         }
     };
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -356,7 +359,7 @@ const MemmberRegisteration = () => {
         // formData.append('online_payment', 'Enabled');
 
         // formData.append('remember_token', 'TokenXYZ');
-       
+
         formData.append('membership_category_id', selectedCategories.id)
         // formData.append('invoice_file', 'https://example.com/invoice.pdf');
         // formData.append('otp_status', '1');
@@ -967,14 +970,14 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2 mt-2'>
-                                <label 
+                                <label
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
                                 >GTIN
                                     <span className='text-red-600'>*</span>
                                     (Barcode)
                                     <img src={barcodeImage} className='h-10 w-auto' alt='' />
                                 </label>
-                                
+
                                 <Autocomplete
                                     id='GTIN'
                                     disabled={!selectedCategories}
@@ -991,7 +994,7 @@ const MemmberRegisteration = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             autoComplete="off"
-                                 
+
                                             {...params}
                                             InputProps={{
                                                 ...params.InputProps,
