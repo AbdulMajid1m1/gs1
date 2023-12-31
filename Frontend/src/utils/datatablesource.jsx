@@ -1303,13 +1303,29 @@ export const GtinColumn = [
       />
     )
   },
+  // {
+  //   field: "product_url",
+  //   headerName: "Product URL",
+  //   width: 180,
+  //   renderCell: (params) => {
+  //     let url = params.value;
+  //     if (!url.startsWith('http://') && !url.startsWith('https://')) {
+  //       url = 'http://' + url;
+  //     }
+  //     return (
+  //       <a href={url} target="_blank" rel="noopener noreferrer">
+  //         {params.value}
+  //       </a>
+  //     );
+  //   },
+  // },
   {
     field: "product_url",
     headerName: "Product URL",
     width: 180,
     renderCell: (params) => {
       let url = params.value;
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
       }
       return (
@@ -1319,6 +1335,7 @@ export const GtinColumn = [
       );
     },
   },
+  
   {
     field: 'ProductType',
     headerName: 'Product Type',
