@@ -38,20 +38,22 @@ const Gtin = () => {
 
   };
 
+
+  const fetchData = async () => {
+    try {
+      const response = await newRequest.get(`/products?user_id=${memberData?.id}`);
+      console.log(response.data);
+      setData(response?.data || []);
+      setIsLoading(false)
+
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false)
+    }
+  };
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await newRequest.get(`/products?user_id=${memberData?.id}`);
-        console.log(response.data);
-        setData(response?.data || []);
-        setIsLoading(false)
-
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false)
-      }
-    };
-
     fetchData(); // Calling the function within useEffect, not inside itself
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -131,32 +133,104 @@ const Gtin = () => {
   
 
 
-  // file Import
+  // // file Import
+  // const [selectedFile, setSelectedFile] = useState(null);
+
+  // const fileInputRef = useRef(null);
+
+  // const handleImportClick = () => {
+  //   fileInputRef.current.click();
+  // };
+
+  //   const handleFileInputChange = (event) => {
+  //     const selectedFile = event.target.files[0];
+  //     setIsLoading(true);
+
+
+  //     if (selectedFile) {
+  //       const formData = new FormData();
+  //       formData.append('file', selectedFile);
+  //       formData.append('user_id', memberData?.id);
+  //       formData.append('email', memberData?.email);
+
+  //       newRequest.post('/products/bulkGtin', formData)
+  //         .then((response) => {
+  //           // Handle the successful response
+  //           console.log(response.data);
+       
+  //           toast.success('The data has been imported successfully.', {
+  //             position: 'top-right',
+  //             autoClose: 2000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             theme: 'light',
+  //           });
+
+  //           setIsLoading(false)
+
+  //         })
+  //         .catch((error) => {
+  //           // Handle the error
+  //           console.error(error);
+       
+  //           toast.error('Something is Wrong', {
+  //             position: 'top-right',
+  //             autoClose: 2000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             theme: 'light',
+  //           });
+
+  //           setIsLoading(false)
+
+  //         });
+  //     }
+  //   };
+
   const [selectedFile, setSelectedFile] = useState(null);
+  
+  const handleFileInputChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setIsLoading(true);
 
-  const fileInputRef = useRef(null);
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('user_id', memberData?.id);
+      formData.append('email', memberData?.email);
 
-  const handleImportClick = () => {
-    fileInputRef.current.click();
-  };
+      newRequest.post('/products/bulkGtin', formData)
+        .then((response) => {
+          // Handle the successful response
+          console.log(response.data);
 
-    const handleFileInputChange = (event) => {
-      const selectedFile = event.target.files[0];
-      setIsLoading(true);
-
-
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        formData.append('user_id', memberData?.id);
-        formData.append('email', memberData?.email);
-
-        newRequest.post('/products/bulkGtin', formData)
-          .then((response) => {
-            // Handle the successful response
-            console.log(response.data);
-       
-            toast.success('The data has been imported successfully.', {
+          if (response.data && response.data.errors && response.data.errors.length > 0) {
+            // Check for the specific error related to duplicate product
+            const duplicateProductError = response.data.errors.find(error =>
+              error.error.includes('A product with the same brand names and product names already exists')
+            );
+      
+            if (duplicateProductError) {
+              // Display a specific error message for duplicate product
+              toast.error(duplicateProductError.error, {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: 'light',
+              });
+            } else {
+              console.error('Unhandled error:', response.data.errors);
+            }
+          } else {
+            // Display a generic success message
+            toast.success(response?.data?.message || 'The data has been imported successfully.', {
               position: 'top-right',
               autoClose: 2000,
               hideProgressBar: false,
@@ -165,29 +239,34 @@ const Gtin = () => {
               draggable: true,
               theme: 'light',
             });
+          }
 
-            setIsLoading(false)
+          setIsLoading(false);
+          // Clear the file input value
+          event.target.value = '';
+          
+          fetchData();
+        })
+        .catch((error) => {
+          // Handle the error
+          console.error(error);
 
-          })
-          .catch((error) => {
-            // Handle the error
-            console.error(error);
-       
-            toast.error('Something is Wrong', {
-              position: 'top-right',
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: 'light',
-            });
-
-            setIsLoading(false)
-
+          toast.error(error?.response?.data || "The Bulk File is not Upload", {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: 'light',
           });
-      }
-    };
+
+          // Clear the file input value
+          event.target.value = '';
+          setIsLoading(false);
+        });
+    }
+  };
 
 
   // Gtin Page Print
@@ -331,7 +410,7 @@ const Gtin = () => {
             </button>
 
 
-            <div>
+            {/* <div>
               <input
                 type="file"
                 ref={fileInputRef}
@@ -341,6 +420,20 @@ const Gtin = () => {
               <button
                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
                 onClick={handleImportClick}
+              >
+                <i className="fas fa-file-import mr-1"></i> Import
+              </button>
+            </div> */}
+
+            <div>
+              <input
+                type="file"
+                style={{ display: 'none' }}
+                onChange={handleFileInputChange}
+              />
+              <button
+                className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
+                onClick={() => document.querySelector('input[type="file"]').click()}
               >
                 <i className="fas fa-file-import mr-1"></i> Import
               </button>
