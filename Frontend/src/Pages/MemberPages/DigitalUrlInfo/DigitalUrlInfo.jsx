@@ -361,6 +361,7 @@ const DigitalUrlInfo = () => {
             columnsName={SafetyInformationColumn}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
+            secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
@@ -381,6 +382,7 @@ const DigitalUrlInfo = () => {
             title="Promotional Offers"
             columnsName={PromotionalOffersColumns}
             checkboxSelection="disabled"
+            secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
@@ -402,6 +404,7 @@ const DigitalUrlInfo = () => {
             title="Product Contents"
             columnsName={ProductContentColumn}
             checkboxSelection="disabled"
+            secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
@@ -423,6 +426,7 @@ const DigitalUrlInfo = () => {
             title="Product Location of Origin"
             columnsName={ProductLocationofOriginColumn}
             checkboxSelection="disabled"
+            secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
@@ -445,6 +449,7 @@ const DigitalUrlInfo = () => {
             columnsName={ProductRecallColumn}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
+            secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
@@ -465,6 +470,7 @@ const DigitalUrlInfo = () => {
             title="Recipe"
             columnsName={RecipeColumn}
             checkboxSelection="disabled"
+            secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
@@ -487,6 +493,7 @@ const DigitalUrlInfo = () => {
             columnsName={PackagingCompositionColumn}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
+            secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
@@ -508,6 +515,7 @@ const DigitalUrlInfo = () => {
             columnsName={ElectronicLeafletsColumn}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
+            secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
@@ -530,69 +538,81 @@ const DigitalUrlInfo = () => {
     <div>
 
       <div className="p-0 sm:p-1 h-full sm:ml-72">
-        <div className="h-28 w-full shadow-xl">
-          <div className="h-auto xl:h-10 lg:h-10 w-full bg-[#1E3B8B]">
+        <div className="2xl:h-28 xl:h-28 lg:h-28 h-auto w-full shadow-xl font-sans rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
+          {/* <div className="">
+              <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
+                  <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
+                    <p className="font-semibold">Complete Data</p>
+                      <p>
+                        This number is registered to company: :{" "}
+                          <span className="font-semibold">Hasnain, Majid</span>
+                      </p>
+                    </div>
+                  </div>
+            </div> */}
+            
+          <div className="h-auto xl:h-10 lg:h-10 w-full">
             <div className="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-6 gap-2 sm:gap-5 px-2 sm:px-10 py-2">
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Product Name [Eng]
                 </p>
-                <p className="sm:text-xs text-sm font-body text-gray-600">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-gray-600">
                   {/* {selectedGtinData?.productnameenglish} */}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   QR Code
                 </p>
-                <p className="sm:text-xs text-sm font-body text-white"></p>
+                <p className="sm:text-xs text-sm font-sans text-secondary"></p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Brand Name
                 </p>
-                <p className="sm:text-xs text-sm font-body text-gray-600">
+                <p className="sm:text-xs text-sm font-sans text-gray-600">
                   {/* {selectedGtinData?.BrandName} */}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Barcode
                 </p>
-                <p className="sm:text-xs text-sm font-body text-white bg-green-700 rounded-full px-3">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary bg-green-700 rounded-full px-3">
                   {/* {selectedGtinData?.barcode} */}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Company
                 </p>
-                <p className="sm:text-xs text-sm font-body text-gray-600">
+                <p className="sm:text-xs text-sm font-sans text-gray-600">
                   {/* {currentUser?.user?.company_name_eng} */}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Certificate
                 </p>
-                <p className="sm:text-xs text-sm font-body text-gray-600">
+                <p className="sm:text-xs text-sm font-sans text-gray-600">
                   Certificate
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Status
                 </p>
-                <p className="sm:text-xs text-sm font-body text-white bg-green-500 rounded-full px-3">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary bg-green-500 rounded-full px-3">
                   {/* {selectedGtinData?.status} */}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
-                <p className="sm:text-xs text-sm font-body text-white">
+                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Action
                 </p>
                 <p
-                  className="sm:text-xs cursor-pointer text-sm font-body text-white bg-blue-600 rounded-md px-3 py-[2px]"
+                  className="sm:text-xs text-center cursor-pointer text-sm font-sans text-white bg-blue-600 rounded-md px-3 py-[2px]"
                   onClick={togglePopup}
                 >
                   Add Digital Link
@@ -609,9 +629,9 @@ const DigitalUrlInfo = () => {
           barcode={selectedGtinData?.barcode}
         />
 
-        <div className="2xl:mt-0 xl:mt-0 lg:mt-0 md:mt-32 smm:mt-56 mt-48">
-          <div className="h-10 w-full bg-[#e49515] shadow-xl mt-6 flex justify-start items-center px-5">
-            <p className="sm:w-auto w-full sm:text-lg text-sm font-body text-white">
+        <div className="2xl:mt-0 xl:mt-0 lg:mt-0">
+          <div className="h-10 w-full bg-primary shadow-xl mt-6 flex justify-start items-center px-5">
+            <p className="sm:w-auto w-full sm:text-lg text-sm font-sans text-white">
               Digital Link Information
             </p>
           </div>

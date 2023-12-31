@@ -334,7 +334,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
         <div className="digital-popup-overlay" onClick={togglePopup}></div>
         <div className="digital-popup-large">
           <div className="digital-popup-header">
-            <h1 className="digital-popup-title">Digital Link</h1>
+            <h1 className="digital-popup-title font-sans text-secondary font-semibold">Digital Link</h1>
             <button className="digital-popup-close" onClick={togglePopup}>
               X
             </button>
@@ -1266,10 +1266,10 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
           <div className="footer-line"></div>
 
           <div className="popup-footer">
-            <button className="popup-close" onClick={togglePopup}>
+            <button className="popup-close bg-secondary hover:bg-primary" onClick={togglePopup}>
               Close
             </button>
-            <button type="submit" className="popup-save" form="gtin-form">
+            <button type="submit" className="bg-secondary hover:bg-primary text-white rounded-md cursor-pointer py-2 px-6" >
               Save
             </button>
           </div>

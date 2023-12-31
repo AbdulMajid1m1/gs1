@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 
-const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData }) => {
+const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, refreshHistoryData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
@@ -167,6 +167,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       setLoading(false);
       fetchMemberbankSlipData();
       refreshBrandData();
+      refreshHistoryData();
       handleCloseMemberPopup();
 
 
@@ -315,7 +316,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                       />
                     </div>
                   )}
-                  
+
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field3" className="text-secondary">Upload Documents </label>
                     <input

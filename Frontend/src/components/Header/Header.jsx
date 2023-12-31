@@ -28,14 +28,14 @@ const Header = () => {
             <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2'>
               <button 
                 onClick={() => navigate('/get-barcode')}
-                className='bg-secondary text-white px-2 py-1 rounded-md'
+                className='bg-secondary text-white px-2 py-1 rounded-md transition-transform transform hover:scale-90'
                   >
                   Get a Barcode
               </button>
               
                 <button 
                   onClick={() => navigate('/email-address')}
-                  className='bg-primary text-white px-2 py-1 rounded-md'
+                  className='bg-primary text-white px-2 py-1 rounded-md transition-transform transform hover:scale-90'
                 >
                   GS1 Member Login
                 </button>
