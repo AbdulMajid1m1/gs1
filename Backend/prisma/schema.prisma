@@ -880,9 +880,9 @@ model markeing_emails {
 }
 
 model mega_menu_categories {
-  id               BigInt    @id(map: "PK_mega_menu_categories") @default(autoincrement())
-  parent_id        Int?
-  megamenu_id      Int?
+  id         String    @id @default(cuid())
+  parent_id        String?
+  megamenu_id      String?
   category_name_en String?   @db.NVarChar(Max)
   category_name_ar String?   @db.NVarChar(Max)
   description      String?   @db.NVarChar(Max)
@@ -891,8 +891,8 @@ model mega_menu_categories {
   meta_description String?   @db.NVarChar(Max)
   meta_keywords    String?   @db.NVarChar(Max)
   status           Int?
-  created_at       DateTime? @db.DateTime
-  updated_at       DateTime? @db.DateTime
+   created_at         DateTime? @default(now()) @db.DateTime
+  updated_at         DateTime  @default(now()) @db.DateTime
 }
 
 model mega_menus {

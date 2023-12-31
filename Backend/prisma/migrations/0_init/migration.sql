@@ -995,9 +995,9 @@ CREATE TABLE [dbo].[markeing_emails] (
 
 -- CreateTable
 CREATE TABLE [dbo].[mega_menu_categories] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
-    [parent_id] INT,
-    [megamenu_id] INT,
+    [id]NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [parent_id] NVARCHAR(max),
+    [megamenu_id] NVARCHAR(max),
     [category_name_en] NVARCHAR(max),
     [category_name_ar] NVARCHAR(max),
     [description] NVARCHAR(max),

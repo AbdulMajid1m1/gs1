@@ -10,7 +10,11 @@ import { createHsCode,getAllHsCode,getHsCodeById,updateHsCode,deleteHsCode } fro
 import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC } from '../controllers/UNSPSC.js';
 import { getAllprod_desc_languages } from "../controllers/productsController.js"
 
-import {getAllmega_menu,createmega_menus,getmega_menusById,updatemega_menus,deletemega_menus} from "../controllers/catalog.js"
+import
+    {
+        getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
+    getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
+deletemega_menu_categories} from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -77,4 +81,11 @@ router.post('/createmega_menus', createmega_menus);
 router.get('/getmega_menusById/:id', getmega_menusById);
 router.put('/updatemega_menus/:id', updatemega_menus);
 router.delete('/deletemega_menus/:id', deletemega_menus);
+
+// Routes for mega_menu_categories
+router.get('/getAllmega_menu_categories', getAllmega_menu_categories);
+router.post('/creatmega_menu_categories', creatmega_menu_categories);
+router.get('/getmega_menu_categoriesById/:id', getmega_menu_categoriesById);
+router.put('/updatemega_menu_categories/:id', updatemega_menu_categories);
+router.delete('/deletemega_menu_categories/:id', deletemega_menu_categories);
 export default router;
