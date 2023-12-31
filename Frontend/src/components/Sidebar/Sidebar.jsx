@@ -19,6 +19,7 @@ import transactionhistory from '../../Images/transactionhistory.png';
 import share from '../../Images/share.png';
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png';
 import helpdesk1 from '../../Images/helpdesk1.png';
+import logout from '../../Images/logout.png';
 import newRequest from "../../utils/userRequest";
 
 const SideBar = () => {
@@ -558,6 +559,18 @@ const SideBar = () => {
               alt=""
             />
             <p className="sidebar-text">Subscribed GTIN</p>
+          </div>
+
+          <div
+            className={`main-images-container`}
+            onClick={() => navigate('/')}
+          >
+            <img
+              src={logout}
+              className="main-inside-image bg-white rounded-full"
+              alt=""
+            />
+            <p className="sidebar-text">Log-out</p>
           </div>
 
 

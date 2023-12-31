@@ -19,12 +19,12 @@ const Gtin = () => {
   const [data, setData] = useState([]);
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
-  console.log(memberData);
+  // console.log(memberData);
 
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
   const navigate = useNavigate()
 
@@ -69,7 +69,7 @@ const Gtin = () => {
   }
   const handleDigitalUrlInfo = (row) => {
     sessionStorage.setItem("selectedGtinData", JSON.stringify(row));
-    navigate("/digitalurl")
+    navigate("/member/digitalurl")
   }
 
   const handleDelete = async (row) => {
