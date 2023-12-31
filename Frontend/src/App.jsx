@@ -76,6 +76,7 @@ import ForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/ForeignGT
 import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/GTIN";
 import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/SSCC";
 import Gln from "./Pages/AdminPages/AdminIndentify/GLN/GLN";
+import DigitalUrlInfo from "./Pages/MemberPages/DigitalUrlInfo/DigitalUrlInfo";
 
 const queryClient = new QueryClient()
 
@@ -142,6 +143,8 @@ const App = () => {
                               path="view-gtin-product/:productId"
                               element={<GTINViewProduct />}
                             />
+                            <Route path="digitalurl" element={<DigitalUrlInfo />} />
+                            
                             <Route path="gln" element={<GLN />} />
                             <Route path="add-gln" element={<AddGLN />} />
                             <Route path="update-gln/:Id" element={<UpdateGLN />} />

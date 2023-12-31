@@ -13,6 +13,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   const [transactionId, setTransactionId] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
+  const [isBankSlip, setIsBankSlip] = useState(true);
   const [error, setError] = useState('');
   // get the sesstion data
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
@@ -22,6 +23,11 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
   const handleCloseMemberPopup = () => {
     setVisibility(false);
+  };
+
+
+  const handleRadioChange = (event) => {
+    setIsBankSlip(event.target.value === 'bankSlip');
   };
 
 
@@ -199,18 +205,6 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">Select Documents</label>
-                    {/* <select
-                                   type="text"
-                                   id="field1"
-                                   value={selectDocument}
-                                   onChange={(e) => setSelectDocument(e.target.value)}
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 >
-                                      <option value="1">Document 1</option>
-                                      <option value="2">Document 2</option>
-                                      <option value="3">Document 3</option>
-                                      <option value="4">Document 4</option>
-                                </select>         */}
                     <Autocomplete
                       id="field1"
                       options={docuements}
@@ -251,61 +245,77 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                     />
                   </div>
 
-                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">Transaction Id </label>
-                    {/* <select
-                                   type="text"
-                                   id="field2"
-                                    onChange={(e) => setTransactionId(e.target.value)}
-                                   placeholder="Transaction Id"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                  >
-                                      <option value="">Select Transaction Id</option>
-                                      {transactionId?.map((item, index) => (
-                                        <option key={index} value={item?.transaction_id}>{item?.transaction_id}</option>
-                                      ))}
 
-                                </select> */}
-                    <Autocomplete
-                      id="field2"
-                      options={transactionId}
-                      value={selectedTransactionId}
-                      getOptionLabel={(option) => option?.transaction_id || ""}
-                      onChange={handleSelectedTransactionId}
-                      onInputChange={(event, value) => {
-                        if (!value) {
-                          // perform operation when input is cleared
-                          console.log("Input cleared");
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          autoComplete="off"
-                          {...params}
-                          InputProps={{
-                            ...params.InputProps,
-                            className: "text-white",
-                          }}
-                          InputLabelProps={{
-                            ...params.InputLabelProps,
-                            style: { color: "white" },
-                          }}
-                          className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Transaction Id"
-                        // required
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label className="text-secondary">Document Type</label>
+                    <div className="flex w-full justify-center gap-4">
+                      <label>
+                        <input
+                          type="radio"
+                          name="documentType"
+                          value="bankSlip"
+                          checked={isBankSlip}
+                          onChange={handleRadioChange}
                         />
-                      )}
-                      classes={{
-                        endAdornment: "text-white",
-                      }}
-                      sx={{
-                        "& .MuiAutocomplete-endAdornment": {
-                          color: "white",
-                        },
-                      }}
-                    />
+                        <span className='ml-2'>Is Bank Slip</span>
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="documentType"
+                          value="notBankSlip"
+                          checked={!isBankSlip}
+                          onChange={handleRadioChange}
+                        />
+                        <span className='ml-2'>Is Not Bank Slip</span>
+                      </label>
+                    </div>
                   </div>
 
+                  {isBankSlip && (
+                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                      <label htmlFor="field2" className="text-secondary">Transaction Id </label>
+                      <Autocomplete
+                        id="field2"
+                        options={transactionId}
+                        value={selectedTransactionId}
+                        getOptionLabel={(option) => option?.transaction_id || ""}
+                        onChange={handleSelectedTransactionId}
+                        onInputChange={(event, value) => {
+                          if (!value) {
+                            // perform operation when input is cleared
+                            console.log("Input cleared");
+                          }
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            autoComplete="off"
+                            {...params}
+                            InputProps={{
+                              ...params.InputProps,
+                              className: "text-white",
+                            }}
+                            InputLabelProps={{
+                              ...params.InputLabelProps,
+                              style: { color: "white" },
+                            }}
+                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                            placeholder="Select Transaction Id"
+                          // required
+                          />
+                        )}
+                        classes={{
+                          endAdornment: "text-white",
+                        }}
+                        sx={{
+                          "& .MuiAutocomplete-endAdornment": {
+                            color: "white",
+                          },
+                        }}
+                      />
+                    </div>
+                  )}
+                  
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field3" className="text-secondary">Upload Documents </label>
                     <input
