@@ -1303,7 +1303,6 @@ export const GtinColumn = [
       />
     )
   },
-
   {
     field: "product_url",
     headerName: "Product URL",
@@ -1319,16 +1318,6 @@ export const GtinColumn = [
         </a>
       );
     },
-  },
-  {
-    field: 'productnamearabic',
-    headerName: 'Product Name Arabic',
-    width: 180,
-  },
-  {
-    field: 'BrandName',
-    headerName: 'Brand Name',
-    width: 180,
   },
   {
     field: 'ProductType',
@@ -1355,8 +1344,6 @@ export const GtinColumn = [
     headerName: 'Size',
     width: 180,
   },
-
-
   // {
   //   field: "status",
   //   headerName: "Status",

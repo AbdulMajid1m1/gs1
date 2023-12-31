@@ -490,7 +490,7 @@ const SideBar = () => {
                   <p className="sidebar-text">Member Profile</p>
                 </div>
 
-                <div 
+                {/* <div 
                   className={`main-images-container ${selectedItem === '/member/member-data' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/member/member-data')}
                       onContextMenu={(event) =>
@@ -519,7 +519,7 @@ const SideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">Cr Number</p>
-                </div>
+                </div> */}
                
                
 
