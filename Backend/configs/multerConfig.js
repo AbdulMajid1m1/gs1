@@ -16,17 +16,19 @@ const createStorage = (fields) => multer.diskStorage({
 
 // Function to create a file filter
 const fileFilter = (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif|pdf|doc|docx/;
+    const filetypes = /jpeg|jpg|png|gif|pdf|doc|docx|xls|xlsx|csv/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
+    const mimetype = file.mimetype;
 
-    if (mimetype && extname) {
+    if (extname && (mimetype === 'application/vnd.ms-excel' ||
+        mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+        mimetype === 'text/csv' ||
+        filetypes.test(mimetype))) {
         cb(null, true);
     } else {
-        cb(new Error('Only .jpeg, .jpg, .png, .gif, .pdf, .doc, .docx formats are allowed!'));
+        cb(new Error('Only .jpeg, .jpg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .csv formats are allowed!'));
     }
 };
-
 // Generic upload function
 export const upload = (fields) => {
     const multerFields = fields.map(field => ({ name: field.name, maxCount: 1 }));
