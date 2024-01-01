@@ -615,6 +615,7 @@ const RegisteredMembersView = () => {
                     columnsName={MembersBrandsColumn}
                     loading={brandsLoader}
                     secondaryColor="secondary"
+                    checkboxSelection={"disabled"}
 
                     dropDownOptions={[
                       // {
@@ -692,7 +693,7 @@ const RegisteredMembersView = () => {
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}
-                    // checkboxSelection='disabled'
+                    checkboxSelection={"disabled"}
                     buttonVisibility={false}
                     dropDownOptions={[
                       {

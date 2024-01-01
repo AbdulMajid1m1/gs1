@@ -181,13 +181,13 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
     handleGetAllCities();
 
 
-    setMobileNumber(gs1MemberData?.mobile || '');
     setUserPassword(editableData?.password || '');
   }
   , []);
-
+  
   useEffect(() => {
-  if (editableData) {
+    if (editableData) {
+    setMobileNumber(gs1MemberData?.companyLandLine || '');
     setUserPassword(editableData.password || '');
   }
   }, [editableData]);
@@ -470,7 +470,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                     international
                     country={'sa'}
                     defaultCountry={'sa'}
-                    value={editableData?.companyLandline}
+                    value={mobileNumber}
                     inputProps={{
                       id: 'mobile',
                       placeholder: 'Mobile Number',
