@@ -27,22 +27,26 @@ const handleSubmit = async (e) => {
       const requestBody = {
         preDigit: extensionDigit,
         quantity: quantity,
-        user_id: currentUser?.user?.id // Replace with currentUser?.user?.id if needed
+        user_id: memberData?.id // Replace with currentUser?.user?.id if needed
       };
 
-      const response = await phpRequest.post('/member/bulk/SSCC', requestBody);
+      const response = await newRequest.post('/sscc/bulk', requestBody);
         console.log(response.data);
 
         //  display message
         const successMessage = response.data.message;
         toast.success(successMessage);
         setLoading(false);
+
+        refreshSsccData();
+        handleCloseBulkPopup();
+
         // reset form
         e.target.reset();
 
       } catch (error) {
           console.log(error);
-          toast.error(error?.response?.data?.message || "Something Is Wrong");
+          toast.error(error?.response?.data?.message || "The Bulk Barcode is not generated.");
           setLoading(false);
       }
   };

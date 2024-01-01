@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 // import SideBar from "../../Components/SideBar/SideBar";
 import "./DigitalUrlInfo.css";
-import userRequest from "../../../utils/userRequest";
+// import userRequest from "../../../utils/userRequest";
+import axios from "axios";
 import FormPopup from "./FormPopup";
 import {
   SafetyInformationColumn,
@@ -29,6 +30,7 @@ import {
 } from "../../../utils/Funtions/rowUpdate";
 // import { CurrentUserContext } from "../../Contexts/CurrentUserContext";
 import DataTable from "../../../components/Datatable/Datatable";
+import { toast } from "react-toastify";
 
 const DigitalUrlInfo = () => {
   // const { currentUser } = useContext(CurrentUserContext);
@@ -55,8 +57,7 @@ const DigitalUrlInfo = () => {
   const { openSnackbar } = useContext(SnackbarContext);
   useEffect(() => {
     // Product Type Drop Down Api
-    userRequest
-      .get("/getAllProductTypes")
+    axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
       .then((response) => {
         console.log(response.data);
         setData(response.data);
@@ -66,8 +67,8 @@ const DigitalUrlInfo = () => {
       });
 
     // // Safety Information Api
-    userRequest
-      .get(`/getSafetyInformationByGtin/${selectedGtinData?.barcode}`)
+    axios
+      .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${selectedGtinData?.barcode}`)
       .then((response) => {
         console.log(response.data);
         setSafetyInformation(response.data);
@@ -84,39 +85,41 @@ const DigitalUrlInfo = () => {
 
     switch (option) {
       case "Safety Information":
-        userRequest
-          .get(`/getSafetyInformationByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             setSafetyInformation(response.data);
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(
-              err?.response?.data?.message ?? "something went wrong!",
-              "error"
-            );
+            // openSnackbar(
+            //   err?.response?.data?.message ?? "something went wrong!",
+            //   "error"
+            // );
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setSafetyInformation([]);
           });
         break;
 
       case "Promotional Offers":
-        userRequest
-          .get(`/getPromotionalOffersByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getPromotionalOffersByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             setPromotionalOffers(response.data);
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setPromotionalOffers([]);
           });
         break;
 
       case "Product Contents":
-        userRequest
-          .get(`/getProductContentByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getProductContentByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             console.log("called");
@@ -124,57 +127,61 @@ const DigitalUrlInfo = () => {
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setProductContent([]);
           });
         break;
 
       case "ProductLocationofOrigin":
-        userRequest
-          .get(`/getProductLocationOriginByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getProductLocationOriginByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             setProductLocationofOrigin(response.data);
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setProductLocationofOrigin([]);
           });
         break;
 
       case "ProductRecall":
-        userRequest
-          .get(`/getProductsRecallByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getProductsRecallByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             setProductRecall(response.data);
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setProductRecall([]);
           });
         break;
 
       case "recipe":
-        userRequest
-          .get(`/getRecipeDataByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getRecipeDataByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             setRecipe(response.data);
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setRecipe([]);
           });
         break;
 
       case "PackagingComposition":
-        userRequest
+        axios
           .get(
-            `/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}`
+            `http://gs1ksa.org:7000/api/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}`
           )
           .then((response) => {
             console.log(response.data);
@@ -182,22 +189,24 @@ const DigitalUrlInfo = () => {
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
 
             setPackagingComposition([]);
           });
         break;
 
       case "ElectronicLeaflets":
-        userRequest
-          .get(`/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}`)
+        axios
+          .get(`http://gs1ksa.org:7000/api/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
             console.log(response.data);
             setElectronicLeaflets(response.data);
           })
           .catch((err) => {
             console.log(err);
-            openSnackbar(err?.response?.data?.message, "error");
+            // openSnackbar(err?.response?.data?.message, "error");
+            toast.error(err?.response?.data?.message ?? "No Data!");
             setElectronicLeaflets([]);
           });
         break;
@@ -210,16 +219,18 @@ const DigitalUrlInfo = () => {
 
   const deleteData = (ID, endpoint) => {
     console.log(ID, selectedOption);
-    userRequest
-      .delete(`/${endpoint}/${ID}`)
+    axios
+      .delete(`http://gs1ksa.org:7000/api/${endpoint}/${ID}`)
       .then((response) => {
         console.log(response.data);
-        openSnackbar(response?.data?.message, "success");
+        // openSnackbar(response?.data?.message, "success");
+        toast.success(response?.data?.message ?? "Deleted Successfully!");
         handleOptionChange(selectedOption);
       })
       .catch((err) => {
         console.log(err);
-        openSnackbar(err?.response?.data?.message, "error");
+        // openSnackbar(err?.response?.data?.message, "error");
+        toast.error(err?.response?.data?.message ?? "something went wrong!");
       });
   };
 
@@ -555,10 +566,10 @@ const DigitalUrlInfo = () => {
             <div className="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-6 gap-2 sm:gap-5 px-2 sm:px-10 py-2">
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Product Name [Eng]
+                  Product Name
                 </p>
                 <p className="sm:text-xs text-sm font-sans font-semibold text-gray-600">
-                  {/* {selectedGtinData?.productnameenglish} */}
+                  {selectedGtinData?.productnameenglish}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
@@ -572,15 +583,15 @@ const DigitalUrlInfo = () => {
                   Brand Name
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-gray-600">
-                  {/* {selectedGtinData?.BrandName} */}
+                  {selectedGtinData?.BrandName}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Barcode
                 </p>
-                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary bg-green-700 rounded-full px-3">
-                  {/* {selectedGtinData?.barcode} */}
+                <p className="sm:text-xs text-sm font-sans font-semibold text-white bg-green-700 rounded-full px-3">
+                  {selectedGtinData?.barcode}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
@@ -603,8 +614,8 @@ const DigitalUrlInfo = () => {
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Status
                 </p>
-                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary bg-green-500 rounded-full px-3">
-                  {/* {selectedGtinData?.status} */}
+                <p className="sm:text-xs text-sm font-sans font-semibold text-white bg-green-500 rounded-full px-3">
+                  {selectedGtinData?.status}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
