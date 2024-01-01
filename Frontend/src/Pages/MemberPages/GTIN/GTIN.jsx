@@ -131,7 +131,7 @@ const Gtin = () => {
   //   setRowSelectionModel([]);
   // };
 
-  
+
   const handleExportProducts = () => {
     if (!tableSelectedExportRows || tableSelectedExportRows.length === 0) {
       toast.error('Please select at least one row for export.');
@@ -157,6 +157,46 @@ const Gtin = () => {
     setRowSelectionModel([]);
   };
   
+
+  const handleExportProductsTemplate = () => {
+    // Mapping of original headers to desired headers
+    const headerMapping = {
+      productnameenglish: 'ProductNameEnglish',
+      productnamearabic: 'ProductNameArabic',
+      BrandName: 'BrandName',
+      BrandNameAr: 'BrandNameAr',
+      ProductType: 'ProductType',
+      Origin: 'Country Of Origin',
+      countrySale: 'Country of Sale',
+      PackagingType: 'PackagingType',
+      MnfCode: 'MnfCode',
+      MnfGLN: 'MnfGLN',
+      ProvGLN: 'ProvGLN',
+      gpc_code: 'GPC Code',
+      prod_lang: 'Product Language Code',
+      details_page: 'DetailsPage',
+      unit: 'UOM',
+      size: 'Size',
+      barcode: 'GTIN'
+    };
+  
+    // Create a new array with the desired headers in the specified order
+    const desiredHeaders = Object.values(headerMapping);
+  
+    // Create a worksheet with only headers
+    const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
+  
+    // Create a workbook and append the header worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
+  
+    // Generate Excel file
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+    // Save Excel file
+    saveAs(dataBlob, 'gtin_products_template.xlsx');
+  };
   
 
 
@@ -468,7 +508,7 @@ const Gtin = () => {
             </div>
 
             <button
-              onClick={handleExportProducts}
+              onClick={handleExportProductsTemplate}
               className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               Download Template <i className="fas fa-caret-down ml-1"></i>
             </button>
