@@ -602,21 +602,11 @@ const DataTable = ({
           slots={{ toolbar: GridToolbar }}
           // rows={filteredData}
           rows={muiFilteredData}
-          columns={
-            uniqueId === "customerListId"
-              ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
-              : (actionColumnVisibility !== false
-                ? idColumn.concat(columnsName.concat(actionColumn))
-                : idColumn.concat(columnsName))
+        
+          columns={(actionColumnVisibility !== false
+            ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
+            : [...idColumn, ...columnsName])
           }
-          // initialState={{
-          //   pinnedColumns: {
-          //     // show actions column as pinned if actionColumnVisibility is false
-
-          //     left: idColumn.concat(columnsName),
-
-          //   },
-          // }}
 
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
