@@ -13,7 +13,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   console.log(gs1MemberInvoiceData);
   //   const [status, setStatus] = useState("");
   const [rejected, setRejected] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState(gs1MemberInvoiceData?.status); // Default to "Approved"
+  const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
