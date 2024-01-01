@@ -39,7 +39,7 @@ const RegisteredMembers = () => {
   //   }
   // }, [data]);
 
-  
+
   const fetchData = async () => {
     try {
       const response = await newRequest.get("/users",);
@@ -54,7 +54,7 @@ const RegisteredMembers = () => {
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     fetchData(); // Calling the function within useEffect, not inside itself
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -100,8 +100,8 @@ const RegisteredMembers = () => {
     sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
     navigate("view-registered-member/" + row?.id);
   };
- 
- 
+
+
   const handleDelete = async (row) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -215,17 +215,17 @@ const RegisteredMembers = () => {
     catch (err) {
       console.log(err);
       // show the toast message
-          toast.error(err?.response?.data?.message || 'Something went wrong!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "light",
-          });
-        }
-      };
+      toast.error(err?.response?.data?.message || 'Something went wrong!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    }
+  };
 
 
   return (
@@ -241,10 +241,11 @@ const RegisteredMembers = () => {
 
           <DataTable data={data} title="Registered Members" columnsName={Gs1AllMembers}
             loading={IsLoading}
+            checkboxSelection="disabled"
             secondaryColor="secondary"
             globalSearch={true}
             handleRowClickInParent={handleRowClickInParent}
-            // globalSearch={false }
+            uniqueId="admin_registered_members"
 
             dropDownOptions={[
               {
@@ -282,7 +283,7 @@ const RegisteredMembers = () => {
               }
 
             ]}
-            uniqueId="customerListId"
+
 
           />
         </div>

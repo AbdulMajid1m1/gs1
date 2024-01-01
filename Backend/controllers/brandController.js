@@ -19,9 +19,23 @@ export const createBrand = async (req, res, next) => {
             return res.status(400).json({ error: error.details[0].message });
         }
 
+
+        // apply check to check if user status is active or not use optized approach to check this
+        const user = await prisma.users.findUnique({
+            where: {
+                id: value.user_id,
+            },
+        });
+        if (!user) {
+            throw createError(404, 'User not found');
+        }
+        if (user.status !== 'active') {
+            throw createError(400, 'User is not active');
+        }
+
         const uploadedCertificate = req.files?.brandCertificate;
         if (!uploadedCertificate) {
-            return next(createError(400, 'Brand Certificate is required'));
+            throw createError(400, 'Brand certificate is required');
         }
 
         const certificate = uploadedCertificate[0];

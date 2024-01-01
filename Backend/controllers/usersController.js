@@ -510,6 +510,7 @@ export const memberLogin = async (req, res, next) => {
         // Query the database to find a user with the provided email and activity
         const user = await prisma.users.findFirst({
             where: { email: email, cr_activity: activity },
+            include: { carts: true },
         });
 
         if (!user) {
