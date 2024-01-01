@@ -58,7 +58,7 @@ const DataTable = ({
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [muiFilteredData, setMuiFilteredData] = useState([]);
-  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
   //   const { openSnackbar } = useContext(SnackbarContext);
 
   const resetSnakeBarMessages = () => {
@@ -635,6 +635,7 @@ const DataTable = ({
             console.log(selectedRows)
             setSelectedRow(selectedRows.map((item, index) => ({ data: item, index }))); // Set the state with selected row data objects
             setTableSelectedRows(selectedRows)
+            setTableSelectedExportRows(selectedRows)
             handleRowClick(selectedRows);
 
           }}

@@ -23,7 +23,7 @@ const Gtin = () => {
   console.log(memberData);
 
   const { rowSelectionModel, setRowSelectionModel,
-    tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+    tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
@@ -109,27 +109,54 @@ const Gtin = () => {
   };
 
 
+  // const handleExportProducts = () => {
+  //   if (!tableSelectedRows || tableSelectedRows.length === 0) {
+  //       toast.error('Please select at least one row for export.')
+  //     return;
+  //   }
+  //   const selectedRowsData = Array.isArray(tableSelectedRows) ? tableSelectedRows : data;
+  
+  //   const workbook = XLSX.utils.book_new();
+  //   const worksheet = XLSX.utils.json_to_sheet(selectedRowsData);
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'SelectedRows');
+  
+  //   // Generate Excel file
+  //   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  //   const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+  //   // Save Excel file
+  //   saveAs(dataBlob, 'selected_rows.xlsx');
+
+  //   setTableSelectedRows([]);
+  //   setRowSelectionModel([]);
+  // };
+
+  
   const handleExportProducts = () => {
-    if (!tableSelectedRows || tableSelectedRows.length === 0) {
-        toast.error('Please select at least one row for export.')
+    if (!tableSelectedExportRows || tableSelectedExportRows.length === 0) {
+      toast.error('Please select at least one row for export.');
       return;
     }
-    const selectedRowsData = Array.isArray(tableSelectedRows) ? tableSelectedRows : data;
   
+    // Convert data to Excel format
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(selectedRowsData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'SelectedRows');
+    const worksheet = XLSX.utils.json_to_sheet(tableSelectedExportRows);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Selected Rows');
   
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   
     // Save Excel file
-    saveAs(dataBlob, 'selected_rows.xlsx');
-
-    setTableSelectedRows([]);
+    saveAs(dataBlob, 'gtin_products.xlsx');
+  
+    // Print data of selected rows
+    console.log('Selected Rows Data:', tableSelectedExportRows);
+  
+    setTableSelectedExportRows([]);
     setRowSelectionModel([]);
   };
+  
   
 
 
@@ -359,6 +386,7 @@ const Gtin = () => {
   const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
       // setTableSelectedRows(data)
+      setTableSelectedExportRows(item)
       setFilteredData(data)
       return
     }
