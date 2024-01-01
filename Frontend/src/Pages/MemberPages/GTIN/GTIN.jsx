@@ -159,9 +159,32 @@ const Gtin = () => {
   
 
   const handleExportProductsTemplate = () => {
+    // Mapping of original headers to desired headers
+    const headerMapping = {
+      productnameenglish: 'ProductNameEnglish',
+      productnamearabic: 'ProductNameArabic',
+      BrandName: 'BrandName',
+      BrandNameAr: 'BrandNameAr',
+      ProductType: 'ProductType',
+      Origin: 'Country Of Origin',
+      countrySale: 'Country of Sale',
+      PackagingType: 'PackagingType',
+      MnfCode: 'MnfCode',
+      MnfGLN: 'MnfGLN',
+      ProvGLN: 'ProvGLN',
+      gpc_code: 'GPC Code',
+      prod_lang: 'Product Language Code',
+      details_page: 'DetailsPage',
+      unit: 'UOM',
+      size: 'Size',
+      barcode: 'GTIN'
+    };
+  
+    // Create a new array with the desired headers in the specified order
+    const desiredHeaders = Object.values(headerMapping);
+  
     // Create a worksheet with only headers
-    const headers = Object.keys(data[0]);
-    const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: headers });
+    const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
   
     // Create a workbook and append the header worksheet
     const workbook = XLSX.utils.book_new();
@@ -172,9 +195,8 @@ const Gtin = () => {
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   
     // Save Excel file
-    saveAs(dataBlob, 'gtin_products_header_only.xlsx');
+    saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
-  
   
 
 
