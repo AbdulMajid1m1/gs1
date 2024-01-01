@@ -33,8 +33,6 @@ export const createBrand = async (req, res, next) => {
             throw createError(400, 'User is not active');
         }
 
-
-
         const uploadedCertificate = req.files?.brandCertificate;
         if (!uploadedCertificate) {
             throw createError(400, 'Brand certificate is required');
