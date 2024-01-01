@@ -502,7 +502,7 @@ CREATE TABLE [dbo].[featured_services] (
 
 -- CreateTable
 CREATE TABLE [dbo].[footer_menus] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [parent_id] INT,
     [category_name_en] NVARCHAR(max),
     [category_name_ar] NVARCHAR(max),
