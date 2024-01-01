@@ -58,7 +58,7 @@ const DataTable = ({
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [muiFilteredData, setMuiFilteredData] = useState([]);
-  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
   //   const { openSnackbar } = useContext(SnackbarContext);
 
   const resetSnakeBarMessages = () => {
@@ -196,13 +196,13 @@ const DataTable = ({
         value && value.toString().toLowerCase().includes(searchValue.toLowerCase())
       );
     });
-    
+
     console.log(filteredData);
     setMuiFilteredData(filteredData);
 
-   
+
   };
-  
+
 
   // Retrieve the value with the key "myKey" from localStorage getvalue
   const myValue = localStorage.getItem("userId");
@@ -503,9 +503,9 @@ const DataTable = ({
       >
         <div className="datatableTitle">
           <div className="left-div">
-           
+
             {/* if global search is true than show search bar instead of title */}
-            {globalSearch ?  (
+            {globalSearch ? (
               <span>
                 <input
                   type="text"
@@ -515,8 +515,8 @@ const DataTable = ({
                   onChange={handleGlobalSearch}
                 />
               </span>
-            ) :  <span>{title}</span>
-           }
+            ) : <span>{title}</span>
+            }
 
             {ShipmentIdSearchEnable && ShipmentIdSearchEnable === true ? (
               <span>
@@ -620,7 +620,7 @@ const DataTable = ({
 
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
-          pageSizeOptions={[100, 500, 1000]} 
+          pageSizeOptions={[50, 100, { value: -1, label: "All" }]}
           checkboxSelection={checkboxSelectionValue}
           filterModel={filterModel}
           onFilterModelChange={handleFilterModelChange}
@@ -635,6 +635,7 @@ const DataTable = ({
             console.log(selectedRows)
             setSelectedRow(selectedRows.map((item, index) => ({ data: item, index }))); // Set the state with selected row data objects
             setTableSelectedRows(selectedRows)
+            setTableSelectedExportRows(selectedRows)
             handleRowClick(selectedRows);
 
           }}
