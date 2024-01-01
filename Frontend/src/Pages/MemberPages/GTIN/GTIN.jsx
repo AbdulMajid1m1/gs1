@@ -131,7 +131,7 @@ const Gtin = () => {
   //   setRowSelectionModel([]);
   // };
 
-  
+
   const handleExportProducts = () => {
     if (!tableSelectedExportRows || tableSelectedExportRows.length === 0) {
       toast.error('Please select at least one row for export.');
@@ -155,6 +155,24 @@ const Gtin = () => {
   
     setTableSelectedExportRows([]);
     setRowSelectionModel([]);
+  };
+  
+
+  const handleExportProductsTemplate = () => {
+    // Create a worksheet with only headers
+    const headers = Object.keys(data[0]);
+    const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: headers });
+  
+    // Create a workbook and append the header worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
+  
+    // Generate Excel file
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+    // Save Excel file
+    saveAs(dataBlob, 'gtin_products_header_only.xlsx');
   };
   
   
@@ -468,7 +486,7 @@ const Gtin = () => {
             </div>
 
             <button
-              onClick={handleExportProducts}
+              onClick={handleExportProductsTemplate}
               className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               Download Template <i className="fas fa-caret-down ml-1"></i>
             </button>
