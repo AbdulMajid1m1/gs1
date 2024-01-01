@@ -14,7 +14,8 @@ import
     {
         getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
     getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
-deletemega_menu_categories} from "../controllers/catalog.js"
+    deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus
+    } from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -88,4 +89,11 @@ router.post('/creatmega_menu_categories', creatmega_menu_categories);
 router.get('/getmega_menu_categoriesById/:id', getmega_menu_categoriesById);
 router.put('/updatemega_menu_categories/:id', updatemega_menu_categories);
 router.delete('/deletemega_menu_categories/:id', deletemega_menu_categories);
+
+// Routes for footer_menus
+router.get('/getAllfooter_menus', getAllfooter_menus);
+router.post('/creatfooter_menus', creatfooter_menus);
+router.get('/getfooter_menusById/:id', getfooter_menusById);
+router.put('/updatefooter_menus/:id', updatefooter_menus);
+router.delete('/deletefooter_menus/:id', deletefooter_menus);
 export default router;

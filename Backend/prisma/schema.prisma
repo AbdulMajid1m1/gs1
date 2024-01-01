@@ -433,7 +433,7 @@ model featured_services {
 
 model footer_menus {
   id               String    @id @default(cuid())
-  parent_id        Int?
+  parent_id        String?   @db.NVarChar(Max)
   category_name_en String?   @db.NVarChar(Max)
   category_name_ar String?   @db.NVarChar(Max)
   url              String?   @db.NVarChar(Max)
