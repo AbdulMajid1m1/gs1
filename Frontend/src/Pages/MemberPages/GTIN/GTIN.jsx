@@ -21,7 +21,8 @@ const Gtin = () => {
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   console.log(memberData);
-
+  const cartItemData = JSON.parse(memberData?.carts[0]?.cart_items);
+  console.log(cartItemData);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
 
@@ -108,28 +109,6 @@ const Gtin = () => {
     }
   };
 
-
-  // const handleExportProducts = () => {
-  //   if (!tableSelectedRows || tableSelectedRows.length === 0) {
-  //       toast.error('Please select at least one row for export.')
-  //     return;
-  //   }
-  //   const selectedRowsData = Array.isArray(tableSelectedRows) ? tableSelectedRows : data;
-  
-  //   const workbook = XLSX.utils.book_new();
-  //   const worksheet = XLSX.utils.json_to_sheet(selectedRowsData);
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'SelectedRows');
-  
-  //   // Generate Excel file
-  //   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //   const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  
-  //   // Save Excel file
-  //   saveAs(dataBlob, 'selected_rows.xlsx');
-
-  //   setTableSelectedRows([]);
-  //   setRowSelectionModel([]);
-  // };
 
 
   const handleExportProducts = () => {
@@ -276,36 +255,12 @@ const Gtin = () => {
           console.log(response.data);
 
           if (response.data && response.data.errors && response.data.errors.length > 0) {
-            // Check for the specific error related to duplicate product
-            const duplicateProductError = response.data.errors.find(error =>
-              error.error.includes('A product with the same brand names and product names already exists')
-            );
-      
-            if (duplicateProductError) {
-              // Display a specific error message for duplicate product
-              toast.error(duplicateProductError.error, {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: 'light',
-              });
-            } else {
-              console.error('Unhandled error:', response.data.errors);
-            }
-          } else {
+            // Display a generic error message
+            toast.error(response.data.errors[0].error);
+          } 
+          else {
             // Display a generic success message
-            toast.success(response?.data?.message || 'The data has been imported successfully.', {
-              position: 'top-right',
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: 'light',
-            });
+            toast.success(response?.data?.message || 'The data has been imported successfully.');
           }
 
           setIsLoading(false);
@@ -530,8 +485,8 @@ const Gtin = () => {
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              {/* {data?.CompanyDetails?.Membership} */}
-              {data?.[0]?.Membership ? data[0]?.Membership : 'Category C'}
+
+              {cartItemData?.[0]?.productName}
             </button>
 
             <button
