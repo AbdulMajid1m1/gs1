@@ -92,6 +92,11 @@ const AdminSideBar = () => {
   //   setSelectedItem(path);
   //   window.open(path, '_blank');
   // };
+
+  const handleItemClickGs1website = (path) => {
+    setSelectedItem(path);
+    window.open(path, '_blank');
+  };
   
   
 
@@ -157,7 +162,10 @@ const AdminSideBar = () => {
            <div className='flex justify-end items-center px-0 mr-4'>
                 <span>
                   <p className="text-white font-sans mr-5 hover:text-primary" 
-                    onClick={() => navigate('/')}
+                    onClick={() => handleItemClickGs1website('/admin/dashboard')}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/dashboard')
+                    }
                   >GS1 Website</p>
                 </span>
                   <span onClick={() => navigate(-1)} className='cursor-pointer'

@@ -3352,7 +3352,7 @@ export const submenusDataColumn = [
   {
     field: 'email',
     headerName: 'Email',
-    width: 180,
+    width: 220,
   },
   {
     field: 'mobile',
@@ -3759,15 +3759,15 @@ export const memberHistoryColumnData = [
     }
   },
 
-  {
-    field: 'created_by_admin',
-    // if value is 1 show yes else no
-    headerName: 'Created By Admin',
-    width: 180,
-    valueGetter: (params) => {
-      return params.value === 1 ? 'Yes' : 'No';
-    },
-  }
+  // {
+  //   field: 'created_by_admin',
+  //   // if value is 1 show yes else no
+  //   headerName: 'Created By Admin',
+  //   width: 180,
+  //   valueGetter: (params) => {
+  //     return params.value === 1 ? 'Yes' : 'No';
+  //   },
+  // }
 
 
 
