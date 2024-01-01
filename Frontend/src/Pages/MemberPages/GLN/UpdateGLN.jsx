@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { GoogleMap, Marker, StandaloneSearchBox } from '@react-google-maps/api';
-import { RiseLoader } from 'react-spinners';
+import { DotLoader, RiseLoader } from 'react-spinners';
 import { useParams } from 'react-router-dom';
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
 import newRequest from '../../../utils/userRequest';
@@ -94,7 +94,7 @@ const UpdateGLN = () => {
       formData.append('user_id', memberData?.id);
       // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
       formData.append('locationNameEn', locationEnglish);
-      // formData.append('locationNameAr', locationArabic);
+      formData.append('locationNameAr', locationArabic);
       formData.append('AddressEn', addressEnglish);
       formData.append('AddressAr', addressArabic);
       formData.append('pobox', po);
@@ -279,12 +279,12 @@ const UpdateGLN = () => {
 
             }}
             >
-            <RiseLoader
-                size={18}
-                color={"#6439ff"}
-                // height={4}
-                loading={isLoading}
-            />
+               <DotLoader
+                  size={45}
+                  color={"#FF693A"}
+                  // height={4}
+                  loading={isLoading}
+                />
             </div>
             }
 

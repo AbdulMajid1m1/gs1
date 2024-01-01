@@ -41,7 +41,7 @@ const AddGLN = () => {
     formData.append('user_id', memberData?.id);
     // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
     formData.append('locationNameEn', locationEnglish);
-    // formData.append('locationNameAr', locationArabic);
+    formData.append('locationNameAr', locationArabic);
     formData.append('AddressEn', selectedLocation ? selectedLocation.address : '');
     formData.append('AddressAr', selectedLocation ? selectedLocation.address : '');
     formData.append('pobox', po);
