@@ -15,7 +15,8 @@ import
         getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
     getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
     deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
-    getAllsliders,creatsliders,getslidersById,updatesliders,deletesliders} from "../controllers/catalog.js"
+    getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
+    ,getfeatured_servicesById,updatefeatured_services,deletefeatured_services} from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -113,4 +114,22 @@ router.put('/updatesliders/:id',upload([
     }
 ]), updatesliders);
 router.delete('/deletesliders/:id', deletesliders);
+
+
+// Routes for featured_services
+router.get('/getAllfeatured_services', getAllfeatured_services);
+router.post('/creatfeatured_services', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatfeatured_services);
+router.get('/getfeatured_servicesById/:id', getfeatured_servicesById);
+router.put('/updatefeatured_services/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updatefeatured_services);
+router.delete('/deletefeatured_services/:id', deletefeatured_services);
 export default router;

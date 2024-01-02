@@ -491,7 +491,7 @@ CREATE TABLE [dbo].[featured_articales] (
 
 -- CreateTable
 CREATE TABLE [dbo].[featured_services] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [image] NVARCHAR(max),
     [link] NVARCHAR(max),
     [status] INT,
