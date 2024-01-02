@@ -612,7 +612,7 @@ export const getUserDetails = async (req, res, next) => {
             });
 
             return [users, allCarts];
-        }, { timeout: 30000 });
+        }, { timeout: 50000 });
 
         // Map carts to their respective users
         const usersWithCarts = users.map(user => ({
