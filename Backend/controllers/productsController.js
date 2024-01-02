@@ -250,6 +250,7 @@ const insertProduct = async (productData, user, productsCount) => {
         const checkBrandName = await prisma.brands.findFirst({
             where: {
                 name: productData.BrandName,
+                name_ar: productData.BrandNameAr,
                 companyID: user.companyID,
             }
         });

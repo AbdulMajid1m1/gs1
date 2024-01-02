@@ -33,6 +33,25 @@ export const createBrand = async (req, res, next) => {
             throw createError(400, 'User is not active');
         }
 
+
+        // Check if brand name or brand name_ar already exists
+        // Check if brand name (English) already exists
+        const existingBrandByName = await prisma.brands.findFirst({
+            where: { name: value.name },
+        });
+
+        if (existingBrandByName) {
+            throw createError(400, 'Brand name (English) already exists');
+        }
+
+        // Check if brand name_ar (Arabic) already exists
+        const existingBrandByNameAr = await prisma.brands.findFirst({
+            where: { name_ar: value.name_ar },
+        });
+
+        if (existingBrandByNameAr) {
+            throw createError(400, 'Brand name (Arabic) already exists');
+        }
         const uploadedCertificate = req.files?.brandCertificate;
         if (!uploadedCertificate) {
             throw createError(400, 'Brand certificate is required');
@@ -58,6 +77,8 @@ export const createBrand = async (req, res, next) => {
         next(error);
     }
 };
+
+
 
 
 const allowedColumns = {

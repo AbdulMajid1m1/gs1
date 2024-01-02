@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSubUser, createUser, deleteUser, getCarts, getCrInfo, getUserDetails, getUsersTempDetails, memberLogin, searchUsers, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
+import { createSubUser, createUser, deleteUser, getCarts, getCrInfo, getNewlyRegisteredUsers, getUserDetails, getUsersTempDetails, getUsersWithExpiringGcpThisYear, memberLogin, searchUsers, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 
@@ -17,7 +17,13 @@ userRouter.post('/', upload([
 
     },
 ]), createUser);
+
 userRouter.get('/', getUserDetails);
+
+userRouter.get('/new', getNewlyRegisteredUsers);
+
+userRouter.get('/getByGcpExpiry', getUsersWithExpiringGcpThisYear);
+
 userRouter.get('/search', searchUsers);
 
 userRouter.post('/subuser', createSubUser);
