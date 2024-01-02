@@ -493,7 +493,7 @@ const Gtin = () => {
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               Member ID {memberData?.memberID}
             </button>
-
+  
             <button
               onClick={handleGtinPage}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
