@@ -13,6 +13,7 @@ const DashboardTable = ({
     columnsName,
     data,
     title,
+    loading,
     uniqueId,
     secondaryColor,
 }) => {
@@ -136,6 +137,7 @@ const DashboardTable = ({
 
                 <MuiCustomTable
                     secondaryColor={secondaryColor ? secondaryColor : null}
+                    loading={loading}
                     getRowClassName={(params) =>
                         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
                     }

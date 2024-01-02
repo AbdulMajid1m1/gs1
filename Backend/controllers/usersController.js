@@ -546,6 +546,7 @@ export const getUserDetails = async (req, res, next) => {
             slug: Joi.string(),
             email: Joi.string().email(),
             parent_memberID: Joi.string(),
+            status: Joi.string().valid('active', 'inactive'),
             // ... define validation for other allowed columns
         };
 
@@ -611,7 +612,7 @@ export const getUserDetails = async (req, res, next) => {
             });
 
             return [users, allCarts];
-        }, { timeout: 30000 });
+        }, { timeout: 50000 });
 
         // Map carts to their respective users
         const usersWithCarts = users.map(user => ({
@@ -623,6 +624,108 @@ export const getUserDetails = async (req, res, next) => {
         return res.json(usersWithCarts);
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+};
+
+
+export const getAdminStatsCounts = async (req, res, next) => {
+    try {
+        const counts = await prisma.$transaction(async (prisma) => {
+            const [usersCount, productsCount, activeUsersCount, inactiveUsersCount] = await Promise.all([
+                prisma.users.count(),
+                prisma.products.count(),
+                prisma.users.count({
+                    where: {
+                        status: 'active'
+                    }
+                }),
+                prisma.users.count({
+                    where: {
+                        status: 'inactive'
+                    }
+                })
+            ]);
+
+            return {
+                usersCount,
+                productsCount,
+                activeUsersCount,
+                inactiveUsersCount
+            };
+        }, { timeout: 30000 });
+
+        return res.json(counts);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+export const getNewlyRegisteredUsers = async (req, res, next) => {
+    try {
+        // Get the current date and the first day of the current month
+        const currentDate = new Date();
+        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+        const users = await prisma.users.findMany({
+            where: {
+                created_at: {
+                    gte: firstDayOfMonth, // Greater than or equal to the first day of the month
+                },
+            },
+            orderBy: {
+                created_at: 'desc', // Optional: Order by created_at in descending order
+            },
+        });
+
+        return res.json(users);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+
+export const getUsersWithExpiringGcpThisYear = async (req, res, next) => {
+    try {
+        const currentDate = new Date();
+        const ninetyDaysLater = new Date();
+        ninetyDaysLater.setDate(currentDate.getDate() + 90); // Set to 90 days from now
+
+        const currentYear = new Date().getFullYear();
+        const startOfYear = new Date(currentYear, 0, 1); // January 1st of current year
+        const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59); // December 31st of current year
+
+        const users = await prisma.users.findMany({
+            where: {
+                gcp_expiry: {
+                    gte: currentDate, // Greater than or equal to the current date
+                    lte: ninetyDaysLater, // Less than or equal to 90 days from now
+                },
+                AND: [
+                    {
+                        gcp_expiry: {
+                            gte: startOfYear, // Greater than or equal to start of the year
+                        },
+                    },
+                    {
+                        gcp_expiry: {
+                            lte: endOfYear, // Less than or equal to end of the year
+                        },
+                    }
+                ]
+            },
+            orderBy: {
+                gcp_expiry: 'asc', // Order by gcp_expiry in ascending order
+            },
+        });
+
+        return res.json(users);
+    } catch (error) {
+        console.error(error);
         next(error);
     }
 };
