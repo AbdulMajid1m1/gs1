@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [pendingApprovals, setPendingApprovals] = useState([]);
   const [allRegisteredMembers, setAllRegisteredMembers] = useState([]);
   const [memberReneval, setMemberReneval] = useState([]);
+  const [allCardData, setAllCardData] = useState([]);
   const [newRegisteredMembersLoader, setNewRegisteredMembersLoader] = useState(false);
   const [pendingApprovalsLoader, setPendingApprovalsLoader] = useState(false);
   const [allRegisteredMembersLoader, setAllRegisteredMembersLoader] = useState(false);
@@ -111,7 +112,6 @@ const Dashboard = () => {
       }
     };
 
-    const [allCardData, setAllCardData] = useState([]);
     
     const getAllCardsData = async () => {
       try {
