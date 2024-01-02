@@ -241,8 +241,23 @@ const writeErrorsToExcel = (filePath, records) => {
     XLSX.writeFile(workbook, filePath);
 };
 
-const insertProduct = async (productData) => {
+const insertProduct = async (productData, user, productsCount) => {
     try {
+
+        // check if the brand name exist for same user usin name_ar and companyID
+
+
+        const checkBrandName = await prisma.brands.findFirst({
+            where: {
+                name: productData.BrandName,
+                companyID: user.companyID,
+            }
+        });
+
+        if (!checkBrandName) {
+            throw new Error(`Brand Name: ${productData.BrandName} not found for the companyID: ${user.companyID}`);
+        }
+
         // Check for existing product
         const existingProduct = await prisma.products.findFirst({
             where: {
@@ -258,41 +273,12 @@ const insertProduct = async (productData) => {
 
         }
 
-        let user = await prisma.users.findUnique({ where: { id: productData.user_id } });
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        if (user.parent_memberID !== '0') {
-            user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
-            if (!user) {
-                throw new Error('User not found');
-            }
-        }
-
-        const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-            where: { user_id: user.id },
-            include: { gtin_product: true }
-        });
-
-        if (!gtinSubscriptions || gtinSubscriptions.length === 0) {
-            throw new Error('Subscription not found');
-        }
-
-        if (gtinSubscriptions?.gtin_subscription_limit === 0) {
-            throw new Error('Subscription limit exceeded, please upgrade your subscription');
-        }
-
-        const productsCount = gtinSubscriptions?.gtin_subscription_counter;
-
-       
-
         if (productData.GTIN) {
             console.log("entered")
             const existingBarcode = await prisma.products.findFirst({
                 where: { barcode: productData.GTIN }
             });
-      
+
 
             if (existingBarcode) {
                 throw new Error(`Duplicate GTIN: A product with GTIN ${productData.GTIN} already exists`);
@@ -317,14 +303,6 @@ const insertProduct = async (productData) => {
         delete productData.GTIN;
         const newProduct = await prisma.products.create({ data: productData });
 
-        // update the gtin_subcription table with new limit and counter
-        const updatedGtinSubscription = await prisma.gtin_subcriptions.update({
-            where: { id: gtinSubscriptions.id },
-            data: {
-                gtin_subscription_counter: productsCount + 1,
-                gtin_subscription_limit: gtinSubscriptions.gtin_subscription_limit - 1
-            }
-        });
 
         return newProduct;
 
@@ -367,6 +345,9 @@ export const bulkCreateProduct = async (req, res) => {
         // readyForGepir: Joi.string().max(10).allow('', null),
         // gepirPosted: Joi.string().max(10).allow('', null),
     });
+
+    let sendEmailFlag = true;
+    let user;
     try {
 
         const getImagePath = (image) => {
@@ -389,6 +370,41 @@ export const bulkCreateProduct = async (req, res) => {
         console.log(records)
         const errorRecords = [];
 
+
+        user = await prisma.users.findUnique({ where: { id: req.body.user_id } });
+        if (!user) {
+            sendEmailFlag = false;
+            throw new Error('User not found')
+        }
+
+        // Handle the parent member ID logic if applicable
+        if (user.parent_memberID !== '0') {
+            user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
+            if (!user) {
+                sendEmailFlag = false;
+                throw new Error('User not found')
+
+            }
+        }
+
+        const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
+            where: { user_id: user.id },
+            include: { gtin_product: true }
+        });
+
+        if (!gtinSubscriptions) {
+            sendEmailFlag = false;
+            throw new Error('Subscription not found')
+        }
+
+        if (gtinSubscriptions.gtin_subscription_limit - records.length < 0) {
+            sendEmailFlag = false;
+            throw new Error('Subscription limit exceeded, please upgrade your subscription')
+
+        }
+
+        // keep track of the number of products created
+        let productsCount = gtinSubscriptions.gtin_subscription_counter;
         await prisma.$transaction(async (transaction) => {
             for (let record of records) {
                 console.log(record)
@@ -428,11 +444,18 @@ export const bulkCreateProduct = async (req, res) => {
                     try {
                         let data = value;
                         console.log(data)
-                        data.user_id = req.body.user_id;
-                        const result = await insertProduct(data, transaction);
+
+                        const result = await insertProduct(data, user, productsCount);
                         if (result.error) {
                             errorRecords.push({ ...record, error: result.error });
                         }
+
+
+                        else {
+                            errorRecords.push({ ...record, error: "Processed Successfully" });
+                        }
+
+                        productsCount++;
                     } catch (insertError) {
                         errorRecords.push({ ...record, error: insertError.message });
                     }
@@ -441,6 +464,15 @@ export const bulkCreateProduct = async (req, res) => {
 
 
             }
+
+            // update the gtin_subcription table with new limit and counter
+            await transaction.gtin_subcriptions.update({
+                where: { id: gtinSubscriptions.id },
+                data: {
+                    gtin_subscription_counter: productsCount,
+                    gtin_subscription_limit: gtinSubscriptions.gtin_subscription_limit - records.length
+                }
+            });
 
 
         }, { timeout: 40000 });
@@ -459,26 +491,28 @@ export const bulkCreateProduct = async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     } finally {
-        const pdfBuffer = await fs1.readFile(req.files.file[0].path);
-        const emailContent = `Dear User, <br><br> Your bulk upload file has been processed. Please find the attached file for the processed records. <br><br> Regards, <br> GS1 KSA`;
-        const attachments = [{
-            filename: req.files.file[0].filename,
-            content: pdfBuffer,
-            contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        }];
+        if (sendEmailFlag) {
+            const pdfBuffer = await fs1.readFile(req.files.file[0].path);
+            const emailContent = `Dear User, <br><br> Your bulk upload file has been processed. Please find the attached file for the processed records. <br><br> Regards, <br> GS1 KSA`;
+            const attachments = [{
+                filename: user?.memberID + '_processed_file.xlsx',
+                content: pdfBuffer,
+                contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }];
 
-        await sendEmail({
-            fromEmail: ADMIN_EMAIL,
-            toEmail: req.body.email,
-            subject: 'GTIN Bulk Upload Processed file',
+            await sendEmail({
+                fromEmail: ADMIN_EMAIL,
+                toEmail: req.body.email,
+                subject: 'GTIN Bulk Upload Processed file',
 
-            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
-            // if status is approved, attach the certificate PDF
-            attachments: attachments
-        });
-        // delete the file after sending the email
-        await fs1.unlink(req.files.file[0].path);
+                htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+                // if status is approved, attach the certificate PDF
+                attachments: attachments
+            });
+            // delete the file after sending the email
+            await fs1.unlink(req.files.file[0].path);
 
+        }
     }
 };
 
