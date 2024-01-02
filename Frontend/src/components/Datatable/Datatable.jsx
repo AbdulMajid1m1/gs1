@@ -499,9 +499,9 @@ const DataTable = ({
             ? { height: "450px" }
             : mediumHeightTableScreens.includes(uniqueId)
               ? { height: "600px" }
-            : largeHeightTableScreens.includes(uniqueId)
-              ? { height: "700px" }
-              : { height: "500px" }
+              : largeHeightTableScreens.includes(uniqueId)
+                ? { height: "700px" }
+                : { height: "500px" }
 
         }
       >
@@ -598,7 +598,7 @@ const DataTable = ({
           }
 
 
-          editMode="none" // set to row if need to edit row
+          editMode="row" // set to row if need to edit row
           processRowUpdate={processRowUpdate ? processRowUpdate : null}
           onProcessRowUpdateError={(params, error) => {
             console.log(error);
@@ -606,7 +606,7 @@ const DataTable = ({
           slots={{ toolbar: GridToolbar }}
           // rows={filteredData}
           rows={muiFilteredData}
-        
+
           columns={(actionColumnVisibility !== false
             ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
             : [...idColumn, ...columnsName])

@@ -303,7 +303,8 @@ const DigitalUrlInfo = () => {
           newRow,
           oldRow,
           openSnackbar,
-          "http://gs1ksa.org:7000/api/updatePromotionalOffersData",
+          // "http://gs1ksa.org:7000/api/updatePromotionalOffersData",
+          "/updatePromotionalOffersData",
           "json"
         );
 
