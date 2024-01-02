@@ -158,6 +158,58 @@ export const searchBrands = async (req, res, next) => {
     }
 };
 
+export const searchMemberBrands = async (req, res, next) => {
+    // const { keyword } = req.query; 
+    // use Joi 
+    const schema = Joi.object({
+        keyword: Joi.string().required(),
+        user_id: Joi.string().required(),
+
+    });
+    const { error, value } = schema.validate(req.query);
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+    const { keyword } = value;
+
+    try {
+        // Get the search keyword from the query parameters
+
+        // Define the searchable columns for brands
+        const searchableColumns = [
+            'name',
+            'name_ar',
+            'status',
+            'companyID',
+            'brand_certificate'
+        ];
+
+        // Construct the search conditions for Prisma query
+        const searchConditions = {
+            AND: [
+                { user_id: req.query.user_id }, // Search based on user_id
+                {
+                    OR: searchableColumns.map(column => ({
+                        [column]: {
+                            contains: keyword.toLowerCase(), // Convert keyword to lowercase
+                        },
+                    })),
+                },
+            ],
+        };
+
+        // Fetch the top 30 latest records that match the search conditions
+        const brands = await prisma.brands.findMany({
+            where: searchConditions,
+            orderBy: { created_at: 'desc' }, // Sort by created_at in descending order
+            take: 30, // Limit to 30 records
+        });
+        return res.json(brands);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 const updateBrandSchema = Joi.object({
     name: Joi.string().max(255),

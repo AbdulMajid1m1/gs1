@@ -15,6 +15,8 @@ import Updatebrands from './updatebrands';
 import { debounce } from '@mui/material/utils';
 import { DataTableContext } from '../../../Contexts/DataTableContext';
 const MemberBrands = () => {
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -47,6 +49,9 @@ const MemberBrands = () => {
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleGPCAutoCompleteChange = (event, value) => {
     console.log(value);
@@ -57,69 +62,69 @@ const MemberBrands = () => {
     setIsAutocompleteFilled(value !== null && value !== '');
 
     if (value) {
-      fetchData(value);
+      // fetchData(value);
     }
   }
 
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
-  const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
-    setIsSubmitClicked(false);
-    if (reason === 'reset' || reason === 'clear') {
-      setBrandList([]); // Clear the data list if there is no input
-      // setSelectedCr(null);
-      return; // Do not perform search if the input is cleared or an option is selected
-    }
-    if (reason === 'option') {
-      return; // Do not perform search if the option is selected
-    }
+  // const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
+  //   console.log(reason);
+  //   setIsSubmitClicked(false);
+  //   if (reason === 'reset' || reason === 'clear') {
+  //     setBrandList([]); // Clear the data list if there is no input
+  //     // setSelectedCr(null);
+  //     return; // Do not perform search if the input is cleared or an option is selected
+  //   }
+  //   if (reason === 'option') {
+  //     return; // Do not perform search if the option is selected
+  //   }
 
-    if (!newInputValue || newInputValue.trim() === '') {
-      // perform operation when input is cleared
-      setBrandList([]);
-      // setSelectedCr(null);
-      return;
-    }
+  //   if (!newInputValue || newInputValue.trim() === '') {
+  //     // perform operation when input is cleared
+  //     setBrandList([]);
+  //     // setSelectedCr(null);
+  //     return;
+  //   }
 
-    console.log(newInputValue);
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort(); // Abort previous request
-    }
-    abortControllerRef.current = new AbortController(); // Create a new controller for the new request
+  //   console.log(newInputValue);
+  //   if (abortControllerRef.current) {
+  //     abortControllerRef.current.abort(); // Abort previous request
+  //   }
+  //   abortControllerRef.current = new AbortController(); // Create a new controller for the new request
 
-    try {
-      setAutocompleteLoading(true);
-      setOpen(true);
+  //   try {
+  //     setAutocompleteLoading(true);
+  //     setOpen(true);
+  //     console.log(memberData?.id);
+  //     const res = await newRequest.get(`/brands/searchMemberBrands?keyword=${newInputValue}&user_id=${memberData?.id}`, {
+  //       signal: abortControllerRef.current.signal
+  //     });
+  //     console.log(res);
 
-      const res = await newRequest.get(`/brands/search?keyword=${newInputValue}`, {
-        signal: abortControllerRef.current.signal
-      });
-      console.log(res);
+  //     const crs = res?.data?.map(item => {
+  //       return {
+  //         name: item?.name,
+  //         name_ar: item?.name_ar,
+  //         companyID: item?.companyID,
 
-      const crs = res?.data?.map(item => {
-        return {
-          name: item?.name,
-          name_ar: item?.name_ar,
-          companyID: item?.companyID,
+  //       };
+  //     });
 
-        };
-      });
+  //     setBrandList(crs);
 
-      setBrandList(crs);
+  //     setOpen(true);
+  //     setAutocompleteLoading(false);
 
-      setOpen(true);
-      setAutocompleteLoading(false);
+  //     // fetchData();
 
-      // fetchData();
-
-    } catch (error) {
-      console.error(error);
-      setBrandList([]); // Clear the data list if an error occurs
-      setOpen(false);
-      setAutocompleteLoading(false);
-    }
-  }, 400);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setBrandList([]); // Clear the data list if an error occurs
+  //     setOpen(false);
+  //     setAutocompleteLoading(false);
+  //   }
+  // }, 400);
 
 
   // const fetchData = async (value) => {
@@ -143,7 +148,7 @@ const MemberBrands = () => {
     console.log(value);
     console.log(value?.companyID);
     try {
-      const response = await newRequest.get(`/brands?companyID=${value?.companyID}`);
+      const response = await newRequest.get(`/brands?user_id=${memberData?.id}`);
       console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
@@ -154,7 +159,7 @@ const MemberBrands = () => {
     }
   };
 
-  
+
   const handleView = (row) => {
     console.log(row);
   }
@@ -252,7 +257,7 @@ const MemberBrands = () => {
             <div className="h-auto w-full p-3 bg-white shadow-xl rounded-md">
 
               {/*  */}
-              <div className='pt-3 px-3'>
+              {/* <div className='pt-3 px-3'>
                 <Autocomplete
                   id="companyName"
                   required
@@ -313,7 +318,7 @@ const MemberBrands = () => {
                   )}
 
                 />
-              </div>
+              </div> */}
 
               <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
                 <button
