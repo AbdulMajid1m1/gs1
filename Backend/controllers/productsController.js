@@ -8,7 +8,7 @@ import path from 'path';
 import fs1 from 'fs/promises';
 import fs from 'fs';
 
-import { generateProdcutGTIN } from '../utils/functions/barcodesGenerator.js';
+import { generateProdcutGTIN, isValidGCPInBarcode } from '../utils/functions/barcodesGenerator.js';
 import { ADMIN_EMAIL } from '../configs/envConfig.js';
 import { sendEmail } from '../services/emailTemplates.js';
 
@@ -224,7 +224,7 @@ const writeErrorsToExcel = (filePath, records) => {
 
     // Convert last column number to letter and set the error header
     const errorHeaderCell = XLSX.utils.encode_col(lastCol + 1) + '1'; // '1' for the first row
-    worksheet[errorHeaderCell] = { v: 'Error' };
+    worksheet[errorHeaderCell] = { v: 'Status' };
 
     // Write errors to the new "Error" column
     records.forEach((record, index) => {
@@ -255,6 +255,7 @@ const insertProduct = async (productData) => {
 
         if (existingProduct) {
             throw new Error('A product with the same brand names and product names already exists');
+
         }
 
         let user = await prisma.users.findUnique({ where: { id: productData.user_id } });
@@ -284,10 +285,36 @@ const insertProduct = async (productData) => {
 
         const productsCount = gtinSubscriptions?.gtin_subscription_counter;
 
-        const gtin = await generateProdcutGTIN(user.gcpGLNID, productsCount);
-        productData.gcpGLNID = user.gcpGLNID;
-        productData.barcode = gtin;
+       
 
+        if (productData.GTIN) {
+            console.log("entered")
+            const existingBarcode = await prisma.products.findFirst({
+                where: { barcode: productData.GTIN }
+            });
+      
+
+            if (existingBarcode) {
+                throw new Error(`Duplicate GTIN: A product with GTIN ${productData.GTIN} already exists`);
+
+            }
+            productData.barcode = productData.GTIN;
+
+            const isValidGCP = isValidGCPInBarcode(productData.GTIN, user.gcpGLNID);
+            if (!isValidGCP) {
+                throw new Error('gcpGLNID is not valid for the provided GTIN');
+            }
+
+        } else {
+            // Generate new GTIN if not provided
+            const gtin = await generateProdcutGTIN(user.gcpGLNID, productsCount);
+            productData.barcode = gtin;
+        }
+
+        productData.gcpGLNID = user.gcpGLNID;
+
+        // delete the GTIN field from the productData object
+        delete productData.GTIN;
         const newProduct = await prisma.products.create({ data: productData });
 
         // update the gtin_subcription table with new limit and counter
@@ -303,7 +330,8 @@ const insertProduct = async (productData) => {
 
     } catch (err) {
         console.error(err);
-        throw new Error(err.message);
+        // throw new Error(err.message);
+        return { error: err.message };
     }
 };
 
@@ -333,6 +361,9 @@ export const bulkCreateProduct = async (req, res) => {
         // product_link_url: Joi.string().max(255).allow('', null),
         BrandNameAr: Joi.string().allow('', null),
         prod_lang: Joi.string().max(50),
+        // gtin field is optional as number or string
+        GTIN: Joi.alternatives().try(Joi.string(), Joi.number().integer().max(99999999999999)),
+
         // digitalInfoType: Joi.number().integer().allow('', null),
         // readyForGepir: Joi.string().max(10).allow('', null),
         // gepirPosted: Joi.string().max(10).allow('', null),
@@ -362,7 +393,12 @@ export const bulkCreateProduct = async (req, res) => {
         await prisma.$transaction(async (transaction) => {
             for (let record of records) {
                 console.log(record)
+                // Add GTIN handling
+                // record.GTIN = record.GTIN || null;
+                // console.log("Gtin", record.GTIN)
                 // Map Excel columns to schema fields
+                // convert Gtin to string
+
                 record = {
                     user_id: req.body.user_id, // Assuming user_id comes from somewhere else like req.body
                     productnameenglish: record.ProductNameEnglish,
@@ -377,11 +413,12 @@ export const bulkCreateProduct = async (req, res) => {
                     MnfGLN: record.MnfGLN,
                     ProvGLN: record.ProvGLN,
                     gpc_code: record['GPC Code'],
-                    memberID: record.memberID, 
-                    admin_id: record.admin_id, 
-                    save_as: record.save_as, 
+                    memberID: record.memberID,
+                    admin_id: record.admin_id,
+                    save_as: record.save_as,
                     BrandNameAr: record.BrandNameAr,
-                    prod_lang: record['Product Language Code']
+                    prod_lang: record['Product Language Code'],
+                    GTIN: record.GTIN?.toString(),
                     // Add other fields as necessary
                 };
 
@@ -391,25 +428,34 @@ export const bulkCreateProduct = async (req, res) => {
                 } else {
                     try {
                         let data = value;
+                        console.log(data)
                         data.user_id = req.body.user_id;
-                        await insertProduct(data, transaction);
+                        const result = await insertProduct(data, transaction);
+                        if (result.error) {
+                            errorRecords.push({ ...record, error: result.error });
+                        }
                     } catch (insertError) {
                         errorRecords.push({ ...record, error: insertError.message });
                     }
                 }
+
+
+
             }
+
+
         }, { timeout: 40000 });
 
-        if (errorRecords.length > 0) {
-            // also add autogenerated barcode for writing in GTIN column
-            // writeErrorsToExcel(req.files.file[0].path, errorRecords);
 
-        let combine 
+        // Write errors to Excel file if any
+        if (errorRecords.length > 0) {
+            writeErrorsToExcel(filePath, errorRecords);
         }
 
-
-
-        res.status(200).json({ message: 'Bulk upload processed', errors: errorRecords });
+        res.status(200).json({
+            message: 'Bulk upload processed check your email for the processed file'
+            , errors: errorRecords
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
@@ -431,6 +477,9 @@ export const bulkCreateProduct = async (req, res) => {
             // if status is approved, attach the certificate PDF
             attachments: attachments
         });
+        // delete the file after sending the email
+        await fs1.unlink(req.files.file[0].path);
+
     }
 };
 
