@@ -1965,7 +1965,7 @@ CREATE TABLE [dbo].[services] (
 
 -- CreateTable
 CREATE TABLE [dbo].[sliders] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [link] NVARCHAR(max),
     [description] NVARCHAR(max),

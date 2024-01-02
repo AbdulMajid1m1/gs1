@@ -9,13 +9,13 @@ import { createcountryofsale,getAllcountryofsale,getcountryof_saleById,updatecou
 import { createHsCode,getAllHsCode,getHsCodeById,updateHsCode,deleteHsCode } from '../controllers/hscodes.js';
 import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC } from '../controllers/UNSPSC.js';
 import { getAllprod_desc_languages } from "../controllers/productsController.js"
-
+import { upload } from '../configs/multerConfig.js';
 import
     {
         getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
     getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
-    deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus
-    } from "../controllers/catalog.js"
+    deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
+    getAllsliders,creatsliders,getslidersById,updatesliders} from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -95,5 +95,22 @@ router.get('/getAllfooter_menus', getAllfooter_menus);
 router.post('/creatfooter_menus', creatfooter_menus);
 router.get('/getfooter_menusById/:id', getfooter_menusById);
 router.put('/updatefooter_menus/:id', updatefooter_menus);
+router.delete('/deletefooter_menus/:id', deletefooter_menus);
+
+// Routes for sliders
+router.get('/getAllsliders', getAllsliders);
+router.post('/creatsliders', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatsliders);
+router.get('/getslidersById/:id', getslidersById);
+router.put('/updatesliders/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updatesliders);
 router.delete('/deletefooter_menus/:id', deletefooter_menus);
 export default router;
