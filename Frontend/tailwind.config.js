@@ -34,7 +34,8 @@ module.exports = {
     colors: {
       'primary': '#FF693A',    // Main Color
       'secondary': '#021F69',  
-      'border-color': '#8E9CAB',  
+      'border-color': '#8E9CAB',
+      'digital-color': '#A9A9A9',  
       // 'capture': '#E02266',  
       // 'share': '#1DAE11',  
       // 'orange': '#F98E1A',

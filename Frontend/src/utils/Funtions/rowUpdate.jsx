@@ -1,4 +1,6 @@
+import axios from "axios";
 import newRequest from "../userRequest";
+import { toast } from "react-toastify";
 
 function computeMutation(newRow, oldRow) {
   for (let key in newRow) {
@@ -59,7 +61,8 @@ export const UpdateRowData = (newRow, oldRow, openSnackbar, endPoint, type) => {
           formData.append(key, newRow[key]);
         }
       }
-      requestPromise = newRequest.put(endPoint, formData, {
+      // requestPromise = newRequest.put(endPoint, formData, {
+      requestPromise = axios.put("http://gs1ksa.org:7000/api" + endPoint, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     } else {
@@ -71,15 +74,17 @@ export const UpdateRowData = (newRow, oldRow, openSnackbar, endPoint, type) => {
         console.log(res);
         resolve(newRow);
         console.log("updated");
-        openSnackbar(res?.data?.message ?? "data updated", "success");
+        // openSnackbar(res?.data?.message ?? "data updated", "success");
+        toast.success(res?.data?.message ?? "data updated");
       })
       .catch((err) => {
         console.log(err);
         resolve(oldRow);
         console.log("not updated");
-        openSnackbar(
-          err?.response?.data?.message ?? "something went wrong!",
-          "error"
+        // use toast here
+        toast.error(
+          err?.response?.data?.message ?? "something went wrong!"
+
         );
       });
   });
@@ -135,15 +140,20 @@ export const UpdateRowDataWithDoc = (
         console.log(res);
         resolve(newRow);
         console.log("updated");
-        openSnackbar(res?.data?.message ?? "data updated", "success");
+        // openSnackbar(res?.data?.message ?? "data updated", "success");
+        toast.success(res?.data?.message ?? "data updated");
       })
       .catch((err) => {
         console.log(err);
         resolve(oldRow);
         console.log("not updated");
-        openSnackbar(
-          err?.response?.data?.message ?? "something went wrong!",
-          "error"
+        // openSnackbar(
+        //   err?.response?.data?.message ?? "something went wrong!",
+        //   "error"
+        // );
+        toast.error(
+          err?.response?.data?.message ?? "something went wrong!"
+
         );
       });
   });
@@ -167,7 +177,7 @@ export const UpdateOdooErpRowData = (newRow, oldRow, openSnackbar, endPoint, odo
     console.log(data);
 
     requestPromise = newRequest.put(endPoint, data);
-    
+
     requestPromise
       .then((res) => {
         console.log(res);

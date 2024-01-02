@@ -4,6 +4,7 @@ import "./DigitalUrlInfo.css";
 // import userRequest from "../../../utils/userRequest";
 import axios from "axios";
 import FormPopup from "./FormPopup";
+import DataTable from "../../../components/Datatable/Datatable";
 import {
   SafetyInformationColumn,
   RecipeColumn,
@@ -29,7 +30,6 @@ import {
   UpdateRowDataWithDoc,
 } from "../../../utils/Funtions/rowUpdate";
 // import { CurrentUserContext } from "../../Contexts/CurrentUserContext";
-import DataTable from "../../../components/Datatable/Datatable";
 import { toast } from "react-toastify";
 
 const DigitalUrlInfo = () => {
@@ -49,6 +49,11 @@ const DigitalUrlInfo = () => {
     sessionStorage.getItem("selectedGtinData")
   );
   console.log(selectedGtinData);
+  const status = selectedGtinData?.status === 1 ? "Active" : "Inactive";
+
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  // console.log(memberData);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -298,6 +303,7 @@ const DigitalUrlInfo = () => {
           newRow,
           oldRow,
           openSnackbar,
+          // "http://gs1ksa.org:7000/api/updatePromotionalOffersData",
           "/updatePromotionalOffersData",
           "json"
         );
@@ -576,7 +582,9 @@ const DigitalUrlInfo = () => {
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   QR Code
                 </p>
-                <p className="sm:text-xs text-sm font-sans text-secondary"></p>
+                <p className="sm:text-xs text-sm font-sans text-secondary">
+                  {memberData?.qr_code}
+                </p>
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
@@ -599,7 +607,7 @@ const DigitalUrlInfo = () => {
                   Company
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-gray-600">
-                  {/* {currentUser?.user?.company_name_eng} */}
+                  {memberData?.company_name_eng}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
@@ -615,7 +623,7 @@ const DigitalUrlInfo = () => {
                   Status
                 </p>
                 <p className="sm:text-xs text-sm font-sans font-semibold text-white bg-green-500 rounded-full px-3">
-                  {selectedGtinData?.status}
+                  {status}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
@@ -623,7 +631,7 @@ const DigitalUrlInfo = () => {
                   Action
                 </p>
                 <p
-                  className="sm:text-xs text-center cursor-pointer text-sm font-sans text-white bg-blue-600 rounded-md px-3 py-[2px]"
+                  className="sm:text-xs text-center cursor-pointer text-sm font-sans text-white bg-secondary rounded-md px-3 py-[2px]"
                   onClick={togglePopup}
                 >
                   Add Digital Link
@@ -652,7 +660,7 @@ const DigitalUrlInfo = () => {
               {/* <span className='bg-yellow-100'>Safety Information</span>
             <span className='bg-yellow-100'>Promotional Offers</span> */}
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "Safety Information" ? "bg-yellow-500" : ""
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "Safety Information" ? "bg-red-500" : ""
                   }`}
                 onClick={() => handleOptionChange("Safety Information")}
               >
@@ -664,7 +672,7 @@ const DigitalUrlInfo = () => {
                 Safety Information
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "Promotional Offers" ? "bg-yellow-500" : ""
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "Promotional Offers" ? "bg-red-500" : ""
                   }`}
                 onClick={() => handleOptionChange("Promotional Offers")}
               >
@@ -676,7 +684,7 @@ const DigitalUrlInfo = () => {
                 Promotional Offers
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "Product Contents" ? "bg-yellow-500" : ""
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "Product Contents" ? "bg-red-500" : ""
                   }`}
                 onClick={() => handleOptionChange("Product Contents")}
               >
@@ -684,8 +692,8 @@ const DigitalUrlInfo = () => {
                 Product Contents
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "ProductLocationofOrigin"
-                    ? "bg-yellow-500"
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "ProductLocationofOrigin"
+                    ? "bg-red-500"
                     : ""
                   }`}
                 onClick={() => handleOptionChange("ProductLocationofOrigin")}
@@ -698,7 +706,7 @@ const DigitalUrlInfo = () => {
                 Product Location of Origin
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "ProductRecall" ? "bg-yellow-500" : ""
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "ProductRecall" ? "bg-red-500" : ""
                   }`}
                 onClick={() => handleOptionChange("ProductRecall")}
               >
@@ -706,7 +714,7 @@ const DigitalUrlInfo = () => {
                 Product Recall
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "recipe" ? "bg-yellow-500" : ""
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "recipe" ? "bg-red-500" : ""
                   }`}
                 onClick={() => handleOptionChange("recipe")}
               >
@@ -714,8 +722,8 @@ const DigitalUrlInfo = () => {
                 Recipe
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "PackagingComposition"
-                    ? "bg-yellow-500"
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "PackagingComposition"
+                    ? "bg-red-500"
                     : ""
                   }`}
                 onClick={() => handleOptionChange("PackagingComposition")}
@@ -728,7 +736,7 @@ const DigitalUrlInfo = () => {
                 Packaging Composition
               </span>
               <span
-                className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "ElectronicLeaflets" ? "bg-yellow-500" : ""
+                className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "ElectronicLeaflets" ? "bg-red-500" : ""
                   }`}
                 onClick={() => handleOptionChange("ElectronicLeaflets")}
               >
