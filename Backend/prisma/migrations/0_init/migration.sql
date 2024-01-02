@@ -477,7 +477,7 @@ CREATE TABLE [dbo].[faq_categories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[featured_articales] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [title_ar] NVARCHAR(max),
     [image] NVARCHAR(max),

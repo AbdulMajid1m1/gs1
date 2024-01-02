@@ -411,15 +411,15 @@ model faq_categories {
 }
 
 model featured_articales {
-  id         BigInt    @id(map: "PK_featured_articales") @default(autoincrement())
+ id           String    @id @default(cuid())
   title      String?   @db.NVarChar(Max)
   title_ar   String?   @db.NVarChar(Max)
   image      String?   @db.NVarChar(Max)
   date       String?   @db.NVarChar(255)
   link       String?   @db.NVarChar(Max)
   status     Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+ created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model featured_services {

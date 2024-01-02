@@ -16,7 +16,8 @@ import
     getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
     deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
     getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
-    ,getfeatured_servicesById,updatefeatured_services,deletefeatured_services} from "../controllers/catalog.js"
+    , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
+     creatfeatured_articales,getfeatured_articalesById,updatefeatured_articales,deletefeatured_articales} from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -132,4 +133,21 @@ router.put('/updatefeatured_services/:id',upload([
     }
 ]), updatefeatured_services);
 router.delete('/deletefeatured_services/:id', deletefeatured_services);
+
+// Routes for featured_articales
+router.get('/getAllfeatured_articales', getAllfeatured_articales);
+router.post('/creatfeatured_articales', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatfeatured_articales);
+router.get('/getfeatured_articalesById/:id', getfeatured_articalesById);
+router.put('/updatefeatured_articales/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updatefeatured_articales);
+router.delete('/deletefeatured_articales/:id', deletefeatured_articales);
 export default router;
