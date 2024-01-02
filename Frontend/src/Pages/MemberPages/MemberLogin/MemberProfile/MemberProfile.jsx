@@ -620,6 +620,7 @@ const MemberProfile = () => {
                     columnsName={MembersBrandsColumn}
                     loading={brandsLoader}
                     secondaryColor="secondary"
+                    checkboxSelection={"disabled"}
 
                     dropDownOptions={[
                       // {
@@ -696,7 +697,7 @@ const MemberProfile = () => {
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
-                    // checkboxSelection='disabled'
+                    checkboxSelection={"disabled"}
                     buttonVisibility={false}
                     dropDownOptions={[
                       {

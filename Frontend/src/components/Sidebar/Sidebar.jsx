@@ -20,6 +20,7 @@ import share from '../../Images/share.png';
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png';
 import helpdesk1 from '../../Images/helpdesk1.png';
 import logout from '../../Images/logout.png';
+import foreigngtin from '../../Images/foreigngtin.png';
 import newRequest from "../../utils/userRequest";
 
 const SideBar = () => {
@@ -292,6 +293,25 @@ const SideBar = () => {
                   <p className="sidebar-text">SSCC</p>
                 </div>
                 )}
+
+
+              {apiResponse.includes('Foreign GTIN (for Imported products)') && (
+                <div
+                  className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''}`}
+                  onClick={() => handleItemClick('/member/udi')}
+                  onContextMenu={(event) =>
+                    handleContextMenu(event, '/member/udi')
+                  }
+                >
+                  <img
+                    src={foreigngtin}
+                    className="main-inside-sidebar bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Foreign GTIN</p>
+                </div>
+                )}
+
 
                 {apiResponse.includes('UDI') && (
                 <div

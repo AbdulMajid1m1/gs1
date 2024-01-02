@@ -177,6 +177,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                    placeholder="Member Type"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  >
+                                    <option value="">-Select MemberType-</option>
                                     <option value="operator">Operator</option>
                                     <option value="moderator">Moderator</option>
                                   </select>
@@ -206,6 +207,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                    placeholder="Member Status"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                   >
+                                    <option value="">-select status-</option>
                                     <option value="active">Active</option>
                                     <option value="inactive">InActive</option>
                                   </select>
@@ -230,7 +232,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                <Button
                                   variant="contained"
                                   style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                                  type="submit"
+                                  // type="submit"
                                   disabled={loading}
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}

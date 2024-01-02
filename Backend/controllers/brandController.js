@@ -19,9 +19,42 @@ export const createBrand = async (req, res, next) => {
             return res.status(400).json({ error: error.details[0].message });
         }
 
+
+        // apply check to check if user status is active or not use optized approach to check this
+        const user = await prisma.users.findUnique({
+            where: {
+                id: value.user_id,
+            },
+        });
+        if (!user) {
+            throw createError(404, 'User not found');
+        }
+        if (user.status !== 'active') {
+            throw createError(400, 'User is not active');
+        }
+
+
+        // Check if brand name or brand name_ar already exists
+        // Check if brand name (English) already exists
+        const existingBrandByName = await prisma.brands.findFirst({
+            where: { name: value.name },
+        });
+
+        if (existingBrandByName) {
+            throw createError(400, 'Brand name (English) already exists');
+        }
+
+        // Check if brand name_ar (Arabic) already exists
+        const existingBrandByNameAr = await prisma.brands.findFirst({
+            where: { name_ar: value.name_ar },
+        });
+
+        if (existingBrandByNameAr) {
+            throw createError(400, 'Brand name (Arabic) already exists');
+        }
         const uploadedCertificate = req.files?.brandCertificate;
         if (!uploadedCertificate) {
-            return next(createError(400, 'Brand Certificate is required'));
+            throw createError(400, 'Brand certificate is required');
         }
 
         const certificate = uploadedCertificate[0];
@@ -44,6 +77,8 @@ export const createBrand = async (req, res, next) => {
         next(error);
     }
 };
+
+
 
 
 const allowedColumns = {
@@ -144,6 +179,58 @@ export const searchBrands = async (req, res, next) => {
     }
 };
 
+export const searchMemberBrands = async (req, res, next) => {
+    // const { keyword } = req.query; 
+    // use Joi 
+    const schema = Joi.object({
+        keyword: Joi.string().required(),
+        user_id: Joi.string().required(),
+
+    });
+    const { error, value } = schema.validate(req.query);
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+    const { keyword } = value;
+
+    try {
+        // Get the search keyword from the query parameters
+
+        // Define the searchable columns for brands
+        const searchableColumns = [
+            'name',
+            'name_ar',
+            'status',
+            'companyID',
+            'brand_certificate'
+        ];
+
+        // Construct the search conditions for Prisma query
+        const searchConditions = {
+            AND: [
+                { user_id: req.query.user_id }, // Search based on user_id
+                {
+                    OR: searchableColumns.map(column => ({
+                        [column]: {
+                            contains: keyword.toLowerCase(), // Convert keyword to lowercase
+                        },
+                    })),
+                },
+            ],
+        };
+
+        // Fetch the top 30 latest records that match the search conditions
+        const brands = await prisma.brands.findMany({
+            where: searchConditions,
+            orderBy: { created_at: 'desc' }, // Sort by created_at in descending order
+            take: 30, // Limit to 30 records
+        });
+        return res.json(brands);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 const updateBrandSchema = Joi.object({
     name: Joi.string().max(255),

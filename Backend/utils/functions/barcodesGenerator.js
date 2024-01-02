@@ -125,6 +125,16 @@ export async function calculateGLN(productsCount, gcpGLNID) {
 }
 
 
+export function isValidGCPInBarcode(barcode, gcpGLNID) {
+    if (!barcode || !gcpGLNID) {
+        return false;
+    }
+
+    const gcpLength = gcpGLNID.length;
+    const barcodeGCP = barcode.substring(0, gcpLength);
+
+    return barcodeGCP === gcpGLNID;
+}
 
 export async function generateProdcutGTIN(gcpGLNID, productsCount) {
 

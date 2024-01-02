@@ -58,7 +58,7 @@ const DataTable = ({
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [muiFilteredData, setMuiFilteredData] = useState([]);
-  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
   //   const { openSnackbar } = useContext(SnackbarContext);
 
   const resetSnakeBarMessages = () => {
@@ -196,13 +196,13 @@ const DataTable = ({
         value && value.toString().toLowerCase().includes(searchValue.toLowerCase())
       );
     });
-    
+
     console.log(filteredData);
     setMuiFilteredData(filteredData);
 
-   
+
   };
-  
+
 
   // Retrieve the value with the key "myKey" from localStorage getvalue
   const myValue = localStorage.getItem("userId");
@@ -436,6 +436,7 @@ const DataTable = ({
     "journalMovementClDetId",
   ];
   let mediumHeightTableScreens = ["userRolesAssignedId", "userAccountRoleId"];
+  let largeHeightTableScreens = ["admin_registered_members"];
 
   // function computeMutation(newRow, oldRow) {
   //     for (let key in newRow) {
@@ -498,14 +499,17 @@ const DataTable = ({
             ? { height: "450px" }
             : mediumHeightTableScreens.includes(uniqueId)
               ? { height: "600px" }
-              : { height: "500px" }
+              : largeHeightTableScreens.includes(uniqueId)
+                ? { height: "700px" }
+                : { height: "500px" }
+
         }
       >
         <div className="datatableTitle">
           <div className="left-div">
-           
+
             {/* if global search is true than show search bar instead of title */}
-            {globalSearch ?  (
+            {globalSearch ? (
               <span>
                 <input
                   type="text"
@@ -515,8 +519,8 @@ const DataTable = ({
                   onChange={handleGlobalSearch}
                 />
               </span>
-            ) :  <span>{title}</span>
-           }
+            ) : <span>{title}</span>
+            }
 
             {ShipmentIdSearchEnable && ShipmentIdSearchEnable === true ? (
               <span>
@@ -594,7 +598,7 @@ const DataTable = ({
           }
 
 
-          editMode="none" // set to row if need to edit row
+          editMode="row" // set to row if need to edit row
           processRowUpdate={processRowUpdate ? processRowUpdate : null}
           onProcessRowUpdateError={(params, error) => {
             console.log(error);
@@ -602,25 +606,15 @@ const DataTable = ({
           slots={{ toolbar: GridToolbar }}
           // rows={filteredData}
           rows={muiFilteredData}
-          columns={
-            uniqueId === "customerListId"
-              ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
-              : (actionColumnVisibility !== false
-                ? idColumn.concat(columnsName.concat(actionColumn))
-                : idColumn.concat(columnsName))
+
+          columns={(actionColumnVisibility !== false
+            ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
+            : [...idColumn, ...columnsName])
           }
-          // initialState={{
-          //   pinnedColumns: {
-          //     // show actions column as pinned if actionColumnVisibility is false
-
-          //     left: idColumn.concat(columnsName),
-
-          //   },
-          // }}
 
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
-          pageSizeOptions={[100, 500, 1000]} 
+          pageSizeOptions={[50, 100, { value: -1, label: "All" }]}
           checkboxSelection={checkboxSelectionValue}
           filterModel={filterModel}
           onFilterModelChange={handleFilterModelChange}
@@ -635,6 +629,7 @@ const DataTable = ({
             console.log(selectedRows)
             setSelectedRow(selectedRows.map((item, index) => ({ data: item, index }))); // Set the state with selected row data objects
             setTableSelectedRows(selectedRows)
+            setTableSelectedExportRows(selectedRows)
             handleRowClick(selectedRows);
 
           }}

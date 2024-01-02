@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBrand, getBrands, updateBrand, deleteBrand, searchBrands } from '../../controllers/brandController.js';
+import { createBrand, getBrands, updateBrand, deleteBrand, searchBrands, searchMemberBrands } from '../../controllers/brandController.js';
 import { upload } from '../../configs/multerConfig.js';
 
 const router = express.Router();
@@ -18,6 +18,7 @@ router.post('/', upload([
 router.get('/', getBrands);
 
 router.get('/search', searchBrands);
+router.get('/searchMemberBrands', searchMemberBrands);
 
 router.put('/:id', upload([
     {

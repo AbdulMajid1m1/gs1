@@ -2,9 +2,78 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
 import { backendUrl } from './config';
+import { useGridApiContext } from "@mui/x-data-grid";
+import { Box } from "@mui/material";
 const QRCodeCell = props => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;
   return <QRCode value={url} size={40} />;
+};
+
+function ImageEditInputCell(props) {
+  const { id, field, fieldUpdated, value, mode } = props;
+  const apiRef = useGridApiContext();
+
+  const handleFileChange = (event) => {
+    const file = event.target?.files?.[0];
+
+    if (!file) {
+      apiRef.current.setEditCellValue({
+        id,
+        field: fieldUpdated,
+        value: false,
+      });
+      return;
+    }
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const imageValue = reader.result;
+        apiRef.current.setEditCellValue({
+          id,
+          field: fieldUpdated,
+          value: true,
+        });
+        apiRef.current.setEditCellValue({
+          id,
+          field,
+          value: { file, dataURL: imageValue, isUpdate: true },
+        });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRef = (element) => {
+    if (element) {
+      const input = element.querySelector('input[type="file"]');
+      input?.focus();
+    }
+  };
+
+  if (mode === "edit") {
+    return (
+      <Box sx={{ display: "flex", alignItems: "center", pr: 2 }}>
+        <input
+          ref={handleRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+      </Box>
+    );
+  }
+
+  console.log("Value");
+  console.log(value);
+}
+const renderImageEditInputCell = (params) => {
+  const { field, fieldUpdated } = params;
+  return (
+    <ImageEditInputCell {...params} mode="edit" fieldUpdated={fieldUpdated} />
+  );
 };
 
 const GTINCell = params => {
@@ -1335,7 +1404,7 @@ export const GtinColumn = [
       );
     },
   },
-  
+
   {
     field: 'ProductType',
     headerName: 'Product Type',
@@ -3352,7 +3421,7 @@ export const submenusDataColumn = [
   {
     field: 'email',
     headerName: 'Email',
-    width: 180,
+    width: 220,
   },
   {
     field: 'mobile',
@@ -3563,11 +3632,25 @@ export const submenusDataColumn = [
     field: 'created_at',
     headerName: 'Created At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+
+    }
   },
   // {
   //   field: 'gcpGLNID',
@@ -3745,15 +3828,15 @@ export const memberHistoryColumnData = [
     }
   },
 
-  {
-    field: 'created_by_admin',
-    // if value is 1 show yes else no
-    headerName: 'Created By Admin',
-    width: 180,
-    valueGetter: (params) => {
-      return params.value === 1 ? 'Yes' : 'No';
-    },
-  }
+  // {
+  //   field: 'created_by_admin',
+  //   // if value is 1 show yes else no
+  //   headerName: 'Created By Admin',
+  //   width: 180,
+  //   valueGetter: (params) => {
+  //     return params.value === 1 ? 'Yes' : 'No';
+  //   },
+  // }
 
 
 
