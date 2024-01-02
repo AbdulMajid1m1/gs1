@@ -436,6 +436,7 @@ const DataTable = ({
     "journalMovementClDetId",
   ];
   let mediumHeightTableScreens = ["userRolesAssignedId", "userAccountRoleId"];
+  let largeHeightTableScreens = ["admin_registered_members"];
 
   // function computeMutation(newRow, oldRow) {
   //     for (let key in newRow) {
@@ -498,7 +499,10 @@ const DataTable = ({
             ? { height: "450px" }
             : mediumHeightTableScreens.includes(uniqueId)
               ? { height: "600px" }
+            : largeHeightTableScreens.includes(uniqueId)
+              ? { height: "700px" }
               : { height: "500px" }
+
         }
       >
         <div className="datatableTitle">

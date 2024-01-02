@@ -98,6 +98,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                    id="field1"
                                    value={firstName}
                                    onChange={(e) => setFirstName(e.target.value)}
+                                   required
                                    placeholder="First Name"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
@@ -110,7 +111,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                    id="field2"
                                       value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
-                                        
+                                        required
                                    placeholder="Last Name"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
@@ -125,6 +126,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                    id="field3"
                                         value={emailAddress}
                                         onChange={(e) => setEmailAddress(e.target.value)}
+                                        required
                                    placeholder="Email"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
@@ -174,8 +176,10 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                         value={memberType}
                                         onChange={(e) => setMemberType(e.target.value)}
                                    placeholder="Member Type"
+                                   required
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  >
+                                    <option value="">-Select MemberType-</option>
                                     <option value="operator">Operator</option>
                                     <option value="moderator">Moderator</option>
                                   </select>
@@ -205,6 +209,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                    placeholder="Member Status"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                   >
+                                    <option value="">-select status-</option>
                                     <option value="active">Active</option>
                                     <option value="inactive">InActive</option>
                                   </select>

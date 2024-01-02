@@ -28,7 +28,7 @@ const Gtin = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
-  const [isExportBarcode, setIsExportBarcode] = useState(false);
+  const [isExportBarcode, setIsExportBarcode] = useState(false); 
   const navigate = useNavigate()
 
   const [error, setError] = useState(false);
@@ -110,54 +110,32 @@ const Gtin = () => {
   };
 
 
-  // const handleExportProducts = () => {
-  //   if (!tableSelectedRows || tableSelectedRows.length === 0) {
-  //       toast.error('Please select at least one row for export.')
-  //     return;
-  //   }
-  //   const selectedRowsData = Array.isArray(tableSelectedRows) ? tableSelectedRows : data;
-
-  //   const workbook = XLSX.utils.book_new();
-  //   const worksheet = XLSX.utils.json_to_sheet(selectedRowsData);
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'SelectedRows');
-
-  //   // Generate Excel file
-  //   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //   const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-  //   // Save Excel file
-  //   saveAs(dataBlob, 'selected_rows.xlsx');
-
-  //   setTableSelectedRows([]);
-  //   setRowSelectionModel([]);
-  // };
-
 
   const handleExportProducts = () => {
     if (!tableSelectedExportRows || tableSelectedExportRows.length === 0) {
       toast.error('Please select at least one row for export.');
       return;
     }
-
+  
     // Convert data to Excel format
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(tableSelectedExportRows);
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Selected Rows');
-
+  
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
+  
     // Save Excel file
     saveAs(dataBlob, 'gtin_products.xlsx');
-
+  
     // Print data of selected rows
     console.log('Selected Rows Data:', tableSelectedExportRows);
-
+  
     setTableSelectedExportRows([]);
     setRowSelectionModel([]);
   };
-
+  
 
   const handleExportProductsTemplate = () => {
     // Mapping of original headers to desired headers
@@ -180,25 +158,25 @@ const Gtin = () => {
       size: 'Size',
       barcode: 'GTIN'
     };
-
+  
     // Create a new array with the desired headers in the specified order
     const desiredHeaders = Object.values(headerMapping);
-
+  
     // Create a worksheet with only headers
     const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
-
+  
     // Create a workbook and append the header worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
-
+  
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
+  
     // Save Excel file
     saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
-
+  
 
 
   // // file Import
@@ -225,7 +203,7 @@ const Gtin = () => {
   //         .then((response) => {
   //           // Handle the successful response
   //           console.log(response.data);
-
+       
   //           toast.success('The data has been imported successfully.', {
   //             position: 'top-right',
   //             autoClose: 2000,
@@ -242,7 +220,7 @@ const Gtin = () => {
   //         .catch((error) => {
   //           // Handle the error
   //           console.error(error);
-
+       
   //           toast.error('Something is Wrong', {
   //             position: 'top-right',
   //             autoClose: 2000,
@@ -260,7 +238,7 @@ const Gtin = () => {
   //   };
 
   const [selectedFile, setSelectedFile] = useState(null);
-
+  
   const handleFileInputChange = (event) => {
     const selectedFile = event.target.files[0];
     setIsLoading(true);
@@ -277,42 +255,18 @@ const Gtin = () => {
           console.log(response.data);
 
           if (response.data && response.data.errors && response.data.errors.length > 0) {
-            // Check for the specific error related to duplicate product
-            const duplicateProductError = response.data.errors.find(error =>
-              error.error.includes('A product with the same brand names and product names already exists')
-            );
-
-            if (duplicateProductError) {
-              // Display a specific error message for duplicate product
-              toast.error(duplicateProductError.error, {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: 'light',
-              });
-            } else {
-              console.error('Unhandled error:', response.data.errors);
-            }
-          } else {
+            // Display a generic error message
+            toast.error(response.data.errors[0].error);
+          } 
+          else {
             // Display a generic success message
-            toast.success(response?.data?.message || 'The data has been imported successfully.', {
-              position: 'top-right',
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: 'light',
-            });
+            toast.success(response?.data?.message || 'The data has been imported successfully.');
           }
 
           setIsLoading(false);
           // Clear the file input value
           event.target.value = '';
-
+          
           fetchData();
         })
         .catch((error) => {
@@ -340,44 +294,44 @@ const Gtin = () => {
   // Gtin Page Print
   const handleGtinPage = () => {
     if (tableSelectedRows.length === 0) {
-      setError('Please select a row to print.');
-      return;
-    }
-    const printWindow = window.open('', 'Print Window', 'height=400,width=800');
-    const html = '<html><head><title>GTIN 2D Barcode</title>' +
-      '<style>' +
-      '@page { size: 3in 2in; margin: 0; }' +
-      'body { font-size: 13px; line-height: 0.1;}' +
-      '#header { display: flex; justify-content: center;}' +
-      '#imglogo {height: 50px; width: 100px; visibility: hidden;}' +
-      '#itemcode { font-size: 13px; font-weight: 600; display: flex; justify-content: center;}' +
-      '#inside-BRCode { display: flex; justify-content: center; align-items: center; padding: 1px;}' +
-      '#itemSerialNo { font-size: 13px; display: flex; justify-content: center; font-weight: 600; margin-top: 3px;}' +
-      '#Qrcodeserails { height: 100%; width: 100%;}' +
-      '</style>' +
-      '</head><body>' +
-      '<div id="printBarcode"></div>' +
-      '</body></html>';
+     setError('Please select a row to print.');
+     return;
+   }
+   const printWindow = window.open('', 'Print Window', 'height=400,width=800');
+   const html = '<html><head><title>GTIN 2D Barcode</title>' +
+     '<style>' +
+     '@page { size: 3in 2in; margin: 0; }' +
+     'body { font-size: 13px; line-height: 0.1;}' +
+     '#header { display: flex; justify-content: center;}' +
+     '#imglogo {height: 50px; width: 100px; visibility: hidden;}' +
+     '#itemcode { font-size: 13px; font-weight: 600; display: flex; justify-content: center;}' +
+     '#inside-BRCode { display: flex; justify-content: center; align-items: center; padding: 1px;}' +
+     '#itemSerialNo { font-size: 13px; display: flex; justify-content: center; font-weight: 600; margin-top: 3px;}' +
+     '#Qrcodeserails { height: 100%; width: 100%;}' +
+     '</style>' +
+     '</head><body>' +
+     '<div id="printBarcode"></div>' +
+     '</body></html>';
 
-    printWindow.document.write(html);
-    const barcodeContainer = printWindow.document.getElementById('printBarcode');
-    const barcode = document.getElementById('barcode').cloneNode(true);
-    barcodeContainer.appendChild(barcode);
+   printWindow.document.write(html);
+   const barcodeContainer = printWindow.document.getElementById('printBarcode');
+   const barcode = document.getElementById('barcode').cloneNode(true);
+   barcodeContainer.appendChild(barcode);
 
-    const logoImg = new Image();
-    logoImg.src = logo;
+   const logoImg = new Image();
+   logoImg.src = logo;
 
-    logoImg.onload = function () {
-      // printWindow.document.getElementById('imglogo').src = logoImg.src;
-      printWindow.print();
-      printWindow.close();
-      setTimeout(() => {
-        setTableSelectedRows([]);
-        setRowSelectionModel([]);
-      }, 500);
-
-    };
-  }
+   logoImg.onload = function () {
+     // printWindow.document.getElementById('imglogo').src = logoImg.src;
+     printWindow.print();
+     printWindow.close();
+       setTimeout(() => {
+         setTableSelectedRows([]);
+         setRowSelectionModel([]);
+        }, 500);
+       
+   };
+ }
 
 
 
@@ -403,24 +357,24 @@ const Gtin = () => {
       '<div id="printBarcode"></div>' +
       '</body></html>';
 
-    printWindow.document.write(html);
-    const barcodeContainer = printWindow.document.getElementById('printBarcode');
-    const barcode = document.getElementById('2dbarcode').cloneNode(true);
-    barcodeContainer.appendChild(barcode);
+      printWindow.document.write(html);
+      const barcodeContainer = printWindow.document.getElementById('printBarcode');
+      const barcode = document.getElementById('2dbarcode').cloneNode(true);
+      barcodeContainer.appendChild(barcode);
 
-    const logoImg = new Image();
-    logoImg.src = logo;
+      const logoImg = new Image();
+      logoImg.src = logo;
 
-    logoImg.onload = function () {
-      // printWindow.document.getElementById('imglogo').src = logoImg.src;
-      printWindow.print();
-      printWindow.close();
-      setTimeout(() => {
-        setTableSelectedRows([]);
-        setRowSelectionModel([]);
-      }, 500);
-
-    };
+      logoImg.onload = function () {
+        // printWindow.document.getElementById('imglogo').src = logoImg.src;
+        printWindow.print();
+        printWindow.close();
+          setTimeout(() => {
+            setTableSelectedRows([]);
+            setRowSelectionModel([]);
+            }, 500);
+          
+      };
   }
 
 
@@ -467,8 +421,8 @@ const Gtin = () => {
                 <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
                   <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
                   <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
-                </div>
-              )}
+              </div>
+                )}
             </div>
 
             <button
