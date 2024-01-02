@@ -330,7 +330,6 @@ const insertProduct = async (productData) => {
 
     } catch (err) {
         console.error(err);
-        // throw new Error(err.message);
         return { error: err.message };
     }
 };
