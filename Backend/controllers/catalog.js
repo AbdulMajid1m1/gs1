@@ -3,7 +3,6 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import fs from 'fs/promises';
 import path from 'path';
-
 const mega_menus = Joi.object({
     name_en: Joi.string().max(255).required(),
     name_ar: Joi.string().max(255).required(),
@@ -438,53 +437,74 @@ export const getslidersById = async (req, res, next) => {
     }
 };
 export const updatesliders = async (req, res, next) => {
-     try {
-        const slidersSchema = Joi.object({
-            title: Joi.string().max(255).required(),
-            link: Joi.string().max(255).required(),
-            description: Joi.string().max(255).required(),
-            caption: Joi.string().max(255).required(),
-            status: Joi.number().required(),
-        });
+  try {
+    const slidersSchema = Joi.object({
+      title: Joi.string().max(255).required(),
+      link: Joi.string().max(255).required(),
+      description: Joi.string().max(255).required(),
+      caption: Joi.string().max(255).required(),
+      status: Joi.number().required(),
+    });
 
+    const { id } = req.params;
+    const existingBankSlip = await prisma.sliders.findUnique({
+      where: { id: id },
+    });
+
+    if (!existingBankSlip) {
+      return next(createError(404, 'image not found'));
+    }
+
+    let imagePathWithoutPublic = existingBankSlip.image || '';
+
+    if (req.files && req.files.image) {
+      const documentFile = req.files.image[0];
+      console.log(documentFile);
+      const documentPath = path.join(documentFile.destination, documentFile.filename);
+
+      if (existingBankSlip.image) {
+        const existingDocumentPath = path.join(existingBankSlip.image);
+        try {
+          await fs.unlink(existingDocumentPath);
+        } catch (unlinkError) {
+          console.error('Error deleting existing image:', unlinkError);
+        }
+      }
+
+      imagePathWithoutPublic = documentPath.replace(/^public[\\/]/, '');
+    }
+
+    const { error, value } = slidersSchema.validate(req.body);
+    
+    const sliderData = {
+      image: imagePathWithoutPublic,
+      ...value,
+    };
+
+    const updatedBankSlip = await prisma.sliders.update({
+      where: { id: id },
+      data: sliderData,
+    });
+
+    res.json(updatedBankSlip);
+  } catch (error) {
+    next(error);
+  }
+};
+export const deletesliders = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error } = schema.validate(req.params);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
         const { id } = req.params;
-        const existingBankSlip = await prisma.sliders.findUnique({
+        await prisma.sliders.delete({
             where: { id: id },
         });
-
-        if (!existingBankSlip) {
-            return next(createError(404, 'image not found'));
-        }
-
-        let imagePathWithoutPublic = existingBankSlip.image || '';
-
-        if (req.files && req.files.image) {
-            const documentFile = req.files.image[0];
-            const documentPath = path.join(__dirname, '..', documentFile.destination, documentFile.filename);
-
-            if (existingBankSlip.image) {
-                const existingDocumentPath = path.join(__dirname, '..', existingBankSlip.image);
-                if (fs.existsSync(existingDocumentPath)) {
-                    await fs.unlink(existingDocumentPath);
-                }
-            }
-
-            imagePathWithoutPublic = documentPath.replace(/^public[\\/]/, '');
-        }
-
-        const { error, value } = slidersSchema.validate(req.body);
-console.log(value);
-        const sliderData = {
-            image: imagePathWithoutPublic,
-            ...value,
-        };
-
-        const updatedBankSlip = await prisma.sliders.update({
-            where: { id: id },
-            data: sliderData,
-        });
-
-        res.json(updatedBankSlip);
+        return res.json({ message: 'sliders deleted successfully' });
     } catch (error) {
         next(error);
     }
