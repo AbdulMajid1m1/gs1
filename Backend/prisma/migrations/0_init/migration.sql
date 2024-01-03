@@ -468,7 +468,7 @@ CREATE TABLE [dbo].[families] (
 
 -- CreateTable
 CREATE TABLE [dbo].[faq_categories] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,

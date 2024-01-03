@@ -23,8 +23,15 @@ const router = express.Router();
 import {createpages,getAllpages,getpagesById,updatepages,deletepages} from '../controllers/pages.js'
 import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
 import {createblog_categories,getAllblog_categories,getblog_categoriesById,updateblog_categories,deleteblog_categories} from '../controllers/blog_categories.js'
+import {createfaq_categories,getAllfaq_categories,getfaq_categoriesById,updatefaq_categories,deletefaq_categories} from '../controllers/faq_categories.js'
 
 
+// Routes for faq_categories
+router.post('/createfaq_categories', createfaq_categories);
+router.get('/getAllfaq_categories', getAllfaq_categories);
+router.get('/getfaq_categoriesById/:id', getfaq_categoriesById);
+router.put('/updatefaq_categories/:id', updatefaq_categories);
+router.delete('/deletefaq_categories/:id', deletefaq_categories);
 // Routes for unite
 router.post('/units', createunit);
 router.get('/getAllunit', getAllunit);
