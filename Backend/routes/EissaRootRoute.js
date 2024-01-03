@@ -20,6 +20,7 @@ import
     creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
 creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events} from "../controllers/catalog.js"
 const router = express.Router();
+import {createpages,getAllpages,getpagesById,updatepages,deletepages} from '../controllers/pages.js'
 
 // Routes for unite
 router.post('/units', createunit);
@@ -168,4 +169,11 @@ router.put('/updateupcoming_events/:id',upload([
     }
 ]), updateupcoming_events);
 router.delete('/deleteupcoming_events/:id', deleteupcoming_events);
+
+// Routes for pages
+router.get('/getAllpages', getAllpages);
+router.post('/createpages', createpages);
+router.get('/getpagesById/:id', getpagesById);
+router.put('/updatepages/:id', updatepages);
+router.delete('/deletepages/:id', deletepages);
 export default router;
