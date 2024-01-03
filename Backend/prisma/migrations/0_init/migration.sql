@@ -2205,7 +2205,7 @@ CREATE TABLE [dbo].[unspscs] (
 
 -- CreateTable
 CREATE TABLE [dbo].[upcoming_events] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [title_ar] NVARCHAR(max),
     [image] NVARCHAR(max),

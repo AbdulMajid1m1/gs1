@@ -17,7 +17,8 @@ import
     deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
     getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
     , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
-     creatfeatured_articales,getfeatured_articalesById,updatefeatured_articales,deletefeatured_articales} from "../controllers/catalog.js"
+    creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
+creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events} from "../controllers/catalog.js"
 const router = express.Router();
 
 // Routes for unite
@@ -150,4 +151,21 @@ router.put('/updatefeatured_articales/:id',upload([
     }
 ]), updatefeatured_articales);
 router.delete('/deletefeatured_articales/:id', deletefeatured_articales);
+
+// Routes for upcoming_events
+router.get('/getAllupcoming_events', getAllupcoming_events);
+router.post('/creatupcoming_events', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatupcoming_events);
+router.get('/getupcoming_eventsById/:id', getupcoming_eventsById);
+router.put('/updateupcoming_events/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updateupcoming_events);
+router.delete('/deleteupcoming_events/:id', deleteupcoming_events);
 export default router;
