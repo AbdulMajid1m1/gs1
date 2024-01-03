@@ -3,6 +3,8 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import DataTable from '../../../../components/Datatable/Datatable'
 import newRequest from '../../../../utils/userRequest'
 import { memberForRenevalColumn } from '../../../../utils/datatablesource'
+import EditIcon from "@mui/icons-material/Edit";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 const MembersExpiryPage = () => {
     const [memberReneval, setMemberReneval] = useState([]);
@@ -56,42 +58,25 @@ const MembersExpiryPage = () => {
             // handleRowClickInParent={handleRowClickInParent}
             uniqueId="members_expiry_page_id"
 
-            // dropDownOptions={[
-            //   {
-            //     label: "Profile",
-            //     icon: (
-            //       <VisibilityIcon
-            //         fontSize="small"
-            //         color="action"
-            //         style={{ color: "rgb(37 99 235)" }}
-            //       />
-            //     ),
-            //     action: handleView,
-            //   },
-            //   {
-            //     label: "Activation",
-            //     icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-            //     ,
-            //     action: fetchMemberInvoiceData,
+            dropDownOptions={[
+              {
+                label: "Send Invoice",
+                icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                ,
+                // action: fetchMemberInvoiceData,
 
-            //   },
-              // {
-              // label: "Open",
-              // icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-              // ,
+              },
+              {
+              label: "Open Profile",
+              icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+              ,
               // action: handleOpen,
 
-              // },
+              },
 
-            //   ,
-            //   {
-            //     label: "Delete",
-            //     icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
-            //     ,
-            //     action: handleDelete,
-            //   }
+        
 
-            // ]}
+            ]}
 
 
           />

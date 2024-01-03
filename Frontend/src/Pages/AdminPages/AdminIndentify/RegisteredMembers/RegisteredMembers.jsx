@@ -7,6 +7,9 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import newRequest from '../../../../utils/userRequest';
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
+import SwipeDownIcon from '@mui/icons-material/SwipeDown';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -266,21 +269,33 @@ const RegisteredMembers = () => {
                 action: fetchMemberInvoiceData,
 
               },
-              // {
-              // label: "Open",
-              // icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-              // ,
+              {
+              label: "Renew",
+              icon: <PublishedWithChangesIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+              ,
               // action: handleOpen,
 
-              // },
-
-              ,
+              },
               {
-                label: "Delete",
-                icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
+                label: "Upgrade",
+                icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
-                action: handleDelete,
-              }
+                // action: handleOpen,
+  
+                },
+                {
+                  label: "Downgrade",
+                  icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                  ,
+                  // action: handleOpen,
+      
+                },
+                {
+                  label: "Delete",
+                  icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
+                  ,
+                  action: handleDelete,
+                }
 
             ]}
 
