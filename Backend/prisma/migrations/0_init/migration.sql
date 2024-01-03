@@ -1640,7 +1640,7 @@ CREATE TABLE [dbo].[our_teams] (
 
 -- CreateTable
 CREATE TABLE [dbo].[pages] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [name_ar] NVARCHAR(max),
     [slug] NVARCHAR(max),

@@ -1460,7 +1460,7 @@ model our_teams {
 }
 
 model pages {
-  id                     BigInt    @id(map: "PK_pages") @default(autoincrement())
+  id                     String    @id @default(cuid())
   name                   String?   @db.NVarChar(Max)
   name_ar                String?   @db.NVarChar(Max)
   slug                   String?   @db.NVarChar(Max)
@@ -1471,8 +1471,8 @@ model pages {
   seo_description        String?   @db.NVarChar(Max)
   is_dropdown            Int?
   status                 Int?
-  created_at             DateTime? @db.DateTime
-  updated_at             DateTime? @db.DateTime
+  created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model partners {
