@@ -21,7 +21,10 @@ import
 creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events} from "../controllers/catalog.js"
 const router = express.Router();
 import {createpages,getAllpages,getpagesById,updatepages,deletepages} from '../controllers/pages.js'
-import {getAllpartners,creatpartners,getpartnersById,updatepartners,deletepartners} from '../controllers/partners.js'
+import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
+import {createblog_categories,getAllblog_categories,getblog_categoriesById,updateblog_categories,deleteblog_categories} from '../controllers/blog_categories.js'
+
+
 // Routes for unite
 router.post('/units', createunit);
 router.get('/getAllunit', getAllunit);
@@ -193,4 +196,11 @@ router.put('/updatepartners/:id',upload([
     }
 ]), updatepartners);
 router.delete('/deletepartners/:id', deletepartners);
+
+// Routes for blog_categories
+router.post('/createblog_categories', createblog_categories);
+router.get('/getAllblog_categories', getAllblog_categories);
+router.get('/getblog_categoriesById/:id', getblog_categoriesById);
+router.put('/updateblog_categories/:id', updateblog_categories);
+router.delete('/deleteblog_categories/:id', deleteblog_categories);
 export default router;

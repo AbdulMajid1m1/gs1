@@ -169,12 +169,12 @@ CREATE TABLE [dbo].[bank_slips] (
 
 -- CreateTable
 CREATE TABLE [dbo].[blog_categories] (
-    [id] BIGINT,
+    [id] NVARCHAR(max),
     [name] NVARCHAR(max),
     [slug] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [BlogCategoryID] INT NOT NULL IDENTITY(1,1),
+    [BlogCategoryID] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     CONSTRAINT [PK__blog_cat__6BD2DA61FF59A720] PRIMARY KEY CLUSTERED ([BlogCategoryID])
 );
 
