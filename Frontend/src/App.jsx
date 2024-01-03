@@ -73,11 +73,14 @@ import SSCC from "./Pages/MemberPages/SSCC/SSCC";
 import AddSSCC from "./Pages/MemberPages/SSCC/AddSSCC";
 import UpdateSSCC from "./Pages/MemberPages/SSCC/UpdateSSCC";
 import ForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/ForeignGTIN";
-import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/GTIN";
-import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/SSCC";
-import Gln from "./Pages/AdminPages/AdminIndentify/GLN/GLN";
+import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/AdminGTIN";
+import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/AdminSSCC";
+import Gln from "./Pages/AdminPages/AdminIndentify/GLN/AdminGLN";
 import DigitalUrlInfo from "./Pages/MemberPages/DigitalUrlInfo/DigitalUrlInfo";
 import MembersExpiryPage from "./Pages/AdminPages/Others/MembersExpiryPage/MembersExpiryPage";
+import AdminAddSSCC from "./Pages/AdminPages/AdminIndentify/SSCC/AdminAddSSCC";
+import AdminAddGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminAddGLN";
+import AddGTINProducts from "./Pages/AdminPages/AdminIndentify/GTIN/AddGTINProducts";
 
 const queryClient = new QueryClient()
 
@@ -233,8 +236,11 @@ const App = () => {
                             <Route path="member-expiry-page" element={<MembersExpiryPage />} />
 
                             <Route path="gtin" element={<Gtin />} />
+                            <Route path="admin-gtin" element={<AddGTINProducts />} />
                             <Route path="gln" element={<Gln />} />
+                            <Route path="admin-addgln" element={<AdminAddGLN />} />
                             <Route path="sscc" element={<Sscc />} />
+                            <Route path="admin-addsscc" element={<AdminAddSSCC />} />
                             <Route path="foreign-gtin" element={<ForeignGTIN />} />
 
                             <Route path="front-end" element={<Frontend />} />
