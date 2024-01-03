@@ -255,9 +255,10 @@ export const createBulkSSCC = async (req, res, next) => {
 
             // generate SSCC barcodes for bulk and save in database using batch insert
             const ssccs = [];
+            let counter = otherProductSubscriptions.other_products_subscription_counter;
             const preDigitGcpGlnId = value.preDigit + user.gcpGLNID;
             for (let i = 0; i < value.quantity; i++) {
-                const sscc = await generateSSCCBarcode(preDigitGcpGlnId, i);
+                const sscc = await generateSSCCBarcode(preDigitGcpGlnId, counter);
                 if (sscc === "false") {
                     throw createError(400, 'Invalid SSCC calculation');
                 }
@@ -268,6 +269,7 @@ export const createBulkSSCC = async (req, res, next) => {
                     gcpGLNID: user.gcpGLNID,
                     product_id: otherProductSubscriptions.product.id,
                 });
+                counter++;
             }
             const newSSCC = await prisma.add_member_sscc_products.createMany({
                 data: ssccs,
