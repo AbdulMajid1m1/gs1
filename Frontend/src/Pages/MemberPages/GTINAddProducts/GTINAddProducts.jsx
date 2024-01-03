@@ -179,7 +179,7 @@ const GTINAddProducts = () => {
 
     const handleAllPackageType = async () => {
         try {
-            const response = await newRequest.get('/productTypes');
+            const response = await newRequest.get('/getAllproductPackag');
             console.log(response.data);
             const data = response.data;
             const PackageName = data.map((country) => country.name);
