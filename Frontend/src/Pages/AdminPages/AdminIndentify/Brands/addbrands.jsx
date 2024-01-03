@@ -155,40 +155,13 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <form onSubmit={handleAddCompany} className='w-full'>
                       <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Brands</h2>
                         <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                          <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                            <label htmlFor="field1" className="text-secondary">Brand Name EN</label>
-                              <input
-                                type="text"
-                                id="field1"
-                                value={companyName}
-                                onChange={(e) => setCompanyName(e.target.value)}
-                                placeholder="Enter Brand Name EN"
-                                required
-                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-0"
-                              />
-                          </div>
-
-                          <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                            <label htmlFor="field2" className="text-secondary">Brand Name AR </label>
-                              <input
-                                type="text"
-                                id="field2"
-                                value={companyNameArabic}
-                                onChange={(e) => setCompanyNameArabic(e.target.value)}
-                                placeholder="Enter Brand Name AR"
-                                required
-                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                              />
-                          </div>
-                        </div>
-
-                        <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
+                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                           <label htmlFor="field5" className="text-secondary">User ID</label>
                           <Autocomplete
                               id="field5"
                               required
                               options={userID}
-                              getOptionLabel={(option) => (option && option.fname) ? `${option?.fname} - ${option?.email} - ${option?.companyID} ` : ''}
+                              getOptionLabel={(option) => (option && option.fname) ? `${option?.fname} - ${option?.email} - ${option?.company_name_eng} ` : ''}
                               onChange={handleGPCAutoCompleteChange}
                               value={selectedUserID}
                               onInputChange={(event, newInputValue, params) => handleAutoCompleteInputChange(event, newInputValue, params)}
@@ -203,7 +176,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                 }}
                                 renderOption={(props, option) => (
                                   <li {...props}>
-                                    {option ? `${option.fname} - ${option.email} - ${option.companyID}` : 'No options'}
+                                    {option ? `${option.fname} - ${option.email} - ${option.company_name_eng}` : 'No options'}
                                   </li>
                                 )}
 
@@ -243,6 +216,34 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                             />
                         </div>
 
+                          <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <label htmlFor="field1" className="text-secondary">Brand Name EN</label>
+                              <input
+                                type="text"
+                                id="field1"
+                                value={companyName}
+                                onChange={(e) => setCompanyName(e.target.value)}
+                                placeholder="Enter Brand Name EN"
+                                required
+                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-0"
+                              />
+                          </div>
+
+                          <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <label htmlFor="field2" className="text-secondary">Brand Name AR </label>
+                              <input
+                                type="text"
+                                id="field2"
+                                value={companyNameArabic}
+                                onChange={(e) => setCompanyNameArabic(e.target.value)}
+                                placeholder="Enter Brand Name AR"
+                                required
+                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                              />
+                          </div>
+                        </div>
+
+                        
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-2">
                           <label htmlFor="field3" className="text-secondary">Upload Documents </label>
                             <input
