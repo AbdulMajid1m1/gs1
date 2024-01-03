@@ -21,7 +21,7 @@ import
 creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events} from "../controllers/catalog.js"
 const router = express.Router();
 import {createpages,getAllpages,getpagesById,updatepages,deletepages} from '../controllers/pages.js'
-
+import {getAllpartners,creatpartners,getpartnersById,updatepartners,deletepartners} from '../controllers/partners.js'
 // Routes for unite
 router.post('/units', createunit);
 router.get('/getAllunit', getAllunit);
@@ -176,4 +176,21 @@ router.post('/createpages', createpages);
 router.get('/getpagesById/:id', getpagesById);
 router.put('/updatepages/:id', updatepages);
 router.delete('/deletepages/:id', deletepages);
+
+// Routes for partners
+router.get('/getAllpartners', getAllpartners);
+router.post('/creatpartners', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatpartners);
+router.get('/getpartnersById/:id', getpartnersById);
+router.put('/updatepartners/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updatepartners);
+router.delete('/deletepartners/:id', deletepartners);
 export default router;
