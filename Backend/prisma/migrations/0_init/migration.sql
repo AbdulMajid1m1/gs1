@@ -1658,7 +1658,7 @@ CREATE TABLE [dbo].[pages] (
 
 -- CreateTable
 CREATE TABLE [dbo].[partners] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [image] NVARCHAR(max),
     [link] NVARCHAR(max),
     [status] INT,
