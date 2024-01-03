@@ -90,7 +90,11 @@ const AdminSSCC = () => {
         const crs = res?.data?.map(item => {
           return {
             user_id: item.id,
-            transaction_id: item.transaction_id,
+            gcpGLNID: item.gcpGLNID,
+            gln: item.gln,
+            memberID: item.memberID,
+            companyID: item.companyID,
+            company_name_eng: item.company_name_eng,
             email: item.email,
             mobile: item.mobile,
           };
@@ -373,7 +377,7 @@ const handleRowClickInParent = (item) => {
                       id="companyName"
                       required
                       options={crList}
-                      getOptionLabel={(option) => (option && option.user_id) ? `${option?.user_id} - ${option?.transaction_id} - ${option?.email} - ${option?.mobile} ` : ''}
+                      getOptionLabel={(option) => (option && option.user_id) ? `${option?.gcpGLNID} - ${option?.company_name_eng} - ${option?.memberID} - ${option?.email} - ${option?.mobile} ` : ''}
                       onChange={handleGPCAutoCompleteChange}
                       value={selectedCr?.cr}
                       onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -388,7 +392,7 @@ const handleRowClickInParent = (item) => {
                       }}
                       renderOption={(props, option) => (
                         <li key={option.user_id} {...props}>
-                          {option ? `${option.user_id} - ${option.transaction_id} - ${option.email} - ${option.mobile}` : 'No options'}
+                          {option ? `${option.gcpGLNID} - ${option.company_name_eng} - ${option.memberID} - ${option.email} - ${option.mobile}` : 'No options'}
                         </li>
                       )} 
 
@@ -399,7 +403,7 @@ const handleRowClickInParent = (item) => {
                           error={isSubmitClicked && !selectedCr?.cr}
                           helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                           {...params}
-                          label="Search SSCC"
+                          label="Search Members.."
                           InputProps={{
                             ...params.InputProps,
                             endAdornment: (
