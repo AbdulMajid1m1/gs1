@@ -35,6 +35,7 @@ import productpackaging from '../../Images/productpackaging.png'
 import verifiedbyGs1 from '../../Images/verifiedbyGs1.png'
 import gdsnproduct from '../../Images/gdsnproduct.png'
 import masterdata from '../../Images/masterdata.png'
+import membersexpiry from '../../Images/membersexpiry.png'
 import logout from '../../Images/logout.png'
 
 const AdminSideBar = () => {
@@ -556,6 +557,27 @@ const AdminSideBar = () => {
                 className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
                 onClick={toggleSidebar}
               >
+                <div 
+                  // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/migration')}
+                  //     onContextMenu={(event) =>
+                  //        handleContextMenu(event, '/admin/migration')
+                  // }
+                  className={`main-images-container ${selectedItem === '/admin/member-expiry-page' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/member-expiry-page', event)}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/member-expiry-page')
+                  }
+                  >
+                  <img
+                    src={membersexpiry}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Members Expiry Page</p>
+                </div>
+
+
                 <div 
                   // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/migration')}
