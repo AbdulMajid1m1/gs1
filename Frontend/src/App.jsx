@@ -77,6 +77,7 @@ import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/GTIN";
 import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/SSCC";
 import Gln from "./Pages/AdminPages/AdminIndentify/GLN/GLN";
 import DigitalUrlInfo from "./Pages/MemberPages/DigitalUrlInfo/DigitalUrlInfo";
+import MembersExpiryPage from "./Pages/AdminPages/Others/MembersExpiryPage/MembersExpiryPage";
 
 const queryClient = new QueryClient()
 
@@ -229,6 +230,7 @@ const App = () => {
                             <Route path="help-desk" element={<HelpDesk />} />
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
+                            <Route path="member-expiry-page" element={<MembersExpiryPage />} />
 
                             <Route path="gtin" element={<Gtin />} />
                             <Route path="gln" element={<Gln />} />

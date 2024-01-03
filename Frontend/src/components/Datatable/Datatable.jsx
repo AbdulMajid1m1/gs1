@@ -513,7 +513,7 @@ const DataTable = ({
               <span>
                 <input
                   type="text"
-                  placeholder="SEARCH REGISTERED MEMBERS"
+                  placeholder="SEARCH MEMBERS"
                   name="SHIPMENTID"
                   className="searchInput w-[75%]"
                   onChange={handleGlobalSearch}
