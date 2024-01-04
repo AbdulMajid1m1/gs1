@@ -1518,26 +1518,6 @@ export const Gs1AllMembers = [
     width: 180,
   },
   {
-    field: 'password',
-    headerName: 'CODE',
-    width: 180,
-  },
-  // {
-  //   field: 'password',
-  //   headerName: 'PASSWORD',
-  //   width: 180,
-  // },
-  {
-    field: 'membership_category',
-    headerName: 'MEMBER CATEGORY',
-    width: 180,
-  },
-  {
-    field: 'email',
-    headerName: 'EMAIL',
-    width: 220,
-  },
-  {
     field: 'remarks',
     headerName: 'REMARKS',
     width: 180,
@@ -1561,6 +1541,26 @@ export const Gs1AllMembers = [
         {params.row.status}
       </div>
     ),
+  },
+  {
+    field: 'password',
+    headerName: 'CODE',
+    width: 180,
+  },
+  // {
+  //   field: 'password',
+  //   headerName: 'PASSWORD',
+  //   width: 180,
+  // },
+  {
+    field: 'membership_category',
+    headerName: 'MEMBER CATEGORY',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'EMAIL',
+    width: 220,
   },
   // {
   //   field: 'user_type',
