@@ -213,7 +213,7 @@ const Brands = () => {
           <DashboardRightHeader
             title={'Brands'}
           />
-        </div>
+        </div>   
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
