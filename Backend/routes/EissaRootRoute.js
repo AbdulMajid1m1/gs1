@@ -24,7 +24,7 @@ import {createpages,getAllpages,getpagesById,updatepages,deletepages} from '../c
 import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
 import {createblog_categories,getAllblog_categories,getblog_categoriesById,updateblog_categories,deleteblog_categories} from '../controllers/blog_categories.js'
 import {createfaq_categories,getAllfaq_categories,getfaq_categoriesById,updatefaq_categories,deletefaq_categories} from '../controllers/faq_categories.js'
-
+import {getAllour_teams,creatour_teams,getour_teamsById,updateour_teams,deleteour_teams} from '../controllers/our_teams.js'
 
 // Routes for faq_categories
 router.post('/createfaq_categories', createfaq_categories);
@@ -210,4 +210,21 @@ router.get('/getAllblog_categories', getAllblog_categories);
 router.get('/getblog_categoriesById/:id', getblog_categoriesById);
 router.put('/updateblog_categories/:id', updateblog_categories);
 router.delete('/deleteblog_categories/:id', deleteblog_categories);
+
+// Routes for our_teams
+router.get('/getAllour_teams', getAllour_teams);
+router.post('/creatour_teams', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatour_teams);
+router.get('/getour_teamsById/:id', getour_teamsById);
+router.put('/updateour_teams/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updateour_teams);
+router.delete('/deleteour_teams/:id', deleteour_teams);
 export default router;
