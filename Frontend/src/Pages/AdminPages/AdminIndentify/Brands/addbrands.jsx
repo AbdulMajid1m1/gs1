@@ -17,80 +17,15 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     const abortControllerRef = React.useRef(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const createBrandData = JSON.parse(sessionStorage.getItem("createBrandData"));
+    console.log(createBrandData)
 
     
     const handleCloseCreatePopup = () => {
         setVisibility(false);
       };
 
-
-    const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-      console.log(reason)
-      if (reason === 'reset' || reason === 'clear') {
-          setUserID([]); // Clear the data list if there is no input
-          return; // Do not perform search if the input is cleared or an option is selected
-      }
-      if (reason === 'option') {
-          return // Do not perform search if the option is selected
-      }
-
-      if (!newInputValue || newInputValue.trim() === '') {
-          // perform operation when input is cleared
-          setUserID([]);
-          return;
-      }
-
-
-      setAutocompleteLoading(true);
-      setOpen(true);
-
-
-      console.log(newInputValue);
-      // setSearchText(newInputValue);
-      console.log("querying...")
-      try {
-
-          // Cancel any pending requests
-          if (abortControllerRef.current) {
-              abortControllerRef.current.abort();
-          }
-
-          // Create a new AbortController
-          abortControllerRef.current = new AbortController();
-          const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, 
-          {
-              signal: abortControllerRef.current.signal
-          })
-
-          console.log(res);
-          setUserID(res?.data);
-          setOpen(true);
-          setAutocompleteLoading(false);
-      }
-      catch (error) {
-          if (error?.name === 'CanceledError') {
-              // Ignore abort errors
-              setUserID([]); // Clear the data list if there is no input
-              setAutocompleteLoading(true);
-              console.log(error)
-              return;
-          }
-          console.error(error);
-          console.log(error)
-          setUserID([]); // Clear the data list if an error occurs
-          setOpen(false);
-          setAutocompleteLoading(false);
-      }
-
-  }
-
-  const handleGPCAutoCompleteChange = (event, value) => {
-      console.log(value);
-      setSelectedUserID(value);
-      // setGpcCode(value);
-  }
-
-
+      
     
     const handleFileChange = (e) => {
       // setError('');
@@ -115,8 +50,8 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     formData.append('name', companyName);
     formData.append('name_ar', companyNameArabic);
     formData.append('status', 'active');
-    formData.append('user_id', selectedUserID?.id);
-    formData.append('companyID', selectedUserID?.companyID);
+    formData.append('user_id', createBrandData?.id);
+    formData.append('companyID', createBrandData?.companyID);
     formData.append('brandCertificate', brandCertificate);
 
     try {
@@ -129,7 +64,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
       toast.success(`Brand ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`);
 
       console.log(response.data);
-      refreshBrandData();
+      refreshBrandData(createBrandData);
       handleCloseCreatePopup();
       setLoading(false);
 
@@ -155,67 +90,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <form onSubmit={handleAddCompany} className='w-full'>
                       <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Brands</h2>
                         <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                          <label htmlFor="field5" className="text-secondary">User ID</label>
-                          <Autocomplete
-                              id="field5"
-                              required
-                              options={userID}
-                              getOptionLabel={(option) => (option && option.fname) ? `${option?.fname} - ${option?.email} - ${option?.company_name_eng} ` : ''}
-                              onChange={handleGPCAutoCompleteChange}
-                              value={selectedUserID}
-                              onInputChange={(event, newInputValue, params) => handleAutoCompleteInputChange(event, newInputValue, params)}
-                              loading={autocompleteLoading}
-                              // sx={{ marginTop: '10px' }}
-                              open={open}
-                              onOpen={() => {
-                              // setOpen(true);
-                              }}
-                                onClose={() => {
-                                  setOpen(false);
-                                }}
-                                renderOption={(props, option) => (
-                                  <li {...props}>
-                                    {option ? `${option.fname} - ${option.email} - ${option.company_name_eng}` : 'No options'}
-                                  </li>
-                                )}
-
-                                renderInput={(params) => (
-                                  <TextField
-                                    // required
-                                    {...params}
-                                      label="Search User ID here"
-                                      InputProps={{
-                                      ...params.InputProps,
-                                      endAdornment: (
-                                        <React.Fragment>
-                                          {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                            {params.InputProps.endAdornment}
-                                        </React.Fragment>
-                                        ),
-                                      }}
-                                      sx={{
-                                        '& label.Mui-focused': {
-                                          color: '#00006A',
-                                          },
-                                          '& .MuiInput-underline:after': {
-                                              borderBottomColor: '#00006A',
-                                          },
-                                          '& .MuiOutlinedInput-root': {
-                                            '&:hover fieldset': {
-                                                borderColor: '#000000',
-                                              },
-                                              '&.Mui-focused fieldset': {
-                                                borderColor: '#000000',
-                                              },
-                                            },
-                                          }}
-                                      />
-                                )}
-
-                            />
-                        </div>
-
+                        
                           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                             <label htmlFor="field1" className="text-secondary">Brand Name EN</label>
                               <input
