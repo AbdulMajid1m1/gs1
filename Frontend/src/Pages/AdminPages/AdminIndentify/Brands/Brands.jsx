@@ -18,20 +18,6 @@ const Brands = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
-  const handleShowCreatePopup = () => {
-    setCreatePopupVisibility(true);
-  };
-
-  const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
-  const handleShowUpdatePopup = (row) => {
-    setUpdatePopupVisibility(true);
-    // console.log(row)
-    sessionStorage.setItem("updateBrandData", JSON.stringify(row));
-  };
-
-
-
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [selectedCr, setSelectedCr] = useState(null);
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
@@ -39,7 +25,6 @@ const Brands = () => {
   const [open, setOpen] = useState(false);
   const [brandList, setBrandList] = useState([]);
   const abortControllerRef = React.useRef(null);
-
   const navigate = useNavigate()
 
 
@@ -87,18 +72,31 @@ const Brands = () => {
       setAutocompleteLoading(true);
       setOpen(true);
 
-      const res = await newRequest.get(`/brands/search?keyword=${newInputValue}`, {
+      // const res = await newRequest.get(`/brands/search?keyword=${newInputValue}`, {
+        const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
       console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
-          name: item?.name,
-          name_ar: item?.name_ar,
+          id: item?.id,
+          memberID: item?.memberID,
+          company_name_eng: item?.company_name_eng,
+          gln: item?.gln,
           companyID: item?.companyID,
+          email: item?.email,
+          mobile: item?.mobile,
+          gpc: item?.gpc,
 
         };
+        // const crs = res?.data?.map(item => {
+        //   return {
+        //     name: item?.name,
+        //     name_ar: item?.name_ar,
+        //     companyID: item?.companyID,
+  
+        //   };
       });
 
       setBrandList(crs);
@@ -119,7 +117,7 @@ const Brands = () => {
   
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value);
+    console.log(value); 
     console.log(value?.companyID);
     try {
       const response = await newRequest.get(`/brands?companyID=${value?.companyID}`);
@@ -132,6 +130,29 @@ const Brands = () => {
       setIsLoading(false)
     }
   };
+
+
+
+  
+  const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
+  const handleShowCreatePopup = (value) => {
+    if (selectedCr == null) {
+      toast.info('Please select a member first')
+    } else {
+      setCreatePopupVisibility(true);
+      // console.log(selectedCr)
+      sessionStorage.setItem("createBrandData", JSON.stringify(selectedCr));
+    }
+  };
+
+
+  const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+  const handleShowUpdatePopup = (row) => {
+    setUpdatePopupVisibility(true);
+    // console.log(row)
+    sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+  };
+
 
   
   const handleView = (row) => {
@@ -154,49 +175,20 @@ const Brands = () => {
         try {
           const isDeleted = await newRequest.delete("/brands/" + row?.id);
           if (isDeleted) {
-            toast.success('Cr number deleted successfully', {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-
+            toast.success('Brand deleted successfully');
 
             // filter out the deleted user from the data
             const filteredData = data.filter((item) => item?.id !== row?.id);
             setData(filteredData);
 
-          } else {
-            // Handle any additional logic if the user was not deleted successfully
-            toast.error('Failed to delete user', {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-
+          } 
+          else {
+            toast.error('Failed to delete Brands');
           }
-        } catch (error) {
-          // Handle any error that occurred during the deletion
+        } 
+        catch (error) {
           console.error("Error deleting user:", error);
-          toast.error('Something went wrong while deleting user', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.error('Something went wrong while deleting user');
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         return;
@@ -225,7 +217,7 @@ const Brands = () => {
                   id="companyName"
                   required
                   options={brandList}
-                  getOptionLabel={(option) => (option && option?.name) ? `${option?.name_ar} - ${option?.companyID}` : ''}
+                  getOptionLabel={(option) => (option && option?.memberID) ? `${option?.company_name_eng} - ${option?.gln} - ${option?.companyID} - ${option?.email} - ${option?.mobile} - ${option?.gpc}` : ''}
                   onChange={handleGPCAutoCompleteChange}
                   value={selectedCr}
                   onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -239,8 +231,8 @@ const Brands = () => {
                     setOpen(false);
                   }}
                   renderOption={(props, option) => (
-                    <li key={option.name_ar} {...props}>
-                      {option ? `${option?.name} - ${option.name_ar} - ${option.companyID}` : 'No options'}
+                    <li key={option.memberID} {...props}>
+                      {option ? `${option?.company_name_eng} - ${option.gln} - ${option.companyID} - ${option.email} - ${option.mobile} - ${option.gpc}` : 'No options'}
                     </li>
                   )}
 
