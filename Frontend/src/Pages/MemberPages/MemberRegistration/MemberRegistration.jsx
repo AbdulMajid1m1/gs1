@@ -1052,11 +1052,11 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='upload'>Upload Company Documents<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='upload'>Upload your company Commercial Registration (CR)<span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={handleDocUpload}
                                     id='upload'
-                                    accept=".pdf,.doc,.docx"
+                                    // accept=".pdf,.doc,.docx"
                                     placeholder='Upload Company Documents'
                                     required
                                     type='file' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
@@ -1064,10 +1064,10 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label classNa me='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
                                 <input
                                     onChange={handleImageChange}
-                                    accept="image/*"
+                                    // accept="image/*"
                                     required
                                     // onChange={(e) => setUploadNationalAddress(e.target.value)}
                                     id='uploadNational'
