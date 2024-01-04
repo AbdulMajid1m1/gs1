@@ -81,6 +81,10 @@ import MembersExpiryPage from "./Pages/AdminPages/Others/MembersExpiryPage/Membe
 import AdminAddSSCC from "./Pages/AdminPages/AdminIndentify/SSCC/AdminAddSSCC";
 import AdminAddGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminAddGLN";
 import AddGTINProducts from "./Pages/AdminPages/AdminIndentify/GTIN/AddGTINProducts";
+import AdminPaymentSlips from "./Pages/AdminPages/PaymentSlips/AdminPaymentSlips";
+import ProductsCategory from "./Pages/AdminPages/Others/ProductsCategory/ProductsCategory";
+import OtherProductsCategory from "./Pages/AdminPages/Others/OtherProductsCategory/OtherProductsCategory";
+import AdditionalProducts from "./Pages/AdminPages/Others/AdditionalProducts/AdditionalProducts";
 
 const queryClient = new QueryClient()
 
@@ -225,6 +229,7 @@ const App = () => {
                             <Route path="member-products" element={<MemberProducts />} />
                             <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
                             <Route path="notfications" element={<Notifications />} />
+                            <Route path="payment-slips" element={<AdminPaymentSlips />} />
 
                             <Route path="gcp-license" element={<GcpLicense />} />
                             <Route path="gs1-registries" element={<GS1Registries />} />
@@ -234,6 +239,9 @@ const App = () => {
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
                             <Route path="member-expiry-page" element={<MembersExpiryPage />} />
+                            <Route path="products-category" element={<ProductsCategory />} />
+                            <Route path="others-products-category" element={<OtherProductsCategory />} />
+                            <Route path="addtional-products" element={<AdditionalProducts />} />
 
                             <Route path="gtin" element={<Gtin />} />
                             <Route path="admin-gtin" element={<AddGTINProducts />} />
