@@ -1897,23 +1897,23 @@ id           String    @id @default(cuid())
 }
 
 model user_guide_pdfs {
-  id         BigInt    @id(map: "PK__user_gui__3213E83F876ADCF1") @default(autoincrement())
+ id           String    @id @default(cuid())
   title      String    @db.NVarChar(255)
   pdf        String    @db.NVarChar(255)
   status     Int       @default(1, map: "DF__user_guid__statu__51851410")
   addedBy    Int
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model user_guide_videos {
-  id         BigInt    @id(map: "PK__user_gui__3213E83FFCD40DEC") @default(autoincrement())
+ id           String    @id @default(cuid())
   title      String    @db.NVarChar(255)
   video      String    @db.NVarChar(255)
   status     Int       @default(1, map: "DF__user_guid__statu__546180BB")
   addedBy    Int
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model users {

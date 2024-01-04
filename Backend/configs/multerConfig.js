@@ -16,7 +16,7 @@ const createStorage = (fields) => multer.diskStorage({
 
 // Function to create a file filter
 const fileFilter = (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif|pdf|doc|docx|xls|xlsx|csv/;
+    const filetypes = /jpeg|jpg|png|mp4|gif|pdf|doc|docx|xls|xlsx|csv/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = file.mimetype;
 
@@ -26,7 +26,7 @@ const fileFilter = (req, file, cb) => {
         filetypes.test(mimetype))) {
         cb(null, true);
     } else {
-        cb(new Error('Only .jpeg, .jpg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .csv formats are allowed!'));
+        cb(new Error('Only .jpeg, .jpg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .mp4 .csv formats are allowed!'));
     }
 };
 // Generic upload function

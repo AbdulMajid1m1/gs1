@@ -2221,7 +2221,7 @@ CREATE TABLE [dbo].[upcoming_events] (
 
 -- CreateTable
 CREATE TABLE [dbo].[user_guide_pdfs] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(255) NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(255) NOT NULL,
     [pdf] NVARCHAR(255) NOT NULL,
     [status] INT NOT NULL CONSTRAINT [DF__user_guid__statu__51851410] DEFAULT 1,
@@ -2233,7 +2233,7 @@ CREATE TABLE [dbo].[user_guide_pdfs] (
 
 -- CreateTable
 CREATE TABLE [dbo].[user_guide_videos] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(255) NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(255) NOT NULL,
     [video] NVARCHAR(255) NOT NULL,
     [status] INT NOT NULL CONSTRAINT [DF__user_guid__statu__546180BB] DEFAULT 1,
