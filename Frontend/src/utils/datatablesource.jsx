@@ -2462,6 +2462,120 @@ export const masterDataColumn = [
   },
 ];
 
+export const megamenuDataColumn = [
+
+  {
+    field: 'name_en',
+    headerName: 'Name[English]',
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const CategoriesDataColumn = [
+
+  {
+    field: 'category_name_en',
+    headerName: 'Category Name[English]',
+    width: 260,
+  },
+  {
+    field: 'category_name_ar',
+    headerName: 'Category Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'megamenu_id',
+    headerName: 'Mega Menu	',
+    width: 200,
+  },
+  {
+    field: 'description',
+    headerName: 'Description',
+    width: 260,
+  },
+  {
+    field: 'url',
+    headerName: 'Url',
+    width: 260,
+  },
+  {
+    field: 'meta_title',
+    headerName: 'Meta Title',
+    width: 200,
+  },
+  {
+    field: 'meta_description',
+    headerName: 'Meta Description',
+    width: 260,
+  },
+  {
+    field: 'meta_keywords',
+    headerName: 'Meta keywords',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
 export const document = [
 
   {
@@ -2499,6 +2613,7 @@ export const document = [
     }
   },
 ];
+
 export const product_packaging = [
 
   {
@@ -2536,6 +2651,59 @@ export const product_packaging = [
     }
   },
 ];
+
+export const footerMenuDataColumn = [
+
+  {
+    field: 'category_name_en',
+    headerName: 'Category Name[English]	',
+    width: 180,
+  },
+  {
+    field: 'category_name_ar',
+    headerName: 'Category Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'url',
+    headerName: 'Url',
+    width: 260,
+  },
+  {
+    field: 'parent_id',
+    headerName: 'Parent ID',
+    width: 150,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
 export const Other_Products = [
 
   {

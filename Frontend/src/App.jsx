@@ -77,6 +77,9 @@ import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/GTIN";
 import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/SSCC";
 import Gln from "./Pages/AdminPages/AdminIndentify/GLN/GLN";
 import DigitalUrlInfo from "./Pages/MemberPages/DigitalUrlInfo/DigitalUrlInfo";
+import Megamenu from "./Pages/AdminPages/FrontEnd/CataLog/MegaMenu/Megamenu";
+import Categories from "./Pages/AdminPages/FrontEnd/CataLog/Categories/Categories";
+import Footermenu from "./Pages/AdminPages/FrontEnd/CataLog/Footermenu/Footermenu";
 
 const queryClient = new QueryClient()
 
@@ -253,6 +256,11 @@ const App = () => {
                             <Route path="Country" element={<Country />} />
                             <Route path="crnumber" element={<Crnumber />} />
                             <Route path="documenttype" element={<Document_type />} />
+                            {/* Megamenu */}
+                            <Route path="megamenu" element={<Megamenu />} />
+                            <Route path="categories" element={<Categories />} />
+                            <Route path="footer_menu" element={<Footermenu />} />
+
                           </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>
