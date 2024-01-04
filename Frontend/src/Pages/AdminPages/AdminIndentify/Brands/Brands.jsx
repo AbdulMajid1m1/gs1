@@ -213,7 +213,7 @@ const Brands = () => {
           <DashboardRightHeader
             title={'Brands'}
           />
-        </div>
+        </div>   
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
@@ -251,7 +251,7 @@ const Brands = () => {
                       error={isSubmitClicked && !selectedCr?.cr}
                       helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                       {...params}
-                      label="Search Brands"
+                      label="Search Members"
                       InputProps={{
                         ...params.InputProps,
                         endAdornment: (
@@ -300,17 +300,17 @@ const Brands = () => {
                   secondaryColor="secondary"
 
                   dropDownOptions={[
-                    {
-                      label: "View",
-                      icon: (
-                        <VisibilityIcon
-                          fontSize="small"
-                          color="action"
-                          style={{ color: "rgb(37 99 235)" }}
-                        />
-                      ),
-                      action: handleView,
-                    },
+                    // {
+                    //   label: "View",
+                    //   icon: (
+                    //     <VisibilityIcon
+                    //       fontSize="small"
+                    //       color="action"
+                    //       style={{ color: "rgb(37 99 235)" }}
+                    //     />
+                    //   ),
+                    //   action: handleView,
+                    // },
                     {
                       label: "Edit",
                       icon: (
