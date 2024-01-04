@@ -233,7 +233,7 @@ const App = () => {
 
                             <Route path="gcp-license" element={<GcpLicense />} />
                             <Route path="gs1-registries" element={<GS1Registries />} />
-
+ 
                             <Route path="migration" element={<Migration />} />
                             <Route path="help-desk" element={<HelpDesk />} />
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />
