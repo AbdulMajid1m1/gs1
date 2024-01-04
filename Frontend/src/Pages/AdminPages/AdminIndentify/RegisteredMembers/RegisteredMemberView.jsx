@@ -235,6 +235,39 @@ const RegisteredMembersView = () => {
   };
 
 
+  const fetchRegisteredProductsData = async () => {
+    setRegisteredProductsLoader(true);
+    try {
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}`);
+
+      console.log(response.data);
+     // Extract gtinSubscriptions data and flatten the nested gtin_product
+     const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
+      ...item,
+      ...item.gtin_product,
+      product: undefined,
+    }));
+
+    const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
+      ...item,
+      ...item.product,
+      gtin_product: undefined,
+    }));
+
+    // Combine gtinSubscriptions and otherProductSubscriptions
+    const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
+
+      setRegisteredProductsData(combinedData);
+      setRegisteredProductsLoader(false)
+
+    }
+    catch (err) {
+      console.log(err);
+      setRegisteredProductsLoader(false)
+    }
+  };
+
+
   useEffect(() => {
 
     fetchAllUserData();
@@ -243,35 +276,12 @@ const RegisteredMembersView = () => {
     fetchMemberInvoiceData();
     fetchMemberbankSlipData();
     fetchSubMembersData();
+    fetchRegisteredProductsData();
     fetchData(); // Calling the function within useEffect, not inside itself
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-
-  useEffect(() => {
-    const cartData = allUserData.carts || [];
-    const stringifiedCartData = [].concat(...cartData.map((item) => {
-      try {
-        // Try parsing the JSON, and return the parsed object or null if invalid
-        return JSON.parse(item.cart_items) || null;
-      } catch (error) {
-        console.error(`Error parsing JSON in cart_items: ${error.message}`);
-        return null;
-      }
-    }));
-
-    // Filter out null values (parsing errors) and keep only valid JSON objects
-    const filteredCartData = stringifiedCartData.filter((item) => item !== null);
-    // console.log(filteredCartData || []);
-
-    // Set the registeredProductsData
-    setRegisteredProductsData(filteredCartData || []);
-    setRegisteredProductsLoader(false);
-  }, [allUserData]);
-
-
-
-
+  
 
   const handleView = (row) => {
     console.log(row);
