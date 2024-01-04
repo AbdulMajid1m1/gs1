@@ -1,23 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
-import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
-import newRequest from '../../../utils/userRequest';
-import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
-import { BarcodeGenerator, DataMatrixGenerator } from '../../../utils/Barcodes/Barcodes';
-import DownloadButton from '../../../utils/Buttons/DownloadBtn';
+import newRequest from '../../../../utils/userRequest';
 
-const GTINUpdateProducts = () => {
+
+const AddGTINProducts = () => {
     const abortControllerRef = useRef(null);
-    const memberDataString = sessionStorage.getItem('memberData');
-    const memberData = JSON.parse(memberDataString);
+    // const memberDataString = sessionStorage.getItem('memberData');
+    // const memberData = JSON.parse(memberDataString);
     // console.log(memberData);
     const [isLoading, setIsLoading] = useState(false);
-    const [barcode, setBarcode] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedBackImage, setSelectedBackImage] = useState(null);
     const [imageOptional1, setImageOptional1] = useState(null);
@@ -37,8 +34,7 @@ const GTINUpdateProducts = () => {
     const [autocompleteLoading, setAutocompleteLoading] = useState(false);
     const [autocompleteLoadingForHsCode, setAutocompleteLoadingForHsCode] = useState(false);
     const navigate = useNavigate();
-    let { productId } = useParams();
-
+    
 
     // set the all state values
     const [productNameEnglish, setProductNameEnglish] = useState('');
@@ -62,70 +58,7 @@ const GTINUpdateProducts = () => {
     const [selectedProductType, setSelectedProductType] = useState('');
     const [selectedPackageType, setSelectedPackageType] = useState('');
     const [selectedDigitalInformationType, setSelectedDigitalInformationType] = useState('');
-   
-    useEffect(() => {
-      setIsLoading(true);
-      const fetchProductDetails = async () => {
-        try {
-          const response = await newRequest.get(`/products?id=${productId}`);
-          console.log(response.data[0]);
-  
-          const productData = response.data[0];
-          setProductNameEnglish(productData?.productnameenglish);
-          setProductNameArabic(productData?.productnamearabic);
-          setSelectedBrandNameEnglish(productData?.BrandName);
-          setSelectedBrandNameArabic(productData?.BrandNameAr);
-          setSelectedProductType(productData?.ProductType);
-          setSelectedRegion(productData?.Origin);
-          setSelectedPackageType(productData?.PackagingType);
-          setSelectedUnitCode(productData?.unit);
-          setSize(productData?.size);
-          setBarcode(productData?.barcode);
-          setSelectedCountry(productData?.countrySale);
-          setGpcCode(productData?.gpc_code);
-          setDescriptionEnglish(productData?.details_page);
-          setDescriptionArabic(productData?.details_page_ar); // Assuming HsDescriptionAr is present in your API response
-          setProductUrl(productData?.product_url);
-          setSelectedDigitalInformationType(productData?.digitalInfoType);
-          setSelectedProductDescription(productData?.prod_lang);
-        //   setGpc(productData?.gpc);
-          setGpc({
-            value: productData?.gpc,
-            codeTitle: productData?.gpc,
-            gpcCode: productData?.gpc_code,
-  
-          });
-          setHsCode({
-            HSCODES: productData?.HSCODES,
-            DescriptionEN: productData?.HsDescription,
-            HSID: productData,
-            value: productData?.HsDescription,
-  
-          });
-          // setSelectedImage(productData?.front_image);
-          // setSelectedBackImage(productData?.back_image);
-          // setImageOptional1(productData?.image_1);
-          // setImageOptional2(productData?.image_2);
-          // setImageOptional3(productData?.image_3);
 
-          // Construct live URLs for images
-          setSelectedImage(imageLiveUrl(productData?.front_image));
-          setSelectedBackImage(imageLiveUrl(productData?.back_image));
-          setImageOptional1(imageLiveUrl(productData?.image_1));
-          setImageOptional2(imageLiveUrl(productData?.image_2));
-          setImageOptional3(imageLiveUrl(productData?.image_3));
-
-
-          setIsLoading(false);
-  
-        } catch (error) {
-          console.log(error);
-          setIsLoading(false);
-  
-        }
-      };
-      fetchProductDetails();
-    }, [productId]);
 
     const handleImageChange = (event) => {
         const imageFile = event.target.files[0];
@@ -158,29 +91,14 @@ const GTINUpdateProducts = () => {
     };
 
 
-//  // Package type Api
-//  userRequest.get('/getAllProductPackagings')
-//      .then((response) => {
-//          console.log(response.data)
-//          const data = response.data;
-//          const PackageName = data.map((country) => country.name);
-//          setPackageType(PackageName);
-//          console.log(PackageName);
-//      })
-//      .catch((error) => {
-//          console.log(error);
-//      }
-//      );
-
-
     const handleCountryOfSales = async () => {
         try {
             const response = await newRequest.get('/getAllcountryofsale');
-            // console.log(response.data);
+            console.log(response.data);
             const data = response.data;
             const countryName = data.map((country) => country.country_name);
             setAllCountryName(countryName);
-            // console.log(countryName);
+            console.log(countryName);
         } catch (error) {
             console.log(error);
         }
@@ -190,7 +108,7 @@ const GTINUpdateProducts = () => {
     const handleUnitCode = async () => {
         try {
             const response = await newRequest.get('/getAllunit');
-            // console.log(response.data);
+            console.log(response.data);
             const data = response?.data;
             const unitNameList = data.map((unitData) => unitData?.unit_name);
             setUnitCode(unitNameList);
@@ -204,11 +122,11 @@ const GTINUpdateProducts = () => {
     const handleProductTypeData = async () => {
         try {
             const response = await newRequest.get('/productTypes');
-            // console.log(response.data);
+            console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
             setProductType(name);
-            // console.log(name);
+            console.log(name);
         } catch (error) {
             console.log(error);
         }
@@ -218,13 +136,13 @@ const GTINUpdateProducts = () => {
     const handleBrandNamesEnglishArabic = async () => {
         try {
             const response = await newRequest.get(`/brands?user_id=${memberData?.id}`);
-            // console.log(response.data);
+            console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
             const name_ar = data.map((country) => country.name_ar);
             setBrandNameEnglish(name);
             setBrandNameArabic(name_ar);
-            // console.log(name);
+            console.log(name);
         } catch (error) {
             console.log(error);
         }
@@ -234,15 +152,15 @@ const GTINUpdateProducts = () => {
     const handleProductDescriptionLanguages = async () => {
         try {
             const response = await newRequest.get('/getAllprod_desc_languages');
-            // console.log(response.data);
+            console.log(response.data);
             const data = response.data;
             const productlanguage = data.map((country) => country.language_name);
             setProductDescriptionLanguage(productlanguage);
-            // console.log(productlanguage);
+            console.log(productlanguage);
         } catch (error) {
             console.log(error);
         }
-    };
+    };  
 
 
     const handleRegion = async () => {
@@ -273,7 +191,6 @@ const GTINUpdateProducts = () => {
     };
 
 
-
     useEffect(() => {
         handleUnitCode();
         handleCountryOfSales();
@@ -292,117 +209,137 @@ const GTINUpdateProducts = () => {
     // }
 
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+    // const handleFormSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setIsLoading(true);
 
-        const formData = new FormData();
-        formData.append('user_id', memberData?.id);
-        // formData.append('gcpGLNID', memberData?.gcpGLNID);
-        // formData.append('import_code', '12345');
-        formData.append('productnameenglish', productNameEnglish);
-        formData.append('productnamearabic', productNameArabic);
-        formData.append('BrandName', selectedBrandNameEnglish);
-        formData.append('ProductType', selectedProductType);
-        formData.append('Origin', selectedRegion);
-        formData.append('PackagingType', selectedPackageType);
-        // formData.append('MnfCode', 'MNF123');
-        // formData.append('MnfGLN', 'GLN123');
-        formData.append('ProvGLN', memberData?.gln);
-        formData.append('unit', selectedUnitCode);
-        formData.append('size', size);
-        // formData.append('childProduct', 'childProd123');
-        // formData.append('quantity', '10');
-        // formData.append('barcode', '0123456789012');
-        formData.append('gpc', gpc?.value);
-        // formData.append('gpc_code', 'GPC456');
-        formData.append('countrySale', selectedCountry);
-        formData.append('HSCODES', hsCode?.value);
-        formData.append('HsDescription', descriptionEnglish);
-        formData.append('gcp_type',  memberData.gcp_type || 'GCP');
-        formData.append('prod_lang', productNameEnglish);
-        formData.append('details_page', descriptionEnglish);
-        formData.append('details_page_ar', descriptionArabic);
-        // formData.append('status', '1');
-        formData.append('memberID', memberData?.id);
-        // formData.append('admin_id', '1');
-        // formData.append('save_as', 'final');
-        // formData.append('gtin_type', 'gtin');
-        formData.append('product_url', productUrl);
-        // formData.append('product_link_url', 'http://productlink.example.com');
-        formData.append('BrandNameAr', selectedBrandNameArabic);
-        // formData.append('digitalInfoType', '1');
-        // formData.append('readyForGepir', '1');
-        // formData.append('gepirPosted', '1');
+    //     const formData = new FormData();
+    //     formData.append('user_id', memberData?.id);
+    //     // formData.append('gcpGLNID', memberData?.gcpGLNID);
+    //     // formData.append('import_code', '12345');
+    //     formData.append('productnameenglish', productNameEnglish);
+    //     formData.append('productnamearabic', productNameArabic);
+    //     formData.append('BrandName', selectedBrandNameEnglish);
+    //     formData.append('ProductType', selectedProductType);
+    //     formData.append('Origin', selectedRegion);
+    //     formData.append('PackagingType', selectedPackageType);
+    //     // formData.append('MnfCode', 'MNF123');
+    //     // formData.append('MnfGLN', 'GLN123');
+    //     formData.append('ProvGLN', memberData?.gln);
+    //     formData.append('unit', selectedUnitCode);
+    //     formData.append('size', size);
+    //     // formData.append('childProduct', 'childProd123');
+    //     // formData.append('quantity', '10');
+    //     // formData.append('barcode', '0123456789012');
+    //     formData.append('gpc', gpc?.value);
+    //     // formData.append('gpc_code', 'GPC456');
+    //     formData.append('countrySale', selectedCountry);
+    //     formData.append('HSCODES', hsCode?.value);
+    //     formData.append('HsDescription', descriptionEnglish);
+    //     formData.append('gcp_type',  memberData.gcp_type || 'GCP');
+    //     formData.append('prod_lang', productNameEnglish);
+    //     formData.append('details_page', descriptionEnglish);
+    //     formData.append('details_page_ar', descriptionArabic);
+    //     // formData.append('status', '1');
+    //     formData.append('memberID', memberData?.id);
+    //     // formData.append('admin_id', '1');
+    //     // formData.append('save_as', 'final');
+    //     // formData.append('gtin_type', 'gtin');
+    //     formData.append('product_url', productUrl);
+    //     // formData.append('product_link_url', 'http://productlink.example.com');
+    //     formData.append('BrandNameAr', selectedBrandNameArabic);
+    //     // formData.append('digitalInfoType', '1');
+    //     // formData.append('readyForGepir', '1');
+    //     // formData.append('gepirPosted', '1');
 
-        // Append back image file
-        const backImageInput = document.querySelector('#backImageInput');
-        if (backImageInput.files && backImageInput.files[0]) {
-            formData.append('back_image', backImageInput.files[0]);
-        }
+    //     // Append back image file
+    //     const backImageInput = document.querySelector('#backImageInput');
+    //     if (backImageInput.files && backImageInput.files[0]) {
+    //         formData.append('back_image', backImageInput.files[0]);
+    //     }
 
-        // Append front image file
-        const imageInput = document.querySelector('#imageInput');
-        if (imageInput.files && imageInput.files[0]) {
-            formData.append('front_image', imageInput.files[0]);
-        }
+    //     // Append front image file
+    //     const imageInput = document.querySelector('#imageInput');
+    //     if (imageInput.files && imageInput.files[0]) {
+    //         formData.append('front_image', imageInput.files[0]);
+    //     }
 
-        // Append optional image 1 file
-        const imageOptional1Input = document.querySelector('#imageOptional1Input');
-        if (imageOptional1Input.files && imageOptional1Input.files[0]) {
-            formData.append('image_1', imageOptional1Input.files[0]);
-        }
+    //     // Append optional image 1 file
+    //     const imageOptional1Input = document.querySelector('#imageOptional1Input');
+    //     if (imageOptional1Input.files && imageOptional1Input.files[0]) {
+    //         formData.append('image_1', imageOptional1Input.files[0]);
+    //     }
 
-        // Append optional image 2 file
-        const imageOptional2Input = document.querySelector('#imageOptional2Input');
-        if (imageOptional2Input.files && imageOptional2Input.files[0]) {
-            formData.append('image_2', imageOptional2Input.files[0]);
-        }
+    //     // Append optional image 2 file
+    //     const imageOptional2Input = document.querySelector('#imageOptional2Input');
+    //     if (imageOptional2Input.files && imageOptional2Input.files[0]) {
+    //         formData.append('image_2', imageOptional2Input.files[0]);
+    //     }
 
-        // Append optional image 3 file
-        const imageOptional3Input = document.querySelector('#imageOptional3Input');
-        if (imageOptional3Input.files && imageOptional3Input.files[0]) {
-            formData.append('image_3', imageOptional3Input.files[0]);
-        }
+    //     // Append optional image 3 file
+    //     const imageOptional3Input = document.querySelector('#imageOptional3Input');
+    //     if (imageOptional3Input.files && imageOptional3Input.files[0]) {
+    //         formData.append('image_3', imageOptional3Input.files[0]);
+    //     }
 
-        try {
+    //     try {
 
 
-            const response = await newRequest.put(
-                `/products/gtin/${productId}`,
-                formData
-            );
+    //         const response = await newRequest.post(
+    //             '/products',
+    //             formData
+    //         );
 
-            console.log(response);
-            setIsLoading(false);
-            toast.success(response?.data?.message || 'Product Updated Successfully', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            });
+    //         console.log(response);
+    //         // openSnackbar('Product Added Successfully', 'success');
+    //         setSelectedImage(null);
+    //         setSelectedBackImage(null);
+    //         setSelectedUnitCode('');
+    //         setSelectedRegion('');
+    //         setSelectedCountry('');
+    //         setSelectedProductDescription('');
+    //         setSelectedProductType('');
+    //         setSelectedPackageType('');
+    //         setGpc(null);
+    //         setGpcCode('');
+    //         setHsCode(null);
+    //         setDescriptionEnglish('');
+    //         setDescriptionArabic('');
+    //         setProductUrl('');
+    //         setSize('');
+    //         setBrandNameEnglish('');
+    //         setBrandNameArabic('');
+    //         setProductNameEnglish('');
+    //         setProductNameArabic('');
+    //         setIsLoading(false);
+    //         toast.success(response?.data?.message || 'Product created Successfully', {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             hideProgressBar: false,
+    //             closeOnClick: true,
+    //             pauseOnHover: true,
+    //             draggable: true
+    //         }); 
 
-            setTimeout(() => {
-                navigate(-1);
-            }, 2000);
+    //         setTimeout(() => {
+    //             navigate(-1);
+    //         }, 2000);
 
-        }
-        catch (error) {
-            console.log(error);
-            toast.error(error?.response?.data?.error || "Error", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            });
-            setIsLoading(false);
-        }
+    //     }
+    //     catch (error) {
+    //         console.log(error);
+    //         toast.error(error?.response?.data?.error || "Error", {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             hideProgressBar: false,
+    //             closeOnClick: true,
+    //             pauseOnHover: true,
+    //             draggable: true
+    //         });
+    //         setIsLoading(false);
+    //     }
 
-    };
+    // };
 
 
 
@@ -626,7 +563,7 @@ const GTINUpdateProducts = () => {
 
             <div className="p-0 h-full sm:ml-72  bg-slate-100">
               <div>
-                <DashboardRightHeader title="Update GTIN Products"
+                <DashboardRightHeader title="Add GTIN Products"
                 />
               </div>
 
@@ -634,40 +571,20 @@ const GTINUpdateProducts = () => {
                 {" "}
                 <div className="h-auto w-full p-5 bg-white">
                     <div className="">
-                        <div className="flex justify-between sm:flex-row flex-wrap w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
-                            <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                                <p className="font-semibold">Complete Data</p>
-                                <p>
-                                    This number is registered to company: :{" "}
-                                    <span className="font-semibold">{memberData?.company_name_eng}</span>
-                                    {/* <span className="font-semibold">Hasnain, Majid</span> */}
-                                </p>
-                            </div>
-
-                            {/* <div className="flex justify-center items-center gap-10" style={{ height: '60px'}}>
-                                <div className='flex flex-col items-center gap-2'>
-                                    <div>
-                                        <BarcodeGenerator text={barcode} />
-                                    </div>
-                                    <div>
-                                        <DownloadButton id="barcodeCanvas" name="barcode" />
-                                    </div>
-                                </div>
-                                <div className='flex flex-col items-center gap-2'>
-                                    <div>
-                                        <DataMatrixGenerator
-                                            text={barcode}
-                                            />
-                                    </div>
-                                    <div>
-                                        <DownloadButton id="dataMatrixCanvas" name="datamatrix" />
-                                    </div>
-                                </div>
-                            </div> */}
+                    <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
+                        <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
+                        <p className="font-semibold">Complete Data</p>
+                        <p>
+                            This number is registered to company: :{" "}
+                            {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
+                            <span className="font-semibold">Hasnain, Majid</span>
+                        </p>
                         </div>
                     </div>
+                    </div>
 
-                    <form onSubmit={handleFormSubmit}>
+                    {/* <form onSubmit={handleFormSubmit}> */}
+                    <form>
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="fields1" className="text-secondary">Product Name [English]</label>
@@ -843,7 +760,7 @@ const GTINUpdateProducts = () => {
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                     
-                            <label htmlFor="field5" className="text-secondary">Region</label>
+                            <label htmlFor="field5" className="text-secondary">Origin</label>
                             <Autocomplete
                                 id="field5"
                                 options={region}
@@ -869,7 +786,7 @@ const GTINUpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/Region"
+                                    placeholder="Enter/Origin"
                                     required
                                 />
                                 )}
@@ -1376,41 +1293,11 @@ const GTINUpdateProducts = () => {
 
                   </div>
 
-
-                    <div className="form-row flex items-center justify-between gap-7 flex-wrap mt-16">
-                        <div
-                            style={{ width: "50%" }}
-                            className=" flex items-center justify-start gap-7 flex-wrap"
-                        >
-                        <label htmlFor="field12">1D Barcode</label>
-                          <BarcodeGenerator text={barcode} />
-                        </div>
-                        <div>
-                          <DownloadButton id="barcodeCanvas" name="1Dbarcode" />
-                        </div>
-                    </div>
-
-                    <div className="form-row flex items-center justify-between gap-7 flex-wrap mt-10">
-                      <div
-                        style={{ width: "50%" }}
-                        className=" flex items-center justify-start gap-7 flex-wrap"
-                        >
-                        <label htmlFor="field12">2D Barcode</label>
-                            <DataMatrixGenerator
-                                text={barcode}
-                            />
-                      </div>
-                      <div>
-                        <DownloadButton id="dataMatrixCanvas" name="2Dbarcode" />
-                      </div>
-                    </div>
-
-
                     <div className='footer-line'></div>
 
                     <div className="popup-footer">
                         <button type='button' onClick={() => navigate(-1)} className="bg-secondary text-white py-2 px-3 rounded-sm">Back</button>
-                        <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Update Changes</button>
+                        <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Create Barcode</button>
                     </div>
                 </div>
             </form>
@@ -1422,4 +1309,4 @@ const GTINUpdateProducts = () => {
         </>
     )
 }
-export default GTINUpdateProducts;
+export default AddGTINProducts;

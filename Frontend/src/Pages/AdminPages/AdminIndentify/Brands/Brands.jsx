@@ -116,23 +116,7 @@ const Brands = () => {
     }
   }, 400);
 
-
-  // const fetchData = async (value) => {
-  //   setIsLoading(true);
-  //   console.log(value);
-  //   try {
-  //     const response = await newRequest.get(`/products?user_id=${value?.user_id}`);
-  //     console.log(response.data);
-  //     setData(response?.data || []);
-  //     setIsLoading(false)
-
-  //   } catch (err) {
-  //     console.log(err);
-  //     setIsLoading(false)
-  //   }
-  // };
-
-
+  
   const fetchData = async (value) => {
     setIsLoading(true);
     console.log(value);

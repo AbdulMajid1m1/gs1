@@ -2,105 +2,145 @@ import React, { useEffect, useState } from 'react'
 import "./Dashboard.css"
 // import userRequest from '../../utils/userRequest'
 import DashboardTable from '../../../components/AdminDashboardTable/DashboardTable'
-import { subscribedGtinColumn } from '../../../utils/datatablesource'
+import { memberForRenevalColumn, newlyRegisteredMembersColumn, pendingApprovalColumn, registerdMemberColumn, subscribedGtinColumn } from '../../../utils/datatablesource'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
 import categorybarcode from '../../../Images/categorybarcode.png'
 import rangebarcode from '../../../Images/rangebarcode.png'
 import barcodeIssued from '../../../Images/barcodeIssued.png'
 import barcoderemain from '../../../Images/barcoderemain.png'
+import newRequest from '../../../utils/userRequest'
 
 const Dashboard = () => {
-  const [newExpectedReceipts, setNewExpectedReceipts] = useState([]);
-  const [newExpectedShipments, setNewExpectedShipments] = useState([]);
-  const [newItemsDispatch, setNewItemsDispatch] = useState([]);
-  const [newTransferOrder, setNewTransferOrder] = useState([]);
-
-  // useEffect(() => {
-
-  //   const getAllAssetsList = async () => {
-  //     try {
-
-  //       const response = await userRequest.get("/getAllExpectedShipments")
-
-  //       setNewExpectedReceipts(response.data)
-
-  //     }
-  //     catch (error) {
-  //       console.log(error);
-
-  //     }
-  //   };
-
-  //   const getAllExpectedShipments = async () => {
-  //     try {
-
-  //       userRequest.get("/getAllShipmentDataFromtShipmentReceivingCL")
-  //         .then(response => {
-  //           console.log(response.data)
-  //           setNewExpectedShipments(response.data)
-  //         })
-  //         .catch(error => {
+  const [newRegisteredMembers, setNewRegisteredMembers] = useState([]);
+  const [pendingApprovals, setPendingApprovals] = useState([]);
+  const [allRegisteredMembers, setAllRegisteredMembers] = useState([]);
+  const [memberReneval, setMemberReneval] = useState([]);
+  const [allCardData, setAllCardData] = useState([]);
+  const [newRegisteredMembersLoader, setNewRegisteredMembersLoader] = useState(false);
+  const [pendingApprovalsLoader, setPendingApprovalsLoader] = useState(false);
+  const [allRegisteredMembersLoader, setAllRegisteredMembersLoader] = useState(false);
+  const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
 
 
-  //           console.error(error);
-  //         });
+    const getAllNewlyRegisteredMembers = async () => {
+      setNewRegisteredMembersLoader(true);
+      try {
 
-  //     }
-  //     catch (error) {
-  //       console.log(error);
+        const response = await newRequest.get("/users/new")
 
-  //     }
-  //   };
+        console.log(response.data)
+        setNewRegisteredMembers(response.data)
+        setNewRegisteredMembersLoader(false);
 
-  //   const getNewItemsDispatch = async () => {
-  //     try {
+      }
+      catch (error) {
+        console.log(error);
+        setNewRegisteredMembersLoader(false);
 
-  //       userRequest.get("/getAllTblDispatchingData")
-  //         .then(response => {
-  //           // response.data == "no data available" ? setNewItemsDispatch([]) : setNewItemsDispatch(response.data);
-  //           setNewItemsDispatch(response.data)
-  //         })
-  //         .catch(error => {
+      }
+    };
 
-  //           // setError(error?.response?.data?.message ?? "Something went wrong");
+    const getAllPendingApprovals = async () => {
+      setPendingApprovalsLoader(true);
+      try {
 
-  //           console.error(error);
-  //         });
+        newRequest.get("/users?status=inactive")
+          .then(response => {
+            console.log(response.data)
+            setPendingApprovals(response.data)
+            setPendingApprovalsLoader(false);
+          })
+          .catch(error => {
 
-  //     }
-  //     catch (error) {
-  //       console.log(error);
 
-  //     }
-  //   };
+            console.error(error);
+            setPendingApprovalsLoader(false);
+          });
 
-  //   const getNewTransferOrder = async () => {
-  //     try {
+      }
+      catch (error) {
+        console.log(error);
 
-  //       userRequest.get("/getAllExpectedTransferOrder")
-  //         .then(response => {
-  //           // response.data == "no data available" ? setNewTransferOrder([]) : setNewTransferOrder(response.data);
-  //           setNewTransferOrder(response.data)
-  //         })
-  //         .catch(error => {
+      }
+    };
 
-  //           // setError(error?.response?.data?.message ?? "Something went wrong");
+    const getAllRegisteredMembers = async () => {
+      setAllRegisteredMembersLoader(true);
+      try {
 
-  //           console.error(error);
-  //         });
+        newRequest.get("/users?status=active")
+          .then(response => {
+            console.log( " Registed", response.data)
+            setAllRegisteredMembers(response.data)
+            setAllRegisteredMembersLoader(false);
+          })
+          .catch(error => {
 
-  //     }
-  //     catch (error) {
-  //       console.log(error);
+        
+            console.error(error);
+            setAllRegisteredMembersLoader(false);
+          });
 
-  //     }
-  //   };
+      }
+      catch (error) {
+        console.log(error);
 
-  //   getAllAssetsList();
-  //   getAllExpectedShipments();
-  //   getNewItemsDispatch();
-  //   getNewTransferOrder();
-  // }, [])
+      }
+    };
+
+    const getNewTransferOrder = async () => {
+      setMemberRenevalLoader(true);
+      try {
+
+        newRequest.get("/users/getByGcpExpiry")
+          .then(response => {
+            console.log("MemberReneval", response.data)
+            setMemberReneval(response.data)
+            setMemberRenevalLoader(false);
+          })
+          .catch(error => {
+
+       
+            console.error(error);
+            setMemberRenevalLoader(false);
+          });
+
+      }
+      catch (error) {
+        console.log(error);
+
+      }
+    };
+
+    
+    const getAllCardsData = async () => {
+      try {
+
+        newRequest.get("/users/adminStatsCounts")
+          .then(response => {
+            console.log(response.data)
+            setAllCardData(response.data)
+          })
+          .catch(error => {
+
+       
+            console.error(error);
+          });
+
+      }
+      catch (error) {
+        console.log(error);
+
+      }
+    };
+
+  useEffect(() => {
+    getAllCardsData();
+    getAllNewlyRegisteredMembers();
+    getAllPendingApprovals();
+    getAllRegisteredMembers();
+    getNewTransferOrder();
+    }, [])
   return (
     <div>
       <div className="p-0 h-full sm:ml-72">
@@ -121,7 +161,7 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={categorybarcode} alt="" className='h-16 w-16 object-contain'/>
                       {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRange}</p> */}
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>0</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.activeUsersCount}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-sm text-gray-200'>Active Members</p>
@@ -133,7 +173,7 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={rangebarcode} alt="" className='h-16 w-16 object-contain'/>
                       {/* <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {totalRange -  1}</p> */}
-                      <p className='font-sans font-semibold text-2xl text-white -mt-4'>102</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.inactiveUsersCount}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>In Active Members</p>
@@ -145,7 +185,7 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcoderemain} alt="" className='h-16 w-16 object-contain'/>
                       {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeIssued}</p> */}
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>730</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.usersCount}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>Total Members</p>
@@ -157,10 +197,10 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain'/>
                       {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeRemaining}</p> */}
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>226358</p>
+                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.productsCount}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Peoducts</p>
+                      <p className='font-sans font-normal text-md text-gray-200'>Products</p>
                     </div>
                   </div>
               </div>
@@ -174,22 +214,22 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-4 bg-gradient-to-r from-[#C3E2DC]">
             {/* <!-- Social Traffic --> */}
             <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-              <DashboardTable data={newExpectedReceipts} secondaryColor="secondary" columnsName={subscribedGtinColumn} title={"Newly Registered Members"} UniqueId="assetPrintingId" />
+              <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn} title={"Newly Registered Members"} UniqueId="assetPrintingId" />
             </div>
 
             {/* <!-- Social Traffic2 --> */}
             <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50  w-full shadow-lg rounded">
-              <DashboardTable data={newExpectedShipments} secondaryColor="secondary" columnsName={subscribedGtinColumn} title={"Pending Approvals"} UniqueId="assetPrintingId" />
+              <DashboardTable data={pendingApprovals} loading={pendingApprovalsLoader} secondaryColor="secondary" columnsName={pendingApprovalColumn} title={"Pending Approvals"} UniqueId="assetPrintingId" />
             </div>
 
             {/* <!-- Social Traffic2 --> */}
             <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-              <DashboardTable data={newItemsDispatch} secondaryColor="secondary" columnsName={subscribedGtinColumn} title={"Registered Members"} UniqueId="assetPrintingId" />
+              <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn} title={"Registered Members"} UniqueId="assetPrintingId" />
             </div>
 
             {/* <!-- Social Traffic2 --> */}
             <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-              <DashboardTable data={newTransferOrder} secondaryColor="secondary" columnsName={subscribedGtinColumn} title={"Members for Renewal"} UniqueId="assetPrintingId" />
+              <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn} title={"Members for Renewal"} UniqueId="assetPrintingId" />
             </div>
 
           </div>
