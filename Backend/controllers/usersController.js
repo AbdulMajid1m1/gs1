@@ -612,7 +612,7 @@ export const getUserDetails = async (req, res, next) => {
             });
 
             return [users, allCarts];
-        }, { timeout: 30000 });
+        }, { timeout: 50000 });
 
         // Map carts to their respective users
         const usersWithCarts = users.map(user => ({
@@ -622,6 +622,40 @@ export const getUserDetails = async (req, res, next) => {
 
 
         return res.json(usersWithCarts);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+export const getAdminStatsCounts = async (req, res, next) => {
+    try {
+        const counts = await prisma.$transaction(async (prisma) => {
+            const [usersCount, productsCount, activeUsersCount, inactiveUsersCount] = await Promise.all([
+                prisma.users.count(),
+                prisma.products.count(),
+                prisma.users.count({
+                    where: {
+                        status: 'active'
+                    }
+                }),
+                prisma.users.count({
+                    where: {
+                        status: 'inactive'
+                    }
+                })
+            ]);
+
+            return {
+                usersCount,
+                productsCount,
+                activeUsersCount,
+                inactiveUsersCount
+            };
+        }, { timeout: 30000 });
+
+        return res.json(counts);
     } catch (error) {
         console.log(error);
         next(error);

@@ -4791,3 +4791,424 @@ export const ProductContentColumn = [
     editable: true,
   },
 ];
+
+
+
+export const newlyRegisteredMembersColumn = [
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  {
+    field: 'cr_activity',
+    headerName: 'CR Activity',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 220,
+  },
+  {
+    field: 'gcpGLNID',
+    headerName: 'GCP GLN ID',
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'GLN',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: 'Country',
+    width: 180,
+  },
+  {
+    field: 'state',
+    headerName: 'State',
+    width: 180,
+  },
+  {
+    field: 'city',
+    headerName: 'City',
+    width: 180,
+  },
+  {
+    field: 'gcp_expiry',
+    headerName: 'GCP Expiry',
+    width: 180,
+    // type: 'dateTime',
+
+    // valueGetter: (params) => {
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    // type: 'dateTime',
+    // valueGetter: (params) => {
+    //   // Convert the string date to a Date object
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+
+
+
+]
+
+
+
+export const pendingApprovalColumn = [
+  {
+    field: 'activityID',
+    headerName: 'Activity ID',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  {
+    field: 'cr_activity',
+    headerName: 'CR Activity',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 220,
+  },
+  {
+    field: 'gcpGLNID',
+    headerName: 'GCP GLN ID',
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'GLN',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: 'Country',
+    width: 180,
+  },
+  {
+    field: 'qr_corde',
+    headerName: 'QR Code',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Mobile',
+    width: 180,
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 180,
+  },
+  {
+    field: 'gcp_expiry',
+    headerName: 'GCP Expiry',
+    width: 180,
+    // type: 'dateTime',
+
+    // valueGetter: (params) => {
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    // type: 'dateTime',
+    // valueGetter: (params) => {
+    //   // Convert the string date to a Date object
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+
+
+
+]
+
+
+export const registerdMemberColumn = [
+  {
+    field: 'activityID',
+    headerName: 'Activity ID',
+    width: 180,
+  },
+  {
+    field: 'additional_number',
+    headerName: 'Additional Number',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  {
+    field: 'cr_activity',
+    headerName: 'CR Activity',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 220,
+  },
+  {
+    field: 'gcpGLNID',
+    headerName: 'GCP GLN ID',
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'GLN',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'other_landline',
+    headerName: 'Other Landline',
+    width: 180,
+  },
+  {
+    field: 'user_type',
+    headerName: 'User Type',
+    width: 180,
+  },
+  {
+    field: 'qr_corde',
+    headerName: 'QR Code',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Mobile',
+    width: 180,
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 180,
+  },
+  {
+    field: 'gcp_expiry',
+    headerName: 'GCP Expiry',
+    width: 180,
+    // type: 'dateTime',
+
+    // valueGetter: (params) => {
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    // type: 'dateTime',
+    // valueGetter: (params) => {
+    //   // Convert the string date to a Date object
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+
+
+
+]
+
+
+export const memberForRenevalColumn = [
+  {
+    field: 'activityID',
+    headerName: 'Activity ID',
+    width: 180,
+  },
+  {
+    field: 'companyID',
+    headerName: 'Company ID',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'cr_documentID',
+    headerName: 'CR Document ID',
+    width: 180,
+  },
+  {
+    field: 'document_number',
+    headerName: 'Document Number',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  {
+    field: 'cr_activity',
+    headerName: 'CR Activity',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 220,
+  },
+  {
+    field: 'location_uk',
+    headerName: 'Location UK',
+    width: 180,
+  },
+  {
+    field: 'member_category',
+    headerName: 'Member Category',
+    width: 180,
+  },
+  {
+    field: 'membership_otherCategory',
+    headerName: 'Membership Other Category',
+    width: 180,
+  },
+  {
+    field: 'gcpGLNID',
+    headerName: 'GCP GLN ID',
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'GLN',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: 'Country',
+    width: 180,
+  },
+  {
+    field: 'qr_corde',
+    headerName: 'QR Code',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Mobile',
+    width: 180,
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 180,
+  },
+  {
+    field: 'gcp_expiry',
+    headerName: 'GCP Expiry',
+    width: 180,
+    // type: 'dateTime',
+
+    // valueGetter: (params) => {
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    // type: 'dateTime',
+    // valueGetter: (params) => {
+    //   // Convert the string date to a Date object
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+]
