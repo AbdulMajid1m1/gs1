@@ -288,7 +288,7 @@ const RegisteredMembers = () => {
                   icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                   ,
                   // action: handleOpen,
-    
+      
                 },
                 {
                   label: "Delete",

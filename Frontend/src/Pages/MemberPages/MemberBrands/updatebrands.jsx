@@ -14,8 +14,8 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [brandCertificate, setBrandCertificate] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
-    useEffect(() => {
+  
+    useEffect(() => {  
         setCompanyName(updateBrandData?.name || '');
         setCompanyNameArabic(updateBrandData?.name_ar || '');
         // setBrandCertificate(updateBrandData?.brand_certificate || '');

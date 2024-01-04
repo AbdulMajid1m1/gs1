@@ -148,12 +148,12 @@ model bank_slips {
 }
 
 model blog_categories {
-  id             BigInt?
+  id             String    @id @default(cuid())
   name           String?   @db.NVarChar(Max)
   slug           String?   @db.NVarChar(Max)
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  BlogCategoryID Int       @id(map: "PK__blog_cat__6BD2DA61FF59A720") @default(autoincrement())
+   created_at    DateTime? @default(now()) @db.DateTime
+  updated_at     DateTime  @default(now()) @db.DateTime
+  BlogCategoryID String    @default(cuid())      
 }
 
 model blog_comments {
@@ -170,15 +170,15 @@ model blog_comments {
 }
 
 model board_members {
-  id          BigInt    @id(map: "PK__board_me__3213E83FCC16072D") @default(autoincrement())
+ id           String    @id @default(cuid())
   name        String    @db.NVarChar(255)
   job_title   String    @db.NVarChar(255)
   description String?   @db.NVarChar(Max)
   image       String    @db.NVarChar(255)
   addedBy     Int       @db.TinyInt
   status      Int       @default(1, map: "DF__board_mem__statu__3726238F") @db.TinyInt
-  created_at  DateTime? @db.DateTime
-  updated_at  DateTime? @db.DateTime
+ created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model bookings {
@@ -404,10 +404,10 @@ model families {
 }
 
 model faq_categories {
-  id         BigInt    @id(map: "PK_faq_categories") @default(autoincrement())
+  id             String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at    DateTime? @default(now()) @db.DateTime
+  updated_at     DateTime  @default(now()) @db.DateTime
 }
 
 model featured_articales {
@@ -1448,19 +1448,19 @@ model other_products_subscription_histories {
 }
 
 model our_teams {
-  id          BigInt    @id(map: "PK__our_team__3213E83F204B810D") @default(autoincrement())
+ id           String    @id @default(cuid())
   name        String    @db.NVarChar(255)
   job_title   String    @db.NVarChar(255)
   description String?   @db.NVarChar(Max)
   image       String    @db.NVarChar(255)
   addedBy     Int       @db.TinyInt
   status      Int       @default(1, map: "DF__our_teams__statu__25A691D2") @db.TinyInt
-  created_at  DateTime? @db.DateTime
-  updated_at  DateTime? @db.DateTime
+ created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model pages {
-  id                     BigInt    @id(map: "PK_pages") @default(autoincrement())
+  id                     String    @id @default(cuid())
   name                   String?   @db.NVarChar(Max)
   name_ar                String?   @db.NVarChar(Max)
   slug                   String?   @db.NVarChar(Max)
@@ -1471,17 +1471,17 @@ model pages {
   seo_description        String?   @db.NVarChar(Max)
   is_dropdown            Int?
   status                 Int?
-  created_at             DateTime? @db.DateTime
-  updated_at             DateTime? @db.DateTime
+  created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model partners {
-  id         BigInt    @id(map: "PK_partners") @default(autoincrement())
+ id          String    @id @default(cuid())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+  created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
 }
 
 model password_resets {
@@ -1883,15 +1883,15 @@ model unspscs {
 }
 
 model upcoming_events {
-  id           BigInt    @id(map: "PK_upcoming_events") @default(autoincrement())
+id           String    @id @default(cuid())
   title        String?   @db.NVarChar(Max)
   title_ar     String?   @db.NVarChar(Max)
   image        String?   @db.NVarChar(Max)
   date         String?   @db.NVarChar(255)
   link         String?   @db.NVarChar(Max)
   status       Int?
-  created_at   DateTime? @db.DateTime
-  updated_at   DateTime? @db.DateTime
+ created_at  DateTime? @default(now()) @db.DateTime
+  updated_at  DateTime  @default(now()) @db.DateTime
   video        String?   @db.NVarChar(Max)
   display_type String?   @db.NVarChar(Max)
 }

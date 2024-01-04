@@ -169,12 +169,12 @@ CREATE TABLE [dbo].[bank_slips] (
 
 -- CreateTable
 CREATE TABLE [dbo].[blog_categories] (
-    [id] BIGINT,
+    [id] NVARCHAR(max),
     [name] NVARCHAR(max),
     [slug] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [BlogCategoryID] INT NOT NULL IDENTITY(1,1),
+    [BlogCategoryID] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     CONSTRAINT [PK__blog_cat__6BD2DA61FF59A720] PRIMARY KEY CLUSTERED ([BlogCategoryID])
 );
 
@@ -195,7 +195,7 @@ CREATE TABLE [dbo].[blog_comments] (
 
 -- CreateTable
 CREATE TABLE [dbo].[board_members] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(255) NOT NULL,
     [job_title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(max),
@@ -468,7 +468,7 @@ CREATE TABLE [dbo].[families] (
 
 -- CreateTable
 CREATE TABLE [dbo].[faq_categories] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -1626,7 +1626,7 @@ CREATE TABLE [dbo].[other_products_subscription_histories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[our_teams] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(255) NOT NULL,
     [job_title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(max),
@@ -1640,7 +1640,7 @@ CREATE TABLE [dbo].[our_teams] (
 
 -- CreateTable
 CREATE TABLE [dbo].[pages] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [name_ar] NVARCHAR(max),
     [slug] NVARCHAR(max),
@@ -1658,7 +1658,7 @@ CREATE TABLE [dbo].[pages] (
 
 -- CreateTable
 CREATE TABLE [dbo].[partners] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [image] NVARCHAR(max),
     [link] NVARCHAR(max),
     [status] INT,
@@ -2205,7 +2205,7 @@ CREATE TABLE [dbo].[unspscs] (
 
 -- CreateTable
 CREATE TABLE [dbo].[upcoming_events] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [title_ar] NVARCHAR(max),
     [image] NVARCHAR(max),

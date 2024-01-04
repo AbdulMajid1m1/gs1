@@ -14,7 +14,7 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 // import BulkPopUp from './BulkPopUp';
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
-
+  
 
 const AdminSSCC = () => {
     const [data, setData] = useState([]);
