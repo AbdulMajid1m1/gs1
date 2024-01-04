@@ -195,7 +195,7 @@ CREATE TABLE [dbo].[blog_comments] (
 
 -- CreateTable
 CREATE TABLE [dbo].[board_members] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(255) NOT NULL,
     [job_title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(max),

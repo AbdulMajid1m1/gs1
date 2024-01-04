@@ -25,7 +25,7 @@ import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletep
 import {createblog_categories,getAllblog_categories,getblog_categoriesById,updateblog_categories,deleteblog_categories} from '../controllers/blog_categories.js'
 import {createfaq_categories,getAllfaq_categories,getfaq_categoriesById,updatefaq_categories,deletefaq_categories} from '../controllers/faq_categories.js'
 import {getAllour_teams,creatour_teams,getour_teamsById,updateour_teams,deleteour_teams} from '../controllers/our_teams.js'
-
+import {getAllboard_members,creatboard_members,getboard_membersById,updateboard_members,deleteboard_members} from "../controllers/board_members.js"
 // Routes for faq_categories
 router.post('/createfaq_categories', createfaq_categories);
 router.get('/getAllfaq_categories', getAllfaq_categories);
@@ -227,4 +227,21 @@ router.put('/updateour_teams/:id',upload([
     }
 ]), updateour_teams);
 router.delete('/deleteour_teams/:id', deleteour_teams);
+
+// Routes for board_members
+router.get('/getAllboard_members', getAllboard_members);
+router.post('/creatboard_members', upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]),creatboard_members);
+router.get('/getboard_membersById/:id', getboard_membersById);
+router.put('/updateboard_members/:id',upload([
+    {
+        name: 'image',
+        path: 'public/uploads/adminImg',
+    }
+]), updateboard_members);
+router.delete('/deleteboard_members/:id', deleteboard_members);
 export default router;
