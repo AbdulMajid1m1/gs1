@@ -86,36 +86,8 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   };
 
 
-  const handleAddMemberDocuments = async () => {
-
-    // Check if required fields are empty
-    if (!transactionId) {
-      toast.error('Enter Transaction Id.', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      return;
-    }
-    else if (!uploadDocument) {
-      toast.error('Upload Document.', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      return;
-    }
-
+  const handleAddMemberDocuments = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
     // Create a FormData object
@@ -183,7 +155,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
         <div className="popup-overlay">
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
-              <form className='w-full'>
+              <form onSubmit={handleAddMemberDocuments} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Member Bank Slip</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -242,19 +214,6 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field2" className="text-secondary">Transaction Id </label>
-                    {/* <select
-                                   type="text"
-                                   id="field2"
-                                    onChange={(e) => setTransactionId(e.target.value)}
-                                   placeholder="Transaction Id"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                  >
-                                      <option value="">Select Transaction Id</option>
-                                      {transactionId?.map((item, index) => (
-                                        <option key={index} value={item?.transaction_id}>{item?.transaction_id}</option>
-                                      ))}
-
-                                </select> */}
                     <Autocomplete
                       id="field2"
                       options={transactionId}
@@ -281,7 +240,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                           placeholder="Select Transaction Id"
-                        // required
+                        required
                         />
                       )}
                       classes={{
@@ -301,6 +260,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                       type="file"
                       id="field3"
                       onChange={handleFileChange}
+                      required
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                     {error && <p className="text-red-500">{error}</p>}
@@ -325,7 +285,8 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                    onClick={handleAddMemberDocuments}
+                    // onClick={handleAddMemberDocuments}
+                    type='submit'
                     disabled={loading}
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
