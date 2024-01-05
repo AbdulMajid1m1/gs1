@@ -9,62 +9,184 @@ import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import QRCode from 'qrcode';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
+import ejs from 'ejs';
+import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
-export const createMemberDocument = async (req, res, next) => {
-    // Validate body data
-    const schema = Joi.object({
-        type: Joi.string().required(),
-        transaction_id: Joi.string().allow(''),
-        user_id: Joi.string().required(),
-        doc_type: Joi.string().default('member_document'),
-        uploaded_by: Joi.string(),
-    });
 
 
-    const { error, value } = schema.validate(req.body);
+// in scheema take user_id 
+const renewMembershipSchema = Joi.object({
+    user_id: Joi.string().required(),
+});
+
+
+export const membershipRenewRequest = async (req, res, next) => {
+
+    // Validate the request body
+    const { error, value } = renewMembershipSchema.validate(req.body);
     if (error) {
         return next(createError(400, error.details[0].message));
     }
 
-    // Get uploaded document
-    const uploadedDocument = req.files.document;
-    if (!uploadedDocument) {
-        return next(createError(400, 'Document is required'));
-    }
+    const currentDate = new Date();
+    const renewalYear = currentDate.getFullYear() + 1;
 
-    const documentFile = uploadedDocument[0];
-    const documentName = documentFile.filename;
-    documentFile.destination = documentFile.destination.replace('public', '');
-    const documentPath = path.join(documentFile.destination, documentName);
 
-    // Save document details in the database using Prisma
     try {
+
+        let existingUser = await prisma.users.findUnique({
+            where: { id: value.user_id },
+            include: {
+                carts: true,
+            },
+        });
+        if (!existingUser) {
+            next(createError(404, 'User not found'));
+        }
+
+        console.log(existingUser);
+
+
+        let cart = existingUser.carts[0];
+        let cartData = JSON.parse(cart.cart_items);
+        cart.cart_items = cartData
+
+
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const invoiceData = {
+            topHeading: "RENWAL INVOICE",
+            secondHeading: "RENWAL INVOICE FOR",
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+
+                registeration: `Renewal for the year ${renewalYear}`,
+                // Assuming $addMember->id is already known
+                company_name_eng: existingUser.company_name_eng,
+                mobile: existingUser.mobile,
+                address: {
+                    zip: existingUser.zip_code,
+                    countryName: existingUser.country,
+                    stateName: existingUser.state,
+                    cityName: existingUser.city,
+                },
+                companyID: existingUser.companyID,
+                membership_otherCategory: existingUser.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: cartData?.[0].productName,
+                    },
+                },
+            },
+
+
+            cart: cart,
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL,
+        };
+
+
+
+
+
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+        const pdfFilename1 = `Receipt-${existingUser?.company_name_eng}-${existingUser.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename1);
+
+        if (!fsSync.existsSync(pdfDirectory)) {
+            fsSync.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+        const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+
+
+        // read the file into a buffer
+
+        const pdfBuffer2 = await fs1.readFile(pdfFilePath);
+
+
         const newDocument = await prisma.member_documents.create({
             data: {
-                type: value.type,
-                document: documentPath,
-                transaction_id: value.transaction_id,
-                user_id: value.user_id,
-
-                doc_type: value.doc_type
+                type: 'renewal_invoice',
+                document: `/uploads/documents/MemberRegInvoice/${pdfFilename1}`,
+                transaction_id: existingUser.transaction_id,
+                user_id: existingUser.id,
+                doc_type: 'member_document',
+                status: 'pending',
+                // TODO: take email form current admin token
+                // uploaded_by: req.admin.email, // Assuming the admin is logged in
+                uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
             }
+
         });
 
+        // send email to user
+
+        //   await sendEmail({
+        //         fromEmail: ADMIN_EMAIL,
+        //         toEmail: userEmail,
+        //         subject: subject,
+
+        //         htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+        //         // if status is approved, attach the certificate PDF
+        //         attachments: attachments
+
+        //     });
+
+        let subject = 'GS1 Saudi Arabia Membership Renewal Request';
+        let emailContent = `This is automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        let userEmail = existingUser.email;
+
+        let attachments = [
+            {
+                filename: pdfFilename1,
+                content: pdfBuffer2,
+                contentType: 'application/pdf',
+            },
+        ];
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: userEmail,
+            subject: subject,
+
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+            // if status is approved, attach the certificate PDF
+            attachments: attachments
+
+        });
 
 
         // Insert Member History log
         const logData = {
-            // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
-            subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
+            subject: 'Renewal invoice created',
             // user user memberId
-            // member_id: value.memberID,
-            user_id: value.user_id,
-            // TODO: add middleware for current admin token 
+            // member_id: userUpdateResult.memberID,
+            user_id: existingUser.id,
+            // TODO: take email form current admin token
+            admin_id: 'admin@gs1sa.link',
+
         }
+
+
         TODO: // chec this
         // if (req?.admin.id) {
         //     logData.admin_id = admin_email;
@@ -73,213 +195,18 @@ export const createMemberDocument = async (req, res, next) => {
 
         await createMemberLogs(logData);
 
+        return res.status(200).json({ message: `Renewal invoice created & sent to ${userEmail} successfully` });
 
-        res.status(201).json({
-            message: 'Document uploaded successfully.',
-            memberDocument: newDocument,
-        });
-    } catch (err) {
-        console.log(err);
-        return next(err);
+
     }
-};
-
-
-const allowedColumns = {
-    id: Joi.string(),
-    type: Joi.string(),
-    transaction_id: Joi.string(),
-    user_id: Joi.string(),
-    type: Joi.string(),
-    status: Joi.string(),
-    // ... other fields
-};
-
-const filterSchema = Joi.object(
-    Object.keys(allowedColumns).reduce((schema, column) => {
-        schema[column] = allowedColumns[column];
-        return schema;
-    }, {})
-).unknown(false);
-
-export const getMemberDocuments = async (req, res, next) => {
-    try {
-        const { error, value } = filterSchema.validate(req.query);
-        if (error) {
-            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
-        }
-
-        const filterConditions = Object.keys(value).length > 0
-            ? Object.keys(value).reduce((obj, key) => {
-                obj[key] = value[key];
-                return obj;
-            }, {})
-            : {};
-
-        const documents = await prisma.member_documents.findMany({ where: filterConditions });
-        res.json(documents);
-    } catch (error) {
-        next(error);
-    }
-};
-const invoiceSchema = Joi.object({
-    user_id: Joi.string().required(),
-});
-export const getMemberInvoices = async (req, res, next) => {
-    try {
-        const { error, value } = invoiceSchema.validate(req.query);
-
-        if (error) {
-            throw createError(400, `Invalid query parameter: ${error.details[0].message}`);
-        }
-
-        const documents = await prisma.member_documents.findMany({
-            where: {
-                AND: [
-                    { user_id: value.user_id },
-                    {
-                        OR: [
-                            { type: 'invoice' },
-                            { type: 'renewal_invoice' },
-                        ]
-                    }
-                ]
-            }
-        });
-
-        res.json(documents);
-    } catch (error) {
+    catch (error) {
         console.error(error);
-        next(error);
+        next(createError(500, 'Server error occurred'));
+
     }
-};
-export const getMemberPendingInvoices = async (req, res, next) => {
-    try {
-        const { error, value } = invoiceSchema.validate(req.query);
 
-        if (error) {
-            throw createError(400, `Invalid query parameter: ${error.details[0].message}`);
-        }
-
-        const documents = await prisma.member_documents.findMany({
-            where: {
-                AND: [
-                    { user_id: value.user_id },
-                    {
-                        OR: [
-                            { type: 'invoice' },
-                            { type: 'renewal_invoice' },
-                        ]
-                    },
-
-                    { status: 'pending' }
-                ]
-            }
-        });
-
-        res.json(documents);
-    } catch (error) {
-        console.error(error);
-        next(error);
-    }
 };
 
-export const getMemberFinanceDocuments = async (req, res, next) => {
-    try {
-        // Validate the query parameters
-        // const { error, value } = filterSchema.validate(req.query);
-        const schema = Joi.object({
-            user_id: Joi.string().required(),
-        });
-        const { error, value } = schema.validate(req.query);
-
-        if (error) {
-            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
-        }
-
-        // Build filter conditions with user ID and type
-        const filterConditions = {
-            user_id: value.user_id || "",
-            type: {
-                in: ['bank_slip', 'invoice']
-            }
-        };
-
-        // Fetch documents based on the filter conditions
-        const documents = await prisma.member_documents.findMany({ where: filterConditions });
-
-
-
-        return res.json(documents);
-    } catch (error) {
-        next(error);
-    }
-};
-
-
-const updateMemberDocumentSchema = Joi.object({
-    type: Joi.string().max(255), // Assuming a string with max length 255
-    document: Joi.string(),      // This will be the path of the document
-    transaction_id: Joi.string().max(255).allow(''), // Allowing empty string
-    user_id: Joi.string(),   // Assuming user_id is a positive integer
-    admin_id: Joi.string(),  // Assuming admin_id is a positive integer
-    doc_type: Joi.string().max(20).default('member_document'), // Assuming max length 20 and default value
-    status: Joi.string().valid('pending', 'approved', 'rejected'),
-
-
-});
-
-
-export const updateMemberDocument = async (req, res, next) => {
-    const documentId = req.params.id;
-    if (!documentId) {
-        return next(createError(400, 'Document ID is required'));
-    }
-
-    // Validate the request body
-    const { error, value } = updateMemberDocumentSchema.validate(req.body);
-    if (error) {
-        return next(createError(400, error.details[0].message));
-    }
-
-    try {
-        // Retrieve the current document from the database
-        const currentDocument = await prisma.member_documents.findUnique({
-            where: { id: documentId }
-        });
-
-        if (!currentDocument) {
-            return next(createError(404, 'Document not found'));
-        }
-
-        // Check for a new document upload
-        if (req.files && req.files.document) {
-            const documentFile = req.files.document[0];
-            const newDocumentPath = path.join(documentFile.destination, documentFile.filename);
-
-            // Calculate the directory of the current module
-            const dirname = path.dirname(fileURLToPath(import.meta.url));
-            const oldDocumentPath = path.join(dirname, '..', currentDocument.document);
-
-            if (fs.existsSync(oldDocumentPath)) {
-                fs.unlinkSync(oldDocumentPath);
-            }
-
-            // Update the document path in the value to be saved
-            value.document = newDocumentPath;
-        }
-
-        // Update the document in the database
-        const updatedDocument = await prisma.member_documents.update({
-            where: { id: documentId },
-            data: value
-        });
-
-        res.json(updatedDocument);
-    } catch (err) {
-        next(err);
-    }
-};
 
 
 
@@ -293,7 +220,7 @@ const updateMemberDocumentStatusSchema = Joi.object({
 
 
 
-export const updateMemberDocumentStatus = async (req, res, next) => {
+export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
     const documentId = req.params.id;
     if (!documentId) {
         return next(createError(400, 'Document ID is required'));
@@ -338,7 +265,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }
         });
         if (bankSlipDocuments.length === 0) {
-            return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
+            return next(createError(400, `No bank slip documents found for this ${currentDocument?.type} with transaction ID: ${currentDocument.transaction_id}`));
         }
 
 
@@ -350,7 +277,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Perform the updateUserStatus logic
                 cart = await prisma.carts.findFirst({ where: { user_id: userId } });
-
+                console.log("cartss", cart);
                 if (cart && cart.cart_items) {
                     const cartItems = JSON.parse(cart.cart_items);
                     const firstCartItem = cartItems[0];
@@ -359,20 +286,17 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     });
 
                     if (product) {
-                        // Generate gcpGLNID and GLN
-                        const gcpGLNID = `628${product.gcp_start_range}`;
-                        const gln = generateGTIN13(gcpGLNID);
+
 
                         // Calculate expiry date (1 year from now)
                         let expiryDate = new Date();
                         expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
+                        console.log("expiryDate");
                         console.log(expiryDate);
                         // Update user with new information
                         userUpdateResult = await prisma.users.update({
                             where: { id: userId },
                             data: {
-                                gcpGLNID: gcpGLNID,
-                                gln: gln,
                                 gcp_expiry: expiryDate,
                                 remarks: 'Registered',
                                 payment_status: 1,
@@ -387,8 +311,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             data: {
                                 status: 'active',
                                 expiry_date: expiryDate,
-                                gtin_subscription_limit: product.total_no_of_barcodes,
-                                gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
+                                // gtin_subscription_limit: product.total_no_of_barcodes,
+                                // gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
 
                             }
                         });
@@ -416,8 +340,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                     transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
                                 },
                                 data: {
-                                    other_products_subscription_limit: product.total_no_of_barcodes,
-                                    other_products_subscription_total_price: subscriptionFee,
+                                    // other_products_subscription_limit: product.total_no_of_barcodes,
+                                    // other_products_subscription_total_price: subscriptionFee,
                                     status: 'active',  // Update the status
                                     expiry_date: expiryDate // Update the expiry date
                                 }
@@ -426,47 +350,47 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
                         // update isRegistered in crs to 1 by  cr_number and cr_activity
-                        await prisma.crs.updateMany({
-                            where: {
-                                cr: existingUser.cr_number,
-                                activity: existingUser.cr_activity
-                            },
-                            data: {
-                                isRegistered: 1
-                            }
-                        });
+                        // await prisma.crs.updateMany({
+                        //     where: {
+                        //         cr: existingUser.cr_number,
+                        //         activity: existingUser.cr_activity
+                        //     },
+                        //     data: {
+                        //         isRegistered: 1
+                        //     }
+                        // });
 
-                        await prisma.gtin_products.update({
-                            where: { id: product.id },
-                            data: { gcp_start_range: (parseInt(product.gcp_start_range) + 1).toString() }
-                        });
+                        // await prisma.gtin_products.update({
+                        //     where: { id: product.id },
+                        //     data: { gcp_start_range: (parseInt(product.gcp_start_range) + 1).toString() }
+                        // });
 
                         // Fetch and update TblSysCtrNo
-                        const tblSysNo = await prisma.tblSysNo.findFirst();
-                        if (tblSysNo) {
-                            userUpdateResult = await prisma.users.update({
-                                where: { id: userId },
-                                data: {
-                                    companyID: tblSysNo.TblSysCtrNo,
-                                    memberID: tblSysNo.TblSysCtrNo,
-                                }
-                            });
+                        // const tblSysNo = await prisma.tblSysNo.findFirst();
+                        // if (tblSysNo) {
+                        //     userUpdateResult = await prisma.users.update({
+                        //         where: { id: userId },
+                        //         data: {
+                        //             companyID: tblSysNo.TblSysCtrNo,
+                        //             memberID: tblSysNo.TblSysCtrNo,
+                        //         }
+                        //     });
 
-                            await prisma.tblSysNo.update({
-                                where: { SysNoID: tblSysNo.SysNoID },
-                                data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
-                            });
-                        }
+                        //     await prisma.tblSysNo.update({
+                        //         where: { SysNoID: tblSysNo.SysNoID },
+                        //         data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
+                        //     });
+                        // }
                     }
                 }
                 const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-                let gcpGLNID = userUpdateResult?.gcpGLNID;
+                let gcpGLNID = existingUser?.gcpGLNID;
                 const CertificateData = {
                     BACKEND_URL: BACKEND_URL,
                     qrCodeDataURL: qrCodeDataURL,
 
                     user: {
-                        company_name_eng: userUpdateResult?.company_name_eng,
+                        company_name_eng: existingUser?.company_name_eng,
                     },
                     general: {
                         gcp_certificate_detail1:
@@ -487,12 +411,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     userData: {
                         // add user data here
                         gcpGLNID: gcpGLNID,
-                        gln: userUpdateResult?.gln,
-                        memberID: userUpdateResult?.memberID,
-                        gcp_expiry: userUpdateResult?.gcp_expiry,
+                        gln: existingUser?.gln,
+                        memberID: existingUser?.memberID,
+                        gcp_expiry: existingUser?.gcp_expiry,
                     },
                     // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-                    expiryDate: userUpdateResult?.gcp_expiry.toISOString().split('T')[0],
+                    expiryDate: existingUser?.gcp_expiry.toISOString().split('T')[0],
                     explodeGPCCode: []
                 };
 
@@ -500,7 +424,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Generate PDF from EJS template
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
-                pdfFilename = `${userUpdateResult.company_name_eng}-Certificate.pdf`;
+                // use current date time to generate unique file name
+                pdfFilename = `${existingUser.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
                 const pdfFilePath = path.join(pdfDirectory, pdfFilename);
                 if (!fsSync.existsSync(pdfDirectory)) {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
@@ -513,6 +438,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }, { timeout: 40000 });
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
+            const currentDate = new Date();
+            const renewalYear = currentDate.getFullYear() + 1;
+
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
@@ -521,7 +449,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 secondHeading: "RECEIPT FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `New Registration`,
+                    registeration: `Renewal for the year ${renewalYear}`,
                     // Assuming $addMember->id is already known
                     company_name_eng: existingUser.company_name_eng,
                     mobile: existingUser.mobile,
@@ -635,10 +563,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Insert Member History log
             const logData = {
-                subject: 'Member Account Approved by Admin',
+                subject: 'Membership renewal approved by admin',
                 // user user memberId
                 // member_id: userUpdateResult.memberID,
-                user_id: userUpdateResult.id,
+                user_id: existingUser.id,
                 // TODO: take email form current admin token
                 admin_id: 'admin@gs1sa.link',
 
@@ -651,21 +579,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             // logData.created_by_admin = 1;
             // }
 
-            console.log("logData", logData);
+
 
             await createMemberLogs(logData);
 
-            // create brand using Company Name and Company Name Arabic
-
-            const newBrand = await prisma.brands.create({
-                data: {
-                    name: existingUser.company_name_eng,
-                    name_ar: existingUser.company_name_arabic,
-                    status: 'active',
-                    user_id: existingUser.id,
-                    companyID: existingUser.companyID,
-                }
-            });
 
 
         }
@@ -712,10 +629,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
         // return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         if (value.status === 'approved') {
-            return res.json({ message: 'Document status updated to approved' });
+            return res.json({ message: `Document status updated to ${value.status} and bank slip documents deleted` });
         }
         else {
-            return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
+            return res.json({ message: `Document status updated to ${value.status}` });
         }
 
     } catch (err) {
@@ -723,6 +640,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         next(err);
     }
 };
+
 
 
 // Function to send status update email
@@ -748,17 +666,17 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
     }
     switch (status) {
         case 'approved':
-            subject = 'Your Gs1Ksa member Account is Now Approved';
-            emailContent = '<p>Your account has been activated. You can now access all the features.</p>';
+            subject = 'Your Gs1Ksa member Account has been Renewed';
+            emailContent = '<p>Your account is renewed successfully. Please find the attached certificate for your reference.<br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia</p>';
             break;
         case 'rejected':
-            subject = 'Your Gs1Ksa member Account is Rejected';
+            subject = 'Your Gs1Ksa renewal request is Rejected';
             let rejectionMessage = rejectReason ? `<p>Reason for rejection: ${rejectReason}</p>` : '';
             emailContent = `<p>Your account status has been updated to: ${status}.</p>${rejectionMessage}`;
             break;
         // Add more cases for other statuses
         default:
-            subject = 'Your Gs1Ksa member Account is Rejected';
+            subject = 'Your Gs1Ksa renewal request is Rejected';
             emailContent = `<p>Your account status has been updated to: ${status}.</p>`;
     }
 
@@ -772,25 +690,4 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
         attachments: attachments
 
     });
-};
-
-
-
-export const deleteMemberDocument = async (req, res, next) => {
-    const schema = Joi.object({
-        id: Joi.string().required(),
-    });
-    const { error, value } = schema.validate(req.params);
-    if (error) {
-        return next(createError(400, error.details[0].message));
-    }
-
-    const documentId = value.id;
-
-    try {
-        await prisma.member_documents.delete({ where: { id: documentId } });
-        res.status(204).send();
-    } catch (err) {
-        next(err);
-    }
 };

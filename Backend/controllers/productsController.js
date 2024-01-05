@@ -317,7 +317,6 @@ const insertProduct = async (productData, user, productsCount) => {
 export const bulkCreateProduct = async (req, res) => {
     const productSchema = Joi.object({
         user_id: Joi.string(),
-
         productnameenglish: Joi.string().allow('', null),
         productnamearabic: Joi.string().required(),
         BrandName: Joi.string().max(255).allow('', null),
@@ -331,7 +330,6 @@ export const bulkCreateProduct = async (req, res) => {
         gpc_code: Joi.string().max(50).allow('', null),
         countrySale: Joi.string().max(50).allow('', null),
         HSCODES: Joi.string().allow('', null),
-
         memberID: Joi.string().allow('', null),
         admin_id: Joi.number().integer().allow('', null),
         save_as: Joi.string().max(20).allow('', null),
@@ -341,7 +339,6 @@ export const bulkCreateProduct = async (req, res) => {
         prod_lang: Joi.string().max(50),
         // gtin field is optional as number or string
         GTIN: Joi.alternatives().try(Joi.string(), Joi.number().integer().max(99999999999999)),
-
         // digitalInfoType: Joi.number().integer().allow('', null),
         // readyForGepir: Joi.string().max(10).allow('', null),
         // gepirPosted: Joi.string().max(10).allow('', null),
@@ -447,16 +444,16 @@ export const bulkCreateProduct = async (req, res) => {
                         console.log(data)
 
                         const result = await insertProduct(data, user, productsCount);
+                        if (!result.error) {
+                            // Increment counter only if there's no error
+                            productsCount++;
+                            errorRecords.push({ ...record, error: "Processed Successfully" });
+                        }
+
                         if (result.error) {
                             errorRecords.push({ ...record, error: result.error });
                         }
 
-
-                        else {
-                            errorRecords.push({ ...record, error: "Processed Successfully" });
-                        }
-
-                        productsCount++;
                     } catch (insertError) {
                         errorRecords.push({ ...record, error: insertError.message });
                     }

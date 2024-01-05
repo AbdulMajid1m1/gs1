@@ -8,9 +8,10 @@ import SendIcon from '@mui/icons-material/Send';
 const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-    // console.log(updateBrandData)
+    console.log(updateBrandData)
     const [companyName, setCompanyName] = useState(updateBrandData?.name || "");
     const [companyNameArabic, setCompanyNameArabic] = useState(updateBrandData?.name_ar || "");
+    const [status, setStatus] = useState(updateBrandData?.status || "");
     const [brandCertificate, setBrandCertificate] = useState("");
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
       const formData = new FormData();
       formData.append('name', companyName);
       formData.append('name_ar', companyNameArabic);
-      formData.append('status', 'active');
+      formData.append('status', status);
       formData.append('user_id', updateBrandData?.id);
       formData.append('companyID', updateBrandData?.companyID);
       formData.append('brandCertificate', brandCertificate);
@@ -111,6 +112,22 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                             </div>
+                          </div>
+
+                          <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                              <label htmlFor="field2" className="text-secondary">Status</label>
+                                <select
+                                  type="text"
+                                  id="field2"
+                                  value={status}
+                                  onChange={(e) => setStatus(e.target.value)}
+                                  required
+                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                >
+                                  <option value="">-select-</option>
+                                  <option value="active">Active</option>
+                                  <option value="inactive">Inactive</option>
+                                </select>
                           </div>
 
                           

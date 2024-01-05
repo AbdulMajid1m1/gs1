@@ -2236,6 +2236,63 @@ export const AdminBrandsColumn = [
   //   width: 180,
   // },
   {
+    field: 'brand_certificate',
+    headerName: 'Documents',
+    width: 180,
+    renderCell: (params) => {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+
+    renderEditCell: (params) =>
+      renderDocEditInputCell({ ...params, fieldUpdated: "logoUpdated" }),
+    editable: true,
+    type: "string",
+  },
+  {
     field: 'status',
     headerName: 'Status',
     width: 120,
@@ -3846,29 +3903,46 @@ export const memberHistoryColumnData = [
 
 export const registeredmemberColumn = [
   {
-    field: 'productID',
+    field: 'id',
     headerName: 'Product ID',
     width: 180,
   },
   {
-    field: 'productName',
+    field: 'combined_description',
     headerName: 'Product Name',
     width: 280,
+    valueGetter: (params) => {
+      return params.row.member_category_description || params.row.product_name || '';
+    },
   },
   {
-    field: 'registration_fee',
+    field: 'Registration_fee',
     headerName: 'Registration fee',
     width: 180,
+    valueGetter: (params) => {
+      return params.row.member_registration_fee || params.row.other_products_subscription_total_price || '';
+    },
   },
   {
-    field: 'yearly_fee',
+    field: 'Yearly_fee',
     headerName: 'Yearly fee',
     width: 180,
+    valueGetter: (params) => {
+      return params.row.gtin_yearly_subscription_fee || params.row.product_subscription_fee || '';
+    },
   },
   {
     field: 'price',
     headerName: 'Price',
     width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
   },
   // {
   //   field: 'product_type',

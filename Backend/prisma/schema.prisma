@@ -2038,3 +2038,13 @@ model document_type {
   updated_at DateTime  @updatedAt
   deleted_at DateTime? @db.DateTime
 }
+
+
+
+model gtin_upgrade_pricing {
+  id                   String   @id @default(cuid())
+  total_no_of_barcodes Float?
+  price                Float?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+}

@@ -19,6 +19,8 @@ import gpcRoutes from './subRoutes/gpcRoutes.js';
 import hsCodesRouter from './subRoutes/hsCodesRouter.js';
 import glnRoutes from './subRoutes/glnRoutes.js';
 
+import changeMembershipRoutes from './subRoutes/changeMembershipRoutes.js';
+
 import ssccRoutes from './subRoutes/ssccRoutes.js';
 
 const router = express.Router();
@@ -64,5 +66,7 @@ router.use('/hsCode', hsCodesRouter);
 router.use('/gln', glnRoutes);
 
 router.use('/sscc', ssccRoutes);
+
+router.use('/changeMembership', changeMembershipRoutes);
 
 export default router;
