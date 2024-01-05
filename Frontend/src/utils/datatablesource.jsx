@@ -2673,9 +2673,9 @@ export const silderDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-         height: '100%',
-          objectFit: 'contain', }}
+          width: '77%',
+         height: '77%',
+          objectFit: 'fill', }}
 />
     ),
   },
@@ -2720,9 +2720,9 @@ export const FeaturedServicesDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
         }}
       />
     ),
@@ -2766,12 +2766,12 @@ export const FeaturedEventsDataColumn = [
   {
     field: 'title',
     headerName: 'Title',
-    width: 200,
+    width: 300,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '200px',
+          maxWidth: '300px',
         }}
       >
         {params.value}
@@ -2781,12 +2781,12 @@ export const FeaturedEventsDataColumn = [
   {
     field: 'title_ar',
     headerName: 'Title ar',
-    width: 200,
+    width: 300,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '200px',
+          maxWidth: '300px',
         }}
       >
         {params.value}
@@ -2807,9 +2807,9 @@ export const FeaturedEventsDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
         }}
       />
     ),
@@ -2853,12 +2853,12 @@ export const FeaturedArticlesDataColumn = [
   {
     field: 'title',
     headerName: 'Title[English]',
-    width: 200,
+    width: 300,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '200px',
+          maxWidth: '300px',
         }}
       >
         {params.value}
@@ -2869,12 +2869,12 @@ export const FeaturedArticlesDataColumn = [
   {
     field: 'title_ar',
     headerName: 'Title [Arabic]',
-    width: 200,
+    width: 300,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '200px',
+          maxWidth: '300px',
         }}
       >
         {params.value}
@@ -2895,9 +2895,9 @@ export const FeaturedArticlesDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
         }}
       />
     ),
@@ -2948,9 +2948,9 @@ export const GS1PartnersDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
         }}
       />
     ),
@@ -3074,7 +3074,7 @@ export const ManageTeamDataColumn = [
   {
     field: 'job_title',
     headerName: 'Job Title',
-    width: 260,
+    width: 300,
     renderCell: (params) => (
       <div
         style={{
@@ -3089,12 +3089,12 @@ export const ManageTeamDataColumn = [
   {
     field: 'description',
     headerName: 'Description',
-    width: 300,
+    width: 350,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '300px',
+          maxWidth: '350px',
         }}
       >
         {params.value}
@@ -3110,9 +3110,9 @@ export const ManageTeamDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '80px',
+          height: '80px',
+          objectFit: 'fill',
         }}
       />
     ),
@@ -3172,12 +3172,12 @@ export const BoardMembersDataColumn = [
   {
     field: 'description',
     headerName: 'Description',
-    width: 300,
+    width: 350,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '300px',
+          maxWidth: '350px',
         }}
       >
         {params.value}
@@ -3193,9 +3193,9 @@ export const BoardMembersDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '77%',
+          height: '77%',
+          // objectFit: 'fill',
         }}
       />
     ),

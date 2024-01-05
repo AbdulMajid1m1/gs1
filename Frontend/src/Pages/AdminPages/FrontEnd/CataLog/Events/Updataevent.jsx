@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import VideoCameraBackSharpIcon from '@mui/icons-material/VideoCameraBackSharp';
+import imageLiveUrl from '../../../../../utils/urlConverter/imageLiveUrl';
 
 const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -16,7 +17,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Date, setDate] = useState(updateBrandData?.date || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [Page, setPage] = useState(updateBrandData?.link || 0)
-    const [imageshow, setimageshow] = useState(updateBrandData?.image || '')
+    const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image )|| '')
     const [loading, setLoading] = useState(false);
 
 
@@ -238,7 +239,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             }} />
 
                                             <div className="row " htmlFor="file-inputs">
-                                                <label htmlFor="file-inputs" className='choosefile'>
+                                                <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
                                                     choose file
                                                 </label>
                                                 <input

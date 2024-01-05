@@ -149,7 +149,7 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             }} />
                  
                                         <div className="row " htmlFor="file-inputs">
-                                            <label htmlFor="file-inputs" className='choosefile'>
+                                            <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
                                                  choose file
                                             </label>
                                             <input

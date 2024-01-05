@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import imageLiveUrl from '../../../../utils/urlConverter/imageLiveUrl';
 
 const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -17,7 +18,7 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [loading, setLoading] = useState(false);
 
     const [selectedFile, setSelectedFile] = useState(null);
-    const [imageshow, setimageshow] = useState(updateBrandData?.image || '')
+    const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
 
 
     console.log(updateBrandData?.image);
@@ -164,7 +165,7 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 }} />
 
                                             <div className="row " htmlFor="file-inputs">
-                                                <label htmlFor="file-inputs" className='choosefile'>
+                                                <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
                                                     choose file
                                                 </label>
                                                 <input

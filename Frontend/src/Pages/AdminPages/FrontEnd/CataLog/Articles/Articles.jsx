@@ -23,7 +23,7 @@ const Articles = () => {
     const handleShowCreatePopup = () => {
         setCreatePopupVisibility(true);
     };
-
+    console.log(data);
     const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
 
     const handleShowUpdatePopup = (row) => {
@@ -118,6 +118,7 @@ const Articles = () => {
     const handleView = (row) => {
         console.log(row);
     }
+
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
             title: 'Create Service',
