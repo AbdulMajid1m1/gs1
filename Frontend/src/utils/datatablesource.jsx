@@ -2937,6 +2937,63 @@ export const FeaturedArticlesDataColumn = [
   },
 ];
 
+export const ManagePagesDataColumn = [
+
+  {
+    field: 'name',
+    headerName: 'Page Name[English]	',
+    width: 250,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Page Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 200,
+  },
+  {
+    field: 'page_order',
+    headerName: 'Page Order',
+    width: 200,
+  },
+  {
+    field: 'sections',
+    headerName: 'Sections',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
 export const GS1PartnersDataColumn = [
   
   {

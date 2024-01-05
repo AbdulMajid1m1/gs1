@@ -691,3 +691,151 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
 
     });
 };
+
+const upgradeMembershipSchema = Joi.object({
+    user_id: Joi.string().required(),
+    additional_barcodes: Joi.number().required(),
+    price: Joi.number().required(),
+});
+
+
+
+
+export const updradeMemberSubscpiption = async (req, res, next) => {
+    // Validate the request body
+    const { error, value } = upgradeMembershipSchema.validate(req.body);
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+
+    try {
+        const user = await prisma.users.findUnique({
+            where: { id: value.user_id },
+            include: {
+                carts: true,
+            },
+
+        });
+
+        if (!user) {
+            return next(createError(404, 'User not found'));
+        }
+
+        const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
+            where: { user_id: value.user_id },
+            include: {
+                gtin_product: true // Include the associated gtin_product
+            }
+        });
+
+        if (!gtinSubscriptions) {
+            return next(createError(404, 'GTIN subscription not found'));
+        }
+
+
+        // Calculate the total number of barcodes after adding the new ones
+        const totalBarcodes = gtinSubscriptions.gtin_product[0].reduce((sum, sub) => sum + sub.gtin_subscription_limit + sub.gtin_subscription_counter, 0) + value.additional_barcodes;
+
+        console.log("totalBarcodes", totalBarcodes);
+
+        // Checking the barcode limit based on user's current category
+        const categoryLimits = { 100: 999, 1000: 9999, 10000: 49999, 50000: 99999 };
+        if (totalBarcodes > categoryLimits[gtinSubscriptions?.gtin_product[0]?.total_no_of_barcodes]) {
+            return res.status(400).send('Subscription update is required');
+        }
+
+        let cart = user.carts[0];
+        let cartData = JSON.parse(cart.cart_items);
+        cart.cart_items = cartData
+
+        // Generate an invoice
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const invoiceData = {
+            topHeading: "UPGRADE INVOICE",
+            secondHeading: "UPGRADE INVOICE FOR",
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+
+                registeration: `Upgrade invoice for ${value.additional_barcodes} barcodes`,
+                // Assuming $addMember->id is already known
+                company_name_eng: existingUser.company_name_eng,
+                mobile: existingUser.mobile,
+                address: {
+                    zip: existingUser.zip_code,
+                    countryName: existingUser.country,
+                    stateName: existingUser.state,
+                    cityName: existingUser.city,
+                },
+                companyID: existingUser.companyID,
+                membership_otherCategory: existingUser.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: cartData?.[0].productName,
+                    },
+                },
+            },
+
+
+            cart: cart,
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+            
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL,
+        };
+
+
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+        const pdfFilename = `Receipt-${user.company_name_eng}-${user.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+
+        if (!fs.existsSync(pdfDirectory)) {
+            await fs.mkdir(pdfDirectory, { recursive: true });
+        }
+
+        const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+
+        // Read the file into a buffer
+        const pdfBuffer = await fs.readFile(pdfFilePath);
+
+        // Send email with invoice
+        const subject = 'GS1 Saudi Arabia Membership Renewal Request';
+        const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        const attachments = [
+            {
+                filename: pdfFilename,
+                content: pdfBuffer,
+                contentType: 'application/pdf',
+            },
+        ];
+
+        await sendEmail({
+            fromEmail: 'admin@example.com',
+            toEmail: user.email,
+            subject: subject,
+            htmlContent: emailContent,
+            attachments: attachments
+        });
+
+        // Update user's subscription details in the database
+        // ...
+
+        res.status(200).json({ message: `Renewal invoice created & sent to ${user.email} successfully` });
+    } catch (error) {
+        console.error(error);
+        next(createError(500, 'Server error occurred'));
+    }
+}
