@@ -18,7 +18,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   // console.log(memberData);
-    
+
   const [loading, setLoading] = useState(false);
 
 
@@ -45,7 +45,8 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
     const getAllTransactionId = async () => {
       try {
-        const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=invoice&status=pending`);
+        const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${memberData?.id}`);
+
         console.log(response.data);
         setTransactionId(response.data);
       } catch (error) {
@@ -80,12 +81,12 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
     const file = e.target.files[0];
     if (file) {
       if (file.size <= 500 * 1024) {
-          setUploadDocument(file);
-          setError(''); // Clear any previous error message
+        setUploadDocument(file);
+        setError(''); // Clear any previous error message
       } else {
-          setError('File size should be 500KB or less');
-          e.target.value = null;
-        }
+        setError('File size should be 500KB or less');
+        e.target.value = null;
+      }
     }
   };
 
@@ -274,49 +275,49 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                     </div>
                   </div>
 
-                {isBankSlip && (
-                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">Transaction Id </label>
-                    <Autocomplete
-                      id="field2"
-                      options={transactionId}
-                      value={selectedTransactionId}
-                      getOptionLabel={(option) => option?.transaction_id || ""}
-                      onChange={handleSelectedTransactionId}
-                      onInputChange={(event, value) => {
-                        if (!value) {
-                          // perform operation when input is cleared
-                          console.log("Input cleared");
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          autoComplete="off"
-                          {...params}
-                          InputProps={{
-                            ...params.InputProps,
-                            className: "text-white",
-                          }}
-                          InputLabelProps={{
-                            ...params.InputLabelProps,
-                            style: { color: "white" },
-                          }}
-                          className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Transaction Id"
-                        // required
-                        />
-                      )}
-                      classes={{
-                        endAdornment: "text-white",
-                      }}
-                      sx={{
-                        "& .MuiAutocomplete-endAdornment": {
-                          color: "white",
-                        },
-                      }}
-                    />
-                  </div>
-                )}
+                  {isBankSlip && (
+                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                      <label htmlFor="field2" className="text-secondary">Transaction Id </label>
+                      <Autocomplete
+                        id="field2"
+                        options={transactionId}
+                        value={selectedTransactionId}
+                        getOptionLabel={(option) => option?.transaction_id || ""}
+                        onChange={handleSelectedTransactionId}
+                        onInputChange={(event, value) => {
+                          if (!value) {
+                            // perform operation when input is cleared
+                            console.log("Input cleared");
+                          }
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            autoComplete="off"
+                            {...params}
+                            InputProps={{
+                              ...params.InputProps,
+                              className: "text-white",
+                            }}
+                            InputLabelProps={{
+                              ...params.InputLabelProps,
+                              style: { color: "white" },
+                            }}
+                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                            placeholder="Select Transaction Id"
+                          // required
+                          />
+                        )}
+                        classes={{
+                          endAdornment: "text-white",
+                        }}
+                        sx={{
+                          "& .MuiAutocomplete-endAdornment": {
+                            color: "white",
+                          },
+                        }}
+                      />
+                    </div>
+                  )}
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field3" className="text-secondary">Upload Documents </label>
