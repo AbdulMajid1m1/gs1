@@ -2487,7 +2487,7 @@ export const masterDataColumn = [
   {
     field: 'unit_name',
     headerName: 'Unit Name',
-    width: 180,
+    width: 260,
   },
   {
     field: 'status',
@@ -2598,7 +2598,7 @@ export const Other_Products = [
   {
     field: 'product_name',
     headerName: 'product_name',
-    width: 180,
+    width: 260,
   },
   {
     field: 'total_no_of_barcodes',
@@ -2614,7 +2614,7 @@ export const Other_Products = [
   {
     field: 'status',
     headerName: 'status',
-    width: 180,
+    width: 130,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
@@ -2694,12 +2694,12 @@ export const counrty_sales = [
   {
     field: 'Alpha2',
     headerName: 'Alpha2',
-    width: 180,
+    width: 130,
   },
   {
     field: 'Alpha3',
     headerName: 'Alpha3',
-    width: 180,
+    width: 130,
   },
   {
     field: 'country_code_numeric3',
@@ -2709,7 +2709,7 @@ export const counrty_sales = [
   {
     field: 'country_name',
     headerName: 'country_name',
-    width: 180,
+    width: 260,
   },
   {
     field: 'created_at',
@@ -2737,12 +2737,12 @@ export const city = [
   {
     field: 'name',
     headerName: 'name',
-    width: 180,
+    width: 280,
   },
   {
     field: 'state_name',
     headerName: 'state',
-    width: 180,
+    width: 280,
   },
 
   {
@@ -2771,7 +2771,7 @@ export const state = [
   {
     field: 'name',
     headerName: 'name',
-    width: 180,
+    width: 280,
   },
   {
     field: 'country_id',
@@ -2854,7 +2854,7 @@ export const document_type = [
   {
     field: 'file_name',
     headerName: 'Document name',
-    width: 180,
+    width: 280,
   },
   {
     field: 'status',
@@ -2939,17 +2939,17 @@ export const Hs_code = [
   {
     field: 'HSCODES',
     headerName: 'HSCODES',
-    width: 180,
+    width: 140,
   },
   {
     field: 'DescriptionEN',
     headerName: 'DescriptionEN',
-    width: 180,
+    width: 750,
   },
   {
     field: 'addBy',
     headerName: 'addBy',
-    width: 180,
+    width: 130,
   },
   {
     field: 'created_at',
