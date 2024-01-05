@@ -177,7 +177,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Categories
+                                        Add Mega Menu categories
                                     </button>
                                 </div>
 

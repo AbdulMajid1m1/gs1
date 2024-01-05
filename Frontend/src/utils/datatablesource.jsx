@@ -2643,12 +2643,12 @@ export const silderDataColumn = [
   {
     field: 'description',
     headerName: 'Description',
-    width: 300,
+    width: 500,
     renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
-          maxWidth: '300px',
+          maxWidth: '500px',
         }}
       >
         {params.value}
