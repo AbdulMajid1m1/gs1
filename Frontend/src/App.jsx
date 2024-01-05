@@ -98,6 +98,8 @@ import Faqcategories from "./Pages/AdminPages/FrontEnd/Faqcategories/Faqcategori
 import Manageteam from "./Pages/AdminPages/FrontEnd/Manageteam/Manageteam";
 import Boardmembers from "./Pages/AdminPages/FrontEnd/Boardmembers/Boardmembers";
 import Userguide from "./Pages/AdminPages/FrontEnd/Userguide/Userguide";
+import Pages from "./Pages/AdminPages/FrontEnd/Pages/Pages";
+import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
 
 const queryClient = new QueryClient()
 
@@ -290,6 +292,9 @@ const App = () => {
                             <Route path="Featured_services" element={<Featuredservices />} />
                             <Route path="events" element={<Events />} />
                             <Route path="articles" element={<Articles />} />
+                            {/* Pages */}
+                            <Route path="Pages" element={<Pages />} />
+                            <Route path="Add_Pages" element={<Addpages />} />
                             {/* Gs1partners */}
                             <Route path="partners" element={<Gs1partners />} />
                             {/* Blogcategories */}

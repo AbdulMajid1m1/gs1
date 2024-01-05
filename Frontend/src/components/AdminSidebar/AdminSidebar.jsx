@@ -1213,10 +1213,10 @@ const AdminSideBar = () => {
               )}
               
               <div
-                className={`main-images-container ${selectedItem === '/admin/Documents' ? 'selected-item' : ''}`}
-                onClick={(event) => handleItemClick('/admin/Documents', event)}
+                className={`main-images-container ${selectedItem === '/admin/Pages' ? 'selected-item' : ''}`}
+                onClick={(event) => handleItemClick('/admin/Pages', event)}
                 onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/Documents')
+                  handleContextMenu(event, '/admin/Pages')
                 }
               >
                 <div
