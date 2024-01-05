@@ -307,10 +307,10 @@ export const deleteuser_guide_videos = async (req, res, next) => {
             return next(createError(400, error.details[0].message));
         }
         const { id } = req.params;
-        await prisma.user_guide_pdfs.delete({
+        await prisma.user_guide_videos.delete({
             where: { id: id },
         });
-        return res.json({ message: 'user guide pdfs deleted successfully' });
+        return res.json({ message: 'user guide videos deleted successfully' });
     } catch (error) {
         next(error);
     }
