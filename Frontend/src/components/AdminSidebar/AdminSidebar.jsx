@@ -1105,6 +1105,42 @@ const AdminSideBar = () => {
                   >
                     <p className="sidebarsub-text">Footer Menu</p>
                   </div>
+                  <div
+                    className={`main-images-containersub ${selectedItem === '/admin/Sliders' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/Sliders', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/Sliders')
+                    }
+                  >
+                    <p className="sidebarsub-text">Silders</p>
+                  </div>
+                  <div
+                    className={`main-images-containersub ${selectedItem === '/admin/Featured_services' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/Featured_services', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/Featured_services')
+                    }
+                  >
+                    <p className="sidebarsub-text">Service</p>
+                  </div>
+                  <div
+                    className={`main-images-containersub ${selectedItem === '/admin/events' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/events', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/events')
+                    }
+                  >
+                    <p className="sidebarsub-text">Event</p>
+                  </div>
+                  <div
+                    className={`main-images-containersub ${selectedItem === '/admin/articles' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/articles', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/articles')
+                    }
+                  >
+                    <p className="sidebarsub-text">Articles</p>
+                  </div>
               </div>
               )}
               
@@ -1120,7 +1156,7 @@ const AdminSideBar = () => {
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Documents</p>
+                <p className="sidebar-text">Pages</p>
               </div>
               <div
                 // className={`main-images-container ${selectedItem === '/admin/ProductPackaging' ? 'selected-item' : ''}`}
@@ -1139,7 +1175,7 @@ const AdminSideBar = () => {
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Product Packaging</p>
+                <p className="sidebar-text">GS1 Partners</p>
               </div>
               <div
                 // className={`main-images-container ${selectedItem === '/admin/Other_products' ? 'selected-item' : ''}`}
@@ -1158,7 +1194,7 @@ const AdminSideBar = () => {
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Other Products</p>
+                <p className="sidebar-text">Blog Category</p>
               </div>
               <div
                 // className={`main-images-container ${selectedItem === '/admin/Gcp_type' ? 'selected-item' : ''}`}

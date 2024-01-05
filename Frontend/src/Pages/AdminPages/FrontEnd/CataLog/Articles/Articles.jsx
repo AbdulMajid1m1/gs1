@@ -1,24 +1,20 @@
 import { useContext, useEffect, useState } from 'react'
-// import visitFrontend from "../../../Images/visitFrontend.png"
-// import profileICon from "../../../Images/profileICon.png"
 import DataTable from '../../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../../../Contexts/DataTableContext'
-import { megamenuDataColumn } from '../../../../../utils/datatablesource'
+import { FeaturedArticlesDataColumn } from '../../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../../utils/userRequest'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
-// import Addunit from './addunit';
-// import Updateunit from './updateunit';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import Addmegamenu from './Addmegamenu';
-import Updatemegamenu from './Updatemegamenu';
-const Megamenu = () => {
+import Addarticles from './Addarticles';
+import Updataarticles from './Updataarticles';
+const Articles = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -33,25 +29,15 @@ const Megamenu = () => {
     const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
         // save this row data in session storage 
-        sessionStorage.setItem("updatemengamenu", JSON.stringify(row));
+        sessionStorage.setItem("updateArticles", JSON.stringify(row));
     };
     const { rowSelectionModel, setRowSelectionModel,
         tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
-    // Empty array dependency ensures this useEffect runs once on component mount
-
-    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
-    //   const response = await newRequest.get("/bankslip",);
-    //   return response?.data || [];
-    //   console.log(response.data);
-
-    // });
     const refreshcitiesData = async () => {
         try {
-            const response = await newRequest.get("/getAllmega_menu",);
-
-            console.log(response.data);
+            const response = await newRequest.get("/getAllfeatured_articales",);
             setData(response?.data || []);
             setIsLoading(false)
 
@@ -67,7 +53,7 @@ const Megamenu = () => {
     const handleDelete = async (row) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You will not be able to recover this Mega Menu!',
+            text: 'You will not be able to recover this Featured Articles!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
@@ -78,9 +64,9 @@ const Megamenu = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const isDeleted = await newRequest.delete("/deletemega_menus/" + row?.id);
+                    const isDeleted = await newRequest.delete("/deletefeatured_articales/" + row?.id);
                     if (isDeleted) {
-                        toast.success('Mega Menu deleted successfully', {
+                        toast.success('Featured Articles deleted successfully', {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -134,9 +120,9 @@ const Megamenu = () => {
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
-            title: 'Create Unit',
+            title: 'Create Service',
             html:
-                '<input id="unitname" class="swal2-input" placeholder="unit Name">' +
+                '<input  id="unitname" class="swal2-input" placeholder="unit Name">' +
 
                 '<input id="unitcode" class="swal2-input" placeholder="unit code">',
             showCancelButton: true,
@@ -149,13 +135,13 @@ const Megamenu = () => {
 
             preConfirm: () => {
                 return {
-                    name_en: document.getElementById('unitname').value,
-                    name_ar: document.getElementById('unitcode').value,
+                    imageshow: document.getElementById('unitname').value,
+                    Page: document.getElementById('unitcode').value,
                 };
             },
             inputValidator: (form) => {
                 if (!form.unitname || !form.unitcode) {
-                    return 'Both Menu Name  are required';
+                    return 'Both image  Page  are required';
                 }
             },
         });
@@ -163,18 +149,19 @@ const Megamenu = () => {
         if (!formValues) {
             return; // Cancelled or invalid input
         }
-
-        const { name_en, name_ar } = formValues;
-
+        const { imageshow, Page, Title, titlear, Date } = formValues;
+        const formData = new FormData();
+        formData.append('image', imageshow);
+        formData.append('link', Page);
+        formData.append('title', Title);
+        formData.append('title_ar', titlear);
+        formData.append('date', Date);
+        formData.append('image', imageshow);
+        formData.append('status', 1);
         try {
             // Send a request to your API to add the company
-            const response = await newRequest.post('/createmega_menus/', {
-                name_en: name_en.toString(),
-                name_ar: name_ar.toString(),
-                status: '0', // You may want to modify this based on your requirements
-            });
-
-            toast.success(`Mega Menu ${name_en} "${name_ar}" has been added successfully.`, {
+            const response = await newRequest.post('/creatfeatured_articales/', formData);
+            toast.success(`Featured Articles ${Page}  has been added successfully.`, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -183,11 +170,8 @@ const Megamenu = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-
             });
-
             console.log(response.data);
-
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -223,17 +207,20 @@ const Megamenu = () => {
                 const sheet = workbook.Sheets[sheetName];
                 const json = XLSX.utils.sheet_to_json(sheet);
                 json.forEach((item) => {
-                    newRequest.post(`/createmega_menus`, {
-                        name_ar: item.name_ar.toString(), // Adjust property names as needed
-                        name_en: item.name_en.toString(),
-                        status: 1
-                    })
+                    const formData = new FormData();
+                    formData.append('status', 1);
+                    formData.append('image', item.imageshow);
+                    formData.append('link', item.Page);
+                    formData.append('title', item.Title);
+                    formData.append('title_ar', item.titlear);
+                    formData.append('date', item.Date);
+                    formData.append('image', item.imageshow);
+                    newRequest.post(`/creatfeatured_articales`, formData)
                         .then((res) => {
                             console.log('Add', res.data);
-
                             Swal.fire(
                                 'Add!',
-                                `Mega Menu has been created`,
+                                `Featured Articles has been created`,
                                 'success'
                             )
                             refreshcitiesData()
@@ -242,7 +229,7 @@ const Megamenu = () => {
                             console.log(err);
                             Swal.fire(
                                 'Error!',
-                                `Some Mega Menus already exist`,
+                                `Some Featured Articles already exist`,
                                 'error'
                             )
                             // Handle errors
@@ -258,7 +245,7 @@ const Megamenu = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'Mega Menu'}
+                        title={' Featured Articles'}
                     />
                 </div>
 
@@ -297,8 +284,8 @@ const Megamenu = () => {
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="Mega Menu"
-                                    columnsName={megamenuDataColumn}
+                                    title="Featured Articles"
+                                    columnsName={FeaturedArticlesDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
@@ -347,19 +334,15 @@ const Megamenu = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Addunit component with handleShowCreatePopup prop */}
                 {isCreatePopupVisible && (
-                    <Addmegamenu isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
+                    <Addarticles isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
                 )}
-                {/* Updateunit component with handleShowUpdatePopup prop */}
                 {isUpdatePopupVisible && (
-                    <Updatemegamenu isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
+                    <Updataarticles isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
                 )}
-
             </div>
         </div>
     )
 }
 
-export default Megamenu
+export default Articles

@@ -6,7 +6,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../../../Contexts/DataTableContext'
-import { megamenuDataColumn } from '../../../../../utils/datatablesource'
+import { silderDataColumn } from '../../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../../utils/userRequest'
 import Swal from 'sweetalert2';
@@ -16,9 +16,9 @@ import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import Addmegamenu from './Addmegamenu';
-import Updatemegamenu from './Updatemegamenu';
-const Megamenu = () => {
+import Addsilders from './Addsilders';
+import Updatasilder from './Updatasilder';
+const Sliders = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -33,23 +33,15 @@ const Megamenu = () => {
     const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
         // save this row data in session storage 
-        sessionStorage.setItem("updatemengamenu", JSON.stringify(row));
+        sessionStorage.setItem("updatesilder", JSON.stringify(row));
     };
     const { rowSelectionModel, setRowSelectionModel,
         tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
-    // Empty array dependency ensures this useEffect runs once on component mount
-
-    // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
-    //   const response = await newRequest.get("/bankslip",);
-    //   return response?.data || [];
-    //   console.log(response.data);
-
-    // });
     const refreshcitiesData = async () => {
         try {
-            const response = await newRequest.get("/getAllmega_menu",);
+            const response = await newRequest.get("/getAllsliders",);
 
             console.log(response.data);
             setData(response?.data || []);
@@ -67,7 +59,7 @@ const Megamenu = () => {
     const handleDelete = async (row) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You will not be able to recover this Mega Menu!',
+            text: 'You will not be able to recover this Sliders!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
@@ -78,9 +70,9 @@ const Megamenu = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const isDeleted = await newRequest.delete("/deletemega_menus/" + row?.id);
+                    const isDeleted = await newRequest.delete("/deletesliders/" + row?.id);
                     if (isDeleted) {
-                        toast.success('Mega Menu deleted successfully', {
+                        toast.success('Sliders deleted successfully', {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -149,8 +141,8 @@ const Megamenu = () => {
 
             preConfirm: () => {
                 return {
-                    name_en: document.getElementById('unitname').value,
-                    name_ar: document.getElementById('unitcode').value,
+                    caption: document.getElementById('unitname').value,
+                    title: document.getElementById('unitcode').value,
                 };
             },
             inputValidator: (form) => {
@@ -163,18 +155,22 @@ const Megamenu = () => {
         if (!formValues) {
             return; // Cancelled or invalid input
         }
-
-        const { name_en, name_ar } = formValues;
-
+        const { caption, title, Description, imageshow, Page } = formValues;
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('caption', caption);
+        formData.append('description',Description);
+        formData.append('image', imageshow);
+        formData.append('link', Page);
+        formData.append('status', 0);
         try {
             // Send a request to your API to add the company
-            const response = await newRequest.post('/createmega_menus/', {
-                name_en: name_en.toString(),
-                name_ar: name_ar.toString(),
+            const response = await newRequest.post('/updatesliders/', {
+                caption: caption.toString(),
+                title: title.toString(),
                 status: '0', // You may want to modify this based on your requirements
             });
-
-            toast.success(`Mega Menu ${name_en} "${name_ar}" has been added successfully.`, {
+            toast.success(`Sliders ${caption} "${title}" has been added successfully.`, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -183,11 +179,8 @@ const Megamenu = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-
             });
-
             console.log(response.data);
-
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -223,17 +216,19 @@ const Megamenu = () => {
                 const sheet = workbook.Sheets[sheetName];
                 const json = XLSX.utils.sheet_to_json(sheet);
                 json.forEach((item) => {
-                    newRequest.post(`/createmega_menus`, {
-                        name_ar: item.name_ar.toString(), // Adjust property names as needed
-                        name_en: item.name_en.toString(),
-                        status: 1
-                    })
+                    const formData = new FormData();
+                    formData.append('title', item.title);
+                    formData.append('caption', item.caption);
+                    formData.append('description', item.Description);
+                    formData.append('image', item.imageshow);
+                    formData.append('link', item.Page);
+                    formData.append('status', 1);
+                    newRequest.post(`/updatesliders`, formData)
                         .then((res) => {
                             console.log('Add', res.data);
-
                             Swal.fire(
                                 'Add!',
-                                `Mega Menu has been created`,
+                                `Sliders has been created`,
                                 'success'
                             )
                             refreshcitiesData()
@@ -242,7 +237,7 @@ const Megamenu = () => {
                             console.log(err);
                             Swal.fire(
                                 'Error!',
-                                `Some Mega Menus already exist`,
+                                `Some Sliders already exist`,
                                 'error'
                             )
                             // Handle errors
@@ -258,7 +253,7 @@ const Megamenu = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'Mega Menu'}
+                        title={'Sliders'}
                     />
                 </div>
 
@@ -297,8 +292,8 @@ const Megamenu = () => {
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="Mega Menu"
-                                    columnsName={megamenuDataColumn}
+                                    title="Sliders"
+                                    columnsName={silderDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
@@ -347,19 +342,16 @@ const Megamenu = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Addunit component with handleShowCreatePopup prop */}
                 {isCreatePopupVisible && (
-                    <Addmegamenu isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
+                    <Addsilders isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
                 )}
                 {/* Updateunit component with handleShowUpdatePopup prop */}
                 {isUpdatePopupVisible && (
-                    <Updatemegamenu isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
+                    <Updatasilder isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
                 )}
-
             </div>
         </div>
     )
 }
 
-export default Megamenu
+export default Sliders

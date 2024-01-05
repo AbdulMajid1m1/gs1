@@ -84,6 +84,10 @@ import AddGTINProducts from "./Pages/AdminPages/AdminIndentify/GTIN/AddGTINProdu
 import Megamenu from "./Pages/AdminPages/FrontEnd/CataLog/MegaMenu/Megamenu";
 import Categories from "./Pages/AdminPages/FrontEnd/CataLog/Categories/Categories";
 import Footermenu from "./Pages/AdminPages/FrontEnd/CataLog/Footermenu/Footermenu";
+import Sliders from "./Pages/AdminPages/FrontEnd/CataLog/Sliders/Sliders";
+import Featuredservices from "./Pages/AdminPages/FrontEnd/CataLog/FeaturedServices/Fraturedservices";
+import Events from "./Pages/AdminPages/FrontEnd/CataLog/Events/Events";
+import Articles from "./Pages/AdminPages/FrontEnd/CataLog/Articles/Articles";
 
 const queryClient = new QueryClient()
 
@@ -268,6 +272,10 @@ const App = () => {
                             <Route path="megamenu" element={<Megamenu />} />
                             <Route path="categories" element={<Categories />} />
                             <Route path="footer_menu" element={<Footermenu />} />
+                            <Route path="Sliders" element={<Sliders />} />
+                            <Route path="Featured_services" element={<Featuredservices />} />
+                            <Route path="events" element={<Events />} />
+                            <Route path="articles" element={<Articles />} />
 
                           </Routes>
                         </QueryClientProvider>
