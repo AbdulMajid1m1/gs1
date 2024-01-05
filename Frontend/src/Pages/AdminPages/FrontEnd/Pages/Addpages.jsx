@@ -12,7 +12,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [SeoDescription, setSeoDescription] = useState('')
     const [PageOrder, setPageOrder] = useState('')
     const [PageSlug, setPageSlug] = useState('')
-    const [sections, setsections] = useState('')
+    const [sections, setsections] = useState([]) 
+     const [draggedSections, setDraggedSections] = useState([]);
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -27,7 +28,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 slug: PageSlug,
                 is_dropdown: '2',
                 page_order: PageOrder,
-                sections: sections,
+                sections: sections.join('\n'),
                 custom_section_data: 'custom_section_data',
                 status: 1,
             });
@@ -62,6 +63,23 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
 
     };
+
+    const handleDragStart = (e, section) => {
+        e.dataTransfer.setData('text/plain', section);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const section = e.dataTransfer.getData('text/plain');
+        setsections([...sections, section]);
+        setDraggedSections([...draggedSections, section]);
+
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <div>
             <div className="p-0 h-full sm:ml-72">
@@ -86,13 +104,17 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="AddSections" className="text-secondary">
                                                     Drag Here sections you want to add
                                                 </label>
+                                              
                                                 <textarea
                                                     type="text"
                                                     id="AddSections"
-                                                    value={sections}
-                                                    onChange={(e) => setsections(e.target.value)}
+                                                    onDrop={handleDrop}
+                                                    onDragOver={handleDragOver}
+                                                    value={sections.join('\n')}
+                                                    onChange={(e) => setsections(e.target.value.split('\n'))}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
                                                     style={{ border:'dotted'}}
+                                                    
                                                 />
 
                                             </div>
@@ -187,106 +209,145 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         {/* <Userguideveido /> */}
                         <div className="flex">
                         
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Blog Section')}
+                                >
                                 <OpenWithIcon/> 
                                 <p>Blog Section</p> 
                         </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Service Section')}>
                                 <OpenWithIcon />
                                 <p>Service Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Counter Section')}>
                                 <OpenWithIcon />
                                 <p>Counter Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Category Section')}>
                                 <OpenWithIcon />
                                 <p>Category Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Testimonal Section')}>
                                 <OpenWithIcon />
                                 <p>Testimonal Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Team Section')}>
                                 <OpenWithIcon />
                                 <p>Team Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Subscribe Section')}>
                                 <OpenWithIcon />
                                 <p>Boardmenber Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Subscribe Section')}>
                                 <OpenWithIcon />
                                 <p>Subscribe Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Brad Section')}>
                                 <OpenWithIcon />
                                 <p>Brad Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'About Section')}>
                                 <OpenWithIcon />
                                 <p>About Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Faq Section')}>
                                 <OpenWithIcon />
                                 <p>Faq Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Contact Section')}>
                                 <OpenWithIcon />
                                 <p>Contact Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Gepir Section')}>
                                 <OpenWithIcon />
                                 <p>Gepir Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Check_digit Section')}>
                                 <OpenWithIcon />
                                 <p>Check_digit Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Gpc Section')}>
                                 <OpenWithIcon />
                                 <p>Gpc Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Userguide Section')}>
                                 <OpenWithIcon />
                                 <p>Userguide Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Gtinreporter Section')}>
                                 <OpenWithIcon />
                                 <p>Gtinreporter Section</p>
                             </div>
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Migration Section')}>
                                 <OpenWithIcon />
                                 <p>Migration Section</p>
                             </div>
                         </div>
                         <div className="flex">
 
-                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'>
+                            <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
+                             draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Custom Section')}>
                                 <OpenWithIcon />
                                 <p>Custom Section</p>
                             </div>
