@@ -209,7 +209,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update unit
+                                        Update Categories
                                     </Button>
                                 </div>
                             </form>
