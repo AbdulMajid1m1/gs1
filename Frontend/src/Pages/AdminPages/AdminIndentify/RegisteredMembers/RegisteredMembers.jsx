@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { useQuery } from 'react-query'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import FinancePopUp from './FinancePopUp';
+import RenewPopUp from './RenewPopUp';
 
 const RegisteredMembers = () => {
   const [IsLoading, setIsLoading] = useState(true);
@@ -193,6 +194,16 @@ const RegisteredMembers = () => {
 
   };
 
+  const [isRenewPopupVisible, setIsRenewPopupVisible] = useState(false);
+
+  const handleShowRenewPopup = (row) => {
+    setIsRenewPopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
   const fetchMemberInvoiceData = async (row) => {
     try {
       const response = await newRequest.get(`/memberDocuments?user_id=${row?.id}&type=invoice&status=pending`);
@@ -273,7 +284,7 @@ const RegisteredMembers = () => {
               label: "Renew",
               icon: <PublishedWithChangesIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
               ,
-              // action: handleOpen,
+              action: handleShowRenewPopup,
 
               },
               {
@@ -308,6 +319,12 @@ const RegisteredMembers = () => {
         {/* AddBrands component with handleShowCreatePopup prop */}
         {isFinancePopupVisible && (
           <FinancePopUp isVisible={isFinancePopupVisible} setVisibility={setFinancePopupVisibility} />
+        )}
+
+
+         {/* Renew component with handleShowRenewPopup prop */}
+         {isRenewPopupVisible && (
+          <RenewPopUp isVisible={isRenewPopupVisible} setVisibility={setIsRenewPopupVisible} />
         )}
 
 
