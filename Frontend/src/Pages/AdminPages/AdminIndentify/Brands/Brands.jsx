@@ -181,7 +181,7 @@ const Brands = () => {
             const filteredData = data.filter((item) => item?.id !== row?.id);
             setData(filteredData);
 
-          } 
+          }   
           else {
             toast.error('Failed to delete Brands');
           }
