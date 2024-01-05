@@ -85,6 +85,21 @@ import AdminPaymentSlips from "./Pages/AdminPages/PaymentSlips/AdminPaymentSlips
 import ProductsCategory from "./Pages/AdminPages/Others/ProductsCategory/ProductsCategory";
 import OtherProductsCategory from "./Pages/AdminPages/Others/OtherProductsCategory/OtherProductsCategory";
 import AdditionalProducts from "./Pages/AdminPages/Others/AdditionalProducts/AdditionalProducts";
+import Megamenu from "./Pages/AdminPages/FrontEnd/CataLog/MegaMenu/Megamenu";
+import Categories from "./Pages/AdminPages/FrontEnd/CataLog/Categories/Categories";
+import Footermenu from "./Pages/AdminPages/FrontEnd/CataLog/Footermenu/Footermenu";
+import Sliders from "./Pages/AdminPages/FrontEnd/CataLog/Sliders/Sliders";
+import Featuredservices from "./Pages/AdminPages/FrontEnd/CataLog/FeaturedServices/Fraturedservices";
+import Events from "./Pages/AdminPages/FrontEnd/CataLog/Events/Events";
+import Articles from "./Pages/AdminPages/FrontEnd/CataLog/Articles/Articles";
+import Gs1partners from "./Pages/AdminPages/FrontEnd/Gs1Partners/Gs1partners";
+import Blogcategories from "./Pages/AdminPages/FrontEnd/Blogcategories/Blogcategories";
+import Faqcategories from "./Pages/AdminPages/FrontEnd/Faqcategories/Faqcategories";
+import Manageteam from "./Pages/AdminPages/FrontEnd/Manageteam/Manageteam";
+import Boardmembers from "./Pages/AdminPages/FrontEnd/Boardmembers/Boardmembers";
+import Userguide from "./Pages/AdminPages/FrontEnd/Userguide/Userguide";
+import Pages from "./Pages/AdminPages/FrontEnd/Pages/Pages";
+import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
 
 const queryClient = new QueryClient()
 
@@ -269,6 +284,30 @@ const App = () => {
                             <Route path="Country" element={<Country />} />
                             <Route path="crnumber" element={<Crnumber />} />
                             <Route path="documenttype" element={<Document_type />} />
+                            {/* Megamenu */}
+                            <Route path="megamenu" element={<Megamenu />} />
+                            <Route path="categories" element={<Categories />} />
+                            <Route path="footer_menu" element={<Footermenu />} />
+                            <Route path="Sliders" element={<Sliders />} />
+                            <Route path="Featured_services" element={<Featuredservices />} />
+                            <Route path="events" element={<Events />} />
+                            <Route path="articles" element={<Articles />} />
+                            {/* Pages */}
+                            <Route path="Pages" element={<Pages />} />
+                            <Route path="Add_Pages" element={<Addpages />} />
+                            {/* Gs1partners */}
+                            <Route path="partners" element={<Gs1partners />} />
+                            {/* Blogcategories */}
+                            <Route path="Blog_categories" element={<Blogcategories />} />
+                            {/* Faqcategories */}
+                            <Route path="Faq_categories" element={<Faqcategories />} />
+                            {/* Manageteam */}
+                            <Route path="Manage_team" element={<Manageteam />} />
+                            {/* Boardmembers */}
+                            <Route path="Board_members" element={<Boardmembers />} />
+                            {/* Userguide */}
+                            <Route path="User_guide" element={<Userguide />} />
+
                           </Routes>
                         </QueryClientProvider>
                       </AdminMainLayout>

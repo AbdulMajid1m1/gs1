@@ -2519,6 +2519,896 @@ export const masterDataColumn = [
   },
 ];
 
+export const megamenuDataColumn = [
+
+  {
+    field: 'name_en',
+    headerName: 'Name[English]',
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const CategoriesDataColumn = [
+
+  {
+    field: 'category_name_en',
+    headerName: 'Category Name[English]',
+    width: 260,
+  },
+  {
+    field: 'category_name_ar',
+    headerName: 'Category Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'megamenu_id',
+    headerName: 'Mega Menu	',
+    width: 200,
+  },
+  {
+    field: 'description',
+    headerName: 'Description',
+    width: 260,
+  },
+  {
+    field: 'url',
+    headerName: 'Url',
+    width: 260,
+  },
+  {
+    field: 'meta_title',
+    headerName: 'Meta Title',
+    width: 200,
+  },
+  {
+    field: 'meta_description',
+    headerName: 'Meta Description',
+    width: 260,
+  },
+  {
+    field: 'meta_keywords',
+    headerName: 'Meta keywords',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const silderDataColumn = [
+
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 260,
+  },
+  {
+    field: 'description',
+    headerName: 'Description',
+    width: 500,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '500px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'caption',
+    headerName: 'Caption',
+    width: 200,
+  }, {
+    field: 'link',
+    headerName: 'Link',
+    width: 200,
+  },
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '77%',
+         height: '77%',
+          objectFit: 'fill', }}
+/>
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const FeaturedServicesDataColumn = [
+  
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
+        }}
+      />
+    ),
+  },
+  {
+    field: 'link',
+    headerName: 'Link',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const FeaturedEventsDataColumn = [
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 300,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '300px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'title_ar',
+    headerName: 'Title ar',
+    width: 300,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '300px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'date',
+    headerName: 'Date',
+    width: 200,
+  },
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
+        }}
+      />
+    ),
+  },
+  {
+    field: 'link',
+    headerName: 'Link',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const FeaturedArticlesDataColumn = [
+  {
+    field: 'title',
+    headerName: 'Title[English]',
+    width: 300,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '300px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+
+  {
+    field: 'title_ar',
+    headerName: 'Title [Arabic]',
+    width: 300,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '300px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'date',
+    headerName: 'Date',
+    width: 200,
+  },
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
+        }}
+      />
+    ),
+  },
+  {
+    field: 'link',
+    headerName: 'Link',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const ManagePagesDataColumn = [
+
+  {
+    field: 'name',
+    headerName: 'Page Name[English]	',
+    width: 250,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Page Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 200,
+  },
+  {
+    field: 'page_order',
+    headerName: 'Page Order',
+    width: 200,
+  },
+  {
+    field: 'sections',
+    headerName: 'Sections',
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const GS1PartnersDataColumn = [
+  
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '77%',
+          height: '77%',
+          objectFit: 'fill',
+        }}
+      />
+    ),
+  }, 
+
+  {
+    field: 'link',
+    headerName: 'Link',
+    width: 250,
+    renderCell: (params) => (
+      <a
+        href={params.value}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#6777ef', textDecoration: 'underline', cursor: 'pointer' }}
+      >
+        {params.value}
+      </a>
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const BlogCategoriesDataColumn = [
+
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 250,
+  },
+  {
+    field: 'slug',
+    headerName: 'Slug',
+    width: 250,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 250,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 250,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const FaqCategoriesDataColumn = [
+
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 250,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 250,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 250,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const ManageTeamDataColumn = [
+
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 260,
+  },
+  {
+    field: 'job_title',
+    headerName: 'Job Title',
+    width: 300,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '300px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'description',
+    headerName: 'Description',
+    width: 350,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '350px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '80px',
+          height: '80px',
+          objectFit: 'fill',
+        }}
+      />
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const BoardMembersDataColumn = [
+
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 260,
+  },
+  {
+    field: 'job_title',
+    headerName: 'Job Title',
+    width: 260,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '300px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'description',
+    headerName: 'Description',
+    width: 350,
+    renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '350px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 200,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.image)}
+        alt="Image"
+        style={{
+          width: '77%',
+          height: '77%',
+          // objectFit: 'fill',
+        }}
+      />
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const UserGuidepdfDataColumn = [
+
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 300,
+  },
+  {
+    field: 'Download',
+    headerName: 'Download',
+    width: 250,
+    renderCell: (params) => (
+      <button
+        style={{
+          width: '100%',
+          height: '70%',
+          padding: '8px',
+          background:'#6777ef',
+          border: '1px solid #6777ef',
+          color:'white',
+          borderRadius:'10px'
+        }}
+        onClick={() => handlepdfDownload(params.row.pdf)}
+      >
+        {/* {params.value} */}
+        Download
+      </button>
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+const handlepdfDownload = (pdfurl) => {
+  const fileUrl = pdfurl;
+  saveAs(fileUrl, `${pdfurl}.pdf`);
+};
+export const UserGuideVideoDataColumn = [
+
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 300,
+  },
+  {
+    field: 'Download',
+    headerName: 'Download',
+    width: 250,
+    renderCell: (params) => (
+      <button
+        style={{
+          width: '100%',
+          height: '70%',
+          padding: '8px',
+          background: '#6777ef',
+          border: '1px solid #6777ef',
+          color: 'white',
+          borderRadius: '10px'
+        }}
+        onClick={() => handleVideoDownload(params.row.video)}
+      >
+        {/* {params.value} */}
+        Download
+      </button>
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+const handleVideoDownload = (videoUrl) => {
+  const fileUrl = videoUrl;
+  saveAs(fileUrl, `${videoUrl}.mp4`);
+};
 export const document = [
 
   {
@@ -2556,6 +3446,7 @@ export const document = [
     }
   },
 ];
+
 export const product_packaging = [
 
   {
@@ -2593,6 +3484,59 @@ export const product_packaging = [
     }
   },
 ];
+
+export const footerMenuDataColumn = [
+
+  {
+    field: 'category_name_en',
+    headerName: 'Category Name[English]	',
+    width: 180,
+  },
+  {
+    field: 'category_name_ar',
+    headerName: 'Category Name[Arabic]',
+    width: 260,
+  },
+  {
+    field: 'url',
+    headerName: 'Url',
+    width: 260,
+  },
+  {
+    field: 'parent_id',
+    headerName: 'Parent ID',
+    width: 150,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
 export const Other_Products = [
 
   {
