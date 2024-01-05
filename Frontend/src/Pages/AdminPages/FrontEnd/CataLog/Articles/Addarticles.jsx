@@ -147,16 +147,17 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 height: selectedFile || imageshow ? '200px' : '200px',
                                             }} />
 
-                                            <div className="row " htmlFor="file-inputs">
-                                                <label htmlFor="file-inputs" className='choosefile'>
+                                            <div className="row " htmlFor="file-inputs" >
+                                                <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
                                                     choose file
-                                                </label>
                                                 <input
                                                     id="file-inputs"
                                                     type="file"
                                                     onChange={handleChangeback}
                                                     style={{ display: 'none' }}
+                                                    alt='Select image'
                                                 />
+                                                </label>
                                             </div>
                                         </div>
 

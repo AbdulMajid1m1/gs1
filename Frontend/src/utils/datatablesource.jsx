@@ -3230,6 +3230,128 @@ export const BoardMembersDataColumn = [
   },
 ];
 
+export const UserGuidepdfDataColumn = [
+
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 300,
+  },
+  {
+    field: 'Download',
+    headerName: 'Download',
+    width: 250,
+    renderCell: (params) => (
+      <button
+        style={{
+          width: '100%',
+          height: '70%',
+          padding: '8px',
+          background:'#6777ef',
+          border: '1px solid #6777ef',
+          color:'white',
+          borderRadius:'10px'
+        }}
+        onClick={() => handlepdfDownload(params.row.pdf)}
+      >
+        {/* {params.value} */}
+        Download
+      </button>
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+const handlepdfDownload = (pdfurl) => {
+  const fileUrl = pdfurl;
+  saveAs(fileUrl, `${pdfurl}.pdf`);
+};
+export const UserGuideVideoDataColumn = [
+
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 300,
+  },
+  {
+    field: 'Download',
+    headerName: 'Download',
+    width: 250,
+    renderCell: (params) => (
+      <button
+        style={{
+          width: '100%',
+          height: '70%',
+          padding: '8px',
+          background: '#6777ef',
+          border: '1px solid #6777ef',
+          color: 'white',
+          borderRadius: '10px'
+        }}
+        onClick={() => handleVideoDownload(params.row.video)}
+      >
+        {/* {params.value} */}
+        Download
+      </button>
+    ),
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    valueGetter: (params) => {
+      return params.value === 1 ? 'Active' : 'Inactive';
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+const handleVideoDownload = (videoUrl) => {
+  const fileUrl = videoUrl;
+  saveAs(fileUrl, `${videoUrl}.mp4`);
+};
 export const document = [
 
   {

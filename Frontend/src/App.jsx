@@ -97,6 +97,7 @@ import Blogcategories from "./Pages/AdminPages/FrontEnd/Blogcategories/Blogcateg
 import Faqcategories from "./Pages/AdminPages/FrontEnd/Faqcategories/Faqcategories";
 import Manageteam from "./Pages/AdminPages/FrontEnd/Manageteam/Manageteam";
 import Boardmembers from "./Pages/AdminPages/FrontEnd/Boardmembers/Boardmembers";
+import Userguide from "./Pages/AdminPages/FrontEnd/Userguide/Userguide";
 
 const queryClient = new QueryClient()
 
@@ -299,6 +300,8 @@ const App = () => {
                             <Route path="Manage_team" element={<Manageteam />} />
                             {/* Boardmembers */}
                             <Route path="Board_members" element={<Boardmembers />} />
+                            {/* Userguide */}
+                            <Route path="User_guide" element={<Userguide />} />
 
                           </Routes>
                         </QueryClientProvider>
