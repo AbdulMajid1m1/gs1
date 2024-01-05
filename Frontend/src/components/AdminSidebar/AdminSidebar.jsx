@@ -35,6 +35,11 @@ import membersexpiry from '../../Images/membersexpiry.png'
 import admingtin from '../../Images/admingtin.jpeg'
 import admingln from '../../Images/admingln.jpeg'
 import adminsscc from '../../Images/adminsscc.jpeg'
+import registeredmembersicon from '../../Images/registeredmembersicon.jpeg'
+import payslip from '../../Images/payslip.png';
+import productscategory from '../../Images/productscategory.png';
+import otherproductscategory from '../../Images/otherproductscategory.png';
+import additionalproducts from '../../Images/additionalproducts.png';
 import logout from '../../Images/logout.png'
 
 const AdminSideBar = () => {
@@ -164,9 +169,9 @@ const AdminSideBar = () => {
            <div className='flex justify-end items-center px-0 mr-4'>
                 <span>
                   <p className="text-white font-sans mr-5 hover:text-primary" 
-                    onClick={() => handleItemClickGs1website('/admin/dashboard')}
+                    onClick={() => handleItemClickGs1website('/')}
                     onContextMenu={(event) =>
-                      handleContextMenu(event, '/admin/dashboard')
+                      handleContextMenu(event, '/')
                     }
                   >GS1 Website</p>
                 </span>
@@ -272,7 +277,7 @@ const AdminSideBar = () => {
                       onContextMenu={(event) => handleContextMenu(event, '/admin/registered-members')}
                     > */}
                   <img
-                    src={registeredMembers}
+                    src={registeredmembersicon}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
@@ -406,23 +411,85 @@ const AdminSideBar = () => {
                 onClick={toggleSidebar}
               >
                 <div 
+                  // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/migration')}
+                  //     onContextMenu={(event) =>
+                  //        handleContextMenu(event, '/admin/migration')
+                  // }
+                  className={`main-images-container ${selectedItem === '/admin/member-expiry-page' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/member-expiry-page', event)}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/member-expiry-page')
+                  }
+                  >
+                  <img
+                    src={membersexpiry}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Members Expiry</p>
+                </div>
+
+                
+                <div 
+                  // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/migration')}
+                  //     onContextMenu={(event) =>
+                  //        handleContextMenu(event, '/admin/migration')
+                  // }
+                  className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/migration', event)}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/migration')
+                  }
+                  >
+                  <img
+                    src={migration}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Migration</p>
+                </div>
+
+                <div 
+                  // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/help-desk')}
+                  //     onContextMenu={(event) =>
+                  //        handleContextMenu(event, '/admin/help-desk')
+                  // }
+                  className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/help-desk', event)}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/help-desk')
+                  }
+                  >
+                  <img
+                    src={inactive}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Old InActive Members</p>
+                </div>
+
+
+                <div 
                   // className={`main-images-container ${selectedItem === '/admin/member-products' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/member-products')}
                   //     onContextMenu={(event) =>
                   //        handleContextMenu(event, '/admin/member-products')
                   // }
-                  className={`main-images-container ${selectedItem === '/admin/member-products' ? 'selected-item' : ''}`}
-                    onClick={(event) => handleItemClick('/admin/member-products', event)}
+                  className={`main-images-container ${selectedItem === '/admin/payment-slips' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/payment-slips', event)}
                       onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/member-products')
+                         handleContextMenu(event, '/admin/payment-slips')
                   }
                   >
                   <img
-                    src={memberproducts}
+                    src={payslip}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Member Products</p>
+                  <p className="sidebar-text">Payment Slips</p>
                 </div>
 
                 <div 
@@ -559,65 +626,66 @@ const AdminSideBar = () => {
                 onClick={toggleSidebar}
               >
                 <div 
-                  // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
-                  //   onClick={() => handleItemClick('/admin/migration')}
+                  // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/old-inactive-members')}
                   //     onContextMenu={(event) =>
-                  //        handleContextMenu(event, '/admin/migration')
+                  //        handleContextMenu(event, '/admin/old-inactive-members')
                   // }
-                  className={`main-images-container ${selectedItem === '/admin/member-expiry-page' ? 'selected-item' : ''}`}
-                    onClick={(event) => handleItemClick('/admin/member-expiry-page', event)}
+                  className={`main-images-container ${selectedItem === '/admin/products-category' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/products-category', event)}
                       onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/member-expiry-page')
+                         handleContextMenu(event, '/admin/products-category')
                   }
                   >
                   <img
-                    src={membersexpiry}
+                    src={productscategory}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Members Expiry Page</p>
+                  <p className="sidebar-text">Products Category</p>
+                </div>
+
+                <div 
+                  // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/old-inactive-members')}
+                  //     onContextMenu={(event) =>
+                  //        handleContextMenu(event, '/admin/old-inactive-members')
+                  // }
+                  className={`main-images-container ${selectedItem === '/admin/others-products-category' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/others-products-category', event)}
+                      onContextMenu={(event) =>
+                         handleContextMenu(event, '/admin/others-products-category')
+                  }
+                  >
+                  <img
+                    src={otherproductscategory}
+                    className="main-inside-image bg-white rounded-full"
+                    alt=""
+                  />
+                  <p className="sidebar-text">Other Products Category</p>
                 </div>
 
 
                 <div 
-                  // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
-                  //   onClick={() => handleItemClick('/admin/migration')}
+                  // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                  //   onClick={() => handleItemClick('/admin/old-inactive-members')}
                   //     onContextMenu={(event) =>
-                  //        handleContextMenu(event, '/admin/migration')
+                  //        handleContextMenu(event, '/admin/old-inactive-members')
                   // }
-                  className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
-                    onClick={(event) => handleItemClick('/admin/migration', event)}
+                  className={`main-images-container ${selectedItem === '/admin/addtional-products' ? 'selected-item' : ''}`}
+                    onClick={(event) => handleItemClick('/admin/addtional-products', event)}
                       onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/migration')
+                         handleContextMenu(event, '/admin/addtional-products')
                   }
                   >
                   <img
-                    src={migration}
+                    src={additionalproducts}
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Migration</p>
+                  <p className="sidebar-text">Additional Products</p>
                 </div>
 
-                <div 
-                  // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
-                  //   onClick={() => handleItemClick('/admin/help-desk')}
-                  //     onContextMenu={(event) =>
-                  //        handleContextMenu(event, '/admin/help-desk')
-                  // }
-                  className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
-                    onClick={(event) => handleItemClick('/admin/help-desk', event)}
-                      onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/help-desk')
-                  }
-                  >
-                  <img
-                    src={inactive}
-                    className="main-inside-image bg-white rounded-full"
-                    alt=""
-                  />
-                  <p className="sidebar-text">Old InActive Members</p>
-                </div>
 
                 <div 
                   // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
@@ -725,7 +793,7 @@ const AdminSideBar = () => {
                   <p className="sidebar-text">Settings</p>
                 </div>
 
-                <div 
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/master-data')}
                   //     onContextMenu={(event) =>
@@ -743,7 +811,7 @@ const AdminSideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">Master Data</p>
-                </div>
+                </div> */}
 
                 <div 
                   // className={`main-images-container ${selectedItem === '/admin/reports' ? 'selected-item' : ''}`}

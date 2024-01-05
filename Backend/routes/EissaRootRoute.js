@@ -10,6 +10,7 @@ import { createHsCode,getAllHsCode,getHsCodeById,updateHsCode,deleteHsCode } fro
 import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC } from '../controllers/UNSPSC.js';
 import { getAllprod_desc_languages } from "../controllers/productsController.js"
 import { upload } from '../configs/multerConfig.js';
+import {getAlluser_guide_pdfs,creatuser_guide_pdfs,getuser_guide_pdfsById,updateuser_guide_pdfs,deleteuser_guide_pdfs,getAlluser_guide_videos,creatuser_guide_videos,getuser_guide_videosById,updateuser_guide_videos,deleteuser_guide_videos} from "../controllers/user_guid.js"
 import
     {
         getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
@@ -244,4 +245,38 @@ router.put('/updateboard_members/:id',upload([
     }
 ]), updateboard_members);
 router.delete('/deleteboard_members/:id', deleteboard_members);
+
+// Routes for user guide pdfs
+router.get('/getAlluser_guide_pdfs', getAlluser_guide_pdfs);
+router.post('/creatuser_guide_pdfs', upload([
+    {
+        name: 'pdf',
+        path: 'public/uploads/adminImg',
+    }
+]),creatuser_guide_pdfs);
+router.get('/getuser_guide_pdfsById/:id', getuser_guide_pdfsById);
+router.put('/updateuser_guide_pdfs/:id',upload([
+    {
+        name: 'pdf',
+        path: 'public/uploads/adminImg',
+    }
+]), updateuser_guide_pdfs);
+router.delete('/deleteuser_guide_pdfs/:id', deleteuser_guide_pdfs);
+
+// Routes for user_guide_videos
+router.get('/getAlluser_guide_videos', getAlluser_guide_videos);
+router.post('/creatuser_guide_videos', upload([
+    {
+        name: 'video',
+        path: 'public/uploads/adminImg',
+    }
+]),creatuser_guide_videos);
+router.get('/getuser_guide_videosById/:id', getuser_guide_videosById);
+router.put('/updateuser_guide_videos/:id',upload([
+    {
+        name: 'video',
+        path: 'public/uploads/adminImg',
+    }
+]), updateuser_guide_videos);
+router.delete('/deleteuser_guide_videos/:id', deleteuser_guide_videos);
 export default router;

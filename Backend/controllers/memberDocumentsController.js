@@ -9,11 +9,11 @@ import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import QRCode from 'qrcode';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-import ejs from 'ejs';
-import puppeteer from 'puppeteer';
+
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
+import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
@@ -122,7 +122,67 @@ export const getMemberDocuments = async (req, res, next) => {
         next(error);
     }
 };
+const invoiceSchema = Joi.object({
+    user_id: Joi.string().required(),
+});
+export const getMemberInvoices = async (req, res, next) => {
+    try {
+        const { error, value } = invoiceSchema.validate(req.query);
 
+        if (error) {
+            throw createError(400, `Invalid query parameter: ${error.details[0].message}`);
+        }
+
+        const documents = await prisma.member_documents.findMany({
+            where: {
+                AND: [
+                    { user_id: value.user_id },
+                    {
+                        OR: [
+                            { type: 'invoice' },
+                            { type: 'renewal_invoice' },
+                        ]
+                    }
+                ]
+            }
+        });
+
+        res.json(documents);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+export const getMemberPendingInvoices = async (req, res, next) => {
+    try {
+        const { error, value } = invoiceSchema.validate(req.query);
+
+        if (error) {
+            throw createError(400, `Invalid query parameter: ${error.details[0].message}`);
+        }
+
+        const documents = await prisma.member_documents.findMany({
+            where: {
+                AND: [
+                    { user_id: value.user_id },
+                    {
+                        OR: [
+                            { type: 'invoice' },
+                            { type: 'renewal_invoice' },
+                        ]
+                    },
+
+                    { status: 'pending' }
+                ]
+            }
+        });
+
+        res.json(documents);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 export const getMemberFinanceDocuments = async (req, res, next) => {
     try {
@@ -224,31 +284,6 @@ export const updateMemberDocument = async (req, res, next) => {
 
 
 
-async function convertEjsToPdf(ejsFilePath, data, outputFilePath, landscapeMode = false) {
-    try {
-        const ejsTemplate = await fs1.readFile(ejsFilePath, 'utf-8');
-        const htmlContent = ejs.render(ejsTemplate, { data });
-
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(htmlContent);
-
-        const pdfOptions = {
-            path: outputFilePath,
-            format: 'A4',
-            printBackground: true,
-            landscape: landscapeMode,
-        };
-
-        await page.pdf(pdfOptions);
-        await browser.close();
-
-        return outputFilePath;
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        throw error;
-    }
-}
 
 
 const updateMemberDocumentStatusSchema = Joi.object({
@@ -357,15 +392,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                             }
                         });
-                        // // also update other_products_subcriptions table
-                        // await prisma.other_products_subcriptions.updateMany({
-                        //     // update based on the transaction ID
-                        //     where: { transaction_id: currentDocument.transaction_id },
-                        //     data: {
-                        //         status: 'active',
-                        //         expiry_date: expiryDate
-                        //     }
-                        // });
 
                         // Fetch the necessary data from other_products table
                         const products = await prisma.other_products.findMany({
@@ -506,7 +532,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         cityName: existingUser.city,
                     },
                     companyID: existingUser.companyID,
-                    membership_otherCategory: existingUser.membership_otherCategory,
+                    membership_otherCategory: existingUser.membership_category,
                     gtin_subscription: {
                         products: {
                             member_category_description: cartData[0].productName,
@@ -629,6 +655,17 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             await createMemberLogs(logData);
 
+            // create brand using Company Name and Company Name Arabic
+
+            const newBrand = await prisma.brands.create({
+                data: {
+                    name: existingUser.company_name_eng,
+                    name_ar: existingUser.company_name_arabic,
+                    status: 'active',
+                    user_id: existingUser.id,
+                    companyID: existingUser.companyID,
+                }
+            });
 
 
         }

@@ -45,7 +45,8 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
     const getAllTransactionId = async () => {
       try {
-        const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=invoice&status=pending`);
+        const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${gs1MemberData?.id}`);
+
         console.log(response.data);
         setTransactionId(response.data);
       } catch (error) {
@@ -80,12 +81,12 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
     const file = e.target.files[0];
     if (file) {
       if (file.size <= 500 * 1024) {
-          setUploadDocument(file);
-          setError(''); // Clear any previous error message
+        setUploadDocument(file);
+        setError(''); // Clear any previous error message
       } else {
-          setError('File size should be 500KB or less');
-          e.target.value = null;
-        }
+        setError('File size should be 500KB or less');
+        e.target.value = null;
+      }
     }
   };
 
