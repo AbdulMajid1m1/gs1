@@ -3972,7 +3972,7 @@ export const financeColumn = [
   {
     field: 'type',
     headerName: 'Type',
-    width: 120,
+    width: 180,
   },
   {
     field: 'status',

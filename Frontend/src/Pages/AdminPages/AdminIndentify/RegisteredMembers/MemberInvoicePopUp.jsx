@@ -60,38 +60,44 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       reject_reason: rejected,
     };
 
-    // console.log(rejectBody);
-    // console.log(approvedBody);
+    const upgrade_invoice = {
+      userId: gs1MemberInvoiceData?.user_id,
+      transactionId: gs1MemberInvoiceData?.transaction_id,
+    }
+    // console.log(upgrade_invoice);
+
+
+    let apiEndpoint = "";
+    let requestBody = {};
+
+    if (gs1MemberInvoiceData?.type === "invoice") {
+      apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+      requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+    } 
+    else if (gs1MemberInvoiceData?.type === "renewal invoice") {
+      apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
+      requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+    } 
+    else if (gs1MemberInvoiceData?.type === "upgrade_invoice") {
+      apiEndpoint = `/changeMembership/approveMembershipRequest`;
+      requestBody = upgrade_invoice;
+    }
+
     try {
-      // const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`,
-      //   { selectedStatus === "approved" ? approvedBody : rejectBody,
-      // });
-
-      const body = selectedStatus === "approved" ? approvedBody : rejectBody;
-      console.log(status);
-      let apiEndpoint = "";
-      if (gs1MemberInvoiceData?.type === "invoice") {
-        apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
-      } 
-      else if (gs1MemberInvoiceData?.type === "renewal invoice") {
-        apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
-      }
-
-      const res = await newRequest.put(apiEndpoint, { ...body, status: selectedStatus });
-      //   console.log(res.data);
-      
-        if (res.status === 200) {
-          if (selectedStatus === "rejected") {
-              toast.info("Member Account Rejected Successfully");
-          } else {
-              toast.success("User Activated Successfully");
-          }
+      const res = await newRequest.put(apiEndpoint, { ...requestBody, status: selectedStatus });
+      // console.log(res.data);
+      if (res.status === 200) {
+        if (selectedStatus === "rejected") {
+          toast.info("Member Account Rejected Successfully");
+        } else {
+          toast.success("User Activated Successfully");
+        }
 
         setLoading(false);
         refreshMemberInoviceData();
         // MemberbankSlip();
         fetchAllUserData();
-        fetchMemberbankSlipData()
+        fetchMemberbankSlipData();
 
         fetchMemberHistoryData();
         // Close the popup
@@ -103,6 +109,11 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       toast.error(err.response?.data?.error || "Something went wrong!");
     }
   };
+      // console.log(err);
+      // setLoading(false);
+      // toast.error(err.response?.data?.error || "Something went wrong!");
+    // }
+  // };
 
 
   return (

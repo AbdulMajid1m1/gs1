@@ -17,6 +17,7 @@ import { useQuery } from 'react-query'
 import FinancePopUp from './FinancePopUp';
 import RenewPopUp from './RenewPopUp';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import UpgradePopUp from './UpgradePopUp';
 
 const RegisteredMembers = () => {
   const [IsLoading, setIsLoading] = useState(true);
@@ -204,6 +205,17 @@ const RegisteredMembers = () => {
 
   };
 
+
+  const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
+
+  const handleShowUpgradePopup = (row) => {
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
   const fetchMemberInvoiceData = async (row) => {
     try {
       const response = await newRequest.get(`/memberDocuments?user_id=${row?.id}&type=invoice&status=pending`);
@@ -291,7 +303,7 @@ const RegisteredMembers = () => {
                 label: "Upgrade",
                 icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
-                // action: handleOpen,
+                action: handleShowUpgradePopup,
   
                 },
                 {
@@ -325,6 +337,12 @@ const RegisteredMembers = () => {
          {/* Renew component with handleShowRenewPopup prop */}
          {isRenewPopupVisible && (
           <RenewPopUp isVisible={isRenewPopupVisible} setVisibility={setIsRenewPopupVisible} />
+        )}
+
+
+        {/* Upgrade component with handleShowUpgradePopup prop */}
+        {isUpgradePopupVisible && (
+          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} />
         )}
 
 
