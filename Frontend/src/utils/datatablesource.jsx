@@ -3009,6 +3009,9 @@ export const GS1PartnersDataColumn = [
           height: '77%',
           objectFit: 'fill',
         }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
       />
     ),
   }, 
