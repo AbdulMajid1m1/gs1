@@ -122,7 +122,67 @@ export const getMemberDocuments = async (req, res, next) => {
         next(error);
     }
 };
+const invoiceSchema = Joi.object({
+    user_id: Joi.string().required(),
+});
+export const getMemberInvoices = async (req, res, next) => {
+    try {
+        const { error, value } = invoiceSchema.validate(req.query);
 
+        if (error) {
+            throw createError(400, `Invalid query parameter: ${error.details[0].message}`);
+        }
+
+        const documents = await prisma.member_documents.findMany({
+            where: {
+                AND: [
+                    { user_id: value.user_id },
+                    {
+                        OR: [
+                            { type: 'invoice' },
+                            { type: 'renewal_invoice' },
+                        ]
+                    }
+                ]
+            }
+        });
+
+        res.json(documents);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+export const getMemberPendingInvoices = async (req, res, next) => {
+    try {
+        const { error, value } = invoiceSchema.validate(req.query);
+
+        if (error) {
+            throw createError(400, `Invalid query parameter: ${error.details[0].message}`);
+        }
+
+        const documents = await prisma.member_documents.findMany({
+            where: {
+                AND: [
+                    { user_id: value.user_id },
+                    {
+                        OR: [
+                            { type: 'invoice' },
+                            { type: 'renewal_invoice' },
+                        ]
+                    },
+
+                    { status: 'pending' }
+                ]
+            }
+        });
+
+        res.json(documents);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 export const getMemberFinanceDocuments = async (req, res, next) => {
     try {
