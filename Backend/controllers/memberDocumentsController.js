@@ -169,6 +169,8 @@ export const getMemberPendingInvoices = async (req, res, next) => {
                         OR: [
                             { type: 'invoice' },
                             { type: 'renewal_invoice' },
+                            { type: 'upgrade_invoice' },
+                            { type: 'downgrade_invoice' },
                         ]
                     },
 

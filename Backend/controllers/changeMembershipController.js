@@ -1146,3 +1146,198 @@ export const approveMembershipRequest = async (req, res, next) => {
 };
 
 
+
+const downgradeMembershipSchema = Joi.object({
+    user_id: Joi.string().required(),
+    gtin_product_id: Joi.string().required(),
+});
+
+
+
+export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
+    // Validate the request body
+    const { error, value } = downgradeMembershipSchema.validate(req.body);
+
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+
+    try {
+
+        const user = await prisma.users.findUnique({
+            where: { id: value.user_id },
+            include: {
+                carts: true,
+            },
+
+        });
+
+        if (!user) {
+            throw createError(404, 'User not found');
+        }
+
+        // fetch  data from gtin_upgrade_pricing table 
+        const gtinUpgradePricing = await prisma.gtin_upgrade_pricing.findUnique({
+            where: { id: value.gtin_product_id },
+        });
+
+        if (!gtinUpgradePricing) {
+            throw createError(404, 'GTIN upgrade pricing not found');
+        }
+        console.log("gtinUpgradePricing", gtinUpgradePricing);
+
+        const randomTransactionIdLength = 10; // adjust the length as needed 2*5 = 10 for 10 digit transaction id
+        const transactionId = generateRandomTransactionId(randomTransactionIdLength);
+
+
+        let cart = user.carts[0];
+        let cartData = JSON.parse(cart.cart_items);
+        cart.cart_items = []
+
+        cart.cart_items.push({
+            productName: `${gtinUpgradePricing.total_no_of_barcodes} Barcodes`,
+            registration_fee: 0,
+            // yearly_fee: gtinUpgradePricing.price,
+            yearly_fee: 0,
+        });
+        // cart.total = gtinUpgradePricing.price;
+        cart.total = 0;
+        cart.transaction_id = transactionId;
+
+        // Generate an invoice
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const invoiceData = {
+            topHeading: "DOWNGRADE INVOICE",
+            secondHeading: "DOWNGRADE INVOICE FOR",
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+
+                registeration: `DOWNGRADE INVOCIE TO ${gtinUpgradePricing.total_no_of_barcodes} barcodes`,
+                // Assuming $addMember->id is already known
+                company_name_eng: user.company_name_eng,
+                mobile: user.mobile,
+                address: {
+                    zip: user.zip_code,
+                    countryName: user.country,
+                    stateName: user.state,
+                    cityName: user.city,
+                },
+                companyID: user.companyID,
+                membership_otherCategory: user.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: cartData?.[0].productName,
+                    },
+                },
+            },
+
+
+            cart: cart,
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL,
+        };
+
+
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+        const pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+
+        if (!fsSync.existsSync(pdfDirectory)) {
+            fsSync.mkdir(pdfDirectory, { recursive: true });
+        }
+
+        const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+
+        // Read the file into a buffer
+        const pdfBuffer = await fs1.readFile(pdfFilePath);
+
+        // insert into upgrade_member_ship_cart
+        await prisma.upgrade_member_ship_cart.create({
+            data: {
+                user_id: user.id,
+                gtin_product_id: value.gtin_product_id,
+                transaction_id: transactionId,
+                registered_product_transaction_id: user.transaction_id,
+                status: 0,
+            }
+        });
+
+
+        await prisma.member_documents.create({
+            data: {
+                type: 'upgrade_invoice',
+                document: `/uploads/documents/MemberRegInvoice/${pdfFilename}`,
+                transaction_id: transactionId,
+                user_id: user.id,
+                doc_type: 'member_document',
+                status: 'pending',
+                // TODO: take email form current admin token
+                // uploaded_by: req.admin.email, // Assuming the admin is logged in
+                uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
+            }
+
+        });
+
+        // Send email with invoice
+        const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
+        const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        const attachments = [
+            {
+                filename: pdfFilename,
+                content: pdfBuffer,
+                contentType: 'application/pdf',
+            },
+        ];
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: user.email,
+            subject: subject,
+
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+            attachments: attachments
+        });
+
+        // Insert Member History log
+        const logData = {
+            subject: 'Upgrade invoice created',
+            // user user memberId
+            // member_id: userUpdateResult.memberID,
+            user_id: user?.id,
+            // TODO: take email form current admin token
+            admin_id: 'admin@gs1sa.link',
+
+        }
+
+
+        TODO: // chec this
+        // if (req?.admin.id) {
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
+        // }
+
+        await createMemberLogs(logData);
+
+
+        res.status(200).json({ message: `Renewal invoice created & sent to ${user.email} successfully` });
+    } catch (error) {
+        console.error(error);
+        next(error)
+    }
+}
