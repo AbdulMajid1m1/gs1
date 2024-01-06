@@ -167,7 +167,7 @@ const RegisteredMembersView = () => {
     setMemberInvoiceLoader(true);
     try {
       // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
-      const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=invoice`);
+      const response = await newRequest.get(`/memberDocuments/invoices?user_id=${gs1MemberData?.id}`);
 
       // console.log(response.data);
       setMemberInovice(response?.data || []);

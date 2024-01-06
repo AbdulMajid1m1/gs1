@@ -6,197 +6,189 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 
-const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) => {
-    // get this session data
-    const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-    console.log(updateBrandData)
-    const [name, setname] = useState(updateBrandData?.name || '');
-    const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
-    const [loading, setLoading] = useState(false);
-    const [docuements, setDocuments] = React.useState([])
-    const [selectedDocuments, setSelectedDocuments] = useState(updateBrandData?.state_name || 0);
-    
+const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
+{
+  // get this session data
+  const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
+  console.log(updateBrandData)
+  const [name, setname] = useState(updateBrandData?.name || '');
+  const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
+  const [loading, setLoading] = useState(false);
+  const [docuements, setDocuments] = React.useState([])
+  const [selectedDocuments, setSelectedDocuments] = useState(updateBrandData?.state_name || 0);
 
-    const handleCloseUpdatePopup = () => {
-        setVisibility(false);
-      };
+  const handleCloseUpdatePopup = () =>
+  {
+    setVisibility(false);
+  };
 
+  useEffect(() =>
+  {
+    const getDocuments = async () =>
+    {
+      try {
+        const response = await newRequest.get('/address/getAllStatesName');
+        console.log(response.data);
+        setDocuments(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-      useEffect(() => {
-        const getDocuments = async () => {
-          try {
-            const response = await newRequest.get('/address/getAllStatesName');
-            console.log(response.data);
-            setDocuments(response.data);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-    
-    
-    
-        getDocuments();
-        
-     }, []);
-          
-      const handleSelectedDocuments = (event, value) => {
-            console.log(value?.id);
-          setSelectedDocuments(value);
-      };
-    
-      console.log(selectedDocuments);
-    
+    getDocuments();
 
+  }, []);
 
+  const handleSelectedDocuments = (event, value) =>
+  {
+    console.log(value?.id);
+    setSelectedDocuments(value);
+  };
 
-const handleUpdateBrand = async () => {
-  // console.log(brandUserId);
-  setLoading(true);
- 
-  try {
-    const response = await newRequest.put(`/address/updateCities/${updateBrandData?.id}`, {
-      name: name,
-      // state_id: Number(state_id),
-      state_id: Number(selectedDocuments?.id),
-    });
+  console.log(selectedDocuments);
 
-    toast.success(response?.data?.message || 'City updated successfully', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  const handleUpdateBrand = async () =>
+  {
+    setLoading(true);
 
-    console.log(response.data);
-    refreshBrandData();
-    handleCloseUpdatePopup();
+    try {
+      const response = await newRequest.put(`/address/updateCities/${updateBrandData?.id}`, {
+        name: name,
+        state_id: Number(selectedDocuments?.id),
+      });
 
-  } catch (error) {
-    toast.error(error?.response?.data?.message || 'Something went wrong!', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+      toast.success(response?.data?.message || 'City updated successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
-    console.log(error);
-  }
-  finally {
-    setLoading(false);
-  }
+      console.log(response.data);
+      refreshBrandData();
+      handleCloseUpdatePopup();
+
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log(error);
+    }
+    finally {
+      setLoading(false);
+    }
 
 
 
-  
-};
+
+  };
 
 
   return (
     <div>
-         {isVisible && (
-                   <div className="popup-overlay">
-                     <div className="popup-container h-auto sm:w-[45%] w-full">
-                       <div className="popup-form w-full">         
-                          <form className='w-full'>
-                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update City</h2>
-                            <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">City name</label>
-                                <input
-                                  type="text"
-                                  id="name"
-                                  value={name}
-                                  onChange={(e) => setname(e.target.value)}
-                                //   readOnly
-                                  placeholder="Enter City name"
-                                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                              </div>
+      {isVisible && (
+        <div className="popup-overlay">
+          <div className="popup-container h-auto sm:w-[45%] w-full">
+            <div className="popup-form w-full">
+              <form className='w-full'>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update City</h2>
+                <div className="flex flex-col sm:gap-3 gap-3 mt-5">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">City name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setname(e.target.value)}
+                      //   readOnly
+                      placeholder="Enter City name"
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
 
-                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">state</label>
-                                <Autocomplete
-                                  id="field1"
-                                  options={docuements}
-                                  value={selectedDocuments}
-                                  getOptionLabel={(option) => option?.name || ""}
-                                  onChange={handleSelectedDocuments}
-                                  onInputChange={(event, value) => {
-                                    if (!value) {
-                                      // perform operation when input is cleared
-                                      console.log("Input cleared");
-                                    }
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      autoComplete="off"
-                                      {...params}
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        className: "text-white",
-                                      }}
-                                      InputLabelProps={{
-                                        ...params.InputLabelProps,
-                                        style: { color: "white" },
-                                      }}
-                                      className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                      placeholder="Select state"
-                                    // required
-                                    />
-                                  )}
-                                  classes={{
-                                    endAdornment: "text-white",
-                                  }}
-                                  sx={{
-                                    "& .MuiAutocomplete-endAdornment": {
-                                      color: "white",
-                                    },
-                                  }}
-                                />
-                              </div>
-                            </div>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">state</label>
+                    <Autocomplete
+                      id="field1"
+                      options={docuements}
+                      value={selectedDocuments}
+                      getOptionLabel={(option) => option?.name || ""}
+                      onChange={handleSelectedDocuments}
+                      onInputChange={(event, value) =>
+                      {
+                        if (!value) {
+                          // perform operation when input is cleared
+                          console.log("Input cleared");
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          autoComplete="off"
+                          {...params}
+                          InputProps={{
+                            ...params.InputProps,
+                            className: "text-white",
+                          }}
+                          InputLabelProps={{
+                            ...params.InputLabelProps,
+                            style: { color: "white" },
+                          }}
+                          className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                          placeholder="Select state"
+                        // required
+                        />
+                      )}
+                      classes={{
+                        endAdornment: "text-white",
+                      }}
+                      sx={{
+                        "& .MuiAutocomplete-endAdornment": {
+                          color: "white",
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
 
-                            
 
-                            <div className="w-full flex justify-center items-center gap-8 mt-5">
-                              <button
-                                type="button"
-                                className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                                onClick={handleCloseUpdatePopup}
-                              >
-                                Close
-                              </button>
-                              {/* <button
-                                type="button"
-                                onClick={handleUpdateBrand}
-                                className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
-                              >
-                                Update Brand
-                              </button> */}
-                               <Button
-                                variant="contained"
-                                style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                                onClick={handleUpdateBrand}
-                                disabled={loading}
-                                className="w-[70%] ml-2"
-                                endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
-                            >
-                                Update City
-                            </Button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+
+                <div className="w-full flex justify-center items-center gap-8 mt-5">
+                  <button
+                    type="button"
+                    className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
+                    onClick={handleCloseUpdatePopup}
+                  >
+                    Close
+                  </button>
+
+                  <Button
+                    variant="contained"
+                    style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                    onClick={handleUpdateBrand}
+                    disabled={loading}
+                    className="w-[70%] ml-2"
+                    endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
+                  >
+                    Update City
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )

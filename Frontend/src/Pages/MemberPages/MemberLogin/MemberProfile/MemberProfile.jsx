@@ -25,7 +25,7 @@ import AddMemberBankSlipPopUp from './AddMemberBankSlipPopUp';
 const MemberProfile = () => {
   // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
-  
+
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   console.log(memberData);
@@ -171,9 +171,9 @@ const MemberProfile = () => {
     setMemberInvoiceLoader(true);
     try {
       // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
-      const response = await newRequest.get(`/memberDocuments?user_id=${memberData?.id}&type=invoice`);
+      const response = await newRequest.get(`/memberDocuments/invoices?user_id=${memberData?.id}`);
 
-      // console.log(response.data);
+      console.log(response.data);
       setMemberInovice(response?.data || []);
       setMemberInvoiceLoader(false);
 
@@ -327,7 +327,7 @@ const MemberProfile = () => {
     }
     // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
-  
+
 
   const handleShowSubMenusPopup = () => {
     // setIsSubMenusPopupVisible(true);
@@ -351,8 +351,8 @@ const MemberProfile = () => {
 
 
   const handleShowUpdateSubMenusPopup = (row) => {
-      setIsUpdateSubMenusPopupVisible(true);
-      sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
+    setIsUpdateSubMenusPopupVisible(true);
+    sessionStorage.setItem("updateSubMenusData", JSON.stringify(row));
   };
 
   const handleShowAddMemberBankSlipPopup = () => {
@@ -579,7 +579,7 @@ const MemberProfile = () => {
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
                     checkboxSelection={"disabled"}
-                    
+
 
                     dropDownOptions={[
                       // {
@@ -821,7 +821,7 @@ const MemberProfile = () => {
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
                   actionColumnVisibility={false}
-                  
+
                   dropDownOptions={[
                     {
                       label: "View",
@@ -860,7 +860,7 @@ const MemberProfile = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberPopupVisible && (
           <AddMemberProfileDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData}/>
+            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData} />
 
         )}
 

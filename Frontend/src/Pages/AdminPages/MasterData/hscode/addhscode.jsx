@@ -2,25 +2,28 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 
-const Addhscode = ({ isVisible, setVisibility, refreshBrandData }) => {
-    const [CNKEY, setCNKEY] = useState("");
-    const [HSCODES, setHSCODES] = useState("");
-    const [DescriptionEN, setDescriptionEN] = useState("");
-   
-    
-    const handleCloseCreatePopup = () => {
-        setVisibility(false);
-      };
-    
+const Addhscode = ({ isVisible, setVisibility, refreshBrandData }) =>
+{
+  const [CNKEY, setCNKEY] = useState("");
+  const [HSCODES, setHSCODES] = useState("");
+  const [DescriptionEN, setDescriptionEN] = useState("");
 
-    const handleAddCompany = async () => {
+
+  const handleCloseCreatePopup = () =>
+  {
+    setVisibility(false);
+  };
+
+
+  const handleAddCompany = async () =>
+  {
     //  integrate the post api in try catch blcck
     try {
       const response = await newRequest.post('/createHsCode/', {
-          CNKEY: CNKEY,
-          HSCODES: HSCODES,
-          DescriptionEN: DescriptionEN,
-          addBy: 1,
+        CNKEY: CNKEY,
+        HSCODES: HSCODES,
+        DescriptionEN: DescriptionEN,
+        addBy: 1,
       });
 
       toast.success(`CNKEY ${CNKEY} has been added successfully.`, {
@@ -59,76 +62,76 @@ const Addhscode = ({ isVisible, setVisibility, refreshBrandData }) => {
 
   };
 
-   
+
   return (
     <div>
-          {/* create the post api popup */}
-          {isVisible && (
-                    <div className="popup-overlay">
-                      <div className="popup-container h-auto sm:w-[45%] w-full">
-                        <div className="popup-form w-full">         
-                           <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add hs code</h2>
-                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">CNKEY </label>
-                                 <input
-                                   type="text"
-                                   id="CNKEY"
-                                   value={CNKEY}
-                                   onChange={(e) => setCNKEY(e.target.value)}
-                                   placeholder="Enter CNKEY"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                               </div>
-                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">HSCODES</label>
-                                 <input
-                                   type="text"
-                                   id="HSCODES"
-                                   value={HSCODES}
-                                   onChange={(e) => setHSCODES(e.target.value)}
-                                   placeholder="Enter HSCODES "
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                                  </div>
-                                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">Description</label>
-                                 <input
-                                   type="text"
-                                   id="DescriptionEN"
-                                   value={DescriptionEN}
-                                   onChange={(e) => setDescriptionEN(e.target.value)}
-                                   placeholder="Enter Description "
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                                  </div>
-                                  
-                               
-                             </div>
+      {/* create the post api popup */}
+      {isVisible && (
+        <div className="popup-overlay">
+          <div className="popup-container h-auto sm:w-[45%] w-full">
+            <div className="popup-form w-full">
+              <form className='w-full'>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add hs code</h2>
+                <div className="flex flex-col sm:gap-3 gap-3 mt-5">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">CNKEY </label>
+                    <input
+                      type="text"
+                      id="CNKEY"
+                      value={CNKEY}
+                      onChange={(e) => setCNKEY(e.target.value)}
+                      placeholder="Enter CNKEY"
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">HSCODES</label>
+                    <input
+                      type="text"
+                      id="HSCODES"
+                      value={HSCODES}
+                      onChange={(e) => setHSCODES(e.target.value)}
+                      placeholder="Enter HSCODES "
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">Description</label>
+                    <input
+                      type="text"
+                      id="DescriptionEN"
+                      value={DescriptionEN}
+                      onChange={(e) => setDescriptionEN(e.target.value)}
+                      placeholder="Enter Description "
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
 
-                             <div className="w-full flex justify-center items-center gap-8 mt-5">
-                               <button
-                                 type="button"
-                                 className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                                 onClick={handleCloseCreatePopup}
-                               >
-                                 Close
-                               </button>
-                               <button
-                                 type="button"
-                                 onClick={handleAddCompany}
-                                 className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
-                               >
-                                 Add HSCODES
-                               </button>
-                             </div>
-                           </form>
-                         </div>
-                       </div>
-                     </div>
-                   )}
-                    
+
+                </div>
+
+                <div className="w-full flex justify-center items-center gap-8 mt-5">
+                  <button
+                    type="button"
+                    className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
+                    onClick={handleCloseCreatePopup}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAddCompany}
+                    className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
+                  >
+                    Add HSCODES
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }

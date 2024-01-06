@@ -18,6 +18,7 @@ import historyLogsRoutes from './subRoutes/historyLogsRoutes.js';
 import gpcRoutes from './subRoutes/gpcRoutes.js';
 import hsCodesRouter from './subRoutes/hsCodesRouter.js';
 import glnRoutes from './subRoutes/glnRoutes.js';
+import gtinUpgrageRoutes from './subRoutes/gtinUpgradeRoutes.js';
 
 import changeMembershipRoutes from './subRoutes/changeMembershipRoutes.js';
 
@@ -68,5 +69,7 @@ router.use('/gln', glnRoutes);
 router.use('/sscc', ssccRoutes);
 
 router.use('/changeMembership', changeMembershipRoutes);
+
+router.use("/gtinUpgrade", gtinUpgrageRoutes);
 
 export default router;
