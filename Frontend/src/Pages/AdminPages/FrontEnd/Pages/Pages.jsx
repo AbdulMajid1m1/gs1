@@ -30,6 +30,7 @@ const Pages = () => {
     const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
         // save this row data in session storage 
+        navigate(`/admin/updata_Pages/${row.id}`)
         sessionStorage.setItem("updatemengamenu", JSON.stringify(row));
     };
     const { rowSelectionModel, setRowSelectionModel,
@@ -263,21 +264,7 @@ const Pages = () => {
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                                     <i className="fas fa-plus mr-2"></i>Add
                                 </button>
-                                <div className="relative">
-                                    <button
-                                        className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
-                                    >
-                                        <i className="fas fa-file-import mr-1"></i> Import
-                                    </button>
-                                    <input
-                                        type="file"
-                                        accept=".xlsx"
-                                        className="absolute inset-0 opacity-0 cursor-pointer"
-                                        onChange={handleFileUpload}
-                                    />
-                                </div>
-
-
+                               
                                 <CSVLink data={data}
 
                                     type="button"
