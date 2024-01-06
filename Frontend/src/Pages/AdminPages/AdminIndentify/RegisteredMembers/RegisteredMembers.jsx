@@ -18,6 +18,7 @@ import FinancePopUp from './FinancePopUp';
 import RenewPopUp from './RenewPopUp';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import UpgradePopUp from './UpgradePopUp';
+import DowngradePopUp from './DowngradePopUp';
 
 const RegisteredMembers = () => {
   const [IsLoading, setIsLoading] = useState(true);
@@ -216,6 +217,17 @@ const RegisteredMembers = () => {
 
   };
 
+
+  const [isDowngradePopupVisible, setIsDowngradePopupVisible] = useState(false);
+
+  const handleShowDowngradePopup = (row) => {
+    setIsDowngradePopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
   const fetchMemberInvoiceData = async (row) => {
     try {
       const response = await newRequest.get(`/memberDocuments?user_id=${row?.id}&type=invoice&status=pending`);
@@ -310,7 +322,7 @@ const RegisteredMembers = () => {
                   label: "Downgrade",
                   icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                   ,
-                  // action: handleOpen,
+                  action: handleShowDowngradePopup,
       
                 },
                 {
@@ -343,6 +355,12 @@ const RegisteredMembers = () => {
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (
           <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} />
+        )}
+
+
+        {/* Downgrade component with handleShowDowngradePopup prop */}
+        {isDowngradePopupVisible && (
+          <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
         )}
 
 

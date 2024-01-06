@@ -10,7 +10,11 @@ import "./MemberInvoicePopUp.css";
 const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
+  // console.log(gs1MemberInvoiceData);
+  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  // console.log(gs1MemberData)
+  const gtinId = sessionStorage.getItem("gtinId");
+  console.log(gtinId);
   //   const [status, setStatus] = useState("");
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
@@ -24,7 +28,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
@@ -64,6 +68,12 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
     }
+
+    const downgrade_invoice = {
+      userId: gs1MemberInvoiceData?.user_id,
+      transactionId: gs1MemberInvoiceData?.transaction_id,
+      current_gtin_subscription_id: gtinId,
+    }
     // console.log(upgrade_invoice);
 
 
@@ -74,7 +84,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
     } 
-    else if (gs1MemberInvoiceData?.type === "renewal invoice") {
+    else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
     } 
@@ -82,15 +92,19 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/changeMembership/approveMembershipRequest`;
       requestBody = upgrade_invoice;
     }
+    else if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
+      apiEndpoint = `/changeMembership/approveDowngradeMembershipRequest`;
+      requestBody = downgrade_invoice;
+    }
 
     try {
-      const res = await newRequest.put(apiEndpoint, { ...requestBody, status: selectedStatus });
+      const res = await newRequest.put(apiEndpoint, { ...requestBody });
       // console.log(res.data);
       if (res.status === 200) {
         if (selectedStatus === "rejected") {
           toast.info("Member Account Rejected Successfully");
         } else {
-          toast.success("User Activated Successfully");
+          toast.success(res?.data?.message || "User Activated Successfully!");
         }
 
         setLoading(false);
@@ -106,7 +120,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.error || "Something went wrong!");
+      toast.error(err.response?.data || "Something went wrong!");
     }
   };
       // console.log(err);
