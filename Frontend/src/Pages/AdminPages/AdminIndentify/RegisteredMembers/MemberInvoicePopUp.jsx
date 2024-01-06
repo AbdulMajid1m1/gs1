@@ -69,7 +69,15 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
       const body = selectedStatus === "approved" ? approvedBody : rejectBody;
       console.log(status);
-      const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
+      let apiEndpoint = "";
+      if (gs1MemberInvoiceData?.type === "invoice") {
+        apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+      } 
+      else if (gs1MemberInvoiceData?.type === "renewal invoice") {
+        apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
+      }
+
+      const res = await newRequest.put(apiEndpoint, { ...body, status: selectedStatus });
       //   console.log(res.data);
       
         if (res.status === 200) {

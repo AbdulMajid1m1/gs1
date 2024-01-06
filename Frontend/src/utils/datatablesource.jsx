@@ -3972,12 +3972,32 @@ export const financeColumn = [
   {
     field: 'type',
     headerName: 'Type',
-    width: 180,
+    width: 120,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'Active' ? 'green' : 'red',
+          color: params.row.status === 'Active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
   },
   {
     field: 'document',
     headerName: 'Document',
-    width: 180,
+    width: 150,
 
     renderCell: (params) => {
       console.log("params");
@@ -4069,26 +4089,26 @@ export const financeColumn = [
   //   headerName: 'Status',
   //   width: 180, 
   // },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 120,
-    renderCell: params => (
-      <div
-        style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
-          border: '2px solid',
-          borderColor: params.row.status === 'Active' ? 'green' : 'red',
-          color: params.row.status === 'Active' ? 'green' : 'red',
-        }}
-      >
-        {params.row.status}
-      </div>
-    ),
-  },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 120,
+  //   renderCell: params => (
+  //     <div
+  //       style={{
+  //         padding: '5px',
+  //         paddingLeft: '10px',
+  //         paddingRight: '10px',
+  //         borderRadius: '20px',
+  //         border: '2px solid',
+  //         borderColor: params.row.status === 'Active' ? 'green' : 'red',
+  //         color: params.row.status === 'Active' ? 'green' : 'red',
+  //       }}
+  //     >
+  //       {params.row.status}
+  //     </div>
+  //   ),
+  // },
 
 
 
@@ -4883,16 +4903,34 @@ export const registeredmemberColumn = [
   {
     field: 'status',
     headerName: 'Status',
-    width: 180,
-    valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
-    },
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
   },
-  // {
-  //   field: 'product_type',
-  //   headerName: 'Product type',
-  //   width: 180,
-  // },
+  {
+    field: 'expiry_date',
+    headerName: 'Expiry Date',
+    width: 180,
+
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+
+    }
+  },
   // {
   //   field: 'quotation',
   //   headerName: 'Quotation',
@@ -6061,4 +6099,63 @@ export const memberForRenevalColumn = [
     //   return params.value ? new Date(params.value) : null;
     // }
   },
+]
+
+
+
+export const adminPaymentSlipsColumn = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'phone',
+    headerName: 'Phone',
+    width: 180,
+  },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 180,
+  // },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'Active' ? 'green' : 'red',
+          color: params.row.status === 'Active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  {
+    field: 'role',
+    headerName: 'Role',
+    width: 180,
+  },
+  {
+    field: 'date',
+    headerName: 'Date',
+    width: 180,
+  },
+ 
+
+
+
 ]
