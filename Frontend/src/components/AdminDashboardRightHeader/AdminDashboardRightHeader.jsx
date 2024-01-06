@@ -14,7 +14,7 @@ const AdminDashboardRightHeader = ({ title, member, gcp }) => {
                       style={{ filter: 'invert(1)' }}
                          className='h-5 w-5 text-white mr-2 -mt-[2px]' />
                 <p className='text-white font-sans font-normal sm:text-base text-sm transition hover:text-secondary' onClick={() => navigate('/')}>Vist Frontend</p>
-            </div> */}
+            </div> */}   
 
             <div className='flex justify-center items-center'
             //   onClick={() => navigate("/member/member-profile")}
