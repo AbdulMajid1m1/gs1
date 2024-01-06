@@ -30,6 +30,7 @@ const Pages = () => {
     const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
         // save this row data in session storage 
+        navigate(`/admin/updata_Pages/${row.id}`)
         sessionStorage.setItem("updatemengamenu", JSON.stringify(row));
     };
     const { rowSelectionModel, setRowSelectionModel,

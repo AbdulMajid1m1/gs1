@@ -100,6 +100,7 @@ import Boardmembers from "./Pages/AdminPages/FrontEnd/Boardmembers/Boardmembers"
 import Userguide from "./Pages/AdminPages/FrontEnd/Userguide/Userguide";
 import Pages from "./Pages/AdminPages/FrontEnd/Pages/Pages";
 import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
+import Updatapage from "./Pages/AdminPages/FrontEnd/Pages/Updatapage";
 
 const queryClient = new QueryClient()
 
@@ -295,6 +296,7 @@ const App = () => {
                             {/* Pages */}
                             <Route path="Pages" element={<Pages />} />
                             <Route path="Add_Pages" element={<Addpages />} />
+                            <Route path="updata_Pages/:userId" element={<Updatapage />} />
                             {/* Gs1partners */}
                             <Route path="partners" element={<Gs1partners />} />
                             {/* Blogcategories */}
