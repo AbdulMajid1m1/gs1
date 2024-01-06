@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import newRequest from '../../../utils/userRequest';
 import { toast } from 'react-toastify';
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import { DotLoader } from 'react-spinners'
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 
 const AdminAddSSCC = () => {
@@ -247,7 +247,7 @@ const AdminAddSSCC = () => {
 
         <div className="p-0 h-full sm:ml-72">    
               <div>
-                 <DashboardRightHeader title={"Add SSCC"}/>
+                 <AdminDashboardRightHeader title={"Add SSCC"}/>
               </div>
 
               <div className="flex flex-col justify-center items-center p-4">

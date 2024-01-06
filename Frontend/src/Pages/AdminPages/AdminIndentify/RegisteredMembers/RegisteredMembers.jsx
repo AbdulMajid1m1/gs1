@@ -14,9 +14,9 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useQuery } from 'react-query'
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import FinancePopUp from './FinancePopUp';
 import RenewPopUp from './RenewPopUp';
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 const RegisteredMembers = () => {
   const [IsLoading, setIsLoading] = useState(true);
@@ -246,7 +246,7 @@ const RegisteredMembers = () => {
     <div>
       <div className="p-0 h-full sm:ml-72">
         <div>
-          <DashboardRightHeader
+          <AdminDashboardRightHeader 
             title={'Registered Members'}
           />
         </div>

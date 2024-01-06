@@ -3,10 +3,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 
 const AddGTINProducts = () => {
@@ -563,7 +563,7 @@ const AddGTINProducts = () => {
 
             <div className="p-0 h-full sm:ml-72  bg-slate-100">
               <div>
-                <DashboardRightHeader title="Add GTIN Products"
+                <AdminDashboardRightHeader title="Add GTIN Products" 
                 />
               </div>
 

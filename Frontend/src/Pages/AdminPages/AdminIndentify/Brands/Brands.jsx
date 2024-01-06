@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import DataTable from '../../../../components/Datatable/Datatable'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { AdminBrandsColumn } from '../../../../utils/datatablesource';
@@ -14,6 +13,7 @@ import { toast } from 'react-toastify';
 import Addbrands from './addbrands';
 import Updatebrands from './updatebrands';
 import { debounce } from '@mui/material/utils';
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 const Brands = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -202,7 +202,7 @@ const Brands = () => {
     <div>
       <div className="p-0 h-full sm:ml-72">
         <div>
-          <DashboardRightHeader
+          <AdminDashboardRightHeader
             title={'Brands'}
           />
         </div>   

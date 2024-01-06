@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { GoogleMap, Marker, StandaloneSearchBox } from '@react-google-maps/api';
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import { DotLoader } from 'react-spinners'
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 const AdminAddGLN = () => {
     // const memberDataString = sessionStorage.getItem('memberData');
@@ -210,7 +210,7 @@ const AdminAddGLN = () => {
         <div className="p-0 h-full sm:ml-72 bg-slate-100">
 
         <div>
-          <DashboardRightHeader title={"Add GLN"}/>
+          <AdminDashboardRightHeader title={"Add GLN"}/>
         </div>
 
             <div className="flex flex-col justify-center items-center p-4">

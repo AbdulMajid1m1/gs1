@@ -281,7 +281,7 @@ const RegisteredMembersView = () => {
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-  
+
 
   const handleView = (row) => {
     console.log(row);
