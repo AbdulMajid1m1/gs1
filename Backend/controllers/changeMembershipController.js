@@ -35,7 +35,8 @@ export const membershipRenewRequest = async (req, res, next) => {
 
     const currentDate = new Date();
     const renewalYear = currentDate.getFullYear() + 1;
-
+    const randomTransactionIdLength = 10;
+    const transactionId = generateRandomTransactionId(randomTransactionIdLength);
 
     try {
 
@@ -55,12 +56,14 @@ export const membershipRenewRequest = async (req, res, next) => {
         let cart = existingUser.carts[0];
         let cartData = JSON.parse(cart.cart_items);
         cart.cart_items = cartData
+        cart.transaction_id = transactionId;
+
 
 
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const invoiceData = {
-            topHeading: "RENWAL INVOICE",
-            secondHeading: "RENWAL INVOICE FOR",
+            topHeading: "RENEWAL INVOICE",
+            secondHeading: "RENEWAL INVOICE FOR",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
 
@@ -129,7 +132,7 @@ export const membershipRenewRequest = async (req, res, next) => {
             data: {
                 type: 'renewal_invoice',
                 document: `/uploads/documents/MemberRegInvoice/${pdfFilename1}`,
-                transaction_id: existingUser.transaction_id,
+                transaction_id: transactionId,
                 user_id: existingUser.id,
                 doc_type: 'member_document',
                 status: 'pending',
@@ -751,7 +754,7 @@ export const updradeMemberSubscpiptionRequest = async (req, res, next) => {
             throw createError(400, `You can't add more than ${categoryLimits[gtinSubscriptions?.gtin_product?.total_no_of_barcodes]} barcodes`);
         }
 
-        const randomTransactionIdLength = 10; // adjust the length as needed 2*5 = 10 for 10 digit transaction id
+        const randomTransactionIdLength = 10;
         const transactionId = generateRandomTransactionId(randomTransactionIdLength);
 
 
@@ -1116,6 +1119,19 @@ export const approveMembershipRequest = async (req, res, next) => {
         // Delete the upgrade_membership_cart record
         await prisma.upgrade_member_ship_cart.delete({
             where: { id: upgradeCart.id },
+        });
+
+
+        // update invoice status to approved
+        await prisma.member_documents.update({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'upgrade_invoice',
+            },
+            data: {
+                status: 'approved',
+            },
         });
 
 
@@ -1602,6 +1618,18 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
             where: { id: upgradeCart.id },
         });
 
+        // update invoice status to approved
+        await prisma.member_documents.update({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'downgrade_invoice',
+            },
+            data: {
+                status: 'approved',
+            },
+        });
+
 
         // Insert Member History log
         const logData = {
@@ -1621,6 +1649,8 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         // }
 
         await createMemberLogs(logData);
+
+
 
         res.status(200).json({ message: 'Membership downgrade request approved successfully and receipt sent to user email.' });
     } catch (error) {
