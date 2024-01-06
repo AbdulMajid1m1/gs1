@@ -2673,9 +2673,14 @@ export const silderDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '77%',
-         height: '77%',
-          objectFit: 'fill', }}
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
 />
     ),
   },
@@ -2720,9 +2725,13 @@ export const FeaturedServicesDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '77%',
-          height: '77%',
-          objectFit: 'fill',
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
     ),
@@ -2807,9 +2816,13 @@ export const FeaturedEventsDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '77%',
-          height: '77%',
-          objectFit: 'fill',
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
     ),
@@ -2895,9 +2908,13 @@ export const FeaturedArticlesDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '77%',
-          height: '77%',
-          objectFit: 'fill',
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
     ),
@@ -3170,9 +3187,13 @@ export const ManageTeamDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '80px',
-          height: '80px',
-          objectFit: 'fill',
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
     ),
@@ -3253,9 +3274,13 @@ export const BoardMembersDataColumn = [
         src={imageLiveUrl(params.row.image)}
         alt="Image"
         style={{
-          width: '77%',
-          height: '77%',
-          // objectFit: 'fill',
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
     ),
