@@ -1,28 +1,55 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, useParams } from "react-router-dom";
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
-const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
+const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const navigate = useNavigate();
+    let { userId } = useParams();
     const [name, setname] = useState("");
     const [name_ar, setname_ar] = useState("");
     const [SeoDescription, setSeoDescription] = useState('')
     const [PageOrder, setPageOrder] = useState('')
     const [PageSlug, setPageSlug] = useState('')
-    const [sections, setsections] = useState([]) 
-     const [draggedSections, setDraggedSections] = useState([]);
+    const [sections, setsections] = useState([])
+    const [draggedSections, setDraggedSections] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
     };
 
-    const handleAddCompany = async () => {
+    const refreshcitiesData = async () => {
         try {
-            const response = await newRequest.post('/createpages', {
+            const response = await newRequest.get(`/getpagesById/${userId}`);
+            // console.log([response.data.sections]);
+            const inputArray = [response.data.sections];
+            const separatedArray = response.data.sections.split('\n');
+            console.log(separatedArray);
+            setname(response.data.name)
+            setname_ar(response.data.name_ar)
+            setSeoDescription(response.data.seo_description)
+            setPageSlug(response.data.slug)
+            setPageOrder(response.data.page_order)
+            setsections(separatedArray.map((section, index) => ({ id: index, content: section })))
+            setDraggedSections(separatedArray.map((section, index) => ({ id: index, content: section })));
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        refreshcitiesData()
+    }, []);
+
+    const handleAddCompanyapi = async () => {
+        try {
+            const response = await newRequest.put(`/updatepages/${userId}`, {
                 name: name,
                 name_ar: name_ar,
                 seo_description: SeoDescription,
@@ -33,7 +60,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 custom_section_data: 'custom_section_data',
                 status: 1,
             });
-            toast.success(`Manage Page ${name} has been added successfully.`, {
+            console.log(response);
+            toast.success(`Manage Page ${name} has been Updata successfully.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -44,9 +72,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 theme: 'light',
             });
             navigate('/admin/Pages')
-            console.log(response.data);
-            refreshBrandData();
-            handleCloseCreatePopup();
+            // refreshBrandData();
+            // handleCloseCreatePopup();
 
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
@@ -69,22 +96,23 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         e.dataTransfer.setData('text/plain', section);
     };
 
-    const handleDrop = (e) => {
-        e.preventDefault();
-        const section = e.dataTransfer.getData('text/plain');
-        setsections([...sections, section]);
-        setDraggedSections([...draggedSections, section]);
-
-    };
-
     const handleDragOver = (e) => {
         e.preventDefault();
     };
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const section = e.dataTransfer.getData('text/plain');
+        const newSection = { id: draggedSections, content: section };
+        setDraggedSections([...draggedSections, newSection]);
+        setsections([...draggedSections, newSection])
+        
+    };
+
     const handleRemoveSection = (index) => {
-        const updatedSections = [...draggedSections];
-        updatedSections.splice(index, 1);
+        const updatedSections = draggedSections.filter((_, idx) => idx !== index);
         setDraggedSections(updatedSections);
+        setsections([updatedSections])
     };
 
     return (
@@ -92,13 +120,13 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'Create Page'}
+                        title={'Edit  Page'}
                     />
                 </div>
 
                 <div className="grid grid-cols-6 sm:grid-cols-12 gap-4 justify-center items-center">
                     <div className="col-span-6 sm:col-span-6 h-auto w-full p-4 bg-white shadow-xl rounded-md mt-8">
-                       
+
                         <div className="w-full">
                             <div className="popup-container h-auto sm:w-[100%] w-full">
                                 <div className="popup-form w-full ">
@@ -106,30 +134,29 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                                 <label htmlFor="AddSections" className="text-secondary">
-                                                    Add Sections
+                                                    Edit Sections
                                                 </label>
                                                 <label htmlFor="AddSections" className="text-secondary">
                                                     Drag Here sections you want to add
                                                 </label>
-                                                <div
+                                              <div
                                                     id="AddSections"
                                                     onDrop={handleDrop}
                                                     onDragOver={handleDragOver}
-                                                    value={sections.join('\n')}
-                                                    onChange={(e) => setsections(e.target.value.split('\n'))}
+                                                    value={sections}
+                                                    onChange={(e) => setsections(e.target.value)}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
-                                                    style={{ border: 'dotted', }}
+                                                    style={{ border: 'dotted', minHeight: '90px', height: 'auto' }}
                                                 >
                                                     {draggedSections.map((section, index) => (
                                                         <div key={index} className="p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md text-white gap-2 flex m-2" style={{ backgroundColor: '#17845ba8', color: 'white' }}>
-                                                            {/* {section} */}
-                                                            <span className="flex-grow">{section}</span>
+                                                            <span className="flex-grow">{section.content}</span>
                                                             <button
                                                                 type="button"
                                                                 className="ml-2"
-                                                                onClick={() => handleRemoveSection(index)}
+                                                                onClick={() => handleRemoveSection(section.id)}
                                                             >
-                                                                <CloseIcon/>
+                                                                <CloseIcon />
                                                             </button>
                                                         </div>
                                                     ))}
@@ -140,11 +167,10 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     id="AddSections"
                                                     onDrop={handleDrop}
                                                     onDragOver={handleDragOver}
-                                                    value={sections.join('\n')}
-                                                    onChange={(e) => setsections(e.target.value.split('\n'))}
+                                                    value={sections}
+                                                    onChange={(e) => setsections(e.target.value)}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
                                                     style={{ border: 'dotted', display: 'none' }}
-                                                    
                                                 />
 
                                             </div>
@@ -221,13 +247,16 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         </div>
 
                                         <div className="w-full flex justify-center items-center gap-8 mt-5">
-                                            <button
-                                                type="button"
-                                                onClick={handleAddCompany}
-                                                className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
+                                            <Button
+                                                // variant="contained"
+                                                style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                                                onClick={handleAddCompanyapi}
+                                                disabled={loading}
+                                                className="w-[70%] ml-2"
+                                                endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                             >
-                                                Add Page
-                                            </button>
+                                                Update Page
+                                            </Button>
                                         </div>
 
                                     </form>
@@ -238,17 +267,17 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="col-span-6 sm:col-span-6 h-auto w-full p-4 bg-white shadow-xl rounded-md mt-8">
                         {/* <Userguideveido /> */}
                         <div className="flex">
-                        
+
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Blog Section')}
-                                >
-                                <OpenWithIcon/> 
-                                <p>Blog Section</p> 
-                        </div>
+                                onDragStart={(e) => handleDragStart(e, 'Blog')}
+                            >
+                                <OpenWithIcon />
+                                <p>Blog Section</p>
+                            </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Service Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Service')}>
                                 <OpenWithIcon />
                                 <p>Service Section</p>
                             </div>
@@ -257,13 +286,13 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Counter Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Counter')}>
                                 <OpenWithIcon />
                                 <p>Counter Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Category Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Category')}>
                                 <OpenWithIcon />
                                 <p>Category Section</p>
                             </div>
@@ -272,13 +301,13 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Testimonal Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Testimonal')}>
                                 <OpenWithIcon />
                                 <p>Testimonal Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Team Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Team')}>
                                 <OpenWithIcon />
                                 <p>Team Section</p>
                             </div>
@@ -287,13 +316,13 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Subscribe Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Subscribe')}>
                                 <OpenWithIcon />
                                 <p>Boardmenber Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Subscribe Section')}>
+                                onDragStart={(e) => handleDragStart(e, 'Subscribe')}>
                                 <OpenWithIcon />
                                 <p>Subscribe Section</p>
                             </div>
@@ -301,14 +330,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Brad Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Brad')}>
                                 <OpenWithIcon />
                                 <p>Brad Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'About Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'About')}>
                                 <OpenWithIcon />
                                 <p>About Section</p>
                             </div>
@@ -316,14 +345,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Faq Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Faq')}>
                                 <OpenWithIcon />
                                 <p>Faq Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Contact Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Contact')}>
                                 <OpenWithIcon />
                                 <p>Contact Section</p>
                             </div>
@@ -331,14 +360,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Gepir Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Gepir')}>
                                 <OpenWithIcon />
                                 <p>Gepir Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Check_digit Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Check_digit')}>
                                 <OpenWithIcon />
                                 <p>Check_digit Section</p>
                             </div>
@@ -346,14 +375,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Gpc Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Gpc')}>
                                 <OpenWithIcon />
                                 <p>Gpc Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Userguide Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Userguide')}>
                                 <OpenWithIcon />
                                 <p>Userguide Section</p>
                             </div>
@@ -361,14 +390,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Gtinreporter Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Gtinreporter')}>
                                 <OpenWithIcon />
                                 <p>Gtinreporter Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Migration Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Migration')}>
                                 <OpenWithIcon />
                                 <p>Migration Section</p>
                             </div>
@@ -376,16 +405,16 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
-                                onDragStart={(e) => handleDragStart(e, 'Custom Section')}>
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, 'Custom')}>
                                 <OpenWithIcon />
                                 <p>Custom Section</p>
                             </div>
-                           
+
                         </div>
-                       
+
                     </div>
-                    
+
                 </div>
 
 
@@ -394,4 +423,4 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
     )
 }
 
-export default Addpages
+export default Updatapage

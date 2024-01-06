@@ -41,6 +41,19 @@ import productscategory from '../../Images/productscategory.png';
 import otherproductscategory from '../../Images/otherproductscategory.png';
 import additionalproducts from '../../Images/additionalproducts.png';
 import logout from '../../Images/logout.png'
+import UserGuide from "../../Images/User guide.jpg"
+import ManageSections from "../../Images/Manage section.png"
+import pageicon from "../../Images/page.png"
+import BlogCategories from "../../Images/Blog Categories.png"
+import FaqCategories from "../../Images/Faq.png"
+import articles from "../../Images/articles.jpg"
+import Eventicon from "../../Images/Event.png"
+import Serviceicon from "../../Images/Service.jpg"
+import Sildersicon from "../../Images/Sildericon.png"
+import Categoriesicon from "../../Images/Categories.jpg"
+import MegaMenuicon from "../../Images/Mega Menu.jpg"
+import Catalogicon from "../../Images/Catalgoicon.jpg"
+import footericon from "../../Images/Footericon.png"
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -1116,7 +1129,7 @@ const AdminSideBar = () => {
             onClick={() => setshowFrontEndData(!showFrontEndData)}
           >
             <img
-              src={masterdata}
+              src={frontend}
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
@@ -1137,77 +1150,118 @@ const AdminSideBar = () => {
                 className={`main-images-container`}
                 onClick={() => setCatalogsubmenu(!Catalogsubmenu)}
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={Catalogicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Catalog</p>
+                {Catalogsubmenu ? (
+                  <i className='fas fa-solid fa-chevron-up text-white'></i>
+                ) : (
+                  <i className='fas fa-solid fa-chevron-down text-white'></i>
+                )}
                 
               </div>
               {Catalogsubmenu && (
                 <div>
               <div
-                className={`main-images-containersub ${selectedItem === '/admin/megamenu' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/megamenu' ? 'selected-item' : ''}`}
                 onClick={(event) => handleItemClick('/admin/megamenu', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/megamenu')
                 }
               >
-                    <p className="sidebarsub-text">Mega Menu</p>
+                    <img
+                      src={MegaMenuicon}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Mega Menu</p>
               </div>
                   <div
-                    className={`main-images-containersub ${selectedItem === '/admin/categories' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/categories' ? 'selected-item' : ''}`}
                     onClick={(event) => handleItemClick('/admin/categories', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/categories')
                     }
                   >
-                    
-                    <p className="sidebarsub-text">Categories</p>
+                    <img
+                      src={Categoriesicon}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Categories</p>
                   </div>
                   <div
-                    className={`main-images-containersub ${selectedItem === '/admin/footer_menu' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/footer_menu' ? 'selected-item' : ''}`}
                     onClick={(event) => handleItemClick('/admin/footer_menu', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/footer_menu')
                     }
                   >
-                    <p className="sidebarsub-text">Footer Menu</p>
+                    <img
+                      src={footericon}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Footer Menu</p>
                   </div>
                   <div
-                    className={`main-images-containersub ${selectedItem === '/admin/Sliders' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/Sliders' ? 'selected-item' : ''}`}
                     onClick={(event) => handleItemClick('/admin/Sliders', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/Sliders')
                     }
                   >
-                    <p className="sidebarsub-text">Silders</p>
+                    <img
+                      src={Sildersicon}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Silders</p>
                   </div>
                   <div
-                    className={`main-images-containersub ${selectedItem === '/admin/Featured_services' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/Featured_services' ? 'selected-item' : ''}`}
                     onClick={(event) => handleItemClick('/admin/Featured_services', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/Featured_services')
                     }
                   >
-                    <p className="sidebarsub-text">Service</p>
+                    <img
+                      src={Serviceicon}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Service</p>
                   </div>
                   <div
-                    className={`main-images-containersub ${selectedItem === '/admin/events' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/events' ? 'selected-item' : ''}`}
                     onClick={(event) => handleItemClick('/admin/events', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/events')
                     }
                   >
-                    <p className="sidebarsub-text">Event</p>
+                    <img
+                      src={Eventicon}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Event</p>
                   </div>
                   <div
-                    className={`main-images-containersub ${selectedItem === '/admin/articles' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/articles' ? 'selected-item' : ''}`}
                     onClick={(event) => handleItemClick('/admin/articles', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/articles')
                     }
                   >
-                    <p className="sidebarsub-text">Articles</p>
+                    <img
+                      src={articles}
+                      className="main-inside-image bg-white rounded-full m-2"
+                      alt=""
+                    />
+                    <p className="sidebar-text">Articles</p>
                   </div>
               </div>
               )}
@@ -1219,8 +1273,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/Pages')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={pageicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Pages</p>
               </div>
@@ -1231,8 +1287,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/partners')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={verifiedbyGs1}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">GS1 Partners</p>
               </div>
@@ -1248,8 +1306,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/Blog_categories')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={BlogCategories}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Blog Category</p>
               </div>
@@ -1265,8 +1325,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/Faq_categories')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={FaqCategories}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Faq Categories</p>
               </div>
@@ -1282,8 +1344,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/CountryofSales')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={ManageSections}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Manage Sections</p>
               </div>
@@ -1299,8 +1363,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/Manage_team')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={staffHelpDesk}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Team Sections</p>
               </div>
@@ -1316,8 +1382,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/Board_members')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={registeredmembersicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">Board Members</p>
               </div>
@@ -1333,8 +1401,10 @@ const AdminSideBar = () => {
                   handleContextMenu(event, '/admin/User_guide')
                 }
               >
-                <div
-                  className="main-inside-image"
+                <img
+                  src={UserGuide}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
                 />
                 <p className="sidebar-text">User Guide</p>
               </div>
