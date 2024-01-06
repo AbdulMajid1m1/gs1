@@ -1,5 +1,5 @@
 import express from 'express';
-import { approveMembershipRequest, membershipRenewRequest, updateMemberRenewalDocumentStatus, updradeMemberSubscpiptionRequest } from '../../controllers/changeMembershipController.js';
+import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, updateMemberRenewalDocumentStatus, updradeMemberSubscpiptionRequest } from '../../controllers/changeMembershipController.js';
 
 
 const router = express.Router();
@@ -12,6 +12,11 @@ router.put('/changeRenewStatus/:id', updateMemberRenewalDocumentStatus);
 router.put('/upgradeMembershipRequest', updradeMemberSubscpiptionRequest);
 
 router.put('/approveMembershipRequest', approveMembershipRequest);
+
+router.put('/downgradeMemberSubscriptionRequest', downgradeMemberSubscriptionRequest);
+
+router.put('/approveDowngradeMembershipRequest', approveDowngradeMembershipRequest);
+
 
 
 
