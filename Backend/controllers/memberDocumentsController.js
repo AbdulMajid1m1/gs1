@@ -291,8 +291,6 @@ const updateMemberDocumentStatusSchema = Joi.object({
     reject_reason: Joi.string().optional(),
 });
 
-
-
 export const updateMemberDocumentStatus = async (req, res, next) => {
     const documentId = req.params.id;
     if (!documentId) {
