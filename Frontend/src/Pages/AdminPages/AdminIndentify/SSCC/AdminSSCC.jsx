@@ -10,10 +10,10 @@ import { ViewSsccColumn } from '../../../../utils/datatablesource';
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 // import BulkPopUp from './BulkPopUp';
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
   
 
 const AdminSSCC = () => {
@@ -340,7 +340,7 @@ const handleRowClickInParent = (item) => {
                 </div> */}
 
                 <div>
-                    <DashboardRightHeader title={"SSCC"}/>
+                    <AdminDashboardRightHeader title={"SSCC"}/>
                 </div>
 
                 {/* <div className='h-auto w-full shadow-xl'> */}

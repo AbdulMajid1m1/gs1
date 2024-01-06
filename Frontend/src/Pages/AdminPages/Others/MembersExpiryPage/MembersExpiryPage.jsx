@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import DataTable from '../../../../components/Datatable/Datatable'
 import newRequest from '../../../../utils/userRequest'
 import { memberForRenevalColumn } from '../../../../utils/datatablesource'
 import EditIcon from "@mui/icons-material/Edit";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 
 const MembersExpiryPage = () => {
     const [memberReneval, setMemberReneval] = useState([]);
@@ -43,7 +43,7 @@ const MembersExpiryPage = () => {
     <div>
       <div className="p-0 h-full sm:ml-72">
         <div>
-          <DashboardRightHeader
+          <AdminDashboardRightHeader
             title={'Members Expiry Page'}
           />
         </div>

@@ -7,12 +7,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import logo from "../../../../Images/logo.png";
 import { QRCodeSVG } from 'qrcode.react'
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import newRequest from '../../../../utils/userRequest';
 import MapEvents from '../../../../components/Maps/MapEvents';
 import { toast } from 'react-toastify';
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 const Gln = () => {
   const [data, setData] = useState([]);
@@ -243,7 +243,7 @@ const Gln = () => {
           </div>
         </div> */}
         <div>
-          <DashboardRightHeader title={"GLN"}/>
+          <AdminDashboardRightHeader title={"GLN"}/>
         </div>
 
         <div className='flex justify-center items-center'>

@@ -16,8 +16,8 @@ import { toast } from "react-toastify";
 import Barcode from "react-barcode";
 import bwipjs from "bwip-js";
 import { debounce } from '@mui/material/utils';
-import DashboardRightHeader from "../../../../components/DashboardRightHeader/DashboardRightHeader";
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import AdminDashboardRightHeader from "../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader";
 
 const Gtin = () => {
   const [data, setData] = useState([]);
@@ -509,7 +509,7 @@ const Gtin = () => {
       <div className="p-0 h-full sm:ml-72">
         <div className='h-auto w-full shadow-xl'>
           <div>
-            <DashboardRightHeader title={"GTIN"}/>
+            <AdminDashboardRightHeader title={"GTIN"} />
           </div>
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4'>
             <button

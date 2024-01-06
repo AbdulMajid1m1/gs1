@@ -81,7 +81,7 @@ import MembersExpiryPage from "./Pages/AdminPages/Others/MembersExpiryPage/Membe
 import AdminAddSSCC from "./Pages/AdminPages/AdminIndentify/SSCC/AdminAddSSCC";
 import AdminAddGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminAddGLN";
 import AddGTINProducts from "./Pages/AdminPages/AdminIndentify/GTIN/AddGTINProducts";
-import AdminPaymentSlips from "./Pages/AdminPages/PaymentSlips/AdminPaymentSlips";
+import AdminPaymentSlips from "./Pages/AdminPages/AdminCapture/PaymentSlips/AdminPaymentSlips";
 import ProductsCategory from "./Pages/AdminPages/Others/ProductsCategory/ProductsCategory";
 import OtherProductsCategory from "./Pages/AdminPages/Others/OtherProductsCategory/OtherProductsCategory";
 import AdditionalProducts from "./Pages/AdminPages/Others/AdditionalProducts/AdditionalProducts";

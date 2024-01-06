@@ -453,7 +453,7 @@ const AdminSideBar = () => {
                   <p className="sidebar-text">Migration</p>
                 </div>
 
-                <div 
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/help-desk')}
                   //     onContextMenu={(event) =>
@@ -471,7 +471,7 @@ const AdminSideBar = () => {
                     alt=""
                   />
                   <p className="sidebar-text">Old InActive Members</p>
-                </div>
+                </div> */}
 
 
                 <div 
