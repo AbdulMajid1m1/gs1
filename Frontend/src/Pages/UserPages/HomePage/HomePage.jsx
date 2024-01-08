@@ -6,6 +6,7 @@ import ValueAddedCard from '../ValueAddedCard/ValueAddedCard';
 import UpcomingEvents from '../UpcomingEvents/UpcomingEvents';
 import FeatureArticle from '../FeatureArticle/FeatureArticle';
 import OurSolutionPartner from '../OurSolutionPartner/OurSolutionPartner';
+import DropDownSelection from '../DropDownSelection/DropDownSelection';
 
 const HomePage = () => {
 
@@ -16,6 +17,9 @@ const HomePage = () => {
         <div className='sticky top-0 z-50 bg-white'>
           <Header />
         </div>
+        
+        {/* DropDown */}
+        <DropDownSelection />
 
         {/* Slider */}
         <HeaderSlider />  

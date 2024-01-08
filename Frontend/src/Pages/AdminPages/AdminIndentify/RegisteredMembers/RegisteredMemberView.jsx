@@ -575,6 +575,20 @@ const RegisteredMembersView = () => {
                       action: handleShowDowngradePopup,
 
                     },
+                    {
+                      label: "Add Barcodes",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      // action: handleShowDowngradePopup,
+
+                    },
+                    {
+                      label: "Add GTIN",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      // action: handleShowDowngradePopup,
+
+                    },
 
                   ]}
                   uniqueId="registeredProductsTableId"
@@ -928,7 +942,7 @@ const RegisteredMembersView = () => {
 
         {/* Downgrade component with handleShowDowngradePopup prop */}
         {isDowngradePopupVisible && (
-          <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
+          <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} userData={allUserData} />
         )}
 
 
