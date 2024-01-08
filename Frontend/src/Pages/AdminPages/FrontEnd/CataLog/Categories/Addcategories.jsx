@@ -10,6 +10,9 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Pagedropdown, setPagedropdown] = useState([])
     const [MegaMenuCategories, setMegaMenuCategories] = useState('')
     const [megamenudropdown, setmegamenudropdown] = useState([])
+    const [Description, setDescription] = useState('')
+    const [Title, setTitle] = useState("");
+    const [MetaDescription, setMetaDescription] = useState('')
 
     useEffect(() => {
         const getDocuments = async () => {
@@ -40,7 +43,6 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
         setVisibility(false);
     };
 
-
     const handleAddCompany = async () => {
         //  integrate the post api in try catch blcck
         try {
@@ -49,10 +51,10 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                 megamenu_id: MegaMenuCategories,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
-                description: "KHAN",
+                description: Description,
                 url: Page,
-                meta_title: "khan",
-                meta_description: "khan",
+                meta_title: Title,
+                meta_description: MetaDescription,
                 meta_keywords: "khan",
                 status: 1,
             });
@@ -95,7 +97,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
             {isVisible && (
                 <div className="popup-overlay">
                     <div className="popup-container h-auto sm:w-[45%] w-full">
-                        <div className="popup-form w-full">
+                        <div className="popup-form w-full" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
                                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Mega Menu Categories </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
@@ -179,6 +181,49 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 })
                                             }
                                         </select>
+                                    </div>
+
+                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                        <label htmlFor="status" className="text-secondary">
+                                             Description
+                                        </label>
+                                        <textarea
+                                            type="text"
+                                            id="name_ar"
+                                            value={Description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            placeholder="Enter Description"
+                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                        />
+
+                                    </div>
+
+                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                        <label htmlFor="field1" className="text-secondary">Meta Title</label>
+                                        <input
+                                            type="text"
+                                            id="Title"
+                                            value={Title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            placeholder="Enter Meta Title"
+                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                        />
+                                    </div>
+
+
+                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                        <label htmlFor="status" className="text-secondary">
+                                           Meta  Description
+                                        </label>
+                                        <textarea
+                                            type="text"
+                                            id="name_ar"
+                                            value={MetaDescription}
+                                            onChange={(e) => setMetaDescription(e.target.value)}
+                                            placeholder="Enter Meta Description"
+                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                        />
+
                                     </div>
 
                                 </div>
