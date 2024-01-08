@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 import Button from '@mui/material/Button';
@@ -14,14 +14,26 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Caption, setCaption] = useState(updateBrandData?.caption || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [Description, setDescription] = useState(updateBrandData?.description || '')
-    const [Page, setPage] = useState('')
+    const [Page, setPage] = useState(updateBrandData?.link || '')
+    const [Pagedropdown, setPagedropdown] = useState([])
     const [loading, setLoading] = useState(false);
-
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
-
     
-    console.log(updateBrandData?.image);
+    useEffect(() => {
+        const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getpagedata();
+    }, []);
+
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
@@ -108,8 +120,13 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
                                             <option value="0">-- Select --</option>
-                                            <option value="1">Set Page1</option>
-                                            <option value="2">Set Page2</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">

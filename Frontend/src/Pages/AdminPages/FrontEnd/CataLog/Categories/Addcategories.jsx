@@ -7,9 +7,10 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_ar, setcategory_name_ar] = useState("");
     const [Categorylevel, setCategorylevel] = useState('')
     const [Page, setPage] = useState('')
+    const [Pagedropdown, setPagedropdown] = useState([])
     const [MegaMenuCategories, setMegaMenuCategories] = useState('')
-
     const [megamenudropdown, setmegamenudropdown] = useState([])
+
     useEffect(() => {
         const getDocuments = async () => {
             try {
@@ -20,7 +21,20 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
+
+        const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+                console.log('--------', nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
         getDocuments();
+        getpagedata();
     }, []);
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -157,8 +171,13 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
                                             <option value="0">-- Select --</option>
-                                            <option value="1">Set Page1</option>
-                                            <option value="2">Set Page2</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 
