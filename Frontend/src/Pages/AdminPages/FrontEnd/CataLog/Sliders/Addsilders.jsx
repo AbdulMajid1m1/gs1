@@ -46,7 +46,6 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('image', imageshow);
         formData.append('link', Page);
         formData.append('status', 1);
-        console.log(formData);
         try {
             const response = await newRequest.post('/creatsliders', formData,
                 {

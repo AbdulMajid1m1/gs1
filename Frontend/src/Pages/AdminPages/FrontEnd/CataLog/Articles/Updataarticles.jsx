@@ -37,6 +37,7 @@ const Updataarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
+        
     }
     const handleCloseUpdatePopup = () => {
         setVisibility(false);

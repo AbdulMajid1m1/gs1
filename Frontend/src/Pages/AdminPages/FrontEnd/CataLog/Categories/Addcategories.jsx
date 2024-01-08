@@ -50,7 +50,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: "KHAN",
-                url: "wwww.wadawd",
+                url: Page,
                 meta_title: "khan",
                 meta_description: "khan",
                 meta_keywords: "khan",

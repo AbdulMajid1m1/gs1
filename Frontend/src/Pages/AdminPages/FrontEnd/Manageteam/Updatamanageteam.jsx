@@ -110,7 +110,8 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
-                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+
+                                    {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
                                             Set Page
                                         </label>
@@ -129,7 +130,8 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 })
                                             }
                                         </select>
-                                    </div>
+                                    </div> */}
+                                    
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="field1" className="text-secondary">Job Title</label>
                                         <input

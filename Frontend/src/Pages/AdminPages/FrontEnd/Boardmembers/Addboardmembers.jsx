@@ -42,7 +42,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('job_title', JobTitle);
         formData.append('description', Description);
         formData.append('image', imageshow);
-        formData.append('addedBy', '12');
+        formData.append('addedBy', '1');
         formData.append('status', 1);
         try {
             const response = await newRequest.post('/creatboard_members', formData,
@@ -117,7 +117,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         />
                                     </div>
 
-                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                    {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
                                             Set Page
                                         </label>
@@ -136,7 +136,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 })
                                             }
                                         </select>
-                                    </div>
+                                    </div> */}
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">

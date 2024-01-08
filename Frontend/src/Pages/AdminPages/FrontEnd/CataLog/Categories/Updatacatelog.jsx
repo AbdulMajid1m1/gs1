@@ -13,10 +13,30 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
     const [Categorylevel, setCategorylevel] = useState(updateBrandData?.Categorylevel || '')
-    const [MegaMenuCategories, setMegaMenuCategories] = useState(updateBrandData?.megamenu_id || '')
-    const [Page, setPage] = useState(updateBrandData?.megamenu_id || '')
+    const [MegaMenuCategories, setMegaMenuCategories] = useState('')
+    const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Pagedropdown, setPagedropdown] = useState([])
     const [megamenudropdown, setmegamenudropdown] = useState([])
+
+    const refreshcitiesData = async () => {
+        try {
+            const citiesData = updateBrandData?.megamenu_id || '';
+            const statesResponse = await newRequest.get('/getAllmega_menu');
+            const statesData = statesResponse?.data || [];
+            const stateIdToNameMap = {};
+            statesData.forEach(state => {
+                stateIdToNameMap[state.id] = state.name_en;
+            });
+            console.log('statesData', citiesData);
+            setMegaMenuCategories(citiesData)
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    useEffect(() => {
+        refreshcitiesData() // Calling the function within useEffect, not inside itself
+    }, []);
+
     useEffect(() => {
         const getDocuments = async () => {
             try {
@@ -32,7 +52,6 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const response = await newRequest.get('/getAllpagesname');
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
-                console.log('--------', nameEnArray);
             } catch (error) {
                 console.log(error);
             }
@@ -56,7 +75,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: "KHAN",
-                url: "wwww.wadawd",
+                url: Page,
                 meta_title: "khan",
                 meta_description: "khan",
                 meta_keywords: "khan",
@@ -167,8 +186,8 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">Category Level</option>
-                                            <option value="1">Main Category</option>
+                                            <option value="Category Level">Category Level</option>
+                                            <option value="Main Category">Main Category</option>
                                         </select>
                                     </div>
 

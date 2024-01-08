@@ -32,7 +32,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 parent_id: Categorylevel,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
-                url: "wwww.wadawd",
+                url: Page,
                 status: 1,
             });
 
