@@ -115,9 +115,14 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
             .split(',')
             .filter((_, index) => index !== itemIndex)
             .join(',');
-        setDraggedSections(updatedDraggedSections);
-        setsections(updatedDraggedSections)
+
+        const filteredArray = updatedDraggedSections.filter(value => value.content.trim() !== ''); // Adjusted the condition
+
+        setDraggedSections(filteredArray);
+        setsections(filteredArray.map(section => ({ id: section.id, content: section.content }))); // Update sections with id and content
+        console.log(filteredArray);
     };
+
 
     return (
         <div>
