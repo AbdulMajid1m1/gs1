@@ -38,17 +38,20 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
             setPageOrder(response.data.page_order)
             setsections(separatedArray.map((section, index) => ({ id: index, content: section })))
             setDraggedSections(separatedArray.map((section, index) => ({ id: index, content: section })));
+
         } catch (err) {
             console.log(err);
         }
     };
-
+    
     useEffect(() => {
         refreshcitiesData()
     }, []);
 
     const handleAddCompanyapi = async () => {
         try {
+            const formattedSections = sections.map(section => `"${section.content}"`).join(',');
+            console.log(`[${formattedSections}]`);
             const response = await newRequest.put(`/updatepages/${userId}`, {
                 name: name,
                 name_ar: name_ar,
@@ -56,7 +59,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                 slug: PageSlug,
                 is_dropdown: sections.length,
                 page_order: PageOrder,
-                sections: sections.join('\n'),
+                sections: `[${formattedSections}]`,
                 custom_section_data: 'custom_section_data',
                 status: 1,
             });
@@ -72,9 +75,6 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                 theme: 'light',
             });
             navigate('/admin/Pages')
-            // refreshBrandData();
-            // handleCloseCreatePopup();
-
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: 'top-right',
@@ -106,13 +106,17 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         const newSection = { id: draggedSections, content: section };
         setDraggedSections([...draggedSections, newSection]);
         setsections([...draggedSections, newSection])
-        
+
     };
 
-    const handleRemoveSection = (index) => {
-        const updatedSections = draggedSections.filter((_, idx) => idx !== index);
-        setDraggedSections(updatedSections);
-        setsections([updatedSections])
+    const handleRemoveSection = (sectionIndex, itemIndex) => {
+        const updatedDraggedSections = [...draggedSections];
+        updatedDraggedSections[sectionIndex].content = updatedDraggedSections[sectionIndex].content
+            .split(',')
+            .filter((_, index) => index !== itemIndex)
+            .join(',');
+        setDraggedSections(updatedDraggedSections);
+        setsections(updatedDraggedSections)
     };
 
     return (
@@ -139,7 +143,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="AddSections" className="text-secondary">
                                                     Drag Here sections you want to add
                                                 </label>
-                                              <div
+                                                <div
                                                     id="AddSections"
                                                     onDrop={handleDrop}
                                                     onDragOver={handleDragOver}
@@ -149,15 +153,26 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     style={{ border: 'dotted', minHeight: '90px', height: 'auto' }}
                                                 >
                                                     {draggedSections.map((section, index) => (
-                                                        <div key={index} className="p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md text-white gap-2 flex m-2" style={{ backgroundColor: '#17845ba8', color: 'white' }}>
-                                                            <span className="flex-grow">{section.content}</span>
-                                                            <button
-                                                                type="button"
-                                                                className="ml-2"
-                                                                onClick={() => handleRemoveSection(section.id)}
-                                                            >
-                                                                <CloseIcon />
-                                                            </button>
+                                                        <div key={index} className="mb-2">
+                                                            {section.content.split(',').map((item, itemIndex) => (
+                                                                <div
+                                                                    key={itemIndex}
+                                                                    className="p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md m-2 text-white gap-2 flex"
+                                                                    style={{
+                                                                        backgroundColor: section.content.length === 0 ? '#f2f2f2' : '#17845ba8',
+                                                                        display: section.content.length === 0 ? 'none' : 'flex',
+                                                                    }}
+                                                                >
+                                                                    <span className="flex-grow ">{item.trim()}</span>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="ml-2"
+                                                                        onClick={() => handleRemoveSection(index, itemIndex)} // Pass indices for removal
+                                                                    >
+                                                                        <CloseIcon />
+                                                                    </button>
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     ))}
 
