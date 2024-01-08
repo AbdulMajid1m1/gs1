@@ -52,6 +52,20 @@ export const getAllpages = async (req, res, next) => {
         next(error);
     }
 };
+export const getAllpagesname = async (req, res, next) => {
+    try {
+        const AllNames = await prisma.pages.findMany({
+  select: {
+    name: true,
+  },
+});
+
+
+        res.json(AllNames);
+    } catch (error) {
+        next(error);
+    }
+};
 export const getpagesById = async (req, res, next) => {
     try {
         // const { id } = req.params;
