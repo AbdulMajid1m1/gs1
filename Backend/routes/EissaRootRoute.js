@@ -21,7 +21,7 @@ import
     creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
 creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events} from "../controllers/catalog.js"
 const router = express.Router();
-import {createpages,getAllpages,getpagesById,updatepages,deletepages} from '../controllers/pages.js'
+import {createpages,getAllpages,getpagesById,updatepages,deletepages,getAllpagesname} from '../controllers/pages.js'
 import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
 import {createblog_categories,getAllblog_categories,getblog_categoriesById,updateblog_categories,deleteblog_categories} from '../controllers/blog_categories.js'
 import {createfaq_categories,getAllfaq_categories,getfaq_categoriesById,updatefaq_categories,deletefaq_categories} from '../controllers/faq_categories.js'
@@ -183,6 +183,7 @@ router.delete('/deleteupcoming_events/:id', deleteupcoming_events);
 
 // Routes for pages
 router.get('/getAllpages', getAllpages);
+router.get('/getAllpagesname', getAllpagesname);
 router.post('/createpages', createpages);
 router.get('/getpagesById/:id', getpagesById);
 router.put('/updatepages/:id', updatepages);
