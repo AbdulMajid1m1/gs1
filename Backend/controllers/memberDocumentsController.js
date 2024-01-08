@@ -141,6 +141,8 @@ export const getMemberInvoices = async (req, res, next) => {
                         OR: [
                             { type: 'invoice' },
                             { type: 'renewal_invoice' },
+                            { type: 'upgrade_invoice' },
+                            { type: 'downgrade_invoice' },
                         ]
                     }
                 ]
@@ -169,6 +171,8 @@ export const getMemberPendingInvoices = async (req, res, next) => {
                         OR: [
                             { type: 'invoice' },
                             { type: 'renewal_invoice' },
+                            { type: 'upgrade_invoice' },
+                            { type: 'downgrade_invoice' },
                         ]
                     },
 
@@ -290,8 +294,6 @@ const updateMemberDocumentStatusSchema = Joi.object({
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
 });
-
-
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
     const documentId = req.params.id;

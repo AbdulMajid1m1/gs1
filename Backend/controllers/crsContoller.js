@@ -1,7 +1,6 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
-import { serializeBigInt } from '../utils/utils.js';
 
 // Define a validation schema for creating or updating a CRs
 const crsSchema = Joi.object({

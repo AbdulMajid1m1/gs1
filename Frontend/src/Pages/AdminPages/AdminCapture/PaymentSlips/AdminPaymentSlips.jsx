@@ -6,7 +6,7 @@ import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import { useNavigate } from 'react-router-dom';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
-const AdditionalProducts = () => {
+const AdminPaymentSlips = () => {
   const [IsLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([
     {
@@ -21,7 +21,7 @@ const AdditionalProducts = () => {
     {
       id: 2,
       name: "Hasnain",
-      email: "hasnain@gmail.com",
+      email: "hasnain12@gmail.com",
       phone: "03069396743",
       status: "Active",
       role: "Admin",
@@ -60,17 +60,17 @@ const AdditionalProducts = () => {
       <div className="p-0 h-full sm:ml-72">
         <div>
           <AdminDashboardRightHeader 
-            title={'Additional Products'}
+            title={'Payment Slips'}
           />
         </div>
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={data} title="Additional Products" columnsName={adminPaymentSlipsColumn}
+          <DataTable data={data} title="Payment Slips" columnsName={adminPaymentSlipsColumn}
             loading={IsLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"
-            // globalSearch={true}
+            globalSearch={true}
             // uniqueId="admin_registered_members"
 
             // dropDownOptions={[
@@ -102,4 +102,4 @@ const AdditionalProducts = () => {
   )
 }
 
-export default AdditionalProducts
+export default AdminPaymentSlips

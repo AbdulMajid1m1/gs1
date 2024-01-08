@@ -169,7 +169,7 @@ const RegisteredMembersView = () => {
       // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
       const response = await newRequest.get(`/memberDocuments/invoices?user_id=${gs1MemberData?.id}`);
 
-      // console.log(response.data);
+      console.log(response.data);
       setMemberInovice(response?.data || []);
       setMemberInvoiceLoader(false);
 
@@ -281,7 +281,7 @@ const RegisteredMembersView = () => {
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-  
+
 
   const handleView = (row) => {
     console.log(row);
