@@ -22,6 +22,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleAddCompany = async () => {
         try {
+            const formattedSections = sections.map(section => `"${section}"`).join(',');
             const response = await newRequest.post('/createpages', {
                 name: name,
                 name_ar: name_ar,
@@ -29,7 +30,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 slug: PageSlug,
                 is_dropdown: sections.length,
                 page_order: PageOrder,
-                sections: sections.join('\n'),
+                sections: `[${formattedSections}]`,
                 custom_section_data: 'custom_section_data',
                 status: 1,
             });
@@ -115,10 +116,10 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     id="AddSections"
                                                     onDrop={handleDrop}
                                                     onDragOver={handleDragOver}
-                                                    value={sections.join('\n')}
-                                                    onChange={(e) => setsections(e.target.value.split('\n'))}
+                                                    value={sections}
+                                                    onChange={(e) => setsections(e.target.value)}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
-                                                    style={{ border: 'dotted', }}
+                                                    style={{ border: 'dotted', minHeight: '90px', height: 'auto' }}
                                                 >
                                                     {draggedSections.map((section, index) => (
                                                         <div key={index} className="p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md text-white gap-2 flex m-2" style={{ backgroundColor: '#17845ba8', color: 'white' }}>
@@ -140,8 +141,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     id="AddSections"
                                                     onDrop={handleDrop}
                                                     onDragOver={handleDragOver}
-                                                    value={sections.join('\n')}
-                                                    onChange={(e) => setsections(e.target.value.split('\n'))}
+                                                    value={sections}
+                                                    onChange={(e) => setsections(e.target.value)}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
                                                     style={{ border: 'dotted', display: 'none' }}
                                                     
