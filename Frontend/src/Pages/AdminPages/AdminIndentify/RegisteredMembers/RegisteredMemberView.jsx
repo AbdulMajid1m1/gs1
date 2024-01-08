@@ -61,9 +61,10 @@ const RegisteredMembersView = () => {
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
   const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
-
+  const [subType, setSubType] = useState("");
   const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
   const handleShowUpgradePopup = (row) => {
+    setSubType("UPGRADE")
     setIsUpgradePopupVisible(true);
     console.log(row);
     // set this data in session storage
@@ -74,7 +75,8 @@ const RegisteredMembersView = () => {
   const [isDowngradePopupVisible, setIsDowngradePopupVisible] = useState(false);
 
   const handleShowDowngradePopup = (row) => {
-    setIsDowngradePopupVisible(true);
+    setSubType("DOWNGRADE")
+    setIsUpgradePopupVisible(true);
     console.log(row);
     // set this data in session storage
     // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
@@ -265,7 +267,7 @@ const RegisteredMembersView = () => {
   const fetchRegisteredProductsData = async () => {
     setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}&isDeleted=false`);
 
       console.log(response.data);
       // Extract gtinSubscriptions data and flatten the nested gtin_product
@@ -927,15 +929,15 @@ const RegisteredMembersView = () => {
         )}
 
         {/* Downgrade component with handleShowDowngradePopup prop */}
-        {isDowngradePopupVisible && (
+        {/* {isDowngradePopupVisible && (
           <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
-        )}
+        )} */}
 
 
 
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (
-          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} />
+          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} />
         )}
 
 
