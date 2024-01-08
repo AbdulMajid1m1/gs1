@@ -97,7 +97,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
             {isVisible && (
                 <div className="popup-overlay">
                     <div className="popup-container h-auto sm:w-[45%] w-full">
-                        <div className="popup-form w-full" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+                        <div className="popup-form w-full max-h-screen overflow-y-auto">
                             <form className='w-full'>
                                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Mega Menu Categories </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
