@@ -2674,9 +2674,10 @@ export const silderDataColumn = [
         alt="Image"
         style={{
           width: '77%',
-         height: '77%',
-          objectFit: 'fill', }}
-/>
+          height: '77%',
+          objectFit: 'fill',
+        }}
+      />
     ),
   },
   {
@@ -2710,7 +2711,7 @@ export const silderDataColumn = [
 ];
 
 export const FeaturedServicesDataColumn = [
-  
+
   {
     field: 'image',
     headerName: 'Image',
@@ -2995,7 +2996,7 @@ export const ManagePagesDataColumn = [
 ];
 
 export const GS1PartnersDataColumn = [
-  
+
   {
     field: 'image',
     headerName: 'Image',
@@ -3011,7 +3012,7 @@ export const GS1PartnersDataColumn = [
         }}
       />
     ),
-  }, 
+  },
 
   {
     field: 'link',
@@ -3304,10 +3305,10 @@ export const UserGuidepdfDataColumn = [
           width: '100%',
           height: '70%',
           padding: '8px',
-          background:'#6777ef',
+          background: '#6777ef',
           border: '1px solid #6777ef',
-          color:'white',
-          borderRadius:'10px'
+          color: 'white',
+          borderRadius: '10px'
         }}
         onClick={() => handlepdfDownload(params.row.pdf)}
       >
@@ -4866,23 +4867,25 @@ export const memberHistoryColumnData = [
 
 
 export const registeredmemberColumn = [
-  {
-    field: 'id',
-    headerName: 'Product ID',
-    width: 180,
-  },
+
   {
     field: 'combined_description',
     headerName: 'Product Name',
-    width: 280,
+    width: 270,
     valueGetter: (params) => {
       return params.row.member_category_description || params.row.product_name || '';
     },
   },
+
+  {
+    field: 'subscription_limit',
+    headerName: 'Remaining limit',
+    width: 120,
+  },
   {
     field: 'Registration_fee',
     headerName: 'Registration fee',
-    width: 180,
+    width: 120,
     valueGetter: (params) => {
       return params.row.member_registration_fee || params.row.other_products_subscription_total_price || '';
     },
@@ -4890,7 +4893,7 @@ export const registeredmemberColumn = [
   {
     field: 'Yearly_fee',
     headerName: 'Yearly fee',
-    width: 180,
+    width: 120,
     valueGetter: (params) => {
       return params.row.gtin_yearly_subscription_fee || params.row.product_subscription_fee || '';
     },
@@ -4898,7 +4901,7 @@ export const registeredmemberColumn = [
   {
     field: 'price',
     headerName: 'Price',
-    width: 180,
+    width: 120,
   },
   {
     field: 'status',
@@ -4924,6 +4927,7 @@ export const registeredmemberColumn = [
     field: 'expiry_date',
     headerName: 'Expiry Date',
     width: 180,
+    type: 'dateTime',
 
     valueGetter: (params) => {
       // Convert the string date to a Date object
@@ -6154,7 +6158,7 @@ export const adminPaymentSlipsColumn = [
     headerName: 'Date',
     width: 180,
   },
- 
+
 
 
 
