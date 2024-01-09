@@ -431,16 +431,6 @@ model featured_services {
   updated_at DateTime  @default(now()) @db.DateTime
 }
 
-model footer_menus {
-  id               String    @id @default(cuid())
-  parent_id        String?   @db.NVarChar(Max)
-  category_name_en String?   @db.NVarChar(Max)
-  category_name_ar String?   @db.NVarChar(Max)
-  url              String?   @db.NVarChar(Max)
-  status           Int?
-  created_at       DateTime? @default(now()) @db.DateTime
-  updated_at       DateTime  @default(now()) @db.DateTime
-}
 
 model foreign_barcodes_downloads {
   id         BigInt    @id(map: "PK__foreign___3213E83FE54D487A") @default(autoincrement())
@@ -879,7 +869,15 @@ model markeing_emails {
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
 }
-
+model mega_menus {
+  id         String    @id @default(cuid())
+  name_en    String?   @db.NVarChar(Max)
+  name_ar    String?   @db.NVarChar(Max)
+  status     Int
+  created_at DateTime? @default(now()) @db.DateTime
+  updated_at DateTime  @default(now()) @db.DateTime
+ mega_menu_categories mega_menu_categories[]
+}
 model mega_menu_categories {
   id               String    @id @default(cuid())
   parent_id        String?
@@ -896,15 +894,15 @@ model mega_menu_categories {
   updated_at       DateTime  @default(now()) @db.DateTime
   mega_menus       mega_menus? @relation(fields: [megamenu_id], references: [id])
 }
-
-model mega_menus {
-  id         String    @id @default(cuid())
-  name_en    String?   @db.NVarChar(Max)
-  name_ar    String?   @db.NVarChar(Max)
-  status     Int
-  created_at DateTime? @default(now()) @db.DateTime
-  updated_at DateTime  @default(now()) @db.DateTime
- mega_menu_categories mega_menu_categories[]
+model footer_menus {
+  id               String    @id @default(cuid())
+  parent_id        String?   @db.NVarChar(Max)
+  category_name_en String?   @db.NVarChar(Max)
+  category_name_ar String?   @db.NVarChar(Max)
+  url              String?   @db.NVarChar(Max)
+  status           Int?
+  created_at       DateTime? @default(now()) @db.DateTime
+  updated_at       DateTime  @default(now()) @db.DateTime
 }
 
 model mema_descriptions {
