@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './DropDownSelection.css';
+import newRequest from '../../../utils/userRequest';
 
 const DummyData = {
   megaMenu: [
@@ -80,11 +81,11 @@ const DummyData = {
       name_en: 'Services',
       categories: [
         {
-          url: '/category7',
-          category_name_ar: 'فئة 7',
-          category_name_en: 'Category 7',
+          url: '/category8',
+          category_name_ar: 'فئة 8',
+          category_name_en: 'Category 8',
           subcategories: [
-            { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 7' },
+            { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 8' },
             { url: '/subcategory8', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 8' },
           ],
         },
@@ -96,12 +97,12 @@ const DummyData = {
         name_en: 'Resources',
         categories: [
           {
-            url: '/category7',
-            category_name_ar: 'فئة 7',
-            category_name_en: 'Category 7',
+            url: '/category9',
+            category_name_ar: 'فئة 9',
+            category_name_en: 'Category 9',
             subcategories: [
-              { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 7' },
-              { url: '/subcategory8', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 8' },
+              { url: '/subcategory9', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 9' },
+              { url: '/subcategory9', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 9' },
             ],
           },
         
@@ -112,12 +113,12 @@ const DummyData = {
         name_en: 'Products Tools',
         categories: [
           {
-            url: '/category7',
+            url: '/category10',
             category_name_ar: 'فئة 7',
-            category_name_en: 'Category 7',
+            category_name_en: 'Category 10',
             subcategories: [
-              { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 7' },
-              { url: '/subcategory8', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 8' },
+              { url: '/subcategory10', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 10' },
+              { url: '/subcategory10', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 10' },
             ],
           },
         
@@ -128,12 +129,12 @@ const DummyData = {
         name_en: 'Support',
         categories: [
           {
-            url: '/category7',
+            url: '/category11',
             category_name_ar: 'فئة 7',
-            category_name_en: 'Category 7',
+            category_name_en: 'Category 11',
             subcategories: [
-              { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 7' },
-              { url: '/subcategory8', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 8' },
+              { url: '/subcategory11', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 11' },
+              { url: '/subcategory11', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 11' },
             ],
           },
         
@@ -144,12 +145,12 @@ const DummyData = {
         name_en: 'MEMA Forum',
         categories: [
           {
-            url: '/category7',
+            url: '/category12',
             category_name_ar: 'فئة 7',
-            category_name_en: 'Category 7',
+            category_name_en: 'Category 12',
             subcategories: [
-              { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 7' },
-              { url: '/subcategory8', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 8' },
+              { url: '/subcategory12', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 12' },
+              { url: '/subcategory12', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 12' },
             ],
           },
         
@@ -168,6 +169,28 @@ const DropDownSelection = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
+
+
+  const [megaMenu, setMegaMenu] = useState([]);
+
+  const getAllRegisteredMembers = async () => {
+    try {
+      const res = await newRequest.get("/mega_menu_categories_frontSide")
+      console.log(res.data);
+      setMegaMenu(res.data);
+        
+    }
+    catch (error) {
+      console.log(error);
+
+    }
+  };
+
+
+  useEffect(() => {
+    getAllRegisteredMembers();
+  }
+    , []);
 
   return (
     <header className="header">
@@ -192,23 +215,24 @@ const DropDownSelection = () => {
               <div className="mobile-menu-close" onClick={toggleMobileMenu}>&times;</div>
             </div>
             <ul className="menu-main 2xl:flex xl:flex lg:flex 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-7">
-              {DummyData.megaMenu.map((section, index) => (
+              {megaMenu?.map((section, index) => (
                 <li key={index} className="menu-item-has-children">
                   <a href="javascript:void(0)" style={{ textDecoration: 'none'  }}>
-                    {lang === 'ar' ? section.name_ar : section.name_en}
-                    <i className="fa fa-angle-down"></i>
+                    {section.name_en}
+                    &nbsp;
+                     <i className="fa fa-angle-down"></i>
                   </a>
                   <div className="sub-menu mega-menu mega-menu-column-4 text-blue-600">
-                    {section.categories.map((category, catIndex) => (
+                    {section.mega_menu_categories.map((category, catIndex) => (
                       <div key={catIndex} className="list-item">
                         <a href={category.url} style={{ textDecoration: 'none' }}>
-                          {lang === 'ar' ? category.category_name_ar : category.category_name_en}
+                          {category.category_name_en}
                         </a>
                         <ul>
-                          {category.subcategories.map((subcategory, subIndex) => (
+                          {category.footer_menus.map((subcategory, subIndex) => (
                             <li key={subIndex}>
                               <a href={subcategory.url} style={{ textDecoration: 'none' }}>
-                                {lang === 'ar' ? subcategory.category_name_ar : subcategory.category_name_en}
+                                {subcategory.category_name_en}
                               </a>
                             </li>
                           ))}
