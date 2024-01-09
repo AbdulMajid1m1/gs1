@@ -2,176 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './DropDownSelection.css';
 import newRequest from '../../../utils/userRequest';
 
-const DummyData = {
-  megaMenu: [
-    {
-      name_ar: 'قسم 1',
-      name_en: 'Overview',
-      categories: [
-        {
-          url: '/category1',
-          category_name_ar: 'فئة 1',
-          category_name_en: 'Category 1',
-          subcategories: [
-            { url: '/subcategory1', category_name_ar: 'فئة فرعية 1', category_name_en: 'Subcategory 1' },
-            { url: '/subcategory2', category_name_ar: 'فئة فرعية 2', category_name_en: 'Subcategory 2' },
-          ],
-        },
-        // Add more categories as needed
-      ],
-    },
-    {
-      name_ar: 'قسم 2',
-      name_en: 'Industries',
-      categories: [
-        {
-          url: '/category3',
-          category_name_ar: 'فئة 3',
-          category_name_en: 'Category 3',
-          subcategories: [
-            { url: '/subcategory3', category_name_ar: 'فئة فرعية 3', category_name_en: 'Subcategory 3' },
-            { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-            { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-            { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-          ],
-        },
-        {
-            url: '/category3',
-            category_name_ar: 'فئة 3',
-            category_name_en: 'Category 3',
-            subcategories: [
-              { url: '/subcategory3', category_name_ar: 'فئة فرعية 3', category_name_en: 'Subcategory 3' },
-              { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-              { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-              { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-            ],
-          },
-          {
-            url: '/category3',
-            category_name_ar: 'فئة 3',
-            category_name_en: 'Category 3',
-            subcategories: [
-              { url: '/subcategory3', category_name_ar: 'فئة فرعية 3', category_name_en: 'Subcategory 3' },
-              { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-              { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-              { url: '/subcategory4', category_name_ar: 'فئة فرعية 4', category_name_en: 'Subcategory 4' },
-            ],
-          },
-        // Add more categories as needed
-      ],
-    },
-    {
-      name_ar: 'قسم 3',
-      name_en: 'Solutions',
-      categories: [
-        {
-          url: '/category5',
-          category_name_ar: 'فئة 5',
-          category_name_en: 'Category 5',
-          subcategories: [
-            { url: '/subcategory5', category_name_ar: 'فئة فرعية 5', category_name_en: 'Subcategory 5' },
-            { url: '/subcategory6', category_name_ar: 'فئة فرعية 6', category_name_en: 'Subcategory 6' },
-          ],
-        },
-        // Add more categories as needed
-      ],
-    },
-    {
-      name_ar: 'قسم 4',
-      name_en: 'Services',
-      categories: [
-        {
-          url: '/category8',
-          category_name_ar: 'فئة 8',
-          category_name_en: 'Category 8',
-          subcategories: [
-            { url: '/subcategory7', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 8' },
-            { url: '/subcategory8', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 8' },
-          ],
-        },
-      
-      ],
-    },
-    {
-        name_ar: 'قسم 4',
-        name_en: 'Resources',
-        categories: [
-          {
-            url: '/category9',
-            category_name_ar: 'فئة 9',
-            category_name_en: 'Category 9',
-            subcategories: [
-              { url: '/subcategory9', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 9' },
-              { url: '/subcategory9', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 9' },
-            ],
-          },
-        
-        ],
-      },
-      {
-        name_ar: 'قسم 4',
-        name_en: 'Products Tools',
-        categories: [
-          {
-            url: '/category10',
-            category_name_ar: 'فئة 7',
-            category_name_en: 'Category 10',
-            subcategories: [
-              { url: '/subcategory10', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 10' },
-              { url: '/subcategory10', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 10' },
-            ],
-          },
-        
-        ],
-      },
-      {
-        name_ar: 'قسم 4',
-        name_en: 'Support',
-        categories: [
-          {
-            url: '/category11',
-            category_name_ar: 'فئة 7',
-            category_name_en: 'Category 11',
-            subcategories: [
-              { url: '/subcategory11', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 11' },
-              { url: '/subcategory11', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 11' },
-            ],
-          },
-        
-        ],
-      },
-      {
-        name_ar: 'قسم 4',
-        name_en: 'MEMA Forum',
-        categories: [
-          {
-            url: '/category12',
-            category_name_ar: 'فئة 7',
-            category_name_en: 'Category 12',
-            subcategories: [
-              { url: '/subcategory12', category_name_ar: 'فئة فرعية 7', category_name_en: 'Subcategory 12' },
-              { url: '/subcategory12', category_name_ar: 'فئة فرعية 8', category_name_en: 'Subcategory 12' },
-            ],
-          },
-        
-        ],
-      },
-    // Add more sections as needed
-  ],
-  lang: 'en', // 'en' or 'ar'
-};
-
 const DropDownSelection = () => {
-  const lang = DummyData.lang;
-
+  const [megaMenu, setMegaMenu] = useState([]);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
 
-
-  const [megaMenu, setMegaMenu] = useState([]);
 
   const getAllRegisteredMembers = async () => {
     try {
@@ -204,7 +42,7 @@ const DropDownSelection = () => {
         </div> */}
 
         {/* Menu Start */}
-        <div className="header-item item-center" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+        <div className="header-item item-center">
           <div className="menu-overlay" onClick={toggleMobileMenu}></div>
           <nav className={`menu ${isMobileMenuOpen ? 'active' : ''}`} style={{ backgroundColor: 'white' }}>
             <div className="mobile-menu-head">
