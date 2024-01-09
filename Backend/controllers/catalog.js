@@ -248,9 +248,7 @@ export const mega_menu_categories_frontSide = async (req, res, next) => {
           },
         },
       },
-      orderBy: {
-        updated_at: 'desc',
-      },
+     
     });
 
     res.json(mega_menus_with_categories);
