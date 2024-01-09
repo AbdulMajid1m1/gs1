@@ -28,7 +28,6 @@ const Featuredservices = () => {
 
     const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
-        // save this row data in session storage 
         sessionStorage.setItem("updateService", JSON.stringify(row));
     };
     const { rowSelectionModel, setRowSelectionModel,
@@ -38,8 +37,6 @@ const Featuredservices = () => {
     const refreshcitiesData = async () => {
         try {
             const response = await newRequest.get("/getAllfeatured_services",);
-
-            console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
 

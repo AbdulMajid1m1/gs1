@@ -13,7 +13,7 @@ import fourthslider from "../../../Images/fourthslider.png"
 const HeaderSlider = () => {
   return (
     <div>
-         <div className='h-auto w-full bg-white border-b mt-10'>
+         <div className='h-auto w-full bg-white border-b mt-4'>
           <div className='h-auto w-full bg-secondary flex justify-center items-center'>
                 <Swiper
                   spaceBetween={30}

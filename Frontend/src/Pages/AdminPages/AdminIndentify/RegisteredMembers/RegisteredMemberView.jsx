@@ -577,6 +577,20 @@ const RegisteredMembersView = () => {
                       action: handleShowDowngradePopup,
 
                     },
+                    {
+                      label: "Add Barcodes",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      // action: handleShowDowngradePopup,
+
+                    },
+                    {
+                      label: "Add GTIN",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      // action: handleShowDowngradePopup,
+
+                    },
 
                   ]}
                   uniqueId="registeredProductsTableId"

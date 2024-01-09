@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
@@ -14,7 +14,22 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [job_title, setjob_title] = useState(updateBrandData?.job_title || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [Description, setDescription] = useState(updateBrandData?.description || '')
-    const [Page, setPage] = useState(updateBrandData?.addedBy || '')
+    const [Page, setPage] = useState('')
+    const [Pagedropdown, setPagedropdown] = useState([])
+    useEffect(() => {
+        const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getpagedata();
+    }, []);
+
     const [loading, setLoading] = useState(false);
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -37,7 +52,7 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('job_title', job_title);
         formData.append('description', Description);
         formData.append('image', imageshow);
-        formData.append('addedBy', Page);
+        formData.append('addedBy', '12');
         formData.append('status', Number(status));
         try {
             const response = await newRequest.put(`/updateour_teams/${updateBrandData?.id}`, formData);
@@ -95,7 +110,8 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
-                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+
+                                    {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
                                             Set Page
                                         </label>
@@ -105,11 +121,17 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
-                                            <option value="1">Set Page1</option>
-                                            <option value="2">Set Page2</option>
+                                            <option value="Select">-- Select --</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
-                                    </div>
+                                    </div> */}
+                                    
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="field1" className="text-secondary">Job Title</label>
                                         <input

@@ -9,7 +9,7 @@ const Userguide = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'Userguide'}
+                        title={'User Guide'}
                     />
                 </div>
 

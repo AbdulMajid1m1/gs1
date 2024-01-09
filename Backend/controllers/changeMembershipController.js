@@ -1153,19 +1153,16 @@ export const approveMembershipRequest = async (req, res, next) => {
         const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
 
         // Update gtin_subscription_limit in gtin_subscriptions
-        const updateResponse = await prisma.gtin_subcriptions.updateMany({
-            where: {
-                user_id: userId,
+        // const updateResponse = await prisma.gtin_subcriptions.updateMany({
+        //     where: {
+        //         user_id: userId,
 
-            },
-            data: {
-                gtin_subscription_limit: totalBarcodesToAdd,
-            },
-        });
+        //     },
+        //     data: {
+        //         gtin_subscription_limit: totalBarcodesToAdd,
+        //     },
+        // });
 
-        if (updateResponse.count === 0) {
-            return res.status(404).send('GTIN subscription not found for the user');
-        }
         let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
         let gcpGLNIDUpdated = false;
         let oldGcpGLNID = user.gcpGLNID;
@@ -1189,14 +1186,25 @@ export const approveMembershipRequest = async (req, res, next) => {
                 // other fields as necessary
             },
         });
-        await prisma.gtin_subcriptions.updateMany({
+
+
+
+        const updateResponse = await prisma.gtin_subcriptions.updateMany({
             // update based on the transaction ID
-            where: { transaction_id: upgradeCart.registered_product_transaction_id },
+            where: {
+                transaction_id: upgradeCart.registered_product_transaction_id,
+                user_id: userId, isDeleted: false
+            },
             data: {
                 deleted_at: new Date(),
                 isDeleted: true,
+                gtin_subscription_limit: totalBarcodesToAdd,
             }
         });
+
+        if (!updateResponse) {
+            throw createError(404, 'GTIN subscription not found for the user');
+        }
 
         //    insert new record in gtin_subcriptions table with new subscription
         await prisma.gtin_subcriptions.create({
@@ -1227,10 +1235,6 @@ export const approveMembershipRequest = async (req, res, next) => {
         });
 
 
-
-
-
-
         let cart = {
             cart_items: [],
         }
@@ -1245,9 +1249,7 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         });
 
-
         cart.transaction_id = transactionId;
-
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
 

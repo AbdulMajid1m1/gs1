@@ -3,7 +3,8 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
+import CloseIcon from '@mui/icons-material/Close';
 const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const navigate = useNavigate();
@@ -21,14 +22,15 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleAddCompany = async () => {
         try {
+            const formattedSections = sections.map(section => `"${section}"`).join(',');
             const response = await newRequest.post('/createpages', {
                 name: name,
                 name_ar: name_ar,
                 seo_description: SeoDescription,
                 slug: PageSlug,
-                is_dropdown: '2',
+                is_dropdown: sections.length,
                 page_order: PageOrder,
-                sections: sections.join('\n'),
+                sections: `[${formattedSections}]`,
                 custom_section_data: 'custom_section_data',
                 status: 1,
             });
@@ -80,6 +82,12 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         e.preventDefault();
     };
 
+    const handleRemoveSection = (index) => {
+        const updatedSections = [...draggedSections];
+        updatedSections.splice(index, 1);
+        setDraggedSections(updatedSections);
+    };
+
     return (
         <div>
             <div className="p-0 h-full sm:ml-72">
@@ -104,16 +112,39 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="AddSections" className="text-secondary">
                                                     Drag Here sections you want to add
                                                 </label>
-                                              
+                                                <div
+                                                    id="AddSections"
+                                                    onDrop={handleDrop}
+                                                    onDragOver={handleDragOver}
+                                                    value={sections}
+                                                    onChange={(e) => setsections(e.target.value)}
+                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
+                                                    style={{ border: 'dotted', minHeight: '90px', height: 'auto' }}
+                                                >
+                                                    {draggedSections.map((section, index) => (
+                                                        <div key={index} className="p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md text-white gap-2 flex m-2" style={{ backgroundColor: '#17845ba8', color: 'white' }}>
+                                                            {/* {section} */}
+                                                            <span className="flex-grow">{section}</span>
+                                                            <button
+                                                                type="button"
+                                                                className="ml-2"
+                                                                onClick={() => handleRemoveSection(index)}
+                                                            >
+                                                                <CloseIcon/>
+                                                            </button>
+                                                        </div>
+                                                    ))}
+
+                                                </div>
                                                 <textarea
                                                     type="text"
                                                     id="AddSections"
                                                     onDrop={handleDrop}
                                                     onDragOver={handleDragOver}
-                                                    value={sections.join('\n')}
-                                                    onChange={(e) => setsections(e.target.value.split('\n'))}
+                                                    value={sections}
+                                                    onChange={(e) => setsections(e.target.value)}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
-                                                    style={{ border:'dotted'}}
+                                                    style={{ border: 'dotted', display: 'none' }}
                                                     
                                                 />
 

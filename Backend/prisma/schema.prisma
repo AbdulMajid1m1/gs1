@@ -1419,7 +1419,7 @@ model other_products_subcriptions {
   created_at                              DateTime       @default(now())
   updated_at                              DateTime       @updatedAt
   deleted_at                              DateTime?      @db.DateTime
-  isDeleted                               Boolean?        @default(false)
+  isDeleted                               Boolean?       @default(false)
   expiry_date                             DateTime?      @db.DateTime
   other_products_subscription_limit       Float          @default(0)
   other_products_subscription_counter     Float          @default(0)
