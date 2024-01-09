@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 import Button from '@mui/material/Button';
@@ -11,6 +11,21 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateService"));
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [Page, setPage] = useState(updateBrandData?.link || '')
+
+    const [Pagedropdown, setPagedropdown] = useState([])
+    useEffect(() => {
+        const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getpagedata();
+    }, []);
     const [loading, setLoading] = useState(false);
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -87,9 +102,14 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
-                                            <option value="Set Page1">Set Page1</option>
-                                            <option value="Set Page2">Set Page2</option>
+                                            <option value="Select">-- Select --</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">

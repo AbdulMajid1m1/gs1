@@ -8,7 +8,9 @@ import FeatureArticle from '../FeatureArticle/FeatureArticle';
 import OurSolutionPartner from '../OurSolutionPartner/OurSolutionPartner';
 
 const HomePage = () => {
+  
 
+    
   return (
     <div>
 
