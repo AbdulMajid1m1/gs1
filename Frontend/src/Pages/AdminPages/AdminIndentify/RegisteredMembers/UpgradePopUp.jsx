@@ -23,7 +23,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
 
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
+      // const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
@@ -197,17 +198,21 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
                       </tr>
                     </thead>
                     <tbody>
-                      {memberInoviceData.map((item, index) => {
-                        const cartItems = JSON.parse(item.cart_items);
-                        return cartItems.map((cartItem, cartIndex) => (
-                          <tr key={cartIndex}>
-                            <td>{cartItem.productName}</td>
-                            <td>{cartItem.registration_fee}</td>
-                            <td>{cartItem.yearly_fee}</td>
-                            <td>{cartItem.price}</td>
+                      {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                        return (
+
+
+                          <tr key={'gtin_product' + index}>
+                            <td>{item?.gtin_product?.member_category_description}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.gtin_subscription_total_price}</td>
+                            {/* <td>{.price}</td> */}
                           </tr>
-                        ));
+                        )
                       })}
+
+
+
                     </tbody>
                     <tfoot>
                       <tr>
