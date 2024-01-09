@@ -894,6 +894,7 @@ model mega_menu_categories {
   status           Int?
   created_at       DateTime? @default(now()) @db.DateTime
   updated_at       DateTime  @default(now()) @db.DateTime
+  mega_menus       mega_menus? @relation(fields: [megamenu_id], references: [id])
 }
 
 model mega_menus {
@@ -903,6 +904,7 @@ model mega_menus {
   status     Int
   created_at DateTime? @default(now()) @db.DateTime
   updated_at DateTime  @default(now()) @db.DateTime
+ mega_menu_categories mega_menu_categories[]
 }
 
 model mema_descriptions {
