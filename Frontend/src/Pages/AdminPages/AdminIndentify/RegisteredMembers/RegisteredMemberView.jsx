@@ -22,6 +22,12 @@ import SubMenusAddPopUp from './SubMenusAddPopUp';
 import { useParams } from 'react-router-dom';
 import UpdateSubMenusPopUp from './UpdateSubMenusPop';
 import AddMemberBankSlipPopUp from './AddMemberBankSlipPopUp';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
+import SwipeDownIcon from '@mui/icons-material/SwipeDown';
+import UpgradePopUp from './UpgradePopUp';
+import DowngradePopUp from './DowngradePopUp';
+
+
 const RegisteredMembersView = () => {
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
@@ -55,6 +61,28 @@ const RegisteredMembersView = () => {
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
   const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
+  const [subType, setSubType] = useState("");
+  const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
+  const handleShowUpgradePopup = (row) => {
+    setSubType("UPGRADE")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
+  const [isDowngradePopupVisible, setIsDowngradePopupVisible] = useState(false);
+
+  const handleShowDowngradePopup = (row) => {
+    setSubType("DOWNGRADE")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
 
 
   const fetchMemberHistoryData = async () => {
@@ -103,6 +131,7 @@ const RegisteredMembersView = () => {
       console.log(response.data[0]);
       const data = response?.data[0] || [];
       setAllUserData(data);
+
       setEditableData(
         {
           companyNameEnglish: data?.company_name_eng,
@@ -238,24 +267,24 @@ const RegisteredMembersView = () => {
   const fetchRegisteredProductsData = async () => {
     setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}&isDeleted=false`);
 
       console.log(response.data);
-     // Extract gtinSubscriptions data and flatten the nested gtin_product
-     const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
-      ...item,
-      ...item.gtin_product,
-      product: undefined,
-    }));
+      // Extract gtinSubscriptions data and flatten the nested gtin_product
+      const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
+        ...item,
+        ...item.gtin_product,
+        subscription_limit: item.gtin_subscription_limit,
+      }));
 
-    const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
-      ...item,
-      ...item.product,
-      gtin_product: undefined,
-    }));
+      const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
+        ...item,
+        ...item.product,
+        subscription_limit: item.other_products_subscription_limit,
+      }));
 
-    // Combine gtinSubscriptions and otherProductSubscriptions
-    const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
+      // Combine gtinSubscriptions and otherProductSubscriptions
+      const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
 
       setRegisteredProductsData(combinedData);
       setRegisteredProductsLoader(false)
@@ -529,20 +558,38 @@ const RegisteredMembersView = () => {
                   columnsName={registeredmemberColumn}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
-                  actionColumnVisibility={false}
+                  // actionColumnVisibility={false}
                   checkboxSelection={"disabled"}
 
                   dropDownOptions={[
+
                     {
-                      label: "View",
-                      icon: (
-                        <VisibilityIcon
-                          fontSize="small"
-                          color="action"
-                          style={{ color: "rgb(37 99 235)" }}
-                        />
-                      ),
-                      action: handleView,
+                      label: "Upgrade",
+                      icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleShowUpgradePopup,
+
+                    },
+                    {
+                      label: "Downgrade",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleShowDowngradePopup,
+
+                    },
+                    {
+                      label: "Add Barcodes",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      // action: handleShowDowngradePopup,
+
+                    },
+                    {
+                      label: "Add GTIN",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      // action: handleShowDowngradePopup,
+
                     },
 
                   ]}
@@ -865,7 +912,7 @@ const RegisteredMembersView = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberPopupVisible && (
           <AddMemberDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData}/>
+            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData} />
 
         )}
 
@@ -893,6 +940,18 @@ const RegisteredMembersView = () => {
           <AddMemberBankSlipPopUp isVisible={isAddMemberBankSlipPopupVisible} setVisibility={setIsAddMemberBankSlipPopupVisible} refreshBrandData={fetchMemberDocumentsData}
             fetchMemberbankSlipData={fetchMemberbankSlipData} />
 
+        )}
+
+        {/* Downgrade component with handleShowDowngradePopup prop */}
+        {/* {isDowngradePopupVisible && (
+          <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
+        )} */}
+
+
+
+        {/* Upgrade component with handleShowUpgradePopup prop */}
+        {isUpgradePopupVisible && (
+          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} />
         )}
 
 

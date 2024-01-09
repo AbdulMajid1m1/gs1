@@ -3,12 +3,12 @@ import "./Dashboard.css"
 // import userRequest from '../../utils/userRequest'
 import DashboardTable from '../../../components/AdminDashboardTable/DashboardTable'
 import { memberForRenevalColumn, newlyRegisteredMembersColumn, pendingApprovalColumn, registerdMemberColumn, subscribedGtinColumn } from '../../../utils/datatablesource'
-import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
 import categorybarcode from '../../../Images/categorybarcode.png'
 import rangebarcode from '../../../Images/rangebarcode.png'
 import barcodeIssued from '../../../Images/barcodeIssued.png'
 import barcoderemain from '../../../Images/barcoderemain.png'
 import newRequest from '../../../utils/userRequest'
+import AdminDashboardRightHeader from '../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 
 const Dashboard = () => {
   const [newRegisteredMembers, setNewRegisteredMembers] = useState([]);
@@ -148,7 +148,7 @@ const Dashboard = () => {
 
         <div className="h-full mb-10 bg-gradient-to-r from-[#C3E2DC]">
           <div className='bg-[#C3E2DC]'>
-           <DashboardRightHeader title={"Dashboard"}/>
+           <AdminDashboardRightHeader title={"Dashboard"}/>
           </div>
 
           {/* <!-- Statistics Cards --> */}

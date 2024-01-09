@@ -32,7 +32,7 @@ export const getGtinSubscriptions = async (req, res, next) => {
             user_id: Joi.string(),
             pkg_id: Joi.string(),
             status: Joi.string().valid('active', 'inactive'),
-            // ... other fields ...
+            isDeleted: Joi.boolean(),
         };
 
         // Create a dynamic schema based on the allowed columns

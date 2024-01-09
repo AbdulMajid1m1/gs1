@@ -325,6 +325,7 @@ export const createUser = async (req, res, next) => {
                 status: "inactive",
                 price: parseFloat(cartData[0].price),
                 pkg_id: cartData[0].productID,
+                gtin_subcription_total_price: parseFloat(cartData[0].yearly_fee),
 
             };
 
@@ -338,8 +339,10 @@ export const createUser = async (req, res, next) => {
                 user_id: newUser.id,
                 status: "inactive",
                 price: parseFloat(item.price),
+
                 product_id: item.productID,
                 product_identifier_name: item.productName,
+                other_products_subscription_total_price: parseFloat(item.yearly_fee),
 
 
             }));

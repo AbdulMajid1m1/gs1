@@ -8,10 +8,8 @@ import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const DowngradePopUp = ({ isVisible, setVisibility,
+const DowngradePopUp = ({ isVisible, setVisibility, userData
 }) => {
-  const gs1RegesteredMembersData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
-  console.log(gs1RegesteredMembersData);
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -26,7 +24,7 @@ const DowngradePopUp = ({ isVisible, setVisibility,
 
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${gs1RegesteredMembersData?.transaction_id}`);
+      const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
@@ -45,34 +43,51 @@ const DowngradePopUp = ({ isVisible, setVisibility,
   }
 
 
-    const handleCompareGtinBarcodes = async () => {
-        try {
-            const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1RegesteredMembersData?.id}`);
-            const res2 = await newRequest.get('/gtinUpgrade');
-            // console.log(res.data);
-            // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
-            const firstApiTotalBarcodes =
-            res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
-            setGtinId(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
-            console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
+  const handleCompareGtinBarcodes = async () => {
+    try {
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}`);
+      const res2 = await newRequest.get('/gtinProducts');
+      // console.log(res.data);
+      // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+      const firstApiTotalBarcodes =
+        res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
+
+        setGtinId(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
+        console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
 
 
-            const filteredOptions = res2.data.filter(
-            (option) => option.total_no_of_barcodes < firstApiTotalBarcodes
-            );
+      const filteredOptions = res2.data.filter(
+        (option) => option.total_no_of_barcodes < firstApiTotalBarcodes
+      );
 
-            console.log(res.data);
-            console.log(firstApiTotalBarcodes);
-            console.log(res2.data);
+      console.log(res.data);
+      console.log(firstApiTotalBarcodes);
+      console.log(res2.data);
 
-            // Set the filtered options in your state or use it directly
-            setGtinBarcodes(filteredOptions);
-            console.log(filteredOptions);
+      // Set the filtered options in your state or use it directly
+      // mmeber has two categotyes non_med_category and med_category selelct price based on category and setGtinBarcodes
+      // member_registration_fee med_yearly_subscription_fee member_registration_fee gtin_yearly_subscription_fee
+
+      // set price based on member category
+      console.log(filteredOptions);
+      filteredOptions.forEach((item) => {
+        if (userData?.membership_category === "non_med_category") {
+          item.price = item.member_registration_fee,
+            item.yearly_fee = item.gtin_yearly_subscription_fee
+        } else if (userData?.membership_category === "med_category") {
+          item.price = item.med_registration_fee,
+            item.yearly_fee = item.med_yearly_subscription_fee
         }
-        catch (err) {
-            console.log(err);
-        }
+      });
+      console.log(filteredOptions);
+   
+
+      setGtinBarcodes(filteredOptions);
     }
+    catch (err) {
+      console.log(err);
+    }
+  }
 
 
   useEffect(() => {
@@ -95,7 +110,7 @@ const DowngradePopUp = ({ isVisible, setVisibility,
 
     try {
        const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
-        "user_id": gs1RegesteredMembersData?.id,
+        "user_id": userData?.id,
         "gtin_product_id": selectedGtinBarcodes?.id,
         "current_gtin_subscription_id": gtinId,
     });
@@ -129,7 +144,8 @@ const DowngradePopUp = ({ isVisible, setVisibility,
                       id="field1"
                       options={gtinBarcodes}
                       value={selectedGtinBarcodes}
-                      getOptionLabel={(option) => option ? `GTIN: ${option.total_no_of_barcodes} - Price: ${option.price}` : ""}
+                      // getOptionLabel={(option) => option ? `GTIN: ${option.total_no_of_barcodes} - Price: ${option.price}` : ""}
+                      getOptionLabel={(option) => option?.total_no_of_barcodes ? `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yealy_fee: ${option?.yearly_fee} - Registeration_Fee ${option?.price}` : ""}
                       onChange={handleSelectedGtinBarcodes}
                       onInputChange={(event, value) => {
                         if (!value) {
@@ -150,7 +166,7 @@ const DowngradePopUp = ({ isVisible, setVisibility,
                             style: { color: "white" },
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Upgrade Barcodes"
+                          placeholder="Select Downgrade Barcodes"
                         required
                         />
                       )}
@@ -168,7 +184,7 @@ const DowngradePopUp = ({ isVisible, setVisibility,
                 <div className="table-member-inoive px-4 pt-3">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1RegesteredMembersData?.transaction_id}</h2>
+                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
                   </div>
                   <table>
                     <thead>
