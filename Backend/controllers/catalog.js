@@ -237,6 +237,35 @@ export const deletemega_menu_categories = async (req, res, next) => {
         next(error);
     }
 };
+export const mega_menu_categories_frontSide = async (req, res, next) => {
+  try {
+        // Fetch all mega_menu ids
+        const megamanuIds = await prisma.mega_menus.findMany({
+            select: {
+                id: true,
+            },
+        });
+
+        // Extract only the ids from the result
+        const megaMenuIdsArray = megamanuIds.map(menu => menu.id);
+
+        // Fetch mega_menu_categories based on the mega_menu_ids
+        const mega_menu_categories = await prisma.mega_menu_categories.findMany({
+            where: {
+                megamenu_id: {
+                    in: megaMenuIdsArray,
+                },
+            },
+            orderBy: {
+                updated_at: 'desc',
+            },
+        });
+
+        res.json(mega_menu_categories);
+    } catch (error) {
+        next(error);
+    }
+};
 const footer_menus = Joi.object({
     parent_id: Joi.string().max(255).required(),
     category_name_en: Joi.string().max(255).required(),
