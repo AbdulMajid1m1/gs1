@@ -12,8 +12,8 @@ const LanguageSwitcher = () =>
 
     return (
         <div>
-            <button onClick={() => changeLanguage('en')}>English</button>
-            <button onClick={() => changeLanguage('ar')}>العربية</button>
+            {/* <button onClick={() => changeLanguage('en')}>English</button> */}
+            {/* <button onClick={() => changeLanguage('ar')}>العربية</button> */}
         </div>
     );
 };
