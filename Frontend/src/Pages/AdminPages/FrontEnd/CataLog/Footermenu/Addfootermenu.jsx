@@ -23,6 +23,17 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
+        const getpagedatasdsd = async () => {
+            try {
+                const response = await newRequest.get('/getAllmega_menu_categories');
+                const nameEnArray = response.data;
+                console.log('getAllmega_menu_categories', nameEnArray);
+                // setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getpagedatasdsd();
         getpagedata();
     }, []);
     
