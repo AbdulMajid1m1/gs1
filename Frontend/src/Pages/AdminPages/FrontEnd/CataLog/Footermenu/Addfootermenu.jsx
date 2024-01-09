@@ -25,6 +25,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
         };
         getpagedata();
     }, []);
+    
     const handleAddCompany = async () => {
         //  integrate the post api in try catch blcck
         try {
