@@ -64,16 +64,11 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       reject_reason: rejected,
     };
 
-    const upgrade_invoice = {
+    const changeGtinSub = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
     }
 
-    const downgrade_invoice = {
-      userId: gs1MemberInvoiceData?.user_id,
-      transactionId: gs1MemberInvoiceData?.transaction_id,
-      current_gtin_subscription_id: gtinId,
-    }
     // console.log(upgrade_invoice);
 
 
@@ -83,19 +78,16 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     if (gs1MemberInvoiceData?.type === "invoice") {
       apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
-    } 
+    }
     else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
-    } 
-    else if (gs1MemberInvoiceData?.type === "upgrade_invoice") {
+    }
+    else if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice") {
       apiEndpoint = `/changeMembership/approveMembershipRequest`;
-      requestBody = upgrade_invoice;
+      requestBody = changeGtinSub;
     }
-    else if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
-      apiEndpoint = `/changeMembership/approveDowngradeMembershipRequest`;
-      requestBody = downgrade_invoice;
-    }
+
 
     try {
       const res = await newRequest.put(apiEndpoint, { ...requestBody });
@@ -120,13 +112,13 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data || "Something went wrong!");
+      toast.error(err.response?.data?.error || "Something went wrong!");
     }
   };
-      // console.log(err);
-      // setLoading(false);
-      // toast.error(err.response?.data?.error || "Something went wrong!");
-    // }
+  // console.log(err);
+  // setLoading(false);
+  // toast.error(err.response?.data?.error || "Something went wrong!");
+  // }
   // };
 
 

@@ -759,6 +759,7 @@ model gtin_subcriptions {
   created_at   DateTime? @default(now())
   updated_at   DateTime? @updatedAt
   deleted_at   DateTime? @db.DateTime
+  isDeleted    Boolean?  @default(false)
   expiry_date  DateTime? @db.DateTime
 
   gtin_subscription_limit       Float @default(0)
@@ -893,6 +894,7 @@ model mega_menu_categories {
   status           Int?
   created_at       DateTime? @default(now()) @db.DateTime
   updated_at       DateTime  @default(now()) @db.DateTime
+  mega_menus       mega_menus? @relation(fields: [megamenu_id], references: [id])
 }
 
 model mega_menus {
@@ -902,6 +904,7 @@ model mega_menus {
   status     Int
   created_at DateTime? @default(now()) @db.DateTime
   updated_at DateTime  @default(now()) @db.DateTime
+ mega_menu_categories mega_menu_categories[]
 }
 
 model mema_descriptions {
@@ -1418,6 +1421,7 @@ model other_products_subcriptions {
   created_at                              DateTime       @default(now())
   updated_at                              DateTime       @updatedAt
   deleted_at                              DateTime?      @db.DateTime
+  isDeleted                               Boolean?       @default(false)
   expiry_date                             DateTime?      @db.DateTime
   other_products_subscription_limit       Float          @default(0)
   other_products_subscription_counter     Float          @default(0)
@@ -2040,23 +2044,20 @@ model document_type {
 }
 
 model gtin_upgrade_pricing {
-  id                       String                     @id @default(cuid())
-  total_no_of_barcodes     Float?
-  price                    Float?
-  created_at               DateTime                   @default(now())
-  updated_at               DateTime                   @updatedAt
-  upgrade_member_ship_cart upgrade_member_ship_cart[]
+  id                   String   @id @default(cuid())
+  total_no_of_barcodes Float?
+  price                Float?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
 }
 
 model upgrade_member_ship_cart {
-  id                                String                @id @default(cuid())
+  id                                String   @id @default(cuid())
   user_id                           String
   gtin_product_id                   String?
   transaction_id                    String
   registered_product_transaction_id String
   status                            Int?
-  created_at                        DateTime              @default(now())
-  updated_at                        DateTime              @updatedAt
-  // make a one-to-many relationship with gtin_upgrade_pricing
-  gtin_upgrade_pricing              gtin_upgrade_pricing? @relation(fields: [gtin_product_id], references: [id])
+  created_at                        DateTime @default(now())
+  updated_at                        DateTime @updatedAt
 }
