@@ -39,48 +39,29 @@ const Categories = () => {
         tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     const [filteredData, setFilteredData] = useState([]);
 
-
-    const fetchData = async () => {
-        try {
-            // Fetch cities data
-            const citiesResponse = await newRequest.get("/getAllmega_menu_categories");
-            const citiesData = citiesResponse?.data || [];
-
-
-            const statesResponse = await newRequest.get('/getAllmega_menu');
-            const statesData = statesResponse?.data || [];
-
-
-            const stateIdToNameMap = {};
-            statesData.forEach(state => {
-                stateIdToNameMap[state.id] = state.category_name_en;
-            });
-
-
-            const updatedCitiesData = citiesData.map(city => ({
-                ...city,
-                megamenu_id: stateIdToNameMap[city.id] || "Unknown State",
-            }));
-            // setData(updatedCitiesData);
-            console.log(updatedCitiesData);
-            setIsLoading(false);
-        } catch (err) {
-            console.log(err);
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
     const refreshcitiesData = async () => {
         try {
             const response = await newRequest.get("/getAllmega_menu_categories",);
-
-            console.log(response.data);
+            const citiesData = response?.data || [];
             setData(response?.data || []);
+
             setIsLoading(false)
+
+            const statesResponse = await newRequest.get('/getAllmega_menu');
+            const statesData = statesResponse?.data || [];
+            const stateIdToNameMap = {};
+            statesData.forEach(state => {
+                stateIdToNameMap[state.id] = state.name_en;
+            });
+
+
+            const updatedCitiesData = citiesData.map(megnumenu => ({
+                ...megnumenu,
+                megamenu_id: stateIdToNameMap[megnumenu.megamenu_id] || "Unknown State",
+            }));
+
+            console.log('statesData', updatedCitiesData);
+            setData(updatedCitiesData);
 
         } catch (err) {
             console.log(err);

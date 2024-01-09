@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 
@@ -7,7 +7,20 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [JobTitle, setJobTitle] = useState("");
     const [Description, setDescription] = useState('')
     const [Page, setPage] = useState('')
+    const [Pagedropdown, setPagedropdown] = useState([])
+    useEffect(() => {
+        const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
+        getpagedata();
+    }, []);
     const handleCloseCreatePopup = () => {
         setVisibility(false);
     };
@@ -29,7 +42,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('job_title', JobTitle);
         formData.append('description', Description);
         formData.append('image', imageshow);
-        formData.append('addedBy', Page);
+        formData.append('addedBy', '1');
         formData.append('status', 1);
         try {
             const response = await newRequest.post('/creatboard_members', formData,
@@ -104,7 +117,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         />
                                     </div>
 
-                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                    {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
                                             Set Page
                                         </label>
@@ -114,11 +127,16 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
-                                            <option value="1">Set Page1</option>
-                                            <option value="2">Set Page2</option>
+                                            <option value="Select">-- Select --</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
-                                    </div>
+                                    </div> */}
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">

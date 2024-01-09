@@ -13,9 +13,34 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
     const [Categorylevel, setCategorylevel] = useState(updateBrandData?.Categorylevel || '')
-    const [MegaMenuCategories, setMegaMenuCategories] = useState(updateBrandData?.megamenu_id || '')
-    const [Page, setPage] = useState(updateBrandData?.megamenu_id || '')
+    const [MegaMenuCategories, setMegaMenuCategories] = useState('')
+    const [Page, setPage] = useState(updateBrandData?.url || '')
+    const [Description, setDescription] = useState(updateBrandData?.description || '')
+    const [Title, setTitle] = useState(updateBrandData?.meta_title || '');
+    const [MetaDescription, setMetaDescription] = useState(updateBrandData?.meta_description || '')
+
+    const [Pagedropdown, setPagedropdown] = useState([])
     const [megamenudropdown, setmegamenudropdown] = useState([])
+
+    const refreshcitiesData = async () => {
+        try {
+            const citiesData = updateBrandData?.megamenu_id || '';
+            const statesResponse = await newRequest.get('/getAllmega_menu');
+            const statesData = statesResponse?.data || [];
+            const stateIdToNameMap = {};
+            statesData.forEach(state => {
+                stateIdToNameMap[state.id] = state.name_en;
+            });
+            console.log('statesData', citiesData);
+            setMegaMenuCategories(citiesData)
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    useEffect(() => {
+        refreshcitiesData() // Calling the function within useEffect, not inside itself
+    }, []);
+
     useEffect(() => {
         const getDocuments = async () => {
             try {
@@ -26,6 +51,17 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
+        const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getpagedata();
         getDocuments();
     }, []);
 
@@ -42,10 +78,10 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 megamenu_id: MegaMenuCategories,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
-                description: "KHAN",
-                url: "wwww.wadawd",
-                meta_title: "khan",
-                meta_description: "khan",
+                description: Description,
+                url: Page,
+                meta_title: Title,
+                meta_description: MetaDescription,
                 meta_keywords: "khan",
                 status: Number(status),
             });
@@ -92,7 +128,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             {isVisible && (
                 <div className="popup-overlay">
                     <div className="popup-container h-auto sm:w-[45%] w-full">
-                        <div className="popup-form w-full">
+                        <div className="popup-form w-full max-h-screen overflow-y-auto">
                             <form className='w-full'>
                                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Mega Menu Categories</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
@@ -154,8 +190,8 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">Category Level</option>
-                                            <option value="1">Main Category</option>
+                                            <option value="Category Level">Category Level</option>
+                                            <option value="Main Category">Main Category</option>
                                         </select>
                                     </div>
 
@@ -170,8 +206,13 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
                                             <option value="0">-- Select --</option>
-                                            <option value="1">Set Page1</option>
-                                            <option value="2">Set Page2</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 
@@ -188,6 +229,49 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             <option value="0">inactive</option>
                                             <option value="1">active</option>
                                         </select>
+                                    </div>
+
+                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                        <label htmlFor="status" className="text-secondary">
+                                            Description
+                                        </label>
+                                        <textarea
+                                            type="text"
+                                            id="name_ar"
+                                            value={Description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            placeholder="Enter Description"
+                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                        />
+
+                                    </div>
+
+                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                        <label htmlFor="field1" className="text-secondary">Meta Title</label>
+                                        <input
+                                            type="text"
+                                            id="Title"
+                                            value={Title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            placeholder="Enter Meta Title"
+                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                        />
+                                    </div>
+
+
+                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                        <label htmlFor="status" className="text-secondary">
+                                            Meta  Description
+                                        </label>
+                                        <textarea
+                                            type="text"
+                                            id="name_ar"
+                                            value={MetaDescription}
+                                            onChange={(e) => setMetaDescription(e.target.value)}
+                                            placeholder="Enter Meta Description"
+                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                        />
+
                                     </div>
 
                                 </div>

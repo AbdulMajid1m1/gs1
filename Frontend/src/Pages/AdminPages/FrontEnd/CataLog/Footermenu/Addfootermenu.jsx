@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 
@@ -7,12 +7,24 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_ar, setcategory_name_ar] = useState("");
     const [Categorylevel, setCategorylevel] = useState('')
     const [Page, setPage] = useState('')
-   
+
+    const [Pagedropdown, setPagedropdown] = useState([])
     const handleCloseCreatePopup = () => {
         setVisibility(false);
     };
 
-
+    useEffect(() => {
+       const getpagedata = async () => {
+            try {
+                const response = await newRequest.get('/getAllpagesname');
+                const nameEnArray = response.data;
+                setPagedropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getpagedata();
+    }, []);
     const handleAddCompany = async () => {
         //  integrate the post api in try catch blcck
         try {
@@ -20,7 +32,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 parent_id: Categorylevel,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
-                url: "wwww.wadawd",
+                url: Page,
                 status: 1,
             });
 
@@ -117,9 +129,14 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
-                                            <option value="1">Set Page1</option>
-                                            <option value="2">Set Page2</option>
+                                            <option value="Select">-- Select --</option>
+                                            {
+                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 
