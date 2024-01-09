@@ -6,6 +6,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_en, setcategory_name_en] = useState("");
     const [category_name_ar, setcategory_name_ar] = useState("");
     const [Categorylevel, setCategorylevel] = useState('')
+    const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Page, setPage] = useState('')
 
     const [Pagedropdown, setPagedropdown] = useState([])
@@ -28,7 +29,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
                 console.log('getAllmega_menu_categories', nameEnArray);
-                // setPagedropdown(nameEnArray);
+                setCategoryleveldropdown(nameEnArray);
             } catch (error) {
                 console.log(error);
             }
@@ -124,10 +125,13 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
                                             <option value="Category Level">Category Level</option>
-                                            <option value="Main Category">Main Category</option>
-                                            <option value="Standards">Standards</option>
-                                            <option value="News and Event">News and Event</option>
-                                            <option value="About GS1">About GS1</option>
+                                            {
+                                                Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.id}>{itme.category_name_en}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 

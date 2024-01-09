@@ -23,7 +23,7 @@ const LanguageSwitcher = () =>
                 onChange={(e) => changeLanguage(e.target.value)}
             >
                 <option value="en" >
-                    <div className="flex items-center">
+                    <div className="flex items-center bg-red" >
                         <img src='./Images/Flage.png' alt="English" className="mr-2" />
                         English
                     </div>

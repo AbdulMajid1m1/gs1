@@ -42,10 +42,24 @@ const Footermenu = () => {
     const refreshcitiesData = async () => {
         try {
             const response = await newRequest.get("/getAllfooter_menus",);
-
-            console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
+            const citiesData = response?.data || [];
+
+            const statesResponse = await newRequest.get('/getAllmega_menu_categories');
+            const statesData = statesResponse?.data || [];
+            const stateIdToNameMap = {};
+            statesData.forEach(state => {
+                stateIdToNameMap[state.id] = state.category_name_en;
+            });
+
+
+            const updatedCitiesData = citiesData.map(megnumenu => ({
+                ...megnumenu,
+                parent_id: stateIdToNameMap[megnumenu.parent_id] || "Unknown Category",
+            }));
+            setData(updatedCitiesData);
+            console.log('getAllmega_menu_categories', updatedCitiesData);
 
         } catch (err) {
             console.log(err);
