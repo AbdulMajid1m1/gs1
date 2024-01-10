@@ -827,9 +827,9 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
     }
 
     try {
-
+        let fetchPrice;
         if (value.subType === "UPGRADE") {
-            const fetchPrice = await calculateSubscriptionPrice(value.user_id, value.new_subscription_product_Id);
+            fetchPrice = await calculateSubscriptionPrice(value.user_id, value.new_subscription_product_Id);
             console.log("fetchPrice", fetchPrice);
             if (fetchPrice.finalPrice < 0) {
                 return next(createError(400, 'Invalid subscription upgrade request'));
