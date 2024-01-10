@@ -11,6 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.ql-editor img {
+  max-width: 220px;
+  max-height: 170px;
+}
 
 @tailwind base;
 @tailwind components;
