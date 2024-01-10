@@ -1464,12 +1464,14 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
     });
 
     const { error, value } = schema.validate(req.body);
-
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
 
+    
     const { transactionId, userId } = value;
+    console.log("trnaactioId",transactionId)
+    console.log("userId",trauserIdnsactionId)
 
     try {
         // Fetch upgrade cart
