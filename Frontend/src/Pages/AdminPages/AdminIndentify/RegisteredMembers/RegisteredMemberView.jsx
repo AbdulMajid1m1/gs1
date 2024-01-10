@@ -945,6 +945,7 @@ const RegisteredMembersView = () => {
           <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
             // fetchAllUserData={fetchAllUserData} MemberbankSlip={fetchMemberbankSlipData}
             fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
+            fetchRegisteredProductsData={fetchRegisteredProductsData}
           />
         )}
 

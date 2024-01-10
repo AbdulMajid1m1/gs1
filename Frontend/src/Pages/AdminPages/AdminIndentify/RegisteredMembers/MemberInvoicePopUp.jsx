@@ -7,7 +7,8 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData
+const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
+  fetchRegisteredProductsData,
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
@@ -101,7 +102,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/changeMembership/approveAdditionalProductsRequest`;
       requestBody = addGtin;
     }
-    
+
     else if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
       apiEndpoint = `/changeMembership/approveAdditionalGlnRequest`;
       requestBody = addGln;
@@ -125,6 +126,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
         // MemberbankSlip();
         fetchAllUserData();
         fetchMemberbankSlipData();
+        fetchRegisteredProductsData();
 
         fetchMemberHistoryData();
         // Close the popup
