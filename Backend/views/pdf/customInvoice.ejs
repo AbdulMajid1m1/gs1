@@ -263,7 +263,11 @@
 
                 <tr style="background-color: #003D79; color: white; font-weight: bold;">
                     <td colspan="10" class="text-bold p-text text-left">Total</td>
-                    <td colspan="2" class="text-bold p-text text-right"><%= data.cart.total %></td>
+                    <% let totalPrice = 0; %>
+                    <% data.cart.cart_items.forEach((item) => { %>
+                        <% totalPrice += parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10); %>
+                    <% }); %>
+                    <td colspan="2" class="text-bold p-text text-right"><%= totalPrice %></td>
                 </tr>
             </table><br>
 

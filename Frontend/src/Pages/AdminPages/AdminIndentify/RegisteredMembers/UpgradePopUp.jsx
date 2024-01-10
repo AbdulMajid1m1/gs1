@@ -8,7 +8,7 @@ import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const UpgradePopUp = ({ isVisible, setVisibility, userData
+const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
 }) => {
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
@@ -23,15 +23,28 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
 
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
+      // const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
       let total = 0;
-      const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-      cartItems.forEach((item) => {
-        total += parseInt(item.price); // Make sure to parse the price as an integer
+
+
+
+
+
+
+
+      res.data?.gtinSubscriptions.forEach((item) => {
+        total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
       });
+
+      res.data?.otherProductSubscriptions.forEach((item) => {
+        // add price and other_products_subscription_total_price
+        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+      });
+      console.log(total);
       setTotalPrice(total);
     }
     catch (err) {
@@ -44,7 +57,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
 
   const handleCompareGtinBarcodes = async () => {
     try {
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
       const res2 = await newRequest.get('/gtinProducts');
       // console.log(res.data);
       // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
@@ -52,7 +65,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
         res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
 
       const filteredOptions = res2.data.filter(
-        (option) => option.total_no_of_barcodes > firstApiTotalBarcodes
+        // if subType is UPGRADE then gtin_product.total_no_of_barcodes > firstApiTotalBarcodes else gtin_product.total_no_of_barcodes < firstApiTotalBarcodes
+        (option) => subType === "UPGRADE" ? option.total_no_of_barcodes > firstApiTotalBarcodes : option.total_no_of_barcodes < firstApiTotalBarcodes
       );
 
       console.log(res.data);
@@ -75,7 +89,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
         }
       });
       console.log(filteredOptions);
-   
+
 
       setGtinBarcodes(filteredOptions);
     }
@@ -91,9 +105,22 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
   }, []);
 
 
-  const handleSelectedGtinBarcodes = (event, value) => {
+  const handleSelectedGtinBarcodes = async (event, value) => {
     console.log(value);
-    setSelectedGtinBarcodes(value);
+    console.log(userData?.id);
+    // calll the api
+    try {
+      const res = await newRequest.post('/changeMembership/getInvoiceDetailsForUpgradeSubscription', {
+        "userId": userData?.id,
+        "newSubscriptionId": value?.id,
+      });
+      console.log(res.data);
+      setSelectedGtinBarcodes(res.data);
+    }
+    catch (err) {
+      console.log(err);
+      toast.error(err.response?.data?.error || "Failed to get invoice details!");
+    }
   };
 
 
@@ -103,21 +130,27 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
     setLoading(true);
 
     try {
+      // if (subType === "UPGRADE") {
       const res = await newRequest.put('/changeMembership/upgradeMembershipRequest', {
         "user_id": userData?.id,
-        "gtin_product_id": selectedGtinBarcodes?.id,
+        "new_subscription_product_Id": selectedGtinBarcodes?.id,
+        subType: subType
+
       });
       console.log(res.data);
-      {
-        toast.success(res?.data?.message || "Upgrade request sent successfully!");
-        setLoading(false);
-        // Close the popup
-        handleCloseUpgradePopup();
-      }
+      toast.success(res?.data?.message || "Upgrade request sent successfully!");
+      // }
+
+
+      // Close the popup
+      handleCloseUpgradePopup();
     } catch (err) {
       console.log(err);
-      setLoading(false);
+
       toast.error(err.response?.data?.error || "Upgrade request failed!");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -130,9 +163,9 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Upgrade Invoice</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{subType} SUBSCRIPTION</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                  <label htmlFor="field1" className="text-secondary">Select Barcodes</label>
+                  <label htmlFor="field1" className="text-secondary">Select new subscription</label>
                   <Autocomplete
                     id="field1"
                     options={gtinBarcodes}
@@ -159,7 +192,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
                           style: { color: "white" },
                         }}
                         className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                        placeholder="Select Upgrade Barcodes"
+                        placeholder="Select new subscription"
                         required
                       />
                     )}
@@ -177,6 +210,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
                 <div className="table-member-inoive px-4 pt-3">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
+                    <h1 className="text-secondary font-sans font-semibold text">Current Subscription</h1>
                     <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
                   </div>
                   <table>
@@ -185,26 +219,85 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData
                         <th>PRODUCT</th>
                         <th>REGISTRATION FEE</th>
                         <th>YEARLY FEE</th>
+                        <th>EXPIRY DATE</th>
                         <th>PRICE</th>
+
                       </tr>
                     </thead>
                     <tbody>
-                      {memberInoviceData.map((item, index) => {
-                        const cartItems = JSON.parse(item.cart_items);
-                        return cartItems.map((cartItem, cartIndex) => (
-                          <tr key={cartIndex}>
-                            <td>{cartItem.productName}</td>
-                            <td>{cartItem.registration_fee}</td>
-                            <td>{cartItem.yearly_fee}</td>
-                            <td>{cartItem.price}</td>
+                      {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+
+                        return (
+                          <tr key={'gtin_product' + index}>
+                            <td>{item?.gtin_product?.member_category_description}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.gtin_subscription_total_price}</td>
+                            <td>{expiryDate}</td>
+                            <td>{item?.gtin_subscription_total_price + item?.price}</td>
                           </tr>
-                        ));
+                        );
                       })}
+                      {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
+                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                        return (
+
+
+                          <tr key={'other_products' + index}>
+                            <td>{item?.product?.product_name}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.other_products_subscription_total_price}</td>
+                            <td>{expiryDate}</td>
+                            <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                          </tr>
+                        )
+                      })}
+
+
+
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan="3" className="text-right font-bold">Total:</td>
+                        <td colSpan="4" className="text-right font-bold">Total:</td>
                         <td>{totalPrice}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2">New Subscription Invoice Details</h1>
+                <div className="table-member-inoive px-4 pt-1">
+                  {/* show the transaction_id in very small  */}
+                  <div className="flex justify-between items-center">
+
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>REMAINING MONTHS FROM CURRENT SUBSCRITION</th>
+                        <th>REMAINING MONTHS FEE</th>
+                        <th>NEW SUBSCRIPTION YEARLY FEE</th>
+                        <th>REMAINING YEALY FEE</th>
+                        <th>FINAL PRICE</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+
+
+                      <tr>
+                        <td>{selectedGtinBarcodes?.remainingMonths}</td>
+                        <td>{selectedGtinBarcodes?.remainingMonthsFee}</td>
+                        <td>{selectedGtinBarcodes?.newSubscriptionYearlyFee}</td>
+                        <td>{selectedGtinBarcodes?.remainingYearlyFee}</td>
+                        <td>{selectedGtinBarcodes?.finalPrice}</td>
+                      </tr>
+
+
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colSpan="4" className="text-right font-bold">Total:</td>
+                        <td>{selectedGtinBarcodes?.finalPrice}</td>
                       </tr>
                     </tfoot>
                   </table>
