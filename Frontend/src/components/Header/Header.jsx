@@ -1,12 +1,16 @@
 import React from 'react'
 import gs1v2logo from "../../Images/logo.png"
 import { useNavigate } from 'react-router-dom'
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import LanguageSwitcher from "../../switer"
+import i18n from '../../i18n';
 
 const Header = () => {
     const navigate = useNavigate()   
   
   return (
     <div>
+
        <div className='sticky top-0 z-50 bg-white p-2'>
           <div className='h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4'>
             {/* Logo and Text */}
@@ -19,7 +23,8 @@ const Header = () => {
             </div>
 
             {/* Buttons */}
-            <div>
+            <div className='flex'>
+              <div className=''>
               <div className='flex justify-end items-end px-1 gap-3 font-sans font-semibold'>
                 <p className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Verified By GS1</p>
                  | 
@@ -39,7 +44,14 @@ const Header = () => {
                 >
                   GS1 Member Login
                 </button>
+                
             </div>
+            </div>
+            
+            <I18nextProvider i18n={i18n}>
+              <LanguageSwitcher />
+            </I18nextProvider>
+           
             </div>
           </div>
         </div>

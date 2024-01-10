@@ -3528,7 +3528,7 @@ export const footerMenuDataColumn = [
   },
   {
     field: 'parent_id',
-    headerName: 'Parent ID',
+    headerName: 'Category',
     width: 150,
   },
   {

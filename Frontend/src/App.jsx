@@ -101,6 +101,7 @@ import Userguide from "./Pages/AdminPages/FrontEnd/Userguide/Userguide";
 import Pages from "./Pages/AdminPages/FrontEnd/Pages/Pages";
 import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
 import Updatapage from "./Pages/AdminPages/FrontEnd/Pages/Updatapage";
+import BlogPages from "./Pages/UserPages/BlogPages/BlogPages";
 
 const queryClient = new QueryClient()
 
@@ -138,6 +139,7 @@ const App = () => {
                   <Route path="/email-address" element={<EmailAddress />} />
                   <Route path="/select-activity" element={<SelectActivity />} />
                   <Route path="/verify-code" element={<VerifyCode />} />
+                  <Route path="/:id" element={<BlogPages />} />
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
