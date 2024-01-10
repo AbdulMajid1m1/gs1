@@ -1,6 +1,13 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
+import Header from '../../../components/Header/Header';
+import Footer from '../../../components/Footer/Footer';
+import DropDownSelection from '../DropDownSelection/DropDownSelection';
 
 const BlogPages = () => {
+  const { id } = useParams();
+  console.log(id);
+
   // const [getAllPageData, setGetAllPageData] = useState([])
 
   // const handleGetAllPageData = async () => {
@@ -15,32 +22,27 @@ const BlogPages = () => {
   //   }
   // }
 
-  
+
   return (
-    <div>BlogPages</div>
+    <div>
+       {/* Nav */}
+       <div className='sticky top-0 z-50 bg-white'>
+          <Header />
+       </div>
+
+       <div>
+         <DropDownSelection />
+       </div>
+
+       <div className='mt-10 mb-10'>
+          Blog Pages
+       </div>
+
+
+       {/* Footer */}
+       <Footer />
+    </div>
   )
 }
 
 export default BlogPages
-
-
-// @extends('frontend.layout.frontend')
-
-
-// @section('content')
-
-
-// @push('seo')
-//         <meta name='description' content="{{$page->seo_description}}">
-// @endpush
-// <?php 
-//     // echo "<pre>"; print_r($page->sections); exit();
-// ?>
-//  @if ($page->sections != null)
-//         @foreach ($page->sections as $sections)
-//             @include('frontend.sections.'.$sections, $page)
-//         @endforeach
-
-//     @endif
-
-// @endsection
