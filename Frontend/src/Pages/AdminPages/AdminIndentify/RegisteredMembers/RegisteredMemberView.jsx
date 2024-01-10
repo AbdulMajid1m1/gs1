@@ -79,9 +79,9 @@ const RegisteredMembersView = () => {
   };
   const handleAddGlnClick = (row) => {
     setSubType("ADD GLN")
+    sessionStorage.setItem("selectedGlnRowData", JSON.stringify(row));
     setIsUpgradePopupVisible(true);
     console.log(row);
-    sessionStorage.setItem("selectedGlnRowData", JSON.stringify(row));
   };
   const filterDropdownOptions = (row, dropDownOptions) => {
     if (row.product_identity === 'gtin') {

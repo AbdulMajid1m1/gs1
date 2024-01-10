@@ -239,7 +239,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
         console.log(selectedGtinBarcodes?.id);
         console.log(memberInoviceData?.otherProductSubscriptions);
         const selectGLnRow = JSON.parse(sessionStorage.getItem('selectedGlnRowData'));
-        console.log(selectGLnRow);
+        console.log("selectGLnRow", selectGLnRow);
         const res = await newRequest.post('/changeMembership/addAdditionalGlnRequest', {
           "userId": userData?.id,
           "additionalGlnId": selectedGtinBarcodes?.id,
