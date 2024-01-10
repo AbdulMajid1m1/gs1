@@ -15,7 +15,7 @@ const BlogPages = () => {
   //     const res = await newRequest.get("/pages")
   //     console.log(res.data);
   //     setGetAllPageData(res.data);
-  //   }
+  //   }   
   //   catch (error) {
   //     console.log(error);
 
