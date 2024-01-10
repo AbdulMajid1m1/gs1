@@ -25,6 +25,128 @@ const renewMembershipSchema = Joi.object({
 });
 
 
+
+
+async function calculateSubscriptionPrice(userId, newSubscriptionId) {
+    try {
+        // Fetch details of the old subscription based on the user ID
+        const oldSubscription = await prisma.gtin_subcriptions.findFirst({
+            where: {
+                user_id: userId,
+                isDeleted: false,
+            },
+            include: {
+                gtin_product: true, // Fetch gtin_product details
+            },
+        });
+
+        const user = await prisma.users.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user)
+            throw new Error('User not found');
+
+        // Fetch details of the new subscription
+        const newSubscription = await prisma.gtin_products.findUnique({
+            where: { id: newSubscriptionId },
+        });
+
+        if (!oldSubscription)
+            throw new Error('Old subscription not found');
+
+        if (!newSubscription)
+            throw new Error('New subscription not found');
+
+        // Calculate the remaining months of the old subscription
+        const currentDate = new Date();
+        const expiryDate = new Date(oldSubscription.expiry_date);
+        const remainingMonths = Math.max(0, expiryDate.getMonth() - currentDate.getMonth() +
+            12 * (expiryDate.getFullYear() - currentDate.getFullYear()));
+        console.log("remainingMonths", remainingMonths);
+
+        // Initial fee calculations
+        let newRegistrationFee;
+        let remainingMonthsFee = 0;
+
+        // Determine new subscription registration fee based on user's membership category
+        let newSubscriptionRegistrationFee = user.membership_category === "non_med_category" ?
+            newSubscription.member_registration_fee : newSubscription.med_registration_fee;
+        let oldSubscriptionRegistrationFee = user.membership_category === "non_med_category" ?
+            oldSubscription.gtin_product.member_registration_fee :
+            oldSubscription.gtin_product.med_registration_fee;
+        // Adjust registration fee based on old subscription
+        if (remainingMonths <= 0) {
+            newRegistrationFee = newSubscriptionRegistrationFee;
+        } else {
+
+
+
+            newRegistrationFee =
+                newSubscriptionRegistrationFee -
+                oldSubscriptionRegistrationFee;
+
+            // Calculate remaining months fee from old subscription
+            remainingMonthsFee =
+                (remainingMonths / 12) * oldSubscription.gtin_subscription_total_price;
+        }
+        console.log("newRegistrationFeeeeee", newRegistrationFee);
+        // Determine new subscription yearly fee based on user's membership category
+        const newSubscriptionYearlyFee =
+            user.membership_category === "non_med_category"
+                ? newSubscription.gtin_yearly_subscription_fee
+                : newSubscription.med_yearly_subscription_fee;
+
+        // Calculate remaining yearly fee for new subscription
+        const remainingYearlyFee = (remainingMonths / 12) * newSubscriptionYearlyFee;
+
+        // Calculate the final price
+        const finalPrice =
+            newRegistrationFee + remainingMonthsFee + remainingYearlyFee;
+
+        // Prepare and return the detailed response
+        return {
+            finalPrice: finalPrice,
+            newRegistrationFee: newRegistrationFee,
+            remainingMonthsFee: remainingMonthsFee,
+            newSubscriptionYearlyFee: newSubscriptionYearlyFee,
+            remainingYearlyFee: remainingYearlyFee,
+            remainingMonths: remainingMonths
+        };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    } finally {
+        await prisma.$disconnect(); // Disconnect from the database
+    }
+}
+
+export const getInvoiceDetailsForUpgradeSubscription = async (req, res) => {
+    const schema = Joi.object({
+        userId: Joi.string().required(),
+        newSubscriptionId: Joi.string().required(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { userId, newSubscriptionId } = value;
+
+    try {
+        const subscriptionDetails = await calculateSubscriptionPrice(userId, newSubscriptionId);
+        console.log(`Details for the new subscription:`, subscriptionDetails);
+        res.json(subscriptionDetails);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
 export const membershipRenewRequest = async (req, res, next) => {
 
     // Validate the request body
