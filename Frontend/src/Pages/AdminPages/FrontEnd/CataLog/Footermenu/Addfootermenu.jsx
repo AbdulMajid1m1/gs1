@@ -130,13 +130,14 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
-                                            { }
-                                            {/* <option value="Category Level">Category Level</option>
-                                            <option value="Main Category">Main Category</option>
-                                            <option value="Standards">Standards</option>
-                                            <option value="News and Event">News and Event</option>
-                                            <option value="About GS1">About GS1</option> */}
+                                            <option value="Category Level">Category Level</option>
+                                            {
+                                                Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.id}>{itme.category_name_en}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 

@@ -1,6 +1,21 @@
 import React from 'react'
 
 const BlogPages = () => {
+  // const [getAllPageData, setGetAllPageData] = useState([])
+
+  // const handleGetAllPageData = async () => {
+  //   try {
+  //     const res = await newRequest.get("/pages")
+  //     console.log(res.data);
+  //     setGetAllPageData(res.data);
+  //   }
+  //   catch (error) {
+  //     console.log(error);
+
+  //   }
+  // }
+
+  
   return (
     <div>BlogPages</div>
   )
