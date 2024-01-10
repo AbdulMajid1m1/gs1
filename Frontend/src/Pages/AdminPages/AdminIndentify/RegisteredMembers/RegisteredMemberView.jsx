@@ -71,8 +71,27 @@ const RegisteredMembersView = () => {
     // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
   };
+  const handleAddGtinClick = (row) => {
+    setSubType("ADD GTIN")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
 
-  const [isDowngradePopupVisible, setIsDowngradePopupVisible] = useState(false);
+  };
+  const handleAddGlnClick = (row) => {
+    setSubType("ADD GLN")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+    sessionStorage.setItem("selectedGlnRowData", JSON.stringify(row));
+  };
+  const filterDropdownOptions = (row, dropDownOptions) => {
+    if (row.product_identity === 'gtin') {
+      return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
+    } else if (row.product_identity === 'gln') {
+      return dropDownOptions.filter(option => option.label === 'Add GLN');
+    }
+    return []; // No options available
+  };
+
 
   const handleShowDowngradePopup = (row) => {
     setSubType("DOWNGRADE")
@@ -275,17 +294,22 @@ const RegisteredMembersView = () => {
         ...item,
         ...item.gtin_product,
         subscription_limit: item.gtin_subscription_limit,
+        Yearly_fee: item.gtin_subscription_total_price,
+        product_identity: "gtin"
       }));
 
       const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
         ...item,
         ...item.product,
         subscription_limit: item.other_products_subscription_limit,
+        Yearly_fee: item.other_products_subscription_total_price,
+        // product_identity: "gln"
+        product_identity: item?.product?.product_name?.toLowerCase().includes('gln') ? 'gln' : 'otherProduct'
       }));
 
       // Combine gtinSubscriptions and otherProductSubscriptions
       const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
-
+      console.log(combinedData);
       setRegisteredProductsData(combinedData);
       setRegisteredProductsLoader(false)
 
@@ -560,7 +584,7 @@ const RegisteredMembersView = () => {
                   secondaryColor="secondary"
                   // actionColumnVisibility={false}
                   checkboxSelection={"disabled"}
-
+                  getFilteredOptions={filterDropdownOptions}
                   dropDownOptions={[
 
                     {
@@ -578,17 +602,17 @@ const RegisteredMembersView = () => {
 
                     },
                     {
-                      label: "Add Barcodes",
+                      label: "Add GLN",
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
-                      // action: handleShowDowngradePopup,
+                      action: handleAddGlnClick,
 
                     },
                     {
                       label: "Add GTIN",
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
-                      // action: handleShowDowngradePopup,
+                      action: handleAddGtinClick,
 
                     },
 

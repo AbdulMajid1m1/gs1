@@ -143,6 +143,8 @@ export const getMemberInvoices = async (req, res, next) => {
                             { type: 'renewal_invoice' },
                             { type: 'upgrade_invoice' },
                             { type: 'downgrade_invoice' },
+                            { type: "additional_gln_invoice" },
+                            { type: "additional_gtin_invoice" },
                         ]
                     }
                 ]
@@ -173,6 +175,8 @@ export const getMemberPendingInvoices = async (req, res, next) => {
                             { type: 'renewal_invoice' },
                             { type: 'upgrade_invoice' },
                             { type: 'downgrade_invoice' },
+                            { type: "additional_gln_invoice" },
+                            { type: "additional_gtin_invoice" },
                         ]
                     },
 
