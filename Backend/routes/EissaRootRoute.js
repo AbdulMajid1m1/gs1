@@ -19,7 +19,7 @@ import
     getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
     , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
     creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
-creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events} from "../controllers/catalog.js"
+creatupcoming_events,getupcoming_eventsById,updateupcoming_events,deleteupcoming_events,mega_menu_categories_frontSide} from "../controllers/catalog.js"
 const router = express.Router();
 import {createpages,getAllpages,getpagesById,updatepages,deletepages,getAllpagesname} from '../controllers/pages.js'
 import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
@@ -99,6 +99,7 @@ router.put('/updatemega_menus/:id', updatemega_menus);
 router.delete('/deletemega_menus/:id', deletemega_menus);
 
 // Routes for mega_menu_categories
+router.get('/mega_menu_categories_frontSide', mega_menu_categories_frontSide);
 router.get('/getAllmega_menu_categories', getAllmega_menu_categories);
 router.post('/creatmega_menu_categories', creatmega_menu_categories);
 router.get('/getmega_menu_categoriesById/:id', getmega_menu_categoriesById);

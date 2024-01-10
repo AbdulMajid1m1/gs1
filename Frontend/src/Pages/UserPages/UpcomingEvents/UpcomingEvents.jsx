@@ -10,7 +10,7 @@ const UpcomingEvents = () => {
         <div className='flex justify-center items-center pt-12'>
             <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'>Upcoming Events</h2>
         </div>
-        <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 gap-4 lg:grid-cols-3 md:grid-cols-1 grid-cols-1 px-5 mb-4'>
+        <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 gap-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 px-5 mb-4'>
             {/* first Card */}
             <div 
               className='h-96 w-full border border-gray-300 rounded-md shadow-lg transition-transform transform hover:scale-110 bg-white'
