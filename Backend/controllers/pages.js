@@ -12,6 +12,7 @@ const pages = Joi.object({
     page_order: Joi.number(),
     sections: Joi.string().max(255).required(),
     custom_section_data: Joi.string().max(255).required(),
+    custom_section_data_ar: Joi.string().max(255).required(),
     seo_description: Joi.string().max(255).required(),
     is_dropdown: Joi.number(),
     
@@ -109,7 +110,7 @@ const { id } = req.params;
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { name, name_ar,slug,page_order,sections,custom_section_data,seo_description,is_dropdown, status } = req.body;
+        const { name, name_ar,slug,page_order,sections,custom_section_data,seo_description,is_dropdown, status,custom_section_data_ar } = req.body;
         const updatedUNSPSC = await prisma.pages.update({
             where: {id: id },
             data: {
@@ -121,7 +122,8 @@ const { id } = req.params;
                 custom_section_data,
                 seo_description,
                 is_dropdown,
-                status
+                status,
+                custom_section_data_ar
                
             },
         });
