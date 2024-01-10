@@ -12,8 +12,10 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_ar, setcategory_name_ar] = useState(updateBrandData?.category_name_ar || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
-    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.Categorylevel || '')
-    const [Page, setPage] = useState()
+    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
+    console.log(Categorylevel);
+    const [Page, setPage] = useState(updateBrandData?.url || '')
+    const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Pagedropdown, setPagedropdown] = useState([])
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -28,6 +30,17 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
+        const getpagedatasdsd = async () => {
+            try {
+                const response = await newRequest.get('/getAllmega_menu_categories');
+                const nameEnArray = response.data;
+                console.log('getAllmega_menu_categories', nameEnArray);
+                setCategoryleveldropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getpagedatasdsd();
         getpagedata();
     }, []);
     const handleUpdateBrand = async () => {
@@ -125,7 +138,13 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
                                             <option value="0">Category Level</option>
-                                            <option value="1">Main Category</option>
+                                            {
+                                                Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.id}>{itme.category_name_en}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 

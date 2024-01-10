@@ -6,6 +6,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_en, setcategory_name_en] = useState("");
     const [category_name_ar, setcategory_name_ar] = useState("");
     const [Categorylevel, setCategorylevel] = useState('')
+    const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Page, setPage] = useState('')
 
     const [Pagedropdown, setPagedropdown] = useState([])
@@ -23,8 +24,20 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
+        const getpagedatasdsd = async () => {
+            try {
+                const response = await newRequest.get('/getAllmega_menu_categories');
+                const nameEnArray = response.data;
+                console.log('getAllmega_menu_categories', nameEnArray);
+                setCategoryleveldropdown(nameEnArray);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getpagedatasdsd();
         getpagedata();
     }, []);
+    
     const handleAddCompany = async () => {
         //  integrate the post api in try catch blcck
         try {
@@ -111,13 +124,14 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
-                                            {}
-                                            {/* <option value="Category Level">Category Level</option>
-                                            <option value="Main Category">Main Category</option>
-                                            <option value="Standards">Standards</option>
-                                            <option value="News and Event">News and Event</option>
-                                            <option value="About GS1">About GS1</option> */}
+                                            <option value="Category Level">Category Level</option>
+                                            {
+                                                Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
+                                                    return (
+                                                        <option key={index} value={itme.id}>{itme.category_name_en}</option>
+                                                    )
+                                                })
+                                            }
                                         </select>
                                     </div>
 
