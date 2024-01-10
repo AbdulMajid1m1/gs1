@@ -48,7 +48,7 @@ export const getAllpages = async (req, res, next) => {
         });
 
 
-        res.json(AllUNSPSC);
+        res.status(200).json(AllUNSPSC);
     } catch (error) {
         next(error);
     }
