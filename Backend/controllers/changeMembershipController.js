@@ -1963,7 +1963,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         const gcpGLNID = `628${gtinProduct.gcp_start_range}`;
         const gln = generateGTIN13(gcpGLNID); // Replace with your actual GTIN generation logic
         let expiryDate = new Date();
-        if (invoiceType === 'downgrade_invoice') {
+        if (value.invoiceType === 'downgrade_invoice') {
             expiryDate = user.gcp_expiry;
         } else {
             expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
