@@ -149,5 +149,30 @@ export const deletepages = async (req, res, next) => {
         next(error);
     }
 };
+export const getpagesByslug = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            slug: Joi.string().required(),
+        });
+        const { error } = schema.validate(req.params);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
 
+        const { slug } = req.params;
+
+        // Use findFirst instead of findUnique
+        const cr = await prisma.pages.findFirst({
+            where: { slug: slug },
+        });
+
+        if (!cr) {
+            return next(createError(404, 'Page not found'));
+        }
+
+        return res.json(cr);
+    } catch (error) {
+        next(error);
+    }
+};
 
