@@ -11,8 +11,8 @@ const pages = Joi.object({
     slug: Joi.string().max(255).required(),
     page_order: Joi.number(),
     sections: Joi.string().max(255).required(),
-    custom_section_data: Joi.string().max(255).required(),
-    custom_section_data_ar: Joi.string().max(255).required(),
+    custom_section_data: Joi.string(),
+    custom_section_data_ar: Joi.string(),
     seo_description: Joi.string().max(255).required(),
     is_dropdown: Joi.number(),
     
