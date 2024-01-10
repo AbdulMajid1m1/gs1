@@ -20,6 +20,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
      const [draggedSections, setDraggedSections] = useState([]);
     const [customsectiondataeng, setcustomsectiondataeng] = useState('')
     const [customsectiondataarb, setcustomsectiondataarb] = useState('') 
+    const [Customdatashow, setCustomdatashow] = useState(false)
 
     const handleChangeeng = (value) => {
         setcustomsectiondataeng(value);
@@ -34,8 +35,11 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
     };
 
     const handleAddCompany = async () => {
+      
         try {
             const formattedSections = sections.map(section => `"${section}"`).join(',');
+            const customSectionDataEng = Customdatashow ? customsectiondataeng : 'Null';
+            const customSectionDataArb = Customdatashow ? customsectiondataarb : 'Null';
             const response = await newRequest.post('/createpages', {
                 name: name,
                 name_ar: name_ar,
@@ -44,8 +48,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 is_dropdown: sections.length,
                 page_order: PageOrder,
                 sections: `[${formattedSections}]`,
-                custom_section_data: customsectiondataeng,
-                custom_section_data_ar: customsectiondataarb,
+                custom_section_data: customSectionDataEng,
+                custom_section_data_ar: customSectionDataArb,
                 status: 1,
             });
             toast.success(`Manage Page ${name} has been added successfully.`, {
@@ -89,9 +93,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         const section = e.dataTransfer.getData('text/plain');
         setsections([...sections, section]);
         setDraggedSections([...draggedSections, section]);
+        // const isCustomSection = sections.includes("Custom Section");
+        console.log(section);
+        if (section == 'Custom Section') {
+            setCustomdatashow(true) 
+        }
+       
 
     };
-
     const handleDragOver = (e) => {
         e.preventDefault();
     };
@@ -100,6 +109,10 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         const updatedSections = [...draggedSections];
         updatedSections.splice(index, 1);
         setDraggedSections(updatedSections);
+        console.log(updatedSections);
+        if (!updatedSections.includes('Custom Section')) {
+            setCustomdatashow(false);
+        }
     };
 
     const modules = {
@@ -243,6 +256,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                             </div>
 
+                                            {Customdatashow ?(
+                                                <>
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                                 <label htmlFor="status" className="text-secondary ">
                                                     Custom Data[English]
@@ -260,6 +275,10 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     value={customsectiondataarb}
                                                     onChange={handleChangearb} />
                                             </div>
+                                                </>
+                                            ) : (
+                                                null
+                                            )}
                                            
                                         </div>
 
