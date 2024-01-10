@@ -119,6 +119,10 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
             filteredOptions = res2.data.filter(
               (option) => option.total_no_of_barcodes >= 500 && option.total_no_of_barcodes <= 50000
             );
+          } else if (firstApiTotalBarcodes <= 50000) {
+            filteredOptions = res2.data.filter(
+              (option) => option.total_no_of_barcodes >= 500 && option.total_no_of_barcodes <= 100000
+            );
           } else if (firstApiTotalBarcodes === 100000) {
             filteredOptions = res2.data.filter(
               (option) => option.total_no_of_barcodes >= 500 && option.total_no_of_barcodes <= 100000

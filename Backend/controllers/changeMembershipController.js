@@ -1464,12 +1464,13 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
     });
 
     const { error, value } = schema.validate(req.body);
-
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
 
+
     const { transactionId, userId } = value;
+
 
     try {
         // Fetch upgrade cart
@@ -1675,7 +1676,8 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
     }
 
     const { transactionId, userId } = value;
-
+    console.log("trnaactioId", transactionId)
+    console.log("userId", userId)
     try {
         // Fetch upgrade cart
         const upgradeCart = await prisma.add_gln_cart.findFirst({
