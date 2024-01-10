@@ -1,8 +1,9 @@
-import { useState ,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 
-const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
+const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
+{
     const [category_name_en, setcategory_name_en] = useState("");
     const [category_name_ar, setcategory_name_ar] = useState("");
     const [Categorylevel, setCategorylevel] = useState('')
@@ -10,12 +11,15 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Page, setPage] = useState('')
 
     const [Pagedropdown, setPagedropdown] = useState([])
-    const handleCloseCreatePopup = () => {
+    const handleCloseCreatePopup = () =>
+    {
         setVisibility(false);
     };
 
-    useEffect(() => {
-       const getpagedata = async () => {
+    useEffect(() =>
+    {
+        const getpagedata = async () =>
+        {
             try {
                 const response = await newRequest.get('/getAllpagesname');
                 const nameEnArray = response.data;
@@ -24,7 +28,8 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 console.log(error);
             }
         };
-        const getpagedatasdsd = async () => {
+        const getpagedatasdsd = async () =>
+        {
             try {
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
@@ -37,8 +42,9 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
         getpagedatasdsd();
         getpagedata();
     }, []);
-    
-    const handleAddCompany = async () => {
+
+    const handleAddCompany = async () =>
+    {
         //  integrate the post api in try catch blcck
         try {
             const response = await newRequest.post('/creatfooter_menus/', {
@@ -125,7 +131,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
                                             <option value="Select">-- Select --</option>
-                                            {}
+                                            { }
                                             {/* <option value="Category Level">Category Level</option>
                                             <option value="Main Category">Main Category</option>
                                             <option value="Standards">Standards</option>
@@ -146,7 +152,8 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         >
                                             <option value="Select">-- Select --</option>
                                             {
-                                                Pagedropdown && Pagedropdown.map((itme, index) => {
+                                                Pagedropdown && Pagedropdown.map((itme, index) =>
+                                                {
                                                     return (
                                                         <option key={index} value={itme.name}>{itme.name}</option>
                                                     )
