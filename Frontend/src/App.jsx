@@ -101,6 +101,7 @@ import Userguide from "./Pages/AdminPages/FrontEnd/Userguide/Userguide";
 import Pages from "./Pages/AdminPages/FrontEnd/Pages/Pages";
 import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
 import Updatapage from "./Pages/AdminPages/FrontEnd/Pages/Updatapage";
+import BlogPages from "./Pages/UserPages/BlogPages/BlogPages";
 
 const queryClient = new QueryClient()
 
@@ -138,6 +139,7 @@ const App = () => {
                   <Route path="/email-address" element={<EmailAddress />} />
                   <Route path="/select-activity" element={<SelectActivity />} />
                   <Route path="/verify-code" element={<VerifyCode />} />
+                  <Route path="/:id" element={<BlogPages />} />
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
@@ -168,7 +170,7 @@ const App = () => {
                               element={<GTINViewProduct />}
                             />
                             <Route path="digitalurl" element={<DigitalUrlInfo />} />
-                            
+
                             <Route path="gln" element={<GLN />} />
                             <Route path="add-gln" element={<AddGLN />} />
                             <Route path="update-gln/:Id" element={<UpdateGLN />} />
@@ -249,7 +251,7 @@ const App = () => {
 
                             <Route path="gcp-license" element={<GcpLicense />} />
                             <Route path="gs1-registries" element={<GS1Registries />} />
- 
+
                             <Route path="migration" element={<Migration />} />
                             <Route path="help-desk" element={<HelpDesk />} />
                             <Route path="old-inactive-members" element={<OldInActiveMembers />} />

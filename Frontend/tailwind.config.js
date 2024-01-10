@@ -23,6 +23,9 @@ module.exports = {
 
         '2xl': '1536px',
         // => @media (min-width: 1280px) { ... }
+
+        '3xl': '1760px',
+        // => @media (min-width: 1280px) { ... }
     },
     fontFamily: {
       'sans': ['Roboto', 'Inter', 'sans-serif'],

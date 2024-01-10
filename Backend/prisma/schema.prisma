@@ -431,16 +431,6 @@ model featured_services {
   updated_at DateTime  @default(now()) @db.DateTime
 }
 
-model footer_menus {
-  id               String    @id @default(cuid())
-  parent_id        String?   @db.NVarChar(Max)
-  category_name_en String?   @db.NVarChar(Max)
-  category_name_ar String?   @db.NVarChar(Max)
-  url              String?   @db.NVarChar(Max)
-  status           Int?
-  created_at       DateTime? @default(now()) @db.DateTime
-  updated_at       DateTime  @default(now()) @db.DateTime
-}
 
 model foreign_barcodes_downloads {
   id         BigInt    @id(map: "PK__foreign___3213E83FE54D487A") @default(autoincrement())
@@ -759,6 +749,7 @@ model gtin_subcriptions {
   created_at   DateTime? @default(now())
   updated_at   DateTime? @updatedAt
   deleted_at   DateTime? @db.DateTime
+  isDeleted    Boolean?  @default(false)
   expiry_date  DateTime? @db.DateTime
 
   gtin_subscription_limit       Float @default(0)
@@ -878,10 +869,19 @@ model markeing_emails {
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
 }
+model mega_menus {
+  id         String    @id @default(cuid())
+  name_en    String?   @db.NVarChar(Max)
+  name_ar    String?   @db.NVarChar(Max)
+  status     Int
+  created_at DateTime? @default(now()) @db.DateTime
+  updated_at DateTime  @default(now()) @db.DateTime
+  mega_menu_categories mega_menu_categories[]
+}
 
 model mega_menu_categories {
   id               String    @id @default(cuid())
-  parent_id        String?
+  parent_id        String
   megamenu_id      String?
   category_name_en String?   @db.NVarChar(Max)
   category_name_ar String?   @db.NVarChar(Max)
@@ -893,16 +893,23 @@ model mega_menu_categories {
   status           Int?
   created_at       DateTime? @default(now()) @db.DateTime
   updated_at       DateTime  @default(now()) @db.DateTime
+  mega_menus       mega_menus? @relation(fields: [megamenu_id], references: [id])
+  footer_menus     footer_menus[] // Removed the explicit relation field here
 }
 
-model mega_menus {
-  id         String    @id @default(cuid())
-  name_en    String?   @db.NVarChar(Max)
-  name_ar    String?   @db.NVarChar(Max)
-  status     Int
-  created_at DateTime? @default(now()) @db.DateTime
-  updated_at DateTime  @default(now()) @db.DateTime
+model footer_menus {
+  id               String    @id @default(cuid())
+  parent_id        String   
+  category_name_en String?   @db.NVarChar(Max)
+  category_name_ar String?   @db.NVarChar(Max)
+  url              String?   @db.NVarChar(Max)
+  status           Int?
+  created_at       DateTime? @default(now()) @db.DateTime
+  updated_at       DateTime  @default(now()) @db.DateTime
+  mega_menu_categorie  mega_menu_categories @relation(fields: [parent_id], references: [id])
 }
+
+
 
 model mema_descriptions {
   id               BigInt    @id(map: "PK__mema_des__3213E83F163AC458") @default(autoincrement())
@@ -1418,6 +1425,7 @@ model other_products_subcriptions {
   created_at                              DateTime       @default(now())
   updated_at                              DateTime       @updatedAt
   deleted_at                              DateTime?      @db.DateTime
+  isDeleted                               Boolean?       @default(false)
   expiry_date                             DateTime?      @db.DateTime
   other_products_subscription_limit       Float          @default(0)
   other_products_subscription_counter     Float          @default(0)
@@ -2040,23 +2048,20 @@ model document_type {
 }
 
 model gtin_upgrade_pricing {
-  id                       String                     @id @default(cuid())
-  total_no_of_barcodes     Float?
-  price                    Float?
-  created_at               DateTime                   @default(now())
-  updated_at               DateTime                   @updatedAt
-  upgrade_member_ship_cart upgrade_member_ship_cart[]
+  id                   String   @id @default(cuid())
+  total_no_of_barcodes Float?
+  price                Float?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
 }
 
 model upgrade_member_ship_cart {
-  id                                String                @id @default(cuid())
+  id                                String   @id @default(cuid())
   user_id                           String
   gtin_product_id                   String?
   transaction_id                    String
   registered_product_transaction_id String
   status                            Int?
-  created_at                        DateTime              @default(now())
-  updated_at                        DateTime              @updatedAt
-  // make a one-to-many relationship with gtin_upgrade_pricing
-  gtin_upgrade_pricing              gtin_upgrade_pricing? @relation(fields: [gtin_product_id], references: [id])
+  created_at                        DateTime @default(now())
+  updated_at                        DateTime @updatedAt
 }

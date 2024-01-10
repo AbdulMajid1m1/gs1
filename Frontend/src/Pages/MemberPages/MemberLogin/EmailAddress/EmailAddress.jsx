@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import newRequest from '../../../../utils/userRequest'
 import { toast } from 'react-toastify'
 import { DotLoader } from 'react-spinners'
+import DropDownSelection from '../../../UserPages/DropDownSelection/DropDownSelection'
 
 
 const EmailAddress = () => {
@@ -80,6 +81,10 @@ const EmailAddress = () => {
             }
         <div className='sticky top-0 z-50 bg-white'>
              <Header />
+        </div>
+
+        <div>
+            <DropDownSelection />
         </div>
 
         <div className='flex justify-center items-center mt-5 mb-10'>
