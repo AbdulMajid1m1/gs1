@@ -1,11 +1,12 @@
 import express from 'express';
-import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest } from '../../controllers/changeMembershipController.js';
+import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, getInvoiceDetailsForUpgradeSubscription, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest } from '../../controllers/changeMembershipController.js';
 
 
 const router = express.Router();
 
 // Routes
 router.post('/renewRequest', membershipRenewRequest);
+router.post('/getInvoiceDetailsForUpgradeSubscription', getInvoiceDetailsForUpgradeSubscription);
 
 router.put('/changeRenewStatus/:id', updateMemberRenewalDocumentStatus);
 
