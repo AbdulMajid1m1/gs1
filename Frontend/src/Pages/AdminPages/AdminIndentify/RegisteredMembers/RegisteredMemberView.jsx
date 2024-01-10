@@ -292,7 +292,7 @@ const RegisteredMembersView = () => {
       // Extract gtinSubscriptions data and flatten the nested gtin_product
       const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
         ...item,
-        ...item.gtin_product,
+        combined_description: item?.gtin_product?.member_category_description,
         subscription_limit: item.gtin_subscription_limit,
         Yearly_fee: item.gtin_subscription_total_price,
         product_identity: "gtin"
@@ -300,7 +300,7 @@ const RegisteredMembersView = () => {
 
       const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
         ...item,
-        ...item.product,
+        combined_description: item?.product?.product_name,
         subscription_limit: item.other_products_subscription_limit,
         Yearly_fee: item.other_products_subscription_total_price,
         // product_identity: "gln"

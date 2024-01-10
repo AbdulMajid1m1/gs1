@@ -4895,9 +4895,7 @@ export const registeredmemberColumn = [
     field: 'combined_description',
     headerName: 'Product Name',
     width: 270,
-    valueGetter: (params) => {
-      return params.row.member_category_description || params.row.product_name || '';
-    },
+   
   },
 
   {

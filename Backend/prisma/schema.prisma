@@ -2080,7 +2080,7 @@ model add_gln_cart {
   id                                String  @id @default(cuid())
   user_id                           String
   new_gln_id                        String?
-  other_products_subscription_id    String?
+  other_products_subscription_id    String
   transaction_id                    String
   registered_product_transaction_id String
   status                            Int?
@@ -2088,5 +2088,5 @@ model add_gln_cart {
   created_at                  DateTime                     @default(now())
   updated_at                  DateTime                     @updatedAt
   // make relationship with other_products_subcriptions
-  other_products_subcriptions other_products_subcriptions? @relation(fields: [other_products_subscription_id], references: [id])
+  other_products_subcriptions other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }
