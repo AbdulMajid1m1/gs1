@@ -38,7 +38,7 @@ const BlogPages = () => {
           Blog Pages
        </div>
 
-
+  
         {/* Footer */}
           <Footer />
     </div>
