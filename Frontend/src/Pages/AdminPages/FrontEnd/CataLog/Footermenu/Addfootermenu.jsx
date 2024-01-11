@@ -132,7 +132,8 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                                         >
                                             <option value="Category Level">Category Level</option>
                                             {
-                                                Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
+                                                Categoryleveldropdown && Categoryleveldropdown.map((itme, index) =>
+                                                {
                                                     return (
                                                         <option key={index} value={itme.id}>{itme.category_name_en}</option>
                                                     )

@@ -15,7 +15,7 @@ const Header = () => {
           <div className='h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4'>
             {/* Logo and Text */}
             <div className='flex items-center flex-wrap mb-4 sm:mb-0'>
-              <img src={gs1v2logo} className='h-14 w-auto' alt='' />
+              <img onClick={() => navigate('/')} src={gs1v2logo} className='h-14 w-auto cursor-pointer' alt='' />
               <div className='text-center px-2'>
                 <p className='text-secondary font-semibold'>GS1 Saudia Arabia</p>
                 <p className='text-secondary'>The Global Language of Business</p>
