@@ -45,6 +45,7 @@ const DataTable = ({
   handleAddDoc,
   handleUsers,
   handleAddUser,
+  getFilteredOptions,
   globalSearch = false,
 }) => {
   const navigate = useNavigate();
@@ -327,14 +328,29 @@ const DataTable = ({
   //     navigate("/digitalurl")
   // }
 
+  // const actionColumn = [
+  //   {
+  //     field: "action",
+  //     headerName: "Action",
+  //     width: uniqueId === "usersAccountsId" ? 200 : 150,
+
+  //     renderCell: (params) => (
+  //       <ActionDropdown row={params.row} dropDownOptions={dropDownOptions} />
+  //     ),
+  //   },
+  // ];
+
   const actionColumn = [
     {
       field: "action",
       headerName: "Action",
       width: uniqueId === "usersAccountsId" ? 200 : 150,
-
       renderCell: (params) => (
-        <ActionDropdown row={params.row} dropDownOptions={dropDownOptions} />
+        <ActionDropdown
+          row={params.row}
+          dropDownOptions={dropDownOptions}
+          getFilteredOptions={getFilteredOptions}
+        />
       ),
     },
   ];

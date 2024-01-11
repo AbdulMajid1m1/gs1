@@ -4895,9 +4895,7 @@ export const registeredmemberColumn = [
     field: 'combined_description',
     headerName: 'Product Name',
     width: 270,
-    valueGetter: (params) => {
-      return params.row.member_category_description || params.row.product_name || '';
-    },
+   
   },
 
   {
@@ -4906,26 +4904,23 @@ export const registeredmemberColumn = [
     width: 120,
   },
   {
-    field: 'Registration_fee',
+    field: 'price',
     headerName: 'Registration fee',
     width: 120,
-    valueGetter: (params) => {
-      return params.row.member_registration_fee || params.row.other_products_subscription_total_price || '';
-    },
+    
+   
   },
   {
     field: 'Yearly_fee',
     headerName: 'Yearly fee',
     width: 120,
-    valueGetter: (params) => {
-      return params.row.gtin_yearly_subscription_fee || params.row.product_subscription_fee || '';
-    },
+
   },
-  {
-    field: 'price',
-    headerName: 'Price',
-    width: 120,
-  },
+  // {
+  //   field: 'price',
+  //   headerName: 'Price',
+  //   width: 120,
+  // },
   {
     field: 'status',
     headerName: 'Status',

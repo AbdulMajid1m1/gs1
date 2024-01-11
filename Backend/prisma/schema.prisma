@@ -1433,6 +1433,8 @@ model other_products_subcriptions {
   product_identifier_name                 String?        @db.NVarChar(255) // to store product name like gln for gln sscc for sscc for query purpose
   // Define the relationship to other_products based on product_id
   product                                 other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  // define the relationship to  gln-cart
+  gln_cart                                add_gln_cart[]
 }
 
 model other_products_subscription_histories {
@@ -2055,6 +2057,14 @@ model gtin_upgrade_pricing {
   updated_at           DateTime @updatedAt
 }
 
+model gln_upgrade_pricing {
+  id              String   @id @default(cuid())
+  total_no_of_gln Float?
+  price           Float?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+}
+
 model upgrade_member_ship_cart {
   id                                String   @id @default(cuid())
   user_id                           String
@@ -2064,4 +2074,19 @@ model upgrade_member_ship_cart {
   status                            Int?
   created_at                        DateTime @default(now())
   updated_at                        DateTime @updatedAt
+}
+
+model add_gln_cart {
+  id                                String  @id @default(cuid())
+  user_id                           String
+  new_gln_id                        String?
+  other_products_subscription_id    String
+  transaction_id                    String
+  registered_product_transaction_id String
+  status                            Int?
+
+  created_at                  DateTime                     @default(now())
+  updated_at                  DateTime                     @updatedAt
+  // make relationship with other_products_subcriptions
+  other_products_subcriptions other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }
