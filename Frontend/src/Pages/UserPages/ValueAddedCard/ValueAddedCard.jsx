@@ -10,7 +10,7 @@ const ValueAddedCard = () =>
   const { t } = useTranslation();
   return (
     <div>
-        <div className='flex justify-center items-center p-8'>
+        <div className='flex justify-center items-center p-8 mt-5'>
         <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'> {t('GS1 Value Added Services')}</h2>
         </div>
        

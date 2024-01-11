@@ -16,7 +16,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
   const [gtinBarcodes, setGtinBarcodes] = React.useState([])
   const [selectedGtinBarcodes, setSelectedGtinBarcodes] = useState("");
   const [compareGtinBarcodes, setCompareGtinBarcodes] = React.useState([]);
-
+  const [newSubscriptionDetails, setNewSubscriptionDetails] = useState([]);
   const handleCloseUpgradePopup = () => {
     setVisibility(false);
   };
@@ -57,41 +57,116 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
 
   const handleCompareGtinBarcodes = async () => {
     try {
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
-      const res2 = await newRequest.get('/gtinProducts');
-      // console.log(res.data);
-      // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
-      const firstApiTotalBarcodes =
-        res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
+      if (subType === "UPGRADE" || subType === "DOWNGRADE") {
+        const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+        const res2 = await newRequest.get('/gtinProducts');
+        // console.log(res.data);
+        // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+        const firstApiTotalBarcodes =
+          res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
 
-      const filteredOptions = res2.data.filter(
-        // if subType is UPGRADE then gtin_product.total_no_of_barcodes > firstApiTotalBarcodes else gtin_product.total_no_of_barcodes < firstApiTotalBarcodes
-        (option) => subType === "UPGRADE" ? option.total_no_of_barcodes > firstApiTotalBarcodes : option.total_no_of_barcodes < firstApiTotalBarcodes
-      );
+        const filteredOptions = res2.data.filter(
+          // if subType is UPGRADE then gtin_product.total_no_of_barcodes > firstApiTotalBarcodes else gtin_product.total_no_of_barcodes < firstApiTotalBarcodes
+          (option) => subType === "UPGRADE" ? option.total_no_of_barcodes > firstApiTotalBarcodes : option.total_no_of_barcodes < firstApiTotalBarcodes
+        );
 
-      console.log(res.data);
-      console.log(firstApiTotalBarcodes);
-      console.log(res2.data);
+        console.log(res.data);
+        console.log(firstApiTotalBarcodes);
+        console.log(res2.data);
 
-      // Set the filtered options in your state or use it directly
-      // mmeber has two categotyes non_med_category and med_category selelct price based on category and setGtinBarcodes
-      // member_registration_fee med_yearly_subscription_fee member_registration_fee gtin_yearly_subscription_fee
+        // Set the filtered options in your state or use it directly
+        // mmeber has two categotyes non_med_category and med_category selelct price based on category and setGtinBarcodes
+        // member_registration_fee med_yearly_subscription_fee member_registration_fee gtin_yearly_subscription_fee
 
-      // set price based on member category
-      console.log(filteredOptions);
-      filteredOptions.forEach((item) => {
-        if (userData?.membership_category === "non_med_category") {
-          item.price = item.member_registration_fee,
-            item.yearly_fee = item.gtin_yearly_subscription_fee
-        } else if (userData?.membership_category === "med_category") {
-          item.price = item.med_registration_fee,
-            item.yearly_fee = item.med_yearly_subscription_fee
+        // set price based on member category
+        console.log(filteredOptions);
+        filteredOptions.forEach((item) => {
+          if (userData?.membership_category === "non_med_category") {
+            item.price = item.member_registration_fee,
+              item.yearly_fee = item.gtin_yearly_subscription_fee
+          } else if (userData?.membership_category === "med_category") {
+            item.price = item.med_registration_fee,
+              item.yearly_fee = item.med_yearly_subscription_fee
+          }
+        });
+        console.log(filteredOptions);
+
+
+        setGtinBarcodes(filteredOptions);
+      }
+      if (subType === 'ADD GTIN') {
+        try {
+          const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+          const res2 = await newRequest.get('/gtinUpgrade');
+          // console.log(res.data);
+          // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+          const firstApiTotalBarcodes =
+            res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
+
+          let filteredOptions = [];
+          console.log(firstApiTotalBarcodes)
+
+
+          if (firstApiTotalBarcodes === 100) {
+            filteredOptions = res2.data.filter(
+              (option) => option.total_no_of_barcodes <= 1000
+            );
+          } else if (firstApiTotalBarcodes === 1000) {
+            filteredOptions = res2.data.filter(
+              (option) => option.total_no_of_barcodes <= 10000 && option.total_no_of_barcodes >= 500
+            );
+          } else if (firstApiTotalBarcodes <= 10000) {
+            filteredOptions = res2.data.filter(
+              (option) => option.total_no_of_barcodes >= 500 && option.total_no_of_barcodes <= 50000
+            );
+          } else if (firstApiTotalBarcodes <= 50000) {
+            filteredOptions = res2.data.filter(
+              (option) => option.total_no_of_barcodes >= 500 && option.total_no_of_barcodes <= 100000
+            );
+          } else if (firstApiTotalBarcodes === 100000) {
+            filteredOptions = res2.data.filter(
+              (option) => option.total_no_of_barcodes >= 500 && option.total_no_of_barcodes <= 100000
+            );
+          }
+
+          // Set the filtered options in your state or use it directly
+          setGtinBarcodes(filteredOptions);
+
+          console.log(res.data);
+          console.log(firstApiTotalBarcodes);
+          console.log(res2.data);
+          console.log(filteredOptions);
+
         }
-      });
-      console.log(filteredOptions);
+        catch (err) {
+          console.log(err);
+        }
+      }
+      if (subType === 'ADD GLN') {
+        try {
+          const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+          const res2 = await newRequest.get('/gtinUpgrade/gln');
+          // console.log(res.data);
+          // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+          const firstApiTotalBarcodes =
+            res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
 
+          // const filteredOptions = res2.data.filter(
+          //   (option) => option.total_no_of_barcodes > firstApiTotalBarcodes
+          // );
 
-      setGtinBarcodes(filteredOptions);
+          console.log(res.data);
+          console.log(firstApiTotalBarcodes);
+          console.log(res2.data);
+
+          // Set the filtered options in your state or use it directly
+          setGtinBarcodes(res2.data);
+          console.log(filteredOptions);
+        }
+        catch (err) {
+          console.log(err);
+        }
+      }
     }
     catch (err) {
       console.log(err);
@@ -109,18 +184,23 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
     console.log(value);
     console.log(userData?.id);
     // calll the api
-    try {
-      const res = await newRequest.post('/changeMembership/getInvoiceDetailsForUpgradeSubscription', {
-        "userId": userData?.id,
-        "newSubscriptionId": value?.id,
-      });
-      console.log(res.data);
-      setSelectedGtinBarcodes(res.data);
+    setSelectedGtinBarcodes(value)
+    if (subType === "UPGRADE" || subType === "DOWNGRADE") {
+
+      try {
+        const res = await newRequest.post('/changeMembership/getInvoiceDetailsForUpgradeSubscription', {
+          "userId": userData?.id,
+          "newSubscriptionId": value?.id,
+        });
+        console.log(res.data);
+        setNewSubscriptionDetails(res.data);
+      }
+      catch (err) {
+        console.log(err);
+        toast.error(err.response?.data?.error || "Failed to get invoice details!");
+      }
     }
-    catch (err) {
-      console.log(err);
-      toast.error(err.response?.data?.error || "Failed to get invoice details!");
-    }
+
   };
 
 
@@ -130,20 +210,45 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
     setLoading(true);
 
     try {
-      // if (subType === "UPGRADE") {
-      const res = await newRequest.put('/changeMembership/upgradeMembershipRequest', {
-        "user_id": userData?.id,
-        "new_subscription_product_Id": selectedGtinBarcodes?.id,
-        subType: subType
+      if (subType === "UPGRADE" || subType === "DOWNGRADE") {
+        const res = await newRequest.put('/changeMembership/upgradeMembershipRequest', {
+          "user_id": userData?.id,
+          "new_subscription_product_Id": selectedGtinBarcodes?.id,
+          subType: subType
 
-      });
-      console.log(res.data);
-      toast.success(res?.data?.message || "Upgrade request sent successfully!");
-      // }
+        });
+        console.log(res.data);
+        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        // }
 
 
-      // Close the popup
-      handleCloseUpgradePopup();
+        // Close the popup
+        handleCloseUpgradePopup();
+      }
+
+      if (subType === "ADD GTIN") {
+        const res = await newRequest.post('/changeMembership/addAdditionalProductsRequest', {
+          "user_id": userData?.id,
+          "gtinUpgradeProductId": selectedGtinBarcodes?.id,
+        });
+        console.log(res.data);
+        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+      }
+
+      if (subType === "ADD GLN") {
+        console.log(selectedGtinBarcodes?.id);
+        console.log(memberInoviceData?.otherProductSubscriptions);
+        const selectGLnRow = JSON.parse(sessionStorage.getItem('selectedGlnRowData'));
+        console.log("selectGLnRow", selectGLnRow);
+        const res = await newRequest.post('/changeMembership/addAdditionalGlnRequest', {
+          "userId": userData?.id,
+          "additionalGlnId": selectedGtinBarcodes?.id,
+          otherProductSubscriptionId: selectGLnRow?.id
+        });
+        console.log(res.data);
+        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+      }
+
     } catch (err) {
       console.log(err);
 
@@ -158,7 +263,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
   return (
     <div>
       {isVisible && (
-        <div className="member-popup-overlay">
+        <div className="member-popup-overlay overflow-x-auto">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
@@ -170,8 +275,19 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
                     id="field1"
                     options={gtinBarcodes}
                     value={selectedGtinBarcodes}
-                    // getOptionLabel={(option) => option?.total_no_of_barcodes || ""}
-                    getOptionLabel={(option) => option?.total_no_of_barcodes ? `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yealy_fee: ${option?.yearly_fee} - Registeration_Fee ${option?.price}` : ""}
+                    getOptionLabel={(option) => {
+                      if (!option) {
+                        return "";
+                      } else if (subType === "ADD GTIN") {
+                        return `GTIN: ${option?.total_no_of_barcodes || ""} - Price: ${option?.price}`;
+                      } else if (subType === "ADD GLN") {
+                        // Assuming you have appropriate fields for GLN
+                        return `GLN: ${option?.total_no_of_gln || ""} - Price: ${option?.price}`;
+                      } else {
+                        return `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yearly_fee: ${option?.yearly_fee} - Registration_Fee: ${option?.price}`;
+                      }
+                    }}
+
                     onChange={handleSelectedGtinBarcodes}
                     onInputChange={(event, value) => {
                       if (!value) {
@@ -264,45 +380,75 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
                     </tfoot>
                   </table>
                 </div>
-                <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2">New Subscription Invoice Details</h1>
-                <div className="table-member-inoive px-4 pt-1">
-                  {/* show the transaction_id in very small  */}
-                  <div className="flex justify-between items-center">
 
-                  </div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>REMAINING MONTHS FROM CURRENT SUBSCRITION</th>
-                        <th>REMAINING MONTHS FEE</th>
-                        <th>NEW SUBSCRIPTION YEARLY FEE</th>
-                        <th>REMAINING YEALY FEE</th>
-                        <th>FINAL PRICE</th>
-
-                      </tr>
-                    </thead>
-                    <tbody>
+                {selectedGtinBarcodes !== "" && subType === "UPGRADE" && (
+                  <span>
 
 
-                      <tr>
-                        <td>{selectedGtinBarcodes?.remainingMonths}</td>
-                        <td>{selectedGtinBarcodes?.remainingMonthsFee}</td>
-                        <td>{selectedGtinBarcodes?.newSubscriptionYearlyFee}</td>
-                        <td>{selectedGtinBarcodes?.remainingYearlyFee}</td>
-                        <td>{selectedGtinBarcodes?.finalPrice}</td>
-                      </tr>
+                    <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2">New Subscription Invoice Details</h1>
+                    
+                    <div className='mt-2'>
+                      <div className='border border-secondary rounded-sm px-4 py-3'>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            REMAINING MONTHS FROM CURRENT SUBSCRITION : <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            REMAINING MONTHS FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            NEW SUBSCRIPTION YEARLY FEE : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            REMAINING YEALY FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            FINAL PRICE : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
+                        </p>
+                      </div>
+                    </div>
+                    {/* <div className="table-member-inoive px-4 pt-1">
+                      <div className="flex justify-between items-center">
+
+                      </div>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>REMAINING MONTHS FROM CURRENT SUBSCRITION</th>
+                            <th>REMAINING MONTHS FEE</th>
+                            <th>NEW SUBSCRIPTION YEARLY FEE</th>
+                            <th>REMAINING YEALY FEE</th>
+                            <th>FINAL PRICE</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
 
 
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan="4" className="text-right font-bold">Total:</td>
-                        <td>{selectedGtinBarcodes?.finalPrice}</td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
+                          <tr>
+                            <td>{newSubscriptionDetails?.remainingMonths}</td>
+                            <td>{newSubscriptionDetails?.remainingMonthsFee}</td>
+                            <td>{newSubscriptionDetails?.newSubscriptionYearlyFee}</td>
+                            <td>{newSubscriptionDetails?.remainingYearlyFee}</td>
+                            <td>{newSubscriptionDetails?.finalPrice}</td>
+                          </tr>
 
+
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colSpan="4" className="text-right font-bold">Total:</td>
+                            <td>{newSubscriptionDetails?.finalPrice}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div> */}
+                  </span>
+                )}
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                   <button
                     type="button"
