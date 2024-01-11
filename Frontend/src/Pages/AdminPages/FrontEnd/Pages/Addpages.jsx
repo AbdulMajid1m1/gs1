@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
+const Addpages = () => {
 
     const navigate = useNavigate();
     const [name, setname] = useState("");
@@ -31,7 +31,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
     };
 
     const handleCloseCreatePopup = () => {
-        setVisibility(false);
+        
     };
 
     const handleAddCompany = async () => {
@@ -64,7 +64,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
             });
             navigate('/admin/Pages')
             console.log(response.data);
-            refreshBrandData();
+           
             handleCloseCreatePopup();
 
         } catch (error) {
