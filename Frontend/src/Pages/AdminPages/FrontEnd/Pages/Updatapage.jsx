@@ -7,6 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const navigate = useNavigate();
@@ -18,7 +21,27 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [PageSlug, setPageSlug] = useState('')
     const [sections, setsections] = useState([])
     const [draggedSections, setDraggedSections] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); 
+    const [customsectiondataeng, setcustomsectiondataeng] = useState('')
+    const [customsectiondataarb, setcustomsectiondataarb] = useState('')
+
+    const handleChangeeng = (value) => {
+        setcustomsectiondataeng(value);
+    };
+
+    const handleChangearb = (value) => {
+        setcustomsectiondataarb(value);
+    };
+
+    const modules = {
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean'],
+        ],
+    };
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -28,7 +51,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.get(`/getpagesById/${userId}`);
             // console.log([response.data.sections]);
-            const inputArray = [response.data.sections];
+            const inputArray = [response.data];
             const separatedArray = response.data.sections.split('\n');
             console.log(separatedArray);
             setname(response.data.name)
@@ -36,6 +59,8 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
             setSeoDescription(response.data.seo_description)
             setPageSlug(response.data.slug)
             setPageOrder(response.data.page_order)
+            setcustomsectiondataeng(response.data.custom_section_data)
+            setcustomsectiondataarb(response.data.custom_section_data_ar);
             setsections(separatedArray.map((section, index) => ({ id: index, content: section })))
             setDraggedSections(separatedArray.map((section, index) => ({ id: index, content: section })));
 
@@ -60,7 +85,8 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                 is_dropdown: sections.length,
                 page_order: PageOrder,
                 sections: `[${formattedSections}]`,
-                custom_section_data: 'custom_section_data',
+                custom_section_data: customsectiondataeng,
+                custom_section_data_ar: customsectiondataarb,
                 status: 1,
             });
             console.log(response);
@@ -262,6 +288,24 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                                 />
 
+                                            </div>
+
+                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                                <label htmlFor="status" className="text-secondary ">
+                                                    Custom Data[English]
+                                                </label>
+                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                    value={customsectiondataeng}
+                                                    onChange={handleChangeeng} />
+                                            </div>
+
+                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-10">
+                                                <label htmlFor="status" className="text-secondary mt-5">
+                                                    Custom Data[Arabic]
+                                                </label>
+                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                    value={customsectiondataarb}
+                                                    onChange={handleChangearb} />
                                             </div>
 
                                         </div>
