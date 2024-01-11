@@ -391,23 +391,23 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
                       <div className='border border-secondary rounded-sm px-4 py-3'>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                           >
-                            REMAINING MONTHS FROM CURRENT SUBSCRITION || <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
+                            REMAINING MONTHS FROM CURRENT SUBSCRITION : <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                           >
-                            REMAINING MONTHS FEE || <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
+                            REMAINING MONTHS FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                           >
-                            NEW SUBSCRIPTION YEARLY FEE || <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
+                            NEW SUBSCRIPTION YEARLY FEE : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                           >
-                            REMAINING YEALY FEE || <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
+                            REMAINING YEALY FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                           >
-                            FINAL PRICE || <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
+                            FINAL PRICE : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
                         </p>
                       </div>
                     </div>
