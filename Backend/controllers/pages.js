@@ -57,7 +57,8 @@ export const getAllpagesname = async (req, res, next) => {
     try {
         const AllNames = await prisma.pages.findMany({
   select: {
-    name: true,
+                name: true,
+                slug: true,
   },
 });
 

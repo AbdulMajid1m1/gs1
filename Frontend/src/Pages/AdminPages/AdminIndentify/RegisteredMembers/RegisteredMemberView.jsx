@@ -71,8 +71,27 @@ const RegisteredMembersView = () => {
     // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
   };
+  const handleAddGtinClick = (row) => {
+    setSubType("ADD GTIN")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
 
-  const [isDowngradePopupVisible, setIsDowngradePopupVisible] = useState(false);
+  };
+  const handleAddGlnClick = (row) => {
+    setSubType("ADD GLN")
+    sessionStorage.setItem("selectedGlnRowData", JSON.stringify(row));
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+  };
+  const filterDropdownOptions = (row, dropDownOptions) => {
+    if (row.product_identity === 'gtin') {
+      return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
+    } else if (row.product_identity === 'gln') {
+      return dropDownOptions.filter(option => option.label === 'Add GLN');
+    }
+    return []; // No options available
+  };
+
 
   const handleShowDowngradePopup = (row) => {
     setSubType("DOWNGRADE")
@@ -273,19 +292,24 @@ const RegisteredMembersView = () => {
       // Extract gtinSubscriptions data and flatten the nested gtin_product
       const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
         ...item,
-        ...item.gtin_product,
+        combined_description: item?.gtin_product?.member_category_description,
         subscription_limit: item.gtin_subscription_limit,
+        Yearly_fee: item.gtin_subscription_total_price,
+        product_identity: "gtin"
       }));
 
       const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
         ...item,
-        ...item.product,
+        combined_description: item?.product?.product_name,
         subscription_limit: item.other_products_subscription_limit,
+        Yearly_fee: item.other_products_subscription_total_price,
+        // product_identity: "gln"
+        product_identity: item?.product?.product_name?.toLowerCase().includes('gln') ? 'gln' : 'otherProduct'
       }));
 
       // Combine gtinSubscriptions and otherProductSubscriptions
       const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
-
+      console.log(combinedData);
       setRegisteredProductsData(combinedData);
       setRegisteredProductsLoader(false)
 
@@ -550,8 +574,16 @@ const RegisteredMembersView = () => {
               <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
 
 
+              <div className='w-full flex justify-end px-6 py-6'>
+                <button
+                  className='bg-blue-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                >
+                  Change Membership
+                </button>
+              </div>
+
               {/* Registered Products */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-25px' }}
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
@@ -560,7 +592,7 @@ const RegisteredMembersView = () => {
                   secondaryColor="secondary"
                   // actionColumnVisibility={false}
                   checkboxSelection={"disabled"}
-
+                  getFilteredOptions={filterDropdownOptions}
                   dropDownOptions={[
 
                     {
@@ -578,17 +610,17 @@ const RegisteredMembersView = () => {
 
                     },
                     {
-                      label: "Add Barcodes",
+                      label: "Add GLN",
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
-                      // action: handleShowDowngradePopup,
+                      action: handleAddGlnClick,
 
                     },
                     {
                       label: "Add GTIN",
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
-                      // action: handleShowDowngradePopup,
+                      action: handleAddGtinClick,
 
                     },
 
@@ -921,6 +953,7 @@ const RegisteredMembersView = () => {
           <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
             // fetchAllUserData={fetchAllUserData} MemberbankSlip={fetchMemberbankSlipData}
             fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
+            fetchRegisteredProductsData={fetchRegisteredProductsData}
           />
         )}
 

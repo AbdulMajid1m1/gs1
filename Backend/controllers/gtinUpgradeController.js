@@ -24,11 +24,45 @@ export const createGtinUpgradePricing = async (req, res, next) => {
         next(error);
     }
 };
+const glnUpgradePricingSchema = Joi.array().items(Joi.object({
+    total_no_of_gln: Joi.number().required(),
+    price: Joi.number().required()
+}));
+
+export const createGlnUpgradePricing = async (req, res, next) => {
+    try {
+        const { error } = glnUpgradePricingSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const records = req.body;
+
+        const newRecords = await prisma.gln_upgrade_pricing.createMany({
+            data: records,
+        });
+        res.status(201).json(newRecords);
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 export const getAllGtinUpgradePricing = async (req, res, next) => {
     try {
         const records = await prisma.gtin_upgrade_pricing.findMany({
+            orderBy: {
+                updated_at: 'desc'
+            }
+        });
+        res.json(records);
+    } catch (error) {
+        next(error);
+    }
+};
+export const getAllGlnUpgradePricing = async (req, res, next) => {
+    try {
+        const records = await prisma.gln_upgrade_pricing.findMany({
             orderBy: {
                 updated_at: 'desc'
             }

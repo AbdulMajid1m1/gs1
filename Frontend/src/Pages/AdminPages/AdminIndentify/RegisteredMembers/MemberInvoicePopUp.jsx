@@ -7,10 +7,11 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData
+const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
+  fetchRegisteredProductsData,
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  // console.log(gs1MemberInvoiceData);
+  console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
   const gtinId = sessionStorage.getItem("gtinId");
@@ -67,6 +68,16 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const changeGtinSub = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
+      invoiceType: gs1MemberInvoiceData?.type
+    }
+
+    const addGtin = {
+      userId: gs1MemberInvoiceData?.user_id,
+      transactionId: gs1MemberInvoiceData?.transaction_id,
+    }
+    const addGln = {
+      userId: gs1MemberInvoiceData?.user_id,
+      transactionId: gs1MemberInvoiceData?.transaction_id,
     }
 
     // console.log(upgrade_invoice);
@@ -87,6 +98,17 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/changeMembership/approveMembershipRequest`;
       requestBody = changeGtinSub;
     }
+    else if (gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
+      apiEndpoint = `/changeMembership/approveAdditionalProductsRequest`;
+      requestBody = addGtin;
+    }
+
+    else if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
+      apiEndpoint = `/changeMembership/approveAdditionalGlnRequest`;
+      requestBody = addGln;
+    }
+
+
 
 
     try {
@@ -104,6 +126,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
         // MemberbankSlip();
         fetchAllUserData();
         fetchMemberbankSlipData();
+        fetchRegisteredProductsData();
 
         fetchMemberHistoryData();
         // Close the popup
