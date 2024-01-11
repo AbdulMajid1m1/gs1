@@ -24,6 +24,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [loading, setLoading] = useState(false); 
     const [customsectiondataeng, setcustomsectiondataeng] = useState('')
     const [customsectiondataarb, setcustomsectiondataarb] = useState('')
+    const [Customdatashow, setCustomdatashow] = useState(false)
 
     const handleChangeeng = (value) => {
         setcustomsectiondataeng(value);
@@ -59,10 +60,18 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
             setSeoDescription(response.data.seo_description)
             setPageSlug(response.data.slug)
             setPageOrder(response.data.page_order)
-            setcustomsectiondataeng(response.data.custom_section_data)
-            setcustomsectiondataarb(response.data.custom_section_data_ar);
+            // setcustomsectiondataeng(response.data.custom_section_data)
+            // setcustomsectiondataarb(response.data.custom_section_data_ar);
             setsections(separatedArray.map((section, index) => ({ id: index, content: section })))
             setDraggedSections(separatedArray.map((section, index) => ({ id: index, content: section })));
+            if (response.data.custom_section_data !== null) {
+                setCustomdatashow(true);
+                setcustomsectiondataeng(response.data.custom_section_data);
+                setcustomsectiondataarb(response.data.custom_section_data_ar);
+            } else {
+                setCustomdatashow(false);
+                setcustomsectiondataeng(null);  // You might want to set it to some default value
+            }
 
         } catch (err) {
             console.log(err);
@@ -132,7 +141,10 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         const newSection = { id: draggedSections, content: section };
         setDraggedSections([...draggedSections, newSection]);
         setsections([...draggedSections, newSection])
-
+        if (section == 'Custom') {
+            setCustomdatashow(true)
+        }
+        console.log(section);
     };
 
     const handleRemoveSection = (sectionIndex, itemIndex) => {
@@ -146,7 +158,9 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
         setDraggedSections(filteredArray);
         setsections(filteredArray.map(section => ({ id: section.id, content: section.content }))); // Update sections with id and content
-        console.log(filteredArray);
+        if (!updatedDraggedSections.includes('Custom Section')) {
+            setCustomdatashow(false);
+        }
     };
 
 
@@ -289,7 +303,8 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 />
 
                                             </div>
-
+                                            {Customdatashow ? (
+                                                <>
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                                 <label htmlFor="status" className="text-secondary ">
                                                     Custom Data[English]
@@ -307,6 +322,10 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     value={customsectiondataarb}
                                                     onChange={handleChangearb} />
                                             </div>
+                                                </>
+                                            ) : (
+                                                null
+                                            )}
 
                                         </div>
 
