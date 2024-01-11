@@ -140,6 +140,8 @@ const App = () => {
                   <Route path="/select-activity" element={<SelectActivity />} />
                   <Route path="/verify-code" element={<VerifyCode />} />
                   <Route path="/:id" element={<BlogPages />} />
+                  <Route path="/admin-login" element={<AdminLogin />} />
+
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
@@ -212,7 +214,7 @@ const App = () => {
 
 
                 <Routes>
-                  <Route path="/admin-login" element={<AdminLogin />} />
+                  {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
 
                   {/* Admin Routes */}
                   <Route
