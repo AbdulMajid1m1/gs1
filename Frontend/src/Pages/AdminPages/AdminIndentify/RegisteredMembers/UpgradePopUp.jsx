@@ -263,7 +263,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
   return (
     <div>
       {isVisible && (
-        <div className="member-popup-overlay">
+        <div className="member-popup-overlay overflow-x-auto">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
@@ -386,8 +386,32 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
 
 
                     <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2">New Subscription Invoice Details</h1>
-                    <div className="table-member-inoive px-4 pt-1">
-                      {/* show the transaction_id in very small  */}
+                    
+                    <div className='mt-2'>
+                      <div className='border border-secondary rounded-sm px-4 py-3'>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            REMAINING MONTHS FROM CURRENT SUBSCRITION || <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            REMAINING MONTHS FEE || <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            NEW SUBSCRIPTION YEARLY FEE || <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            REMAINING YEALY FEE || <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
+                        </p>
+                        <p className='text-secondary text-xs font-sans font-medium py-1'
+                          >
+                            FINAL PRICE || <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
+                        </p>
+                      </div>
+                    </div>
+                    {/* <div className="table-member-inoive px-4 pt-1">
                       <div className="flex justify-between items-center">
 
                       </div>
@@ -422,7 +446,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
                           </tr>
                         </tfoot>
                       </table>
-                    </div>
+                    </div> */}
                   </span>
                 )}
                 <div className="w-full flex justify-center items-center gap-8 mt-5">

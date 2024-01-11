@@ -574,8 +574,16 @@ const RegisteredMembersView = () => {
               <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
 
 
+              <div className='w-full flex justify-end px-6 py-6'>
+                <button
+                  className='bg-blue-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                >
+                  Change Membership
+                </button>
+              </div>
+
               {/* Registered Products */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-25px' }}
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
