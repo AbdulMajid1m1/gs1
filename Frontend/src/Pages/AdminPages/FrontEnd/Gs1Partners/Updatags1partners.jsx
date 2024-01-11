@@ -10,7 +10,7 @@ const Updatags1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updatePartners"));
     const [status, setstatus] = useState(updateBrandData?.status || 0);
-    const [Page, setPage] = useState(updateBrandData?.link || 0)
+    const [Page, setPage] = useState(updateBrandData?.link || '')
     const [Pagedropdown, setPagedropdown] = useState([])
     const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
     const [loading, setLoading] = useState(false);
@@ -103,7 +103,7 @@ const Updatags1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }

@@ -93,8 +93,6 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         const section = e.dataTransfer.getData('text/plain');
         setsections([...sections, section]);
         setDraggedSections([...draggedSections, section]);
-        // const isCustomSection = sections.includes("Custom Section");
-        console.log(section);
         if (section == 'Custom Section') {
             setCustomdatashow(true) 
         }
