@@ -4,7 +4,10 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
 import { useNavigate } from "react-router-dom"; 
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'; 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const navigate = useNavigate();
@@ -15,14 +18,28 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [PageSlug, setPageSlug] = useState('')
     const [sections, setsections] = useState([]) 
      const [draggedSections, setDraggedSections] = useState([]);
+    const [customsectiondataeng, setcustomsectiondataeng] = useState('')
+    const [customsectiondataarb, setcustomsectiondataarb] = useState('') 
+    const [Customdatashow, setCustomdatashow] = useState(false)
+
+    const handleChangeeng = (value) => {
+        setcustomsectiondataeng(value);
+    };
+
+    const handleChangearb = (value) => {
+        setcustomsectiondataarb(value);
+    };
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
     };
 
     const handleAddCompany = async () => {
+      
         try {
             const formattedSections = sections.map(section => `"${section}"`).join(',');
+            const customSectionDataEng = Customdatashow ? customsectiondataeng : 'Null';
+            const customSectionDataArb = Customdatashow ? customsectiondataarb : 'Null';
             const response = await newRequest.post('/createpages', {
                 name: name,
                 name_ar: name_ar,
@@ -31,7 +48,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 is_dropdown: sections.length,
                 page_order: PageOrder,
                 sections: `[${formattedSections}]`,
-                custom_section_data: 'custom_section_data',
+                custom_section_data: customSectionDataEng,
+                custom_section_data_ar: customSectionDataArb,
                 status: 1,
             });
             toast.success(`Manage Page ${name} has been added successfully.`, {
@@ -75,9 +93,14 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         const section = e.dataTransfer.getData('text/plain');
         setsections([...sections, section]);
         setDraggedSections([...draggedSections, section]);
+        // const isCustomSection = sections.includes("Custom Section");
+        console.log(section);
+        if (section == 'Custom Section') {
+            setCustomdatashow(true) 
+        }
+       
 
     };
-
     const handleDragOver = (e) => {
         e.preventDefault();
     };
@@ -86,6 +109,20 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         const updatedSections = [...draggedSections];
         updatedSections.splice(index, 1);
         setDraggedSections(updatedSections);
+        console.log(updatedSections);
+        if (!updatedSections.includes('Custom Section')) {
+            setCustomdatashow(false);
+        }
+    };
+
+    const modules = {
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean'],
+        ],
     };
 
     return (
@@ -219,9 +256,33 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                             </div>
 
+                                            {Customdatashow ?(
+                                                <>
+                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                                <label htmlFor="status" className="text-secondary ">
+                                                    Custom Data[English]
+                                                </label>
+                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                 value={customsectiondataeng}
+                                                 onChange={handleChangeeng} />
+                                            </div>
+
+                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-10">
+                                                <label htmlFor="status" className="text-secondary mt-5">
+                                                    Custom Data[Arabic]
+                                                </label>
+                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                    value={customsectiondataarb}
+                                                    onChange={handleChangearb} />
+                                            </div>
+                                                </>
+                                            ) : (
+                                                null
+                                            )}
+                                           
                                         </div>
 
-                                        <div className="w-full flex justify-center items-center gap-8 mt-5">
+                                        <div className="w-full flex justify-center items-center gap-8 mt-20">
                                             <button
                                                 type="button"
                                                 onClick={handleAddCompany}

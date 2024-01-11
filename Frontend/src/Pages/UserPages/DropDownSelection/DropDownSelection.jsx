@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './DropDownSelection.css';
 import newRequest from '../../../utils/userRequest';
+import { Link } from 'react-router-dom';
 
 const DropDownSelection = () => {
   const [megaMenu, setMegaMenu] = useState([]);
@@ -55,23 +56,23 @@ const DropDownSelection = () => {
             <ul className="menu-main 2xl:flex xl:flex lg:flex 3xl:flex 3xl:justify-center 3xl:items-center 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-7">
               {megaMenu?.map((section, index) => (
                 <li key={index} className="menu-item-has-children">
-                  <a href="javascript:void(0)" style={{ textDecoration: 'none'  }}>
+                  <Link to="javascript:void(0)" style={{ textDecoration: 'none'  }}>
                     {section.name_en}
                     &nbsp;
                      <i className="fa fa-angle-down"></i>
-                  </a>
+                  </Link>
                   <div className="sub-menu mega-menu mega-menu-column-4 text-blue-600">
                     {section.mega_menu_categories.map((category, catIndex) => (
                       <div key={catIndex} className="list-item">
-                        <a href={category.url} style={{ textDecoration: 'none' }}>
+                        <Link to={category.url} style={{ textDecoration: 'none' }}>
                           {category.category_name_en}
-                        </a>
+                        </Link>
                         <ul>
                           {category.footer_menus.map((subcategory, subIndex) => (
                             <li key={subIndex}>
-                              <a href={subcategory.url} style={{ textDecoration: 'none' }}>
+                              <Link to={subcategory.url} style={{ textDecoration: 'none' }}>
                                 {subcategory.category_name_en}
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
