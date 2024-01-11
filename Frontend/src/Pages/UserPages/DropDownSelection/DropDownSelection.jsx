@@ -64,13 +64,15 @@ const DropDownSelection = () => {
                   <div className="sub-menu mega-menu mega-menu-column-4 text-blue-600">
                     {section.mega_menu_categories.map((category, catIndex) => (
                       <div key={catIndex} className="list-item">
-                        <Link to={category.url} style={{ textDecoration: 'none' }}>
+                        {/* <Link to={category.url} style={{ textDecoration: 'none' }}> */}
+                        <Link to={`/${category.url}`} style={{ textDecoration: 'none' }}>
                           {category.category_name_en}
                         </Link>
                         <ul>
                           {category.footer_menus.map((subcategory, subIndex) => (
                             <li key={subIndex}>
-                              <Link to={subcategory.url} style={{ textDecoration: 'none' }}>
+                              {/* <Link to={subcategory.url} style={{ textDecoration: 'none' }}> */}
+                              <Link to={`/${subcategory.url}`} style={{ textDecoration: 'none' }}>
                                 {subcategory.category_name_en}
                               </Link>
                             </li>
