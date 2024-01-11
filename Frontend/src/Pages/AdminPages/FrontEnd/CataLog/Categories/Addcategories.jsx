@@ -46,8 +46,9 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleAddCompany = async () => {
         //  integrate the post api in try catch blcck
         try {
+            
             const response = await newRequest.post('/creatmega_menu_categories/', {
-                parent_id: Categorylevel,
+                parent_id: Categorylevel || 'Main Category',
                 megamenu_id: MegaMenuCategories,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
