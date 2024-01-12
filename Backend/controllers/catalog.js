@@ -252,17 +252,22 @@ export const mega_menu_categories_frontSide = async (req, res, next) =>
     try {
         const mega_menus_with_categories = await prisma.mega_menus.findMany({
             where: {
-                status: 1, // Filter by status equal to 1
+                status: 1,
             },
             include: {
                 mega_menu_categories: {
+                    where: {
+                        status: 1,
+                    },
                     include: {
-                        // mega_menus: true,
-                        footer_menus: true,
+                        footer_menus: {
+                            where: {
+                                status: 1,
+                            },
+                        },
                     },
                 },
             },
-
         });
 
         res.json(mega_menus_with_categories);
@@ -271,6 +276,7 @@ export const mega_menu_categories_frontSide = async (req, res, next) =>
         next(error);
     }
 };
+
 
 const footer_menus = Joi.object({
     parent_id: Joi.string().max(255).required(),
