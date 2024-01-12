@@ -58,6 +58,10 @@ const MemmberRegisteration = () => {
     // const [selectProducts, setSelectProducts] = useState('');
 
     const [categories, setCategories] = useState([]);
+    const [addCrNumber, setAddCrNumber] = useState("");
+    const [crActivity, setCrActivity] = useState("");
+    const [error, setError] = useState("");
+    
 
 
     useEffect(() => {
@@ -494,6 +498,16 @@ const MemmberRegisteration = () => {
     }, [selectedCategories]);
 
 
+    const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        if (inputValue.length > 10) {
+          setError("Cr Number should be 10 digits");
+        } else {
+          setError("");
+        }
+        setAddCrNumber(inputValue.slice(0, 10));  // Limit input to 10 characters
+    };
+
     // console.log("company", companyLandLine)
 
     return (
@@ -522,15 +536,15 @@ const MemmberRegisteration = () => {
                 <Header />
             </div>
             <div className="flex flex-col justify-center items-center">
-                <div className='h-auto sm:w-[85%] w-full border-l border-r border-primary'>
+                <div className='h-auto w-full sm:w-2/3 border-l border-r border-primary'>
                     <div className='h-5 w-full bg-primary rounded-t-md'></div>
                     <div className='h-auto w-full flex justify-between items-center px-5 py-2'>
                         <p className='sm:text-2xl w-full font-semibold text-sm text-secondary'>Member Registration</p>
-                        <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p>
+                        {/* <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p> */}
                     </div>
                 </div>
 
-                <div className='h-auto sm:w-[85%] w-full p-6 shadow-xl border-l border-r border-b border-primary'>
+                <div className='h-auto w-full sm:w-2/3 p-6 shadow-xl border-l border-r border-b border-primary'>
                     <form onSubmit={handleSubmit}>
                         {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
@@ -577,6 +591,34 @@ const MemmberRegisteration = () => {
                     </div> */}
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
+                           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <label htmlFor="field1" className="text-secondary font-semibold">Cr Number<span className='text-red-600'> *</span></label>
+                                <input
+                                   type="number"
+                                   id="field1"
+                                   value={addCrNumber}
+                                   onChange={handleInputChange}
+                                //    onChange={(e) => setAddCrNumber(e.target.value)}
+                                   placeholder="Cr Number"
+                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                 />
+                                {error && <p className="text-red-500 text-xs">{error}</p>}
+                               </div>
+
+                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                 <label htmlFor="field2" className="text-secondary font-semibold">Cr Activity<span className='text-red-600'> *</span></label>
+                                 <input
+                                   type="text"
+                                   id="field2"
+                                  //  value={addCrNumber}
+                                   onChange={(e) => setCrActivity(e.target.value)}
+                                   placeholder="Cr Activity"
+                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                 />
+                            </div>     
+                        </div>
+
+                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='email'>Email<span className='text-red-600'>*</span></label>
                                 <input
@@ -584,31 +626,7 @@ const MemmberRegisteration = () => {
                                     id='email'
                                     placeholder='Email'
                                     required
-                                    type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
-                            </div>
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='companyEnglish'>Company Name [English]<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setCompanyEnglish(e.target.value)}
-                                    id='companyEnglish'
-                                    placeholder='Company Name English'
-                                    required
-                                    type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='companyArabic'>Company Name [Arabic]<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setCompanyArabic(e.target.value)}
-                                    id='companyArabic'
-                                    placeholder='Company Name Arabic'
-                                    required
-                                    type='text' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
+                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
 
 
@@ -619,7 +637,31 @@ const MemmberRegisteration = () => {
                                     id='contactperson'
                                     placeholder='Contact Person'
                                     required
-                                    type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
+                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
+                            </div>
+                        </div>
+
+
+                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                                <label className='text-secondary font-semibold' htmlFor='companyEnglish'>Company Name [English]<span className='text-red-600'>*</span></label>
+                                <input
+                                    onChange={(e) => setCompanyEnglish(e.target.value)}
+                                    id='companyEnglish'
+                                    placeholder='Company Name English'
+                                    required
+                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
+                            </div>
+
+
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                                <label className='text-secondary font-semibold' htmlFor='companyArabic'>Company Name [Arabic]<span className='text-red-600'>*</span></label>
+                                <input
+                                    onChange={(e) => setCompanyArabic(e.target.value)}
+                                    id='companyArabic'
+                                    placeholder='Company Name Arabic'
+                                    required
+                                    type='text' className='border-1 border-[#8E9CAB] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
 
                         </div>
@@ -628,7 +670,7 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline<span className='text-red-600'>*</span></label>
-                                <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm '>
+                                <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm '>
                                     {/* <PhoneInput
                                         international
                                         defaultCountry="SA"
@@ -675,7 +717,7 @@ const MemmberRegisteration = () => {
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Mobile Number <span>(Omit Zero)</span><span className='text-red-600'>*</span></label>
-                                <div className='flex items-center border-2 border-[#e4e4e4] w-full rounded-sm'>
+                                <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm'>
                                     {/* <PhoneInput
                                         international
                                         country={'sa'}
@@ -722,65 +764,14 @@ const MemmberRegisteration = () => {
                                 </div>
                             </div>
 
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                            {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='extension'>Extension no.</label>
                                 <input
                                     onChange={(e) => setExtension(e.target.value)}
                                     id='extension'
                                     placeholder='Extension no.'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setZipCode(e.target.value)}
-                                    id='zipcode'
-                                    placeholder='Zip Code*'
-                                    required
-                                    type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='website'>Website</label>
-                                <input
-                                    onChange={(e) => setWebsite(e.target.value)}
-                                    id='website'
-                                    placeholder='Website'
-                                    type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='industriesTypes'>Select Industries Releated to your Business<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-
-                                    multiple
-                                    id='industriesTypes'
-                                    options={industryTypes}
-                                    getOptionLabel={(option) => option.name}
-                                    value={selectedIndustries}
-                                    onChange={handleIndustryTypeChange}
-                                    filterSelectedOptions
-                                    renderInput={(params) => (
-                                        <TextField
-
-
-                                            autoComplete="off"
-                                            {...params}
-                                            label='Select matching industries'
-                                            placeholder='select industries types'
-                                            variant='outlined'
-                                        />
-                                    )}
-                                    required
-                                />
-                            </div>
+                            </div> */}
 
                         </div>
 
@@ -876,7 +867,11 @@ const MemmberRegisteration = () => {
                             </div>
 
 
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col'>
+                        </div>
+
+
+                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
+                           <div className='w-full font-body sm:text-base text-sm flex flex-col'>
                                 <label className='text-secondary font-semibold' htmlFor='city'>City<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="city"
@@ -919,11 +914,63 @@ const MemmberRegisteration = () => {
                                 />
                             </div>
 
+
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code<span className='text-red-600'>*</span></label>
+                                <input
+                                    onChange={(e) => setZipCode(e.target.value)}
+                                    id='zipcode'
+                                    placeholder='Zip Code*'
+                                    required
+                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
+                            </div>
+
+
                         </div>
 
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-                            <div className='sm:w-[32.5%] w-full font-body sm:text-base text-sm flex flex-col'>
+                           
+
+
+                            {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                                <label className='text-secondary font-semibold' htmlFor='website'>Website</label>
+                                <input
+                                    onChange={(e) => setWebsite(e.target.value)}
+                                    id='website'
+                                    placeholder='Website'
+                                    type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
+                            </div> */}
+
+
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                                <label className='text-secondary font-semibold' htmlFor='industriesTypes'>Select Industries Releated to your Business<span className='text-red-600'>*</span></label>
+                                <Autocomplete
+
+                                    multiple
+                                    id='industriesTypes'
+                                    options={industryTypes}
+                                    getOptionLabel={(option) => option.name}
+                                    value={selectedIndustries}
+                                    onChange={handleIndustryTypeChange}
+                                    filterSelectedOptions
+                                    renderInput={(params) => (
+                                        <TextField
+
+
+                                            autoComplete="off"
+                                            {...params}
+                                            label='Select matching industries'
+                                            placeholder='select industries types'
+                                            variant='outlined'
+                                        />
+                                    )}
+                                    required
+                                />
+                            </div>
+
+
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col mt-0'>
                                 <label className='text-secondary font-semibold' htmlFor='category'>Membership category<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="category"
@@ -965,14 +1012,12 @@ const MemmberRegisteration = () => {
                                 />
                             </div>
 
-
                         </div>
-
 
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
 
-                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2 mt-2'>
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3'>
                                 <label
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
                                 >GTIN
@@ -1025,7 +1070,7 @@ const MemmberRegisteration = () => {
                             </div>
 
 
-                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-2'>
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1'>
                                 <label className='text-secondary font-semibold' htmlFor='other'>Other Products<span className='font-normal'> (GLN,SSCC,UDI)</span></label>
                                 <Autocomplete
                                     multiple
@@ -1053,7 +1098,7 @@ const MemmberRegisteration = () => {
 
                         </div>
 
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
+                        {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
                             <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='upload'>Upload your company Commercial Registration (CR)<span className='text-red-600'>*</span></label>
                                 <input
@@ -1079,7 +1124,7 @@ const MemmberRegisteration = () => {
                         </div>
                         {errorMessage && (
                             <p className='text-red-600'>{errorMessage}</p>
-                        )}
+                        )} */}
 
 
                         <div>
@@ -1131,14 +1176,14 @@ const MemmberRegisteration = () => {
 
                         {/* add one radio button */}
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
-                            <div className='w-full sm:w-[15%] font-body sm:text-base text-sm flex flex-col gap-1'>
+                            <div className='w-full sm:w-[18%] font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <div className='flex items-center gap-3'>
                                     <input
                                         // onChange={(e) => setLocationArabic(e.target.value)}
                                         id='radio'
                                         placeholder='radio'
                                         defaultChecked
-                                        type='radio' className='border-2 border-[#e4e4e4] w-5 h-5 rounded-sm p-2 mb-3' />
+                                        type='radio' className='border-1 border-[#8E9CAB] w-5 h-5 rounded-sm p-2 mb-3' />
                                     <p className='text-secondary font-semibold'>Bank Transfer</p>
                                 </div>
 
