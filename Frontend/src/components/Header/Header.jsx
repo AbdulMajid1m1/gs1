@@ -23,7 +23,7 @@ const Header = () => {
             </div>
 
             {/* Buttons */}
-            <div className='flex'>
+            <div className='flex flex-wrap justify-center'>
               <div className=''>
               <div className='flex justify-end items-end px-1 gap-3 font-sans font-semibold'>
                 <p className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>Verified By GS1</p>
@@ -32,7 +32,8 @@ const Header = () => {
               </div>
             <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2'>
               <button 
-                onClick={() => navigate('/get-barcode')}
+                // onClick={() => navigate('/get-barcode')}
+                onClick={() => navigate('/member-registration')}
                 className='bg-secondary text-white px-2 py-1 rounded-md transition-transform transform hover:scale-90'
                   >
                   Get a Barcode
@@ -45,12 +46,16 @@ const Header = () => {
                   GS1 Member Login
                 </button>
                 
+              </div>
             </div>
-            </div>
+
+              <div className='w-full sm:w-auto'>
+                <I18nextProvider i18n={i18n}>
+                  <LanguageSwitcher />
+                </I18nextProvider>
+              </div>
             
-            <I18nextProvider i18n={i18n}>
-              <LanguageSwitcher />
-            </I18nextProvider>
+            
            
             </div>
           </div>

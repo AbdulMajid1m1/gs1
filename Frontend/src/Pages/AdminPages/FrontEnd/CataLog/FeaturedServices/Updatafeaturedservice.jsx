@@ -30,10 +30,12 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
+    const [imageshowupload, setimageshowupload] = useState(updateBrandData?.image)
 
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
+        setimageshowupload(e.target.files[0])
     }
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -42,7 +44,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
     const handleUpdateBrand = async () => {
         setLoading(true);
         const formData = new FormData();
-        formData.append('image', imageshow);
+        formData.append('image', imageshowupload);
         formData.append('link', Page);
         formData.append('status', Number(status));
         console.log(formData);

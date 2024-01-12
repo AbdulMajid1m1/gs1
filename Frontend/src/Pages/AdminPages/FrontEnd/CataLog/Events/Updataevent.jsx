@@ -18,7 +18,8 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [Page, setPage] = useState(updateBrandData?.link || 0)
     const [Pagedropdown, setPagedropdown] = useState([])
-    const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image )|| '')
+    const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
+    const [imageshowupload, setimageshowupload] = useState(updateBrandData?.image)
     const [loading, setLoading] = useState(false);
     
     useEffect(() => {
@@ -51,6 +52,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
+        setimageshowupload(e.target.files[0])
     }
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -64,7 +66,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('date', Date);
         formData.append('link', Page);
         formData.append('display_type', selectedOption);
-        formData.append('image', imageshow);
+        formData.append('image', imageshowupload);
         formData.append('status', Number(status));
         try {
             const response = await newRequest.put(`/updateupcoming_events/${updateBrandData?.id}`, formData);
