@@ -46,8 +46,9 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleAddCompany = async () => {
         //  integrate the post api in try catch blcck
         try {
+            
             const response = await newRequest.post('/creatmega_menu_categories/', {
-                parent_id: Categorylevel,
+                parent_id: Categorylevel || 'Main Category',
                 megamenu_id: MegaMenuCategories,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
@@ -157,8 +158,8 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">Category Level</option>
-                                            <option value="1">Main Category</option>
+                                            <option value="Category Level">Category Level</option>
+                                            <option value="Main Category">Main Category</option>
                                         </select>
                                     </div>
 
@@ -176,7 +177,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }

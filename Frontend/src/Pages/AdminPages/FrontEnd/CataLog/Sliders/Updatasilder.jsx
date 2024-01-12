@@ -19,6 +19,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [loading, setLoading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
+    const [imageshowupload, setimageshowupload] = useState(updateBrandData?.image)
     
     useEffect(() => {
         const getpagedata = async () => {
@@ -37,6 +38,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
+        setimageshowupload(e.target.files[0])
     }
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -48,7 +50,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('title', Title);
         formData.append('caption', Caption);
         formData.append('description', Description);
-        formData.append('image', imageshow);
+        formData.append('image', imageshowupload);
         formData.append('link', Page);
         formData.append('status', Number(status));
         console.log(formData);
@@ -70,7 +72,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.error || 'Something went wrong!', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -123,7 +125,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }

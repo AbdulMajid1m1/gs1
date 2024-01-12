@@ -34,12 +34,14 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
+    const [imageshowupload, setimageshowupload] = useState(updateBrandData?.image)
 
 
     console.log(updateBrandData?.image);
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
+        setimageshowupload(e.target.files[0])
     }
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -51,7 +53,7 @@ const Updatamanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('name', Name);
         formData.append('job_title', job_title);
         formData.append('description', Description);
-        formData.append('image', imageshow);
+        formData.append('image', imageshowupload);
         formData.append('addedBy', '12');
         formData.append('status', Number(status));
         try {

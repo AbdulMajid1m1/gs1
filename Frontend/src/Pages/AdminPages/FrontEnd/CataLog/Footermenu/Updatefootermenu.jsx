@@ -162,7 +162,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }

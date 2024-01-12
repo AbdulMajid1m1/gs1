@@ -90,24 +90,18 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                        <label htmlFor="page" className="text-secondary">
+                                           Link
                                         </label>
-                                        <select
-                                            id="status"
+                                        <input
+                                            id="page"
+                                            type="text"
                                             value={Page}
                                             onChange={(e) => setPage(e.target.value)}
+                                            placeholder='Enter Link'
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                        >
-                                            <option value="Select">-- Select --</option>
-                                            {
-                                                Pagedropdown && Pagedropdown.map((itme, index) => {
-                                                    return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
+                                        />
+                                      
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
