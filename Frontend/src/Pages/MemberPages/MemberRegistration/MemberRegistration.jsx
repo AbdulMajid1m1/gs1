@@ -319,7 +319,9 @@ const MemmberRegisteration = () => {
         if (location) {
             formData.append('location_uk', location);
         }
-        formData.append('have_cr', selectedCr ? 'yes' : 'no');
+
+
+        // formData.append('have_cr', selectedCr ? 'yes' : 'no');
 
         // formData.append('document_number', 'doc-67890');
         // formData.append('fname', 'John');
@@ -330,12 +332,16 @@ const MemmberRegisteration = () => {
         formData.append('state', selectedState?.name);
         formData.append('city', selectedCity?.name);
         formData.append('zip_code', zipCode);
-        if (extension) {
-            formData.append('mbl_extension', extension);
-        }
-        if (website) {
-            formData.append('website', website);
-        }
+
+
+        // if (extension) {
+        //     formData.append('mbl_extension', extension);
+        // }
+        // if (website) {
+        //     formData.append('website', website);
+        // }
+
+
         // formData.append('no_of_staff', '50');
         // formData.append('district', 'Central');
         // formData.append('building_no', '12A');
@@ -345,19 +351,28 @@ const MemmberRegisteration = () => {
         // formData.append('qr_corde', 'QRCode123');
         // formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
         // formData.append('verification_code', '123456');
-        if (selectedCr?.cr && selectedCr?.activity) {
-            formData.append('cr_number', selectedCr?.cr);
-            formData.append('cr_activity', selectedCr?.activity);
-            formData.append('cr_documentID', selectedCr?.crId || '0');
 
-        }
 
+        // if (selectedCr?.cr && selectedCr?.activity) {
+        //     formData.append('cr_number', selectedCr?.cr);
+        //     formData.append('cr_activity', selectedCr?.activity);
+        //     formData.append('cr_documentID', selectedCr?.crId || '0');
+
+        // }
+        formData.append('cr_number', addCrNumber);
+        formData.append('cr_activity', crActivity);
+       
+       
         formData.append('company_name_eng', companyEnglish);
         formData.append('company_name_arabic', companyArabic);
         // formData.append('bussiness_activity', 'Trading');
         // formData.append('other_products', selectProducts);
-        formData.append('image', selectedImage);
-        formData.append('document', upload);
+
+
+        // formData.append('image', selectedImage);
+        // formData.append('document', upload);
+
+
         // formData.append('product_addons', 'AddonABC');
 
         formData.append('contactPerson', contactPerson);
