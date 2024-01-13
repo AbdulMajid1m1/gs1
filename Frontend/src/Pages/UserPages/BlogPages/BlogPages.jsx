@@ -65,7 +65,7 @@ const BlogPages = () => {
        {/* <div className='mt-10 mb-10'>
           Blog Pages
        </div> */}
-        <div className='mt-10 mb-10 px-5'>
+        <div className='mt-10 mb-10 px-4 sm:px-20'>
            {pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>}
               {pageData.custom_section_data && (
             <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
