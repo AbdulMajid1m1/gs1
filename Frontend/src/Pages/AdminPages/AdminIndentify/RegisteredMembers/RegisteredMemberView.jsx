@@ -26,6 +26,7 @@ import UpgradeIcon from '@mui/icons-material/Upgrade';
 import SwipeDownIcon from '@mui/icons-material/SwipeDown';
 import UpgradePopUp from './UpgradePopUp';
 import DowngradePopUp from './DowngradePopUp';
+import PendingApprovedPopUp from './PendingApprovedPopUp';
 
 
 const RegisteredMembersView = () => {
@@ -61,6 +62,7 @@ const RegisteredMembersView = () => {
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
   const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
+  const [isPendingApprovedPopupVisible, setIsPendingApprovedPopupVisible] = useState(false);
   const [subType, setSubType] = useState("");
   const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
   const handleShowUpgradePopup = (row) => {
@@ -420,6 +422,9 @@ const RegisteredMembersView = () => {
   };
 
 
+  const handlePendingApprovedPopUp = () => {
+    setIsPendingApprovedPopupVisible(true);
+  };
 
 
 
@@ -574,16 +579,22 @@ const RegisteredMembersView = () => {
               <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
 
 
-              <div className='w-full flex justify-end px-6 py-6'>
-                <button
-                  className='bg-blue-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                >
-                  Change Membership
-                </button>
-              </div>
-
               {/* Registered Products */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-25px' }}
+              <div className='w-full flex justify-end px-6 pt-6 gap-2'>
+                  <button
+                    onClick={handlePendingApprovedPopUp}
+                    className='bg-red-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Pending For Approved
+                  </button>
+                  {/* <button
+                    className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Approved
+                  </button> */}
+                </div>
+
+              <div style={{ marginLeft: '-11px', marginRight: '-11px'}}
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
@@ -628,11 +639,22 @@ const RegisteredMembersView = () => {
                   uniqueId="registeredProductsTableId"
 
                 />
+                 
               </div>
 
+              </div>
+             </div>
+            </div>
 
-              <div className='flex justify-between w-full mt-10'>
-                <div className='w-full flex justify-end px-6'>
+
+
+            {/* Member Documents */}
+            <div className='flex justify-center items-center bg-[#DAF2EE]'>
+              <div className="h-auto w-[97%] px-0 pt-4">
+               <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+
+               <div className='flex justify-between w-full'>
+                 <div className='w-full flex justify-end px-6'>
                   {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                   <button
                     onClick={handleShowAddMemberPopup}
@@ -985,6 +1007,12 @@ const RegisteredMembersView = () => {
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (
           <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} />
+        )}
+
+
+        {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
+        {isPendingApprovedPopupVisible && (
+          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} />
         )}
 
 
