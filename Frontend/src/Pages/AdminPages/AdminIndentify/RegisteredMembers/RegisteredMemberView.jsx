@@ -583,9 +583,12 @@ const RegisteredMembersView = () => {
               <div className='w-full flex justify-end px-6 pt-6 gap-2'>
                   <button
                     onClick={handlePendingApprovedPopUp}
-                    className='bg-red-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                    className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${
+                      allUserData.status === 'active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white pointer-events-none'
+                    }`}
+                    disabled={allUserData.status !== 'active'}
                   >
-                    Pending For Approved
+                    {allUserData.status === 'active' ? 'Approved' : 'Pending For Approval'}
                   </button>
                   {/* <button
                     className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
@@ -1012,7 +1015,7 @@ const RegisteredMembersView = () => {
 
         {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
         {isPendingApprovedPopupVisible && (
-          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} />
+          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData}/>
         )}
 
 

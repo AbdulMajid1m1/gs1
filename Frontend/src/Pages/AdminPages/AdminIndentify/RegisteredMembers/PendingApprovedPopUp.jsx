@@ -7,12 +7,12 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const PendingApprovedPopUp = ({ isVisible, setVisibility,
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
 }) => {
-  const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
+//   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
+//   console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  // console.log(gs1MemberData)
+  console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
@@ -48,42 +48,35 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility,
   }, []);
 
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-//     const approvedBody = {
-//       status: selectedStatus,
-//     };
+    const approvedBody = {
+        "userId": gs1MemberData?.id,
+        "status": selectedStatus, // or approved
+        // "reject_reason": rejected // optional
+    };
+    if (rejected) {
+        approvedBody.reject_reason = rejected;
+    }
 
   
-//     try {
-//       const res = await newRequest.put(apiEndpoint, { ...requestBody });
-//       // console.log(res.data);
-//       if (res.status === 200) {
-//         if (selectedStatus === "rejected") {
-//           toast.info("Member Account Rejected Successfully");
-//         } else {
-//           toast.success(res?.data?.message || "User Activated Successfully!");
-//         }
-
-//         setLoading(false);
-//         refreshMemberInoviceData();
-//         // MemberbankSlip();
-//         fetchAllUserData();
-//         fetchMemberbankSlipData();
-//         fetchRegisteredProductsData();
-
-//         fetchMemberHistoryData();
-//         // Close the popup
-//         handleCloseInvoicePopup();
-//       }
-//     } catch (err) {
-//       console.log(err);
-//       setLoading(false);
-//       toast.error(err.response?.data?.error || "Something went wrong!");
-//     }
-//   };
+    try {
+      const res = await newRequest.post('/users/sendInvoice', approvedBody);
+      
+      setLoading(false);
+      toast.success(res.data.message || "Invoice status updated successfully!");
+      fetchAllUserData();
+        // Close the popup
+        handleClosePendingApprovedPopup();
+    //   }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      toast.error(err.response?.data?.error || "Something went wrong!");
+    }
+  };
 
 
   return (
@@ -92,8 +85,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility,
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-            {/* <form onSubmit={handleSubmit} className='w-full'> */}
-              <form className='w-full'>
+            <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approved</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -145,7 +137,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility,
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
+                    {/* <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2> */}
                   </div>
                   <table>
                     <thead>
