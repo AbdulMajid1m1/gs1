@@ -55,11 +55,11 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
     const approvedBody = {
         "userId": gs1MemberData?.id,
         "status": selectedStatus, // or approved
-        // "reject_reason": rejected // optional
     };
     if (rejected) {
         approvedBody.reject_reason = rejected;
     }
+
 
   
     try {
