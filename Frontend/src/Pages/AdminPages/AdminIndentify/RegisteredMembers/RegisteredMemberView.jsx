@@ -586,7 +586,7 @@ const RegisteredMembersView = () => {
                     className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${
                       allUserData.status === 'active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white pointer-events-none'
                     }`}
-                    disabled={allUserData.status !== 'active'}
+                    disabled={allUserData.status == 'active'}
                   >
                     {allUserData.status === 'active' ? 'Approved' : 'Pending For Approval'}
                   </button>
