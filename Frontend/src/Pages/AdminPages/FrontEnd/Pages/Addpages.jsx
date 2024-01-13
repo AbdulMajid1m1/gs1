@@ -118,8 +118,15 @@ const Addpages = () => {
             [{ header: [1, 2, false] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['link', 'image'],
+            [{ 'color': [] }], // Added font color
+            [{ 'font': [] }], 
+            ['link', 'image', 'video'], // Added video support
             ['clean'],
+            [{ 'align': [] }],
+            ['script', 'sub', 'super'],
+            ['formula'],
+            ['question-mark'],
+
         ],
     };
 
