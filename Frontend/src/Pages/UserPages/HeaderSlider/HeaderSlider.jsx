@@ -21,7 +21,9 @@ const HeaderSlider = () => {
           const response = await newRequest.get("/getAllsliders",);
 
           console.log(response.data);
-          setData(response?.data || []);
+
+        const filteredData = response.data.filter(item => item.status === 1);
+        setData(filteredData || []);
           // setIsLoading(false)
 
       } catch (err) {

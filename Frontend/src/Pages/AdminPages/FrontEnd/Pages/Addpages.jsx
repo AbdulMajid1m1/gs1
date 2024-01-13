@@ -131,20 +131,19 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                 { indent: '-1' },
                 { indent: '+1' }
             ],
-            ['link', 'image', 'video'],
-            ['clean'], // <-- Comma was missing here
+            ['link', 'image', 'video', 'deleteImage'], // Added 'deleteImage' button
+            ['clean'],
             [{ 'color': [] }],
             [{ 'background': [] }],
             [{ 'font': [] }],
         ],
         clipboard: {
-            // toggle to add extra line breaks when pasting HTML:
             matchVisual: false
         },
         imageResize: {
-            parchment: Quill.import('parchment'),
             modules: ['Resize', 'DisplaySize']
-        }
+        },
+       
     };
 
     const formats = [
@@ -164,9 +163,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         'video',
         'color',
         'background',
-
     ];
-
 
     return (
         <div>
