@@ -22,7 +22,7 @@ import { createMemberLogs } from '../utils/functions/historyLogs.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const userSchema = Joi.object({
+const updateUserSchema = Joi.object({
     user_type: Joi.string().max(20),
     slug: Joi.string(),
     location_uk: Joi.string(),
@@ -120,23 +120,402 @@ const userSchema = Joi.object({
     })
 });
 
+const userSchema = Joi.object({
+    cr_number: Joi.string(), // CR NO.
+    cr_activity: Joi.string(), // Activity Name
+    email: Joi.string().email(), // Email
+    contactPerson: Joi.string(), // Contact Person
+    company_name_eng: Joi.string(), // CompanyE
+    company_name_arabic: Joi.string(), // CompanyAr
+    companyLandLine: Joi.string(), // Landline
+    mobile: Joi.string(), // Mobile
+    zip_code: Joi.string().max(50), // SipCode
+    industryTypes: Joi.array().items(Joi.object({ // Industry
+        id: Joi.string(),
+        name: Joi.string()
+    })),
+    country: Joi.string(), // Country
+    state: Joi.string(), // State
+    city: Joi.string(), // City
+    membership_category: Joi.string().max(50), // MemberShipCategory
+    other_products: Joi.string().optional(), // OtherProducts
+
+    // Nested cart schema
+    cart: Joi.object({
+        transaction_id: Joi.string(),
+        cart_items: Joi.array().items(Joi.object({
+            productID: Joi.string().required(),
+            productName: Joi.string(),
+            registration_fee: Joi.string(),
+            yearly_fee: Joi.string(),
+            price: Joi.string(),
+            product_type: Joi.string(),
+            quotation: Joi.string()
+        })).min(1).required(),
+        total: Joi.number(),
+        request_type: Joi.string(),
+        payment_type: Joi.string(),
+        receipt: Joi.string(),
+        receipt_path: Joi.string(),
+        admin_id: Joi.number().integer(),
+        assign_to: Joi.number().integer().allow(null),
+        discount: Joi.number().allow(null),
+    })
+});
+
+
+// const userSchema = Joi.object({
+//     user_type: Joi.string().max(20),
+//     slug: Joi.string(),
+//     location_uk: Joi.string(),
+//     have_cr: Joi.string(),
+//     cr_documentID: Joi.string(),
+//     document_number: Joi.string(),
+//     fname: Joi.string(),
+//     lname: Joi.string(),
+//     email: Joi.string().email(),
+//     mobile: Joi.string(),
+//     image: Joi.string(),
+//     country: Joi.string(),
+//     city: Joi.string(),
+//     state: Joi.string(),
+//     po_box: Joi.string(),
+//     mbl_extension: Joi.string(),
+//     website: Joi.string(),
+//     no_of_staff: Joi.string(),
+//     companyID: Joi.string(),
+//     district: Joi.string(),
+//     building_no: Joi.string(),
+//     additional_number: Joi.string(),
+//     other_landline: Joi.string(),
+//     unit_number: Joi.string(),
+//     qr_corde: Joi.string(),
+//     email_verified_at: Joi.date(),
+//     zip_code: Joi.string().max(50),
+//     verification_code: Joi.number().integer(),
+//     cr_number: Joi.string(),
+//     cr_activity: Joi.string(),
+//     company_name_eng: Joi.string(),
+//     company_name_arabic: Joi.string(),
+//     bussiness_activity: Joi.string(),
+//     other_products: Joi.string().optional(),
+//     gpc: Joi.string(),
+//     product_addons: Joi.string(),
+//     password: Joi.string(),
+//     // total: Joi.number(),
+//     contactPerson: Joi.string(),
+//     companyLandLine: Joi.string(),
+//     documents: Joi.string(),
+//     document: Joi.string(),
+//     address_image: Joi.string(),
+//     payment_type: Joi.string(),
+//     online_payment: Joi.string(),
+//     remember_token: Joi.string(),
+//     parent_memberID: Joi.string().default('0'),
+//     invoice_file: Joi.string(),
+//     otp_status: Joi.number().integer(),
+//     gcpGLNID: Joi.string().max(50),
+//     gln: Joi.string().max(50),
+//     gcp_type: Joi.string().max(50),
+//     deleted_at: Joi.date(),
+//     gcp_expiry: Joi.date(),
+//     memberID: Joi.string(),
+//     user_id: Joi.string(),
+//     assign_to: Joi.number().integer(),
+//     membership_category_id: Joi.string().max(50),
+//     membership_category: Joi.string().max(50),
+//     upgradation_disc: Joi.number().integer(),
+//     upgradation_disc_amount: Joi.number(),
+//     renewal_disc: Joi.number().integer(),
+//     renewal_disc_amount: Joi.number(),
+//     membership_otherCategory: Joi.string().max(50),
+//     activityID: Joi.number().integer(),
+//     registration_type: Joi.string().max(10),
+//     status: Joi.string().valid('active', 'inactive', 'reject', 'suspend'), // TODO: remove status and allow only in update
+//     industryTypes: Joi.array().items(Joi.object({
+//         id: Joi.string(),
+//         name: Joi.string()
+//     })),
+
+
+//     // Nested cart schema
+//     cart: Joi.object({
+//         transaction_id: Joi.string(),
+//         cart_items: Joi.array().items(Joi.object({
+//             productID: Joi.string().required(),
+//             productName: Joi.string(),
+//             registration_fee: Joi.string(),
+//             yearly_fee: Joi.string(),
+//             price: Joi.string(),
+//             product_type: Joi.string(),
+//             quotation: Joi.string()
+//         })).min(1).required(),
+//         total: Joi.number(),
+//         request_type: Joi.string(),
+//         payment_type: Joi.string(),
+//         user_id: Joi.string(),
+//         receipt: Joi.string(),
+//         receipt_path: Joi.string(),
+//         admin_id: Joi.number().integer(),
+//         assign_to: Joi.number().integer().allow(null),
+//         discount: Joi.number().allow(null),
+//     })
+// });
+
+
+const sendAndSaveInvoiceSchema = Joi.object({
+    userId: Joi.string().required(),
+    status: Joi.string().valid('approved', 'rejected').required(),
+    reject_reason: Joi.string().optional(),
+});
+
+export const sendInvoiceToUser = async (req, res, next) => {
+    try {
+        // Validate user data
+        const { error, value } = sendAndSaveInvoiceSchema.validate(req.body);
+        if (error) {
+            console.log("error")
+            console.log(error)
+            return next(createError(400, error.details[0].message));
+        }
+        // Extract user and cart values
+
+        const { userId, status, reject_reason } = value;
+
+
+
+        // fetch user data and cart data
+        const user = await prisma.users.findUnique({
+            where: {
+                id: userId
+            },
+            include: {
+                carts: true
+            }
+
+        });
+
+
+        const cartValue = user.carts[0];
+        cartValue.cart_items = JSON.parse(cartValue.cart_items);
+        console.log("cartValue", cartValue)
+        let userUpdateResult; // to store the updated user
+        let transaction;
+        if (status === 'approved') {
+
+            // Generate QR code
+            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+
+            const data1 = {
+                topHeading: "INVOICE",
+                secondHeading: "BILL TO",
+                memberData: {
+                    qrCodeDataURL: qrCodeDataURL,
+                    // registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                    registeration: `New Registration`,
+                    // Assuming $addMember->id is already known
+                    company_name_eng: user.company_name_eng,
+                    mobile: user.mobile,
+                    address: {
+                        zip: user.zip_code,
+                        countryName: user.country,
+                        stateName: user.state,
+                        cityName: user.city,
+                    },
+                    companyID: user.companyID,
+                    membership_otherCategory: user.membership_category,
+                    gtin_subscription: {
+                        products: {
+                            member_category_description: cartValue?.cart_items[0]?.productName,
+                        },
+                    },
+                },
+
+                cart: cartValue,
+
+
+                currentDate: {
+                    day: new Date().getDate(),
+                    month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                    year: new Date().getFullYear(),
+                },
+
+
+
+                company_details: {
+                    title: 'Federation of Saudi Chambers',
+                    account_no: '25350612000200',
+                    iban_no: 'SA90 1000 0025 3506 1200 0200',
+                    bank_name: 'Saudi National Bank - SNB',
+                    bank_swift_code: 'NCBKSAJE',
+                },
+                BACKEND_URL: BACKEND_URL
+            };
+
+
+            // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
+            const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
+
+
+            // Define the directory and filename for the PDF
+            const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+            const pdfFilename = `Invoice-${user?.company_name_eng}-${cartValue.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+            const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+            cartValue.documents = `/uploads/documents/MemberRegInvoice/${pdfFilename}`
+            // Ensure the directory exists
+            if (!fsSync.existsSync(pdfDirectory)) {
+                fsSync.mkdirSync(pdfDirectory, { recursive: true });
+            }
+
+            // Generate PDF and save it to the specified path
+            const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+
+            // now fetch the pdf file from the path and send it as attachment
+            const invoiceBuffer = await fs.readFile(pdfFilePath);
+
+            cartValue.cart_items = JSON.stringify(cartValue.cart_items);
+            // await sendOTPEmail(user.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
+
+            //     , { invoiceBuffer, pdfFilename }, pdfBuffer2);
 
 
 
 
+            // Start a transaction to ensure both user and cart are inserted
+            transaction = await prisma.$transaction(async (prisma) => {
 
 
-// const generatePDF = async (ejsFilePath, data) => {
-//     const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
-//     const htmlContent = await ejs.render(ejsTemplate, { data });
+                // add all three documents to the member_documents table
+                const documentsData =
+                {
+                    type: "invoice",
+                    document: `/uploads/documents/MemberRegInvoice/${pdfFilename}`,
+                    transaction_id: user.carts[0].transaction_id,
+                    user_id: user.id,
+                    doc_type: "member_document",
+                    status: "pending",
+                    uploaded_by: user.email
+                }
 
-//     return new Promise((resolve, reject) => {
-//         pdf.create(htmlContent, { format: 'A4' }).toBuffer((err, buffer) => {
-//             if (err) return reject(err);
-//             resolve(buffer);
-//         });
-//     });
-// };
+
+
+                await prisma.member_documents.create({ data: documentsData })
+                // isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
+
+                // update user isproductApproved to 1 and return the updated user
+                userUpdateResult = await prisma.users.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        isproductApproved: 1
+                    },
+                    include: {
+                        carts: true
+                    }
+                });
+
+                /// send email to user with generated invoice
+                const emailSubject = `Invoice Generated`;
+                const emailContent = `
+                <h1>Invoice Generated</h1>
+                <p>Your Invoice is generated by the admin</p>
+                <p>Invoice: <strong>${pdfFilename}</strong></p>
+                `;
+
+                await sendEmail({
+                    toEmail: user.email,
+                    subject: emailSubject,
+                    htmlContent: emailContent,
+                    attachments: [
+                        {
+                            filename: pdfFilename,
+                            content: invoiceBuffer,
+                            contentType: 'application/pdf'
+                        },
+                        {
+                            filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf',
+                            content: pdfBuffer2,
+                            contentType: 'application/pdf'
+                        }
+                    ]
+                });
+
+
+                return { userUpdateResult };
+
+                // return { newUser, newCart };
+
+                // make trantion time to 40 sec
+            }, { timeout: 40000 });
+
+
+            const logData = {
+                subject: 'Invoice Generated',
+                // user user memberId
+                // member_id: userUpdateResult.memberID,
+                user_id: transaction.userUpdateResult.id,
+                // TODO: take email form current admin token
+                // admin_id: 'admin@gs1sa.link',
+
+            }
+
+
+
+            try {
+
+                await createMemberLogs(logData);
+            }
+            catch (error) {
+                console.log("error in member logs")
+                console.log(error)
+
+            }
+
+        }
+        else if (status === 'rejected') {
+            // update user isproductApproved to 2 and return the updated user
+            userUpdateResult = await prisma.users.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    isproductApproved: 2
+                },
+                include: {
+                    carts: true
+                }
+            });
+
+            // send email to user that his invoice is rejected with the reason if provided
+            // send reject email with appropriate message
+            const emailSubject = `Invoice Rejected`;
+            const emailContent = `
+        <h1>Invoice Rejected</h1>
+        <p>Your Invoice against transaction id: <strong>${cartValue.transaction_id}</strong> is rejected by the admin</p>
+        <p>Reason: <strong>${reject_reason}</strong></p>
+        `;
+            await sendEmail({
+                toEmail: user.email,
+                subject: emailSubject,
+                htmlContent: emailContent,
+            });
+
+        }
+
+        res.status(201).json({
+            message: status === 'approved' ? 'Invoice sent successfully' : 'Invoice rejected successfully',
+            user: userUpdateResult,
+        })
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+
+
 
 
 async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
@@ -167,12 +546,23 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
 
 export const createUser = async (req, res, next) => {
     try {
+        // Check if email already exists
+        // const existingUser = await prisma.users.findFirst({
+        //     where: {
+        //         email: req.body.email
+        //     }
+        // });
+        // if (existingUser) {
+        //     throw createError(409, 'User with this email already exists');
+        // }    TODO: enable after testing is done
+
+
         // Validate user data
         const { error, value } = userSchema.validate(req.body);
         if (error) {
             console.log("error")
             console.log(error)
-            return next(createError(400, error.details[0].message));
+            throw createError(400, error.details[0].message);
         }
         // Extract user and cart values
         const userValue = { ...value };
@@ -185,38 +575,7 @@ export const createUser = async (req, res, next) => {
         cartValue.transaction_id = transactionId;
         userValue.transaction_id = transactionId;
         // Handle file uploads, generate password, etc.
-        const uploadedDocument = req.files.document;
-        const uploadedImage = req.files.image;
-        console.log("uploadedDocument")
-        console.log(uploadedDocument)
-        console.log("uploadedImage")
-        console.log(uploadedImage)
-        let documentPath = '';
-        let imagePath = '';
-        let newUser;
-        if (!uploadedDocument) {
-            return next(createError(400, 'Document is required'));
-        }
-        if (uploadedDocument) {
-            const documentFile = uploadedDocument[0];
-            // fix the path of the documentFile remove the public from the path
-            documentFile.destination = documentFile.destination.replace('public', '');
-            documentPath = path.join(documentFile.destination, documentFile.filename);
-            userValue.documents = documentPath;
-        }
 
-        if (!uploadedImage) {
-            return next(createError(400, 'Image is required'));
-        }
-
-
-        if (uploadedImage) {
-            const imageFile = uploadedImage[0];
-            // fix the path of the imageFile remove the public from the path
-            imageFile.destination = imageFile.destination.replace('public', '');
-            imagePath = path.join(imageFile.destination, imageFile.filename);
-            userValue.address_image = imagePath;
-        }
 
 
         // Generate and send password
@@ -224,80 +583,12 @@ export const createUser = async (req, res, next) => {
 
         // Generate QR code
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-        console.log("cartValue")
         console.log(cartValue)
 
-        const data1 = {
-            topHeading: "INVOICE",
-            secondHeading: "BILL TO",
-            memberData: {
-                qrCodeDataURL: qrCodeDataURL,
-                // registeration: `New Registration for the year ${new Date().getFullYear()}`,
-                registeration: `New Registration`,
-                // Assuming $addMember->id is already known
-                company_name_eng: value.company_name_eng,
-                mobile: value.mobile,
-                address: {
-                    zip: value.zip_code,
-                    countryName: value.country,
-                    stateName: value.state,
-                    cityName: value.city,
-                },
-                companyID: value.companyID,
-                membership_otherCategory: value.membership_category,
-                gtin_subscription: {
-                    products: {
-                        member_category_description: cartValue?.cart_items[0]?.productName,
-                    },
-                },
-            },
 
-            cart: cartValue,
-
-
-            currentDate: {
-                day: new Date().getDate(),
-                month: new Date().getMonth() + 1, // getMonth() returns 0-11
-                year: new Date().getFullYear(),
-            },
-
-
-
-            company_details: {
-                title: 'Federation of Saudi Chambers',
-                account_no: '25350612000200',
-                iban_no: 'SA90 1000 0025 3506 1200 0200',
-                bank_name: 'Saudi National Bank - SNB',
-                bank_swift_code: 'NCBKSAJE',
-            },
-            BACKEND_URL: BACKEND_URL
-        };
-
-
-        // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
-        const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
-
-
-        // Define the directory and filename for the PDF
-        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-        const pdfFilename = `Invoice-${value?.company_name_eng}-${cartValue.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-        cartValue.documents = `/uploads/documents/MemberRegInvoice/${pdfFilename}`
-        // Ensure the directory exists
-        if (!fsSync.existsSync(pdfDirectory)) {
-            fsSync.mkdirSync(pdfDirectory, { recursive: true });
-        }
-
-        // Generate PDF and save it to the specified path
-        const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
-
-        // now fetch the pdf file from the path and send it as attachment
-        const invoiceBuffer = await fs.readFile(pdfFilePath);
 
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-        await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
-
-            , { invoiceBuffer, pdfFilename }, pdfBuffer2);
+        await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'.");
         // const hashedPassword = bcrypt.hashSync(password, 10);
         // userValue.password = hashedPassword;
         userValue.password = password;
@@ -305,7 +596,7 @@ export const createUser = async (req, res, next) => {
 
         // Start a transaction to ensure both user and cart are inserted
         const transaction = await prisma.$transaction(async (prisma) => {
-            newUser = await prisma.users.create({
+            const newUser = await prisma.users.create({
                 data: userValue
             });
 
@@ -352,65 +643,26 @@ export const createUser = async (req, res, next) => {
                 )
             );
 
-            // add all three documents to the member_documents table
-            const documentsData = [
-                {
-                    type: "company_documents",
-                    document: documentPath,
-                    transaction_id: transactionId,
-                    user_id: newUser.id,
-                    doc_type: "member_document",
-                    status: "pending",
-                    uploaded_by: newUser.email
-                },
-                {
-                    type: "national_address",
-                    document: imagePath,
-                    transaction_id: transactionId,
-                    user_id: newUser.id,
-                    doc_type: "member_document",
-                    status: "pending",
-                    uploaded_by: newUser.email
-                },
-                {
-                    type: "invoice",
-                    document: cartValue.documents,
-                    transaction_id: transactionId,
-                    user_id: newUser.id,
-                    doc_type: "member_document",
-                    status: "pending",
-                    uploaded_by: newUser.email
-                }
-            ];
-
-            const memberDocuments = await Promise.all(
-                documentsData.map(docData =>
-                    prisma.member_documents.create({ data: docData })
-                )
-            );
-
-
-
-            return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions, memberDocuments };
+            return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions };
 
             // return { newUser, newCart };
 
             // make trantion time to 40 sec
-        }, { timeout: 40000 });
+        }, { timeout: 30000 });
 
 
         const logData = {
             subject: 'New Member Registration',
             // user user memberId
             // member_id: userUpdateResult.memberID,
-            user_id: newUser.id,
+            user_id: transaction.newUser.id,
             // TODO: take email form current admin token
             // admin_id: 'admin@gs1sa.link',
 
         }
 
 
-        console.log("newUser.id", newUser.id)
+
 
 
         try {
@@ -431,6 +683,8 @@ export const createUser = async (req, res, next) => {
         next(error);
     }
 };
+
+
 
 
 // create sub user schema
@@ -916,7 +1170,7 @@ export const updateUser = async (req, res, next) => {
         const userId = idValue.userId;
 
         // Validate user data
-        const { error, value } = userSchema.validate(req.body);
+        const { error, value } = updateUserSchema.validate(req.body);
         if (error) {
             return next(createError(400, error.details[0].message));
         }
