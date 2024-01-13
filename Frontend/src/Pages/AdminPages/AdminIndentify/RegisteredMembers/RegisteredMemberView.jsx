@@ -286,7 +286,7 @@ const RegisteredMembersView = () => {
   const fetchRegisteredProductsData = async () => {
     setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}&isDeleted=false`);
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts&user_id=${gs1MemberData?.id}&isDeleted=false`);
 
       console.log(response.data);
       // Extract gtinSubscriptions data and flatten the nested gtin_product
