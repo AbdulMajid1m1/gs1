@@ -1914,7 +1914,7 @@ export const approveMembershipRequest = async (req, res, next) => {
                 user_id: userId,
             },
 
-        });
+        }); 
 
         if (!upgradeCart) {
             return res.status(404).send('Upgrade membership cart not found');
