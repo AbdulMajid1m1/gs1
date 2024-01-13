@@ -305,7 +305,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="status" className="text-secondary ">
                                                     Custom Data[English]
                                                 </label>
-                                                        <ReactQuill theme="snow" modules={modules} formats={formats} className=' h-40'
+                                                        <ReactQuill theme="snow" modules={modules} formats={formats} bounds={'#root'}
+ className=' h-40'
                                                  value={customsectiondataeng}
                                                  onChange={handleChangeeng} />
                                             </div>
