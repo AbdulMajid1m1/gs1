@@ -291,12 +291,22 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
 
 export const createUser = async (req, res, next) => {
     try {
+        // Check if email already exists
+        const existingUser = await prisma.users.findFirst({
+            where: {
+                email: req.body.email
+            }
+        });
+        if (existingUser) {
+            throw createError(409, 'User with this email already exists');
+        }
+
         // Validate user data
         const { error, value } = userSchema.validate(req.body);
         if (error) {
             console.log("error")
             console.log(error)
-            return next(createError(400, error.details[0].message));
+            throw createError(400, error.details[0].message);
         }
         // Extract user and cart values
         const userValue = { ...value };
