@@ -451,7 +451,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
             const logData = {
-                subject: 'New Member Registration',
+                subject: 'Invoice Generated',
                 // user user memberId
                 // member_id: userUpdateResult.memberID,
                 user_id: transaction.userUpdateResult.id,

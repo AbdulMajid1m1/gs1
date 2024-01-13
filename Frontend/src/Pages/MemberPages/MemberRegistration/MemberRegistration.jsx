@@ -61,7 +61,7 @@ const MemmberRegisteration = () => {
     const [addCrNumber, setAddCrNumber] = useState("");
     const [crActivity, setCrActivity] = useState("");
     const [error, setError] = useState("");
-    
+
 
 
     useEffect(() => {
@@ -361,8 +361,8 @@ const MemmberRegisteration = () => {
         // // }
         // formData.append('cr_number', addCrNumber);
         // formData.append('cr_activity', crActivity);
-       
-       
+
+
         // formData.append('company_name_eng', companyEnglish);
         // formData.append('company_name_arabic', companyArabic);
         // // formData.append('bussiness_activity', 'Trading');
@@ -437,6 +437,37 @@ const MemmberRegisteration = () => {
         // console.log(selectedOtherProducts)
         // console.log(subscriptionData)
 
+        let cart_items = []
+        // add subscription data to cart_items and then add other products to cart_items
+        subscriptionData.forEach((item) => {
+            cart_items.push({
+                "productID": item.productId,
+                "productName": item.product,
+                "registration_fee": item.registrationFee.toString(), // Convert to string
+                "yearly_fee": item.yearlyFee.toString(), // Convert to string
+                "price": item.price.toString(), // Convert to string
+                "product_type": item.productType,
+            })
+
+        });
+
+
+        selectedOtherProducts.forEach((otherProduct) => {
+            cart_items.push({
+                "productID": otherProduct.id,
+                "productName": otherProduct.product_name,
+                "registration_fee": "0",
+                "yearly_fee": otherProduct.price.toString(), // Convert to string
+                "price": otherProduct.price.toString(), // Convert to string
+                "product_type": otherProduct.product_type,
+            })
+        });
+
+
+
+
+
+
         const requestBody = {
             "cr_number": addCrNumber,
             "cr_activity": crActivity,
@@ -453,21 +484,13 @@ const MemmberRegisteration = () => {
             "city": selectedCity?.name,
             "membership_category": selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category',
             "other_products": selectedOtherProducts.map(product => product.product_name).join(', '),
+
+
             "cart": {
-              "cart_items": subscriptionData.map(item => ({
-                "productID": item.productId,
-                "productName": item.product,
-                // "registration_fee": item.registrationFee,
-                // "yearly_fee": item.yearlyFee,
-                // "price": item.price,
-                "registration_fee": item.registrationFee.toString(), // Convert to string
-                "yearly_fee": item.yearlyFee.toString(), // Convert to string
-                "price": item.price.toString(), // Convert to string
-                "product_type": item.productType,
-                // "quotation": item.quotation  // Uncomment if 'quotation' is available in your data
-              })),
+                "cart_items": cart_items,
+            },
             //   "total": totalPrice,
-            "total": totalPrice.toString(),
+
             //   "request_type": "New Membership",
             //   "payment_type": "Credit Card",  // You may need to replace this with your actual payment type
             //   "receipt": "Receipt123",
@@ -475,13 +498,14 @@ const MemmberRegisteration = () => {
             //   "admin_id": 1,
             //   "assign_to": null,
             //   "discount": 50
-            }
-          };
-          
-          
+        };
+
+
+
+
         newRequest
             // .post("/users", formData, {
-                .post("/users", requestBody)
+            .post("/users", requestBody)
             .then((response) => {
                 console.log(response.data);
                 setIsLoading(false);
@@ -555,9 +579,9 @@ const MemmberRegisteration = () => {
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
         if (inputValue.length > 10) {
-          setError("Cr Number should be 10 digits");
+            setError("Cr Number should be 10 digits");
         } else {
-          setError("");
+            setError("");
         }
         setAddCrNumber(inputValue.slice(0, 10));  // Limit input to 10 characters
     };
@@ -645,31 +669,31 @@ const MemmberRegisteration = () => {
                     </div> */}
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-                           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field1" className="text-secondary font-semibold">Cr Number<span className='text-red-600'> *</span></label>
                                 <input
-                                   type="number"
-                                   id="field1"
-                                   value={addCrNumber}
-                                   onChange={handleInputChange}
-                                //    onChange={(e) => setAddCrNumber(e.target.value)}
-                                   placeholder="Cr Number"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
+                                    type="number"
+                                    id="field1"
+                                    value={addCrNumber}
+                                    onChange={handleInputChange}
+                                    //    onChange={(e) => setAddCrNumber(e.target.value)}
+                                    placeholder="Cr Number"
+                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                />
                                 {error && <p className="text-red-500 text-xs">{error}</p>}
-                               </div>
+                            </div>
 
-                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field2" className="text-secondary font-semibold">Cr Activity<span className='text-red-600'> *</span></label>
-                                 <input
-                                   type="text"
-                                   id="field2"
-                                  //  value={addCrNumber}
-                                   onChange={(e) => setCrActivity(e.target.value)}
-                                   placeholder="Cr Activity"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 />
-                            </div>     
+                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                <label htmlFor="field2" className="text-secondary font-semibold">Cr Activity<span className='text-red-600'> *</span></label>
+                                <input
+                                    type="text"
+                                    id="field2"
+                                    //  value={addCrNumber}
+                                    onChange={(e) => setCrActivity(e.target.value)}
+                                    placeholder="Cr Activity"
+                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                />
+                            </div>
                         </div>
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
@@ -925,7 +949,7 @@ const MemmberRegisteration = () => {
 
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-                           <div className='w-full font-body sm:text-base text-sm flex flex-col'>
+                            <div className='w-full font-body sm:text-base text-sm flex flex-col'>
                                 <label className='text-secondary font-semibold' htmlFor='city'>City<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="city"
@@ -984,7 +1008,7 @@ const MemmberRegisteration = () => {
 
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-                           
+
 
 
                             {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>

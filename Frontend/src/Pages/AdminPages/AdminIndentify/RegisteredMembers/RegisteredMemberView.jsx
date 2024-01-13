@@ -288,7 +288,7 @@ const RegisteredMembersView = () => {
   const fetchRegisteredProductsData = async () => {
     setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts&user_id=${gs1MemberData?.id}&isDeleted=false`);
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${gs1MemberData?.id}&isDeleted=false`);
 
       console.log(response.data);
       // Extract gtinSubscriptions data and flatten the nested gtin_product
@@ -581,23 +581,24 @@ const RegisteredMembersView = () => {
 
               {/* Registered Products */}
               <div className='w-full flex justify-end px-6 pt-6 gap-2'>
-                  <button
-                    onClick={handlePendingApprovedPopUp}
-                    className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${
-                      allUserData.status === 'active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                <button
+                  onClick={handlePendingApprovedPopUp}
+                  className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
                     }`}
-                    // disabled={allUserData.status !== 'active'}
-                  >
-                    {allUserData.status === 'active' ? 'Approved' : 'Pending For Approval'}
-                  </button>
-                  {/* <button
+                  disabled={allUserData.isproductApproved == 1}
+                  // show disable cursor if status is not approved
+                  style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
+                >
+                  {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                </button>
+                {/* <button
                     className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                   >
                     Approved
                   </button> */}
-                </div>
+              </div>
 
-              <div style={{ marginLeft: '-11px', marginRight: '-11px'}}
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
@@ -642,22 +643,22 @@ const RegisteredMembersView = () => {
                   uniqueId="registeredProductsTableId"
 
                 />
-                 
-              </div>
 
               </div>
-             </div>
+
             </div>
+          </div>
+        </div>
 
 
 
-            {/* Member Documents */}
-            <div className='flex justify-center items-center bg-[#DAF2EE]'>
-              <div className="h-auto w-[97%] px-0 pt-4">
-               <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+        {/* Member Documents */}
+        <div className='flex justify-center items-center bg-[#DAF2EE]'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
-               <div className='flex justify-between w-full'>
-                 <div className='w-full flex justify-end px-6'>
+              <div className='flex justify-between w-full'>
+                <div className='w-full flex justify-end px-6'>
                   {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                   <button
                     onClick={handleShowAddMemberPopup}
@@ -1015,7 +1016,7 @@ const RegisteredMembersView = () => {
 
         {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
         {isPendingApprovedPopupVisible && (
-          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData}/>
+          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData} />
         )}
 
 
