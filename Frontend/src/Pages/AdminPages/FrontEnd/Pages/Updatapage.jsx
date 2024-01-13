@@ -51,26 +51,26 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
     const refreshcitiesData = async () => {
         try {
             const response = await newRequest.get(`/getpagesById/${userId}`);
-            // console.log([response.data.sections]);
             const inputArray = [response.data];
             const separatedArray = response.data.sections.split('\n');
+           const sectionsArray = JSON.parse(response.data.sections);
+        // const sectionsString = sectionsArray.join(', ');
+            console.log('sectionsArray', sectionsArray);
             console.log(separatedArray);
             setname(response.data.name)
             setname_ar(response.data.name_ar)
             setSeoDescription(response.data.seo_description)
             setPageSlug(response.data.slug)
             setPageOrder(response.data.page_order)
-            // setcustomsectiondataeng(response.data.custom_section_data)
-            // setcustomsectiondataarb(response.data.custom_section_data_ar);
-            setsections(separatedArray.map((section, index) => ({ id: index, content: section })))
-            setDraggedSections(separatedArray.map((section, index) => ({ id: index, content: section })));
+            setsections(sectionsArray.map((section, index) => ({ id: index, content: section })))
+            setDraggedSections(sectionsArray.map((section, index) => ({ id: index, content: section })));
             if (response.data.custom_section_data !== null) {
                 setCustomdatashow(true);
                 setcustomsectiondataeng(response.data.custom_section_data);
                 setcustomsectiondataarb(response.data.custom_section_data_ar);
             } else {
                 setCustomdatashow(false);
-                setcustomsectiondataeng(null);  // You might want to set it to some default value
+                setcustomsectiondataeng(null);
             }
 
         } catch (err) {
