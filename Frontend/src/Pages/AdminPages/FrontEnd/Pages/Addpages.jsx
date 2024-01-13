@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
 import { useNavigate } from "react-router-dom"; 
 import CloseIcon from '@mui/icons-material/Close'; 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill, { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; 
+import ImageResize from 'quill-image-resize-module-react';
+
 
 const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
@@ -113,22 +115,58 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         }
     };
 
+    useEffect(() => {
+        // Register the ImageResize module when the component mounts
+        Quill.register('modules/imageResize', ImageResize);
+    }, []);
+
     const modules = {
         toolbar: [
-            [{ header: [1, 2, false] }],
+            [{ header: '1' }, { header: '2' }, { font: [] }],
+            [{ size: [] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'color': [] }], // Added font color
-            [{ 'font': [] }], 
-            ['link', 'image', 'video'], // Added video support
-            ['clean'],
-            [{ 'align': [] }],
-            ['script', 'sub', 'super'],
-            ['formula'],
-            ['question-mark'],
-
+            [
+                { list: 'ordered' },
+                { list: 'bullet' },
+                { indent: '-1' },
+                { indent: '+1' }
+            ],
+            ['link', 'image', 'video'],
+            ['clean'], // <-- Comma was missing here
+            [{ 'color': [] }],
+            [{ 'background': [] }],
+            [{ 'font': [] }],
         ],
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false
+        },
+        imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize']
+        }
     };
+
+    const formats = [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'video',
+        'color',
+        'background',
+        
+    ];
+
 
     return (
         <div>
@@ -267,7 +305,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="status" className="text-secondary ">
                                                     Custom Data[English]
                                                 </label>
-                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                        <ReactQuill theme="snow" modules={modules} formats={formats} className=' h-40'
                                                  value={customsectiondataeng}
                                                  onChange={handleChangeeng} />
                                             </div>
@@ -276,7 +314,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="status" className="text-secondary mt-5">
                                                     Custom Data[Arabic]
                                                 </label>
-                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                        <ReactQuill theme="snow" modules={modules}
+                                                            formats={formats} className=' h-40'
                                                     value={customsectiondataarb}
                                                     onChange={handleChangearb} />
                                             </div>

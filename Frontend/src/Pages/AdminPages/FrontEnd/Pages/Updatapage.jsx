@@ -7,8 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize-module-react';
 
 const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
@@ -34,15 +35,57 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         setcustomsectiondataarb(value);
     };
 
+    useEffect(() => {
+        // Register the ImageResize module when the component mounts
+        Quill.register('modules/imageResize', ImageResize);
+    }, []);
+
     const modules = {
         toolbar: [
-            [{ header: [1, 2, false] }],
+            [{ header: '1' }, { header: '2' }, { font: [] }],
+            [{ size: [] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['link', 'image'],
-            ['clean'],
+            [
+                { list: 'ordered' },
+                { list: 'bullet' },
+                { indent: '-1' },
+                { indent: '+1' }
+            ],
+            ['link', 'image', 'video'],
+            ['clean'], // <-- Comma was missing here
+            [{ 'color': [] }],
+            [{ 'background': [] }],
+            [{ 'font': [] }],
         ],
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false
+        },
+        imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize']
+        }
     };
+
+    const formats = [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'video',
+        'color',
+        'background',
+
+    ];
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -309,7 +352,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="status" className="text-secondary ">
                                                     Custom Data[English]
                                                 </label>
-                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                <ReactQuill theme="snow" modules={modules} formats={formats}className=' h-40'
                                                     value={customsectiondataeng}
                                                     onChange={handleChangeeng} />
                                             </div>
@@ -318,7 +361,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="status" className="text-secondary mt-5">
                                                     Custom Data[Arabic]
                                                 </label>
-                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                <ReactQuill theme="snow" modules={modules} formats={formats} className=' h-40'
                                                     value={customsectiondataarb}
                                                     onChange={handleChangearb} />
                                             </div>
