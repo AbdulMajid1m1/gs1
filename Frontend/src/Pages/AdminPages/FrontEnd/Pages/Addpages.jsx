@@ -3,14 +3,15 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
-import { useNavigate } from "react-router-dom"; 
-import CloseIcon from '@mui/icons-material/Close'; 
+import { useNavigate } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
 import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; 
+import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
 
 
-const Addpages = () => {
+const Addpages = () =>
+{
 
     const navigate = useNavigate();
     const [name, setname] = useState("");
@@ -18,26 +19,30 @@ const Addpages = () => {
     const [SeoDescription, setSeoDescription] = useState('')
     const [PageOrder, setPageOrder] = useState('')
     const [PageSlug, setPageSlug] = useState('')
-    const [sections, setsections] = useState([]) 
-     const [draggedSections, setDraggedSections] = useState([]);
+    const [sections, setsections] = useState([])
+    const [draggedSections, setDraggedSections] = useState([]);
     const [customsectiondataeng, setcustomsectiondataeng] = useState('')
-    const [customsectiondataarb, setcustomsectiondataarb] = useState('') 
+    const [customsectiondataarb, setcustomsectiondataarb] = useState('')
     const [Customdatashow, setCustomdatashow] = useState(false)
 
-    const handleChangeeng = (value) => {
+    const handleChangeeng = (value) =>
+    {
         setcustomsectiondataeng(value);
     };
 
-    const handleChangearb = (value) => {
+    const handleChangearb = (value) =>
+    {
         setcustomsectiondataarb(value);
     };
 
-    const handleCloseCreatePopup = () => {
-        
+    const handleCloseCreatePopup = () =>
+    {
+
     };
 
-    const handleAddCompany = async () => {
-      
+    const handleAddCompany = async () =>
+    {
+
         try {
             const formattedSections = sections.map(section => `"${section}"`).join(',');
             const customSectionDataEng = Customdatashow ? customsectiondataeng : 'Null';
@@ -66,7 +71,7 @@ const Addpages = () => {
             });
             navigate('/admin/Pages')
             console.log(response.data);
-           
+
             handleCloseCreatePopup();
 
         } catch (error) {
@@ -86,26 +91,30 @@ const Addpages = () => {
 
     };
 
-    const handleDragStart = (e, section) => {
+    const handleDragStart = (e, section) =>
+    {
         e.dataTransfer.setData('text/plain', section);
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e) =>
+    {
         e.preventDefault();
         const section = e.dataTransfer.getData('text/plain');
         setsections([...sections, section]);
         setDraggedSections([...draggedSections, section]);
         if (section == 'Custom Section') {
-            setCustomdatashow(true) 
+            setCustomdatashow(true)
         }
-       
+
 
     };
-    const handleDragOver = (e) => {
+    const handleDragOver = (e) =>
+    {
         e.preventDefault();
     };
 
-    const handleRemoveSection = (index) => {
+    const handleRemoveSection = (index) =>
+    {
         const updatedSections = [...draggedSections];
         updatedSections.splice(index, 1);
         setDraggedSections(updatedSections);
@@ -115,7 +124,8 @@ const Addpages = () => {
         }
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         // Register the ImageResize module when the component mounts
         Quill.register('modules/imageResize', ImageResize);
     }, []);
@@ -164,7 +174,7 @@ const Addpages = () => {
         'video',
         'color',
         'background',
-        
+
     ];
 
 
@@ -179,7 +189,7 @@ const Addpages = () => {
 
                 <div className="grid grid-cols-6 sm:grid-cols-12 gap-4 justify-center items-center">
                     <div className="col-span-6 sm:col-span-6 h-auto w-full p-4 bg-white shadow-xl rounded-md mt-8">
-                       
+
                         <div className="w-full">
                             <div className="popup-container h-auto sm:w-[100%] w-full">
                                 <div className="popup-form w-full ">
@@ -210,7 +220,7 @@ const Addpages = () => {
                                                                 className="ml-2"
                                                                 onClick={() => handleRemoveSection(index)}
                                                             >
-                                                                <CloseIcon/>
+                                                                <CloseIcon />
                                                             </button>
                                                         </div>
                                                     ))}
@@ -225,7 +235,7 @@ const Addpages = () => {
                                                     onChange={(e) => setsections(e.target.value)}
                                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 "
                                                     style={{ border: 'dotted', display: 'none' }}
-                                                    
+
                                                 />
 
                                             </div>
@@ -299,32 +309,32 @@ const Addpages = () => {
 
                                             </div>
 
-                                            {Customdatashow ?(
+                                            {Customdatashow ? (
                                                 <>
-                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="status" className="text-secondary ">
-                                                    Custom Data[English]
-                                                </label>
+                                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                                        <label htmlFor="status" className="text-secondary ">
+                                                            Custom Data[English]
+                                                        </label>
                                                         <ReactQuill theme="snow" modules={modules} formats={formats} bounds={'#root'}
- className=' h-40'
-                                                 value={customsectiondataeng}
-                                                 onChange={handleChangeeng} />
-                                            </div>
+                                                            className=' h-40'
+                                                            value={customsectiondataeng}
+                                                            onChange={handleChangeeng} />
+                                                    </div>
 
-                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-10">
-                                                <label htmlFor="status" className="text-secondary mt-5">
-                                                    Custom Data[Arabic]
-                                                </label>
+                                                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-10">
+                                                        <label htmlFor="status" className="text-secondary mt-5">
+                                                            Custom Data[Arabic]
+                                                        </label>
                                                         <ReactQuill theme="snow" modules={modules}
                                                             formats={formats} className=' h-40'
-                                                    value={customsectiondataarb}
-                                                    onChange={handleChangearb} />
-                                            </div>
+                                                            value={customsectiondataarb}
+                                                            onChange={handleChangearb} />
+                                                    </div>
                                                 </>
                                             ) : (
                                                 null
                                             )}
-                                           
+
                                         </div>
 
                                         <div className="w-full flex justify-center items-center gap-8 mt-20">
@@ -345,14 +355,14 @@ const Addpages = () => {
                     <div className="col-span-6 sm:col-span-6 h-auto w-full p-4 bg-white shadow-xl rounded-md mt-8">
                         {/* <Userguideveido /> */}
                         <div className="flex">
-                        
+
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Blog Section')}
-                                >
-                                <OpenWithIcon/> 
-                                <p>Blog Section</p> 
-                        </div>
+                            >
+                                <OpenWithIcon />
+                                <p>Blog Section</p>
+                            </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
                                 draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Service Section')}>
@@ -408,13 +418,13 @@ const Addpages = () => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Brad Section')}>
                                 <OpenWithIcon />
                                 <p>Brad Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'About Section')}>
                                 <OpenWithIcon />
                                 <p>About Section</p>
@@ -423,13 +433,13 @@ const Addpages = () => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Faq Section')}>
                                 <OpenWithIcon />
                                 <p>Faq Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Contact Section')}>
                                 <OpenWithIcon />
                                 <p>Contact Section</p>
@@ -438,13 +448,13 @@ const Addpages = () => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Gepir Section')}>
                                 <OpenWithIcon />
                                 <p>Gepir Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Check_digit Section')}>
                                 <OpenWithIcon />
                                 <p>Check_digit Section</p>
@@ -453,13 +463,13 @@ const Addpages = () => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Gpc Section')}>
                                 <OpenWithIcon />
                                 <p>Gpc Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Userguide Section')}>
                                 <OpenWithIcon />
                                 <p>Userguide Section</p>
@@ -468,13 +478,13 @@ const Addpages = () => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Gtinreporter Section')}>
                                 <OpenWithIcon />
                                 <p>Gtinreporter Section</p>
                             </div>
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Migration Section')}>
                                 <OpenWithIcon />
                                 <p>Migration Section</p>
@@ -483,16 +493,16 @@ const Addpages = () => {
                         <div className="flex">
 
                             <div className='p-4 w-1/2 sm:w-full cursor-all-scroll rounded-md bg-secondary hover:bg-primary text-white gap-2 flex m-2'
-                             draggable="true"
+                                draggable="true"
                                 onDragStart={(e) => handleDragStart(e, 'Custom Section')}>
                                 <OpenWithIcon />
                                 <p>Custom Section</p>
                             </div>
-                           
+
                         </div>
-                       
+
                     </div>
-                    
+
                 </div>
 
 
