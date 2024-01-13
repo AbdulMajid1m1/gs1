@@ -308,9 +308,8 @@ const MemmberRegisteration = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        console.log(selectedCountry?.name)
-        console.log(selectedState?.name)
-        console.log(selectedCity?.name)
+        console.log(subscriptionData)
+        console.log(selectedOtherProducts)
 
         const formData = new FormData();
 
