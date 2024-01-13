@@ -311,137 +311,177 @@ const MemmberRegisteration = () => {
         console.log(subscriptionData)
         console.log(selectedOtherProducts)
 
-        const formData = new FormData();
+        // const formData = new FormData();
 
-        // User data
-        formData.append('user_type', 'new');
-        // formData.append('slug', 'user-slug');
-        if (location) {
-            formData.append('location_uk', location);
-        }
-
-
-        // formData.append('have_cr', selectedCr ? 'yes' : 'no');
-
-        // formData.append('document_number', 'doc-67890');
-        // formData.append('fname', 'John');
-        // formData.append('lname', 'Doe');
-        formData.append('email', email);
-        formData.append('mobile', mobileNumber);
-        formData.append('country', selectedCountry?.name);
-        formData.append('state', selectedState?.name);
-        formData.append('city', selectedCity?.name);
-        formData.append('zip_code', zipCode);
-
-
-        // if (extension) {
-        //     formData.append('mbl_extension', extension);
-        // }
-        // if (website) {
-        //     formData.append('website', website);
+        // // User data
+        // formData.append('user_type', 'new');
+        // // formData.append('slug', 'user-slug');
+        // if (location) {
+        //     formData.append('location_uk', location);
         // }
 
 
-        // formData.append('no_of_staff', '50');
-        // formData.append('district', 'Central');
-        // formData.append('building_no', '12A');
-        // formData.append('additional_number', '202');
-        // formData.append('other_landline', '0987654321');
-        // formData.append('unit_number', 'Unit 5');
-        // formData.append('qr_corde', 'QRCode123');
-        // formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
-        // formData.append('verification_code', '123456');
+        // // formData.append('have_cr', selectedCr ? 'yes' : 'no');
+
+        // // formData.append('document_number', 'doc-67890');
+        // // formData.append('fname', 'John');
+        // // formData.append('lname', 'Doe');
+        // formData.append('email', email);
+        // formData.append('mobile', mobileNumber);
+        // formData.append('country', selectedCountry?.name);
+        // formData.append('state', selectedState?.name);
+        // formData.append('city', selectedCity?.name);
+        // formData.append('zip_code', zipCode);
 
 
-        // if (selectedCr?.cr && selectedCr?.activity) {
-        //     formData.append('cr_number', selectedCr?.cr);
-        //     formData.append('cr_activity', selectedCr?.activity);
-        //     formData.append('cr_documentID', selectedCr?.crId || '0');
+        // // if (extension) {
+        // //     formData.append('mbl_extension', extension);
+        // // }
+        // // if (website) {
+        // //     formData.append('website', website);
+        // // }
 
-        // }
-        formData.append('cr_number', addCrNumber);
-        formData.append('cr_activity', crActivity);
+
+        // // formData.append('no_of_staff', '50');
+        // // formData.append('district', 'Central');
+        // // formData.append('building_no', '12A');
+        // // formData.append('additional_number', '202');
+        // // formData.append('other_landline', '0987654321');
+        // // formData.append('unit_number', 'Unit 5');
+        // // formData.append('qr_corde', 'QRCode123');
+        // // formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
+        // // formData.append('verification_code', '123456');
+
+
+        // // if (selectedCr?.cr && selectedCr?.activity) {
+        // //     formData.append('cr_number', selectedCr?.cr);
+        // //     formData.append('cr_activity', selectedCr?.activity);
+        // //     formData.append('cr_documentID', selectedCr?.crId || '0');
+
+        // // }
+        // formData.append('cr_number', addCrNumber);
+        // formData.append('cr_activity', crActivity);
        
        
-        formData.append('company_name_eng', companyEnglish);
-        formData.append('company_name_arabic', companyArabic);
-        // formData.append('bussiness_activity', 'Trading');
-        // formData.append('other_products', selectProducts);
+        // formData.append('company_name_eng', companyEnglish);
+        // formData.append('company_name_arabic', companyArabic);
+        // // formData.append('bussiness_activity', 'Trading');
+        // // formData.append('other_products', selectProducts);
 
 
-        // formData.append('image', selectedImage);
-        // formData.append('document', upload);
+        // // formData.append('image', selectedImage);
+        // // formData.append('document', upload);
 
 
-        // formData.append('product_addons', 'AddonABC');
+        // // formData.append('product_addons', 'AddonABC');
 
-        formData.append('contactPerson', contactPerson);
-        formData.append('companyLandLine', companyLandLine);
-        // formData.append('online_payment', 'Enabled');
+        // formData.append('contactPerson', contactPerson);
+        // formData.append('companyLandLine', companyLandLine);
+        // // formData.append('online_payment', 'Enabled');
 
-        // formData.append('remember_token', 'TokenXYZ');
+        // // formData.append('remember_token', 'TokenXYZ');
 
-        formData.append('membership_category_id', selectedCategories.id)
-        // formData.append('invoice_file', 'https://example.com/invoice.pdf');
-        // formData.append('otp_status', '1');
-        // formData.append('gcpGLNID', 'GLN123');
-        // formData.append('gln', '123456');
-        // formData.append('gcp_type', 'Type1');
-        // formData.append('memberID', 'MID123');
+        // formData.append('membership_category_id', selectedCategories.id)
+        // // formData.append('invoice_file', 'https://example.com/invoice.pdf');
+        // // formData.append('otp_status', '1');
+        // // formData.append('gcpGLNID', 'GLN123');
+        // // formData.append('gln', '123456');
+        // // formData.append('gcp_type', 'Type1');
+        // // formData.append('memberID', 'MID123');
 
-        // formData.append('assign_to', '5');
+        // // formData.append('assign_to', '5');
 
-        formData.append('membership_category', selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category');
-        if (selectedCategories.name !== 'non-medical') {
-            formData.append('membership_otherCategory', selectedCategories.name);
-        }
-        // formData.append('upgradation_disc', '10');
-        // formData.append('upgradation_disc_amount', '100.00');
-        // formData.append('renewal_disc', '5');
-        // formData.append('renewal_disc_amount', '50.00');
-        // formData.append('activityID', selectedActivity?.id);
-        formData.append('registration_type', 'New');
-        // formData.append('industryTypes', JSON.stringify(selectedIndustries));
-        selectedIndustries.forEach((item, index) => {
-            formData.append(`industryTypes[${index}][id]`, item.id);
-            formData.append(`industryTypes[${index}][name]`, item.name);
-        });
+        // formData.append('membership_category', selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category');
+        // if (selectedCategories.name !== 'non-medical') {
+        //     formData.append('membership_otherCategory', selectedCategories.name);
+        // }
+        // // formData.append('upgradation_disc', '10');
+        // // formData.append('upgradation_disc_amount', '100.00');
+        // // formData.append('renewal_disc', '5');
+        // // formData.append('renewal_disc_amount', '50.00');
+        // // formData.append('activityID', selectedActivity?.id);
+        // formData.append('registration_type', 'New');
+        // // formData.append('industryTypes', JSON.stringify(selectedIndustries));
+        // selectedIndustries.forEach((item, index) => {
+        //     formData.append(`industryTypes[${index}][id]`, item.id);
+        //     formData.append(`industryTypes[${index}][name]`, item.name);
+        // });
 
 
-        let currentIndex = 0;
+        // let currentIndex = 0;
 
-        subscriptionData.forEach((item) => {
-            formData.append(`cart[cart_items][${currentIndex}][productID]`, item.productId);
-            formData.append(`cart[cart_items][${currentIndex}][productName]`, item.product);
-            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, item.registrationFee);
-            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, item.yearlyFee);
-            formData.append(`cart[cart_items][${currentIndex}][price]`, item.price);
-            formData.append(`cart[cart_items][${currentIndex}][product_type]`, item.productType);
-            // formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); 
-            currentIndex++;
-        });
+        // subscriptionData.forEach((item) => {
+        //     formData.append(`cart[cart_items][${currentIndex}][productID]`, item.productId);
+        //     formData.append(`cart[cart_items][${currentIndex}][productName]`, item.product);
+        //     formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, item.registrationFee);
+        //     formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, item.yearlyFee);
+        //     formData.append(`cart[cart_items][${currentIndex}][price]`, item.price);
+        //     formData.append(`cart[cart_items][${currentIndex}][product_type]`, item.productType);
+        //     // formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); 
+        //     currentIndex++;
+        // });
 
-        selectedOtherProducts.forEach((otherProduct) => {
-            formData.append(`cart[cart_items][${currentIndex}][productID]`, otherProduct.id);
-            formData.append(`cart[cart_items][${currentIndex}][productName]`, otherProduct.product_name);
-            formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, 0);
-            formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.price || 0);
-            formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
-            formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type);
-            // formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); 
-            currentIndex++;
-        });
+        // selectedOtherProducts.forEach((otherProduct) => {
+        //     formData.append(`cart[cart_items][${currentIndex}][productID]`, otherProduct.id);
+        //     formData.append(`cart[cart_items][${currentIndex}][productName]`, otherProduct.product_name);
+        //     formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, 0);
+        //     formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.price || 0);
+        //     formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
+        //     formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type);
+        //     // formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); 
+        //     currentIndex++;
+        // });
 
-        formData.append('cart[total]', totalPrice);
+        // formData.append('cart[total]', totalPrice);
 
-        console.log(selectedOtherProducts)
-        console.log(subscriptionData)
+        // console.log(selectedOtherProducts)
+        // console.log(subscriptionData)
+
+        const requestBody = {
+            "cr_number": addCrNumber,
+            "cr_activity": crActivity,
+            "email": email,
+            "contactPerson": contactPerson,
+            "company_name_eng": companyEnglish,
+            "company_name_arabic": companyArabic,
+            "companyLandLine": companyLandLine,
+            "mobile": mobileNumber,
+            "zip_code": zipCode,
+            "industryTypes": selectedIndustries.map(item => ({ id: item.id, name: item.name })),
+            "country": selectedCountry?.name,
+            "state": selectedState?.name,
+            "city": selectedCity?.name,
+            "membership_category": selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category',
+            "other_products": selectedOtherProducts.map(product => product.product_name).join(', '),
+            "cart": {
+              "cart_items": subscriptionData.map(item => ({
+                "productID": item.productId,
+                "productName": item.product,
+                // "registration_fee": item.registrationFee,
+                // "yearly_fee": item.yearlyFee,
+                // "price": item.price,
+                "registration_fee": item.registrationFee.toString(), // Convert to string
+                "yearly_fee": item.yearlyFee.toString(), // Convert to string
+                "price": item.price.toString(), // Convert to string
+                "product_type": item.productType,
+                // "quotation": item.quotation  // Uncomment if 'quotation' is available in your data
+              })),
+            //   "total": totalPrice,
+            "total": totalPrice.toString(),
+            //   "request_type": "New Membership",
+            //   "payment_type": "Credit Card",  // You may need to replace this with your actual payment type
+            //   "receipt": "Receipt123",
+            //   "receipt_path": "/receipts/receipt123.pdf",
+            //   "admin_id": 1,
+            //   "assign_to": null,
+            //   "discount": 50
+            }
+          };
+          
+          
         newRequest
-            .post("/users", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+            // .post("/users", formData, {
+                .post("/users", requestBody)
             .then((response) => {
                 console.log(response.data);
                 setIsLoading(false);
