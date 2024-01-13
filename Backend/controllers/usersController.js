@@ -263,6 +263,261 @@ const userSchema = Joi.object({
 // });
 
 
+const sendAndSaveInvoiceSchema = Joi.object({
+    userId: Joi.string().required(),
+    status: Joi.string().valid('approved', 'rejected').required(),
+    reject_reason: Joi.string().optional(),
+});
+
+export const sendInvoiceToUser = async (req, res, next) => {
+    try {
+        // Validate user data
+        const { error, value } = sendAndSaveInvoiceSchema.validate(req.body);
+        if (error) {
+            console.log("error")
+            console.log(error)
+            return next(createError(400, error.details[0].message));
+        }
+        // Extract user and cart values
+
+        const { userId, status, reject_reason } = value;
+
+
+
+        // fetch user data and cart data
+        const user = await prisma.users.findUnique({
+            where: {
+                id: userId
+            },
+            include: {
+                carts: true
+            }
+
+        });
+
+
+        const cartValue = user.carts[0];
+        cartValue.cart_items = JSON.parse(cartValue.cart_items);
+        console.log("cartValue", cartValue)
+        let userUpdateResult; // to store the updated user
+        let transaction;
+        if (status === 'approved') {
+
+            // Generate QR code
+            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+
+            const data1 = {
+                topHeading: "INVOICE",
+                secondHeading: "BILL TO",
+                memberData: {
+                    qrCodeDataURL: qrCodeDataURL,
+                    // registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                    registeration: `New Registration`,
+                    // Assuming $addMember->id is already known
+                    company_name_eng: user.company_name_eng,
+                    mobile: user.mobile,
+                    address: {
+                        zip: user.zip_code,
+                        countryName: user.country,
+                        stateName: user.state,
+                        cityName: user.city,
+                    },
+                    companyID: user.companyID,
+                    membership_otherCategory: user.membership_category,
+                    gtin_subscription: {
+                        products: {
+                            member_category_description: cartValue?.cart_items[0]?.productName,
+                        },
+                    },
+                },
+
+                cart: cartValue,
+
+
+                currentDate: {
+                    day: new Date().getDate(),
+                    month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                    year: new Date().getFullYear(),
+                },
+
+
+
+                company_details: {
+                    title: 'Federation of Saudi Chambers',
+                    account_no: '25350612000200',
+                    iban_no: 'SA90 1000 0025 3506 1200 0200',
+                    bank_name: 'Saudi National Bank - SNB',
+                    bank_swift_code: 'NCBKSAJE',
+                },
+                BACKEND_URL: BACKEND_URL
+            };
+
+
+            // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
+            const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
+
+
+            // Define the directory and filename for the PDF
+            const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+            const pdfFilename = `Invoice-${user?.company_name_eng}-${cartValue.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+            const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+            cartValue.documents = `/uploads/documents/MemberRegInvoice/${pdfFilename}`
+            // Ensure the directory exists
+            if (!fsSync.existsSync(pdfDirectory)) {
+                fsSync.mkdirSync(pdfDirectory, { recursive: true });
+            }
+
+            // Generate PDF and save it to the specified path
+            const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+
+            // now fetch the pdf file from the path and send it as attachment
+            const invoiceBuffer = await fs.readFile(pdfFilePath);
+
+            cartValue.cart_items = JSON.stringify(cartValue.cart_items);
+            // await sendOTPEmail(user.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
+
+            //     , { invoiceBuffer, pdfFilename }, pdfBuffer2);
+
+
+
+
+            // Start a transaction to ensure both user and cart are inserted
+            transaction = await prisma.$transaction(async (prisma) => {
+
+
+                // add all three documents to the member_documents table
+                const documentsData =
+                {
+                    type: "invoice",
+                    document: `/uploads/documents/MemberRegInvoice/${pdfFilename}`,
+                    transaction_id: user.carts[0].transaction_id,
+                    user_id: user.id,
+                    doc_type: "member_document",
+                    status: "pending",
+                    uploaded_by: user.email
+                }
+
+
+
+                await prisma.member_documents.create({ data: documentsData })
+                // isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
+
+                // update user isproductApproved to 1 and return the updated user
+                userUpdateResult = await prisma.users.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        isproductApproved: 1
+                    },
+                    include: {
+                        carts: true
+                    }
+                });
+
+                /// send email to user with generated invoice
+                const emailSubject = `Invoice Generated`;
+                const emailContent = `
+                <h1>Invoice Generated</h1>
+                <p>Your Invoice is generated by the admin</p>
+                <p>Invoice: <strong>${pdfFilename}</strong></p>
+                `;
+
+                await sendEmail({
+                    toEmail: user.email,
+                    subject: emailSubject,
+                    htmlContent: emailContent,
+                    attachments: [
+                        {
+                            filename: pdfFilename,
+                            content: invoiceBuffer,
+                            contentType: 'application/pdf'
+                        },
+                        {
+                            filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf',
+                            content: pdfBuffer2,
+                            contentType: 'application/pdf'
+                        }
+                    ]
+                });
+
+
+                return { userUpdateResult };
+
+                // return { newUser, newCart };
+
+                // make trantion time to 40 sec
+            }, { timeout: 40000 });
+
+
+            const logData = {
+                subject: 'New Member Registration',
+                // user user memberId
+                // member_id: userUpdateResult.memberID,
+                user_id: transaction.userUpdateResult.id,
+                // TODO: take email form current admin token
+                // admin_id: 'admin@gs1sa.link',
+
+            }
+
+
+
+            try {
+
+                await createMemberLogs(logData);
+            }
+            catch (error) {
+                console.log("error in member logs")
+                console.log(error)
+
+            }
+
+        }
+        else if (status === 'rejected') {
+            // update user isproductApproved to 2 and return the updated user
+            userUpdateResult = await prisma.users.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    isproductApproved: 2
+                },
+                include: {
+                    carts: true
+                }
+            });
+
+            // send email to user that his invoice is rejected with the reason if provided
+            // send reject email with appropriate message
+            const emailSubject = `Invoice Rejected`;
+            const emailContent = `
+        <h1>Invoice Rejected</h1>
+        <p>Your Invoice against transaction id: <strong>${cartValue.transaction_id}</strong> is rejected by the admin</p>
+        <p>Reason: <strong>${reject_reason}</strong></p>
+        `;
+            await sendEmail({
+                toEmail: user.email,
+                subject: emailSubject,
+                htmlContent: emailContent,
+            });
+
+        }
+
+        res.status(201).json({
+            message: status === 'approved' ? 'Invoice sent successfully' : 'Invoice rejected successfully',
+            user: userUpdateResult,
+        })
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+
+
+
+
 async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
     try {
         const ejsTemplate = await fs.readFile(ejsFilePath, 'utf-8');
@@ -291,12 +546,23 @@ async function convertEjsToPdf(ejsFilePath, data, outputFilePath) {
 
 export const createUser = async (req, res, next) => {
     try {
+        // Check if email already exists
+        // const existingUser = await prisma.users.findFirst({
+        //     where: {
+        //         email: req.body.email
+        //     }
+        // });
+        // if (existingUser) {
+        //     throw createError(409, 'User with this email already exists');
+        // }    TODO: enable after testing is done
+
+
         // Validate user data
         const { error, value } = userSchema.validate(req.body);
         if (error) {
             console.log("error")
             console.log(error)
-            return next(createError(400, error.details[0].message));
+            throw createError(400, error.details[0].message);
         }
         // Extract user and cart values
         const userValue = { ...value };
