@@ -980,7 +980,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = `GS1 Saudi Arabia ${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
-            const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated renewal invoice of your ${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1193,7 +1193,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-            const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated renewal invoice of your GTIN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -2568,7 +2568,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
         // Send email with invoice
         const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-        const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        const emailContent = `This is an automated email to confirm that your membership upgrade request has been received. Please find the attached invoice for your reference.`;
         const attachments = [
             {
                 filename: pdfFilename,
@@ -2785,7 +2785,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
             secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                upgradeDetails: `Receipt for upgrade of ${totalBarcodesToSub} barcodes`,
+                upgradeDetails: `Receipt for downgrading membership from ${gtinSubscriptions?.member_category_description} to ${newGtinSubscriptions?.member_category_description}`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {

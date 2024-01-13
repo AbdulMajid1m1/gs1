@@ -614,7 +614,7 @@ export const createUser = async (req, res, next) => {
                 user_id: newUser.id,
                 request_type: "registration",
                 status: "inactive",
-                price: parseFloat(cartData[0].registrationFee),
+                price: parseFloat(cartData[0].registration_fee),
                 pkg_id: cartData[0].productID,
                 gtin_subscription_total_price: parseFloat(cartData[0].yearly_fee),
 
@@ -629,7 +629,7 @@ export const createUser = async (req, res, next) => {
                 transaction_id: transactionId,
                 user_id: newUser.id,
                 status: "inactive",
-                price: parseFloat(item.registrationFee),
+                price: parseFloat(item.registration_fee),
 
                 product_id: item.productID,
                 product_identifier_name: item.productName,

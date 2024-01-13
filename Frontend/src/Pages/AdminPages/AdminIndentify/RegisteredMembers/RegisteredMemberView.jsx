@@ -85,12 +85,27 @@ const RegisteredMembersView = () => {
     setIsUpgradePopupVisible(true);
     console.log(row);
   };
+  // const filterDropdownOptions = (row, dropDownOptions) => {
+  //   if (row.product_identity === 'gtin') {
+  //     return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
+  //   } else if (row.product_identity === 'gln') {
+  //     return dropDownOptions.filter(option => option.label === 'Add GLN');
+  //   }
+  //   return []; // No options available
+  // };
   const filterDropdownOptions = (row, dropDownOptions) => {
+    console.log(allUserData);
+    if (allUserData?.status !== 'active') {
+      // If product is not approved, disable all options
+      return [];
+    }
+
     if (row.product_identity === 'gtin') {
       return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
     } else if (row.product_identity === 'gln') {
       return dropDownOptions.filter(option => option.label === 'Add GLN');
     }
+
     return []; // No options available
   };
 
