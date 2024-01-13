@@ -6,17 +6,8 @@ import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 const userRouter = express.Router();
 
 // userRouter.post('/', createUser);
-userRouter.post('/', upload([
-    {
-        name: 'document',
-        path: 'public/uploads/documents/MemberRegDocs',
-    },
-    {
-        name: 'image',
-        path: 'public/uploads/images/MemberRegImages',
-
-    },
-]), createUser);
+userRouter.post('/',
+    createUser);
 
 userRouter.get('/', getUserDetails);
 

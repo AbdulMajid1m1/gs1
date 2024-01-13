@@ -16,38 +16,46 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
                 }
             });
 
+            // Initialize an empty attachments array
+            let attachments = [];
+
+            // Add attachments conditionally
+            if (pdfBuffer && pdfBuffer.invoiceBuffer) {
+                attachments.push({
+                    filename: pdfBuffer.pdfFilename ? pdfBuffer.pdfFilename : 'Invoice.pdf',
+                    content: pdfBuffer.invoiceBuffer,
+                    contentType: 'application/pdf'
+                });
+            }
+
+            if (pdfBuffer2) {
+                attachments.push({
+                    filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf',
+                    content: pdfBuffer2,
+                    contentType: 'application/pdf'
+                });
+            }
+
             const mailOptions = {
                 from: `Gs1Ksa <${process.env.EMAIL}>`,
                 to: email,
                 subject: subject || 'Login Credentials for GS1',
-
                 html: `<h1>Your Login Credentials for GS1</h1>
-                <p>Your Login ID: ${email}</p>
-                <p>Your Password: ${password}</p>
-                ${footerMessage ? `<p>${footerMessage}</p>` : ''}`,
-                attachments: [{
-                    filename: pdfBuffer.pdfFilename ? pdfBuffer.pdfFilename : 'Invoice.pdf',
-                    content: pdfBuffer.invoiceBuffer,
-                    contentType: 'application/pdf'
-                },
-                {
-                    filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf', // Second PDF file
-                    content: pdfBuffer2,
-                    contentType: 'application/pdf'
-                }
-
-
-                ]
-
+                       <p>Your Login ID: ${email}</p>
+                       <p>Your Password: ${password}</p>
+                       ${footerMessage ? `<p>${footerMessage}</p>` : ''}`,
+                // Use the attachments array
+                attachments: attachments
             };
 
             const info = await transporter.sendMail(mailOptions);
-            resolve({ success: true, message: 'OTP sent successfully!' });
+            resolve({ success: true, message: 'Email sent successfully!' });
         } catch (error) {
             reject({ success: false, message: 'Something went wrong', error: error });
         }
     });
-}
+};
+
 
 // helo
 
