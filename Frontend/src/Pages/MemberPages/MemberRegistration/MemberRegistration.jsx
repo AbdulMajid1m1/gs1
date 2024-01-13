@@ -439,6 +439,7 @@ const MemmberRegisteration = () => {
 
         let cart_items = []
         // add subscription data to cart_items and then add other products to cart_items
+        console.log(subscriptionData)
         subscriptionData.forEach((item) => {
             cart_items.push({
                 "productID": item.productId,
