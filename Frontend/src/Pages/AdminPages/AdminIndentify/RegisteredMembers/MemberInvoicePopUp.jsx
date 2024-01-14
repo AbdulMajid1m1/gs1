@@ -186,7 +186,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Member Invoice Details</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending Invoice for Approval</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
@@ -201,7 +201,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           checked={selectedStatus === "approved"}
                           onChange={() => setSelectedStatus("approved")}
                         />
-                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approved</label>
+                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approve</label>
                       </div>
                       <div className="flex flex-row gap-2">
                         <input
@@ -213,7 +213,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           checked={selectedStatus === "rejected"}
                           onChange={() => setSelectedStatus("rejected")}
                         />
-                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Rejected</label>
+                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Reject</label>
                       </div>
                     </div>
                   </div>
@@ -237,7 +237,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
+                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
                   </div>
                   <table>
                     <thead>

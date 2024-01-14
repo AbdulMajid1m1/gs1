@@ -6,24 +6,26 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
-const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData,
+// const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
+const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
 }) => {
-  const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
-  //   const [status, setStatus] = useState("");
+//   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
+//   console.log(gs1MemberInvoiceData);
+  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState(gs1MemberInvoiceData?.status); // Default to "Approved"
+  const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const handleCloseInvoicePopup = () => {
+  const handleClosePendingApprovedPopup = () => {
     setVisibility(false);
   };
 
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
@@ -51,37 +53,24 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
     setLoading(true);
 
     const approvedBody = {
-      status: selectedStatus,
+        "userId": gs1MemberData?.id,
+        "status": selectedStatus, // or approved
     };
+    if (rejected) {
+        approvedBody.reject_reason = rejected;
+    }
 
-    const rejectBody = {
-      status: selectedStatus,
-      reject_reason: rejected,
-    };
 
-    // console.log(rejectBody);
-    // console.log(approvedBody);
+  
     try {
-      // const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`,
-      //   { selectedStatus === "approved" ? approvedBody : rejectBody,
-      // });
-
-      const body = selectedStatus === "approved" ? approvedBody : rejectBody;
-      console.log(status);
-      const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
-      //   console.log(res.data);
-   
-      if (res.status === 200) {
-        if (selectedStatus === "rejected") {
-            toast.info("Member Account Rejected Successfully");
-        } else {
-            toast.success("User Activated Successfully");
-        }
-
-        setLoading(false);
-        refreshMemberInoviceData();
-        handleCloseInvoicePopup();
-      }
+      const res = await newRequest.post('/users/sendInvoice', approvedBody);
+      
+      setLoading(false);
+      toast.success(res.data.message || "Invoice status updated successfully!");
+      fetchAllUserData();
+        // Close the popup
+        handleClosePendingApprovedPopup();
+    //   }
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -96,8 +85,8 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-              <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending Invoice for Approval</h2>
+            <form onSubmit={handleSubmit} className='w-full'>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approved</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
@@ -124,7 +113,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
                           checked={selectedStatus === "rejected"}
                           onChange={() => setSelectedStatus("rejected")}
                         />
-                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Reject</label>
+                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Rejected</label>
                       </div>
                     </div>
                   </div>
@@ -148,7 +137,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
+                    {/* <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2> */}
                   </div>
                   <table>
                     <thead>
@@ -185,7 +174,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
                   <button
                     type="button"
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                    onClick={handleCloseInvoicePopup}
+                    onClick={handleClosePendingApprovedPopup}
                   >
                     Close
                   </button>
@@ -209,4 +198,4 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
   );
 }
 
-export default FinanceMemberInvoicePopUp;
+export default MemberPendingApprovedPopUp;
