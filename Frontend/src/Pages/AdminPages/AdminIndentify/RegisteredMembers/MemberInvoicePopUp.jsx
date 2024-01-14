@@ -90,7 +90,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     e.preventDefault();
     setLoading(true);
     console.log(gs1MemberInvoiceData);
- 
+
 
     const approvedBody = {
       status: selectedStatus,
@@ -178,8 +178,9 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       }
     } catch (err) {
       console.log(err);
+
+      toast.error(err.response?.data?.error || "Something went wrong!");
       setLoading(false);
-      toast.error(err.response?.data || "Something went wrong!");
     }
   };
   // console.log(err);

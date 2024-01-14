@@ -1892,13 +1892,14 @@ export const approveMembershipRequest = async (req, res, next) => {
 
     const { error, value } = schema.validate(req.body);
 
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    }
-
-    const { transactionId, userId, invoiceType } = value;
 
     try {
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { transactionId, userId, invoiceType } = value;
+
         const bankSlipDocuments = await prisma.member_documents.findMany({
             where: {
                 user_id: userId,
