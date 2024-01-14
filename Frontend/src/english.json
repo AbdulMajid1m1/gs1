@@ -5,5 +5,19 @@
     "Get a Barcode": "Get a Barcode",
     "GS1 Member Login": "GS1 Member Login",
     "Staff Login": "Staff Login",
-    "GS1 Saudia Arabia":"GS1 Saudia Arabia"
+    "GS1 Saudia Arabia":"GS1 Saudia Arabia",
+    "Add":"Add",
+    "View":"View",
+    "Edit":"Edit",
+    "Update":"Update",
+    "Status":"Status",
+    "Delete":"Delete",
+    "Import":"Import",
+    "Export":"Export",
+    "Close":"Close",
+    "Mega Menu":"Mega Menu",
+    "Menu":"Menu",
+    "Enter":"Enter",
+    "Name[English]":"Name[English]",
+    "Name[Arabic]":"Name[Arabic]"
 }

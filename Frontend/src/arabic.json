@@ -5,5 +5,19 @@
     "Get a Barcode": "احصل على الباركود",
     "GS1 Member Login": "تسجيل دخول عضو GS1",
     "Staff Login": "تسجيل دخول الموظفين",
-    "GS1 Saudia Arabia": "GS1 المملكة العربية السعودية"
+    "GS1 Saudia Arabia": "GS1 المملكة العربية السعودية",
+    "Add":"إضافة",
+    "View":"عرض",
+    "Edit":"تحرير",
+    "Update":"تحديث",
+    "Status":"حالة",
+    "Delete":"حذف",
+    "Import":"استيراد",
+    "Export":"تصدير",
+    "Close":"إغلاق",
+    "Mega Menu":"القائمة الضخمة",
+    "Menu":"قائمة",
+    "Enter":"أدخل",
+    "Name[English]":"اسم [بالإنجليزية]",
+    "Name[Arabic]":"اسم [بالعربية]]"
 }

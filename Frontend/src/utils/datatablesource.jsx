@@ -4,6 +4,7 @@ import QRCode from 'qrcode.react';
 import { backendUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
+
 const QRCodeCell = props => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;
   return <QRCode value={url} size={40} />;
@@ -1437,8 +1438,6 @@ export const GtinColumn = [
   // },
 ];
 
-
-
 export const GlnColumn = [
   {
     field: 'product_id',
@@ -2533,7 +2532,7 @@ export const megamenuDataColumn = [
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: `Status`,
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
