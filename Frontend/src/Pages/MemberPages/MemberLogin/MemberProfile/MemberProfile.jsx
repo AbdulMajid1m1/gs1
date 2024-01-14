@@ -26,6 +26,7 @@ import UpgradeIcon from '@mui/icons-material/Upgrade';
 import SwipeDownIcon from '@mui/icons-material/SwipeDown';
 import MemberUpgradePopUp from './MemberUpgradePopUp';
 import MemberPendingApprovedPopUp from './MemberPendingApprovedPopUp';
+import MemberPendingInvoices from './MemberPendingInvoices';
 const MemberProfile = () => {
   // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
@@ -64,6 +65,7 @@ const MemberProfile = () => {
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
   const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
   const [isPendingApprovedPopupVisible, setIsPendingApprovedPopupVisible] = useState(false);
+  const [isMemberPendingInvoicePopUpVisible, setIsMemberPendingInvoicePopUpVisible] = useState(false);
   const [subType, setSubType] = useState("");
   const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
   const handleShowUpgradePopup = (row) => {
@@ -338,6 +340,22 @@ const MemberProfile = () => {
   };
 
 
+  
+  // MemberPendingInvoice Api call
+  const getAllTransactionId = async () => {
+    try {
+        const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${memberData?.id}`);
+        console.log(response.data);
+        if (response.data.length > 0) {
+          setIsMemberPendingInvoicePopUpVisible(true);
+        }
+
+    } 
+    catch (error) {
+        console.log(error);
+    }
+};
+
   useEffect(() => {
 
     fetchAllUserData();
@@ -347,6 +365,7 @@ const MemberProfile = () => {
     fetchMemberbankSlipData();
     fetchSubMembersData();
     fetchRegisteredProductsData();
+    getAllTransactionId();
     fetchData(); // Calling the function within useEffect, not inside itself
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -434,9 +453,6 @@ const MemberProfile = () => {
   const handleShowAddMemberBankSlipPopup = () => {
     setIsAddMemberBankSlipPopupVisible(true);
   };
-
-
-
 
 
 
@@ -1019,6 +1035,11 @@ const MemberProfile = () => {
          {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
          {isPendingApprovedPopupVisible && (
           <MemberPendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData} />
+        )}
+
+        {/* Member Pending Invoice component with Handle prop */}
+        {isMemberPendingInvoicePopUpVisible && (
+          <MemberPendingInvoices isVisible={isMemberPendingInvoicePopUpVisible} setVisibility={setIsMemberPendingInvoicePopUpVisible}/>
         )}
 
 
