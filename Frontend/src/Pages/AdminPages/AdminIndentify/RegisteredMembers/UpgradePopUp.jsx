@@ -210,11 +210,27 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
     setLoading(true);
 
     try {
-      if (subType === "UPGRADE" || subType === "DOWNGRADE") {
+      if (subType === "UPGRADE") {
         const res = await newRequest.put('/changeMembership/upgradeMembershipRequest', {
           "user_id": userData?.id,
           "new_subscription_product_Id": selectedGtinBarcodes?.id,
           subType: subType
+
+        });
+        console.log(res.data);
+        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        // }
+
+        fetchMemberInvoiceData();
+        // Close the popup
+        handleCloseUpgradePopup();
+      }
+      if (subType === "DOWNGRADE") {
+        const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
+          "user_id": userData?.id,
+          "gtin_product_id": selectedGtinBarcodes?.id,
+          "current_gtin_subscription_id": memberInoviceData?.gtinSubscriptions[0]?.id,
+
 
         });
         console.log(res.data);
@@ -382,6 +398,45 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                     </tfoot>
                   </table>
                 </div>
+
+
+                {selectedGtinBarcodes !== "" && subType === "DOWNGRADE" && (
+                  <div className="table-member-inoive px-4 pt-3">
+                    {/* show the transaction_id in very small  */}
+                    <div className="flex justify-between items-center">
+                      <h1 className="text-secondary font-sans font-semibold text">NEW Subscription</h1>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>PRODUCT</th>
+                          <th>REGISTRATION FEE</th>
+                          <th>YEARLY FEE</th>
+
+
+                        </tr>
+                      </thead>
+                      <tbody>
+
+
+
+                        <tr >
+                          <td>{selectedGtinBarcodes?.member_category_description}</td>
+                          <td>{selectedGtinBarcodes?.price}</td>
+                          <td>{selectedGtinBarcodes?.yearly_fee}</td>
+                        </tr>
+                        );
+
+
+
+
+                      </tbody>
+
+                    </table>
+                  </div>
+
+                )}
+
 
                 {selectedGtinBarcodes !== "" && subType === "UPGRADE" && (
                   <span>

@@ -371,6 +371,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
         let userUpdateResult;
         let pdfFilename;
         let cart;
+        let expiryDate;
 
         const bankSlipDocuments = await prisma.member_documents.findMany({
             where: {
@@ -404,7 +405,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
                         // Update user with new information
-                        let expiryDate = new Date();
+                        expiryDate = new Date();
                         expiryDate.setDate(expiryDate.getDate() + existingUser.gcp_expiry.getDate());
                         console.log("expiryDate");
                         console.log(expiryDate);
@@ -528,10 +529,12 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                         gcpGLNID: gcpGLNID,
                         gln: existingUser?.gln,
                         memberID: existingUser?.memberID,
-                        gcp_expiry: existingUser?.gcp_expiry,
+                        // gcp_expiry:
+                        // use updated expiry date used above
+                        expiryDate: expiryDate,
                     },
                     // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-                    expiryDate: existingUser?.gcp_expiry.toISOString().split('T')[0],
+                    expiryDate: expiryDate?.toISOString()?.split('T')[0],
                     explodeGPCCode: []
                 };
 
@@ -1943,7 +1946,7 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
 
-        let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
+        let emailContent = `Your request for changing membership has been approved. Please find the attached receipt for your reference.`;
 
 
 
@@ -2164,11 +2167,14 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
     // Validate the request body
     const { error, value } = downgradeMembershipSchema.validate(req.body);
 
-    if (error) {
-        return next(createError(400, error.details[0].message));
-    }
 
     try {
+
+        if (error) {
+            // return next(createError(400, error.details[0].message));
+            throw createError(400, error.details[0].message);
+        }
+
 
         const user = await prisma.users.findUnique({
             where: { id: value.user_id },
@@ -2377,7 +2383,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
-        current_gtin_subscription_id: Joi.string().required(),
+        // current_gtin_subscription_id: Joi.string().required(),
 
     });
 
@@ -2420,13 +2426,13 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
 
         // get gtin_products data baed of  current_gtin_subscription_id
-        const gtinSubscriptions = await prisma.gtin_products.findFirst({
-            where: { id: current_gtin_subscription_id },
-        });
+        // const gtinSubscriptions = await prisma.gtin_products.findFirst({
+        //     where: { id: current_gtin_subscription_id },
+        // });
 
-        if (!gtinSubscriptions) {
-            throw createError(404, 'GTIN subscription not found');
-        }
+        // if (!gtinSubscriptions) {
+        //     throw createError(404, 'GTIN subscription not found');
+        // }
 
 
         const totalBarcodesToSub = upgradeCart.gtin_upgrade_pricing.total_no_of_barcodes;
@@ -2538,7 +2544,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
             secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                upgradeDetails: `Receipt for downgrading membership from ${gtinSubscriptions?.member_category_description} to ${newGtinSubscriptions?.member_category_description}`,
+                upgradeDetails: `Receipt for downgrading membership to ${newGtinSubscriptions?.member_category_description}`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
@@ -2622,7 +2628,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
         // Insert Member History log
         const logData = {
-            subject: `Membership downgraded from ${gtinSubscriptions?.member_category_description} to ${newGtinSubscriptions?.member_category_description}. ${gcpGLNIDUpdated ? `GPC/GLN updated from ${oldGcpGLNID} to ${user.gcpGLNID}.` : ''}`,
+            subject: `Membership downgraded to ${newGtinSubscriptions?.member_category_description}. ${gcpGLNIDUpdated ? `GPC/GLN updated from ${oldGcpGLNID} to ${user.gcpGLNID}.` : ''}`,
             // member_id: userUpdateResult.memberID,
             user_id: userId,
             // TODO: take email form current admin token

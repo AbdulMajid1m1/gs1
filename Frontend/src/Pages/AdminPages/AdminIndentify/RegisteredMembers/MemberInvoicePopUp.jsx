@@ -89,6 +89,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log(gs1MemberInvoiceData);
+ 
 
     const approvedBody = {
       status: selectedStatus,
@@ -103,6 +105,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       invoiceType: gs1MemberInvoiceData?.type
+    }
+    const downgradeInvoiceBody = {
+      userId: gs1MemberInvoiceData?.user_id,
+      transactionId: gs1MemberInvoiceData?.transaction_id,
     }
 
     const addGtin = {
@@ -128,9 +134,13 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
     }
-    else if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice") {
+    else if (gs1MemberInvoiceData?.type === "upgrade_invoice") {
       apiEndpoint = `/changeMembership/approveMembershipRequest`;
       requestBody = changeGtinSub;
+    }
+    else if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
+      apiEndpoint = `/changeMembership/approveDowngradeMembershipRequest`;
+      requestBody = downgradeInvoiceBody;
     }
     else if (gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
       apiEndpoint = `/changeMembership/approveAdditionalProductsRequest`;
@@ -169,7 +179,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.error || "Something went wrong!");
+      toast.error(err.response?.data || "Something went wrong!");
     }
   };
   // console.log(err);
