@@ -899,11 +899,11 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: `${value.sub_type === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE`,
-                secondHeading: `${value.sub_type === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
+                topHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE`,
+                secondHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`,
+                    registeration: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -968,7 +968,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             await prisma.member_documents.create({
                 data: {
-                    type: `${value.sub_type === "UPGRADE" ? "upgrade_invoice" : "downgrade_invoice"}`,
+                    type: `${value.subType === "UPGRADE" ? "upgrade_invoice" : "downgrade_invoice"}`,
                     document: `/uploads/documents/MemberRegInvoice/${pdfFilename}`,
                     transaction_id: transactionId,
                     user_id: user.id,
@@ -979,8 +979,8 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             // Send email with invoice
-            const subject = `GS1 Saudi Arabia ${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
-            const emailContent = `This is an automated renewal invoice of your ${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
+            const emailContent = `This is an automated renewal invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -999,7 +999,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             const logData = {
-                subject: `${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created`,
+                subject: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created`,
                 user_id: user?.id,
                 admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
             };
@@ -1009,7 +1009,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             return user.email;
         }, { timeout: 40000 });
 
-        res.status(200).json({ message: `${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
+        res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
         next(error);
