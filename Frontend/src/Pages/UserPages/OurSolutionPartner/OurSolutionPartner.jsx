@@ -6,8 +6,10 @@ import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import newRequest from '../../../utils/userRequest'
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
+import { useTranslation } from 'react-i18next';
 
 const OurSolutionPartner = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const fetchHeaderSliderData = async () => {
     try {
@@ -27,7 +29,7 @@ const OurSolutionPartner = () => {
     <div>
           {/* Our Solution Partners */}
           <div className='flex justify-center items-center pt-5'>
-            <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'>Our Solution Partners</h2>
+        <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'> {t('Our Solution Partners')}</h2>
         </div>
      
         <div className='mt-10 mb-10 px-10'>

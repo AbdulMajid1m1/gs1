@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import firstArticle from "../../../Images/firstArticle.png"
-import secondArticle from "../../../Images/secondArticle.png"
-import thirdArticle from "../../../Images/thirdArticle.png"
 import newRequest from '../../../utils/userRequest'
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const FeatureArticle = () => {
 
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState([]);
   const fetchHeaderSliderData = async () => {
     try {
@@ -27,7 +26,7 @@ const FeatureArticle = () => {
     <div>
         {/* Featured Articles */}
         <div className='flex justify-center items-center pt-5'>
-            <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'>Featured Articles</h2>
+        <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'>{t('Featured Articles')}</h2>
         </div>
         <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 gap-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 px-5 mb-4'>
             {/* first Card */}
@@ -44,8 +43,8 @@ const FeatureArticle = () => {
 
               <div className='h-[25%] w-full pt-5'>
                 <div className='px-5'>
-                  <Link className='h-auto w-auto px-5 bg-primary font-medium text-white' to={`/${item.link}`}>More Details</Link>
-                  <p className='font-semibold text-secondary'>{item.title}</p>
+                  <Link className='h-auto w-auto px-5 bg-primary font-medium text-white' to={`/${item.link}`}>{t('More Details')}</Link>
+                  <p className='font-semibold text-secondary'> {i18n.language === 'ar' ? item?.title_ar : item?.title}</p>
                 </div>
               </div>
 
@@ -57,8 +56,8 @@ const FeatureArticle = () => {
 
         {/* More events Button */}
         <div className='flex justify-center items-center gap-4 mb-10 sm:px-0 px-5'>
-            <button className='bg-secondary font-medium text-white sm:text-lg text-sm rounded-md px-3 py-1'>View More</button>
-            <button className='bg-primary font-medium text-white sm:text-lg text-sm rounded-md px-3 py-1'>Join Our Mailing List</button>
+        <button className='bg-secondary font-medium text-white sm:text-lg text-sm rounded-md px-3 py-1'> {t('View More')}</button>
+        <button className='bg-primary font-medium text-white sm:text-lg text-sm rounded-md px-3 py-1'>{t('Join Our Mailing List')}</button>
         </div>
 
     </div>

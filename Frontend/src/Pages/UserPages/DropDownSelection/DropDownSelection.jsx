@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './DropDownSelection.css';
 import newRequest from '../../../utils/userRequest';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const DropDownSelection = () => {
+  const { t, i18n } = useTranslation();
   const [megaMenu, setMegaMenu] = useState([]);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,7 +17,7 @@ const DropDownSelection = () => {
   const getAllRegisteredMembers = async () => {
     try {
       const res = await newRequest.get("/mega_menu_categories_frontSide")
-      console.log(res.data);
+      console.log('Menu',res.data);
       setMegaMenu(res.data);
         
     }
@@ -57,7 +59,8 @@ const DropDownSelection = () => {
               {megaMenu?.map((section, index) => (
                 <li key={index} className="menu-item-has-children">
                   <Link to="javascript:void(0)" style={{ textDecoration: 'none'  }}>
-                    {section.name_en}
+                    {/* {section.name_en} */}
+                    {i18n.language === 'ar' ? section?.name_ar : section?.name_en}
                     &nbsp;
                      <i className="fa fa-angle-down"></i>
                   </Link>
@@ -66,14 +69,15 @@ const DropDownSelection = () => {
                       <div key={catIndex} className="list-item">
                         {/* <Link to={category.url} style={{ textDecoration: 'none' }}> */}
                         <Link to={`/${category.url}`} style={{ textDecoration: 'none' }}>
-                          {category.category_name_en}
+                          {/* {category.category_name_en} */}
+                          {i18n.language === 'ar' ? category?.category_name_ar : category?.category_name_en}
                         </Link>
                         <ul>
                           {category.footer_menus.map((subcategory, subIndex) => (
                             <li key={subIndex}>
                               {/* <Link to={subcategory.url} style={{ textDecoration: 'none' }}> */}
                               <Link to={`/${subcategory.url}`} style={{ textDecoration: 'none' }}>
-                                {subcategory.category_name_en}
+                                {i18n.language === 'ar' ? subcategory?.category_name_ar : subcategory?.category_name_en}
                               </Link>
                             </li>
                           ))}
