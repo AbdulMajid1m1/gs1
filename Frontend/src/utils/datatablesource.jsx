@@ -4895,7 +4895,7 @@ export const registeredmemberColumn = [
     field: 'combined_description',
     headerName: 'Product Name',
     width: 270,
-   
+
   },
 
   {
@@ -4907,8 +4907,8 @@ export const registeredmemberColumn = [
     field: 'price',
     headerName: 'Registration fee',
     width: 120,
-    
-   
+
+
   },
   {
     field: 'Yearly_fee',
@@ -4933,11 +4933,11 @@ export const registeredmemberColumn = [
           paddingRight: '10px',
           borderRadius: '20px',
           border: '2px solid',
-          borderColor: params.row.status === 1 ? 'green' : 'red',
-          color: params.row.status === 1 ? 'green' : 'red',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
         }}
       >
-        {params.row.status === 1 ? 'Active' : 'Inactive'}
+        {params.row.status === 'active' ? 'Active' : 'Inactive'}
       </div>
     ),
   },

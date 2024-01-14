@@ -45,7 +45,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
 
   const handleCompareGtinBarcodes = async () => {
     try {
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
       const res2 = await newRequest.get('/gtinProducts');
       // console.log(res.data);
       // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);

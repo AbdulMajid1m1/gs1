@@ -26,6 +26,7 @@ import UpgradeIcon from '@mui/icons-material/Upgrade';
 import SwipeDownIcon from '@mui/icons-material/SwipeDown';
 import UpgradePopUp from './UpgradePopUp';
 import DowngradePopUp from './DowngradePopUp';
+import PendingApprovedPopUp from './PendingApprovedPopUp';
 
 
 const RegisteredMembersView = () => {
@@ -61,6 +62,7 @@ const RegisteredMembersView = () => {
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
   const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
+  const [isPendingApprovedPopupVisible, setIsPendingApprovedPopupVisible] = useState(false);
   const [subType, setSubType] = useState("");
   const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
   const handleShowUpgradePopup = (row) => {
@@ -83,12 +85,27 @@ const RegisteredMembersView = () => {
     setIsUpgradePopupVisible(true);
     console.log(row);
   };
+  // const filterDropdownOptions = (row, dropDownOptions) => {
+  //   if (row.product_identity === 'gtin') {
+  //     return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
+  //   } else if (row.product_identity === 'gln') {
+  //     return dropDownOptions.filter(option => option.label === 'Add GLN');
+  //   }
+  //   return []; // No options available
+  // };
   const filterDropdownOptions = (row, dropDownOptions) => {
+    console.log(allUserData);
+    if (allUserData?.status !== 'active') {
+      // If product is not approved, disable all options
+      return [];
+    }
+
     if (row.product_identity === 'gtin') {
       return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
     } else if (row.product_identity === 'gln') {
       return dropDownOptions.filter(option => option.label === 'Add GLN');
     }
+
     return []; // No options available
   };
 
@@ -286,7 +303,7 @@ const RegisteredMembersView = () => {
   const fetchRegisteredProductsData = async () => {
     setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${gs1MemberData?.id}&isDeleted=false`);
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${gs1MemberData?.id}&isDeleted=false`);
 
       console.log(response.data);
       // Extract gtinSubscriptions data and flatten the nested gtin_product
@@ -420,6 +437,9 @@ const RegisteredMembersView = () => {
   };
 
 
+  const handlePendingApprovedPopUp = () => {
+    setIsPendingApprovedPopupVisible(true);
+  };
 
 
 
@@ -574,16 +594,26 @@ const RegisteredMembersView = () => {
               <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
 
 
-              <div className='w-full flex justify-end px-6 py-6'>
+              {/* Registered Products */}
+              <div className='w-full flex justify-end px-6 pt-6 gap-2'>
                 <button
-                  className='bg-blue-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  onClick={handlePendingApprovedPopUp}
+                  className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                    }`}
+                  disabled={allUserData.isproductApproved == 1}
+                  // show disable cursor if status is not approved
+                  style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                 >
-                  Change Membership
+                  {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
                 </button>
+                {/* <button
+                    className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Approved
+                  </button> */}
               </div>
 
-              {/* Registered Products */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-25px' }}
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
@@ -628,10 +658,21 @@ const RegisteredMembersView = () => {
                   uniqueId="registeredProductsTableId"
 
                 />
+
               </div>
 
+            </div>
+          </div>
+        </div>
 
-              <div className='flex justify-between w-full mt-10'>
+
+
+        {/* Member Documents */}
+        <div className='flex justify-center items-center bg-[#DAF2EE]'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+
+              <div className='flex justify-between w-full'>
                 <div className='w-full flex justify-end px-6'>
                   {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
                   <button
@@ -953,7 +994,7 @@ const RegisteredMembersView = () => {
           <MemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
             // fetchAllUserData={fetchAllUserData} MemberbankSlip={fetchMemberbankSlipData}
             fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
-            fetchRegisteredProductsData={fetchRegisteredProductsData}
+            fetchRegisteredProductsData={fetchRegisteredProductsData} userData={allUserData}
           />
         )}
 
@@ -984,7 +1025,13 @@ const RegisteredMembersView = () => {
 
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (
-          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} />
+          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} fetchMemberInvoiceData={fetchMemberInvoiceData} />
+        )}
+
+
+        {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
+        {isPendingApprovedPopupVisible && (
+          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData} />
         )}
 
 

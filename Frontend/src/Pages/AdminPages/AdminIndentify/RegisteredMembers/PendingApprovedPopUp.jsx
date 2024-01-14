@@ -7,70 +7,33 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
-  fetchRegisteredProductsData, userData,
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
 }) => {
-  const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
+//   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
+//   console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  // console.log(gs1MemberData)
-  const gtinId = sessionStorage.getItem("gtinId");
-  console.log(gtinId);
-  //   const [status, setStatus] = useState("");
+  console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const handleCloseInvoicePopup = () => {
+  const handleClosePendingApprovedPopup = () => {
     setVisibility(false);
   };
 
-  // const handleMemberInvoiceData = async () => {
-  //   try {
-  //     const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
-  //     console.log(res.data);
-  //     setMemberInvoiceData(res.data);
-
-  //     let total = 0;
-  //     const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-  //     cartItems.forEach((item) => {
-  //       total += parseInt(item.price); // Make sure to parse the price as an integer
-  //     });
-  //     setTotalPrice(total);
-  //   }
-  //   catch (err) {
-  //     console.log(err);
-  //   }
-
-
-  // }
-
   const handleMemberInvoiceData = async () => {
     try {
-      // const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
       let total = 0;
-
-
-
-
-
-
-
-      res.data?.gtinSubscriptions.forEach((item) => {
-        total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+      const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
+      cartItems.forEach((item) => {
+        total += parseInt(item.price); // Make sure to parse the price as an integer
       });
-
-      res.data?.otherProductSubscriptions.forEach((item) => {
-        // add price and other_products_subscription_total_price
-        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
-      });
-      console.log(total);
       setTotalPrice(total);
     }
     catch (err) {
@@ -79,7 +42,6 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
 
   }
-
 
   useEffect(() => {
     handleMemberInvoiceData();
@@ -91,92 +53,30 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     setLoading(true);
 
     const approvedBody = {
-      status: selectedStatus,
+        "userId": gs1MemberData?.id,
+        "status": selectedStatus, // or approved
     };
-
-    const rejectBody = {
-      status: selectedStatus,
-      reject_reason: rejected,
-    };
-
-    const changeGtinSub = {
-      userId: gs1MemberInvoiceData?.user_id,
-      transactionId: gs1MemberInvoiceData?.transaction_id,
-      invoiceType: gs1MemberInvoiceData?.type
-    }
-
-    const addGtin = {
-      userId: gs1MemberInvoiceData?.user_id,
-      transactionId: gs1MemberInvoiceData?.transaction_id,
-    }
-    const addGln = {
-      userId: gs1MemberInvoiceData?.user_id,
-      transactionId: gs1MemberInvoiceData?.transaction_id,
-    }
-
-    // console.log(upgrade_invoice);
-
-
-    let apiEndpoint = "";
-    let requestBody = {};
-
-    if (gs1MemberInvoiceData?.type === "invoice") {
-      apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
-      requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
-    }
-    else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
-      apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
-      requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
-    }
-    else if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice") {
-      apiEndpoint = `/changeMembership/approveMembershipRequest`;
-      requestBody = changeGtinSub;
-    }
-    else if (gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
-      apiEndpoint = `/changeMembership/approveAdditionalProductsRequest`;
-      requestBody = addGtin;
-    }
-
-    else if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
-      apiEndpoint = `/changeMembership/approveAdditionalGlnRequest`;
-      requestBody = addGln;
+    if (rejected) {
+        approvedBody.reject_reason = rejected;
     }
 
 
-
-
+  
     try {
-      const res = await newRequest.put(apiEndpoint, { ...requestBody });
-      // console.log(res.data);
-      if (res.status === 200) {
-        if (selectedStatus === "rejected") {
-          toast.info("Member Account Rejected Successfully");
-        } else {
-          toast.success(res?.data?.message || "User Activated Successfully!");
-        }
-
-        setLoading(false);
-        refreshMemberInoviceData();
-        // MemberbankSlip();
-        fetchAllUserData();
-        fetchMemberbankSlipData();
-        fetchRegisteredProductsData();
-
-        fetchMemberHistoryData();
+      const res = await newRequest.post('/users/sendInvoice', approvedBody);
+      
+      setLoading(false);
+      toast.success(res.data.message || "Invoice status updated successfully!");
+      fetchAllUserData();
         // Close the popup
-        handleCloseInvoicePopup();
-      }
+        handleClosePendingApprovedPopup();
+    //   }
     } catch (err) {
       console.log(err);
       setLoading(false);
       toast.error(err.response?.data?.error || "Something went wrong!");
     }
   };
-  // console.log(err);
-  // setLoading(false);
-  // toast.error(err.response?.data?.error || "Something went wrong!");
-  // }
-  // };
 
 
   return (
@@ -185,8 +85,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-              <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Member Invoice Details</h2>
+            <form onSubmit={handleSubmit} className='w-full'>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approved</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
@@ -237,26 +137,18 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
+                    {/* <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2> */}
                   </div>
                   <table>
                     <thead>
-                      {/* <tr>
-                        <th>PRODUCT</th>
-                        <th>REGISTRATION FEE</th>
-                        <th>YEARLY FEE</th>
-                        <th>PRICE</th>
-                      </tr> */}
                       <tr>
                         <th>PRODUCT</th>
                         <th>REGISTRATION FEE</th>
                         <th>YEARLY FEE</th>
-                        <th>EXPIRY DATE</th>
                         <th>PRICE</th>
-
                       </tr>
                     </thead>
-                    {/* <tbody>
+                    <tbody>
                       {memberInoviceData.map((item, index) => {
                         const cartItems = JSON.parse(item.cart_items);
                         return cartItems.map((cartItem, cartIndex) => (
@@ -268,38 +160,6 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           </tr>
                         ));
                       })}
-                    </tbody> */}
-                    <tbody>
-                      {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
-                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
-
-                        return (
-                          <tr key={'gtin_product' + index}>
-                            <td>{item?.gtin_product?.member_category_description}</td>
-                            <td>{item?.price}</td>
-                            <td>{item?.gtin_subscription_total_price}</td>
-                            <td>{expiryDate}</td>
-                            <td>{item?.gtin_subscription_total_price + item?.price}</td>
-                          </tr>
-                        );
-                      })}
-                      {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
-                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
-                        return (
-
-
-                          <tr key={'other_products' + index}>
-                            <td>{item?.product?.product_name}</td>
-                            <td>{item?.price}</td>
-                            <td>{item?.other_products_subscription_total_price}</td>
-                            <td>{expiryDate}</td>
-                            <td>{item?.other_products_subscription_total_price + item?.price}</td>
-                          </tr>
-                        )
-                      })}
-
-
-
                     </tbody>
                     <tfoot>
                       <tr>
@@ -314,7 +174,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                   <button
                     type="button"
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
-                    onClick={handleCloseInvoicePopup}
+                    onClick={handleClosePendingApprovedPopup}
                   >
                     Close
                   </button>
@@ -338,4 +198,4 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   );
 }
 
-export default MemberInvoicePopUp;
+export default PendingApprovedPopUp;

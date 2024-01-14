@@ -267,7 +267,7 @@ export const membershipRenewRequest = async (req, res, next) => {
 
 
         let subject = 'GS1 Saudi Arabia Membership Renewal Request';
-        let emailContent = `This is automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        let emailContent = `This is automated invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
         let userEmail = existingUser.email;
 
         let attachments = [
@@ -899,11 +899,11 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: `${value.sub_type === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE`,
-                secondHeading: `${value.sub_type === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
+                topHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE`,
+                secondHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`,
+                    registeration: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -968,7 +968,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             await prisma.member_documents.create({
                 data: {
-                    type: `${value.sub_type === "UPGRADE" ? "upgrade_invoice" : "downgrade_invoice"}`,
+                    type: `${value.subType === "UPGRADE" ? "upgrade_invoice" : "downgrade_invoice"}`,
                     document: `/uploads/documents/MemberRegInvoice/${pdfFilename}`,
                     transaction_id: transactionId,
                     user_id: user.id,
@@ -979,8 +979,8 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             // Send email with invoice
-            const subject = `GS1 Saudi Arabia ${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
-            const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
+            const emailContent = `This is an automated invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -999,7 +999,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             const logData = {
-                subject: `${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created`,
+                subject: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created`,
                 user_id: user?.id,
                 admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
             };
@@ -1009,7 +1009,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             return user.email;
         }, { timeout: 40000 });
 
-        res.status(200).json({ message: `${value.sub_type === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
+        res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
         next(error);
@@ -1193,7 +1193,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-            const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated invoice of your GTIN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1316,7 +1316,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: "ADDITIONAL GLN INVOICE",
+                topHeading: "INVOICE",
                 secondHeading: "ADDITIONAL GLN INVOICE FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
@@ -1406,7 +1406,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = 'GS1 Saudi Arabia Membership Upgrade GLN Request';
-            const emailContent = `This is an automated renewal invoice of your additional GLN. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated invoice of your additional GLN. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1549,7 +1549,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "ADDITIONAL GTIN RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR ADDITIONAL GTIN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -1639,7 +1639,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
 
         // Insert Member History log
         const logData = {
-            subject: `Membership upgraded by adding ${totalBarcodesToAdd} barcodes.`,
+            subject: `Membership upgraded by adding ${totalBarcodesToAdd} GTIN`,
             // member_id: userUpdateResult.memberID,
             user_id: userId,
             // TODO: take email form current admin token
@@ -1767,7 +1767,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "ADDITIONAL GLN RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR ADDITIONAL GLN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -1893,7 +1893,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    const { transactionId, userId } = value;
+    const { transactionId, userId, invoiceType } = value;
 
     try {
         const bankSlipDocuments = await prisma.member_documents.findMany({
@@ -1917,7 +1917,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         });
 
         if (!upgradeCart) {
-            return res.status(404).send('Upgrade membership cart not found');
+            throw createError(404, 'Upgrade membership cart not found');
         }
 
         const gtinProduct = await prisma.gtin_products.findUnique({
@@ -1925,7 +1925,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         });
 
         if (!gtinProduct) {
-            return res.status(404).send('GTIN product not found');
+            throw createError(404, 'GTIN product not found');
         }
 
 
@@ -1938,36 +1938,25 @@ export const approveMembershipRequest = async (req, res, next) => {
         });
 
         if (!user) {
-            return res.status(404).send('User not found');
+            throw createError(404, 'User not found');
         }
 
         const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
 
-        // Update gtin_subscription_limit in gtin_subscriptions
-        // const updateResponse = await prisma.gtin_subcriptions.updateMany({
-        //     where: {
-        //         user_id: userId,
-
-        //     },
-        //     data: {
-        //         gtin_subscription_limit: totalBarcodesToAdd,
-        //     },
-        // });
-
         let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
-        let gcpGLNIDUpdated = false;
-        let oldGcpGLNID = user.gcpGLNID;
+
+
 
         // Check for special cases and update gcpGLNID and GLN if necessary
 
-
-
-        const gcpGLNID = `628${gtinProduct.gcp_start_range}`;
-        const gln = generateGTIN13(gcpGLNID); // Replace with your actual GTIN generation logic
+        let gcpGLNID = user.gcpGLNID;
+        let gln = user.gln;
         let expiryDate = new Date();
         if (value.invoiceType === 'downgrade_invoice') {
             expiryDate = user.gcp_expiry;
         } else {
+            gcpGLNID = `628${gtinProduct.gcp_start_range}`;
+            gln = generateGTIN13(gcpGLNID); // Replace with your actual GTIN generation logic
             expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
         }
         // Update user with new gcpGLNID and GLN
@@ -1976,13 +1965,10 @@ export const approveMembershipRequest = async (req, res, next) => {
             data: {
                 gcpGLNID: gcpGLNID,
                 gln: gln,
-                // 
                 gcp_expiry: expiryDate,
-
                 // other fields as necessary
             },
         });
-
 
 
         const updateResponse = await prisma.gtin_subcriptions.updateMany({
@@ -2050,7 +2036,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
 
         const receiptData = {
-            topHeading: "MEMBERSHIP SUBSCRIPTION RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -2100,9 +2086,11 @@ export const approveMembershipRequest = async (req, res, next) => {
         const pdfBuffer = await fs1.readFile(pdfFilePath);
 
         // Update email content if gcpGLNID is updated
-        if (gcpGLNIDUpdated) {
-            emailContent = `Thank you for upgrading your membership. Your GPC/GLN has been updated from ${oldGcpGLNID} to ${user.gcpGLNID}. Please find the attached receipt for your reference.`;
-        }
+        // if (gcpGLNIDUpdated) {
+        //     emailContent = `Thank you for upgrading your membership. Your GPC/GLN has been updated from ${oldGcpGLNID} to ${user.gcpGLNID}. Please find the attached receipt for your reference.`;
+        // }
+
+
 
         // Send email with receipt
         await sendEmail({
@@ -2119,11 +2107,6 @@ export const approveMembershipRequest = async (req, res, next) => {
             ],
         });
 
-        // Delete the upgrade_membership_cart record
-        await prisma.upgrade_member_ship_cart.delete({
-            where: { id: upgradeCart.id },
-        });
-
 
         // update invoice status to approved
         await prisma.member_documents.updateMany({
@@ -2136,12 +2119,16 @@ export const approveMembershipRequest = async (req, res, next) => {
                 status: 'approved',
             },
         });
+        // Delete the upgrade_membership_cart record
+        await prisma.upgrade_member_ship_cart.delete({
+            where: { id: upgradeCart.id },
+        });
+
 
 
         // Insert Member History log
         const logData = {
-            subject: `Membership upgraded by adding ${totalBarcodesToAdd} barcodes. ${gcpGLNIDUpdated ? `GPC/GLN updated from ${oldGcpGLNID} to ${user.gcpGLNID}.` : ''}`,
-            // member_id: userUpdateResult.memberID,
+            subject: `GS1 Membership ` + invoiceType + ` approved`,
             user_id: userId,
             // TODO: take email form current admin token
             admin_id: 'admin@gs1sa.link',
@@ -2163,240 +2150,6 @@ export const approveMembershipRequest = async (req, res, next) => {
         next(error);
     }
 };
-
-
-// export const approveMembershipRequest = async (req, res, next) => {
-//     const schema = Joi.object({
-//         transactionId: Joi.string().required(),
-//         userId: Joi.string().required(),
-//     });
-
-//     const { error, value } = schema.validate(req.body);
-
-//     if (error) {
-//         return res.status(400).send(error.details[0].message);
-//     }
-
-//     const { transactionId, userId } = value;
-
-//     try {
-//         await prisma.$transaction(async (prisma) => {
-
-//             const bankSlipDocuments = await prisma.member_documents.findMany({
-//                 where: {
-//                     user_id: userId,
-//                     transaction_id: transactionId,
-//                     type: 'bank_slip',
-//                 }
-//             });
-//             if (bankSlipDocuments.length === 0) {
-//                 throw createError(400, `No bank slip documents found for the transaction ID: ${transactionId}`);
-//             }
-
-//             const upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
-//                 where: {
-//                     transaction_id: transactionId,
-//                     user_id: userId,
-//                 },
-//             });
-
-//             if (!upgradeCart) {
-//                 throw new Error('Upgrade membership cart not found');
-//             }
-
-//             const gtinProduct = await prisma.gtin_products.findUnique({
-//                 where: { id: upgradeCart.gtin_product_id },
-//             });
-
-//             if (!gtinProduct) {
-//                 throw new Error('GTIN product not found');
-//             }
-
-//             const user = await prisma.users.findUnique({
-//                 where: { id: userId },
-//                 include: { carts: true },
-//             });
-
-//             if (!user) {
-//                 throw new Error('User not found');
-//             }
-
-
-
-//             const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
-//             const gcpGLNID = `628${gtinProduct.gcp_start_range}`;
-//             const gln = generateGTIN13(gcpGLNID);
-//             let expiryDate = new Date();
-//             expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
-
-//             await prisma.gtin_subcriptions.updateMany({
-//                 where: { user_id: userId },
-//                 data: { gtin_subscription_limit: totalBarcodesToAdd },
-//             });
-
-//             await prisma.users.update({
-//                 where: { id: userId },
-//                 data: {
-//                     gcpGLNID: gcpGLNID,
-//                     gln: gln,
-//                     gcp_expiry: expiryDate,
-//                 },
-//             });
-
-//             await prisma.gtin_subcriptions.create({
-//                 data: {
-//                     user_id: userId,
-//                     pkg_id: gtinProduct.id,
-//                     transaction_id: upgradeCart.registered_product_transaction_id,
-//                     gtin_subscription_limit: totalBarcodesToAdd,
-//                     gtin_subscription_counter: 0,
-//                     gtin_subscription_total_price: user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee,
-//                     price: user.membership_category === "non_med_category" ? gtinProduct.member_registration_fee : gtinProduct.med_registration_fee,
-//                     status: 'active',
-//                     expiry_date: expiryDate,
-//                     request_type: 'upgrade',
-//                     createdBy: 'adminksa@gmail.com',
-//                 },
-//             });
-
-//             await prisma.gtin_products.update({
-//                 where: { id: gtinProduct.id },
-//                 data: { gcp_start_range: String(parseInt(gtinProduct.gcp_start_range) + 1) },
-//             });
-
-
-//             let cart = {
-//                 cart_items: [],
-//             }
-
-//             cart.cart_items = []
-
-//             cart.cart_items.push({
-//                 // check user category and add price accordingly
-//                 registration_fee: user.membership_category === "non_med_category" ? gtinProduct.member_registration_fee : gtinProduct.med_registration_fee,
-//                 yearly_fee: user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee,
-//                 productName: gtinProduct.member_category_description,
-
-//             });
-
-
-//             cart.transaction_id = transactionId;
-
-//             // Generate receipt
-//             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-
-//             const receiptData = {
-//                 topHeading: "MEMBERSHIP SUBSCRIPTION RECEIPT",
-//                 secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
-//                 memberData: {
-//                     qrCodeDataURL: qrCodeDataURL,
-//                     registeration: `Receipt for upgrading membership to ${gtinProduct.member_category_description}`,
-//                     company_name_eng: user.company_name_eng,
-//                     mobile: user.mobile,
-//                     address: {
-//                         zip: user.zip_code,
-//                         countryName: user.country,
-//                         stateName: user.state,
-//                         cityName: user.city,
-//                     },
-//                     companyID: user.companyID,
-//                     membership_otherCategory: user.membership_category,
-//                     gtin_subscription: {
-//                         products: {
-//                             member_category_description: gtinProduct.member_category_description,
-//                         },
-//                     },
-//                 },
-
-//                 cart: cart,
-//                 currentDate: {
-//                     day: new Date().getDate(),
-//                     month: new Date().getMonth() + 1,
-//                     year: new Date().getFullYear(),
-//                 },
-//                 company_details: {
-//                     title: 'Federation of Saudi Chambers',
-//                     account_no: '25350612000200',
-//                     iban_no: 'SA90 1000 0025 3506 1200 0200',
-//                     bank_name: 'Saudi National Bank - SNB',
-//                     bank_swift_code: 'NCBKSAJE',
-//                 },
-//                 BACKEND_URL: BACKEND_URL,
-//             };
-
-//             const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-//             const pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-//             const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-
-//             if (!fsSync.existsSync(pdfDirectory)) {
-//                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
-//             }
-
-//             await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
-//             const pdfBuffer = await fs1.readFile(pdfFilePath);
-
-//             // Update email content if gcpGLNID is updated
-
-
-//             // After all operations
-//             await prisma.upgrade_member_ship_cart.delete({
-//                 where: { id: upgradeCart.id },
-//             });
-
-//             await prisma.member_documents.updateMany({
-//                 where: {
-//                     transaction_id: transactionId,
-//                     user_id: userId,
-//                     type: 'upgrade_invoice',
-//                 },
-//                 data: { status: 'approved' },
-//             });
-
-//             // Insert Member History log
-//             const logData = {
-//                 subject: `Membership upgraded by adding ${totalBarcodesToAdd} barcodes. GPC/GLN updated to ${user.gcpGLNID}.`,
-//                 // member_id: userUpdateResult.memberID,
-//                 user_id: userId,
-//                 // TODO: take email form current admin token
-//                 admin_id: 'admin@gs1sa.link',
-
-//             }
-
-
-//             TODO: // chec this
-//             // if (req?.admin.id) {
-//             //     logData.admin_id = admin_email;
-//             // logData.created_by_admin = 1;
-//             // }
-
-//             await createMemberLogs(logData);
-
-//             let emailContent = `Thank you for upgrading your membership. Your GPC/GLN has been updated to ${user.gcpGLNID}. Please find the attached receipt for your reference.`;
-
-
-//             // Send email with receipt
-//             await sendEmail({
-//                 fromEmail: ADMIN_EMAIL, // Replace with your admin email
-//                 toEmail: user.email,
-//                 subject: 'Membership Upgrade Receipt - GS1 Saudi Arabia',
-//                 htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
-//                 attachments: [
-//                     {
-//                         filename: pdfFilename,
-//                         content: pdfBuffer,
-//                         contentType: 'application/pdf',
-//                     },
-//                 ],
-//             });
-
-//         }, { timeout: 60000 });
-
-//         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
-//     } catch (error) {
-//         console.error(error);
-//         next(error);
-//     }
-// };
 
 
 const downgradeMembershipSchema = Joi.object({
@@ -2479,7 +2232,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
         // Generate an invoice
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const invoiceData = {
-            topHeading: "DOWNGRADE INVOICE",
+            topHeading: "INVOICE",
             secondHeading: "DOWNGRADE INVOICE FOR",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -2568,7 +2321,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
         // Send email with invoice
         const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-        const emailContent = `This is an automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        const emailContent = `This is an automated email to confirm that your membership upgrade request has been received. Please find the attached invoice for your reference.`;
         const attachments = [
             {
                 filename: pdfFilename,
@@ -2781,11 +2534,11 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "MEMBERSHIP UPGRADE RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                upgradeDetails: `Receipt for upgrade of ${totalBarcodesToSub} barcodes`,
+                upgradeDetails: `Receipt for downgrading membership from ${gtinSubscriptions?.member_category_description} to ${newGtinSubscriptions?.member_category_description}`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
