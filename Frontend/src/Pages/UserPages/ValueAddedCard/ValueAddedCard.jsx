@@ -12,9 +12,8 @@ const ValueAddedCard = () =>
   const fetechAllCardData = async () => {
     try {
         const response = await newRequest.get("/getAllfeatured_services",);
-        setData(response?.data || []);
-        // setIsLoading(false)
-        console.log(response.data);
+        const filteredData = response.data.filter(item => item.status === 1);
+      setData(filteredData || []);
 
     } catch (err) {
         console.log(err);
@@ -30,6 +29,7 @@ const ValueAddedCard = () =>
     <div>
         <div className='flex justify-center items-center p-8 mt-5'>
         <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'> {t('GS1 Value Added Services')}</h2>
+        
         </div>
        
         <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 gap-7 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 px-5'>

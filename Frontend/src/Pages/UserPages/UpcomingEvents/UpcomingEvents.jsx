@@ -14,8 +14,9 @@ const UpcomingEvents = () => {
     try {
         const response = await newRequest.get("/getAllupcoming_events",);
 
+      const filteredData = response.data.filter(item => item.status === 1);
         console.log(response.data);
-        setData(response?.data || []);
+        setData(filteredData || []);
         // setIsLoading(false)
 
     } catch (err) {
