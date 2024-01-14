@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
 import { Autocomplete, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -15,13 +15,28 @@ const BankSlip = () => {
     const memberDataString = sessionStorage.getItem('memberData');
     const memberData = JSON.parse(memberDataString);
     console.log(memberData);
+    const [transactionList, setTransactionId] = useState([]);
     const [translationID, setTranslationID] = useState(memberData?.transaction_id || '');
     const navigate = useNavigate();
+    const getAllTransactionId = async () => {
+        try {
+            const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${memberData?.id}`);
+            console.log(response.data);
+            setTransactionId(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getAllTransactionId();
+    }, [])
 
 
 
     const [selectedTranslationID, setSelectedTranslationID] = useState('');
     const handleTranslationID = (event, value) => {
+        console.log(value);
         setSelectedTranslationID(value);
     }
 
@@ -63,11 +78,11 @@ const BankSlip = () => {
         // Create a FormData object
         const formData = new FormData();
         formData.append('type', 'bank_slip');
-        formData.append('transaction_id', translationID || '');
+        formData.append('transaction_id', selectedTranslationID?.transaction_id || '');
         formData.append('user_id', memberData?.id || ''); // Replace with the actual user ID
         formData.append('doc_type', 'member_document');
         formData.append('document', document);
-       
+
         formData.append('uploaded_by', memberData.email);
 
 
@@ -179,9 +194,9 @@ const BankSlip = () => {
                                     {/* {memberData.payment_status === 0 && ( */}
                                     {/* {memberData?.payment_status === 0 && memberData.status !== 1 && ( */}
                                     <Autocomplete
-                                        id="translate"
+                                        id="tranactionIds"
                                         // options={[translationID]}
-                                        options={[{ transaction_id: memberData?.transaction_id }]}
+                                        options={transactionList}
                                         value={selectedTranslationID}
                                         getOptionLabel={(option) => option?.transaction_id || ''}
                                         onChange={handleTranslationID}

@@ -89,6 +89,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log(gs1MemberInvoiceData);
+ 
 
     const approvedBody = {
       status: selectedStatus,
@@ -103,6 +105,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       invoiceType: gs1MemberInvoiceData?.type
+    }
+    const downgradeInvoiceBody = {
+      userId: gs1MemberInvoiceData?.user_id,
+      transactionId: gs1MemberInvoiceData?.transaction_id,
     }
 
     const addGtin = {
@@ -128,9 +134,13 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
     }
-    else if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice") {
+    else if (gs1MemberInvoiceData?.type === "upgrade_invoice") {
       apiEndpoint = `/changeMembership/approveMembershipRequest`;
       requestBody = changeGtinSub;
+    }
+    else if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
+      apiEndpoint = `/changeMembership/approveDowngradeMembershipRequest`;
+      requestBody = downgradeInvoiceBody;
     }
     else if (gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
       apiEndpoint = `/changeMembership/approveAdditionalProductsRequest`;
@@ -169,7 +179,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.error || "Something went wrong!");
+      toast.error(err.response?.data || "Something went wrong!");
     }
   };
   // console.log(err);
@@ -186,7 +196,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Member Invoice Details</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending Invoice for Approval</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
@@ -201,7 +211,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           checked={selectedStatus === "approved"}
                           onChange={() => setSelectedStatus("approved")}
                         />
-                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approved</label>
+                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approve</label>
                       </div>
                       <div className="flex flex-row gap-2">
                         <input
@@ -213,7 +223,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           checked={selectedStatus === "rejected"}
                           onChange={() => setSelectedStatus("rejected")}
                         />
-                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Rejected</label>
+                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Reject</label>
                       </div>
                     </div>
                   </div>
@@ -237,7 +247,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
+                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
                   </div>
                   <table>
                     <thead>

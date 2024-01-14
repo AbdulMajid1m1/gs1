@@ -3996,7 +3996,7 @@ export const financeColumn = [
   {
     field: 'type',
     headerName: 'Type',
-    width: 180,
+    width: 120,
   },
   {
     field: 'status',
@@ -4837,7 +4837,7 @@ export const memberHistoryColumnData = [
   {
     field: 'user.email',
     headerName: 'User Email',
-    width: 180,
+    width: 220,
     valueGetter: (params) => {
       // Access the 'email' property within the 'user' object
       const userEmail = params.row.user ? params.row.user.email : '';
