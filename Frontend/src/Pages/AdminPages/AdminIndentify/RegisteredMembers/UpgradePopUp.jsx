@@ -8,7 +8,7 @@ import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
+const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
 }) => {
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
@@ -221,7 +221,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         // }
 
-
+        fetchMemberInvoiceData();
         // Close the popup
         handleCloseUpgradePopup();
       }
@@ -233,6 +233,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
         });
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        fetchMemberInvoiceData();
       }
 
       if (subType === "ADD GLN") {
@@ -247,6 +248,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
         });
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        fetchMemberInvoiceData();
       }
 
     } catch (err) {
@@ -386,28 +388,28 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType
 
 
                     <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2">New Subscription Invoice Details</h1>
-                    
+
                     <div className='mt-2'>
                       <div className='border border-secondary rounded-sm px-4 py-3'>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
-                          >
-                            REMAINING MONTHS FROM CURRENT SUBSCRITION : <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
+                        >
+                          REMAINING MONTHS FROM CURRENT SUBSCRITION : <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
-                          >
-                            REMAINING MONTHS FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
+                        >
+                          REMAINING MONTHS FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
-                          >
-                            NEW SUBSCRIPTION YEARLY FEE : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
+                        >
+                          NEW SUBSCRIPTION YEARLY FEE : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
-                          >
-                            REMAINING YEALY FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
+                        >
+                          REMAINING YEALY FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
-                          >
-                            FINAL PRICE : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
+                        >
+                          FINAL PRICE : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
                         </p>
                       </div>
                     </div>
