@@ -10,7 +10,8 @@ import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
 
 
-const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
+const Addpages = () =>
+{
 
     const navigate = useNavigate();
     const [name, setname] = useState("");
@@ -24,19 +25,23 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [customsectiondataarb, setcustomsectiondataarb] = useState('')
     const [Customdatashow, setCustomdatashow] = useState(false)
 
-    const handleChangeeng = (value) => {
+    const handleChangeeng = (value) =>
+    {
         setcustomsectiondataeng(value);
     };
 
-    const handleChangearb = (value) => {
+    const handleChangearb = (value) =>
+    {
         setcustomsectiondataarb(value);
     };
 
-    const handleCloseCreatePopup = () => {
-        setVisibility(false);
+    const handleCloseCreatePopup = () =>
+    {
+
     };
 
-    const handleAddCompany = async () => {
+    const handleAddCompany = async () =>
+    {
 
         try {
             const formattedSections = sections.map(section => `"${section}"`).join(',');
@@ -66,7 +71,7 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
             });
             navigate('/admin/Pages')
             console.log(response.data);
-            refreshBrandData();
+
             handleCloseCreatePopup();
 
         } catch (error) {
@@ -86,11 +91,13 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     };
 
-    const handleDragStart = (e, section) => {
+    const handleDragStart = (e, section) =>
+    {
         e.dataTransfer.setData('text/plain', section);
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e) =>
+    {
         e.preventDefault();
         const section = e.dataTransfer.getData('text/plain');
         setsections([...sections, section]);
@@ -101,11 +108,13 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
 
 
     };
-    const handleDragOver = (e) => {
+    const handleDragOver = (e) =>
+    {
         e.preventDefault();
     };
 
-    const handleRemoveSection = (index) => {
+    const handleRemoveSection = (index) =>
+    {
         const updatedSections = [...draggedSections];
         updatedSections.splice(index, 1);
         setDraggedSections(updatedSections);
@@ -115,7 +124,8 @@ const Addpages = ({ isVisible, setVisibility, refreshBrandData }) => {
         }
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         // Register the ImageResize module when the component mounts
         Quill.register('modules/imageResize', ImageResize);
     }, []);

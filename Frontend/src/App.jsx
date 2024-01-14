@@ -105,8 +105,10 @@ import BlogPages from "./Pages/UserPages/BlogPages/BlogPages";
 
 const queryClient = new QueryClient()
 
-const App = () => {
-  const MainLayout = ({ children }) => {
+const App = () =>
+{
+  const MainLayout = ({ children }) =>
+  {
     return (
       <div className="main-layout-container">
         <Sidebar />
@@ -115,7 +117,8 @@ const App = () => {
     );
   };
 
-  const AdminMainLayout = ({ children }) => {
+  const AdminMainLayout = ({ children }) =>
+  {
     return (
       <div className="main-layout-container">
         <AdminSideBar />
