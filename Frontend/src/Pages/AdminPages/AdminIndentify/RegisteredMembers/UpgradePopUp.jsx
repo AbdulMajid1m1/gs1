@@ -228,8 +228,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
       if (subType === "DOWNGRADE") {
         const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
           "user_id": userData?.id,
-          "gtin_product_id": selectedGtinBarcodes?.id,
-          "current_gtin_subscription_id": memberInoviceData?.gtinSubscriptions[0]?.id,
+          "new_subscription_product_Id": selectedGtinBarcodes?.id,
 
 
         });
