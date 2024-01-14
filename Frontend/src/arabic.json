@@ -19,5 +19,18 @@
     "Menu":"قائمة",
     "Enter":"أدخل",
     "Name[English]":"اسم [بالإنجليزية]",
-    "Name[Arabic]":"اسم [بالعربية]]"
+    "Name[Arabic]":"اسم [بالعربية]]",
+    "Categories":"الفئات",
+    "Set Page":"تعيين الصفحة",
+    "Select":"اختيار",
+    "Select Category Level":"اختيار مستوى الفئة",
+    "Description":"الوصف",
+    "Meta":"ميتا",
+    "Title":"العنوان",
+    "Yes":"نعم",
+    "successfully":"بنجاح",
+    "has been not deleted":"لم يتم حذفه",
+    "Are you sure to delete this record?":"هل أنت متأكد من رغبتك في حذف هذا السجل؟",
+    "You will not be able to recover this":"لن تتمكن من استرداد هذا",
+    "No, keep it":"لا، احتفظ بها"
 }

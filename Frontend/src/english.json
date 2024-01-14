@@ -19,5 +19,18 @@
     "Menu":"Menu",
     "Enter":"Enter",
     "Name[English]":"Name[English]",
-    "Name[Arabic]":"Name[Arabic]"
+    "Name[Arabic]":"Name[Arabic]",
+    "Categories":"Categories",
+    "Set Page":"Set Page",
+    "Select":"Select",
+    "Select Category Level":"Select Category Level",
+    "Description":"Description",
+    "Meta":"Meta",
+    "Title":"Title",
+    "Yes":"Yes",
+    "successfully":"successfully",
+    "has been not deleted":"has been not deleted",
+    "Are you sure to delete this record?":"Are you sure to delete this record?",
+    "You will not be able to recover this":"You will not be able to recover this",
+    "No, keep it":"No, keep it"
 }
