@@ -267,7 +267,7 @@ export const membershipRenewRequest = async (req, res, next) => {
 
 
         let subject = 'GS1 Saudi Arabia Membership Renewal Request';
-        let emailContent = `This is automated renewal invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        let emailContent = `This is automated invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
         let userEmail = existingUser.email;
 
         let attachments = [
@@ -980,7 +980,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
-            const emailContent = `This is an automated renewal invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1193,7 +1193,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-            const emailContent = `This is an automated renewal invoice of your GTIN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated invoice of your GTIN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1316,7 +1316,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: "ADDITIONAL GLN INVOICE",
+                topHeading: "INVOICE",
                 secondHeading: "ADDITIONAL GLN INVOICE FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
@@ -1406,7 +1406,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
             // Send email with invoice
             const subject = 'GS1 Saudi Arabia Membership Upgrade GLN Request';
-            const emailContent = `This is an automated renewal invoice of your additional GLN. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const emailContent = `This is an automated invoice of your additional GLN. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1549,7 +1549,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "ADDITIONAL GTIN RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR ADDITIONAL GTIN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -1767,7 +1767,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "ADDITIONAL GLN RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR ADDITIONAL GLN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -2050,7 +2050,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
 
         const receiptData = {
-            topHeading: "MEMBERSHIP SUBSCRIPTION RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -2479,7 +2479,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
         // Generate an invoice
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const invoiceData = {
-            topHeading: "DOWNGRADE INVOICE",
+            topHeading: "INVOICE",
             secondHeading: "DOWNGRADE INVOICE FOR",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -2781,7 +2781,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "MEMBERSHIP UPGRADE RECEIPT",
+            topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,

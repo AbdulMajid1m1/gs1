@@ -169,8 +169,14 @@
             
 
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
-                    <tr>
+                    <!-- <tr>
                         <td width="100%" class="text-center text-bold" style="font-size:1.5rem;"><strong><%= data.topHeading %></strong></td>
+                    </tr> -->
+                    <tr>
+
+                        <td
+                            style=" width: 100%; padding-top: 30px; font-size: 18px; font-weight: bold; text-align: center;">
+                            <strong>فاتورة</strong></td>
                     </tr>
                 </table>
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
@@ -195,43 +201,79 @@
                     <tr>
                         <!-- Billing Information -->
                         <td width="50%">
-                            <p style="line-height: 1.5rem;"><b><%= data.secondHeading %></b><br><span><%= data.memberData.company_name_eng %></span></p>
-                            <address>
+                            <!-- <p style="line-height: 1.5rem;"><b><%= data.secondHeading %></b><br><span><%= data.memberData.company_name_eng %></span></p> -->
+                                <p style="line-height: 1.5rem;">
+                                    <b>مشروع قانون ل,<%= data.secondHeading %></b><br>
+                                        <span><%= data.memberData.company_name_eng %>
+                                    </p>
+                            <!-- <address>
                                 <p style="line-height: 1.5rem;">
                                     POBOX: <span><%= data.memberData.address.zip %></span><br>
                                     Mobile: <span><%= data.memberData.mobile %></span><br>
                                     <span><%= data.memberData.address.countryName %>, <%= data.memberData.address.stateName %>, <%= data.memberData.address.cityName %></span>
                                 </p>
+                            </address> -->
+                            <address>
+                                <p style="line-height: 1.5rem;">
+                                    <span><%= data.memberData.address.zip %></span> <span><b>: صندوق بريد</b></span><br>
+                                    <span><%= data.memberData.mobile %></span><b>: متحرك</b></span><br>
+                                    <span><%= data.memberData.address.countryName %>, <%= data.memberData.address.stateName %>, <%= data.memberData.address.cityName %></span>
+                                </p>
+
                             </address>
                         </td>
                         <!-- Date and Transaction Information -->
-                        <td width="50%" class="text-right">
+                        <!-- <td width="50%" class="text-right">
                             <p class="p-text" style="line-height: 1.5rem;">
                                 <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
-                                <!-- <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br> -->
                                 <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
                                 <b>Membership Category:</b> <span><%= data.memberData.membership_otherCategory %></span><br>
+                            </p>
+                        </td> -->
+                        <td width="50%" class="text-right">
+                            <p class="p-text text-right" style="line-height: 1.5rem;">
+                                <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span> <b>: تاريخ الإصدار</b><br>
+                                <span><%= data.cart.transaction_id %></span> <b>: رقم الشركة </b><br>
+                                <span><%= data.cart.transaction_id %></span> <b>: رقم الفاتورة </b> <br>
+                                <span><%= data.memberData.membership_otherCategory %></span>
+                                <<b>فئة العضوية</b>
+
                             </p>
                         </td>
                     </tr>
                     <tr>
                         <!-- Payment Type and Membership Type -->
                         <td width="50%">
-                            <p class="p-text">
+                            <!-- <p class="p-text">
                                 <b>Type of Payment:</b> 
                                 <%= data.memberData.registeration %>
-                            </p>
-                            <p class="p-text">
+                            </p> -->
+                                <p class="p-text"> 
+                                    <%= data.memberData.registeration %>
+                                    <b>: نوع العملية </b>
+                                </p>
+                            <!-- <p class="p-text">
                                 <b>Membership Type:</b> <%= data.memberData.gtin_subscription.products.member_category_description %>
+                            </p> -->
+                            <p class="p-text"><%= data.memberData.gtin_subscription.products.member_category_description %>
+                                <b>: نوع العضوية </b>
                             </p>
-                            <p class="p-text">
+
+                            <!-- <p class="p-text">
                                 <b>Payment Method</b> 
                                 <% if (data.cart.payment_type === 'bank_transfer') { %>
                                     Bank Transfer
                                 <% } else { %>
                                     Bank Transfer
                                 <% } %>
-                            </p>
+                            </p> -->
+                            <p class="p-text">
+                                <% if (data.cart.payment_type === 'bank_transfer') { %>
+                                    Bank Transfer
+                                <% } else { %>
+                                    Bank Transfer
+                                <% } %> 
+                                <b>: طريقة الدفع </b></p>
                         </td>
                     </tr>
                     <!-- Add any additional rows as needed -->
@@ -243,13 +285,20 @@
               
               <!-- Invoice Items Table -->
               <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1.2rem;">
-                <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
+                <!-- <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
                     <th colspan="2">#</th>
                     <th colspan="4">Description</th>
                     <th colspan="2">Registration Fee</th>
                     <th colspan="2">Yearly Fee</th>
                     <th colspan="2">SubTotal</th>
-                </tr>
+                </tr> -->
+                <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
+                        <th colspan="2">المجموع</th>
+                        <th colspan="2">الرسوم السنوية</th>
+                        <th colspan="2">رسوم التسجيل</th>
+                        <th colspan="4">الوصف</th>
+                        <th colspan="2">#</th>
+                    </tr>
 
                 <% data.cart.cart_items.forEach((item, index) => { %>
                     <tr>
@@ -276,43 +325,70 @@
                
 
                 <div>
-                    <p class="p-text" style="line-height: 0.5;">This is a system generated document and does not
-                        require any signature and stamp.</p>
+                    <!-- <p class="p-text" style="line-height: 0.5;">This is a system generated document and does not
+                        require any signature and stamp.</p> -->
+                        <p class="p-text" style="line-height: 0.5;">
+                            ھذا المستند تم إنشاؤه الكترونيا بواسطة النظام ولا يتطلب أي توقيع أو ختم
+                        </p>
                 </div>
 
                 <!-- Bank Details Table -->
                 <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1.2rem;">
                     <tr class="p-text text-bold" style="background-color: #003D79;">
-                        <td colspan="12" align="center" class="p-text text-left"
+                        <!-- <td colspan="12" align="center" class="p-text text-left"
                         style="color: white; font-weight: bold; font-size: 1.2rem;" 
-                        >For transfer to our bank account</td>
+                        >For transfer to our bank account</td> -->
+                        <td colspan="12" align="center" class="p-text text-right"
+                        style="color: white; font-weight: bold; font-size: 1.2rem;"
+                        >
+                            <b>
+                                للتحويل البنكي إلى حسابنا البنكي
+                            </b>
+                        </td>
                     </tr>
                     <tr>
-                        <td width="40%" colspan="4" class="text-left">Name</td>
+                        <!-- <td width="40%" colspan="4" class="text-left">Name</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.title %></td> -->
                         <td width="60%" colspan="8" class="text-left"><%= data.company_details.title %></td>
+                        <td width="40%" colspan="4" class="text-right">الاسم</td>
+
                     </tr>
                     <tr>
-                        <td width="40%" colspan="4" class="text-left">Account Number</td>
+                        <!-- <td width="40%" colspan="4" class="text-left">Account Number</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.account_no %></td> -->
                         <td width="60%" colspan="8" class="text-left"><%= data.company_details.account_no %></td>
+                        <td width="40%" colspan="4" class="text-right">رقم الحساب</td>
                     </tr>
                     <tr>
-                        <td width="40%" colspan="4" class="text-left">IBAN NO</td>
-                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.iban_no %></td>
+                        <!-- <td width="40%" colspan="4" class="text-left">IBAN NO</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.iban_no %></td> -->
+                        <td width="60%" colspan="8" class="text-left">
+                            <%= data.company_details.iban_no %>
+                        </td>
+                        <td width="40%" colspan="4" class="text-right">
+                            رقم الآيبان
+                        </td>
                     </tr>
                     <tr>
-                        <td width="40%" colspan="4" class="text-left">Bank Name</td>
+                        <!-- <td width="40%" colspan="4" class="text-left">Bank Name</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.bank_name %></td> -->
                         <td width="60%" colspan="8" class="text-left"><%= data.company_details.bank_name %></td>
+                        <td width="40%" colspan="4" class="text-right">اسم البنك</td>
                     </tr>
                     <tr>
-                        <td width="40%" colspan="4" class="text-left">Bank Swift Code</td>
+                        <!-- <td width="40%" colspan="4" class="text-left">Bank Swift Code</td>
+                        <td width="60%" colspan="8" class="text-left"><%= data.company_details.bank_swift_code %></td> -->
                         <td width="60%" colspan="8" class="text-left"><%= data.company_details.bank_swift_code %></td>
+                        <td width="40%" colspan="4" class="text-right">الرمز المختصر للبنك</td>
                     </tr>
                 </table><br>
 
 
                 <div>
-                    <p class="p-text" style="line-height: 0.5;">*Upon transfer, Please upload a copy of transfer receipt
-                        from your account.</p>
+                    <!-- <p class="p-text" style="line-height: 0.5;">*Upon transfer, Please upload a copy of transfer receipt
+                        from your account.</p> -->
+                        <p class="p-text" style="line-height: 0.5;">
+                            * بعد التحويل ، يرجى تحميل نسخة من إيصال التحويل من حسابك.
                 </div>
             </div>
             
@@ -354,9 +430,13 @@
                                 <i class="fas fa-map-marker" aria-hidden="true"></i>
                             </td>
                             <td style="padding-left: 10px;">
-                                <span>
+                                <!-- <span>
                                     King Fahad Branch Road, Al-Moatamarat District
                                     P.O.Box 16683 Riyadh 11474, Saudi Arabia
+                                </span> -->
+                                <span>
+                                    طريق الملك فهد ، حي المعتمرات
+                                    ص.ب 16683 الرياض 11474 ، المملكة العربية السعودية
                                 </span>
                             </td>
                         </tr>
