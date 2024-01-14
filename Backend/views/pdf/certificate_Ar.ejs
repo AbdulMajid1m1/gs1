@@ -1,0 +1,217 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+   
+    <style type='text/css'>
+          @page {
+        size: landscape;
+    }
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            color: black;
+            display: table;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            text-align: center;
+            /* width: calc(100% - 20px); */
+            width: auto;
+            height: auto;
+            padding: 10px 10px 20px 10px;
+        }
+
+        p {
+            font-family: 'Open Sans', sans-serif;
+            padding-right: 10px;
+        }
+
+
+        .table-suply {
+            border: none;
+            border-top: none;
+            margin-top: 20px;
+        }
+
+        .table-suply tr th,
+        .table-suply tr td {
+            border-top: none;
+            text-align: left;
+            border-right: none;
+            padding: 1px;
+
+        }
+
+        .table-suply tr th:last-child,
+        .table-suply tr td:last-child {
+            border-right: none;
+        }
+
+
+
+
+
+
+
+
+
+        #backLogo {
+            background: url(tree.png);
+            background-repeat: no-repeat;
+            background-size: auto;
+            margin-top: 25%;
+            background-size: 400px 400px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: -20px;
+            left: 0px;
+            right: 0px;
+            height: 70px;
+            font-size: 12px !important;
+
+            /** Extra personal styles **/
+            background-color: white;
+            color: black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <center style="margin: 0px auto;">
+        <footer>
+            <span>
+                King Fahad Branch Road, Al-Moatamarat District
+                P.O.Box 16683 Riyadh 11474, Saudi Arabia
+            </span>
+        </footer>
+
+        <hr style="width: calc(100% - 20px); border: 10px solid #EF6231;"></hr>
+        <table class="table-suply" width="100%" cellspacing="0" cellpadding="0" style="border:none; line-height: 0.5rem;">
+            <tr>
+                <td width="70%">
+                    <table>
+                        <tr style="width: 60%" class="text-left">
+                            <td width="50%">
+                                <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/logo.png" width="210" height="100">
+
+                            </td>
+                            <td width="50%">
+                                <p style="margin-bottom:0; text-align: left;">The Global Language of Business</p>
+                                <p style="margin: 0; padding-top:0; text-align: left; font-size: bold; font-size: 16px; color: #F26334;">
+                                    <strong>GS<span>1</span> COMPANY PREFIX CERTIFICATE</strong>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin-bottom:0;">Licensed To</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin-bottom:0; padding-top:0; padding-bottom: 0; font-size: 20px; color: #F26334;">
+                                    <span><%= data.user.company_name_eng %></span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin-bottom:0; padding-top:0;">LICENSEE</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin-bottom:0; padding-top:0;"><strong>GS<span>1</span> COMPANY PREFIX: <span style="color: #F26334;"><%= data.userData.gcpGLNID %></span></strong></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="padding-top:0;">For use in creating GS1 Identification Numbers</p>
+                            </td>
+                        </tr>
+                        <% let p1_explode = data.general.gcp_certificate_detail1 %>
+                        <% let p2_explode = data.general.gcp_certificate_detail2 %>
+                        <tr>
+                            <td>
+                                <p>
+                                    <% p1_explode.forEach(function(p1) { %>
+                                        <%= p1 %><br>
+                                    <% }); %>
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    <% p2_explode.forEach(function(p2) { %>
+                                        <%= p2 %><br>
+                                    <% }); %>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin-bottom:0; padding-top:0;"><strong>GS<span>1</span> GLN Identification: <span style="color: #F26334;"><%= data.userData.gln %></span></strong></p>
+                            </td>
+                            <td class="text-center">
+                                <img src="<%= data.BACKEND_URL %>/gs1Images/stamp.png" width="120" height="100" style="transform: rotate(330deg);">
+                            </td>
+                        </tr>
+                        <% 
+                            let _2DVal = data.userData.gcpGLNID + data.expiryDate + Date.now();
+                            let _2DBarCode = 'GCP=' + data.userData.gcpGLNID + ',EXP=' + data.expiryDate + ',HASH=' + _2DVal; // You'll need to generate the QR code in your Node.js backend
+                        %>
+                        <!-- <tr>
+                            <td>
+                                <p style="margin-bottom:0; padding-top:0;"><strong>Legal Entity GPC: </strong></p>
+                                <p><strong><span style="color: #F26334;">
+                                    <% data.explodeGPCCode.forEach(function(code, index) { %>
+                                        <span><%= code %></span><% if(index !== data.explodeGPCCode.length - 1) { %>,<% } %>
+                                    <% }); %>
+                                    </span></strong></p>
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <td>
+                                <!-- <p style="margin-bottom:0; padding-top:0;"><%= data.general.gcp_legal_detail %></p> -->
+                            </td>
+                            <td width="10%" class="text-left" style="border-right-style: 1px solid; border-color: #ED7D31">
+                                <span>
+                                    <img src="<%= data.qrCodeDataURL %>"
+                                    style="width: 70px; height: 70px;"
+                                    alt="QR Code">
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- <div style="margin-top: 20px;">hello</div> -->
+                        <tr >
+                            <td class="text-left">
+                                <span>MemberID: </span>&nbsp;&nbsp;<span><%= data.userData.memberID %></span>
+                            </td>
+                            <td class="text-left">
+                                <span>Valid Until: </span>&nbsp;&nbsp;<span><%= data.expiryDate %></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="30%" style="float: left; margin-top: 30%;">
+                    <table>
+                        <!-- ... -->
+                        <tr>
+                            <td>
+                                <img src="<%= data.BACKEND_URL %>/gs1Images/tree.png" width="400" height="400">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+
+
+
+</html>

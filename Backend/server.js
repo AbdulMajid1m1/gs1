@@ -56,10 +56,11 @@ app.set('views', path.join(__dirname, 'views'));
 // calling the routes
 app.use("/api", rootRoute);
 
-app.get('/render', async (req, res) => {
+app.get('/renderInvoice', async (req, res) => {
     // Define your dummy data here
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
+
         memberData: {
             // add New Rigistriont with current date
             registeration: `New Registration ${new Date().toLocaleDateString()}`,
@@ -79,6 +80,8 @@ app.get('/render', async (req, res) => {
                     member_category_description: 'Gold Membership',
                 },
             },
+
+
         },
         general: {
             service_default_image: 'default_service_image.png',
@@ -88,8 +91,20 @@ app.get('/render', async (req, res) => {
             request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
             transaction_id: 'T123456789',
             payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
+
             cart_items: [
-                // Item descriptions
+                {
+
+                    productName: 'Product Name',
+                    registration_fee: 100,
+                    yearly_fee: 100,
+                },
+                {
+
+                    productName: 'Product Name',
+                    registration_fee: 100,
+                    yearly_fee: 100,
+                }
             ],
         },
         currentDate: {
@@ -98,16 +113,7 @@ app.get('/render', async (req, res) => {
             year: new Date().getFullYear(),
         },
         custom_amount: 100, // Example custom amount
-        cart: {
-            request_type: 'registration', // or 'renew' or 'addon'
-            transaction_id: 'T123456789',
-            payment_type: 'bank_transfer', // or 'Mada/Visa'
-            cart_items: [
-                'Item 1 Description',
-                'Item 2 Description',
-                'Item 3 Description',
-            ],
-        },
+       
         general: {
             service_default_image: 'default_service_image.png',
             logo: 'company_logo.png',
@@ -123,7 +129,7 @@ app.get('/render', async (req, res) => {
     };
 
     // Render the EJS template with the dummy data
-    res.render('pdf/customInvoice', { data });
+    res.render('pdf/customInvoice_Ar', { data });
 });
 
 // Define your API route to render the certificate
@@ -154,7 +160,7 @@ app.get('/renderCertificate', async (req, res) => {
     };
 
     // Render the EJS template with the data
-    res.render('pdf/certificate', { data });
+    res.render('pdf/certificate_Ar', { data });
 });
 
 
