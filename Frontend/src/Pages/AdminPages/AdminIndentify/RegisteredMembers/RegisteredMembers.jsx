@@ -311,20 +311,20 @@ const RegisteredMembers = () => {
               action: handleShowRenewPopup,
 
               },
-              {
-                label: "Upgrade",
-                icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                ,
-                action: handleShowUpgradePopup,
+              // {
+              //   label: "Upgrade",
+              //   icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+              //   ,
+              //   action: handleShowUpgradePopup,
   
-                },
-                {
-                  label: "Downgrade",
-                  icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                  ,
-                  action: handleShowDowngradePopup,
+              //   },
+              //   {
+              //     label: "Downgrade",
+              //     icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+              //     ,
+              //     action: handleShowDowngradePopup,
       
-                },
+              //   },
                 {
                   label: "Delete",
                   icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
