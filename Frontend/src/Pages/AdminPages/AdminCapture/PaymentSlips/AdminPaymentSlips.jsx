@@ -4,6 +4,7 @@ import DataTable from '../../../../components/Datatable/Datatable'
 // import newRequest from '../../../../utils/userRequest';
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import { useNavigate } from 'react-router-dom';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 const AdminPaymentSlips = () => {
@@ -73,23 +74,23 @@ const AdminPaymentSlips = () => {
             globalSearch={true}
             // uniqueId="admin_registered_members"
 
-            // dropDownOptions={[
-            //   {
-            //     label: "Profile",
-            //     icon: (
-            //       <VisibilityIcon
-            //         fontSize="small"
-            //         color="action"
-            //         style={{ color: "rgb(37 99 235)" }}
-            //       />
-            //     ),
-            //     action: handleView,
-            //   },
+            dropDownOptions={[
+              {
+                label: "Profile",
+                icon: (
+                  <VisibilityIcon
+                    fontSize="small"
+                    color="action"
+                    style={{ color: "rgb(37 99 235)" }}
+                  />
+                ),
+                // action: handleView,
+              },
              
 
 
 
-            // ]}
+            ]}
 
 
           />
