@@ -403,9 +403,9 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                     if (product) {
 
 
-                        // Calculate expiry date (1 year from now)
+                        // Update user with new information
                         let expiryDate = new Date();
-                        expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
+                        expiryDate.setDate(expiryDate.getDate() + existingUser.gcp_expiry.getDate());
                         console.log("expiryDate");
                         console.log(expiryDate);
                         // Update user with new information
