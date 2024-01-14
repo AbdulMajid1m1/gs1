@@ -8,7 +8,7 @@ import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
-  fetchRegisteredProductsData,
+  fetchRegisteredProductsData, userData,
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
@@ -27,17 +27,50 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     setVisibility(false);
   };
 
+  // const handleMemberInvoiceData = async () => {
+  //   try {
+  //     const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
+  //     console.log(res.data);
+  //     setMemberInvoiceData(res.data);
+
+  //     let total = 0;
+  //     const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
+  //     cartItems.forEach((item) => {
+  //       total += parseInt(item.price); // Make sure to parse the price as an integer
+  //     });
+  //     setTotalPrice(total);
+  //   }
+  //   catch (err) {
+  //     console.log(err);
+  //   }
+
+
+  // }
+
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
+      // const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
       let total = 0;
-      const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-      cartItems.forEach((item) => {
-        total += parseInt(item.price); // Make sure to parse the price as an integer
+
+
+
+
+
+
+
+      res.data?.gtinSubscriptions.forEach((item) => {
+        total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
       });
+
+      res.data?.otherProductSubscriptions.forEach((item) => {
+        // add price and other_products_subscription_total_price
+        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+      });
+      console.log(total);
       setTotalPrice(total);
     }
     catch (err) {
@@ -46,6 +79,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
 
   }
+
 
   useEffect(() => {
     handleMemberInvoiceData();
@@ -203,18 +237,26 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
+                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
                   </div>
                   <table>
                     <thead>
-                      <tr>
+                      {/* <tr>
                         <th>PRODUCT</th>
                         <th>REGISTRATION FEE</th>
                         <th>YEARLY FEE</th>
                         <th>PRICE</th>
+                      </tr> */}
+                      <tr>
+                        <th>PRODUCT</th>
+                        <th>REGISTRATION FEE</th>
+                        <th>YEARLY FEE</th>
+                        <th>EXPIRY DATE</th>
+                        <th>PRICE</th>
+
                       </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                       {memberInoviceData.map((item, index) => {
                         const cartItems = JSON.parse(item.cart_items);
                         return cartItems.map((cartItem, cartIndex) => (
@@ -226,6 +268,38 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           </tr>
                         ));
                       })}
+                    </tbody> */}
+                    <tbody>
+                      {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+
+                        return (
+                          <tr key={'gtin_product' + index}>
+                            <td>{item?.gtin_product?.member_category_description}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.gtin_subscription_total_price}</td>
+                            <td>{expiryDate}</td>
+                            <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                          </tr>
+                        );
+                      })}
+                      {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
+                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                        return (
+
+
+                          <tr key={'other_products' + index}>
+                            <td>{item?.product?.product_name}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.other_products_subscription_total_price}</td>
+                            <td>{expiryDate}</td>
+                            <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                          </tr>
+                        )
+                      })}
+
+
+
                     </tbody>
                     <tfoot>
                       <tr>
