@@ -50,7 +50,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
   const handleMemberInvoiceData = async () => {
     try {
       // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${gs1MemberInvoiceData?.user_id}&isDeleted=false`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
