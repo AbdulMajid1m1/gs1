@@ -314,7 +314,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan="3" className="text-right font-bold">Total:</td>
+                        <td colSpan="4" className="text-right font-bold">Total:</td>
                         <td>{totalPrice}</td>
                       </tr>
                     </tfoot>
