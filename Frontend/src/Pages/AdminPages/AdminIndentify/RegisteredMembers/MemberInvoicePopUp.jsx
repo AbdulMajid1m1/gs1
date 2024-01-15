@@ -48,34 +48,102 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   // }
 
   const handleMemberInvoiceData = async () => {
-    try {
-      // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
-      console.log(res.data);
-      setMemberInvoiceData(res.data);
+    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+      try {
 
-      let total = 0;
+        // check invoice type
+        // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+        const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
+        console.log(res.data);
+        setMemberInvoiceData(res.data);
 
+        let total = 0;
+        res.data?.gtinSubscriptions.forEach((item) => {
+          total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+        });
 
-
-
-
-
-
-      res.data?.gtinSubscriptions.forEach((item) => {
-        total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
-      });
-
-      res.data?.otherProductSubscriptions.forEach((item) => {
-        // add price and other_products_subscription_total_price
-        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
-      });
-      console.log(total);
-      setTotalPrice(total);
+        res.data?.otherProductSubscriptions.forEach((item) => {
+          // add price and other_products_subscription_total_price
+          total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+        });
+        console.log(total);
+        setTotalPrice(total);
+      }
+      catch (err) {
+        console.log(err);
+      }
     }
-    catch (err) {
-      console.log(err);
+    if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice" || gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
+      try {
+        const res = await newRequest.get(`/changeMembership/upgradeMembershipCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+        console.log(res.data);
+        setMemberInvoiceData(res.data);
+
+        let total = 0;
+        res.data?.gtinSubscriptions.forEach((item) => {
+          total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+        });
+
+        res.data?.otherProductSubscriptions?.forEach((item) => {
+          // add price and other_products_subscription_total_price
+          total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+        });
+        console.log(total);
+        setTotalPrice(total);
+      }
+      catch (err) {
+        console.log(err);
+
+      }
     }
+
+    // if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
+    //   try {
+    //     const res = await newRequest.get(`/changeMembership/upgradeMembershipCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+    //     console.log(res.data);
+    //     setMemberInvoiceData(res.data);
+
+    //     let total = 0;
+    //     res.data?.gtinSubscriptions.forEach((item) => {
+    //       total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+    //     });
+
+    //     res.data?.otherProductSubscriptions.forEach((item) => {
+    //       // add price and other_products_subscription_total_price
+    //       total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+    //     });
+    //     console.log(total);
+    //     setTotalPrice(total);
+    //   }
+    //   catch (err) {
+    //     console.log(err);
+
+    //   }
+    // }
+
+      if(gs1MemberInvoiceData?.type === "additional_gtin_invoice"){
+        try {
+          const res = await newRequest.get(`/changeMembership/addGlnCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+          console.log(res.data);
+          setMemberInvoiceData(res.data);
+  
+          let total = 0;
+          res.data?.gtinSubscriptions.forEach((item) => {
+            total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+          });
+  
+          res.data?.otherProductSubscriptions.forEach((item) => {
+            // add price and other_products_subscription_total_price
+            total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+          });
+          console.log(total);
+          setTotalPrice(total);
+        }
+        catch (err) {
+          console.log(err);
+  
+        }
+      }
 
 
   }
