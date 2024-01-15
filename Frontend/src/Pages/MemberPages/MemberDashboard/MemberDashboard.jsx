@@ -7,6 +7,7 @@ import barcoderemain from '../../../Images/barcoderemain.png'
 import dashboardchart from '../../../Images/dashboardchart.png'
 import newRequest from '../../../utils/userRequest'
 import CountdownTimer from './CountdownTimer'
+import Dashboardchart from './DashboardChart'
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
@@ -189,7 +190,8 @@ const MemberDashboard = () => {
                 
             <div className='h-auto w-full px-5 py-4'>
                 <p className='text-secondary font-sans text-3xl font-semibold mt-5'>Member Products</p>
-                <img src={dashboardchart} alt='' />
+                {/* <img src={dashboardchart} alt='' /> */}
+                <Dashboardchart />
             </div>
        </div>
     </div>
