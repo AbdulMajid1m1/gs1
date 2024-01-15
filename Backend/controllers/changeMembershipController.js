@@ -966,6 +966,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -1175,6 +1176,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -1388,6 +1390,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -2293,6 +2296,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -2775,7 +2779,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
         const pdfBuffer = await fs1.readFile(pdfFilePath);
 
-       
+
 
 
 
