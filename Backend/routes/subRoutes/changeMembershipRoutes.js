@@ -1,10 +1,17 @@
 import express from 'express';
-import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, getInvoiceDetailsForUpgradeSubscription, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest, addAdditionalProductsRequest, approveAdditionalProductsRequest, addAdditionalGlnRequest, approveAdditionalGlnRequest } from '../../controllers/changeMembershipController.js';
+import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, getInvoiceDetailsForUpgradeSubscription, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest, addAdditionalProductsRequest, approveAdditionalProductsRequest, addAdditionalGlnRequest, approveAdditionalGlnRequest, getAddGlnCarts, getUpgradeMembershipCarts } from '../../controllers/changeMembershipController.js';
 
 
 const router = express.Router();
 
 // Routes
+// Route for getting upgrade membership carts
+router.get('/upgradeMembershipCarts', getUpgradeMembershipCarts);
+
+// Route for getting add GLN carts
+router.get('/addGlnCarts', getAddGlnCarts);
+
+
 router.post('/renewRequest', membershipRenewRequest);
 
 router.post('/getInvoiceDetailsForUpgradeSubscription', getInvoiceDetailsForUpgradeSubscription);

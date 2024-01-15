@@ -121,6 +121,91 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
     }
 }
 
+
+
+
+
+export const getUpgradeMembershipCarts = async (req, res, next) => {
+    try {
+        // Define validation rules for query parameters
+        const filterSchema = Joi.object({
+            user_id: Joi.string(),
+            gtin_product_id: Joi.string(),
+            transaction_id: Joi.string(),
+            registered_product_transaction_id: Joi.string(),
+            status: Joi.number(),
+            // Add other fields if necessary
+        }).unknown(false);
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Construct the filter conditions
+        const filterConditions = Object.keys(value).reduce((obj, key) => {
+            obj[key] = value[key];
+            return obj;
+        }, {});
+
+        // Fetch upgrade membership carts
+        const carts = await prisma.upgrade_member_ship_cart.findMany({
+            where: filterConditions,
+            // Include relationships if necessary
+        });
+
+        return res.json(carts);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+export const getAddGlnCarts = async (req, res, next) => {
+    try {
+        // Define validation rules for query parameters
+        const filterSchema = Joi.object({
+            user_id: Joi.string(),
+            new_gln_id: Joi.string(),
+            other_products_subscription_id: Joi.string(),
+            transaction_id: Joi.string(),
+            registered_product_transaction_id: Joi.string(),
+            status: Joi.number(),
+            // Add other fields if necessary
+        }).unknown(false);
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Construct the filter conditions
+        const filterConditions = Object.keys(value).reduce((obj, key) => {
+            obj[key] = value[key];
+            return obj;
+        }, {});
+
+        // Fetch add GLN carts
+        const carts = await prisma.add_gln_cart.findMany({
+            where: filterConditions,
+            // Include relationships if necessary
+        });
+
+        return res.json(carts);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+
+};
+
+
+
+
+
 export const getInvoiceDetailsForUpgradeSubscription = async (req, res) => {
     const schema = Joi.object({
         userId: Joi.string().required(),
