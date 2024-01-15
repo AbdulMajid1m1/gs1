@@ -2427,10 +2427,30 @@ export const paymentSlipColumn = [
     headerName: 'Reject Reason',
     width: 180,
   },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 180,
+  // },
   {
     field: 'status',
     headerName: 'Status',
-    width: 180,
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
   },
   {
     field: 'created_at',
@@ -3995,7 +4015,7 @@ export const financeColumn = [
   {
     field: 'type',
     headerName: 'Type',
-    width: 180,
+    width: 120,
   },
   {
     field: 'status',
@@ -4836,7 +4856,7 @@ export const memberHistoryColumnData = [
   {
     field: 'user.email',
     headerName: 'User Email',
-    width: 180,
+    width: 220,
     valueGetter: (params) => {
       // Access the 'email' property within the 'user' object
       const userEmail = params.row.user ? params.row.user.email : '';

@@ -158,59 +158,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
               <form onSubmit={handleAddMemberDocuments} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Member Bank Slip</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                  {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Select Documents</label> */}
-                  {/* <select
-                                   type="text"
-                                   id="field1"
-                                   value={selectDocument}
-                                   onChange={(e) => setSelectDocument(e.target.value)}
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                 >
-                                      <option value="1">Document 1</option>
-                                      <option value="2">Document 2</option>
-                                      <option value="3">Document 3</option>
-                                      <option value="4">Document 4</option>
-                                </select>         */}
-                  {/* <Autocomplete
-                      id="field1"
-                      options={docuements}
-                      value={selectedDocuments}
-                      getOptionLabel={(option) => option}
-                      onChange={handleSelectedDocuments}
-                      onInputChange={(event, value) => {
-                        if (!value) {
-                          // perform operation when input is cleared
-                          console.log("Input cleared");
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          autoComplete="off"
-                          {...params}
-                          InputProps={{
-                            ...params.InputProps,
-                            className: "text-white",
-                          }}
-                          InputLabelProps={{
-                            ...params.InputLabelProps,
-                            style: { color: "white" },
-                          }}
-                          className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Document"
-                        // required
-                        />
-                      )}
-                      classes={{
-                        endAdornment: "text-white",
-                      }}
-                      sx={{
-                        "& .MuiAutocomplete-endAdornment": {
-                          color: "white",
-                        },
-                      }}
-                    /> */}
-                  {/* </div> */}
+               
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field2" className="text-secondary">Transaction Id </label>

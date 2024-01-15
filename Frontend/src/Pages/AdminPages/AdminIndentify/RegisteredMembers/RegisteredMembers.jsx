@@ -230,7 +230,8 @@ const RegisteredMembers = () => {
 
   const fetchMemberInvoiceData = async (row) => {
     try {
-      const response = await newRequest.get(`/memberDocuments?user_id=${row?.id}&type=invoice&status=pending`);
+
+      const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${row?.id}`);
 
       // console.log(response.data);
 
@@ -270,7 +271,7 @@ const RegisteredMembers = () => {
     <div>
       <div className="p-0 h-full sm:ml-72">
         <div>
-          <AdminDashboardRightHeader 
+          <AdminDashboardRightHeader
             title={'Registered Members'}
           />
         </div>
@@ -305,10 +306,10 @@ const RegisteredMembers = () => {
 
               },
               {
-              label: "Renew",
-              icon: <PublishedWithChangesIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-              ,
-              action: handleShowRenewPopup,
+                label: "Renew",
+                icon: <PublishedWithChangesIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                ,
+                action: handleShowRenewPopup,
 
               },
               // {
@@ -316,21 +317,21 @@ const RegisteredMembers = () => {
               //   icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
               //   ,
               //   action: handleShowUpgradePopup,
-  
+
               //   },
               //   {
               //     label: "Downgrade",
               //     icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
               //     ,
               //     action: handleShowDowngradePopup,
-      
+
               //   },
-                {
-                  label: "Delete",
-                  icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
-                  ,
-                  action: handleDelete,
-                }
+              {
+                label: "Delete",
+                icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
+                ,
+                action: handleDelete,
+              }
 
             ]}
 
@@ -346,8 +347,8 @@ const RegisteredMembers = () => {
         )}
 
 
-         {/* Renew component with handleShowRenewPopup prop */}
-         {isRenewPopupVisible && (
+        {/* Renew component with handleShowRenewPopup prop */}
+        {isRenewPopupVisible && (
           <RenewPopUp isVisible={isRenewPopupVisible} setVisibility={setIsRenewPopupVisible} />
         )}
 

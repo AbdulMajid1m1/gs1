@@ -8,7 +8,7 @@ import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
+const MemberUpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
 }) => {
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
@@ -533,4 +533,4 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
   );
 }
 
-export default UpgradePopUp;
+export default MemberUpgradePopUp;

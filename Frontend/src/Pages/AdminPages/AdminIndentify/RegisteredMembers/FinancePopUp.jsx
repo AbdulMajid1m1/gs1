@@ -26,6 +26,7 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
         // const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=2875842183`);
         const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=bank_slip&transaction_id=${row?.transaction_id}`);
         
+        
         console.log(response.data);
         setFilteredMemberDetails(response?.data || []);
         setIsLoading(false)
@@ -42,7 +43,9 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
 
   const fetchMemberInvoiceData = async () => {
     try {
-      const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=invoice`);
+      // const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=invoice`);
+      const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${registeredMemberRowData?.id}`);
+
     
       console.log(response.data);
       setMemberInovice(response?.data || []);

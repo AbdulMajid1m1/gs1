@@ -748,7 +748,7 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline</label>
                                 <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm '>
                                     {/* <PhoneInput
                                         international
@@ -788,7 +788,7 @@ const MemmberRegisteration = () => {
                                             borderRadius: '0px',
                                             border: 'none'
                                         }}
-                                        required
+                                        // required
                                     />
 
                                 </div>
@@ -995,15 +995,15 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code</label>
                                 <input
                                     onChange={(e) => setZipCode(e.target.value)}
                                     id='zipcode'
                                     placeholder='Zip Code*'
-                                    required
+                                    // required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
-
+ 
 
                         </div>
 

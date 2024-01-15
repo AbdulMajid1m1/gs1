@@ -22,6 +22,11 @@ import MemberSubMenusAddPopUp from './MemberSubMenusAddPopUp';
 import { useParams } from 'react-router-dom';
 import MemberUpdateSubMenusPopUp from './MemberUpdateSubMenusPop';
 import AddMemberBankSlipPopUp from './AddMemberBankSlipPopUp';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
+import SwipeDownIcon from '@mui/icons-material/SwipeDown';
+import MemberUpgradePopUp from './MemberUpgradePopUp';
+import MemberPendingApprovedPopUp from './MemberPendingApprovedPopUp';
+import MemberPendingInvoices from './MemberPendingInvoices';
 const MemberProfile = () => {
   // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
@@ -59,6 +64,64 @@ const MemberProfile = () => {
   const [isSubMenusPopupVisible, setIsSubMenusPopupVisible] = useState(false);
   const [isUpdateSubMenusPopupVisible, setIsUpdateSubMenusPopupVisible] = useState(false);
   const [isAddMemberBankSlipPopupVisible, setIsAddMemberBankSlipPopupVisible] = useState(false);
+  const [isPendingApprovedPopupVisible, setIsPendingApprovedPopupVisible] = useState(false);
+  const [isMemberPendingInvoicePopUpVisible, setIsMemberPendingInvoicePopUpVisible] = useState(false);
+  const [subType, setSubType] = useState("");
+  const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
+  const handleShowUpgradePopup = (row) => {
+    setSubType("UPGRADE")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+  const handleAddGtinClick = (row) => {
+    setSubType("ADD GTIN")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+
+  };
+  const handleAddGlnClick = (row) => {
+    setSubType("ADD GLN")
+    sessionStorage.setItem("selectedGlnRowData", JSON.stringify(row));
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+  };
+  // const filterDropdownOptions = (row, dropDownOptions) => {
+  //   if (row.product_identity === 'gtin') {
+  //     return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
+  //   } else if (row.product_identity === 'gln') {
+  //     return dropDownOptions.filter(option => option.label === 'Add GLN');
+  //   }
+  //   return []; // No options available
+  // };
+  const filterDropdownOptions = (row, dropDownOptions) => {
+    console.log(allUserData);
+    if (allUserData?.status !== 'active') {
+      // If product is not approved, disable all options
+      return [];
+    }
+
+    if (row.product_identity === 'gtin') {
+      return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
+    } else if (row.product_identity === 'gln') {
+      return dropDownOptions.filter(option => option.label === 'Add GLN');
+    }
+
+    return []; // No options available
+  };
+
+
+  const handleShowDowngradePopup = (row) => {
+    setSubType("DOWNGRADE")
+    setIsUpgradePopupVisible(true);
+    console.log(row);
+    // set this data in session storage
+    // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
 
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
@@ -239,6 +302,60 @@ const MemberProfile = () => {
   };
 
 
+  const fetchRegisteredProductsData = async () => {
+    setRegisteredProductsLoader(true);
+    try {
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${memberData?.id}&isDeleted=false`);
+
+      console.log(response.data);
+      // Extract gtinSubscriptions data and flatten the nested gtin_product
+      const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
+        ...item,
+        combined_description: item?.gtin_product?.member_category_description,
+        subscription_limit: item.gtin_subscription_limit,
+        Yearly_fee: item.gtin_subscription_total_price,
+        product_identity: "gtin"
+      }));
+
+      const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
+        ...item,
+        combined_description: item?.product?.product_name,
+        subscription_limit: item.other_products_subscription_limit,
+        Yearly_fee: item.other_products_subscription_total_price,
+        // product_identity: "gln"
+        product_identity: item?.product?.product_name?.toLowerCase().includes('gln') ? 'gln' : 'otherProduct'
+      }));
+
+      // Combine gtinSubscriptions and otherProductSubscriptions
+      const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
+      console.log(combinedData);
+      setRegisteredProductsData(combinedData);
+      setRegisteredProductsLoader(false)
+
+    }
+    catch (err) {
+      console.log(err);
+      setRegisteredProductsLoader(false)
+    }
+  };
+
+
+  
+  // MemberPendingInvoice Api call
+  const getAllTransactionId = async () => {
+    try {
+        const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${memberData?.id}`);
+        console.log(response.data);
+        if (response.data.length > 0) {
+          setIsMemberPendingInvoicePopUpVisible(true);
+        }
+
+    } 
+    catch (error) {
+        console.log(error);
+    }
+};
+
   useEffect(() => {
 
     fetchAllUserData();
@@ -247,32 +364,10 @@ const MemberProfile = () => {
     fetchMemberInvoiceData();
     fetchMemberbankSlipData();
     fetchSubMembersData();
+    fetchRegisteredProductsData();
+    getAllTransactionId();
     fetchData(); // Calling the function within useEffect, not inside itself
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
-
-
-
-  useEffect(() => {
-    const cartData = allUserData.carts || [];
-    const stringifiedCartData = [].concat(...cartData.map((item) => {
-      try {
-        // Try parsing the JSON, and return the parsed object or null if invalid
-        return JSON.parse(item.cart_items) || null;
-      } catch (error) {
-        console.error(`Error parsing JSON in cart_items: ${error.message}`);
-        return null;
-      }
-    }));
-
-    // Filter out null values (parsing errors) and keep only valid JSON objects
-    const filteredCartData = stringifiedCartData.filter((item) => item !== null);
-    // console.log(filteredCartData || []);
-
-    // Set the registeredProductsData
-    setRegisteredProductsData(filteredCartData || []);
-    setRegisteredProductsLoader(false);
-  }, [allUserData]);
-
 
 
 
@@ -358,9 +453,6 @@ const MemberProfile = () => {
   const handleShowAddMemberBankSlipPopup = () => {
     setIsAddMemberBankSlipPopupVisible(true);
   };
-
-
-
 
 
 
@@ -517,6 +609,24 @@ const MemberProfile = () => {
 
 
               {/* Registered Products */}
+              <div className='w-full flex justify-end px-6 pt-6 gap-2'>
+                <button
+                  // onClick={handlePendingApprovedPopUp}
+                  className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                    }`}
+                  disabled={allUserData.isproductApproved == 1}
+                  // show disable cursor if status is not approved
+                  style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
+                >
+                  {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                </button>
+                {/* <button
+                    className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  >
+                    Approved
+                  </button> */}
+              </div>
+
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
               >
                 <DataTable data={registeredProductsData}
@@ -524,29 +634,56 @@ const MemberProfile = () => {
                   columnsName={registeredmemberColumn}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
-                  actionColumnVisibility={false}
+                  // actionColumnVisibility={false}
                   checkboxSelection={"disabled"}
-
+                  getFilteredOptions={filterDropdownOptions}
                   dropDownOptions={[
+
                     {
-                      label: "View",
-                      icon: (
-                        <VisibilityIcon
-                          fontSize="small"
-                          color="action"
-                          style={{ color: "rgb(37 99 235)" }}
-                        />
-                      ),
-                      action: handleView,
+                      label: "Upgrade",
+                      icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleShowUpgradePopup,
+
+                    },
+                    {
+                      label: "Downgrade",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleShowDowngradePopup,
+
+                    },
+                    {
+                      label: "Add GLN",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleAddGlnClick,
+
+                    },
+                    {
+                      label: "Add GTIN",
+                      icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleAddGtinClick,
+
                     },
 
                   ]}
                   uniqueId="registeredProductsTableId"
 
                 />
+
               </div>
+          
+            </div>
+          </div>
+        </div>
 
 
+        <div className='flex justify-center items-center bg-[#DAF2EE]'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+              
               <div className='flex justify-between w-full mt-10'>
                 <div className='w-full flex justify-end px-6'>
                   {/* <p className='text-blue-500 font-sans font-semibold'>Member Documents</p> */}
@@ -698,15 +835,16 @@ const MemberProfile = () => {
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
                     checkboxSelection={"disabled"}
+                    actionColumnVisibility={false}
                     buttonVisibility={false}
                     dropDownOptions={[
-                      {
-                        label: "Activation",
-                        icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                        ,
-                        action: handleShowMemberInvoicePopup,
+                      // {
+                      //   label: "Activation",
+                      //   icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      //   ,
+                      //   action: handleShowMemberInvoicePopup,
 
-                      },
+                      // },
 
                     ]}
                     uniqueId="memberInvoiceId"
@@ -887,6 +1025,21 @@ const MemberProfile = () => {
           <AddMemberBankSlipPopUp isVisible={isAddMemberBankSlipPopupVisible} setVisibility={setIsAddMemberBankSlipPopupVisible} refreshBrandData={fetchMemberDocumentsData}
             fetchMemberbankSlipData={fetchMemberbankSlipData} />
 
+        )}
+
+         {/* Upgrade component with handle prop */}
+         {isUpgradePopupVisible && (
+          <MemberUpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} fetchMemberInvoiceData={fetchMemberInvoiceData}/>
+        )}
+
+         {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
+         {isPendingApprovedPopupVisible && (
+          <MemberPendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData} />
+        )}
+
+        {/* Member Pending Invoice component with Handle prop */}
+        {isMemberPendingInvoicePopUpVisible && (
+          <MemberPendingInvoices isVisible={isMemberPendingInvoicePopUpVisible} setVisibility={setIsMemberPendingInvoicePopUpVisible}/>
         )}
 
 
