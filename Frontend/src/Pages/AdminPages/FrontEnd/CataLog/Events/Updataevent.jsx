@@ -73,7 +73,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updateupcoming_events/${updateBrandData?.id}`, formData);
 
-            toast.success(response?.data?.message || `${('Events')} ${('has been')} ${t('Updated Successfully')}.`, {
+            toast.success(response?.data?.message || `${t('Events')} ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
