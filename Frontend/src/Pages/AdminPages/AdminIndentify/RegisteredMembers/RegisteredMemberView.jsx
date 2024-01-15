@@ -831,7 +831,6 @@ const RegisteredMembersView = () => {
                         icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                         ,
                         action: handleShowMemberInvoicePopup,
-
                       },
 
                     ]}
