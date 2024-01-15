@@ -902,7 +902,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE`,
+                topHeading: `INVOICE`,
                 secondHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
