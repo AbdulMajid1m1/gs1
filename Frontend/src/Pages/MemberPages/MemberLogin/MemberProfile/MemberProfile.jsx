@@ -1029,7 +1029,7 @@ const MemberProfile = () => {
 
          {/* Upgrade component with handle prop */}
          {isUpgradePopupVisible && (
-          <MemberUpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} />
+          <MemberUpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} fetchMemberInvoiceData={fetchMemberInvoiceData}/>
         )}
 
          {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
