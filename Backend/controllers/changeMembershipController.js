@@ -121,6 +121,91 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
     }
 }
 
+
+
+
+
+export const getUpgradeMembershipCarts = async (req, res, next) => {
+    try {
+        // Define validation rules for query parameters
+        const filterSchema = Joi.object({
+            user_id: Joi.string(),
+            gtin_product_id: Joi.string(),
+            transaction_id: Joi.string(),
+            registered_product_transaction_id: Joi.string(),
+            status: Joi.number(),
+            // Add other fields if necessary
+        }).unknown(false);
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Construct the filter conditions
+        const filterConditions = Object.keys(value).reduce((obj, key) => {
+            obj[key] = value[key];
+            return obj;
+        }, {});
+
+        // Fetch upgrade membership carts
+        const carts = await prisma.upgrade_member_ship_cart.findMany({
+            where: filterConditions,
+            // Include relationships if necessary
+        });
+
+        return res.json(carts);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+export const getAddGlnCarts = async (req, res, next) => {
+    try {
+        // Define validation rules for query parameters
+        const filterSchema = Joi.object({
+            user_id: Joi.string(),
+            new_gln_id: Joi.string(),
+            other_products_subscription_id: Joi.string(),
+            transaction_id: Joi.string(),
+            registered_product_transaction_id: Joi.string(),
+            status: Joi.number(),
+            // Add other fields if necessary
+        }).unknown(false);
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Construct the filter conditions
+        const filterConditions = Object.keys(value).reduce((obj, key) => {
+            obj[key] = value[key];
+            return obj;
+        }, {});
+
+        // Fetch add GLN carts
+        const carts = await prisma.add_gln_cart.findMany({
+            where: filterConditions,
+            // Include relationships if necessary
+        });
+
+        return res.json(carts);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+
+};
+
+
+
+
+
 export const getInvoiceDetailsForUpgradeSubscription = async (req, res) => {
     const schema = Joi.object({
         userId: Joi.string().required(),
@@ -899,14 +984,14 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             }
 
             cart.transaction_id = transactionId;
-
+            let typeOfPayment = `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`;
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
                 topHeading: `INVOICE`,
                 secondHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`,
+                    registeration: typeOfPayment,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -958,7 +1043,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
 
             const pdfBuffer = await fs1.readFile(pdfFilePath);
-
+            cart.typeOfPayment = typeOfPayment;
             await prisma.upgrade_member_ship_cart.create({
                 data: {
                     user_id: user.id,
@@ -966,6 +1051,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -1103,7 +1189,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
             });
             cart.total = gtinUpgradePricing.price;
             cart.transaction_id = transactionId;
-
+            let typeOfPayment = `ADDITIONAL GTIN invoice for ${gtinUpgradePricing.total_no_of_barcodes} barcodes`;
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
@@ -1112,7 +1198,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
 
-                    registeration: `ADDITIONAL GTIN invoice for ${gtinUpgradePricing.total_no_of_barcodes} barcodes`,
+                    registeration: typeOfPayment,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -1166,7 +1252,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
 
             // Read the file into a buffer
             const pdfBuffer = await fs1.readFile(pdfFilePath);
-
+            cart.typeOfPayment = typeOfPayment;
             // insert into upgrade_member_ship_cart
             await prisma.upgrade_member_ship_cart.create({
                 data: {
@@ -1175,6 +1261,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -1315,7 +1402,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             });
             cart.total = additionalGlnDetails.price;
             cart.transaction_id = transactionId;
-
+            let typeOfPayment = `ADDITIONAL GLN invoice for ${additionalGlnDetails.total_no_of_gln} GLN`;
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
@@ -1324,7 +1411,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
 
-                    registeration: `ADDITIONAL GLN invoice for ${additionalGlnDetails.total_no_of_gln} GLN`,
+                    registeration: typeOfPayment,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -1378,7 +1465,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
             // Read the file into a buffer
             const pdfBuffer = await fs1.readFile(pdfFilePath);
-
+            cart.typeOfPayment = typeOfPayment;
             // insert into upgrade_member_ship_cart
             await prisma.add_gln_cart.create({
                 data: {
@@ -1388,6 +1475,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -2226,14 +2314,14 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                 productName: subscribedProductDetails.member_category_description,
             });
             cart.transaction_id = transactionId;
-
+            let typeOfPayment = `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}`;
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
                 topHeading: "INVOICE",
                 secondHeading: `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}`,
+                    registeration: typeOfPayment,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -2285,7 +2373,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
 
             const pdfBuffer = await fs1.readFile(pdfFilePath);
-
+            cart.typeOfPayment = typeOfPayment;
             await prisma.upgrade_member_ship_cart.create({
                 data: {
                     user_id: user.id,
@@ -2293,6 +2381,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                     transaction_id: transactionId,
                     registered_product_transaction_id: user.transaction_id,
                     status: 0,
+                    cart: JSON.stringify(cart),
                 }
             });
 
@@ -2775,7 +2864,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
         const pdfBuffer = await fs1.readFile(pdfFilePath);
 
-       
+
 
 
 

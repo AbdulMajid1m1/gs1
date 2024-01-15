@@ -2072,6 +2072,7 @@ model upgrade_member_ship_cart {
   status                            Int?
   created_at                        DateTime @default(now())
   updated_at                        DateTime @updatedAt
+  cart                              String?
 }
 
 model add_gln_cart {
@@ -2087,4 +2088,5 @@ model add_gln_cart {
   updated_at                  DateTime                    @updatedAt
   // make relationship with other_products_subcriptions
   other_products_subcriptions other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
+  cart                        String?
 }
