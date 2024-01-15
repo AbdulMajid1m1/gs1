@@ -403,7 +403,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                   <div className="table-member-inoive px-4 pt-3">
                     {/* show the transaction_id in very small  */}
                     <div className="flex justify-between items-center">
-                      <h1 className="text-secondary font-sans font-semibold text">NEW Subscription</h1>
+                      <h1 className="text-secondary font-sans font-semibold text">New Subscription</h1>
                     </div>
                     <table>
                       <thead>
@@ -424,7 +424,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                           <td>{selectedGtinBarcodes?.price}</td>
                           <td>{selectedGtinBarcodes?.yearly_fee}</td>
                         </tr>
-                        );
+
 
 
 
