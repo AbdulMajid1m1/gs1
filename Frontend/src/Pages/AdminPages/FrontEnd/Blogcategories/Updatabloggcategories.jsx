@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -12,6 +13,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
     const [name, setname] = useState(updateBrandData?.name || '');
     const [slug, setslug] = useState(updateBrandData?.slug || '');
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -26,7 +28,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
                 slug: slug,
             });
 
-            toast.success(response?.data?.message || 'Blog Categories updated successfully', {
+            toast.success(response?.data?.message || `${t('Blog Categories')} ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -42,7 +44,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -72,29 +74,27 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Blog Categories</h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Blog Categories')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Category')}{t('Name')}</label>
                                         <input
                                             type="text"
                                             id="name"
                                             value={name}
                                             onChange={(e) => setname(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Name"
+                                            placeholder={`${t('Enter')} ${t('Category')} ${t('Name')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Slug</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Category')} {t('Slug')}</label>
                                         <input
                                             type="text"
                                             id="slug"
                                             value={slug}
                                             onChange={(e) => setslug(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Slug"
+                                            placeholder={`${t('Enter')} ${t('Category')} ${t('Slug')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
@@ -109,7 +109,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseUpdatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <Button
                                         variant="contained"
@@ -119,7 +119,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update Blog Categorie
+                                        {t('Update')} {t('Blog Categories')}
                                     </Button>
                                 </div>
                             </form>

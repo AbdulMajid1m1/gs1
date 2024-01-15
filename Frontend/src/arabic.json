@@ -79,5 +79,15 @@
     "[English]":"[بالإنجليزية]",
     "[Arabic]":"[بالعربية]",
     "Display":"عرض",
-    "Articles":"المقالات"
+    "Articles":"المقالات",
+    "GS1 Partners":"شركاء GS1",
+    "Link":"وصلة",
+    "Blog Categories":"فئات المدونة",
+    "Faq Categories":"فئات الأسئلة الشائعة",
+    "Board Members":"أعضاء مجلس الإدارة",
+    "Manage Team":"إدارة الفريق",
+    "Name":"اسم",
+    "Slug":"سبيكة",
+    "Team Member":"أعضاء الفريق",
+    "Job Title":"اللقب الوظيفي"
 }

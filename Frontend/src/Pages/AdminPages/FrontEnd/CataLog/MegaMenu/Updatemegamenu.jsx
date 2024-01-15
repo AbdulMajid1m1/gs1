@@ -110,8 +110,8 @@ const Updatemegamenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setstatus(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">inactive</option>
-                                            <option value="1">active</option>
+                                            <option value="0">{t('Inactive')}</option>
+                                            <option value="1">{t('Active')}</option>
                                         </select>
                                     </div>
 

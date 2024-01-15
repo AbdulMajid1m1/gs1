@@ -79,5 +79,15 @@
     "[English]":"[English]",
     "[Arabic]":"[Arabic]",
     "Display":"Display",
-    "Articles":"Articles"
+    "Articles":"Articles",
+    "GS1 Partners":"GS1 Partners",
+    "Link":"Link",
+    "Blog Categories":"Blog Categories",
+    "Faq Categories":"Faq Categories",
+    "Board Members":"Board Members",
+    "Manage Team":"Manage Team",
+    "Name":"Name",
+    "Slug":"Slug",
+    "Team Member":"Team Member",
+    "Job Title":"Job Title"
 }

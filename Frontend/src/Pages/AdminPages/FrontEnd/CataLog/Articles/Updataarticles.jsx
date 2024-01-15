@@ -89,7 +89,6 @@ const Updataarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
         }
     };
 
-
     return (
         <div>
             {isVisible && (
