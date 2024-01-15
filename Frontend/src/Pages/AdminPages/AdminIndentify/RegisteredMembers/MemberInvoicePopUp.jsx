@@ -49,8 +49,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
   const handleMemberInvoiceData = async () => {
     try {
-      // const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+      // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
       console.log(res.data);
       setMemberInvoiceData(res.data);
 
