@@ -2428,10 +2428,30 @@ export const paymentSlipColumn = [
     headerName: 'Reject Reason',
     width: 180,
   },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 180,
+  // },
   {
     field: 'status',
     headerName: 'Status',
-    width: 180,
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
   },
   {
     field: 'created_at',
