@@ -14,8 +14,10 @@ import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Addevent from './Addevent';
 import Updataevent from './Updataevent';
+import { useTranslation } from 'react-i18next';
 const Events = () => {
 
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -54,12 +56,12 @@ const Events = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this Featured Events!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('Featured Events')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -68,7 +70,7 @@ const Events = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deleteupcoming_events/" + row?.id);
                     if (isDeleted) {
-                        toast.success('Featured Events deleted successfully', {
+                        toast.success(`${t('Featured Events')}  ${t('has been deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -249,7 +251,7 @@ const Events = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={' Featured Events'}
+                        title={`${t('Featured Events')}`}
                     />
                 </div>
 
@@ -261,13 +263,13 @@ const Events = () => {
                                 <button
                                     onClick={handleShowCreatePopup}
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                                    <i className="fas fa-plus mr-2"></i>Add
+                                    <i className="fas fa-plus mr-2"></i>{t('Add')}
                                 </button>
                                 <div className="relative">
                                     <button
                                         className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                                     >
-                                        <i className="fas fa-file-import mr-1"></i> Import
+                                        <i className="fas fa-file-import mr-1"></i> {t('Import')}
                                     </button>
                                     <input
                                         type="file"
@@ -281,14 +283,14 @@ const Events = () => {
                                 <CSVLink data={data}
 
                                     type="button"
-                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  {t('Export')}   <FileUploadIcon />
                                 </CSVLink>
                             </div>
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="Featured Events"
+                                    title={`${t('Featured Events')}`}
                                     columnsName={FeaturedEventsDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
@@ -296,7 +298,7 @@ const Events = () => {
 
                                     dropDownOptions={[
                                         {
-                                            label: "View",
+                                            label: `${t('View')}`,
                                             icon: (
                                                 <VisibilityIcon
                                                     fontSize="small"
@@ -307,7 +309,7 @@ const Events = () => {
                                             action: handleView,
                                         },
                                         {
-                                            label: "Edit",
+                                            label: `${t('Edit')}`,
                                             icon: (
                                                 <EditIcon
                                                     fontSize="small"
@@ -318,7 +320,7 @@ const Events = () => {
                                             action: handleShowUpdatePopup,
                                         },
                                         {
-                                            label: "Delete",
+                                            label: `${t('Delete')}`,
                                             icon: (
                                                 <DeleteIcon
                                                     fontSize="small"

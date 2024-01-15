@@ -4,6 +4,7 @@ import newRequest from '../../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -17,6 +18,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Pagedropdown, setPagedropdown] = useState([])
+    const { t, i18n } = useTranslation();
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
     };
@@ -55,7 +57,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 status: Number(status),
             });
 
-            toast.success(response?.data?.message || 'Footer Menus updated successfully', {
+            toast.success(response?.data?.message || `${t('Footer menu')} ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -71,7 +73,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -99,37 +101,35 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Mega Menu Categories</h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Footer menu')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[English]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Category')} {t('Name[English]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_en"
                                             value={category_name_en}
                                             onChange={(e) => setcategory_name_en(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Name[English]"
+                                            placeholder={`${t('Enter')}${t('Category')}${t('Name[English]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[Arabic]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Category')} {t('Name[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_ar"
                                             value={category_name_ar}
                                             onChange={(e) => setcategory_name_ar(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Name[Arabic]"
+                                            placeholder={`${t('Enter')}${t('Category')}${t('Name[Arabic]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Parent Category
+                                            {t('Parent Category')}
                                         </label>
                                         <select
                                             id="status"
@@ -137,11 +137,11 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">Category Level</option>
+                                            <option value="0">{t('Category Level')}</option>
                                             {
                                                 Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.id}>{itme.category_name_en}</option>
+                                                        <option key={index} value={itme.id}>{i18n.language === 'ar' ? itme?.category_name_ar : itme?.category_name_en}</option>
                                                     )
                                                 })
                                             }
@@ -150,7 +150,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -158,7 +158,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
@@ -171,7 +171,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Status
+                                            {t('Status')}
                                         </label>
                                         <select
                                             id="status"
@@ -192,7 +192,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseUpdatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
 
                                     <Button
@@ -203,7 +203,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update Footer Menu
+                                        {t('Update')} {t('Footer menu')}
                                     </Button>
                                 </div>
                             </form>

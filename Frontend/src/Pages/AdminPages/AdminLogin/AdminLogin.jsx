@@ -74,7 +74,7 @@ const AdminLogin = () => {
       })
       .then((res) => {
         console.log(res);
-        toast.success(res?.data?.message || "Login Successfully", {
+        toast.success(res?.data?.message || `${t('Login Successfully') }`, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,

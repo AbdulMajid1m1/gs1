@@ -88,7 +88,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 status: Number(status),
             });
 
-            toast.success(response?.data?.message || 'Mega Menu categorie updated successfully', {
+            toast.success(response?.data?.message || `${t('Mega Menu')} ${('categorie')} ${('has been')} ${t('Updated Successfully')}.` , {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -104,7 +104,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,

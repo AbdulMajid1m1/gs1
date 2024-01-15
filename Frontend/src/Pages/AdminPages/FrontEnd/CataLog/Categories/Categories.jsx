@@ -91,7 +91,7 @@ const Categories = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deletemega_menu_categories/" + row?.id);
                     if (isDeleted) {
-                        toast.success(`${t('Mega Menu')} ${t('Categories')}${t('Delete')}${t('successfully')}!`, {
+                        toast.success(`${t('Mega Menu')} ${t('Categories')} ${t('has been not deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
