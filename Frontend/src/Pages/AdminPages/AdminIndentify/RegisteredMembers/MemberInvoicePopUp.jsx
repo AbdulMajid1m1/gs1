@@ -21,6 +21,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
+  const [typeOfPayment, setTypeOfPayment] = useState([])
   const [totalPrice, setTotalPrice] = useState(0);
 
   const handleCloseInvoicePopup = () => {
@@ -48,33 +49,109 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   // }
 
   const handleMemberInvoiceData = async () => {
-    try {
-      // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
-      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
-      console.log(res.data);
-      setMemberInvoiceData(res.data);
+    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+      try {
 
-      let total = 0;
+        // check invoice type
+        // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
+        const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
+        console.log(res.data);
+        setMemberInvoiceData(res.data);
 
+        let total = 0;
+        res.data?.gtinSubscriptions.forEach((item) => {
+          total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+        });
 
-
-
-
-
-
-      res.data?.gtinSubscriptions.forEach((item) => {
-        total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
-      });
-
-      res.data?.otherProductSubscriptions.forEach((item) => {
-        // add price and other_products_subscription_total_price
-        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
-      });
-      console.log(total);
-      setTotalPrice(total);
+        res.data?.otherProductSubscriptions.forEach((item) => {
+          // add price and other_products_subscription_total_price
+          total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+        });
+        console.log(total);
+        setTotalPrice(total);
+      }
+      catch (err) {
+        console.log(err);
+      }
     }
-    catch (err) {
-      console.log(err);
+    if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice" || gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
+      try {
+        const res = await newRequest.get(`/changeMembership/upgradeMembershipCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+        console.log(res.data);
+        let data = res.data[0];
+
+
+        let cart = JSON.parse(data?.cart);
+        console.log(cart);
+        setTypeOfPayment(cart?.typeOfPayment)
+        let total = 0;
+        const cartItems = cart?.cart_items?.map((item) => ({
+          productName: item?.productName,
+          registrationFee: item?.registration_fee,
+          yearlyFee: item?.yearly_fee
+        }));
+
+        total = cartItems?.reduce((acc, item) => acc + item?.registrationFee + item?.yearlyFee, 0);
+        console.log(total)
+        setMemberInvoiceData(cartItems)
+        setTotalPrice(total);
+      }
+      catch (err) {
+        console.log(err);
+
+      }
+    }
+
+    // if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
+    //   try {
+    //     const res = await newRequest.get(`/changeMembership/upgradeMembershipCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+    //     console.log(res.data);
+    //     setMemberInvoiceData(res.data);
+
+    //     let total = 0;
+    //     res.data?.gtinSubscriptions.forEach((item) => {
+    //       total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+    //     });
+
+    //     res.data?.otherProductSubscriptions.forEach((item) => {
+    //       // add price and other_products_subscription_total_price
+    //       total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+    //     });
+    //     console.log(total);
+    //     setTotalPrice(total);
+    //   }
+    //   catch (err) {
+    //     console.log(err);
+
+    //   }
+    // }
+
+    if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
+      try {
+        const res = await newRequest.get(`/changeMembership/addGlnCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
+        console.log(res.data);
+        let data = res.data[0];
+
+
+        let cart = JSON.parse(data?.cart);
+        console.log(cart);
+        setTypeOfPayment(cart?.typeOfPayment)
+        let total = 0;
+        const cartItems = cart?.cart_items?.map((item) => ({
+          productName: item?.productName,
+          registrationFee: item?.registration_fee,
+          yearlyFee: item?.yearly_fee
+        }));
+
+        total = cartItems?.reduce((acc, item) => acc + item?.registrationFee + item?.yearlyFee, 0);
+        console.log(total)
+        setMemberInvoiceData(cartItems)
+        setTotalPrice(total);
+      }
+      catch (err) {
+        console.log(err);
+
+      }
     }
 
 
@@ -246,79 +323,99 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 </div>
 
                 <div className="table-member-inoive px-4">
-                  {/* show the transaction_id in very small  */}
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
-                  </div>
-                  <table>
-                    <thead>
-                      {/* <tr>
-                        <th>PRODUCT</th>
-                        <th>REGISTRATION FEE</th>
-                        <th>YEARLY FEE</th>
-                        <th>PRICE</th>
-                      </tr> */}
-                      <tr>
-                        <th>PRODUCT</th>
-                        <th>REGISTRATION FEE</th>
-                        <th>YEARLY FEE</th>
-                        <th>EXPIRY DATE</th>
-                        <th>PRICE</th>
 
-                      </tr>
-                    </thead>
-                    {/* <tbody>
-                      {memberInoviceData.map((item, index) => {
-                        const cartItems = JSON.parse(item.cart_items);
-                        return cartItems.map((cartItem, cartIndex) => (
-                          <tr key={cartIndex}>
-                            <td>{cartItem.productName}</td>
-                            <td>{cartItem.registration_fee}</td>
-                            <td>{cartItem.yearly_fee}</td>
-                            <td>{cartItem.price}</td>
+
+                  {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" ? (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
+                      </div>
+
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>PRODUCT</th>
+                            <th>REGISTRATION FEE</th>
+                            <th>YEARLY FEE</th>
+                            <th>EXPIRY DATE</th>
+                            <th>PRICE</th>
                           </tr>
-                        ));
-                      })}
-                    </tbody> */}
-                    <tbody>
-                      {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
-                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
-
-                        return (
-                          <tr key={'gtin_product' + index}>
-                            <td>{item?.gtin_product?.member_category_description}</td>
-                            <td>{item?.price}</td>
-                            <td>{item?.gtin_subscription_total_price}</td>
-                            <td>{expiryDate}</td>
-                            <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                        </thead>
+                        <tbody>
+                          {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                            const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                            return (
+                              <tr key={'gtin_product' + index}>
+                                <td>{item?.gtin_product?.member_category_description}</td>
+                                <td>{item?.price}</td>
+                                <td>{item?.gtin_subscription_total_price}</td>
+                                <td>{expiryDate}</td>
+                                <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                              </tr>
+                            );
+                          })}
+                          {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
+                            const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                            return (
+                              <tr key={'other_products' + index}>
+                                <td>{item?.product?.product_name}</td>
+                                <td>{item?.price}</td>
+                                <td>{item?.other_products_subscription_total_price}</td>
+                                <td>{expiryDate}</td>
+                                <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colSpan="4" className="text-right font-bold">Total:</td>
+                            <td>{totalPrice}</td>
                           </tr>
-                        );
-                      })}
-                      {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
-                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
-                        return (
+                        </tfoot>
+                      </table>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-secondary font-sans text-sm mb-2">TRANSACTION ID: {gs1MemberInvoiceData?.transaction_id}</h2>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-secondary font-sans text-sm mb-2">TYPE OF PAYMENT: {typeOfPayment}</h2>
+                      </div>
 
-
-                          <tr key={'other_products' + index}>
-                            <td>{item?.product?.product_name}</td>
-                            <td>{item?.price}</td>
-                            <td>{item?.other_products_subscription_total_price}</td>
-                            <td>{expiryDate}</td>
-                            <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>PRODUCT</th>
+                            <th>REGISTRATION FEE</th>
+                            <th>YEARLY FEE</th>
+                            <th>SUB TOTAL</th>
                           </tr>
-                        )
-                      })}
+                        </thead>
+                        <tbody>
+                          {memberInoviceData?.map((item, index) => {
+                            return (
+                              <tr key={'gtin_product' + index}>
+                                <td>{item?.productName}</td>
+                                <td>{item?.registrationFee}</td>
+                                <td>{item?.yearlyFee}</td>
+                                <td>{item?.registrationFee + item?.yearlyFee}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colSpan="3" className="text-right font-bold">Total:</td>
+                            <td>{totalPrice}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </>
+                  )}
 
 
-
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan="4" className="text-right font-bold">Total:</td>
-                        <td>{totalPrice}</td>
-                      </tr>
-                    </tfoot>
-                  </table>
                 </div>
 
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
