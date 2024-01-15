@@ -126,7 +126,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     //   }
     // }
 
-    if (gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
+    if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
       try {
         const res = await newRequest.get(`/changeMembership/addGlnCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
         console.log(res.data);
