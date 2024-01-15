@@ -1003,7 +1003,7 @@ const MemmberRegisteration = () => {
                                     // required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
-
+ 
 
                         </div>
 
