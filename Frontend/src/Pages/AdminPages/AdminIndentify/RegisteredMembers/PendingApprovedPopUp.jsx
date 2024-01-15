@@ -86,7 +86,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
             <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approved</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approve</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
@@ -101,7 +101,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                           checked={selectedStatus === "approved"}
                           onChange={() => setSelectedStatus("approved")}
                         />
-                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approved</label>
+                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approve</label>
                       </div>
                       <div className="flex flex-row gap-2">
                         <input
@@ -113,7 +113,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                           checked={selectedStatus === "rejected"}
                           onChange={() => setSelectedStatus("rejected")}
                         />
-                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Rejected</label>
+                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Reject</label>
                       </div>
                     </div>
                   </div>
