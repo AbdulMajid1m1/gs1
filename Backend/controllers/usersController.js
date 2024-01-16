@@ -607,7 +607,7 @@ export const createUser = async (req, res, next) => {
         // userValue.password = hashedPassword;
         userValue.password = password;
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
-
+        userValue.parent_memberID = '0';
         // Start a transaction to ensure both user and cart are inserted
         const transaction = await prisma.$transaction(async (prisma) => {
             const newUser = await prisma.users.create({

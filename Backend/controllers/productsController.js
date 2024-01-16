@@ -71,7 +71,7 @@ const productSchema = Joi.object({
     childProduct: Joi.string().max(255).allow('', null),
     quantity: Joi.string().max(10).allow('', null),
     gpc: Joi.string().max(255).allow('', null),
-    gpc_code: Joi.string().max(50).allow('', null),
+    gpc_code: Joi.alternatives().try(Joi.string().max(50).allow('', null), Joi.number().allow('', null)),
     countrySale: Joi.string().max(50).allow('', null),
     HSCODES: Joi.string().allow('', null),
     HsDescription: Joi.string().allow('', null),
@@ -153,7 +153,7 @@ export const createProduct = async (req, res, next) => {
             }
 
             const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-                where: { user_id: user.id },
+                where: { user_id: user.id,isDeleted:false },
                 include: { gtin_product: true }
             });
 
@@ -314,7 +314,7 @@ const insertProduct = async (productData, user, productsCount) => {
 };
 
 
-export const bulkCreateProduct = async (req, res) => {
+export const bulkCreateProduct = async (req, res, next) => {
     const productSchema = Joi.object({
         user_id: Joi.string(),
         productnameenglish: Joi.string().allow('', null),
@@ -327,7 +327,7 @@ export const bulkCreateProduct = async (req, res) => {
         MnfGLN: Joi.string().max(50).allow('', null),
         ProvGLN: Joi.string().max(50).allow('', null),
         // gpc: Joi.string().max(255).allow('', null),
-        gpc_code: Joi.string().max(50).allow('', null),
+        gpc_code: Joi.alternatives().try(Joi.string().max(50).allow('', null), Joi.number().allow('', null)),
         countrySale: Joi.string().max(50).allow('', null),
         HSCODES: Joi.string().allow('', null),
         memberID: Joi.string().allow('', null),
@@ -372,32 +372,39 @@ export const bulkCreateProduct = async (req, res) => {
         user = await prisma.users.findUnique({ where: { id: req.body.user_id } });
         if (!user) {
             sendEmailFlag = false;
-            throw new Error('User not found')
+            // throw new Error('User not found')
+            throw createError(404, 'User not found')
         }
 
         // Handle the parent member ID logic if applicable
+        // if (user.parent_memberID !== '0' && user.parent_memberID !== null) {
         if (user.parent_memberID !== '0') {
             user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
             if (!user) {
                 sendEmailFlag = false;
-                throw new Error('User not found')
+                // throw new Error('User not found')
+                throw createError(404, 'User not found')
 
             }
         }
 
         const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-            where: { user_id: user.id },
+            where: { user_id: user.id,isDeleted:false},
             include: { gtin_product: true }
         });
 
         if (!gtinSubscriptions) {
             sendEmailFlag = false;
-            throw new Error('Subscription not found')
+            // throw new Error('Subscription not found')
+            throw createError(404, 'Subscription not found')
         }
-
+        console.log(gtinSubscriptions)
         if (gtinSubscriptions.gtin_subscription_limit - records.length < 0) {
             sendEmailFlag = false;
-            throw new Error('Subscription limit exceeded, please upgrade your subscription')
+            // throw new Error('Subscription limit exceeded, please upgrade your subscription')
+
+            throw createError(403, 'Subscription limit exceeded, please upgrade your subscription')
+
 
         }
 
@@ -425,7 +432,7 @@ export const bulkCreateProduct = async (req, res) => {
                     MnfCode: record.MnfCode,
                     MnfGLN: record.MnfGLN,
                     ProvGLN: record.ProvGLN,
-                    gpc_code: record['GPC Code'],
+                    gpc_code: record['GPC Code']?.toString(),
                     memberID: record.memberID,
                     admin_id: record.admin_id,
                     save_as: record.save_as,
@@ -486,8 +493,9 @@ export const bulkCreateProduct = async (req, res) => {
             , errors: errorRecords
         });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        console.log(err);
+        // res.status(500).json({ error: 'Internal server error' });
+        next(err);
     } finally {
         if (sendEmailFlag) {
             const pdfBuffer = await fs1.readFile(req.files.file[0].path);
