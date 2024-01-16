@@ -4965,7 +4965,7 @@ export const registeredmemberColumn = [
     field: 'expiry_date',
     headerName: 'Expiry Date',
     width: 180,
-    type: 'dateTime',
+    type: 'date',
 
     valueGetter: (params) => {
       // Convert the string date to a Date object

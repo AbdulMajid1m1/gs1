@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
@@ -146,7 +147,9 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                         <th>PRODUCT</th>
                         <th>REGISTRATION FEE</th>
                         <th>YEARLY FEE</th>
-                        <th>PRICE</th>
+                        {/* <th>PRICE</th> */}
+                        <th>SUB TOTAL</th>
+                        <th>DELETE</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -158,6 +161,9 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                             <td>{cartItem.registration_fee}</td>
                             <td>{cartItem.yearly_fee}</td>
                             <td>{cartItem.price}</td>
+                            <td className='hover:text-red-500 cursor-pointer'>
+                              <DeleteSweepIcon />
+                            </td>
                           </tr>
                         ));
                       })}
