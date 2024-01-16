@@ -58,7 +58,8 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
 
-const AdminSideBar = () => {
+const AdminSideBar = () =>
+{
   const { t } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
@@ -66,8 +67,8 @@ const AdminSideBar = () => {
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const [selectedPath, setSelectedPath] = useState('');
-
-
+  
+  
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -76,7 +77,7 @@ const AdminSideBar = () => {
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
-
+    
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -100,7 +101,8 @@ const AdminSideBar = () => {
   //   setSelectedItem(path);
   //   navigate(path);
   // };
-  const handleItemClick = (path, event) => {
+  const handleItemClick = (path, event) =>
+  {
     setSelectedItem(path);
 
     // Check if the "Ctrl" key (or "Command" key on Mac) is pressed
@@ -117,14 +119,16 @@ const AdminSideBar = () => {
   //   window.open(path, '_blank');
   // };
 
-  const handleItemClickGs1website = (path) => {
+  const handleItemClickGs1website = (path) =>
+  {
     setSelectedItem(path);
     window.open(path, '_blank');
   };
 
 
 
-  const handleContextMenu = (event, path) => {
+  const handleContextMenu = (event, path) =>
+  {
     event.preventDefault();
     const clickX = event.clientX;
     const clickY = event.clientY;
@@ -133,7 +137,8 @@ const AdminSideBar = () => {
     setShowContextMenu(true);
   };
 
-  const handleContextMenuOptionClick = (option) => {
+  const handleContextMenuOptionClick = (option) =>
+  {
     if (option === 'openNewTab') {
       window.open(selectedPath, '_blank');
     }
@@ -141,7 +146,8 @@ const AdminSideBar = () => {
   };
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleLogoClick = () => {
+  const handleLogoClick = () =>
+  {
     setSelectedItem(null);
     navigate('/admin/dashboard') // Navigate to the "track" component
   };
@@ -275,12 +281,12 @@ const AdminSideBar = () => {
             )}
           </div>
 
-          {showFirstData && (
-            <div
-              className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
-              onClick={toggleSidebar}
-            >
-              {/* <div
+            {showFirstData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                {/* <div 
                   className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/admin/registered-members')}
                       onContextMenu={(event) =>
@@ -472,7 +478,7 @@ const AdminSideBar = () => {
                 <p className="sidebar-text">{t('Migration')}</p>
               </div>
 
-              {/* <div
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/help-desk')}
                   //     onContextMenu={(event) =>
@@ -814,7 +820,7 @@ const AdminSideBar = () => {
                 <p className="sidebar-text">{t('Settings')}</p>
               </div>
 
-              {/* <div
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/master-data')}
                   //     onContextMenu={(event) =>

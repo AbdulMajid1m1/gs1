@@ -145,5 +145,14 @@
     "User Guide": "User Guide",
     "Log-out": "Log-out",
     "Hide": "Hide",
-    "Open in New Tab": "Open in New Tab"
+    "Open in New Tab": "Open in New Tab",
+    "Active Members":"Active Members",
+    "In Active Members":"In Active Members",
+    "Total Members":"Total Members",
+    "Products":"Products",
+    "Dashboard":"Dashboard",
+    "Newly Registered Members":"Newly Registered Members",
+    "Pending Approvals":"Pending Approvals",
+    "Registered Members":"Registered Members",
+    "Members for Renewal":"Members for Renewal"
 }
