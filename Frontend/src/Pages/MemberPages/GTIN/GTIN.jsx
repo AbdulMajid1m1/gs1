@@ -56,31 +56,22 @@ const Gtin = () => {
 
 
    
-  // useEffect(() => {
     const fetchGtinProducts = async () => {
        try {
          const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
-         console.log(response.data);
-        //  setExpiryDate(response?.data?.gtinSubscriptions[0]?.expiry_date);
- 
+        //  console.log(response.data);
+     
         //  setGtinSubscriptions(response?.data?.gtinSubscriptions);
          setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-        console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-        console.log(totalCategory)
-        //  setTotalRange(response?.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
-        //  setGtinBarcodeIssued(response?.data?.gtinSubscriptions[0]?.gtin_subscription_counter);
-        //  setGtinBarcodeRemaining(response?.data?.gtinSubscriptions[0]?.gtin_subscription_limit);
-         
- 
-        //  setOtherProductSubscriptions(response?.data?.otherProductSubscriptions);
- 
+         console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+         console.log(totalCategory)
+    
  
       
        } catch (err) {
          console.log(err);
        }
      }
-     //  }, []) 
      
      
      
