@@ -55,7 +55,7 @@ const DropDownSelection = () => {
               <div className="current-menu-title"></div>
               <div className="mobile-menu-close" onClick={toggleMobileMenu}>&times;</div>
             </div>
-            <ul className="menu-main 2xl:flex xl:flex lg:flex 3xl:flex 3xl:justify-center 3xl:items-center 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-7">
+              <ul className={`menu-main ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'} 2xl:flex xl:flex lg:flex 3xl:flex 3xl:justify-center 3xl:items-center 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-7`}>
               {megaMenu?.map((section, index) => (
                 <li key={index} className="menu-item-has-children">
                   <Link to="javascript:void(0)" style={{ textDecoration: 'none'  }}>
