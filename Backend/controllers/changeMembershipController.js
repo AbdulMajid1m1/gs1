@@ -2308,15 +2308,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             let cart = { cart_items: [] };
             // if subType is UPGRADE then in registration fee add final price and in yearly fee add final - registration fee
 
-            cart.cart_items.push({
-                registration_fee: user.membership_category === "non_med_category" ?
-                    subscribedProductDetails.member_registration_fee :
-                    subscribedProductDetails.med_registration_fee,
-                yearly_fee: user.membership_category === "non_med_category" ?
-                    subscribedProductDetails.gtin_yearly_subscription_fee :
-                    subscribedProductDetails.med_yearly_subscription_fee,
-                productName: subscribedProductDetails.member_category_description,
-            });
+          
 
             let newDowngradeYearlyFee = user.membership_category === "non_med_category" ?
                 subscribedProductDetails.member_registration_fee :
