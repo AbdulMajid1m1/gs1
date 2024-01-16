@@ -68,7 +68,7 @@ const HeaderSlider = () => {
                   
                   {data.map((item) => (
                     <SwiperSlide>
-                        <div className='w-full flex flex-col lg:flex-row justify-between items-center px-5'>
+                      <div className={`w-full flex flex-col  justify-between items-center px-5 ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`} >
                           <div className='w-full flex flex-col gap-2 sm:px-10 px-4 sm:pt-0 pt-5'>
                             <h2 className='sm:text-3xl text-xl text-white font-semibold'>{item?.title} </h2>
                             <p className='text-lg text-white font-medium'>{item?.description}</p>

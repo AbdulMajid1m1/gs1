@@ -14,12 +14,14 @@ import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Addvideo from './Addvideo';
 import Updatevideo from './Updatevideo';
+import { useTranslation } from 'react-i18next';
 const Userguideveido = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
     const [brandsData, setBrandsData] = useState([]);
+    const { t } = useTranslation();
     const handleShowCreatePopup = () => {
         setCreatePopupVisibility(true);
     };
@@ -51,12 +53,12 @@ const Userguideveido = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this User Guide Video!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('User Guide')} ${t('Video')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -65,7 +67,7 @@ const Userguideveido = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deleteuser_guide_videos/" + row?.id);
                     if (isDeleted) {
-                        toast.success('User Guide Video deleted successfully', {
+                        toast.success(`${t('User Guide')} ${t('Video')} ${t('has been deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -98,7 +100,7 @@ const Userguideveido = () => {
                 } catch (error) {
                     // Handle any error that occurred during the deletion
                     console.error("Error deleting user:", error);
-                    toast.error('Something went wrong while deleting user', {
+                    toast.error(`${t('User Guide')} ${t('Video')} ${t('has been not deleted')} ${t('Delete')}!`, {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -243,13 +245,13 @@ const Userguideveido = () => {
                 <CSVLink data={data}
 
                     type="button"
-                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  {t('Export')}  <FileUploadIcon />
                 </CSVLink>
 
                 <button
                     onClick={handleShowCreatePopup}
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                    <i className="fas fa-plus mr-2"></i>Add Video
+                    <i className="fas fa-plus mr-2"></i>{t('Add')} {t('Video')}
                 </button>
 
             </div>
@@ -264,7 +266,7 @@ const Userguideveido = () => {
 
                     dropDownOptions={[
                         {
-                            label: "View",
+                            label: `${t('View')}`,
                             icon: (
                                 <VisibilityIcon
                                     fontSize="small"
@@ -275,7 +277,7 @@ const Userguideveido = () => {
                             action: handleView,
                         },
                         {
-                            label: "Edit",
+                            label: `${t('Edit')}`,
                             icon: (
                                 <EditIcon
                                     fontSize="small"
@@ -286,7 +288,7 @@ const Userguideveido = () => {
                             action: handleShowUpdatePopup,
                         },
                         {
-                            label: "Delete",
+                            label: `${t('Delete')}`,
                             icon: (
                                 <DeleteIcon
                                     fontSize="small"

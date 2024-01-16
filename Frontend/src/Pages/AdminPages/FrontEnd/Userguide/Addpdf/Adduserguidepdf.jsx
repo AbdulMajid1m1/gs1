@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
-import imageicon from '../../../../../Images/imagges.jpg';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import VideoCameraBackSharpIcon from '@mui/icons-material/VideoCameraBackSharp';
+import { useTranslation } from 'react-i18next';
 
 const Adduserguidepdf = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Title, setTitle] = useState("");
@@ -11,6 +9,7 @@ const Adduserguidepdf = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Date, setDate] = useState("");
     const [Description, setDescription] = useState('')
     const [Page, setPage] = useState('')
+    const { t } = useTranslation();
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -52,7 +51,7 @@ const Adduserguidepdf = ({ isVisible, setVisibility, refreshBrandData }) => {
                     },
                 });
 
-            toast.success(`Pdf File ${Title} has been added successfully.`, {
+            toast.success(`${t('Pdf File')} ${Title} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -91,17 +90,17 @@ const Adduserguidepdf = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add  Pdf File </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Pdf File')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Title</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Enter Title"
+                                            placeholder={`${t('Enter')} ${t('Title')} `}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
@@ -109,7 +108,7 @@ const Adduserguidepdf = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Upload File Only Pdf
+                                            {t('Upload File Only Pdf')} 
                                         </label>
                                         <input
                                             id="file-Video"
@@ -133,14 +132,14 @@ const Adduserguidepdf = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add  Pdf File
+                                        {t('Add')} {t('Pdf File')}
                                     </button>
                                 </div>
 
