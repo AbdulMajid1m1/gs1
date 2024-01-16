@@ -256,7 +256,11 @@
                     <% } else { %>
                         <th colspan="2">Yearly Fee</th>
                     <% } %>
-                    <th colspan="2">SubTotal</th>
+                    <% if (data.type === 'downgrade') { %>
+                        <th colspan="4">SubTotal</th>
+                    <% } else { %>
+                        <th colspan="2">SubTotal</th>
+                    <% } %>
                 </tr>
 
                 <% data.cart.cart_items.forEach((item, index) => { %>
@@ -270,7 +274,7 @@
                             <td colspan="2" class="p-text text-right"><%= item.yearly_fee %></td>
                         <% } %>
                         <% if (data.type === 'downgrade') { %>
-                            <td colspan="2" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) %></td>
+                            <td colspan="4" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) %></td>
                         <% } else { %>
                             <td colspan="2" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10) %></td>
                         <% } %>
