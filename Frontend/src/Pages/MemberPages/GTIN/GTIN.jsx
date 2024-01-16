@@ -480,7 +480,7 @@ const Gtin = () => {
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              GCP {data[0]?.gcpGLNID}
+              GCP {memberData?.gcpGLNID}
             </button>
 
             <button

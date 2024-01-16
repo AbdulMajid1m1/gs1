@@ -266,6 +266,20 @@ const RegisteredMembers = () => {
     }
   };
 
+  const filterDropdownOptions = (row, dropDownOptions) => {
+    // console.log(row);
+    if (row?.status === 'active') {
+      // If user is active, show all options
+      return dropDownOptions;
+    } 
+    else if (row.product_identity !== 'active') {
+      // If user is not active, disable the Renew option
+      return dropDownOptions.filter(option => option.label !== 'Renew');
+    }
+  
+    return []; // No options available
+  };
+  
 
   return (
     <div>
@@ -284,6 +298,7 @@ const RegisteredMembers = () => {
             secondaryColor="secondary"
             globalSearch={true}
             handleRowClickInParent={handleRowClickInParent}
+            getFilteredOptions={filterDropdownOptions}
             uniqueId="admin_registered_members"
 
             dropDownOptions={[
