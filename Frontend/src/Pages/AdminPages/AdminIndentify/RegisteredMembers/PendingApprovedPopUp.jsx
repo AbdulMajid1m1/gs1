@@ -4,13 +4,14 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData,
 }) => {
-//   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-//   console.log(gs1MemberInvoiceData);
+  //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
+  //   console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
@@ -31,6 +32,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
 
       let total = 0;
       const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
+      // console.log(cartItems);
       cartItems.forEach((item) => {
         total += parseInt(item.price); // Make sure to parse the price as an integer
       });
@@ -43,6 +45,53 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
 
   }
 
+  const [cartItemsProducts, setCartItemsProducts] = useState([]);
+
+  const handleDeleteRow = (index) => {
+    // Create a copy of the current memberInvoiceData
+    const updatedData = [...memberInoviceData];
+
+    // Remove the selected row
+    updatedData.forEach((item) => {
+      const cartItems = JSON.parse(item.cart_items);
+      cartItems.splice(index, 1);
+      item.cart_items = JSON.stringify(cartItems);
+    });
+
+    // Update state with the modified data
+    setMemberInvoiceData(updatedData);
+
+    // Recalculate total price
+    let total = 0;
+    updatedData.forEach((item) => {
+      const cartItems = JSON.parse(item.cart_items);
+      console.log(cartItems)
+      const cartItemSpecificProducts = cartItems.map((cartItem) => {
+        return cartItem?.productID;
+      });
+
+      console.log(cartItemSpecificProducts)
+      setCartItemsProducts(cartItemSpecificProducts)
+
+      cartItems.forEach((cartItem) => {
+        total += parseInt(cartItem.price);
+      });
+    });
+    setTotalPrice(total);
+
+
+    // Check if no rows are selected after deletion
+    const isAnyRowSelected = updatedData.some((item) => {
+      const cartItems = JSON.parse(item.cart_items);
+      return cartItems.length > 0;
+    });
+
+    // Update radio button based on row selection
+    setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
+  };
+
+
+
   useEffect(() => {
     handleMemberInvoiceData();
   }, []);
@@ -53,24 +102,26 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
     setLoading(true);
 
     const approvedBody = {
-        "userId": gs1MemberData?.id,
-        "status": selectedStatus, // or approved
+      "userId": gs1MemberData?.id,
+      "status": selectedStatus, // or approved
+      "productIDs": cartItemsProducts,
     };
     if (rejected) {
-        approvedBody.reject_reason = rejected;
+      approvedBody.reject_reason = rejected;
     }
 
 
-  
+
     try {
       const res = await newRequest.post('/users/sendInvoice', approvedBody);
-      
+
       setLoading(false);
-      toast.success(res.data.message || "Invoice status updated successfully!");
+      toast.success(res?.data?.message || "Invoice status updated successfully!");
       fetchAllUserData();
-        // Close the popup
-        handleClosePendingApprovedPopup();
-    //   }
+      // Close the popup
+      handleClosePendingApprovedPopup();
+      fetchMemberHistoryData();
+      //   }
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -85,7 +136,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-            <form onSubmit={handleSubmit} className='w-full'>
+              <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approve</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -145,9 +196,27 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                         <th>PRODUCT</th>
                         <th>REGISTRATION FEE</th>
                         <th>YEARLY FEE</th>
-                        <th>PRICE</th>
+                        {/* <th>PRICE</th> */}
+                        <th>SUB TOTAL</th>
+                        <th>DELETE</th>
                       </tr>
                     </thead>
+                    {/* <tbody>
+                      {.map((item, index) => {
+                        const cartItems = JSON.parse(item.cart_items);
+                        return cartItems.map((cartItem, cartIndex) => (
+                          <tr key={cartIndex}>
+                            <td>{cartItem.productName}</td>
+                            <td>{cartItem.registration_fee}</td>
+                            <td>{cartItem.yearly_fee}</td>
+                            <td>{cartItem.price}</td>
+                            <td className='hover:text-red-500 cursor-pointer'>
+                              <DeleteSweepIcon />
+                            </td>
+                          </tr>
+                        ));
+                      })}
+                    </tbody> */}
                     <tbody>
                       {memberInoviceData.map((item, index) => {
                         const cartItems = JSON.parse(item.cart_items);
@@ -157,6 +226,9 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                             <td>{cartItem.registration_fee}</td>
                             <td>{cartItem.yearly_fee}</td>
                             <td>{cartItem.price}</td>
+                            <td className='hover:text-red-500 cursor-pointer' onClick={() => handleDeleteRow(cartIndex)}>
+                              <DeleteSweepIcon />
+                            </td>
                           </tr>
                         ));
                       })}

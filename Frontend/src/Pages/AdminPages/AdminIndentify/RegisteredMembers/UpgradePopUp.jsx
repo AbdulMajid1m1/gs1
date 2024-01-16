@@ -9,6 +9,7 @@ import { Autocomplete, TextField } from '@mui/material';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
+  fetchMemberHistoryData,
 }) => {
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
@@ -222,6 +223,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         // }
 
         fetchMemberInvoiceData();
+        fetchMemberHistoryData();
         // Close the popup
         handleCloseUpgradePopup();
       }
@@ -416,19 +418,11 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                         </tr>
                       </thead>
                       <tbody>
-
-
-
                         <tr >
                           <td>{selectedGtinBarcodes?.member_category_description}</td>
                           <td>{selectedGtinBarcodes?.price}</td>
                           <td>{selectedGtinBarcodes?.yearly_fee}</td>
                         </tr>
-
-
-
-
-
                       </tbody>
 
                     </table>

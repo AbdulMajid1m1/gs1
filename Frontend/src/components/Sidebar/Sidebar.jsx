@@ -472,7 +472,7 @@ const SideBar = () => {
             } */}
 
 
-          <div
+          {/* <div
             className="main-images-container"
             onClick={() => setShowFourthData(!showFourthData)}   
           >
@@ -487,14 +487,14 @@ const SideBar = () => {
               ) : (
                 <i className='fas fa-solid fa-chevron-down text-white'></i>
               )}
-          </div>
+          </div> */}
 
 
-          {showFourthData && (
+          {/* {showFourthData && (
               <div
                 className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
                 onClick={toggleSidebar}
-              >
+              > */}
                 <div 
                   className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/member/member-profile')}
@@ -543,8 +543,8 @@ const SideBar = () => {
                
                
 
-              </div>
-              )}
+              {/* </div>
+              )} */}
 
 
 
