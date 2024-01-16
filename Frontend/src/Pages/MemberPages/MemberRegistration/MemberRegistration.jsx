@@ -46,7 +46,6 @@ const MemmberRegisteration = () => {
     const [upload, setUpload] = useState('')
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedCategories, setSelectedCategories] = useState(null);
-    const [otherProductChange, setOtherProductChange] = useState(false);
 
 
     // multple select 
@@ -207,21 +206,13 @@ const MemmberRegisteration = () => {
 
 
     const handleOtherProductsChange = (event, value) => {
-        // setOtherProductChange(!otherProductChange);
-        // setSelectedOtherProducts(value);
 
-        // const names = value.map((option) => option.product_name);
-        // // Join the array elements into a single string
-        // const joinedNames = names.join(', ');
-        // console.log(joinedNames);
-        // setSelectProducts(joinedNames);
-
-        // // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
+        // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
         const selectedGLN = value.find(
             (option) =>
-                option.product_name === 'GLN ( 20 Locations)' ||
-                option.product_name === 'GLN ( 10 Locations)' ||
-                option.product_name === 'GLN (30 Locations)'
+                option.product_name === 'GLN (30 Locations)' ||
+                option.product_name === 'GLN (10 Location)' ||
+                option.product_name === 'GLN (20 Locations)'
         );
 
         setSelectedGLNOption(selectedGLN);
@@ -240,7 +231,8 @@ const MemmberRegisteration = () => {
 
 
     const [subscriptionData, setSubscriptionData] = useState([]);
-
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [otherSubscriptionData, setOtherSubscriptionData] = useState([]);
     useEffect(() => {
         let newSubscriptionData = [];
         let newSelectedOtherProducts = [];
@@ -277,34 +269,17 @@ const MemmberRegisteration = () => {
         }
 
         setSubscriptionData(newSubscriptionData);
-        setSelectedOtherProducts(newSelectedOtherProducts);
-    // }, [selectedCategories, selectedGtinNumber, otherProductChange]);
-}, [selectedCategories, selectedGtinNumber]);
+        // Calculate total price
+        const newTotalPrice = newSubscriptionData.reduce((total, item) => total + item.price, 0) +
+            newSelectedOtherProducts.reduce((total, item) => total + item.price, 0);
+        setOtherSubscriptionData(newSelectedOtherProducts);
+        setTotalPrice(newTotalPrice);
+    }, [selectedCategories, selectedGtinNumber, selectedOtherProducts]);
 
 
     // Calculate total price
-    const totalPrice = subscriptionData.reduce((total, item) => total + item.price, 0) +
-        selectedOtherProducts.reduce((total, item) => total + item.price, 0);
-
-    // Image section
-    const handleImageChange = (event) => {
-        setSelectedImage(event.target.files[0]);
-    };
-
-    const [errorMessage, setErrorMessage] = useState('');
-    const handleDocUpload = (event) => {
-        // setUpload(event.target.files[0]);
-        const file = event.target.files[0];
-        if (file) {
-            if (file.size <= 500 * 1024) {
-                setUpload(file);
-                setErrorMessage(''); // Clear any previous error message
-            } else {
-                setErrorMessage('File size should be 500KB or less');
-                event.target.value = null;
-            }
-        }
-    };
+    // const totalPrice = subscriptionData.reduce((total, item) => total + item.price, 0) +
+    //     selectedOtherProducts.reduce((total, item) => total + item.price, 0);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -312,132 +287,6 @@ const MemmberRegisteration = () => {
 
         console.log(subscriptionData)
         console.log(selectedOtherProducts)
-
-        // const formData = new FormData();
-
-        // // User data
-        // formData.append('user_type', 'new');
-        // // formData.append('slug', 'user-slug');
-        // if (location) {
-        //     formData.append('location_uk', location);
-        // }
-
-
-        // // formData.append('have_cr', selectedCr ? 'yes' : 'no');
-
-        // // formData.append('document_number', 'doc-67890');
-        // // formData.append('fname', 'John');
-        // // formData.append('lname', 'Doe');
-        // formData.append('email', email);
-        // formData.append('mobile', mobileNumber);
-        // formData.append('country', selectedCountry?.name);
-        // formData.append('state', selectedState?.name);
-        // formData.append('city', selectedCity?.name);
-        // formData.append('zip_code', zipCode);
-
-
-        // // if (extension) {
-        // //     formData.append('mbl_extension', extension);
-        // // }
-        // // if (website) {
-        // //     formData.append('website', website);
-        // // }
-
-
-        // // formData.append('no_of_staff', '50');
-        // // formData.append('district', 'Central');
-        // // formData.append('building_no', '12A');
-        // // formData.append('additional_number', '202');
-        // // formData.append('other_landline', '0987654321');
-        // // formData.append('unit_number', 'Unit 5');
-        // // formData.append('qr_corde', 'QRCode123');
-        // // formData.append('email_verified_at', '2023-03-15T00:00:00.000Z');
-        // // formData.append('verification_code', '123456');
-
-
-        // // if (selectedCr?.cr && selectedCr?.activity) {
-        // //     formData.append('cr_number', selectedCr?.cr);
-        // //     formData.append('cr_activity', selectedCr?.activity);
-        // //     formData.append('cr_documentID', selectedCr?.crId || '0');
-
-        // // }
-        // formData.append('cr_number', addCrNumber);
-        // formData.append('cr_activity', crActivity);
-
-
-        // formData.append('company_name_eng', companyEnglish);
-        // formData.append('company_name_arabic', companyArabic);
-        // // formData.append('bussiness_activity', 'Trading');
-        // // formData.append('other_products', selectProducts);
-
-
-        // // formData.append('image', selectedImage);
-        // // formData.append('document', upload);
-
-
-        // // formData.append('product_addons', 'AddonABC');
-
-        // formData.append('contactPerson', contactPerson);
-        // formData.append('companyLandLine', companyLandLine);
-        // // formData.append('online_payment', 'Enabled');
-
-        // // formData.append('remember_token', 'TokenXYZ');
-
-        // formData.append('membership_category_id', selectedCategories.id)
-        // // formData.append('invoice_file', 'https://example.com/invoice.pdf');
-        // // formData.append('otp_status', '1');
-        // // formData.append('gcpGLNID', 'GLN123');
-        // // formData.append('gln', '123456');
-        // // formData.append('gcp_type', 'Type1');
-        // // formData.append('memberID', 'MID123');
-
-        // // formData.append('assign_to', '5');
-
-        // formData.append('membership_category', selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category');
-        // if (selectedCategories.name !== 'non-medical') {
-        //     formData.append('membership_otherCategory', selectedCategories.name);
-        // }
-        // // formData.append('upgradation_disc', '10');
-        // // formData.append('upgradation_disc_amount', '100.00');
-        // // formData.append('renewal_disc', '5');
-        // // formData.append('renewal_disc_amount', '50.00');
-        // // formData.append('activityID', selectedActivity?.id);
-        // formData.append('registration_type', 'New');
-        // // formData.append('industryTypes', JSON.stringify(selectedIndustries));
-        // selectedIndustries.forEach((item, index) => {
-        //     formData.append(`industryTypes[${index}][id]`, item.id);
-        //     formData.append(`industryTypes[${index}][name]`, item.name);
-        // });
-
-
-        // let currentIndex = 0;
-
-        // subscriptionData.forEach((item) => {
-        //     formData.append(`cart[cart_items][${currentIndex}][productID]`, item.productId);
-        //     formData.append(`cart[cart_items][${currentIndex}][productName]`, item.product);
-        //     formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, item.registrationFee);
-        //     formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, item.yearlyFee);
-        //     formData.append(`cart[cart_items][${currentIndex}][price]`, item.price);
-        //     formData.append(`cart[cart_items][${currentIndex}][product_type]`, item.productType);
-        //     // formData.append(`cart[cart_items][${currentIndex}][quotation]`, item.quotation); 
-        //     currentIndex++;
-        // });
-
-        // selectedOtherProducts.forEach((otherProduct) => {
-        //     formData.append(`cart[cart_items][${currentIndex}][productID]`, otherProduct.id);
-        //     formData.append(`cart[cart_items][${currentIndex}][productName]`, otherProduct.product_name);
-        //     formData.append(`cart[cart_items][${currentIndex}][registration_fee]`, 0);
-        //     formData.append(`cart[cart_items][${currentIndex}][yearly_fee]`, otherProduct.price || 0);
-        //     formData.append(`cart[cart_items][${currentIndex}][price]`, otherProduct.price); // Using the calculated price
-        //     formData.append(`cart[cart_items][${currentIndex}][product_type]`, otherProduct.product_type);
-        //     // formData.append(`cart[cart_items][${currentIndex}][quotation]`, otherProduct.quotation); 
-        //     currentIndex++;
-        // });
-
-        // formData.append('cart[total]', totalPrice);
-
-        // console.log(selectedOtherProducts)
-        // console.log(subscriptionData)
 
         let cart_items = []
         // add subscription data to cart_items and then add other products to cart_items
@@ -453,15 +302,15 @@ const MemmberRegisteration = () => {
             })
 
         });
+        console.log(otherSubscriptionData)
 
-
-        selectedOtherProducts.forEach((otherProduct) => {
+        otherSubscriptionData?.forEach((otherProduct) => {
             cart_items.push({
                 "productID": otherProduct.id,
                 "productName": otherProduct.product_name,
                 "registration_fee": "0",
-                "yearly_fee": otherProduct.price.toString(), // Convert to string
-                "price": otherProduct.price.toString(), // Convert to string
+                "yearly_fee": otherProduct?.price?.toString(), // Convert to string
+                "price": otherProduct?.price?.toString(), // Convert to string
                 "product_type": otherProduct.product_type,
             })
         });
@@ -547,16 +396,22 @@ const MemmberRegisteration = () => {
 
 
     const handleCategoryChange = (event, value) => {
-        console.log("Value")
         console.log(value)
         setSelectedCategories(value);
         // Reset selectedGtinNumber when category changes
-        setSelectedGtinNumber(null);
+        // check if user cancelled the selection then reset the selectedGtinNumber as well as other products
+        if (!value) {
+            setSelectedGtinNumber(null);
+            setSelectedOtherProducts([]);
+        }
     };
 
     const handleGtinNumberChange = (event, value) => {
 
         setSelectedGtinNumber(value);
+        if (!value) {
+            setSelectedOtherProducts([]);
+        }
     };
 
 
@@ -790,7 +645,7 @@ const MemmberRegisteration = () => {
                                             borderRadius: '0px',
                                             border: 'none'
                                         }}
-                                        // required
+                                    // required
                                     />
 
                                 </div>
@@ -1005,7 +860,7 @@ const MemmberRegisteration = () => {
                                     // required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
- 
+
 
                         </div>
 
@@ -1179,34 +1034,6 @@ const MemmberRegisteration = () => {
 
                         </div>
 
-                        {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
-                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='upload'>Upload your company Commercial Registration (CR)<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={handleDocUpload}
-                                    id='upload'
-                                    // accept=".pdf,.doc,.docx"
-                                    placeholder='Upload Company Documents'
-                                    required
-                                    type='file' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-
-                            <div className='w-full sm:w-[34%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='uploadNational'>Upload National Address <span className='font-normal'> (QR Code photo)</span><span className='text-red-600 font-normal'>*</span></label>
-                                <input
-                                    onChange={handleImageChange}
-                                    // accept="image/*"
-                                    required
-                                    // onChange={(e) => setUploadNationalAddress(e.target.value)}
-                                    id='uploadNational'
-                                    type='file' className='border-2 border-[#e4e4e4] w-full text-right rounded-sm p-2 mb-3' />
-                            </div>
-                        </div>
-                        {errorMessage && (
-                            <p className='text-red-600'>{errorMessage}</p>
-                        )} */}
-
 
                         <div>
                             <div className='mt-6'>
@@ -1231,7 +1058,7 @@ const MemmberRegisteration = () => {
                                                     <td>{item.price}</td>
                                                 </tr>
                                             ))}
-                                            {selectedOtherProducts.map((item, index) => (
+                                            {otherSubscriptionData?.map((item, index) => (
                                                 <tr key={index}>
                                                     <td>{item.product_name}</td>
                                                     <td>0</td>
