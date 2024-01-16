@@ -8,10 +8,10 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData,
 }) => {
-//   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-//   console.log(gs1MemberInvoiceData);
+  //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
+  //   console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
@@ -54,24 +54,25 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
     setLoading(true);
 
     const approvedBody = {
-        "userId": gs1MemberData?.id,
-        "status": selectedStatus, // or approved
+      "userId": gs1MemberData?.id,
+      "status": selectedStatus, // or approved
     };
     if (rejected) {
-        approvedBody.reject_reason = rejected;
+      approvedBody.reject_reason = rejected;
     }
 
 
-  
+
     try {
       const res = await newRequest.post('/users/sendInvoice', approvedBody);
-      
+
       setLoading(false);
-      toast.success(res.data.message || "Invoice status updated successfully!");
+      toast.success(res?.data?.message || "Invoice status updated successfully!");
       fetchAllUserData();
-        // Close the popup
-        handleClosePendingApprovedPopup();
-    //   }
+      // Close the popup
+      handleClosePendingApprovedPopup();
+      fetchMemberHistoryData();
+      //   }
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -86,7 +87,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-            <form onSubmit={handleSubmit} className='w-full'>
+              <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approve</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">

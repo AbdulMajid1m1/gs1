@@ -267,6 +267,7 @@ const sendAndSaveInvoiceSchema = Joi.object({
     userId: Joi.string().required(),
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
+    productIDs: Joi.array().items(Joi.string()).required().min(1),
 });
 
 export const sendInvoiceToUser = async (req, res, next) => {
@@ -280,7 +281,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
         }
         // Extract user and cart values
 
-        const { userId, status, reject_reason } = value;
+        const { userId, status, reject_reason, productIDs } = value;
 
 
 
@@ -298,7 +299,21 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
         const cartValue = user.carts[0];
         cartValue.cart_items = JSON.parse(cartValue.cart_items);
-        console.log("cartValue", cartValue)
+
+
+
+
+
+        // Filter out the cart items that have a productID present in the list
+        cartValue.cart_items = cartValue.cart_items.filter(item => productIDs.includes(item.productID));
+
+        if (cartValue.cart_items.length === 0) {
+            throw createError(400, "no cart items found")
+        }
+
+        console.log("cartValue", cartValue);
+
+
         let userUpdateResult; // to store the updated user
         let transaction;
         if (status === 'approved') {
@@ -400,7 +415,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
                 await prisma.member_documents.create({ data: documentsData })
-                // isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
 
                 // update user isproductApproved to 1 and return the updated user
                 userUpdateResult = await prisma.users.update({
