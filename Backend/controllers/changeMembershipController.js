@@ -1141,7 +1141,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
             console.log("gtinUpgradePricing", gtinUpgradePricing);
 
             const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-                where: { user_id: value.user_id },
+                where: { user_id: value.user_id, isDeleted: false },
                 include: {
                     gtin_product: true // Include the associated gtin_product
                 }
@@ -1597,6 +1597,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         const updateResponse = await prisma.gtin_subcriptions.updateMany({
             where: {
                 user_id: userId,
+                isDeleted: false
 
             },
             data: {

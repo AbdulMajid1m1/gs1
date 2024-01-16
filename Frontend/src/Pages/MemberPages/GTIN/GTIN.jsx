@@ -273,7 +273,7 @@ const Gtin = () => {
           // Handle the error
           console.error(error);
 
-          toast.error(error?.response?.data || "The Bulk File is not Upload", {
+          toast.error(error?.response?.data?.error || 'Something is Wrong', {
             position: 'top-right',
             autoClose: 2000,
             hideProgressBar: false,
@@ -391,7 +391,7 @@ const Gtin = () => {
     setTableSelectedRows(barcodes);
   }
 
-
+  
 
   return (
     <div>

@@ -419,6 +419,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             await prisma.other_products_subcriptions.updateMany({
                                 where: {
                                     product_id: product.id,
+                                    isDeleted: false,
                                     transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
                                 },
                                 data: {
