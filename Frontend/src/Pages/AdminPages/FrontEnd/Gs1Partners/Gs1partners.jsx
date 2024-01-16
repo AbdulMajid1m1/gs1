@@ -14,8 +14,10 @@ import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Addgs1partners from './Addgs1partners';
 import Updatags1partners from './Updatags1partners';
+import { useTranslation } from 'react-i18next';
 const Gs1partners = () => {
 
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -52,12 +54,12 @@ const Gs1partners = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this  GS1 Partners!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('GS1 Partners')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -66,7 +68,7 @@ const Gs1partners = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deletepartners/" + row?.id);
                     if (isDeleted) {
-                        toast.success('GS1 Partners deleted successfully', {
+                        toast.success(`${t('GS1 Partners')}  ${t('has been deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -99,7 +101,7 @@ const Gs1partners = () => {
                 } catch (error) {
                     // Handle any error that occurred during the deletion
                     console.error("Error deleting user:", error);
-                    toast.error('Something went wrong while deleting user', {
+                    toast.error(`${t('GS1 Partners')} ${t('has been not deleted')} ${t('Delete')}!`, {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -237,7 +239,7 @@ const Gs1partners = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={' GS1 Partners '}
+                        title={`${t('GS1 Partners')}`}
                     />
                 </div>
 
@@ -249,13 +251,13 @@ const Gs1partners = () => {
                                 <button
                                     onClick={handleShowCreatePopup}
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                                    <i className="fas fa-plus mr-2"></i>Add
+                                    <i className="fas fa-plus mr-2"></i>{t('Add')}
                                 </button>
                                 <div className="relative">
                                     <button
                                         className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                                     >
-                                        <i className="fas fa-file-import mr-1"></i> Import
+                                        <i className="fas fa-file-import mr-1"></i> {t('Import')}
                                     </button>
                                     <input
                                         type="file"
@@ -269,14 +271,14 @@ const Gs1partners = () => {
                                 <CSVLink data={data}
 
                                     type="button"
-                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  {t('Export')}  <FileUploadIcon />
                                 </CSVLink>
                             </div>
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="GS1 Partners "
+                                    title={`${t('GS1 Partners')}`}
                                     columnsName={GS1PartnersDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
@@ -284,7 +286,7 @@ const Gs1partners = () => {
 
                                     dropDownOptions={[
                                         {
-                                            label: "View",
+                                            label: `${t('View')}`,
                                             icon: (
                                                 <VisibilityIcon
                                                     fontSize="small"
@@ -295,7 +297,7 @@ const Gs1partners = () => {
                                             action: handleView,
                                         },
                                         {
-                                            label: "Edit",
+                                            label: `${t('Edit')}`,
                                             icon: (
                                                 <EditIcon
                                                     fontSize="small"
@@ -306,7 +308,7 @@ const Gs1partners = () => {
                                             action: handleShowUpdatePopup,
                                         },
                                         {
-                                            label: "Delete",
+                                            label: `${t('Delete')}`,
                                             icon: (
                                                 <DeleteIcon
                                                     fontSize="small"

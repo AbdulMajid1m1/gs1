@@ -4,8 +4,10 @@ import newRequest from '../../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
+    const { t } = useTranslation();
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updatecatlogmenu"));
     const [category_name_en, setcategory_name_en] = useState(updateBrandData?.category_name_en || '');
@@ -86,7 +88,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 status: Number(status),
             });
 
-            toast.success(response?.data?.message || 'Mega Menu categorie updated successfully', {
+            toast.success(response?.data?.message || `${t('Mega Menu')} ${('categorie')} ${('has been')} ${t('Updated Successfully')}.` , {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -102,7 +104,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -130,37 +132,35 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full max-h-screen overflow-y-auto">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Mega Menu Categories</h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Menu')} {t('Categories')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[English]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Categories')} {t('Name[English]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_en"
                                             value={category_name_en}
                                             onChange={(e) => setcategory_name_en(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Name[English]"
+                                            placeholder={`${t('Enter')}${t('Categories')}${t('Name[English]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[Arabic]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Categories')} {t('Name[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_ar"
                                             value={category_name_ar}
                                             onChange={(e) => setcategory_name_ar(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Name[Arabic]"
+                                            placeholder={`${t('Enter')}${t('Categories')}${t('Name[Arabic]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Add Mega Menu Categories
+                                            {t('Add')} {t('Menu')} {t('Categories')}
                                         </label>
                                         <select
                                             id="status"
@@ -168,7 +168,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setMegaMenuCategories(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
+                                            <option value="0">-- {t('Select')} --</option>
                                             {
                                                 megamenudropdown && megamenudropdown.map((itme, index) => {
                                                     return (
@@ -182,7 +182,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Select Category Level
+                                            {t('Select Category Level')}
                                         </label>
                                         <select
                                             id="status"
@@ -197,7 +197,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -205,7 +205,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
+                                            <option value="0">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
@@ -218,7 +218,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Status
+                                            {t('Status')}
                                         </label>
                                         <select
                                             id="status"
@@ -226,34 +226,34 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setstatus(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">inactive</option>
-                                            <option value="1">active</option>
+                                            <option value="0">{t('Inactive')}</option>
+                                            <option value="1">{t('Active')}</option>
                                         </select>
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Description
+                                            {t('Description')}
                                         </label>
                                         <textarea
                                             type="text"
                                             id="name_ar"
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            placeholder="Enter Description"
+                                            placeholder={`${t('Enter')}${t('Description')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
 
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Meta Title</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Meta')}  {t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Enter Meta Title"
+                                            placeholder={`${t('Enter')}${t('Meta')}${t('Title')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
@@ -261,14 +261,14 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Meta  Description
+                                            {t('Meta')}  {t('Description')}
                                         </label>
                                         <textarea
                                             type="text"
                                             id="name_ar"
                                             value={MetaDescription}
                                             onChange={(e) => setMetaDescription(e.target.value)}
-                                            placeholder="Enter Meta Description"
+                                            placeholder={`${t('Enter')}${t('Meta')}${t('Description')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
 
@@ -282,7 +282,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseUpdatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     
                                     <Button
@@ -293,7 +293,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update Mega Menu categories
+                                        {t('Update')} {t('Menu')} {t('Categories')}
                                     </Button>
                                 </div>
                             </form>

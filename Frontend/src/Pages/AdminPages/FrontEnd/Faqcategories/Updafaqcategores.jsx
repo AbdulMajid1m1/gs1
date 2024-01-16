@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -12,6 +13,7 @@ const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [name, setname] = useState(updateBrandData?.name || '');
     const [slug, setslug] = useState(updateBrandData?.slug || '');
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -25,7 +27,7 @@ const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
                 name: name,
             });
 
-            toast.success(response?.data?.message || 'Faq Categories updated successfully', {
+            toast.success(response?.data?.message || `${t('Faq Categories')} ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -41,7 +43,7 @@ const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -71,17 +73,16 @@ const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Faq Categories</h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Faq Categories')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name</label>
+                                        <label htmlFor="field1" className="text-secondary"> {t('Category')}{t('Name')}</label>
                                         <input
                                             type="text"
                                             id="name"
                                             value={name}
                                             onChange={(e) => setname(e.target.value)}
-                                            //   readOnly
-                                            placeholder="Enter Category Name"
+                                            placeholder={`${t('Enter')} ${t('Category')} ${t('Name')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
@@ -96,7 +97,7 @@ const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseUpdatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <Button
                                         variant="contained"
@@ -106,7 +107,7 @@ const Updafaqcategores = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update Faq Categorie
+                                        {t('Update')} {t('Faq Categories')}
                                     </Button>
                                 </div>
                             </form>

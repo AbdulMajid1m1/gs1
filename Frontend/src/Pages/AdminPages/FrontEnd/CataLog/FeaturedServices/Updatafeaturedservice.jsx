@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import imageLiveUrl from '../../../../../utils/urlConverter/imageLiveUrl';
+import { useTranslation } from 'react-i18next';
 
 const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -13,6 +14,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
     const [Page, setPage] = useState(updateBrandData?.link || '')
 
     const [Pagedropdown, setPagedropdown] = useState([])
+    const { t } = useTranslation();
     useEffect(() => {
         const getpagedata = async () => {
             try {
@@ -51,7 +53,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
         try {
             const response = await newRequest.put(`/updatefeatured_services/${updateBrandData?.id}`, formData);
 
-            toast.success(response?.data?.message || 'Service updated successfully', {
+            toast.success(response?.data?.message || `${('Featured Services')} ${('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -66,7 +68,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -91,12 +93,12 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Service</h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Featured Services')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                    
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -104,7 +106,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
@@ -116,7 +118,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                                     </div>
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Status
+                                            {t('Status')}
                                         </label>
                                         <select
                                             id="status"
@@ -124,15 +126,15 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                                             onChange={(e) => setstatus(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">inactive</option>
-                                            <option value="1">active</option>
+                                            <option value="0">{t('Inactive')}</option>
+                                            <option value="1">{t('Active')}</option>
                                         </select>
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                         <div className="imgesection">
                                             <img
@@ -169,7 +171,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseUpdatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     {/* <button
                                 type="button"
@@ -186,7 +188,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update Featured Service
+                                        {t('Update')} {t('Featured Services')}
                                     </Button>
                                 </div>
                             </form>

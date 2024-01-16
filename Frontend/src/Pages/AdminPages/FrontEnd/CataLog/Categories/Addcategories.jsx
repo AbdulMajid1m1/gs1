@@ -1,6 +1,7 @@
 import { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_en, setcategory_name_en] = useState("");
@@ -14,6 +15,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Title, setTitle] = useState("");
     const [MetaDescription, setMetaDescription] = useState('')
 
+    const { t } = useTranslation();
     useEffect(() => {
         const getDocuments = async () => {
             try {
@@ -100,35 +102,35 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full max-h-screen overflow-y-auto">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Mega Menu Categories </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Mega Menu')} {t('Categories')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[English]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Categories')} {t('Name[English]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_en"
                                             value={category_name_en}
                                             onChange={(e) => setcategory_name_en(e.target.value)}
-                                            placeholder="Enter Category Name[English]"
+                                            placeholder={`${t('Enter')}${t('Categories')}${t('Name[English]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[Arabic]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Categories')} {t('Name[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_ar"
                                             value={category_name_ar}
                                             onChange={(e) => setcategory_name_ar(e.target.value)}
-                                            placeholder="Enter Category Name[Arabic]"
+                                            placeholder={`${t('Enter')}${t('Categories')}${t('Name[Arabic]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Add Mega Menu Categories
+                                            {t('Add')} {t('Menu')} {t('Categories')}
                                         </label>
                                         <select
                                             id="status"
@@ -136,7 +138,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setMegaMenuCategories(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
+                                            <option value="0">-- {t('Select')}  --</option>
                                             {
                                                 megamenudropdown && megamenudropdown.map((itme, index) => {
                                                     return (
@@ -150,7 +152,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Select Category Level
+                                         {t('Select Category Level')}
                                         </label>
                                         <select
                                             id="status"
@@ -165,7 +167,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                          {t('Set Page')} 
                                         </label>
                                         <select
                                             id="status"
@@ -173,7 +175,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">-- Select --</option>
+                                            <option value="0">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
@@ -186,27 +188,27 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                             Description
+                                            {t('Description')}
                                         </label>
                                         <textarea
                                             type="text"
                                             id="name_ar"
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            placeholder="Enter Description"
+                                            placeholder={`${t('Enter')}${t('Description')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
 
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Meta Title</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Meta')}  {t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Enter Meta Title"
+                                            placeholder={`${t('Enter')}${t('Meta')}${t('Title')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
@@ -214,14 +216,14 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                           Meta  Description
+                                            {t('Meta')}  {t('Description')}
                                         </label>
                                         <textarea
                                             type="text"
                                             id="name_ar"
                                             value={MetaDescription}
                                             onChange={(e) => setMetaDescription(e.target.value)}
-                                            placeholder="Enter Meta Description"
+                                            placeholder={`${t('Enter')}${t('Meta')}${t('Description')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
 
@@ -235,14 +237,14 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Mega Menu categories
+                                       {t('Add')} {t('Menu')} {t('Categories')}
                                     </button>
                                 </div>
 

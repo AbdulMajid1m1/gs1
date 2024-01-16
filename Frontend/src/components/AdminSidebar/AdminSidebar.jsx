@@ -54,6 +54,9 @@ import Categoriesicon from "../../Images/Categories.jpg"
 import MegaMenuicon from "../../Images/Mega Menu.jpg"
 import Catalogicon from "../../Images/Catalgoicon.jpg"
 import footericon from "../../Images/Footericon.png"
+import { I18nextProvider } from "react-i18next";
+import i18n from "../../i18n";
+import LanguageSwitcher from "../../switer";
 
 const AdminSideBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -180,6 +183,11 @@ const AdminSideBar = () => {
             className="flex justify-center items-center cursor-pointer mt-1 px-4"
           >
            <div className='flex justify-end items-center px-0 mr-4'>
+            <span>
+                <I18nextProvider i18n={i18n}>
+                  <LanguageSwitcher />
+                </I18nextProvider>
+            </span>
                 <span>
                   <p className="text-white font-sans mr-5 hover:text-primary" 
                     onClick={() => handleItemClickGs1website('/')}
@@ -208,7 +216,6 @@ const AdminSideBar = () => {
               className="h-7 w-7 bg-white rounded-full"
               alt=""
             />
-
           </div>
         </div>
       </div>
