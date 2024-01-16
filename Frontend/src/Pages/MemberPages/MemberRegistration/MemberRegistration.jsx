@@ -207,7 +207,7 @@ const MemmberRegisteration = () => {
 
 
     const handleOtherProductsChange = (event, value) => {
-        setOtherProductChange(!otherProductChange);
+        // setOtherProductChange(!otherProductChange);
         // setSelectedOtherProducts(value);
 
         // const names = value.map((option) => option.product_name);
@@ -237,6 +237,7 @@ const MemmberRegisteration = () => {
             option.product_name !== selectedGLNOption.product_name
         );
     };
+
 
     const [subscriptionData, setSubscriptionData] = useState([]);
 
@@ -277,7 +278,8 @@ const MemmberRegisteration = () => {
 
         setSubscriptionData(newSubscriptionData);
         setSelectedOtherProducts(newSelectedOtherProducts);
-    }, [selectedCategories, selectedGtinNumber, otherProductChange]);
+    // }, [selectedCategories, selectedGtinNumber, otherProductChange]);
+}, [selectedCategories, selectedGtinNumber]);
 
 
     // Calculate total price
