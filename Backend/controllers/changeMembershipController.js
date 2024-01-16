@@ -2668,16 +2668,16 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
         const { transactionId, userId } = value;
 
-        const bankSlipDocuments = await prisma.member_documents.findMany({
-            where: {
-                user_id: userId,
-                transaction_id: transactionId,
-                type: 'bank_slip',
-            }
-        });
-        if (bankSlipDocuments.length === 0) {
-            throw createError(400, `No bank slip documents found for the transaction ID: ${transactionId}`);
-        }
+        // const bankSlipDocuments = await prisma.member_documents.findMany({
+        //     where: {
+        //         user_id: userId,
+        //         transaction_id: transactionId,
+        //         type: 'bank_slip',
+        //     }
+        // });
+        // if (bankSlipDocuments.length === 0) {
+        //     throw createError(400, `No bank slip documents found for the transaction ID: ${transactionId}`);
+        // }
 
         // Fetch upgrade cart
         const upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
