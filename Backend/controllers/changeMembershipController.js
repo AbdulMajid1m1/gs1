@@ -9,23 +9,16 @@ import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import QRCode from 'qrcode';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-import ejs from 'ejs';
-import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
 
-
-
 // in scheema take user_id 
 const renewMembershipSchema = Joi.object({
     user_id: Joi.string().required(),
 });
-
-
-
 
 async function calculateSubscriptionPrice(userId, newSubscriptionId) {
     try {
@@ -510,10 +503,11 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                         // Update GTIN subscriptions for the user
                         await prisma.gtin_subcriptions.updateMany({
                             // update based on the transaction ID
-                            where: { transaction_id: currentDocument.transaction_id },
+                            where: { user_id: userId, isDeleted: false },
                             data: {
                                 status: 'active',
                                 expiry_date: expiryDate,
+
                                 // gtin_subscription_limit: product.total_no_of_barcodes,
                                 // gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
 
@@ -540,7 +534,8 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                             await prisma.other_products_subcriptions.updateMany({
                                 where: {
                                     product_id: product.id,
-                                    transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
+                                    user_id: userId,
+                                    isDeleted: false
                                 },
                                 data: {
                                     // other_products_subscription_limit: product.total_no_of_barcodes,
