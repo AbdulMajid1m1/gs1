@@ -1024,13 +1024,17 @@ const RegisteredMembersView = () => {
 
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (
-          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} fetchMemberInvoiceData={fetchMemberInvoiceData} />
+          <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} fetchMemberInvoiceData={fetchMemberInvoiceData}
+          fetchMemberHistoryData={fetchMemberHistoryData} 
+           />
         )}
 
 
         {/* PendingApproved component with handleShowPendingApprovedPopup prop */}
         {isPendingApprovedPopupVisible && (
-          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData} />
+          <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData}
+          fetchMemberHistoryData={fetchMemberHistoryData}
+           />
         )}
 
 
