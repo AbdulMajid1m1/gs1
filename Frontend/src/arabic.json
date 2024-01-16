@@ -89,5 +89,14 @@
     "Name":"اسم",
     "Slug":"سبيكة",
     "Team Member":"أعضاء الفريق",
-    "Job Title":"اللقب الوظيفي"
+    "Job Title":"اللقب الوظيفي",
+    "User Guide pdf":"صارف گائیڈ پی ڈی ایف",
+    "Add Pdf":"إضافة Pdf",
+    "User Guide":"دليل المستخدم",
+    "Pdf File":"ملف Pdf",
+    "Upload File Only Pdf":"رفع الملف pdf فقط",
+    "User Guide Video":"فيديو دليل المستخدم",
+    "Video":"فيديو",
+    "Video File":"ملف فيديو",
+    "Upload File Only video":"رفع الملف فيديو فقط"
 }

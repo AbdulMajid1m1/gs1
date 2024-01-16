@@ -89,5 +89,14 @@
     "Name":"Name",
     "Slug":"Slug",
     "Team Member":"Team Member",
-    "Job Title":"Job Title"
+    "Job Title":"Job Title",
+    "User Guide pdf":"User Guide pdf",
+    "Add Pdf":"Add Pdf",
+    "User Guide":"User Guide",
+    "Pdf File":"Pdf File",
+    "Upload File Only Pdf":"Upload File Only Pdf",
+    "User Guide Video":"User Guide Video",
+    "Video":"Video",
+    "Video File":"Video File",
+    "Upload File Only video":"Upload File Only video"
 }
