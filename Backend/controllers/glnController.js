@@ -72,6 +72,7 @@ export const createGLN = async (req, res, next) => {
                 where: {
                     user_id: user.id,
                     status: 'active',
+                    isDeleted: false,
                     product_identifier_name: {
                         in: ["GLN (20 Locations)", "GLN (10 Locations)", "GLN (30 Locations)"]
                     }

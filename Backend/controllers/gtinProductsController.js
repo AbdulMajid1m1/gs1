@@ -97,7 +97,8 @@ export const getUserSubscribedProductsNames = async (req, res, next) => {
         const subscribedProducts = await prisma.other_products_subcriptions.findMany({
             where: {
                 user_id: userId,
-                status: 'active'
+                status: 'active',
+                isDeleted: false,
             },
             include: {
                 product: {

@@ -29,6 +29,7 @@ const Gtin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
   const [isExportBarcode, setIsExportBarcode] = useState(false); 
+  const [totalCategory, setTotalCategory] = useState("");
   const navigate = useNavigate()
 
   const [error, setError] = useState(false);
@@ -54,8 +55,29 @@ const Gtin = () => {
   };
 
 
-  useEffect(() => {
-    fetchData(); // Calling the function within useEffect, not inside itself
+   
+    const fetchGtinProducts = async () => {
+       try {
+         const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
+        //  console.log(response.data);
+     
+        //  setGtinSubscriptions(response?.data?.gtinSubscriptions);
+         setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+         console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+         console.log(totalCategory)
+    
+ 
+      
+       } catch (err) {
+         console.log(err);
+       }
+     }
+     
+     
+     
+     useEffect(() => {
+      fetchData(); // Calling the function within useEffect, not inside itself
+      fetchGtinProducts();
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
@@ -273,7 +295,7 @@ const Gtin = () => {
           // Handle the error
           console.error(error);
 
-          toast.error(error?.response?.data || "The Bulk File is not Upload", {
+          toast.error(error?.response?.data?.error || 'Something is Wrong', {
             position: 'top-right',
             autoClose: 2000,
             hideProgressBar: false,
@@ -391,7 +413,7 @@ const Gtin = () => {
     setTableSelectedRows(barcodes);
   }
 
-
+  
 
   return (
     <div>
@@ -480,13 +502,13 @@ const Gtin = () => {
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              GCP {data[0]?.gcpGLNID}
+              GCP {memberData?.gcpGLNID}
             </button>
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
 
-              {cartItemData?.[0]?.productName}
+              {totalCategory}
             </button>
 
             <button

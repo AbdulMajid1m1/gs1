@@ -64,6 +64,7 @@ export const createSSCC = async (req, res, next) => {
                 where: {
                     user_id: user.id,
                     status: 'active',
+                    isDeleted: false,
                     product_identifier_name: "SSCC" // Changed to SSCC
                 },
                 include: {
@@ -178,6 +179,7 @@ export const createBulkSSCC = async (req, res, next) => {
                 where: {
                     user_id: user.id,
                     status: 'active',
+                    isDeleted: false,
                     product_identifier_name: "SSCC" // Changed to SSCC
                 },
                 include: {
