@@ -2309,8 +2309,28 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             // if subType is UPGRADE then in registration fee add final price and in yearly fee add final - registration fee
 
             cart.cart_items.push({
+                registration_fee: user.membership_category === "non_med_category" ?
+                    subscribedProductDetails.member_registration_fee :
+                    subscribedProductDetails.med_registration_fee,
+                yearly_fee: user.membership_category === "non_med_category" ?
+                    subscribedProductDetails.gtin_yearly_subscription_fee :
+                    subscribedProductDetails.med_yearly_subscription_fee,
+                productName: subscribedProductDetails.member_category_description,
+            });
+
+            let newDowngradeYearlyFee = user.membership_category === "non_med_category" ?
+                subscribedProductDetails.member_registration_fee :
+                subscribedProductDetails.med_registration_fee;
+            let newDowngradeRegistrationFee = user.membership_category === "non_med_category" ?
+                subscribedProductDetails.gtin_yearly_subscription_fee :
+                subscribedProductDetails.med_yearly_subscription_fee;
+
+
+            cart.cart_items.push({
                 registration_fee: 0,
                 yearly_fee: 0,
+                newDowngradeYearlyFee: newDowngradeYearlyFee,
+                newDowngradeRegistrationFee: newDowngradeRegistrationFee,
                 productName: subscribedProductDetails.member_category_description,
             });
             cart.transaction_id = transactionId;
@@ -2318,6 +2338,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
                 topHeading: "INVOICE",
+                type: 'downgrade',
                 secondHeading: `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
@@ -2668,16 +2689,16 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
         const { transactionId, userId } = value;
 
-        const bankSlipDocuments = await prisma.member_documents.findMany({
-            where: {
-                user_id: userId,
-                transaction_id: transactionId,
-                type: 'bank_slip',
-            }
-        });
-        if (bankSlipDocuments.length === 0) {
-            throw createError(400, `No bank slip documents found for the transaction ID: ${transactionId}`);
-        }
+        // const bankSlipDocuments = await prisma.member_documents.findMany({
+        //     where: {
+        //         user_id: userId,
+        //         transaction_id: transactionId,
+        //         type: 'bank_slip',
+        //     }
+        // });
+        // if (bankSlipDocuments.length === 0) {
+        //     throw createError(400, `No bank slip documents found for the transaction ID: ${transactionId}`);
+        // }
 
         // Fetch upgrade cart
         const upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
