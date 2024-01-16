@@ -224,13 +224,18 @@
                                 <b>Membership Type:</b> <%= data.memberData.gtin_subscription.products.member_category_description %>
                             </p>
                             <p class="p-text">
-                                <b>Payment Method</b> 
+                                <b>Payment Method:</b> 
                                 <% if (data.cart.payment_type === 'bank_transfer') { %>
                                     Bank Transfer
                                 <% } else { %>
                                     Bank Transfer
                                 <% } %>
                             </p>
+                            <% if (data.type === 'downgrade' && data.cart.cart_items[0].newDowngradeYearlyFee) { %>
+                                <p class="p-text">
+                                    <b>New Subscription Yearly Fee:</b> <%= data.cart.cart_items[0].newDowngradeYearlyFee %>
+                                </p>
+                            <% } %>
                         </td>
                     </tr>
                     <!-- Add any additional rows as needed -->
@@ -241,12 +246,16 @@
 
               
               <!-- Invoice Items Table -->
-              <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1.2rem;">
+            <table class="table-suply table-sm" width="100%" cellspacing="0" cellpadding="0" style="font-size: 1.2rem;">
                 <tr class="p-text text-bold" style="background-color: #003D79; color: white;">
                     <th colspan="2">#</th>
                     <th colspan="4">Description</th>
                     <th colspan="2">Registration Fee</th>
-                    <th colspan="2">Yearly Fee</th>
+                    <% if (data.type === 'downgrade') { %>
+                        <!-- Don't show yearly fee column -->
+                    <% } else { %>
+                        <th colspan="2">Yearly Fee</th>
+                    <% } %>
                     <th colspan="2">SubTotal</th>
                 </tr>
 
@@ -255,9 +264,16 @@
                         <td colspan="2" class="text-center p-text"><%= index + 1 %></td>
                         <td colspan="4" class="p-text text-left"><%= item.productName %></td>
                         <td colspan="2" class="p-text text-right"><%= item.registration_fee %></td>
-                        <td colspan="2" class="p-text text-right"><%= item.yearly_fee %></td>
-                       
-                        <td colspan="2" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10) %></td>
+                        <% if (data.type === 'downgrade') { %>
+                            <!-- Don't show yearly fee -->
+                        <% } else { %>
+                            <td colspan="2" class="p-text text-right"><%= item.yearly_fee %></td>
+                        <% } %>
+                        <% if (data.type === 'downgrade') { %>
+                            <td colspan="2" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) %></td>
+                        <% } else { %>
+                            <td colspan="2" class="text-right p-text text-left"><%= parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10) %></td>
+                        <% } %>
                     </tr>
                 <% }); %>
 
@@ -265,12 +281,15 @@
                     <td colspan="10" class="text-bold p-text text-left">Total</td>
                     <% let totalPrice = 0; %>
                     <% data.cart.cart_items.forEach((item) => { %>
-                        <% totalPrice += parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10); %>
+                        <% if (data.type === 'downgrade') { %>
+                            <% totalPrice += parseInt(item.registration_fee, 10); %>
+                        <% } else { %>
+                            <% totalPrice += parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10); %>
+                        <% } %>
                     <% }); %>
                     <td colspan="2" class="text-bold p-text text-right"><%= totalPrice %></td>
                 </tr>
             </table><br>
-
 
                
 
