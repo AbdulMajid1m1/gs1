@@ -32,6 +32,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
       let total = 0;
       const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
+      // console.log(cartItems);
       cartItems.forEach((item) => {
         total += parseInt(item.price); // Make sure to parse the price as an integer
       });
@@ -43,6 +44,53 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
   }
+
+  const [cartItemsProducts, setCartItemsProducts] = useState([]);
+
+  const handleDeleteRow = (index) => {
+    // Create a copy of the current memberInvoiceData
+    const updatedData = [...memberInoviceData];
+
+    // Remove the selected row
+    updatedData.forEach((item) => {
+      const cartItems = JSON.parse(item.cart_items);
+      cartItems.splice(index, 1);
+      item.cart_items = JSON.stringify(cartItems);
+    });
+
+    // Update state with the modified data
+    setMemberInvoiceData(updatedData);
+
+    // Recalculate total price
+    let total = 0;
+    updatedData.forEach((item) => {
+      const cartItems = JSON.parse(item.cart_items);
+      console.log(cartItems)
+      const cartItemSpecificProducts = cartItems.map((cartItem) => {
+        return cartItem?.productID;
+      });
+
+      console.log(cartItemSpecificProducts)
+      setCartItemsProducts(cartItemSpecificProducts)
+
+      cartItems.forEach((cartItem) => {
+        total += parseInt(cartItem.price);
+      });
+    });
+    setTotalPrice(total);
+
+
+    // Check if no rows are selected after deletion
+    const isAnyRowSelected = updatedData.some((item) => {
+      const cartItems = JSON.parse(item.cart_items);
+      return cartItems.length > 0;
+    });
+
+    // Update radio button based on row selection
+    setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
+  };
+
+
 
   useEffect(() => {
     handleMemberInvoiceData();
@@ -56,6 +104,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     const approvedBody = {
       "userId": gs1MemberData?.id,
       "status": selectedStatus, // or approved
+      "productIDs": cartItemsProducts,
     };
     if (rejected) {
       approvedBody.reject_reason = rejected;
@@ -152,6 +201,22 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                         <th>DELETE</th>
                       </tr>
                     </thead>
+                    {/* <tbody>
+                      {.map((item, index) => {
+                        const cartItems = JSON.parse(item.cart_items);
+                        return cartItems.map((cartItem, cartIndex) => (
+                          <tr key={cartIndex}>
+                            <td>{cartItem.productName}</td>
+                            <td>{cartItem.registration_fee}</td>
+                            <td>{cartItem.yearly_fee}</td>
+                            <td>{cartItem.price}</td>
+                            <td className='hover:text-red-500 cursor-pointer'>
+                              <DeleteSweepIcon />
+                            </td>
+                          </tr>
+                        ));
+                      })}
+                    </tbody> */}
                     <tbody>
                       {memberInoviceData.map((item, index) => {
                         const cartItems = JSON.parse(item.cart_items);
@@ -161,7 +226,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                             <td>{cartItem.registration_fee}</td>
                             <td>{cartItem.yearly_fee}</td>
                             <td>{cartItem.price}</td>
-                            <td className='hover:text-red-500 cursor-pointer'>
+                            <td className='hover:text-red-500 cursor-pointer' onClick={() => handleDeleteRow(cartIndex)}>
                               <DeleteSweepIcon />
                             </td>
                           </tr>
