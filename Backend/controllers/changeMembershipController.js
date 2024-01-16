@@ -490,8 +490,10 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
                         // Update user with new information
-                        expiryDate = new Date();
-                        expiryDate.setDate(expiryDate.getDate() + existingUser.gcp_expiry.getDate());
+                        // get existingUser.gcp_expiry and add 1 year to it
+                        expiryDate = new Date(existingUser.gcp_expiry);
+                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
                         console.log("expiryDate");
                         console.log(expiryDate);
                         // Update user with new information
@@ -589,7 +591,6 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 const CertificateData = {
                     BACKEND_URL: BACKEND_URL,
                     qrCodeDataURL: qrCodeDataURL,
-
                     user: {
                         company_name_eng: existingUser?.company_name_eng,
                     },
@@ -2308,7 +2309,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             let cart = { cart_items: [] };
             // if subType is UPGRADE then in registration fee add final price and in yearly fee add final - registration fee
 
-          
+
 
             let newDowngradeYearlyFee = user.membership_category === "non_med_category" ?
                 subscribedProductDetails.member_registration_fee :
