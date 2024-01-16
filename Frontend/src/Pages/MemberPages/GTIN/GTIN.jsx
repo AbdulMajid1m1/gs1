@@ -29,6 +29,7 @@ const Gtin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
   const [isExportBarcode, setIsExportBarcode] = useState(false); 
+  const [totalCategory, setTotalCategory] = useState("");
   const navigate = useNavigate()
 
   const [error, setError] = useState(false);
@@ -54,8 +55,38 @@ const Gtin = () => {
   };
 
 
-  useEffect(() => {
-    fetchData(); // Calling the function within useEffect, not inside itself
+   
+  // useEffect(() => {
+    const fetchGtinProducts = async () => {
+       try {
+         const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
+         console.log(response.data);
+        //  setExpiryDate(response?.data?.gtinSubscriptions[0]?.expiry_date);
+ 
+        //  setGtinSubscriptions(response?.data?.gtinSubscriptions);
+         setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+        console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+        console.log(totalCategory)
+        //  setTotalRange(response?.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+        //  setGtinBarcodeIssued(response?.data?.gtinSubscriptions[0]?.gtin_subscription_counter);
+        //  setGtinBarcodeRemaining(response?.data?.gtinSubscriptions[0]?.gtin_subscription_limit);
+         
+ 
+        //  setOtherProductSubscriptions(response?.data?.otherProductSubscriptions);
+ 
+ 
+      
+       } catch (err) {
+         console.log(err);
+       }
+     }
+     //  }, []) 
+     
+     
+     
+     useEffect(() => {
+      fetchData(); // Calling the function within useEffect, not inside itself
+      fetchGtinProducts();
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
@@ -486,7 +517,7 @@ const Gtin = () => {
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
 
-              {cartItemData?.[0]?.productName}
+              {totalCategory}
             </button>
 
             <button
