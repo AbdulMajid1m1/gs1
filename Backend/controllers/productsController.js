@@ -376,7 +376,7 @@ export const bulkCreateProduct = async (req, res) => {
         }
 
         // Handle the parent member ID logic if applicable
-        if (user.parent_memberID !== '0') {
+        if (user.parent_memberID !== '0' && user.parent_memberID !== null) {
             user = await prisma.users.findUnique({ where: { id: user.parent_memberID } });
             if (!user) {
                 sendEmailFlag = false;
