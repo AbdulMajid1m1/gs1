@@ -37,22 +37,23 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
         }
       };
 
-    const handleAddCompany = async () => {
-    
-    // Check if required fields are empty
-    if (!companyName || !companyNameArabic) {
-      toast.error('Brand Name (EN and AR) are required.', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      return;
-    }
+    const handleAddCompany = async (e) => {
+      e.preventDefault();
+
+    // // Check if required fields are empty
+    // if (!companyName || !companyNameArabic) {
+    //   toast.error('Brand Name (EN and AR) are required.', {
+    //     position: 'top-right',
+    //     autoClose: 2000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: 'light',
+    //   });
+    //   return;
+    // }
     
     setLoading(true);
 
@@ -63,7 +64,10 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     formData.append('status', 'active');
     formData.append('user_id', memberData?.id);
     formData.append('companyID', memberData?.companyID);
-    formData.append('brandCertificate', brandCertificate);
+
+    if (brandCertificate) {
+      formData.append('brandCertificate', brandCertificate);
+    }
 
     try {
       const response = await newRequest.post('/brands', formData , {
@@ -116,7 +120,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-overlay">
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
-                           <form className='w-full'>
+                           <form onSubmit={handleAddCompany} className='w-full'>
                              <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Brands</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -128,6 +132,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                    onChange={(e) => setCompanyName(e.target.value)}
                                    placeholder="Enter Brand Name EN"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                   required
                                  />
                                </div>
 
@@ -140,6 +145,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                    onChange={(e) => setCompanyNameArabic(e.target.value)}
                                    placeholder="Enter Brand Name AR"
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                   required
                                  />
                                </div>
                              </div>
@@ -173,7 +179,8 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                <Button
                                   variant="contained"
                                   style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                                  onClick={handleAddCompany}
+                                  type="submit"
+                                  // onClick={handleAddCompany}
                                   disabled={loading}
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
