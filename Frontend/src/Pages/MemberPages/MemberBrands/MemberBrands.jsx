@@ -180,17 +180,7 @@ const MemberBrands = () => {
         try {
           const isDeleted = await newRequest.delete("/brands/" + row?.id);
           if (isDeleted) {
-            toast.success('Cr number deleted successfully', {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-
+            toast.success(isDeleted?.data?.message || 'Brand has been deleted successfully');
 
             // filter out the deleted user from the data
             const filteredData = data.filter((item) => item?.id !== row?.id);
@@ -198,31 +188,13 @@ const MemberBrands = () => {
 
           } else {
             // Handle any additional logic if the user was not deleted successfully
-            toast.error('Failed to delete user', {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error('Failed to delete the Brands');
 
           }
         } catch (error) {
           // Handle any error that occurred during the deletion
           console.error("Error deleting user:", error);
-          toast.error('Something went wrong while deleting user', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.error('Something went wrong while deleting user');
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         return;

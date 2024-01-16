@@ -11,6 +11,13 @@ const RenewPopUp = ({ isVisible, setVisibility,
 }) => {
   const gs1RegesteredMembersData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
   console.log(gs1RegesteredMembersData);
+  
+  const expiryDate = new Date(gs1RegesteredMembersData.gcp_expiry);
+  const newExpiryDate = new Date(expiryDate);
+  newExpiryDate.setFullYear(newExpiryDate.getFullYear() + 1);
+  const formattedExpiryDate = expiryDate.toLocaleDateString();
+  const formattedNewExpiryDate = newExpiryDate.toLocaleDateString();
+
   //   const [status, setStatus] = useState("");
 //   const [rejected, setRejected] = useState("");
 //   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
@@ -130,6 +137,10 @@ const RenewPopUp = ({ isVisible, setVisibility,
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
                     <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1RegesteredMembersData?.transaction_id}</h2>
+                    <div>
+                      <h2 className="text-secondary font-sans text-sm">GCP Expiry: {formattedExpiryDate}</h2>
+                      <h2 className="text-secondary font-sans text-sm">New GCP: {formattedNewExpiryDate}</h2>
+                    </div>
                   </div>
                   <table>
                     <thead>
