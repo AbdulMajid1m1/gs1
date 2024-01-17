@@ -267,7 +267,10 @@ const sendAndSaveInvoiceSchema = Joi.object({
     userId: Joi.string().required(),
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
-    productIDs: Joi.array().items(Joi.string()).required().min(1),
+    productIDs: Joi.array().items(Joi.object({
+        productID: Joi.string().required(),
+        product_type: Joi.string().required(),
+    })).required().min(1),
 });
 
 export const sendInvoiceToUser = async (req, res, next) => {
@@ -277,12 +280,13 @@ export const sendInvoiceToUser = async (req, res, next) => {
         if (error) {
             console.log("error")
             console.log(error)
+            console.log("error")
             return next(createError(400, error.details[0].message));
         }
         // Extract user and cart values
 
         const { userId, status, reject_reason, productIDs } = value;
-
+        console.log("productIDs", productIDs)
 
 
         // fetch user data and cart data
@@ -305,8 +309,11 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
         // Filter out the cart items that have a productID present in the list
-        cartValue.cart_items = cartValue.cart_items.filter(item => productIDs.includes(item.productID));
-
+        cartValue.cart_items = cartValue.cart_items.filter(item => {
+            return productIDs.some(productId =>
+                productId.productID === item.productID && productId.productType === item.product_type
+            );
+        });
         if (cartValue.cart_items.length === 0) {
             throw createError(400, "no cart items found")
         }

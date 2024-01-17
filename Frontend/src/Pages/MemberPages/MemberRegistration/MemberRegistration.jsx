@@ -266,6 +266,7 @@ const MemmberRegisteration = () => {
                 registrationFee: selectedCategories?.name === "medical"
                     ? product.med_subscription_fee
                     : product.product_subscription_fee,
+                productType: 'other_products',
             }));
         }
 
@@ -700,14 +701,14 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Mobile Number <span>(Omit Zero)</span><span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm'>
-                                   
+
                                     <PhoneInput
                                         international
                                         country={'sa'}
                                         defaultCountry={'sa'}
                                         value={mobileNumber}
                                         onChange={handleMobileNumber}
-                                      
+
                                         inputProps={{
                                             id: 'mobile',
                                             placeholder: 'Mobile Number',
