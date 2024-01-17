@@ -47,12 +47,11 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
   const [cartItemsProducts, setCartItemsProducts] = useState([]);
 
-  const handleDeleteRow = (index) => {
+  const handleDeleteRow = async (index, item) => {
 
     // Check if the index is greater than 0 (not the first row)
     if (index === 0) {
-      // Display an error message
-      toast.info("Cannot remove GTIN Subscription");
+      toast.error("You cannot delete the first row!");
       return;
     }
 
@@ -70,37 +69,47 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     setMemberInvoiceData(updatedData);
 
     // Recalculate total price
-    let total = 0;
-    updatedData.forEach((item) => {
-      const cartItems = JSON.parse(item.cart_items);
-      console.log(cartItems);
-      const cartItemSpecificProducts = cartItems.map((cartItem) => {
-        return {
+    // call the api to delete the cart item
+    try {
+      const res = await newRequest.delete(`/otherProductsSubscriptions/${item.id}`);
+      console.log(res.data);
+      toast.success(res?.data?.message || "Cart item deleted successfully!");
+
+      let total = 0;
+      updatedData.forEach((item) => {
+        const cartItems = JSON.parse(item.cart_items);
+        console.log(cartItems);
+        const cartItemSpecificProducts = cartItems.map((cartItem) => {
+          return {
+            productID: cartItem.productID,
+            productType: cartItem.product_type
+          };
+        });
+
+        console.log(cartItemSpecificProducts);
+        setCartItemsProducts(cartItemSpecificProducts);
+
+        cartItems.forEach((cartItem) => {
+          total += parseInt(cartItem.price);
+        });
+      });
+      setTotalPrice(total);
 
 
-          productID: cartItem.productID,
-          productType: cartItem.product_type
-        };
+      // Check if no rows are selected after deletion
+      const isAnyRowSelected = updatedData.some((item) => {
+        const cartItems = JSON.parse(item.cart_items);
+        return cartItems.length > 0;
       });
 
-      console.log(cartItemSpecificProducts);
-      setCartItemsProducts(cartItemSpecificProducts);
-
-      cartItems.forEach((cartItem) => {
-        total += parseInt(cartItem.price);
-      });
-    });
-    setTotalPrice(total);
+      // Update radio button based on row selection
+      setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response?.data?.error || "Something went wrong!");
+    }
 
 
-    // Check if no rows are selected after deletion
-    const isAnyRowSelected = updatedData.some((item) => {
-      const cartItems = JSON.parse(item.cart_items);
-      return cartItems.length > 0;
-    });
-
-    // Update radio button based on row selection
-    setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
   };
 
 
@@ -240,7 +249,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                             <td>{cartItem.registration_fee}</td>
                             <td>{cartItem.yearly_fee}</td>
                             <td>{cartItem.price}</td>
-                            <td className='hover:text-red-500 cursor-pointer' onClick={() => handleDeleteRow(cartIndex)}>
+                            <td className='hover:text-red-500 cursor-pointer' onClick={() => handleDeleteRow(cartIndex, item)}>
                               <DeleteSweepIcon />
                             </td>
                           </tr>
