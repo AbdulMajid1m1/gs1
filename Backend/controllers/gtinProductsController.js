@@ -138,20 +138,58 @@ export const deleteGtinSubscription = async (req, res, next) => {
 
 
 // Delete Other Products Subscription
+// Joi schema for request parameter validation
+const deleteOtherProductsSubscriptionSchema = Joi.object({
+    id: Joi.string().required(),
+    transaction_id: Joi.string().required()
+});
 export const deleteOtherProductsSubscription = async (req, res, next) => {
-    const { id } = req.params;
+    // const { id, transaction_id } = req.params;
 
     try {
-        const result = await prisma.other_products_subcriptions.deleteMany({
-            where: { id: id },
+        // Validate the request parameters
+        const { error, value } = deleteOtherProductsSubscriptionSchema.validate(req.query);
+        if (error) {
+            throw createError(400, `Invalid request parameters: ${error.details[0].message}`);
+        }
+        const { id, transaction_id } = value;
+
+        const result = await prisma.$transaction(async (prisma) => {
+            const cart = await prisma.carts.findFirst({
+                where: {
+                    transaction_id: transaction_id,
+                },
+            });
+
+            if (!cart) {
+                throw createError(404, 'Cart not found');
+            }
+
+            const cartItems = JSON.parse(cart.cart_items);
+            const newCartItems = cartItems.filter(item => item.id !== id);
+            const newCartItemsStr = JSON.stringify(newCartItems);
+
+            // Update the cart within the transaction
+            await prisma.carts.update({
+                where: { id: cart.id },
+                data: {
+                    cart_items: newCartItemsStr,
+                },
+            });
+
+            const result = await prisma.other_products_subcriptions.deleteMany({
+                where: { id: id },
+            });
+
+            if (result.count === 0) {
+                throw createError(404, 'Subscription not found');
+            }
+
+            return { message: 'Subscription deleted successfully' };
         });
 
-        if (result.count === 0) {
-            throw createError(404, 'Subscription not found');
-        }
-        // Return the deleted subscription
-        return res.status(200).send("Subscription product deleted successfully");
-
+        // Return the result after the transaction
+        return res.status(200).json({ ...result });
 
     } catch (error) {
         console.error(error);

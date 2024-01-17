@@ -15,6 +15,6 @@ router.get('/getUserSubscribedProductsNames', getUserSubscribedProductsNames);
 
 router.delete('/gtinSubscriptions/:id', deleteGtinSubscription);
 
-router.delete('/otherProductsSubscriptions/:id', deleteOtherProductsSubscription);
+router.delete('/deleteotherProductsSubscriptionsFromAdmin', deleteOtherProductsSubscription);
 
 export default router;
