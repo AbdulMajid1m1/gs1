@@ -426,9 +426,9 @@ const MemmberRegisteration = () => {
         // Check if the country code is for Saudi Arabia
         if (value.startsWith('966')) {
             // Check for mobile number (should start with '9665')
-            if (value.length > 1 && value[3] !== '5') {
-                setCompanyLandlineError('Mobile number must start with 9665');
-            }
+            // if (value.length > 1 && value[3] !== '5') {
+            //     setCompanyLandlineError('Mobile number must start with 9665');
+            // }
 
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
