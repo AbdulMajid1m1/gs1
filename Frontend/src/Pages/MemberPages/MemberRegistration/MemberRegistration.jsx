@@ -60,7 +60,8 @@ const MemmberRegisteration = () => {
     const [addCrNumber, setAddCrNumber] = useState("");
     const [crActivity, setCrActivity] = useState("");
     const [error, setError] = useState("");
-
+    const [companyLandlineError, setCompanyLandlineError] = useState("");
+    const [mobileError, setMobileError] = useState("");
 
 
     useEffect(() => {
@@ -415,6 +416,51 @@ const MemmberRegisteration = () => {
     };
 
 
+
+    const handlecompanyLandLine = (value) => {
+        // Reset error message
+        setCompanyLandlineError('');
+
+        // Check if the country code is for Saudi Arabia
+        if (value.startsWith('966')) {
+            // Check for mobile number (should start with '9665')
+            if (value.length > 1 && value[3] !== '5') {
+                setCompanyLandlineError('Mobile number must start with 9665');
+            }
+
+            // Check for maximum length (12 digits including country code)
+            if (value.length > 12) {
+                setCompanyLandlineError('Number must be a maximum of 12 digits');
+            }
+        }
+
+        // Set the mobile number
+        setCompanyLandLine(value);
+    };
+
+    const handleMobileNumber = (value) => {
+        // Reset error message
+        setMobileError('');
+
+        // Check if the country code is for Saudi Arabia
+        if (value.startsWith('966')) {
+            // Check for mobile number (should start with '9665')
+            if (value.length > 1 && value[3] !== '5') {
+                setMobileError('Mobile number must start with 9665');
+            }
+
+            // Check for maximum length (12 digits including country code)
+            if (value.length > 12) {
+                setMobileError('Number must be a maximum of 12 digits');
+            }
+        }
+
+        // Set the mobile number
+        setMobileNumber(value);
+    };
+
+
+
     useEffect(() => {
         const handleGtinNumber = async () => {
             try {
@@ -634,9 +680,9 @@ const MemmberRegisteration = () => {
                                         defaultCountry={'sa'}
                                         value={companyLandLine}
                                         // onChange={setCompanyLandLine}
-                                        onChange={(e) => setCompanyLandLine(e)}
+                                        onChange={handlecompanyLandLine}
                                         inputProps={{
-                                            id: 'mobile',
+                                            id: 'landline',
                                             placeholder: 'Company Landline',
                                         }}
 
@@ -647,42 +693,21 @@ const MemmberRegisteration = () => {
                                         }}
                                     // required
                                     />
-
                                 </div>
+                                {companyLandlineError && <p className="text-red-600">{companyLandlineError}</p>}
                             </div>
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='mobile'>Mobile Number <span>(Omit Zero)</span><span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm'>
-                                    {/* <PhoneInput
-                                        international
-                                        country={'sa'}
-                                        defaultCountry={'sa'}
-                                        value={mobileNumber}
-                                        onChange={setMobileNumber}
-                                        containerStyle={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                        }}
-                                        inputProps={{
-                                            id: 'mobile',
-                                            placeholder: 'Mobile Number',
-                                        }}
-                                        style={{
-                                            width: '100%',
-                                            border: '#e4e4e4',
-                                            borderRadius: '8px',
-                                            padding: '2px',
-                                            marginBottom: '3px',
-                                        }}
-                                    /> */}
+                                   
                                     <PhoneInput
                                         international
                                         country={'sa'}
                                         defaultCountry={'sa'}
                                         value={mobileNumber}
-                                        onChange={setMobileNumber}
-                                        // onChange={(e) => setCompanyLandLine(e)}
+                                        onChange={handleMobileNumber}
+                                      
                                         inputProps={{
                                             id: 'mobile',
                                             placeholder: 'Mobile Number',
@@ -698,6 +723,7 @@ const MemmberRegisteration = () => {
 
 
                                 </div>
+                                {mobileError && <p className="text-red-600">{mobileError}</p>}
                             </div>
 
                             {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
