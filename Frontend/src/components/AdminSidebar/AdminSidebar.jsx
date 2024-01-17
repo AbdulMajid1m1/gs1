@@ -60,7 +60,7 @@ import LanguageSwitcher from "../../switer";
 
 const AdminSideBar = () =>
 {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -229,8 +229,8 @@ const AdminSideBar = () =>
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0`}
+        className={`fixed top-0  z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:translate-x-0 ${i18n.language === 'ar' ? 'Right-0' : 'left-0'}`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >
