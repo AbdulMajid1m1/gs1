@@ -155,8 +155,8 @@ const AdminSideBar = () =>
 
   return (
     <div>
-      <div className="h-10 sm:ml-72 mb-6 bg-[#1E3B8B] ">
-        <div className="flex justify-between items-center">
+      <div className={`h-10 mb-6 bg-[#1E3B8B] ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+        <div className={`flex justify-between items-center ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
           <div className="flex items-center">
             <button
               data-drawer-target="logo-sidebar"
@@ -229,8 +229,8 @@ const AdminSideBar = () =>
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0  z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0 ${i18n.language === 'ar' ? 'Right-0' : 'left-0'}`}
+        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >
