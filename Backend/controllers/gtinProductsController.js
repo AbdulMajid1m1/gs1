@@ -142,16 +142,17 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
     const { id } = req.params;
 
     try {
-        const res = await prisma.other_products_subcriptions.deleteMany({
+        const result = await prisma.other_products_subcriptions.deleteMany({
             where: { id: id },
         });
 
-        if (res.count === 0) {
+        if (result.count === 0) {
             throw createError(404, 'Subscription not found');
         }
+        // Return the deleted subscription
+        return res.status(200).send("Subscription product deleted successfully");
 
 
-        return res.status(204).send();
     } catch (error) {
         console.error(error);
         next(error);
