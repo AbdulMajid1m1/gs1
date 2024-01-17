@@ -308,10 +308,10 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
 
-        // Filter out the cart items that have a productID present in the list
+        // Filter out the cart items that have a productID present in the deletedItemIds
         cartValue.cart_items = cartValue.cart_items.filter(item => {
-            return productIDs.some(productId =>
-                productId.productID === item.productID && productId.productType === item.product_type
+            return !deletedItemIds.some(deletedItem =>
+                deletedItem.productID === item.productID && deletedItem.productType === item.product_type
             );
         });
         if (cartValue.cart_items.length === 0) {
