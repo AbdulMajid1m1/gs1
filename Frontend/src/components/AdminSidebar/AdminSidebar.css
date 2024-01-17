@@ -21,7 +21,6 @@
 
 .main-images-container {
   display: flex;
-  justify-content: start;
   align-items: center;
   gap: 15px;
   margin-top: 3%;

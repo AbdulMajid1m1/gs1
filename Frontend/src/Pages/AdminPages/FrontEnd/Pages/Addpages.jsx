@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
+import { useTranslation } from 'react-i18next';
 
 
 const Addpages = () =>
@@ -24,6 +25,7 @@ const Addpages = () =>
     const [customsectiondataeng, setcustomsectiondataeng] = useState('')
     const [customsectiondataarb, setcustomsectiondataarb] = useState('')
     const [Customdatashow, setCustomdatashow] = useState(false)
+    const { t, i18n } = useTranslation();
 
     const handleChangeeng = (value) =>
     {
@@ -177,7 +179,7 @@ const Addpages = () =>
 
     return (
         <div>
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
                         title={'Create Page'}
