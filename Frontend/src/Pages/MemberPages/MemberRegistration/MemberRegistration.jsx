@@ -269,7 +269,8 @@ const MemmberRegisteration = () => {
                 product_type: 'other_products',
             }));
         }
-
+        console.log(newSubscriptionData)
+        console.log(newSelectedOtherProducts)
         setSubscriptionData(newSubscriptionData);
         // Calculate total price
         const newTotalPrice = newSubscriptionData.reduce((total, item) => total + item.price, 0) +
@@ -300,7 +301,7 @@ const MemmberRegisteration = () => {
                 "registration_fee": item.registrationFee.toString(), // Convert to string
                 "yearly_fee": item.yearlyFee.toString(), // Convert to string
                 "price": item.price.toString(), // Convert to string
-                "product_type": item.productType,
+                "product_type": item.product_type,
             })
 
         });
