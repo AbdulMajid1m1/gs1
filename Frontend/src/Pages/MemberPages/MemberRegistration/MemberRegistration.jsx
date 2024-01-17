@@ -252,7 +252,7 @@ const MemmberRegisteration = () => {
                 yearlyFee: yearlyFee,
                 price: registrationFee + yearlyFee,
                 productId: selectedGtinNumber.id,
-                productType: selectedGtinNumber.type,
+                product_type: selectedGtinNumber.type,
             }];
         }
 
@@ -266,7 +266,7 @@ const MemmberRegisteration = () => {
                 registrationFee: selectedCategories?.name === "medical"
                     ? product.med_subscription_fee
                     : product.product_subscription_fee,
-                productType: 'other_products',
+                product_type: 'other_products',
             }));
         }
 
