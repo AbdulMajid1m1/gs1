@@ -267,10 +267,10 @@ const sendAndSaveInvoiceSchema = Joi.object({
     userId: Joi.string().required(),
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
-    productIDs: Joi.array().items(Joi.object({
-        productID: Joi.string().required(),
-        productType: Joi.string().required(),
-    })),
+    // productIDs: Joi.array().items(Joi.object({
+    //     productID: Joi.string().required(),
+    //     productType: Joi.string().required(),
+    // })),
 });
 
 export const sendInvoiceToUser = async (req, res, next) => {
@@ -285,8 +285,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
         }
         // Extract user and cart values
 
-        const { userId, status, reject_reason, productIDs } = value;
-        console.log("productIDs", productIDs)
+        const { userId, status, reject_reason } = value;
 
 
         // fetch user data and cart data
@@ -304,21 +303,17 @@ export const sendInvoiceToUser = async (req, res, next) => {
         const cartValue = user.carts[0];
         cartValue.cart_items = JSON.parse(cartValue.cart_items);
 
-
-
-
-
         // Filter out the cart items that have a productID present in the deletedItemIds
-        cartValue.cart_items = cartValue.cart_items.filter(item => {
-            return !deletedItemIds.some(deletedItem =>
-                deletedItem.productID === item.productID && deletedItem.productType === item.product_type
-            );
-        });
-        if (cartValue.cart_items.length === 0) {
-            throw createError(400, "no cart items found")
-        }
+        // cartValue.cart_items = cartValue.cart_items.filter(item => {
+        //     return !deletedItemIds.some(deletedItem =>
+        //         deletedItem.productID === item.productID && deletedItem.productType === item.product_type
+        //     );
+        // });
+        // if (cartValue.cart_items.length === 0) {
+        //     throw createError(400, "no cart items found")
+        // }
 
-        console.log("cartValue", cartValue);
+        // console.log("cartValue", cartValue);
 
 
         let userUpdateResult; // to store the updated user

@@ -52,14 +52,14 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
   }
 
-  const [cartItemsProducts, setCartItemsProducts] = useState([]);
+  // const [cartItemsProducts, setCartItemsProducts] = useState([]);
 
   const handleDeleteRow = async (index, item) => {
     console.log(item);
 
 
     try {
-      const res = await newRequest.delete(`/gtinProducts/otherProductsSubscriptions/${item.id}`);
+      const res = await newRequest.delete(`/gtinProducts/deleteotherProductsSubscriptionsFromAdmin?id=${item.id}&transaction_id=${gs1MemberData?.transaction_id}`);
       console.log(res.data);
       toast.success(res?.data?.message ?? "Cart item deleted successfully!");
 
@@ -78,17 +78,17 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       // Append the deleted item to the list
       let deletedItemIds = [];
       const deletedItem = memberInoviceData?.otherProductSubscriptions?.find((cartItem) => cartItem.id === item.id);
-      if (deletedItem) {
-        deletedItemIds.push({
-          productID: deletedItem?.product?.id,
-          productType: "other_products",
-        });
-      }
+      // if (deletedItem) {
+      //   deletedItemIds.push({
+      //     productID: deletedItem?.product?.id,
+      //     productType: "other_products",
+      //   });
+      // }
 
-      setCartItemsProducts((prev) => [...prev, ...deletedItemIds]);
+      // setCartItemsProducts((prev) => [...prev, ...deletedItemIds]);
 
-      console.log(deletedItemIds);
-      console.log(cartItemsProducts);
+      // console.log(deletedItemIds);
+      // console.log(cartItemsProducts);
 
     } catch (err) {
       console.log(err);
@@ -126,7 +126,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     const approvedBody = {
       "userId": gs1MemberData?.id,
       "status": selectedStatus, // or approved
-      "productIDs": cartItemsProducts,
+      // "productIDs": cartItemsProducts,
     };
     if (rejected) {
       approvedBody.reject_reason = rejected;
