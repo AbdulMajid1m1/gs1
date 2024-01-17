@@ -7,6 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import VideoCameraBackSharpIcon from '@mui/icons-material/VideoCameraBackSharp';
 import imageLiveUrl from '../../../../../utils/urlConverter/imageLiveUrl';
+import { useTranslation } from 'react-i18next';
 
 const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -18,8 +19,10 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [Page, setPage] = useState(updateBrandData?.link || 0)
     const [Pagedropdown, setPagedropdown] = useState([])
-    const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image )|| '')
+    const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.image) || '')
+    const [imageshowupload, setimageshowupload] = useState(updateBrandData?.image)
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
     
     useEffect(() => {
         const getpagedata = async () => {
@@ -51,6 +54,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
+        setimageshowupload(e.target.files[0])
     }
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
@@ -64,12 +68,12 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('date', Date);
         formData.append('link', Page);
         formData.append('display_type', selectedOption);
-        formData.append('image', imageshow);
+        formData.append('image', imageshowupload);
         formData.append('status', Number(status));
         try {
             const response = await newRequest.put(`/updateupcoming_events/${updateBrandData?.id}`, formData);
 
-            toast.success(response?.data?.message || 'Event updated successfully', {
+            toast.success(response?.data?.message || `${t('Events')} ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -83,7 +87,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Something went wrong!', {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -108,37 +112,37 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Edit Event</h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Events')}</h2>
                               
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Title [English]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Title')} {t('[English]')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Enter Title [English]"
+                                            placeholder={`${t('Enter')} ${t('Title')} ${t('[English]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="title_ar" className="text-secondary">Title [Arabic]</label>
+                                        <label htmlFor="title_ar" className="text-secondary">{t('Title')} {t('[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="title_ar"
                                             value={titlear}
                                             onChange={(e) => settitlear(e.target.value)}
-                                            placeholder="Enter Title [Arabic]"
+                                            placeholder={`${t('Enter')} ${t('Title')} ${t('[Arabic]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -146,11 +150,11 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }
@@ -158,19 +162,19 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Date</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Date')}</label>
                                         <input
                                             type="date"
                                             id="Date"
                                             value={Date}
                                             onChange={(e) => setDate(e.target.value)}
-                                            placeholder="Enter Date"
+                                            placeholder={`${t('Enter')} ${t('Date')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Status
+                                            {t('Status')}
                                         </label>
                                         <select
                                             id="status"
@@ -178,12 +182,12 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setstatus(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">inactive</option>
-                                            <option value="1">active</option>
+                                            <option value="0">{t('Inactive')}</option>
+                                            <option value="1">{t('Active')}</option>
                                         </select>
                                     </div>
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Display</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Display')}</label>
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <div style={{ marginRight: '10px', border: '1px solid #e4e6fc' }}>
                                                 <input
@@ -231,7 +235,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Event Video
+                                            {t('Event Video')}
                                         </label>
                                         <input
                                             id="file-Video"
@@ -249,7 +253,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                         <div className="imgesection">
                                             <img src={selectedFile ? URL.createObjectURL(selectedFile) : imageshow != null ? imageshow : ''} className="printerpic" style={{
@@ -281,7 +285,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseUpdatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <Button
                                         variant="contained"
@@ -291,7 +295,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="w-[70%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        Update Event
+                                        {t('Update')} {t('Events')}
                                     </Button>
                                 </div>
                             </form>

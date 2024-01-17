@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
@@ -9,6 +10,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
     const [Categorylevel, setCategorylevel] = useState('')
     const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Page, setPage] = useState('')
+    const { t, i18n } = useTranslation();
 
     const [Pagedropdown, setPagedropdown] = useState([])
     const handleCloseCreatePopup = () =>
@@ -45,7 +47,6 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
 
     const handleAddCompany = async () =>
     {
-        //  integrate the post api in try catch blcck
         try {
             const response = await newRequest.post('/creatfooter_menus/', {
                 parent_id: Categorylevel,
@@ -55,7 +56,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                 status: 1,
             });
 
-            toast.success(`Footer Menu ${category_name_en} has been added successfully.`, {
+            toast.success(`${t('Footer menu')} ${category_name_en} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -94,35 +95,35 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Footer Category </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Footer menu')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[English]</label>
+                                        <label htmlFor="field1" className="text-secondary"> {t('Category')} {t('Name[English]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_en"
                                             value={category_name_en}
                                             onChange={(e) => setcategory_name_en(e.target.value)}
-                                            placeholder="Enter Category Name[English]"
+                                            placeholder={`${t('Enter')}${t('Category')}${t('Name[English]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Category Name[Arabic]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Category')} {t('Name[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_ar"
                                             value={category_name_ar}
                                             onChange={(e) => setcategory_name_ar(e.target.value)}
-                                            placeholder="Enter Category Name[Arabic]"
+                                            placeholder={`${t('Enter')}${t('Category')}${t('Name[Arabic]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Parent Category
+                                            {t('Parent Category')}
                                         </label>
                                         <select
                                             id="status"
@@ -130,12 +131,12 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Category Level">Category Level</option>
+                                            <option value="Category Level"> {t('Category Level')}</option>
                                             {
                                                 Categoryleveldropdown && Categoryleveldropdown.map((itme, index) =>
                                                 {
                                                     return (
-                                                        <option key={index} value={itme.id}>{itme.category_name_en}</option>
+                                                        <option key={index} value={itme.id}> {i18n.language === 'ar' ? itme?.category_name_ar : itme?.category_name_en}</option>
                                                     )
                                                 })
                                             }
@@ -144,7 +145,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -152,12 +153,12 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) =>
                                                 {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }
@@ -172,14 +173,14 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Footer Menu
+                                        {t('Add')} {t('Footer menu')}
                                     </button>
                                 </div>
 

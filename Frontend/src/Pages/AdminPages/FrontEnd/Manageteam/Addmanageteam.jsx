@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Name, setName] = useState("");
@@ -8,6 +9,7 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Description, setDescription] = useState('')
     const [Page, setPage] = useState('')
     const [Pagedropdown, setPagedropdown] = useState([])
+    const { t } = useTranslation();
 
     useEffect(() => {
         const getpagedata = async () => {
@@ -54,7 +56,7 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                     },
                 });
 
-            toast.success(`Team Member ${Name} has been added successfully.`, {
+            toast.success(`${t('Team Member')} ${Name} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -93,63 +95,42 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Team Member </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Team Member')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Name</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Name')}</label>
                                         <input
                                             type="text"
                                             id="Name"
                                             value={Name}
                                             onChange={(e) => setName(e.target.value)}
-                                            placeholder="Enter Name"
+                                            placeholder={`${t('Enter')} ${t('Name')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Job Title</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Job Title')}</label>
                                         <input
                                             type="text"
                                             id="JobTitle"
                                             value={JobTitle}
                                             onChange={(e) => setJobTitle(e.target.value)}
-                                            placeholder="Enter Job Title"
+                                            placeholder={`${t('Enter')} ${t('Job Title')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
-                                    {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
-                                            Set Page
-                                        </label>
-                                        <select
-                                            id="status"
-                                            value={Page}
-                                            onChange={(e) => setPage(e.target.value)}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                        >
-                                            <option value="Select">-- Select --</option>
-                                            {
-                                                Pagedropdown && Pagedropdown.map((itme, index) => {
-                                                    return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                    </div> */}
-
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Description
+                                            {t('Description')}
                                         </label>
                                         <textarea
                                             type="text"
                                             id="JobTitle"
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            placeholder="Enter Description"
+                                            placeholder={`${t('Enter')} ${t('Description')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
 
@@ -158,7 +139,7 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                         <div className="imgesection">
                                             <img src={selectedFile ? URL.createObjectURL(selectedFile) : imageshow != null ? imageshow : ''} className="printerpic" style={{
@@ -191,14 +172,14 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Team
+                                        {t('Add')} {t('Team Member')}
                                     </button>
                                 </div>
 

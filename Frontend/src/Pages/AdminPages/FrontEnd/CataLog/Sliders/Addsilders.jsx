@@ -2,6 +2,7 @@ import { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 import "./Silder.css"
+import { useTranslation } from 'react-i18next';
 
 const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Title, setTitle] = useState("");
@@ -13,6 +14,7 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleCloseCreatePopup = () => {
         setVisibility(false);
     };
+    const { t } = useTranslation();
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageshow, setimageshow] = useState('')
@@ -54,7 +56,7 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                     },
                 });
 
-            toast.success(`Footer Menu ${Title} has been added successfully.`, {
+            toast.success(`${t('Sliders')} ${Title} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -93,23 +95,23 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Silders </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Sliders')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Title</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Enter Title"
+                                            placeholder={`${t('Enter')} ${t('Title')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -117,11 +119,11 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }
@@ -129,27 +131,27 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Caption</label>
+                                        <label htmlFor="field1" className="text-secondary">{t(Caption)}</label>
                                         <input
                                             type="text"
                                             id="Caption"
                                             value={Caption}
                                             onChange={(e) => setCaption(e.target.value)}
-                                            placeholder="Enter Caption"
+                                            placeholder={`${t('Enter')}${t('Caption')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Description
+                                            {t('Description')}
                                         </label>
                                         <textarea
                                             type="text"
                                             id="Caption"
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            placeholder="Enter Description"
+                                            placeholder={`${t('Enter')}${t('Description')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                        
@@ -158,7 +160,7 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                             <div className="imgesection">
                                             <img src={selectedFile ? URL.createObjectURL(selectedFile) : imageshow != null ? imageshow : ''}  className="printerpic" style={{
@@ -168,7 +170,7 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                  
                                         <div className="row " htmlFor="file-inputs">
                                             <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
-                                                 choose file
+                                                    {t('choose file')}
                                             </label>
                                             <input
                                                 id="file-inputs"
@@ -191,14 +193,14 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Silder
+                                        {t('Add')} {t('Sliders')}
                                     </button>
                                 </div>
 

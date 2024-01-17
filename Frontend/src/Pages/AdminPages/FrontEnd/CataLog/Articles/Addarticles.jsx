@@ -1,9 +1,7 @@
 import { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
-import imageicon from '../../../../../Images/imagges.jpg';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import VideoCameraBackSharpIcon from '@mui/icons-material/VideoCameraBackSharp';
+import { useTranslation } from 'react-i18next';
 
 const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Title, setTitle] = useState("");
@@ -11,6 +9,7 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Date, setDate] = useState("");
     const [Page, setPage] = useState('')
     const [Pagedropdown, setPagedropdown] = useState([])
+    const { t } = useTranslation();
     useEffect(() => {
         const getpagedata = async () => {
             try {
@@ -55,7 +54,7 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                     },
                 });
 
-            toast.success(`Articles ${Title} has been added successfully.`, {
+            toast.success(`${t('Featured Articles')} ${Title} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -94,36 +93,36 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Articles </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Articles')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Title [English]</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Title')} {t('[English]')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Enter Title [English]"
+                                            placeholder={`${t('Enter')} ${t('Title')} ${t('[English]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="title_ar" className="text-secondary">Title [Arabic]</label>
+                                        <label htmlFor="title_ar" className="text-secondary">{t('Title')} {t('[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="title_ar"
                                             value={titlear}
                                             onChange={(e) => settitlear(e.target.value)}
-                                            placeholder="Enter Title [Arabic]"
+                                            placeholder={`${t('Enter')} ${t('Title')} ${t('[Arabic]')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -131,11 +130,11 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }
@@ -143,13 +142,13 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">Date</label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Date')}</label>
                                         <input
                                             type="date"
                                             id="Date"
                                             value={Date}
                                             onChange={(e) => setDate(e.target.value)}
-                                            placeholder="Enter Date"
+                                            placeholder={`${t('Enter')} ${t('Date')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         />
                                     </div>
@@ -157,7 +156,7 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                         <div className="imgesection">
                                             <img src={selectedFile ? URL.createObjectURL(selectedFile) : imageshow != null ? imageshow : ''} className="printerpic" style={{
@@ -167,7 +166,7 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                             <div className="row " htmlFor="file-inputs" >
                                                 <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
-                                                    choose file
+                                                    {t('choose file')}
                                                 <input
                                                     id="file-inputs"
                                                     type="file"
@@ -191,14 +190,14 @@ const Addarticles = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Articles
+                                        {t('Add')} {t('Articles')}
                                     </button>
                                 </div>
 

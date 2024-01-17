@@ -1,11 +1,12 @@
 import { useState,useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Page, setPage] = useState('')
     const [Pagedropdown, setPagedropdown] = useState([])
-
+    const { t } = useTranslation();
     useEffect(() => {
         const getpagedata = async () => {
             try {
@@ -47,7 +48,7 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                     },
                 });
 
-            toast.success(`GS1 Partners ${Page} has been added successfully.`, {
+            toast.success(`${t('GS1 Partners')} ${Page} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -62,6 +63,7 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseCreatePopup();
 
         } catch (error) {
+            console.log(error);
             toast.error(error?.response?.data?.error || 'Error', {
                 position: 'top-right',
                 autoClose: 2000,
@@ -86,34 +88,28 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add  GS1 Partners </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('GS1 Partners')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                        <label htmlFor="page" className="text-secondary">
+                                            {t('Link')}
                                         </label>
-                                        <select
-                                            id="status"
+                                        <input
+                                            id="page"
+                                            type="text"
                                             value={Page}
                                             onChange={(e) => setPage(e.target.value)}
+                                            placeholder={`${t('Enter')} ${t('Link')}`}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                        >
-                                            <option value="Select">-- Select --</option>
-                                            {
-                                                Pagedropdown && Pagedropdown.map((itme, index) => {
-                                                    return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
+                                        />
+                                      
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                         <div className="imgesection">
                                             <img src={selectedFile ? URL.createObjectURL(selectedFile) : imageshow != null ? imageshow : ''} className="printerpic" style={{
@@ -123,7 +119,7 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                             <div className="row " htmlFor="file-inputs">
                                                 <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
-                                                    choose file
+                                                    {t('choose file')}
                                                 </label>
                                                 <input
                                                     id="file-inputs"
@@ -146,14 +142,14 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Partners
+                                        {t('Add')} {t('GS1 Partners')}
                                     </button>
                                 </div>
 

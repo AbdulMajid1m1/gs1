@@ -2,14 +2,16 @@ import React from 'react'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import Pdftable from './Addpdf/Pdftable';
 import Userguideveido from './userguidevideo/Userguideveido';
+import { useTranslation } from 'react-i18next';
 const Userguide = () => {
-   
+
+    const { t } = useTranslation();
     return (
         <div>
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'User Guide'}
+                        title={`${t('User Guide')}`}
                     />
                 </div>
 
