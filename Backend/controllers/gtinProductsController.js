@@ -117,3 +117,39 @@ export const getUserSubscribedProductsNames = async (req, res, next) => {
         res.status(500).send('Server error occurred');
     }
 };
+
+
+// Delete a GTIN Subscription
+export const deleteGtinSubscription = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        await prisma.gtin_subcriptions.update({
+            where: { id: id },
+            data: { isDeleted: true, deleted_at: new Date() },
+        });
+
+        return res.status(204).send();
+    } catch (error) {
+        console.error(error);
+        next(createError(500, 'Server error occurred'));
+    }
+};
+
+
+// Delete Other Products Subscription
+export const deleteOtherProductsSubscription = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        await prisma.other_products_subcriptions.update({
+            where: { id: id },
+            data: { isDeleted: true, deleted_at: new Date() },
+        });
+
+        return res.status(204).send();
+    } catch (error) {
+        console.error(error);
+        next(createError(500, 'Server error occurred'));
+    }
+};
