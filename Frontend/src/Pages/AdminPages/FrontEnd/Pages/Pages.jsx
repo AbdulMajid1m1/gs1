@@ -14,7 +14,9 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import Addpage from './AddPage';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 const Pages = () => {
+    const { t, i18n } = useTranslation();
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -245,7 +247,7 @@ const Pages = () => {
     };
     return (
         <div>
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
                         title={'Manage Pages'}

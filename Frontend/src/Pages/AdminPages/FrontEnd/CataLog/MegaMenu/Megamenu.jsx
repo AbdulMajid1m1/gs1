@@ -20,7 +20,7 @@ import Addmegamenu from './Addmegamenu';
 import Updatemegamenu from './Updatemegamenu';
 import { useTranslation } from 'react-i18next';
 const Megamenu = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -256,7 +256,7 @@ const Megamenu = () => {
     };
     return (
         <div>
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
                         title={`${t('Mega Menu')}`}

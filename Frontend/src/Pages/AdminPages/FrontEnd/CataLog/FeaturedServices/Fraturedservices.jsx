@@ -17,7 +17,7 @@ import Updatafeaturedservice from './Updatafeaturedservice';
 import { useTranslation } from 'react-i18next';
 const Featuredservices = () => {
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -235,7 +235,7 @@ const Featuredservices = () => {
     };
     return (
         <div>
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
                         title={`${t('Featured Services')}`}
