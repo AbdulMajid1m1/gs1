@@ -71,7 +71,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     // Recalculate total price
     // call the api to delete the cart item
     try {
-      const res = await newRequest.delete(`/otherProductsSubscriptions/${item.id}`);
+      const res = await newRequest.delete(`/gtinProducts/otherProductsSubscriptions/${item.id}`);
       console.log(res.data);
       toast.success(res?.data?.message || "Cart item deleted successfully!");
 
