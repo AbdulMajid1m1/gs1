@@ -142,14 +142,18 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
     const { id } = req.params;
 
     try {
-        await prisma.other_products_subcriptions.update({
+        const res = await prisma.other_products_subcriptions.deleteMany({
             where: { id: id },
-            data: { isDeleted: true, deleted_at: new Date() },
         });
+
+        if (res.count === 0) {
+            throw createError(404, 'Subscription not found');
+        }
+
 
         return res.status(204).send();
     } catch (error) {
         console.error(error);
-        next(createError(500, 'Server error occurred'));
+        next(error);
     }
 };
