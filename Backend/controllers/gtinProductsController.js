@@ -166,7 +166,8 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
             }
 
             const cartItems = JSON.parse(cart.cart_items);
-            const newCartItems = cartItems.filter(item => item.id !== id);
+            console.log(cartItems);
+            const newCartItems = cartItems.filter(item => item.productID !== id);
             const newCartItemsStr = JSON.stringify(newCartItems);
 
             // Update the cart within the transaction
