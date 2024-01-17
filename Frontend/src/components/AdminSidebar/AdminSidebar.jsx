@@ -60,7 +60,7 @@ import LanguageSwitcher from "../../switer";
 
 const AdminSideBar = () =>
 {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -155,8 +155,8 @@ const AdminSideBar = () =>
 
   return (
     <div>
-      <div className="h-10 sm:ml-72 mb-6 bg-[#1E3B8B] ">
-        <div className="flex justify-between items-center">
+      <div className={`h-10 mb-6 bg-[#1E3B8B] ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+        <div className={`flex justify-between items-center ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
           <div className="flex items-center">
             <button
               data-drawer-target="logo-sidebar"
@@ -187,9 +187,9 @@ const AdminSideBar = () =>
           </div>
 
           <div
-            className="flex justify-center items-center cursor-pointer -mt-1 px-4"
+            className={`flex justify-center items-center cursor-pointer -mt-1 px-4 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}
           >
-            <div className='flex justify-end items-center px-0 mr-4'>
+            <div className={`flex justify-end items-center px-0   ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}>
               <span>
                 <I18nextProvider i18n={i18n}>
                   <LanguageSwitcher />
@@ -229,8 +229,8 @@ const AdminSideBar = () =>
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0`}
+        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >
@@ -265,7 +265,7 @@ const AdminSideBar = () =>
           </div> */}
 
           <div
-            className="main-images-container"
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowFirstData(!showFirstData)}
           >
             <img
@@ -294,7 +294,7 @@ const AdminSideBar = () =>
                   }
                   > */}
               <div
-                className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/registered-members', event)}
                 onContextMenu={(event) => handleContextMenu(event, '/admin/registered-members')}
               >
@@ -317,7 +317,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/brands')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/brands' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/brands' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/brands', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/brands')
@@ -337,7 +337,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/gtin')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/gtin' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/gtin', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/gtin')
@@ -357,7 +357,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/gln')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/gln' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/gln' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/gln', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/gln')
@@ -377,7 +377,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/sscc')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/sscc' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/sscc' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/sscc', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/sscc')
@@ -397,7 +397,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/foreign-gtin')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/foreign-gtin' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/foreign-gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/foreign-gtin', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/foreign-gtin')
@@ -416,7 +416,7 @@ const AdminSideBar = () =>
 
 
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowSecondData(!showSecondData)}
           >
             <img
@@ -443,7 +443,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/migration')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/member-expiry-page' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/member-expiry-page' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/member-expiry-page', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/member-expiry-page')
@@ -464,7 +464,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/migration')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/migration', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/migration')
@@ -505,7 +505,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/member-products')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/payment-slips' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/payment-slips' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/payment-slips', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/payment-slips')
@@ -525,7 +525,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/notfications')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/notfications' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/notfications' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/notfications', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/notfications')
@@ -545,7 +545,7 @@ const AdminSideBar = () =>
 
 
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowThirdData(!showThirdData)}
           >
             <img
@@ -572,7 +572,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/gcp-license')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/gcp-license' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/gcp-license' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/gcp-license', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/gcp-license')
@@ -592,7 +592,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/verified-by-gs1')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/verified-by-gs1' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/verified-by-gs1' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/verified-by-gs1', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/verified-by-gs1')
@@ -612,7 +612,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/gs1-registries')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/gs1-registries' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/gs1-registries' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/gs1-registries', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/gs1-registries')
@@ -631,7 +631,7 @@ const AdminSideBar = () =>
 
 
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowFourthData(!showFourthData)}
           >
             <img
@@ -658,7 +658,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/old-inactive-members')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/products-category' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/products-category' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/products-category', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/products-category')
@@ -678,7 +678,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/old-inactive-members')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/others-products-category' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/others-products-category' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/others-products-category', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/others-products-category')
@@ -699,7 +699,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/old-inactive-members')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/addtional-products' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/addtional-products' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/addtional-products', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/addtional-products')
@@ -720,7 +720,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/old-inactive-members')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/old-inactive-members', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/old-inactive-members')
@@ -740,7 +740,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/staff-help-desk')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/staff-help-desk' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/staff-help-desk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/staff-help-desk', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/staff-help-desk')
@@ -759,7 +759,7 @@ const AdminSideBar = () =>
 
 
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowFifthData(!showFifthData)}
           >
             <img
@@ -786,7 +786,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/front-end')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/front-end' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/front-end' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/front-end', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/front-end')
@@ -806,7 +806,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/settings')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/settings', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/settings')
@@ -846,7 +846,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/reports')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/reports' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/reports' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/reports', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/reports')
@@ -866,7 +866,7 @@ const AdminSideBar = () =>
 
           {/* Master Data */}
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowSixthData(!showSixthData)}
           >
             <img
@@ -893,7 +893,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/units')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/units', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/units')
@@ -912,7 +912,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Documents')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Documents' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Documents' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Documents', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Documents')
@@ -931,7 +931,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/ProductPackaging')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/ProductPackaging' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/ProductPackaging' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/ProductPackaging', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/ProductPackaging')
@@ -950,7 +950,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Other_products')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Other_products' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Other_products' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Other_products', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Other_products')
@@ -969,7 +969,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Gcp_type')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Gcp_type' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Gcp_type' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Gcp_type', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Gcp_type')
@@ -988,7 +988,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/CountryofSales')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/CountryofSales', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/CountryofSales')
@@ -1007,7 +1007,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Hscode')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Hscode' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Hscode' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Hscode', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Hscode')
@@ -1026,7 +1026,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/UNSPCS')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/UNSPCS' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/UNSPCS' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/UNSPCS', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/UNSPCS')
@@ -1045,7 +1045,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Cities')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Cities' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Cities' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Cities', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Cities')
@@ -1064,7 +1064,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/State')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/State' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/State' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/State', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/State')
@@ -1083,7 +1083,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Country')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Country' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Country' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Country', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Country')
@@ -1102,7 +1102,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/crnumber')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/crnumber' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/crnumber' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/crnumber', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/crnumber')
@@ -1121,7 +1121,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/documenttype')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/documenttype' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/documenttype' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/documenttype', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/documenttype')
@@ -1139,7 +1139,7 @@ const AdminSideBar = () =>
 
           {/* Front End */}
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setshowFrontEndData(!showFrontEndData)}
           >
             <img
@@ -1161,7 +1161,7 @@ const AdminSideBar = () =>
               onClick={toggleSidebar}
             >
               <div
-                className={`main-images-container`}
+                className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={() => setCatalogsubmenu(!Catalogsubmenu)}
               >
                 <img
@@ -1180,7 +1180,7 @@ const AdminSideBar = () =>
               {Catalogsubmenu && (
                 <div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/megamenu' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/megamenu' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/megamenu', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/megamenu')
@@ -1194,7 +1194,7 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Mega Menu')}</p>
                   </div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/categories' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/categories' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/categories', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/categories')
@@ -1208,7 +1208,7 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Categories')}</p>
                   </div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/footer_menu' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/footer_menu' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/footer_menu', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/footer_menu')
@@ -1222,7 +1222,7 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Footer Menu')}</p>
                   </div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/Sliders' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/Sliders' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/Sliders', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/Sliders')
@@ -1236,7 +1236,7 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Silders')}</p>
                   </div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/Featured_services' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/Featured_services' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/Featured_services', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/Featured_services')
@@ -1250,7 +1250,7 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Service')}</p>
                   </div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/events' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/events' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/events', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/events')
@@ -1264,7 +1264,7 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Event')}</p>
                   </div>
                   <div
-                    className={`main-images-container ${selectedItem === '/admin/articles' ? 'selected-item' : ''}`}
+                    className={`main-images-container ${selectedItem === '/admin/articles' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={(event) => handleItemClick('/admin/articles', event)}
                     onContextMenu={(event) =>
                       handleContextMenu(event, '/admin/articles')
@@ -1281,7 +1281,7 @@ const AdminSideBar = () =>
               )}
 
               <div
-                className={`main-images-container ${selectedItem === '/admin/Pages' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Pages' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Pages', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Pages')
@@ -1295,7 +1295,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Pages')}</p>
               </div>
               <div
-                className={`main-images-container ${selectedItem === '/admin/partners' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/partners' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/partners', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/partners')
@@ -1314,7 +1314,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Other_products')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Blog_categories' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Blog_categories' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Blog_categories', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Blog_categories')
@@ -1333,7 +1333,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Gcp_type')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Faq_categories' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Faq_categories' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Faq_categories', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Faq_categories')
@@ -1352,7 +1352,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/CountryofSales')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/CountryofSales', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/CountryofSales')
@@ -1371,7 +1371,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Hscode')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Manage_team' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Manage_team' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Manage_team', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Manage_team')
@@ -1390,7 +1390,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/UNSPCS')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/Board_members' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/Board_members' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Board_members', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/Board_members')
@@ -1409,7 +1409,7 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/Cities')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/User_guide' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/admin/User_guide' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/User_guide', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/User_guide')
@@ -1427,7 +1427,7 @@ const AdminSideBar = () =>
 
 
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => navigate('/admin-login')}
           >
             <img
@@ -1448,7 +1448,7 @@ const AdminSideBar = () =>
 
         {/* This two icons  */}
         <div>
-          <div className="flex justify-between w-[95%] px-2 absolute bottom-0 bg-[#1E3B8B]">
+          <div className={`flex justify-between w-[95%] px-2 absolute bottom-0 bg-[#1E3B8B] ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className="main-images-container">
               <img src={isoicon} className="main-inside-image-gs1logo" alt="" />
             </div>

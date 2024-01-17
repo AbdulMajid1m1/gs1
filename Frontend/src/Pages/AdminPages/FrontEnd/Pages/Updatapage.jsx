@@ -10,9 +10,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
+import { useTranslation } from 'react-i18next';
 
 const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     let { userId } = useParams();
     const [name, setname] = useState("");
@@ -209,7 +211,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     return (
         <div>
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
                         title={'Edit  Page'}

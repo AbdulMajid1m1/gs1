@@ -14,7 +14,9 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import Addpage from './AddPage';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 const Pages = () => {
+    const { t, i18n } = useTranslation();
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -245,7 +247,7 @@ const Pages = () => {
     };
     return (
         <div>
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
                         title={'Manage Pages'}
@@ -256,7 +258,7 @@ const Pages = () => {
                     <div className="h-auto w-[97%] px-0 pt-4">
                         <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-                            <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                            <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                                 <button
                                     // onClick={handleShowCreatePopup}
                                     onClick={() => navigate('/admin/Add_Pages')}
