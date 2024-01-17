@@ -67,21 +67,18 @@ const AdminSideBar = () =>
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const [selectedPath, setSelectedPath] = useState('');
-
-
-  useEffect(() =>
-  {
-    const handleOutsideClick = (event) =>
-    {
+  
+  
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsSidebarOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
-
-    return () =>
-    {
+    
+    return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
@@ -284,12 +281,12 @@ const AdminSideBar = () =>
             )}
           </div>
 
-          {showFirstData && (
-            <div
-              className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
-              onClick={toggleSidebar}
-            >
-              {/* <div 
+            {showFirstData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                {/* <div 
                   className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/admin/registered-members')}
                       onContextMenu={(event) =>
@@ -481,7 +478,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Migration')}</p>
               </div>
 
-              {/* <div 
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/help-desk')}
                   //     onContextMenu={(event) =>
@@ -823,7 +820,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Settings')}</p>
               </div>
 
-              {/* <div 
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/master-data')}
                   //     onContextMenu={(event) =>
