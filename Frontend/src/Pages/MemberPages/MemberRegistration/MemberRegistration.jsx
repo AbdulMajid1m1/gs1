@@ -252,7 +252,7 @@ const MemmberRegisteration = () => {
                 yearlyFee: yearlyFee,
                 price: registrationFee + yearlyFee,
                 productId: selectedGtinNumber.id,
-                product_type: selectedGtinNumber.type,
+                product_type: 'gtin',
             }];
         }
 
