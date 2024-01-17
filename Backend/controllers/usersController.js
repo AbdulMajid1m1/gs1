@@ -405,6 +405,13 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
             // Start a transaction to ensure both user and cart are inserted
             transaction = await prisma.$transaction(async (prisma) => {
+                // update cart record with new cartValue
+                await prisma.carts.update({
+                    where: {
+                        id: cartValue.id
+                    },
+                    data: cartValue
+                });
 
 
                 // add all three documents to the member_documents table
@@ -444,6 +451,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 <p>Invoice: <strong>${pdfFilename}</strong></p>
                 `;
 
+
                 await sendEmail({
                     toEmail: user.email,
                     subject: emailSubject,
@@ -465,7 +473,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
                 return { userUpdateResult };
 
-                // return { newUser, newCart };
 
                 // make trantion time to 40 sec
             }, { timeout: 40000 });
