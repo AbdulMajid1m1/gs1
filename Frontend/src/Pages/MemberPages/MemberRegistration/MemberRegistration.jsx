@@ -429,7 +429,7 @@ const MemmberRegisteration = () => {
             // if (value.length > 1 && value[3] !== '5') {
             //     setCompanyLandlineError('Mobile number must start with 9665');
             // }
-
+  
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
                 setCompanyLandlineError('Number must be a maximum of 12 digits');
