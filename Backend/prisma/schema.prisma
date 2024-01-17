@@ -2055,14 +2055,6 @@ model gtin_upgrade_pricing {
   updated_at           DateTime @updatedAt
 }
 
-model gln_upgrade_pricing {
-  id              String   @id @default(cuid())
-  total_no_of_gln Float?
-  price           Float?
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-}
-
 model upgrade_member_ship_cart {
   id                                String   @id @default(cuid())
   user_id                           String
@@ -2075,10 +2067,19 @@ model upgrade_member_ship_cart {
   cart                              String?
 }
 
+model gln_upgrade_pricing {
+  id              String         @id @default(cuid())
+  total_no_of_gln Float?
+  price           Float?
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt
+  add_gln_cart    add_gln_cart[]
+}
+
 model add_gln_cart {
   id                                String  @id @default(cuid())
   user_id                           String
-  new_gln_id                        String?
+  new_gln_id                        String
   other_products_subscription_id    String
   transaction_id                    String
   registered_product_transaction_id String
@@ -2089,4 +2090,6 @@ model add_gln_cart {
   // make relationship with other_products_subcriptions
   other_products_subcriptions other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
   cart                        String?
+  gln_upgrade_pricing   gln_upgrade_pricing @relation(fields: [new_gln_id], references: [id])
+  
 }
