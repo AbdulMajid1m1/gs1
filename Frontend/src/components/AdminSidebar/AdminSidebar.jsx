@@ -67,21 +67,18 @@ const AdminSideBar = () =>
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const [selectedPath, setSelectedPath] = useState('');
-
-
-  useEffect(() =>
-  {
-    const handleOutsideClick = (event) =>
-    {
+  
+  
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsSidebarOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
-
-    return () =>
-    {
+    
+    return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
@@ -184,13 +181,13 @@ const AdminSideBar = () =>
                 ></path>
               </svg>
             </button>
-            <p className="sm:text-2xl text-sm sm:py-0 py-2 sm:px-0 px-3 text-white font-medium">
+            <p className="sm:text-2xl text-sm -mt-2 sm:py-0 py-2 sm:px-0 px-3 text-white font-medium">
               GS1-V2
             </p>
           </div>
 
           <div
-            className="flex justify-center items-center cursor-pointer mt-1 px-4"
+            className="flex justify-center items-center cursor-pointer -mt-1 px-4"
           >
             <div className='flex justify-end items-center px-0 mr-4'>
               <span>
@@ -284,12 +281,12 @@ const AdminSideBar = () =>
             )}
           </div>
 
-          {showFirstData && (
-            <div
-              className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
-              onClick={toggleSidebar}
-            >
-              {/* <div 
+            {showFirstData && (
+              <div
+                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                onClick={toggleSidebar}
+              >
+                {/* <div 
                   className={`main-images-container ${selectedItem === '/admin/registered-members' ? 'selected-item' : ''}`}
                     onClick={() => handleItemClick('/admin/registered-members')}
                       onContextMenu={(event) =>
@@ -481,7 +478,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Migration')}</p>
               </div>
 
-              {/* <div 
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/help-desk')}
                   //     onContextMenu={(event) =>
@@ -823,7 +820,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Settings')}</p>
               </div>
 
-              {/* <div 
+                {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
                   //   onClick={() => handleItemClick('/admin/master-data')}
                   //     onContextMenu={(event) =>
@@ -1481,7 +1478,7 @@ const AdminSideBar = () =>
               className='context-menu-option'
               onClick={() => handleContextMenuOptionClick('someOption')}
             >
-              {t('Close')} 
+              {t('Close')}
             </div>
             {/* ...other context menu options... */}
           </div>

@@ -1882,7 +1882,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         cart.cart_items = []
 
         cart.cart_items.push({
-            productName: `${otherProductSubscriptionProduct.product_name}`,
+            productName: `Additional GLN (${totalGlnToAdd} GLN)`, // this is the new gln product (gln_upgrade_pricing
             registration_fee: 0,
             yearly_fee: yearly_fee,
         });
@@ -1896,7 +1896,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             secondHeading: "RECEIPT FOR ADDITIONAL GLN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `Receipt for upgrade of ${totalGlnToAdd} GLN`,
+                registeration: `Receipt for additional ${totalGlnToAdd} GLN`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {

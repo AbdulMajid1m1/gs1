@@ -14,7 +14,7 @@ const Header = () =>
     <div>
 
       <div className='sticky top-0 z-50 bg-white p-2'>
-        <div className='h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4'>
+        <div className={`h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4  ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
           {/* Logo and Text */}
           <div className='flex items-center flex-wrap mb-4 sm:mb-0'>
             <img onClick={() => navigate('/')} src={gs1v2logo} className='h-14 w-auto cursor-pointer' alt='' />
@@ -60,6 +60,7 @@ const Header = () =>
 
 
           </div>
+
         </div>
       </div>
       {/* End Nav */}
