@@ -181,13 +181,13 @@ const AdminSideBar = () =>
                 ></path>
               </svg>
             </button>
-            <p className="sm:text-2xl text-sm sm:py-0 py-2 sm:px-0 px-3 text-white font-medium">
+            <p className="sm:text-2xl text-sm -mt-2 sm:py-0 py-2 sm:px-0 px-3 text-white font-medium">
               GS1-V2
             </p>
           </div>
 
           <div
-            className="flex justify-center items-center cursor-pointer mt-1 px-4"
+            className="flex justify-center items-center cursor-pointer -mt-1 px-4"
           >
             <div className='flex justify-end items-center px-0 mr-4'>
               <span>
