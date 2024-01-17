@@ -1814,13 +1814,16 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
                     include: {
                         product: true
                     }
-                }
+                },
+                gln_upgrade_pricing: true
+
             }
 
 
         });
 
         let otherProductSubscription = upgradeCart.other_products_subcriptions;
+        let gln_upgrade_pricing = upgradeCart.gln_upgrade_pricing; // this is the new gln product
         let otherProductSubscriptionProduct = otherProductSubscription.product;
         console.log("upgradeCart", upgradeCart);
         console.log("otherProductSubscription", otherProductSubscription);
@@ -1844,12 +1847,10 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             return res.status(404).send('User not found');
         }
 
-        const totalGlnToAdd = otherProductSubscriptionProduct.total_no_of_barcodes;
+        const totalGlnToAdd = gln_upgrade_pricing.total_no_of_gln;
 
         // user yealy fee
-        let yearly_fee = user.membership_category === "non_med_category" ?
-            otherProductSubscriptionProduct.product_subscription_fee :
-            otherProductSubscriptionProduct.med_subscription_fee;
+        let yearly_fee = gln_upgrade_pricing.price;
 
         console.log("yearly_fee", yearly_fee);
         // Update gtin_subscription_limit in gtin_subscriptions
