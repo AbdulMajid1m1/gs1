@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
-
 const AddGTINProducts = () => {
     const abortControllerRef = useRef(null);
     // const memberDataString = sessionStorage.getItem('memberData');

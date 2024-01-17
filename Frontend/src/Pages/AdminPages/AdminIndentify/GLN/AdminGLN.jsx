@@ -13,11 +13,14 @@ import { toast } from 'react-toastify';
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import { useTranslation } from 'react-i18next';
 
 const Gln = () => {
   const [data, setData] = useState([]);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const { t, i18n } = useTranslation();
+
   // const memberDataString = sessionStorage.getItem('memberData');
   // const memberData = JSON.parse(memberDataString);
   // console.log(memberData);
@@ -144,7 +147,7 @@ const Gln = () => {
       const deleteResponse = await newRequest.delete(`/gln/${row.id}`);
       console.log(deleteResponse.data);
 
-      toast.success(deleteResponse?.data?.message || 'GLN deleted successfully', {
+      toast.success(deleteResponse?.data?.message || `${t('GLN')}  ${t('deleted successfully')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -236,31 +239,32 @@ const Gln = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         {/* <div className='h-auto w-full'>
           <div className='h-16 w-full shadow-xl flex justify-start items-center px-5 border-l-2 border-t-2 border-r-2 border-[#e49515]'>
             <p className='sm:text-2xl text-sm font-body'>View GLN</p>
           </div>
         </div> */}
         <div>
-          <AdminDashboardRightHeader title={"GLN"}/>
+          <AdminDashboardRightHeader
+            title={`${t('GLN')}`} />
         </div>
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              <i className="fas fa-arrow-left mr-1"></i> Back
+              <i className="fas fa-arrow-left mr-1"></i> {t('Back')}
             </button>
 
             <button onClick={() => navigate('/admin/admin-addgln')} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              <i className="fas fa-plus mr-1"></i> Add GLN
+                  <i className="fas fa-plus mr-1"></i>{t('Add GLN')}
             </button>
 
             <button onClick={handleGlnPage} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              <i className="fas fa-print mr-1"></i> Print GLN
+              <i className="fas fa-print mr-1"></i>  {t('Print')} {t('GLN')}
             </button>
           </div>
 
@@ -297,7 +301,7 @@ const Gln = () => {
                           error={isSubmitClicked && !selectedCr?.cr}
                           helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                           {...params}
-                          label="Search Members.."
+                          label={`${t('Search Members')}`}
                           InputProps={{
                             ...params.InputProps,
                             endAdornment: (
@@ -332,21 +336,22 @@ const Gln = () => {
 
 
         <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-          <DataTable data={data} title={"GLN LIST"} columnsName={GlnColumn} backButton={false}
+                <DataTable data={data}
+                  title={`${t('GLN LIST')}`} columnsName={GlnColumn} backButton={false}
             loading={isLoading}
             secondaryColor="secondary"
             uniqueId={"gln_id"}
             handleRowClickInParent={handleRowClickInParent}
             dropDownOptions={[
               {
-                label: "Edit",
+                label: `${t('Edit')}`,
                 icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 action: handleEdit
 
               },
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                 ,
                 action: handleDelete,

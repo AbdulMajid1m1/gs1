@@ -14,9 +14,11 @@ import Addbrands from './addbrands';
 import Updatebrands from './updatebrands';
 import { debounce } from '@mui/material/utils';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import { useTranslation } from 'react-i18next';
 const Brands = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+  const { t, i18n } = useTranslation();
 
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [selectedCr, setSelectedCr] = useState(null);
@@ -137,7 +139,7 @@ const Brands = () => {
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
   const handleShowCreatePopup = (value) => {
     if (selectedCr == null) {
-      toast.info('Please select a member first')
+      toast.info(`${t('Please select a member first')}`)
     } else {
       setCreatePopupVisibility(true);
       // console.log(selectedCr)
@@ -161,12 +163,12 @@ const Brands = () => {
 
   const handleDelete = async (row) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this cr number!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('cr number')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -175,7 +177,7 @@ const Brands = () => {
         try {
           const isDeleted = await newRequest.delete("/brands/" + row?.id);
           if (isDeleted) {
-            toast.success('Brand deleted successfully');
+            toast.success(`${t('Brands')}  ${t('deleted successfully')}`);
 
             // filter out the deleted user from the data
             const filteredData = data.filter((item) => item?.id !== row?.id);
@@ -200,10 +202,10 @@ const Brands = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <AdminDashboardRightHeader
-            title={'Brands'}
+            title={`${t('Brands')}`}
           />
         </div>   
 
@@ -243,7 +245,7 @@ const Brands = () => {
                       error={isSubmitClicked && !selectedCr?.cr}
                       helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                       {...params}
-                      label="Search Members"
+                      label={`${t('Search Members')}`}
                       InputProps={{
                         ...params.InputProps,
                         endAdornment: (
@@ -275,18 +277,18 @@ const Brands = () => {
                 />
               </div>
 
-              <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
               </div>
 
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
                 <DataTable data={data}
-                  title="Brands"
+                  title={`${t('Brands')}`}
                   columnsName={AdminBrandsColumn}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -304,7 +306,7 @@ const Brands = () => {
                     //   action: handleView,
                     // },
                     {
-                      label: "Edit",
+                      label: `${t('Edit')}`,
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -315,7 +317,7 @@ const Brands = () => {
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: `${t('Delete')}`,
                       icon: (
                         <DeleteIcon
                           fontSize="small"
