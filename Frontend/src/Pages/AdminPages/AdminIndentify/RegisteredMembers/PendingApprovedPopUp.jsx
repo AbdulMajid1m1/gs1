@@ -8,7 +8,7 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData,
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData
 }) => {
   //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   //   console.log(gs1MemberInvoiceData);
@@ -77,7 +77,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       const cartItemSpecificProducts = cartItems.map((cartItem) => {
         return {
 
-          
+
           productID: cartItem.productID,
           productType: cartItem.product_type
         };
@@ -133,6 +133,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       fetchAllUserData();
       // Close the popup
       handleClosePendingApprovedPopup();
+      refreshMemberInoviceData();
       fetchMemberHistoryData();
       //   }
     } catch (err) {

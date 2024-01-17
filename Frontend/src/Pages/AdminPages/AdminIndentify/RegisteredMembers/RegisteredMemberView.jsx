@@ -1034,6 +1034,7 @@ const RegisteredMembersView = () => {
         {isPendingApprovedPopupVisible && (
           <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData}
             fetchMemberHistoryData={fetchMemberHistoryData}
+            refreshMemberInoviceData={fetchMemberInvoiceData}
           />
         )}
 

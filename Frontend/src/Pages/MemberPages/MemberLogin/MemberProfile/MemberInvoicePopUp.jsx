@@ -68,7 +68,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       // });
 
       const body = selectedStatus === "approved" ? approvedBody : rejectBody;
-      console.log(status);
+     
       const res = await newRequest.put(`/memberDocuments/status/${gs1MemberInvoiceData?.id}`, { ...body, status: selectedStatus });
       //   console.log(res.data);
       

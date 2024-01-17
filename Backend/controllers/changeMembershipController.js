@@ -1814,13 +1814,16 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
                     include: {
                         product: true
                     }
-                }
+                },
+                gln_upgrade_pricing: true
+
             }
 
 
         });
 
         let otherProductSubscription = upgradeCart.other_products_subcriptions;
+        let gln_upgrade_pricing = upgradeCart.gln_upgrade_pricing; // this is the new gln product
         let otherProductSubscriptionProduct = otherProductSubscription.product;
         console.log("upgradeCart", upgradeCart);
         console.log("otherProductSubscription", otherProductSubscription);
@@ -1844,12 +1847,10 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             return res.status(404).send('User not found');
         }
 
-        const totalGlnToAdd = otherProductSubscriptionProduct.total_no_of_barcodes;
+        const totalGlnToAdd = gln_upgrade_pricing.total_no_of_gln;
 
         // user yealy fee
-        let yearly_fee = user.membership_category === "non_med_category" ?
-            otherProductSubscriptionProduct.product_subscription_fee :
-            otherProductSubscriptionProduct.med_subscription_fee;
+        let yearly_fee = gln_upgrade_pricing.price;
 
         console.log("yearly_fee", yearly_fee);
         // Update gtin_subscription_limit in gtin_subscriptions
@@ -1881,7 +1882,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         cart.cart_items = []
 
         cart.cart_items.push({
-            productName: `${otherProductSubscriptionProduct.product_name}`,
+            productName: `Additional GLN (${totalGlnToAdd} GLN)`, // this is the new gln product (gln_upgrade_pricing
             registration_fee: 0,
             yearly_fee: yearly_fee,
         });
@@ -1895,7 +1896,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             secondHeading: "RECEIPT FOR ADDITIONAL GLN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `Receipt for upgrade of ${totalGlnToAdd} GLN`,
+                registeration: `Receipt for additional ${totalGlnToAdd} GLN`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
