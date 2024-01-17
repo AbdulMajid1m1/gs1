@@ -48,32 +48,32 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
   const [cartItemsProducts, setCartItemsProducts] = useState([]);
 
   const handleDeleteRow = async (index, item) => {
-
+    console.log(item);
     // Check if the index is greater than 0 (not the first row)
     if (index === 0) {
       toast.error("You cannot delete the first row!");
       return;
     }
-
-    // Create a copy of the current memberInvoiceData
-    const updatedData = [...memberInoviceData];
-
-    // Remove the selected row
-    updatedData.forEach((item) => {
-      const cartItems = JSON.parse(item.cart_items);
-      cartItems.splice(index, 1);
-      item.cart_items = JSON.stringify(cartItems);
-    });
-
-    // Update state with the modified data
-    setMemberInvoiceData(updatedData);
-
-    // Recalculate total price
-    // call the api to delete the cart item
     try {
       const res = await newRequest.delete(`/gtinProducts/otherProductsSubscriptions/${item.id}`);
       console.log(res.data);
       toast.success(res?.data?.message || "Cart item deleted successfully!");
+      // Create a copy of the current memberInvoiceData
+      const updatedData = [...memberInoviceData];
+
+      // Remove the selected row
+      updatedData.forEach((item) => {
+        const cartItems = JSON.parse(item.cart_items);
+        cartItems.splice(index, 1);
+        item.cart_items = JSON.stringify(cartItems);
+      });
+
+      // Update state with the modified data
+      setMemberInvoiceData(updatedData);
+
+      // Recalculate total price
+      // call the api to delete the cart item
+
 
       let total = 0;
       updatedData.forEach((item) => {
