@@ -26,17 +26,23 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
+      // const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
+      const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${gs1MemberData?.id}&isDeleted=false`);
+
       console.log(res.data);
       setMemberInvoiceData(res.data);
+      // let total = 0;
+      // res.data?.gtinSubscriptions.forEach((item) => {
+      //   total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+      // });
 
-      let total = 0;
-      const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-      // console.log(cartItems);
-      cartItems.forEach((item) => {
-        total += parseInt(item.price); // Make sure to parse the price as an integer
-      });
-      setTotalPrice(total);
+      // res.data?.otherProductSubscriptions.forEach((item) => {
+      //   // add price and other_products_subscription_total_price
+      //   total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+      // });
+      // console.log(total);
+      // setTotalPrice(total);
+
     }
     catch (err) {
       console.log(err);
@@ -49,68 +55,60 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
   const handleDeleteRow = async (index, item) => {
     console.log(item);
-    // Check if the index is greater than 0 (not the first row)
-    if (index === 0) {
-      toast.error("You cannot delete the first row!");
-      return;
-    }
+
+
     try {
       const res = await newRequest.delete(`/gtinProducts/otherProductsSubscriptions/${item.id}`);
       console.log(res.data);
-      toast.success(res?.data?.message || "Cart item deleted successfully!");
-      // Create a copy of the current memberInvoiceData
-      const updatedData = [...memberInoviceData];
+      toast.success(res?.data?.message ?? "Cart item deleted successfully!");
 
-      // Remove the selected row
-      updatedData.forEach((item) => {
-        const cartItems = JSON.parse(item.cart_items);
-        cartItems.splice(index, 1);
-        item.cart_items = JSON.stringify(cartItems);
+      // Remove the deleted item from the cart based on id  
+      const updatedCartItems = memberInoviceData?.otherProductSubscriptions?.filter((cartItem) => cartItem.id !== item.id);
+
+      setMemberInvoiceData((prev) => {
+        return {
+          ...prev,
+          otherProductSubscriptions: updatedCartItems,
+        };
       });
 
-      // Update state with the modified data
-      setMemberInvoiceData(updatedData);
-
-      // Recalculate total price
-      // call the api to delete the cart item
 
 
-      let total = 0;
-      updatedData.forEach((item) => {
-        const cartItems = JSON.parse(item.cart_items);
-        console.log(cartItems);
-        const cartItemSpecificProducts = cartItems.map((cartItem) => {
-          return {
-            productID: cartItem.productID,
-            productType: cartItem.product_type
-          };
-        });
 
-        console.log(cartItemSpecificProducts);
-        setCartItemsProducts(cartItemSpecificProducts);
-
-        cartItems.forEach((cartItem) => {
-          total += parseInt(cartItem.price);
-        });
+      // set cartItemsProducts2 to object with productID and product_type
+      const updatedProductIds = updatedCartItems.map((item) => {
+        return {
+          productID: item?.product?.id,
+          productType: "other_products",
+        };
       });
-      setTotalPrice(total);
-
-
-      // Check if no rows are selected after deletion
-      const isAnyRowSelected = updatedData.some((item) => {
-        const cartItems = JSON.parse(item.cart_items);
-        return cartItems.length > 0;
-      });
+      console.log(updatedProductIds);
+      setCartItemsProducts(updatedProductIds);
+      // No need to set cartItemsProducts again here, as it was already updated above.
 
       // Update radio button based on row selection
-      setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
+      // setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
     } catch (err) {
       console.log(err);
       toast.error(err.response?.data?.error || "Something went wrong!");
     }
-
-
   };
+  // create a useEffect to calculate the total price of the cart items
+  useEffect(() => {
+    let total = 0;
+    memberInoviceData?.gtinSubscriptions?.forEach((item) => {
+      total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
+    });
+
+    memberInoviceData?.otherProductSubscriptions?.forEach((item) => {
+      // add price and other_products_subscription_total_price
+      total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+    });
+    console.log(total);
+    setTotalPrice(total);
+  }, [memberInoviceData]);
+
+
 
 
 
@@ -219,29 +217,14 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                         <th>PRODUCT</th>
                         <th>REGISTRATION FEE</th>
                         <th>YEARLY FEE</th>
-                        {/* <th>PRICE</th> */}
-                        <th>SUB TOTAL</th>
+                        <th>EXPIRY DATE</th>
+                        <th>PRICE</th>
                         <th>DELETE</th>
                       </tr>
                     </thead>
-                    {/* <tbody>
-                      {.map((item, index) => {
-                        const cartItems = JSON.parse(item.cart_items);
-                        return cartItems.map((cartItem, cartIndex) => (
-                          <tr key={cartIndex}>
-                            <td>{cartItem.productName}</td>
-                            <td>{cartItem.registration_fee}</td>
-                            <td>{cartItem.yearly_fee}</td>
-                            <td>{cartItem.price}</td>
-                            <td className='hover:text-red-500 cursor-pointer'>
-                              <DeleteSweepIcon />
-                            </td>
-                          </tr>
-                        ));
-                      })}
-                    </tbody> */}
+
                     <tbody>
-                      {memberInoviceData.map((item, index) => {
+                      {/* {memberInoviceData.map((item, index) => {
                         const cartItems = JSON.parse(item.cart_items);
                         return cartItems.map((cartItem, cartIndex) => (
                           <tr key={cartIndex}>
@@ -254,12 +237,43 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                             </td>
                           </tr>
                         ));
+                      })} */}
+                      {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                        return (
+                          <tr key={'gtin_product' + index}>
+                            <td>{item?.gtin_product?.member_category_description}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.gtin_subscription_total_price}</td>
+                            <td>{expiryDate}</td>
+                            <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                            <td className='hover:text-gray-500 cursor-pointer text-gray-500 cursor-not-allowed' >
+                              <DeleteSweepIcon style={{ color: "gray-500" }} />
+                            </td>
+                          </tr>
+                        );
                       })}
+                      {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
+                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                        return (
+                          <tr key={'other_products' + index}>
+                            <td>{item?.product?.product_name}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.other_products_subscription_total_price}</td>
+                            <td>{expiryDate}</td>
+                            <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                            <td className='hover:text-red-500 cursor-pointer' onClick={() => handleDeleteRow(index, item)}>
+                              <DeleteSweepIcon />
+                            </td>
+                          </tr>
+                        );
+                      })}
+
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan="3" className="text-right font-bold">Total:</td>
-                        <td>{totalPrice}</td>
+                        <td colSpan="4" className="text-right font-bold">Total:</td>
+                        <td colSpan="2">{totalPrice}</td>
                       </tr>
                     </tfoot>
                   </table>
