@@ -414,6 +414,44 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 });
 
 
+                const cartData = JSON.parse(cartValue.cart_items)
+
+                const gtinSubscriptionData = {
+                    transaction_id: cartValue.transaction_id,
+                    user_id: user.id,
+                    request_type: "registration",
+                    status: "inactive",
+                    price: parseFloat(cartData?.[0]?.registration_fee),
+                    pkg_id: cartData?.[0]?.productID,
+                    gtin_subscription_total_price: parseFloat(cartData?.[0]?.yearly_fee),
+
+                };
+
+
+                const newGtinSubscription = await prisma.gtin_subcriptions.create({
+                    data: gtinSubscriptionData
+                });
+
+                const otherProductsData = cartData.slice(1).map(item => ({
+                    transaction_id: cartValue.transaction_id,
+                    user_id: user.id,
+                    status: "inactive",
+                    price: parseFloat(item.registration_fee),
+
+                    product_id: item.productID,
+                    product_identifier_name: item.productName,
+                    other_products_subscription_total_price: parseFloat(item.yearly_fee),
+
+
+                }));
+                const otherProductsSubscriptions = await Promise.all(
+                    otherProductsData.map(productData =>
+                        prisma.other_products_subcriptions.create({ data: productData })
+                    )
+                );
+
+
+
                 // add all three documents to the member_documents table
                 const documentsData =
                 {
@@ -635,43 +673,43 @@ export const createUser = async (req, res, next) => {
             });
 
 
-            const cartData = JSON.parse(cartValue.cart_items)
+            // const cartData = JSON.parse(cartValue.cart_items)
 
-            const gtinSubscriptionData = {
-                transaction_id: transactionId,
-                user_id: newUser.id,
-                request_type: "registration",
-                status: "inactive",
-                price: parseFloat(cartData[0].registration_fee),
-                pkg_id: cartData[0].productID,
-                gtin_subscription_total_price: parseFloat(cartData[0].yearly_fee),
+            // const gtinSubscriptionData = {
+            //     transaction_id: transactionId,
+            //     user_id: newUser.id,
+            //     request_type: "registration",
+            //     status: "inactive",
+            //     price: parseFloat(cartData[0].registration_fee),
+            //     pkg_id: cartData[0].productID,
+            //     gtin_subscription_total_price: parseFloat(cartData[0].yearly_fee),
 
-            };
-
-
-            const newGtinSubscription = await prisma.gtin_subcriptions.create({
-                data: gtinSubscriptionData
-            });
-
-            const otherProductsData = cartData.slice(1).map(item => ({
-                transaction_id: transactionId,
-                user_id: newUser.id,
-                status: "inactive",
-                price: parseFloat(item.registration_fee),
-
-                product_id: item.productID,
-                product_identifier_name: item.productName,
-                other_products_subscription_total_price: parseFloat(item.yearly_fee),
+            // };
 
 
-            }));
-            const otherProductsSubscriptions = await Promise.all(
-                otherProductsData.map(productData =>
-                    prisma.other_products_subcriptions.create({ data: productData })
-                )
-            );
+            // const newGtinSubscription = await prisma.gtin_subcriptions.create({
+            //     data: gtinSubscriptionData
+            // });
 
-            return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions };
+            // const otherProductsData = cartData.slice(1).map(item => ({
+            //     transaction_id: transactionId,
+            //     user_id: newUser.id,
+            //     status: "inactive",
+            //     price: parseFloat(item.registration_fee),
+
+            //     product_id: item.productID,
+            //     product_identifier_name: item.productName,
+            //     other_products_subscription_total_price: parseFloat(item.yearly_fee),
+
+
+            // }));
+            // const otherProductsSubscriptions = await Promise.all(
+            //     otherProductsData.map(productData =>
+            //         prisma.other_products_subcriptions.create({ data: productData })
+            //     )
+            // );
+
+            return { newUser, newCart };
 
             // return { newUser, newCart };
 
