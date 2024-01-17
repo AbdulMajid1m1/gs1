@@ -267,7 +267,7 @@ const Megamenu = () => {
                     <div className="h-auto w-[97%] px-0 pt-4">
                         <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-                            <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+                            <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                                 <button
                                     onClick={handleShowCreatePopup}
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">

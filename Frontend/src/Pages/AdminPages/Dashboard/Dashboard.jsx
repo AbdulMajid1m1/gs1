@@ -10,11 +10,10 @@ import barcoderemain from '../../../Images/barcoderemain.png'
 import newRequest from '../../../utils/userRequest'
 import AdminDashboardRightHeader from '../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { I18nextProvider, useTranslation } from "react-i18next";
-import i18n from "../../../i18n";
 import LanguageSwitcher from "../../../switer";
 const Dashboard = () =>
 {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [newRegisteredMembers, setNewRegisteredMembers] = useState([]);
   const [pendingApprovals, setPendingApprovals] = useState([]);
   const [allRegisteredMembers, setAllRegisteredMembers] = useState([]);
@@ -161,7 +160,7 @@ const Dashboard = () =>
   }, [])
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white text-black dark:text-white">
 
           <div className="h-full mb-10 bg-gradient-to-r from-[#C3E2DC]">
