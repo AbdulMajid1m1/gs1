@@ -209,6 +209,9 @@
                                 <b>Date of Issue:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
                                 <!-- <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br> -->
                                 <b>Transaction ID:</b> <span><%= data.cart.transaction_id %></span><br>
+                                <% if (data.memberData.companyID) { %>
+                                    <b>Company ID:</b> <span><%= data.memberData.companyID %></span><br>
+                                <% } %>
                                 <b>Membership Category:</b> <span><%= data.memberData.membership_otherCategory %></span><br>
                             </p>
                         </td>
@@ -220,9 +223,11 @@
                                 <b>Type of Payment:</b> 
                                 <%= data.memberData.registeration %>
                             </p>
-                            <p class="p-text">
-                                <b>Membership Type:</b> <%= data.memberData.gtin_subscription.products.member_category_description %>
-                            </p>
+                            <% if (data.memberData.gtin_subscription && data.memberData.gtin_subscription.products && data.memberData.gtin_subscription.products.member_category_description) { %>
+                                <p class="p-text">
+                                    <b>Membership Type:</b> <%= data.memberData.gtin_subscription.products.member_category_description %>
+                                </p>
+                            <% } %>
                             <p class="p-text">
                                 <b>Payment Method:</b> 
                                 <% if (data.cart.payment_type === 'bank_transfer') { %>

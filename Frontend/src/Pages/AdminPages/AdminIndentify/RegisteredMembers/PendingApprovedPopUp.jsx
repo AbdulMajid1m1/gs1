@@ -65,13 +65,18 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     let total = 0;
     updatedData.forEach((item) => {
       const cartItems = JSON.parse(item.cart_items);
-      console.log(cartItems)
+      console.log(cartItems);
       const cartItemSpecificProducts = cartItems.map((cartItem) => {
-        return cartItem?.productID;
+        return {
+
+          
+          productID: cartItem.productID,
+          productType: cartItem.product_type
+        };
       });
 
-      console.log(cartItemSpecificProducts)
-      setCartItemsProducts(cartItemSpecificProducts)
+      console.log(cartItemSpecificProducts);
+      setCartItemsProducts(cartItemSpecificProducts);
 
       cartItems.forEach((cartItem) => {
         total += parseInt(cartItem.price);

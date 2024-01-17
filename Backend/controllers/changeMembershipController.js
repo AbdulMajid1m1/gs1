@@ -234,7 +234,7 @@ export const membershipRenewRequest = async (req, res, next) => {
     }
 
     const currentDate = new Date();
-    const renewalYear = currentDate.getFullYear() + 1;
+    let renewalYear;
     const randomTransactionIdLength = 10;
     const transactionId = generateRandomTransactionId(randomTransactionIdLength);
 
@@ -259,10 +259,30 @@ export const membershipRenewRequest = async (req, res, next) => {
         cart.transaction_id = transactionId;
 
 
+        var expiryDate = new Date(existingUser.gcp_expiry);
+
+        // Add one year
+        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+        // Check if the original date was February 29th on a leap year
+        if (existingUser.gcp_expiry.getMonth() === 1 && existingUser.gcp_expiry.getDate() === 29) {
+            // Check if the new year is not a leap year
+            if ((expiryDate.getFullYear() % 4 !== 0) ||
+                (expiryDate.getFullYear() % 100 === 0 && expiryDate.getFullYear() % 400 !== 0)) {
+                // Adjust the date to February 28th
+                expiryDate.setDate(28);
+            }
+        }
+
+        console.log("expiryDate");
+        console.log(expiryDate);
+
+        renewalYear = expiryDate.getFullYear(); //
+
 
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const invoiceData = {
-            topHeading: "RENEWAL INVOICE",
+            topHeading: "INVOICE",
             secondHeading: "RENEWAL INVOICE FOR",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
@@ -484,8 +504,20 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
                         // Update user with new information
                         // get existingUser.gcp_expiry and add 1 year to it
-                        expiryDate = new Date(existingUser.gcp_expiry);
+                        var expiryDate = new Date(existingUser.gcp_expiry);
+
+                        // Add one year
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+                        // Check if the original date was February 29th on a leap year
+                        if (existingUser.gcp_expiry.getMonth() === 1 && existingUser.gcp_expiry.getDate() === 29) {
+                            // Check if the new year is not a leap year
+                            if ((expiryDate.getFullYear() % 4 !== 0) ||
+                                (expiryDate.getFullYear() % 100 === 0 && expiryDate.getFullYear() % 400 !== 0)) {
+                                // Adjust the date to February 28th
+                                expiryDate.setDate(28);
+                            }
+                        }
 
                         console.log("expiryDate");
                         console.log(expiryDate);
@@ -1189,7 +1221,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: "ADDITIONAL GTIN INVOICE",
+                topHeading: "INVOICE",
                 secondHeading: "ADDITIONAL GTIN INVOICE FOR",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
@@ -1640,8 +1672,9 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
             topHeading: "RECEIPT",
             secondHeading: "RECEIPT FOR ADDITIONAL GTIN",
             memberData: {
+                registeration: `Receipt for additional ${gtinUpgradePricing.total_no_of_barcodes} barcodes`,
                 qrCodeDataURL: qrCodeDataURL,
-                upgradeDetails: `Receipt for upgrade of ${totalBarcodesToAdd} barcodes`,
+                // upgradeDetails: `Receipt for upgrade of ${totalBarcodesToAdd} barcodes`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
@@ -1654,7 +1687,8 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
                 membership_otherCategory: user.membership_category,
                 gtin_subscription: {
                     products: {
-                        member_category_description: upgradeCart.productName,
+                        // it's member_category_description not productName 
+                        member_category_description: user?.membership_category
                     },
                 },
             },
@@ -1690,6 +1724,8 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         if (gcpGLNIDUpdated) {
             emailContent = `Thank you for upgrading your membership. Your GPC/GLN has been updated from ${oldGcpGLNID} to ${user.gcpGLNID}. Please find the attached receipt for your reference.`;
         }
+
+
 
         // Send email with receipt
         await sendEmail({
@@ -1859,7 +1895,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             secondHeading: "RECEIPT FOR ADDITIONAL GLN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                upgradeDetails: `Receipt for upgrade of ${totalGlnToAdd} GLN`,
+                registeration: `Receipt for upgrade of ${totalGlnToAdd} GLN`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
@@ -2032,7 +2068,7 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
 
-        let emailContent = `Your request for changing membership has been approved. Please find the attached receipt for your reference.`;
+        let emailContent = `Your request for changing membership has been approved. Please find the attached documents for your reference.`;
 
 
 
@@ -2046,7 +2082,8 @@ export const approveMembershipRequest = async (req, res, next) => {
         } else {
             gcpGLNID = `628${gtinProduct.gcp_start_range}`;
             gln = generateGTIN13(gcpGLNID); // Replace with your actual GTIN generation logic
-            expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
+            // don't change for now
+            // expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
         }
         // Update user with new gcpGLNID and GLN
         await prisma.users.update({
@@ -2181,6 +2218,62 @@ export const approveMembershipRequest = async (req, res, next) => {
 
 
 
+
+
+
+        const CertificateData = {
+            BACKEND_URL: BACKEND_URL,
+            qrCodeDataURL: qrCodeDataURL,
+            user: {
+                company_name_eng: user?.company_name_eng,
+            },
+            general: {
+                gcp_certificate_detail1:
+                    ['Global Trade Item Number(GTIN)',
+                        'Serial Shipping Container Code (SSCC)',
+                        'Global Location Number (GLN)',
+                        'Global Document Type Identifier(GDTI)',
+                        'Global Service Relation Number(GSRN)'
+                    ], // Dummy data, replace with actual detail data from your API
+                gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
+                    'Global Identification Number for',
+                    'Consignment(GSNC)',
+                    'Global Shipment Identification Number (GSIN)'
+                ], // Dummy data, replace with actual detail data from your API
+                gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+            },
+
+            userData: {
+                // add user data here
+                gcpGLNID: gcpGLNID,
+                gln: gln,
+                memberID: user?.memberID,
+                // gcp_expiry:
+                // use updated expiry date used above
+                expiryDate: expiryDate,
+            },
+            // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+            expiryDate: expiryDate?.toISOString()?.split('T')[0],
+            explodeGPCCode: []
+        };
+
+
+
+        // Generate PDF from EJS template
+        const certificatePdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
+        // use current date time to generate unique file name
+        pdfFilename = `${user.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+        const certPdfFilePath = path.join(certificatePdfDirectory, pdfFilename);
+        if (!fsSync.existsSync(certificatePdfDirectory)) {
+            fsSync.mkdirSync(certificatePdfDirectory, { recursive: true });
+        }
+
+        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, certPdfFilePath, true);
+        const certificatepdfBuffer = await fs1.readFile(Certificatepath);
+
+
+
+
         // Send email with receipt
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
@@ -2191,6 +2284,11 @@ export const approveMembershipRequest = async (req, res, next) => {
                 {
                     filename: pdfFilename,
                     content: pdfBuffer,
+                    contentType: 'application/pdf',
+                },
+                {
+                    filename: `Certificate-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`,
+                    content: certificatepdfBuffer,
                     contentType: 'application/pdf',
                 },
             ],

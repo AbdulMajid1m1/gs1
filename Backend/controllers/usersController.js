@@ -267,7 +267,10 @@ const sendAndSaveInvoiceSchema = Joi.object({
     userId: Joi.string().required(),
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
-    productIDs: Joi.array().items(Joi.string()).required().min(1),
+    productIDs: Joi.array().items(Joi.object({
+        productID: Joi.string().required(),
+        productType: Joi.string().required(),
+    })).required().min(1),
 });
 
 export const sendInvoiceToUser = async (req, res, next) => {
@@ -277,12 +280,13 @@ export const sendInvoiceToUser = async (req, res, next) => {
         if (error) {
             console.log("error")
             console.log(error)
+            console.log("error")
             return next(createError(400, error.details[0].message));
         }
         // Extract user and cart values
 
         const { userId, status, reject_reason, productIDs } = value;
-
+        console.log("productIDs", productIDs)
 
 
         // fetch user data and cart data
@@ -305,8 +309,11 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
         // Filter out the cart items that have a productID present in the list
-        cartValue.cart_items = cartValue.cart_items.filter(item => productIDs.includes(item.productID));
-
+        cartValue.cart_items = cartValue.cart_items.filter(item => {
+            return productIDs.some(productId =>
+                productId.productID === item.productID && productId.productType === item.product_type
+            );
+        });
         if (cartValue.cart_items.length === 0) {
             throw createError(400, "no cart items found")
         }
@@ -398,6 +405,51 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
             // Start a transaction to ensure both user and cart are inserted
             transaction = await prisma.$transaction(async (prisma) => {
+                // update cart record with new cartValue
+                await prisma.carts.update({
+                    where: {
+                        id: cartValue.id
+                    },
+                    data: cartValue
+                });
+
+
+                const cartData = JSON.parse(cartValue.cart_items)
+
+                const gtinSubscriptionData = {
+                    transaction_id: cartValue.transaction_id,
+                    user_id: user.id,
+                    request_type: "registration",
+                    status: "inactive",
+                    price: parseFloat(cartData?.[0]?.registration_fee),
+                    pkg_id: cartData?.[0]?.productID,
+                    gtin_subscription_total_price: parseFloat(cartData?.[0]?.yearly_fee),
+
+                };
+
+
+                const newGtinSubscription = await prisma.gtin_subcriptions.create({
+                    data: gtinSubscriptionData
+                });
+
+                const otherProductsData = cartData.slice(1).map(item => ({
+                    transaction_id: cartValue.transaction_id,
+                    user_id: user.id,
+                    status: "inactive",
+                    price: parseFloat(item.registration_fee),
+
+                    product_id: item.productID,
+                    product_identifier_name: item.productName,
+                    other_products_subscription_total_price: parseFloat(item.yearly_fee),
+
+
+                }));
+                const otherProductsSubscriptions = await Promise.all(
+                    otherProductsData.map(productData =>
+                        prisma.other_products_subcriptions.create({ data: productData })
+                    )
+                );
+
 
 
                 // add all three documents to the member_documents table
@@ -437,6 +489,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 <p>Invoice: <strong>${pdfFilename}</strong></p>
                 `;
 
+
                 await sendEmail({
                     toEmail: user.email,
                     subject: emailSubject,
@@ -458,7 +511,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
                 return { userUpdateResult };
 
-                // return { newUser, newCart };
 
                 // make trantion time to 40 sec
             }, { timeout: 40000 });
@@ -621,43 +673,43 @@ export const createUser = async (req, res, next) => {
             });
 
 
-            const cartData = JSON.parse(cartValue.cart_items)
+            // const cartData = JSON.parse(cartValue.cart_items)
 
-            const gtinSubscriptionData = {
-                transaction_id: transactionId,
-                user_id: newUser.id,
-                request_type: "registration",
-                status: "inactive",
-                price: parseFloat(cartData[0].registration_fee),
-                pkg_id: cartData[0].productID,
-                gtin_subscription_total_price: parseFloat(cartData[0].yearly_fee),
+            // const gtinSubscriptionData = {
+            //     transaction_id: transactionId,
+            //     user_id: newUser.id,
+            //     request_type: "registration",
+            //     status: "inactive",
+            //     price: parseFloat(cartData[0].registration_fee),
+            //     pkg_id: cartData[0].productID,
+            //     gtin_subscription_total_price: parseFloat(cartData[0].yearly_fee),
 
-            };
-
-
-            const newGtinSubscription = await prisma.gtin_subcriptions.create({
-                data: gtinSubscriptionData
-            });
-
-            const otherProductsData = cartData.slice(1).map(item => ({
-                transaction_id: transactionId,
-                user_id: newUser.id,
-                status: "inactive",
-                price: parseFloat(item.registration_fee),
-
-                product_id: item.productID,
-                product_identifier_name: item.productName,
-                other_products_subscription_total_price: parseFloat(item.yearly_fee),
+            // };
 
 
-            }));
-            const otherProductsSubscriptions = await Promise.all(
-                otherProductsData.map(productData =>
-                    prisma.other_products_subcriptions.create({ data: productData })
-                )
-            );
+            // const newGtinSubscription = await prisma.gtin_subcriptions.create({
+            //     data: gtinSubscriptionData
+            // });
 
-            return { newUser, newCart, newGtinSubscription, otherProductsSubscriptions };
+            // const otherProductsData = cartData.slice(1).map(item => ({
+            //     transaction_id: transactionId,
+            //     user_id: newUser.id,
+            //     status: "inactive",
+            //     price: parseFloat(item.registration_fee),
+
+            //     product_id: item.productID,
+            //     product_identifier_name: item.productName,
+            //     other_products_subscription_total_price: parseFloat(item.yearly_fee),
+
+
+            // }));
+            // const otherProductsSubscriptions = await Promise.all(
+            //     otherProductsData.map(productData =>
+            //         prisma.other_products_subcriptions.create({ data: productData })
+            //     )
+            // );
+
+            return { newUser, newCart };
 
             // return { newUser, newCart };
 
