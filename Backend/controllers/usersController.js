@@ -269,7 +269,7 @@ const sendAndSaveInvoiceSchema = Joi.object({
     reject_reason: Joi.string().optional(),
     productIDs: Joi.array().items(Joi.object({
         productID: Joi.string().required(),
-        product_type: Joi.string().required(),
+        productType: Joi.string().required(),
     })).required().min(1),
 });
 
