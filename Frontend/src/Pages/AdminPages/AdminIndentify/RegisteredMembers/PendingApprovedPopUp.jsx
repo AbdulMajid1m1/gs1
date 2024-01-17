@@ -48,6 +48,14 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
   const [cartItemsProducts, setCartItemsProducts] = useState([]);
 
   const handleDeleteRow = (index) => {
+
+    // Check if the index is greater than 0 (not the first row)
+    if (index === 0) {
+      // Display an error message
+      toast.info("Cannot remove GTIN Subscription");
+      return;
+    }
+
     // Create a copy of the current memberInvoiceData
     const updatedData = [...memberInoviceData];
 
