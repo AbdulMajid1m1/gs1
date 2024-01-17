@@ -68,6 +68,8 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       console.log(cartItems);
       const cartItemSpecificProducts = cartItems.map((cartItem) => {
         return {
+
+          
           productID: cartItem.productID,
           productType: cartItem.product_type
         };
