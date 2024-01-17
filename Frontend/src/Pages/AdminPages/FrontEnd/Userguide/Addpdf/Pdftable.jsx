@@ -14,8 +14,9 @@ import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Adduserguidepdf from './Adduserguidepdf';
 import Updtauserguidespdf from './Updtauserguidespdf';
+import { useTranslation } from 'react-i18next';
 const Pdftable = () => {
-
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -51,12 +52,12 @@ const Pdftable = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this User Guide pdf!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('User Guide pdf')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -65,7 +66,7 @@ const Pdftable = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deleteuser_guide_pdfs/" + row?.id);
                     if (isDeleted) {
-                        toast.success('User Guide pdf deleted successfully', {
+                        toast.success(`${t('User Guide pdf')}  ${t('has been deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -98,7 +99,7 @@ const Pdftable = () => {
                 } catch (error) {
                     // Handle any error that occurred during the deletion
                     console.error("Error deleting user:", error);
-                    toast.error('Something went wrong while deleting user', {
+                    toast.error(`${t('User Guide pdf')} ${t('has been not deleted')} ${t('Delete')}!`, {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -243,13 +244,13 @@ const Pdftable = () => {
                 <CSVLink data={data}
 
                     type="button"
-                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >   {t('Export')}  <FileUploadIcon />
                 </CSVLink>
 
                 <button
                     onClick={handleShowCreatePopup}
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                    <i className="fas fa-plus mr-2"></i>Add Pdf
+                    <i className="fas fa-plus mr-2"></i>{t('Add Pdf')}
                 </button>
              
             </div>
@@ -264,7 +265,7 @@ const Pdftable = () => {
 
                     dropDownOptions={[
                         {
-                            label: "View",
+                            label: `${t('View')}`,
                             icon: (
                                 <VisibilityIcon
                                     fontSize="small"
@@ -275,7 +276,7 @@ const Pdftable = () => {
                             action: handleView,
                         },
                         {
-                            label: "Edit",
+                            label: `${t('Edit')}`,
                             icon: (
                                 <EditIcon
                                     fontSize="small"
@@ -286,7 +287,7 @@ const Pdftable = () => {
                             action: handleShowUpdatePopup,
                         },
                         {
-                            label: "Delete",
+                            label: `${t('Delete')}`,
                             icon: (
                                 <DeleteIcon
                                     fontSize="small"

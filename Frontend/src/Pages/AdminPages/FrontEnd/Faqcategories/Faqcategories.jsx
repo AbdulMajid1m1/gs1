@@ -14,8 +14,10 @@ import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Addfaqcategories from './Addfaqcategories';
 import Updafaqcategores from './Updafaqcategores';
+import { useTranslation } from 'react-i18next';
 const Faqcategories = () => {
 
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -53,12 +55,12 @@ const Faqcategories = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this Faq Categories!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('Faq Categories')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -67,7 +69,7 @@ const Faqcategories = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deletefaq_categories/" + row?.id);
                     if (isDeleted) {
-                        toast.success('Faq  Categories deleted successfully', {
+                        toast.success(`${t('Faq Categories')}  ${t('has been deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -100,7 +102,7 @@ const Faqcategories = () => {
                 } catch (error) {
                     // Handle any error that occurred during the deletion
                     console.error("Error deleting user:", error);
-                    toast.error('Something went wrong while deleting user', {
+                    toast.error(`${t('Faq Categories')} ${t('has been not deleted')} ${t('Delete')}!`, {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -237,7 +239,7 @@ const Faqcategories = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'Faq Categories'}
+                        title={`${t('Faq Categories')}`}
                     />
                 </div>
 
@@ -249,13 +251,13 @@ const Faqcategories = () => {
                                 <button
                                     onClick={handleShowCreatePopup}
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                                    <i className="fas fa-plus mr-2"></i>Add
+                                    <i className="fas fa-plus mr-2"></i>{t('Add')}
                                 </button>
                                 <div className="relative">
                                     <button
                                         className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                                     >
-                                        <i className="fas fa-file-import mr-1"></i> Import
+                                        <i className="fas fa-file-import mr-1"></i> {t('Import')}
                                     </button>
                                     <input
                                         type="file"
@@ -269,14 +271,14 @@ const Faqcategories = () => {
                                 <CSVLink data={data}
 
                                     type="button"
-                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  {t('Export')}  <FileUploadIcon />
                                 </CSVLink>
                             </div>
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="Faq Categories"
+                                    title={`${t('Faq Categories')}`}
                                     columnsName={FaqCategoriesDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
@@ -284,7 +286,7 @@ const Faqcategories = () => {
 
                                     dropDownOptions={[
                                         {
-                                            label: "View",
+                                            label: `${t('View')}`,
                                             icon: (
                                                 <VisibilityIcon
                                                     fontSize="small"
@@ -295,7 +297,7 @@ const Faqcategories = () => {
                                             action: handleView,
                                         },
                                         {
-                                            label: "Edit",
+                                            label: `${t('Edit')}`,
                                             icon: (
                                                 <EditIcon
                                                     fontSize="small"
@@ -306,7 +308,7 @@ const Faqcategories = () => {
                                             action: handleShowUpdatePopup,
                                         },
                                         {
-                                            label: "Delete",
+                                            label: `${t('Delete')}`,
                                             icon: (
                                                 <DeleteIcon
                                                     fontSize="small"

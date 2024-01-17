@@ -2,29 +2,33 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
-
+import slugify from 'slugify';
 
 
 const pages = Joi.object({
     name: Joi.string().max(255).required(),
     name_ar: Joi.string().max(255).required(),
-    slug: Joi.string().max(255).required(),
+    slug: Joi.string().max(255).trim().lowercase().custom((value, helpers) =>
+    {
+        return slugify(value);
+    }).required(),
     page_order: Joi.number(),
     sections: Joi.string().max(255).required(),
     custom_section_data: Joi.string(),
     custom_section_data_ar: Joi.string(),
     seo_description: Joi.string().max(255).required(),
     is_dropdown: Joi.number(),
-    
-    status: Joi.number().valid(0,1).required(),
-    
+
+    status: Joi.number().valid(0, 1).required(),
+
 });
 
-export const createpages = async (req, res, next) => {
+export const createpages = async (req, res, next) =>
+{
     try {
         const { error, value } = pages.validate(req.body);
         if (error) {
-           
+
             return res.status(400).json({ error: error.details[0].message });
         }
 
@@ -39,7 +43,8 @@ export const createpages = async (req, res, next) => {
 };
 
 
-export const getAllpages = async (req, res, next) => {
+export const getAllpages = async (req, res, next) =>
+{
     try {
         const AllUNSPSC = await prisma.pages.findMany({
             orderBy: {
@@ -53,13 +58,15 @@ export const getAllpages = async (req, res, next) => {
         next(error);
     }
 };
-export const getAllpagesname = async (req, res, next) => {
+export const getAllpagesname = async (req, res, next) =>
+{
     try {
         const AllNames = await prisma.pages.findMany({
-  select: {
-    name: true,
-  },
-});
+            select: {
+                name: true,
+                slug: true,
+            },
+        });
 
 
         res.json(AllNames);
@@ -67,7 +74,8 @@ export const getAllpagesname = async (req, res, next) => {
         next(error);
     }
 };
-export const getpagesById = async (req, res, next) => {
+export const getpagesById = async (req, res, next) =>
+{
     try {
         // const { id } = req.params;
         // use JOi to validate the id
@@ -92,27 +100,28 @@ export const getpagesById = async (req, res, next) => {
         next(error);
     }
 };
-export const updatepages = async (req, res, next) => {
+export const updatepages = async (req, res, next) =>
+{
     try {
 
-      const schema = Joi.object({
-    id: Joi.string().required(),
-});
-const { error: idError } = schema.validate(req.params);
-if (idError) {
-    return next(createError(400, idError.details[0].message));
-}
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error: idError } = schema.validate(req.params);
+        if (idError) {
+            return next(createError(400, idError.details[0].message));
+        }
 
-const { id } = req.params;
+        const { id } = req.params;
 
         const { error } = pages.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { name, name_ar,slug,page_order,sections,custom_section_data,seo_description,is_dropdown, status,custom_section_data_ar } = req.body;
+        const { name, name_ar, slug, page_order, sections, custom_section_data, seo_description, is_dropdown, status, custom_section_data_ar } = req.body;
         const updatedUNSPSC = await prisma.pages.update({
-            where: {id: id },
+            where: { id: id },
             data: {
                 name,
                 name_ar,
@@ -124,7 +133,7 @@ const { id } = req.params;
                 is_dropdown,
                 status,
                 custom_section_data_ar
-               
+
             },
         });
 
@@ -133,7 +142,8 @@ const { id } = req.params;
         next(error);
     }
 };
-export const deletepages = async (req, res, next) => {
+export const deletepages = async (req, res, next) =>
+{
     try {
         const schema = Joi.object({
             id: Joi.string().required(),
@@ -151,7 +161,8 @@ export const deletepages = async (req, res, next) => {
         next(error);
     }
 };
-export const getpagesByslug = async (req, res, next) => {
+export const getpagesByslug = async (req, res, next) =>
+{
     try {
         const schema = Joi.object({
             slug: Joi.string().required(),

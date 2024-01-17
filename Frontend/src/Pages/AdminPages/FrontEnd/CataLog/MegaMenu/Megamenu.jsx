@@ -18,8 +18,9 @@ import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Addmegamenu from './Addmegamenu';
 import Updatemegamenu from './Updatemegamenu';
+import { useTranslation } from 'react-i18next';
 const Megamenu = () => {
-
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
@@ -66,12 +67,12 @@ const Megamenu = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this Mega Menu!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('Mega Menu')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -80,7 +81,7 @@ const Megamenu = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deletemega_menus/" + row?.id);
                     if (isDeleted) {
-                        toast.success('Mega Menu deleted successfully', {
+                        toast.success(`${t('Mega Menu')} ${t('Delete')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -113,7 +114,7 @@ const Megamenu = () => {
                 } catch (error) {
                     // Handle any error that occurred during the deletion
                     console.error("Error deleting user:", error);
-                    toast.error('Something went wrong while deleting user', {
+                    toast.error(`${t('Mega Menu')} ${t('has been not deleted')} ${t('Delete')} ${t('has been not deleted')}!`, {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -258,7 +259,7 @@ const Megamenu = () => {
             <div className="p-0 h-full sm:ml-72">
                 <div>
                     <DashboardRightHeader
-                        title={'Mega Menu'}
+                        title={`${t('Mega Menu')}`}
                     />
                 </div>
 
@@ -270,13 +271,13 @@ const Megamenu = () => {
                                 <button
                                     onClick={handleShowCreatePopup}
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                                    <i className="fas fa-plus mr-2"></i>Add
+                                    <i className="fas fa-plus mr-2"></i>{t('Add')}
                                 </button>
                                 <div className="relative">
                                     <button
                                         className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                                     >
-                                        <i className="fas fa-file-import mr-1"></i> Import
+                                        <i className="fas fa-file-import mr-1"></i> {t('Import')}
                                     </button>
                                     <input
                                         type="file"
@@ -290,22 +291,21 @@ const Megamenu = () => {
                                 <CSVLink data={data}
 
                                     type="button"
-                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  {t('Export')}  <FileUploadIcon />
                                 </CSVLink>
                             </div>
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="Mega Menu"
+                                    title={`${t('Mega Menu')}`}
                                     columnsName={megamenuDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
-
                                     dropDownOptions={[
                                         {
-                                            label: "View",
+                                            label: `${t('View')}`,
                                             icon: (
                                                 <VisibilityIcon
                                                     fontSize="small"
@@ -316,7 +316,7 @@ const Megamenu = () => {
                                             action: handleView,
                                         },
                                         {
-                                            label: "Edit",
+                                            label: `${t('Edit')}`,
                                             icon: (
                                                 <EditIcon
                                                     fontSize="small"
@@ -327,7 +327,7 @@ const Megamenu = () => {
                                             action: handleShowUpdatePopup,
                                         },
                                         {
-                                            label: "Delete",
+                                            label: `${t('Delete')}`,
                                             icon: (
                                                 <DeleteIcon
                                                     fontSize="small"

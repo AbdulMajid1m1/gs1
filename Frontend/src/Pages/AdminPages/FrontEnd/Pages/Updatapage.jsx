@@ -7,8 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize-module-react';
 
 const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
@@ -24,6 +25,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [loading, setLoading] = useState(false); 
     const [customsectiondataeng, setcustomsectiondataeng] = useState('')
     const [customsectiondataarb, setcustomsectiondataarb] = useState('')
+    const [Customdatashow, setCustomdatashow] = useState(false)
 
     const handleChangeeng = (value) => {
         setcustomsectiondataeng(value);
@@ -33,15 +35,57 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         setcustomsectiondataarb(value);
     };
 
+    useEffect(() => {
+        // Register the ImageResize module when the component mounts
+        Quill.register('modules/imageResize', ImageResize);
+    }, []);
+
     const modules = {
         toolbar: [
-            [{ header: [1, 2, false] }],
+            [{ header: '1' }, { header: '2' }, { font: [] }],
+            [{ size: [] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['link', 'image'],
-            ['clean'],
+            [
+                { list: 'ordered' },
+                { list: 'bullet' },
+                { indent: '-1' },
+                { indent: '+1' }
+            ],
+            ['link', 'image', 'video'],
+            ['clean'], // <-- Comma was missing here
+            [{ 'color': [] }],
+            [{ 'background': [] }],
+            [{ 'font': [] }],
         ],
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false
+        },
+        imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize']
+        }
     };
+
+    const formats = [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'video',
+        'color',
+        'background',
+
+    ];
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -50,19 +94,27 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
     const refreshcitiesData = async () => {
         try {
             const response = await newRequest.get(`/getpagesById/${userId}`);
-            // console.log([response.data.sections]);
             const inputArray = [response.data];
             const separatedArray = response.data.sections.split('\n');
+           const sectionsArray = JSON.parse(response.data.sections);
+        // const sectionsString = sectionsArray.join(', ');
+            console.log('sectionsArray', sectionsArray);
             console.log(separatedArray);
             setname(response.data.name)
             setname_ar(response.data.name_ar)
             setSeoDescription(response.data.seo_description)
             setPageSlug(response.data.slug)
             setPageOrder(response.data.page_order)
-            setcustomsectiondataeng(response.data.custom_section_data)
-            setcustomsectiondataarb(response.data.custom_section_data_ar);
-            setsections(separatedArray.map((section, index) => ({ id: index, content: section })))
-            setDraggedSections(separatedArray.map((section, index) => ({ id: index, content: section })));
+            setsections(sectionsArray.map((section, index) => ({ id: index, content: section })))
+            setDraggedSections(sectionsArray.map((section, index) => ({ id: index, content: section })));
+            if (response.data.custom_section_data !== null) {
+                setCustomdatashow(true);
+                setcustomsectiondataeng(response.data.custom_section_data);
+                setcustomsectiondataarb(response.data.custom_section_data_ar);
+            } else {
+                setCustomdatashow(false);
+                setcustomsectiondataeng(null);
+            }
 
         } catch (err) {
             console.log(err);
@@ -132,7 +184,10 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         const newSection = { id: draggedSections, content: section };
         setDraggedSections([...draggedSections, newSection]);
         setsections([...draggedSections, newSection])
-
+        if (section == 'Custom') {
+            setCustomdatashow(true)
+        }
+        console.log(section);
     };
 
     const handleRemoveSection = (sectionIndex, itemIndex) => {
@@ -146,7 +201,9 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
 
         setDraggedSections(filteredArray);
         setsections(filteredArray.map(section => ({ id: section.id, content: section.content }))); // Update sections with id and content
-        console.log(filteredArray);
+        if (!updatedDraggedSections.includes('Custom Section')) {
+            setCustomdatashow(false);
+        }
     };
 
 
@@ -289,12 +346,13 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 />
 
                                             </div>
-
+                                            {Customdatashow ? (
+                                                <>
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                                 <label htmlFor="status" className="text-secondary ">
                                                     Custom Data[English]
                                                 </label>
-                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                <ReactQuill theme="snow" modules={modules} formats={formats}className=' h-40'
                                                     value={customsectiondataeng}
                                                     onChange={handleChangeeng} />
                                             </div>
@@ -303,10 +361,14 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 <label htmlFor="status" className="text-secondary mt-5">
                                                     Custom Data[Arabic]
                                                 </label>
-                                                <ReactQuill theme="snow" modules={modules} className=' h-40'
+                                                <ReactQuill theme="snow" modules={modules} formats={formats} className=' h-40'
                                                     value={customsectiondataarb}
                                                     onChange={handleChangearb} />
                                             </div>
+                                                </>
+                                            ) : (
+                                                null
+                                            )}
 
                                         </div>
 

@@ -1,22 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import nartecSlider from "../../../Images/nartecSlider.png"
-import nartecSlider1 from "../../../Images/nartecSlider1.png"
-import magicSlider from "../../../Images/magicSlider.png"
-import oracleSlider from "../../../Images/oracleSlider.png"
-import sasoSlider from "../../../Images/sasoSlider.png"
-import intellSlider from "../../../Images/intellSlider.png"
+import newRequest from '../../../utils/userRequest'
+import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
+import { useTranslation } from 'react-i18next';
 
 const OurSolutionPartner = () => {
+  const { t } = useTranslation();
+  const [data, setData] = useState([]);
+  const fetchHeaderSliderData = async () => {
+    try {
+      const response = await newRequest.get("/getAllpartners");
+      const filteredData = response.data.filter(item => item.status === 1);
+      setData(filteredData || []);
+      console.log('------------', response);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
+  }, []);
   return (
     <div>
           {/* Our Solution Partners */}
           <div className='flex justify-center items-center pt-5'>
-            <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'>Our Solution Partners</h2>
+        <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'> {t('Our Solution Partners')}</h2>
         </div>
      
         <div className='mt-10 mb-10 px-10'>
@@ -48,72 +61,22 @@ const OurSolutionPartner = () => {
         className="mySwiper"
       >
       <div className='grid 2xl:grid-cols-4 xl:grid-cols-5 gap-0 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 px-5'>
+            {data.map((item, index) => {
+              return (
         <SwiperSlide>
-            <div 
+            <div key={index}
               className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
             >
               <img 
-                src={nartecSlider}
+                src={imageLiveUrl(item?.image)}
                 alt="partner"
                 className='w-[90%] h-auto p-1 object-contain'
               />
             </div>
         </SwiperSlide>
-        <SwiperSlide>
-            <div 
-              className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
-            >
-              <img 
-                src={sasoSlider}
-                alt="partner"
-                className='w-[90%] h-32 p-1 object-contain'
-              />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div 
-              className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
-            >
-              <img 
-                src={intellSlider}
-                alt="partner"
-                className='w-[90%] h-auto p-1 object-contain'
-              />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div 
-              className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
-            >
-              <img 
-                src={oracleSlider}
-                alt="partner"
-                className='w-[90%] h-auto p-1 object-contain'
-              />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div 
-              className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
-            >
-              <img 
-                src={magicSlider}
-                alt="partner"
-                className='w-[90%] h-32 p-1 object-contain'
-              />
-            </div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <div 
-              className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
-            >
-              <img 
-                src={nartecSlider1}
-                alt="partner"
-                className='w-[90%] h-auto p-1 object-contain'
-              />
-            </div>
-        </SwiperSlide>
+              );
+            })}
+       
       </div>
       </Swiper>
         </div>

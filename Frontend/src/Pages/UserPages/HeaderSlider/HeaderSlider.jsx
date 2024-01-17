@@ -4,24 +4,24 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import firstslider from "../../../Images/firstslider.png"
-import secondslider from "../../../Images/secondslider.png"
-import thirdslider from "../../../Images/thirdslider.png"
-import fourthslider from "../../../Images/fourthslider.png"
 import newRequest from '../../../utils/userRequest';
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const HeaderSlider = () => {
 
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState([]); 
     const fetchHeaderSliderData = async () => {
       try {
           const response = await newRequest.get("/getAllsliders",);
 
-          console.log(response.data);
-          setData(response?.data || []);
+          console.log('Silder section',response.data);
+
+        const filteredData = response.data.filter(item => item.status === 1);
+        setData(filteredData || []);
           // setIsLoading(false)
 
       } catch (err) {
@@ -68,9 +68,9 @@ const HeaderSlider = () => {
                   
                   {data.map((item) => (
                     <SwiperSlide>
-                        <div className='w-full flex flex-col lg:flex-row justify-between items-center px-5'>
+                      <div className={`w-full flex flex-col  justify-between items-center px-5 ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`} >
                           <div className='w-full flex flex-col gap-2 sm:px-10 px-4 sm:pt-0 pt-5'>
-                            <h2 className='sm:text-3xl text-xl text-white font-semibold'>{item?.title}</h2>
+                            <h2 className='sm:text-3xl text-xl text-white font-semibold'>{item?.title} </h2>
                             <p className='text-lg text-white font-medium'>{item?.description}</p>
                             <Link to={`/${item?.link}`}>
                               <button className=' bg-primary sm:w-[50%] w-full text-white font-medium sm:text-xl text-xs px-4 py-1'>Read the Sucess Stories</button>

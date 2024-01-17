@@ -1,10 +1,12 @@
 import { useState,useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Page, setPage] = useState('')
     const [Pagedropdown, setPagedropdown] = useState([])
+    const { t } = useTranslation();
     useEffect(() => {
         const getpagedata = async () => {
             try {
@@ -46,7 +48,7 @@ const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
                     },
                 });
 
-            toast.success(` Service ${Page} has been added successfully.`, {
+            toast.success( `${t('Featured Services')} ${Page} ${t('has been added successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -85,12 +87,12 @@ const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add  Service </h2>
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Featured Services')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                    
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="status" className="text-secondary">
-                                            Set Page
+                                            {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
@@ -98,11 +100,11 @@ const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onChange={(e) => setPage(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="Select">-- Select --</option>
+                                            <option value="Select">-- {t('Select')} --</option>
                                             {
                                                 Pagedropdown && Pagedropdown.map((itme, index) => {
                                                     return (
-                                                        <option key={index} value={itme.name}>{itme.name}</option>
+                                                        <option key={index} value={itme.slug}>{itme.name}</option>
                                                     )
                                                 })
                                             }
@@ -112,7 +114,7 @@ const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
                                         <label htmlFor="Image" className="text-secondary">
-                                            Image
+                                            {t('Image')}
                                         </label>
                                         <div className="imgesection">
                                             <img src={selectedFile ? URL.createObjectURL(selectedFile) : imageshow != null ? imageshow : ''} className="printerpic" style={{
@@ -122,7 +124,7 @@ const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                             <div className="row " htmlFor="file-inputs">
                                                 <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
-                                                    choose file
+                                                    {t('choose file')}
                                                 </label>
                                                 <input
                                                     id="file-inputs"
@@ -145,14 +147,14 @@ const Addfeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={handleCloseCreatePopup}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleAddCompany}
                                         className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                                     >
-                                        Add Featured Service
+                                    {t('Add')} {t('Featured Services')}
                                     </button>
                                 </div>
 

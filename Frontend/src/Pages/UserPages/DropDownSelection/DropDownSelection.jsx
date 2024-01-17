@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './DropDownSelection.css';
 import newRequest from '../../../utils/userRequest';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const DropDownSelection = () => {
+  const { t, i18n } = useTranslation();
   const [megaMenu, setMegaMenu] = useState([]);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,7 +17,7 @@ const DropDownSelection = () => {
   const getAllRegisteredMembers = async () => {
     try {
       const res = await newRequest.get("/mega_menu_categories_frontSide")
-      console.log(res.data);
+      console.log('Menu',res.data);
       setMegaMenu(res.data);
         
     }
@@ -53,11 +55,12 @@ const DropDownSelection = () => {
               <div className="current-menu-title"></div>
               <div className="mobile-menu-close" onClick={toggleMobileMenu}>&times;</div>
             </div>
-            <ul className="menu-main 2xl:flex xl:flex lg:flex 3xl:flex 3xl:justify-center 3xl:items-center 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-7">
+              <ul className={`menu-main ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'} 2xl:flex xl:flex lg:flex 3xl:flex 3xl:justify-center 3xl:items-center 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-7`}>
               {megaMenu?.map((section, index) => (
                 <li key={index} className="menu-item-has-children">
                   <Link to="javascript:void(0)" style={{ textDecoration: 'none'  }}>
-                    {section.name_en}
+                    {/* {section.name_en} */}
+                    {i18n.language === 'ar' ? section?.name_ar : section?.name_en}
                     &nbsp;
                      <i className="fa fa-angle-down"></i>
                   </Link>
@@ -66,14 +69,15 @@ const DropDownSelection = () => {
                       <div key={catIndex} className="list-item">
                         {/* <Link to={category.url} style={{ textDecoration: 'none' }}> */}
                         <Link to={`/${category.url}`} style={{ textDecoration: 'none' }}>
-                          {category.category_name_en}
+                          {/* {category.category_name_en} */}
+                          {i18n.language === 'ar' ? category?.category_name_ar : category?.category_name_en}
                         </Link>
                         <ul>
                           {category.footer_menus.map((subcategory, subIndex) => (
                             <li key={subIndex}>
                               {/* <Link to={subcategory.url} style={{ textDecoration: 'none' }}> */}
                               <Link to={`/${subcategory.url}`} style={{ textDecoration: 'none' }}>
-                                {subcategory.category_name_en}
+                                {i18n.language === 'ar' ? subcategory?.category_name_ar : subcategory?.category_name_en}
                               </Link>
                             </li>
                           ))}
