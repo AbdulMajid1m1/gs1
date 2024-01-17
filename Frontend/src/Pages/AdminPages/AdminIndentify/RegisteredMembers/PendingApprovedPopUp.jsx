@@ -59,7 +59,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
     try {
-      const res = await newRequest.delete(`/gtinProducts/deleteotherProductsSubscriptionsFromAdmin?id=${item.id}&transaction_id=${gs1MemberData?.transaction_id}`);
+      const res = await newRequest.delete(`/gtinProducts/deleteotherProductsSubscriptionsFromAdmin?id=${item.id}&transaction_id=${gs1MemberData?.transaction_id}&product_id=${item?.product_id}`);
       console.log(res.data);
       toast.success(res?.data?.message ?? "Cart item deleted successfully!");
 

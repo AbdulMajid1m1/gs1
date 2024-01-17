@@ -141,18 +141,17 @@ export const deleteGtinSubscription = async (req, res, next) => {
 // Joi schema for request parameter validation
 const deleteOtherProductsSubscriptionSchema = Joi.object({
     id: Joi.string().required(),
-    transaction_id: Joi.string().required()
+    transaction_id: Joi.string().required(),
+    product_id: Joi.string().required(),
 });
-export const deleteOtherProductsSubscription = async (req, res, next) => {
-    // const { id, transaction_id } = req.params;
 
+export const deleteOtherProductsSubscription = async (req, res, next) => {
     try {
-        // Validate the request parameters
         const { error, value } = deleteOtherProductsSubscriptionSchema.validate(req.query);
         if (error) {
             throw createError(400, `Invalid request parameters: ${error.details[0].message}`);
         }
-        const { id, transaction_id } = value;
+        const { id, transaction_id, product_id } = value;
 
         const result = await prisma.$transaction(async (prisma) => {
             const cart = await prisma.carts.findFirst({
@@ -166,27 +165,26 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
             }
 
             const cartItems = JSON.parse(cart.cart_items);
-            console.log(cartItems);
-            const newCartItems = cartItems.filter(item => item.productID !== id);
+            const newCartItems = cartItems.filter(item => item.productID !== product_id);
             const newCartItemsStr = JSON.stringify(newCartItems);
 
-            // Update the cart within the transaction
-            await prisma.carts.update({
+            // Update the cart within the transaction   
+            const updatedCart = await prisma.carts.update({
                 where: { id: cart.id },
                 data: {
                     cart_items: newCartItemsStr,
                 },
             });
 
-            const result = await prisma.other_products_subcriptions.deleteMany({
+            const count = await prisma.other_products_subcriptions.deleteMany({
                 where: { id: id },
             });
 
-            if (result.count === 0) {
+            if (count === 0) {
                 throw createError(404, 'Subscription not found');
             }
 
-            return { message: 'Subscription deleted successfully' };
+            return { updatedCart, count };
         });
 
         // Return the result after the transaction
