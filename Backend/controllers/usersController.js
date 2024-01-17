@@ -270,7 +270,7 @@ const sendAndSaveInvoiceSchema = Joi.object({
     productIDs: Joi.array().items(Joi.object({
         productID: Joi.string().required(),
         productType: Joi.string().required(),
-    })).required().min(1),
+    })),
 });
 
 export const sendInvoiceToUser = async (req, res, next) => {
