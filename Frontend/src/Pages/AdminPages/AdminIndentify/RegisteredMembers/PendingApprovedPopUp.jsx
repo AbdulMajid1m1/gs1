@@ -8,7 +8,8 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData,
+  fetchRegisteredProductsData
 }) => {
   //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   //   console.log(gs1MemberInvoiceData);
@@ -74,20 +75,21 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
 
-
-      // set cartItemsProducts2 to object with productID and product_type
-      const updatedProductIds = updatedCartItems.map((item) => {
-        return {
-          productID: item?.product?.id,
+      // Append the deleted item to the list
+      let deletedItemIds = [];
+      const deletedItem = memberInoviceData?.otherProductSubscriptions?.find((cartItem) => cartItem.id === item.id);
+      if (deletedItem) {
+        deletedItemIds.push({
+          productID: deletedItem?.product?.id,
           productType: "other_products",
-        };
-      });
-      console.log(updatedProductIds);
-      setCartItemsProducts(updatedProductIds);
-      // No need to set cartItemsProducts again here, as it was already updated above.
+        });
+      }
 
-      // Update radio button based on row selection
-      // setSelectedStatus(isAnyRowSelected ? "approved" : "rejected");
+      setCartItemsProducts((prev) => [...prev, ...deletedItemIds]);
+
+      console.log(deletedItemIds);
+      console.log(cartItemsProducts);
+
     } catch (err) {
       console.log(err);
       toast.error(err.response?.data?.error || "Something went wrong!");
@@ -142,6 +144,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       handleClosePendingApprovedPopup();
       refreshMemberInoviceData();
       fetchMemberHistoryData();
+      fetchRegisteredProductsData();
       //   }
     } catch (err) {
       console.log(err);
