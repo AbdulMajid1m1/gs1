@@ -18,6 +18,7 @@ import bwipjs from "bwip-js";
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import AdminDashboardRightHeader from "../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader";
+import { useTranslation } from 'react-i18next';
 
 const Gtin = () => {
   const [data, setData] = useState([]);
@@ -36,6 +37,7 @@ const Gtin = () => {
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+  const { t, i18n } = useTranslation();
   const resetSnakeBarMessages = () => {
     setError(null);
     setMessage(null);
@@ -186,7 +188,7 @@ const Gtin = () => {
     try {
       const deleteResponse = await newRequest.delete(`/products/gtin/${row?.id}`);
       console.log(deleteResponse.data);
-      toast.success('The product has been deleted successfully.', {
+      toast.success(`${t('The product has been deleted successfully')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -218,7 +220,7 @@ const Gtin = () => {
 
   const handleExportProducts = () => {
     if (!tableSelectedExportRows || tableSelectedExportRows.length === 0) {
-      toast.error('Please select at least one row for export.');
+      toast.error(`${t('Please select at least one row for export')}!`);
       return;
     }
 
@@ -365,7 +367,7 @@ const Gtin = () => {
           }
           else {
             // Display a generic success message
-            toast.success(response?.data?.message || 'The data has been imported successfully.');
+            toast.success(response?.data?.message ||  `${t('The data has been imported successfully')}`);
           }
 
           setIsLoading(false);
@@ -378,7 +380,7 @@ const Gtin = () => {
           // Handle the error
           console.error(error);
 
-          toast.error(error?.response?.data?.error ?? 'Something is Wrong', {
+          toast.error(error?.response?.data?.error ?? `${t('Something is Wrong')}`, {
             position: 'top-right',
             autoClose: 2000,
             hideProgressBar: false,
@@ -399,7 +401,7 @@ const Gtin = () => {
   // Gtin Page Print
   const handleGtinPage = () => {
     if (tableSelectedRows.length === 0) {
-      setError('Please select a row to print.');
+      setError( `${ t('Please select a row to print') }`);
       return;
     }
     const printWindow = window.open('', 'Print Window', 'height=400,width=800');
@@ -443,7 +445,7 @@ const Gtin = () => {
   // 2d Barcode Page Print
   const handle2dBarcodePage = () => {
     if (tableSelectedRows.length === 0) {
-      setError('Please select a row to print.');
+      setError(`${t('Please select a row to print')}`);
       return;
     }
     const printWindow = window.open('', 'Print Window', 'height=400,width=800');
@@ -506,23 +508,41 @@ const Gtin = () => {
       {error && <CustomSnakebar message={error} severity="error" onClose={resetSnakeBarMessages} />}
 
 
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div className='h-auto w-full shadow-xl'>
           <div>
             <AdminDashboardRightHeader title={"GTIN"} />
           </div>
-          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4'>
+          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
               onClick={() => navigate('/admin/admin-gtin')}
               className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
-              <i className="fas fa-plus mr-1"></i>Add Product
+             
+              {i18n.language === 'ar' ? (
+                <>
+                  {t('Add Product')}   <i className="fas fa-plus mr-1"></i>
+                </>
+              ) : (
+                <>
+                    <i className="fas fa-plus mr-1"></i> {t('Add Product')}
+                </>
+              )}
             </button>
 
             <div className="relative">
               <button
                 onClick={() => setIsExportBarcode(!isExportBarcode)}
                 className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                Export Bulk Barcodes <i className="fas fa-caret-down ml-1"></i>
+              
+                {i18n.language === 'ar' ? (
+                  <>
+                    <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')} 
+                  </>
+                ) : (
+                  <>
+                      {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
+                  </>
+                )}
               </button>
 
               {isExportBarcode && (
@@ -537,7 +557,15 @@ const Gtin = () => {
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
               onClick={handleExportProducts}
             >
-              Export in Excel <i className="fas fa-caret-down ml-1"></i>
+             {i18n.language === 'ar' ? (
+                <>
+                  <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')} 
+                </>
+              ) : (
+                <>
+                    {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i> 
+                </>
+              )}
             </button>
 
             <div>
@@ -550,14 +578,32 @@ const Gtin = () => {
                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
               // onClick={() => document.querySelector('input[type="file"]').click()}
               >
-                <i className="fas fa-file-import mr-1"></i> Import
+                
+                {i18n.language === 'ar' ? (
+                  <>
+                    {t('Import')}  <i className="fas fa-file-import mr-1"></i>
+                  </>
+                ) : (
+                  <>
+                      <i className="fas fa-file-import mr-1"></i>  {t('Import')} 
+                  </>
+                )}
               </button>
             </div>
 
             <button
               // onClick={handleExportProductsTemplate}
               className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              Download Template <i className="fas fa-caret-down ml-1"></i>
+             
+              {i18n.language === 'ar' ? (
+                <>
+                  <i className="fas fa-caret-down ml-1"></i>  {t('Download Template')}
+                </>
+              ) : (
+                <>
+                    {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
+                </>
+              )}
             </button>
 
             {/* <button
@@ -567,9 +613,7 @@ const Gtin = () => {
             </button> */}
           </div>
 
-
-
-          <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
+          <div  className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               GCP {data[0]?.gcpGLNID}
@@ -585,13 +629,22 @@ const Gtin = () => {
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               {/* Member ID {memberData?.memberID} */}
-              Member ID
+              {t('Member ID')}
             </button>
 
             <button
               onClick={handleGtinPage}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              Print GTIN
+              
+              {i18n.language === 'ar' ? (
+                <>
+                  GTIN {t('Print')}
+                </>
+              ) : (
+                <>
+                    {t('Print')} GTIN 
+                </>
+              )}
             </button>
           </div>
 
@@ -634,7 +687,7 @@ const Gtin = () => {
                   error={isSubmitClicked && !selectedCr?.cr}
                   helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                   {...params}
-                  label="Search Members.."
+                  label={`${t('Search Members')}`}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -670,7 +723,7 @@ const Gtin = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title="GTIN LIST" columnsName={GtinColumn}
+            <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn}
               loading={isLoading}
               secondaryColor="secondary"
               handleRowClickInParent={handleRowClickInParent}
@@ -678,7 +731,7 @@ const Gtin = () => {
 
               dropDownOptions={[
                 {
-                  label: "View",
+                  label: `${t('View')}`,
                   icon: (
                     <VisibilityIcon
                       fontSize="small"
@@ -689,14 +742,14 @@ const Gtin = () => {
                   action: handleView,
                 },
                 {
-                  label: "Edit",
+                  label: `${t('Edit')}`,
                   icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                   ,
                   action: handleEdit
 
                 },
                 {
-                  label: "Digital Links",
+                  label: `${t('Digital Links')}`,
                   icon: (
                     <VisibilityIcon
                       fontSize="small"
@@ -708,7 +761,7 @@ const Gtin = () => {
                 }
                 ,
                 {
-                  label: "Delete",
+                  label: `${t('Delete')}`,
                   icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                   ,
                   action: handleDelete,
