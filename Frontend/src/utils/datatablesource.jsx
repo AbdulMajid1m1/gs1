@@ -1498,7 +1498,7 @@ export const Gs1AllMembers = [
     renderCell: params => (
       <div
         style={{
-          padding: '4px 4px',
+          padding: '4px 8px',
           borderRadius: '10px',
           border: '2px solid',
           borderColor: params.row.status === 'none' ? 'green' : 'crimson',

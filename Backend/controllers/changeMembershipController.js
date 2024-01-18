@@ -14,7 +14,7 @@ import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
-import { getPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
+import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 
 // in scheema take user_id 
 const renewMembershipSchema = Joi.object({
@@ -406,7 +406,7 @@ export const membershipRenewRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-        await getPendingInvoiceStatus(existingUser.id);
+        await updateUserPendingInvoiceStatus(existingUser.id);
         await createMemberLogs(logData);
 
         return res.status(200).json({ message: `Renewal invoice created & sent to ${userEmail} successfully` });
@@ -812,7 +812,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             // }
 
 
-            await getPendingInvoiceStatus(existingUser.id);
+            await updateUserPendingInvoiceStatus(existingUser.id);
             await createMemberLogs(logData);
 
 
@@ -1121,7 +1121,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                 user_id: user?.id,
                 admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
             };
-            await getPendingInvoiceStatus(user.id);
+            await updateUserPendingInvoiceStatus(user.id);
             await createMemberLogs(logData);
 
             return user.email;
@@ -1348,7 +1348,7 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
             // logData.created_by_admin = 1;
             // }
 
-            await getPendingInvoiceStatus(user.id);
+            await updateUserPendingInvoiceStatus(user.id);
 
             await createMemberLogs(logData);
 
@@ -1571,7 +1571,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             // logData.created_by_admin = 1;
             // }
 
-            await getPendingInvoiceStatus(user.id);
+            await updateUserPendingInvoiceStatus(user.id);
             await createMemberLogs(logData);
 
             return user.email;
@@ -1787,7 +1787,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-        await getPendingInvoiceStatus(userId);
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
@@ -2003,7 +2003,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-        await getPendingInvoiceStatus(userId);
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
@@ -2339,7 +2339,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-        await getPendingInvoiceStatus(userId);
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
@@ -2541,7 +2541,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                 user_id: user?.id,
                 admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
             };
-            await getPendingInvoiceStatus(user?.id);
+            await updateUserPendingInvoiceStatus(user?.id);
             await createMemberLogs(logData);
 
             return user.email;
@@ -3036,7 +3036,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-        await getPendingInvoiceStatus(userId);
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership downgrade request approved successfully' });
