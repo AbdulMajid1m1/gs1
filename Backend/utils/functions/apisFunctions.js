@@ -23,6 +23,7 @@ export async function updateUserPendingInvoiceStatus(userId) {
         });
 
         // Check the count and update the 'pending_invoices' column in 'users' table
+        console.log('pendingInvoiceCount:', pendingInvoiceCount);
         const pendingStatus = pendingInvoiceCount === 0 ? 'none' : 'pending_for_approval';
         await prisma.users.update({
             where: { id: userId },
