@@ -154,5 +154,26 @@
     "Newly Registered Members":"Newly Registered Members",
     "Pending Approvals":"Pending Approvals",
     "Registered Members":"Registered Members",
-    "Members for Renewal":"Members for Renewal"
+    "Members for Renewal":"Members for Renewal",
+
+    "unit_code has been added successfully.":"unit_code has been added successfully.",
+    "Add Unit":"Add Unit",
+    "Unit code":"Unit code",
+    "Enter Unit code":"Enter Unit code",
+    "Unit name":"Unit name",
+    "Enter Unit name":"Enter Unit name",
+    "units updated successfully":"units updated successfully",
+    "Something went wrong!":"Something went wrong!",
+    "Update unit":"Update unit",
+    "unit code":"unit code",
+    "Enter unit code":"Enter unit code",
+    "unit name":"unit name",
+    "Enter unit name":"Enter unit name",
+    "inactive":"inactive",
+    "active":"active"
+    
+    
+    
+    
+    
 }

@@ -154,5 +154,21 @@
     "Newly Registered Members": "الأعضاء المسجلين حديثا",
     "Pending Approvals": "الموافقات المعلقة",
     "Registered Members": "الأعضاء المسجلين",
-    "Members for Renewal": "أعضاء للتجديد"
+    "Members for Renewal": "أعضاء للتجديد",
+
+    "unit_code has been added successfully.": "تمت إضافة Unit_code بنجاح.",
+    "Add Unit": "أضف وحدة",
+    "Unit code": "رمز الوحدة",
+    "Enter Unit code": "أدخل رمز الوحدة",
+    "Unit name": "إسم الوحدة",
+    "Enter Unit name": "أدخل اسم الوحدة",
+    "units updated successfully": "تم تحديث الوحدات بنجاح",
+    "Something went wrong!": "هناك خطأ ما!",
+    "Update unit": "تحديث الوحدة",
+    "unit code": "رمز الوحدة",
+    "Enter unit code": "أدخل رمز الوحدة",
+    "unit name": "إسم الوحدة",
+    "Enter unit name": "أدخل اسم الوحدة",
+    "inactive": "غير نشط",
+    "active": "نشيط"
 }
