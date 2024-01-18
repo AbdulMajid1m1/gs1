@@ -1491,21 +1491,30 @@ export const ViewSsccColumn = [
 ];
 
 export const Gs1AllMembers = [
-  // {
-  //   field: 'gs1_id',
-  //   headerName: 'GS1 ID',
-  //   width: 180,
-  // },
-  // {
-  //   field: 'company_name',
-  //   headerName: 'COMPANY NAME',
-  //   width: 180,
-  // },
+  {
+    field: 'pending_invoices',
+    headerName: 'PENDING INVOICES',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 4px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'none' ? 'green' : 'crimson',
+          color: params.row.status === 'none' ? 'green' : 'crimson',
+        }}
+      >
+        {params.row.pending_invoices}
+      </div >
+    ),
+  },
   {
     field: 'company_name_eng',
     headerName: 'COMPANY NAME (ENGLISH)',
     width: 180,
   },
+  
   {
     field: 'memberID',
     headerName: 'MEMBER ID',
