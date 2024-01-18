@@ -1505,7 +1505,7 @@ export const Gs1AllMembers = [
           color: params.row.status === 'none' ? 'green' : 'crimson',
         }}
       >
-        {params.row.pending_invoices}
+        {params.row.pending_invoices === 'none' ? 'none' : 'pending for approval'}
       </div >
     ),
   },
@@ -1514,7 +1514,7 @@ export const Gs1AllMembers = [
     headerName: 'COMPANY NAME (ENGLISH)',
     width: 180,
   },
-  
+
   {
     field: 'memberID',
     headerName: 'MEMBER ID',
