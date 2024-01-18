@@ -4,7 +4,7 @@ import QRCode from 'qrcode.react';
 import { backendUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
-
+import PersonIcon from '@mui/icons-material/Person';
 const QRCodeCell = props => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;
   return <QRCode value={url} size={40} />;
@@ -5734,6 +5734,12 @@ export const ProductContentColumn = [
 
 export const newlyRegisteredMembersColumn = [
   {
+    field: 'profile',
+    headerName: 'Profile',
+    width: 60,
+
+  },
+  {
     field: 'company_name_eng',
     headerName: 'Company Name English',
     width: 180,
@@ -5921,15 +5927,12 @@ export const pendingApprovalColumn = [
 
 export const registerdMemberColumn = [
   {
-    field: 'activityID',
-    headerName: 'Activity ID',
-    width: 180,
+    field: 'profile',
+    headerName: 'Profile',
+    width: 60,
+
   },
-  {
-    field: 'additional_number',
-    headerName: 'Additional Number',
-    width: 180,
-  },
+
   {
     field: 'company_name_eng',
     headerName: 'Company Name English',
@@ -5938,6 +5941,16 @@ export const registerdMemberColumn = [
   {
     field: 'company_name_arabic',
     headerName: 'Company Name Arabic',
+    width: 180,
+  }, 
+  {
+    field: 'activityID',
+    headerName: 'Activity ID',
+    width: 180,
+  },
+  {
+    field: 'additional_number',
+    headerName: 'Additional Number',
     width: 180,
   },
   {

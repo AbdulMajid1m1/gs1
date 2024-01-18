@@ -11,8 +11,9 @@ import newRequest from '../../../utils/userRequest'
 import AdminDashboardRightHeader from '../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { I18nextProvider, useTranslation } from "react-i18next";
 import LanguageSwitcher from "../../../switer";
-const Dashboard = () =>
-{
+import PersonIcon from '@mui/icons-material/Person';
+import { Link } from 'react-router-dom'
+const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const [newRegisteredMembers, setNewRegisteredMembers] = useState([]);
   const [pendingApprovals, setPendingApprovals] = useState([]);
@@ -25,15 +26,30 @@ const Dashboard = () =>
   const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
 
 
-  const getAllNewlyRegisteredMembers = async () =>
-  {
+  const getAllNewlyRegisteredMembers = async () => {
     setNewRegisteredMembersLoader(true);
     try {
 
       const response = await newRequest.get("/users/new")
 
       console.log(response.data)
-      setNewRegisteredMembers(response.data)
+      let data = response.data.map((item) => ({
+        ...item, profile: (
+          <Link
+            className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+            to={`/admin/registered-members/view-registered-member/${item.id}`}
+          >
+            <PersonIcon
+              style={{
+                width: '30px',
+                height: '30px',
+              }}
+            />
+          </Link>
+        ),
+      }));
+
+      setNewRegisteredMembers(data)
       setNewRegisteredMembersLoader(false);
 
     }
@@ -44,20 +60,17 @@ const Dashboard = () =>
     }
   };
 
-  const getAllPendingApprovals = async () =>
-  {
+  const getAllPendingApprovals = async () => {
     setPendingApprovalsLoader(true);
     try {
 
       newRequest.get("/users?status=inactive")
-        .then(response =>
-        {
+        .then(response => {
           console.log(response.data)
           setPendingApprovals(response.data)
           setPendingApprovalsLoader(false);
         })
-        .catch(error =>
-        {
+        .catch(error => {
 
 
           console.error(error);
@@ -71,20 +84,33 @@ const Dashboard = () =>
     }
   };
 
-  const getAllRegisteredMembers = async () =>
-  {
+  const getAllRegisteredMembers = async () => {
     setAllRegisteredMembersLoader(true);
     try {
 
       newRequest.get("/users?status=active")
-        .then(response =>
-        {
+        .then(response => {
           console.log(" Registed", response.data)
-          setAllRegisteredMembers(response.data)
+          console.log(response.data)
+          let data = response.data.map((item) => ({
+            ...item, profile: (
+              <Link
+                className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+                to={`/admin/registered-members/view-registered-member/${item.id}`}
+              >
+                <PersonIcon
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                  }}
+                />
+              </Link>
+            ),
+          }));
+          setAllRegisteredMembers(data)
           setAllRegisteredMembersLoader(false);
         })
-        .catch(error =>
-        {
+        .catch(error => {
 
 
           console.error(error);
@@ -98,20 +124,17 @@ const Dashboard = () =>
     }
   };
 
-  const getNewTransferOrder = async () =>
-  {
+  const getNewTransferOrder = async () => {
     setMemberRenevalLoader(true);
     try {
 
       newRequest.get("/users/getByGcpExpiry")
-        .then(response =>
-        {
+        .then(response => {
           console.log("MemberReneval", response.data)
           setMemberReneval(response.data)
           setMemberRenevalLoader(false);
         })
-        .catch(error =>
-        {
+        .catch(error => {
 
 
           console.error(error);
@@ -126,18 +149,15 @@ const Dashboard = () =>
   };
 
 
-  const getAllCardsData = async () =>
-  {
+  const getAllCardsData = async () => {
     try {
 
       newRequest.get("/users/adminStatsCounts")
-        .then(response =>
-        {
+        .then(response => {
           console.log(response.data)
           setAllCardData(response.data)
         })
-        .catch(error =>
-        {
+        .catch(error => {
 
 
           console.error(error);
@@ -150,8 +170,7 @@ const Dashboard = () =>
     }
   };
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     getAllCardsData();
     getAllNewlyRegisteredMembers();
     getAllPendingApprovals();
@@ -165,7 +184,7 @@ const Dashboard = () =>
 
           <div className="h-full mb-10 bg-gradient-to-r from-[#C3E2DC]">
             <div className='bg-[#C3E2DC]'>
-              <AdminDashboardRightHeader title={ t('Dashboard') } />
+              <AdminDashboardRightHeader title={t('Dashboard')} />
             </div>
 
             {/* <!-- Statistics Cards --> */}
@@ -231,7 +250,7 @@ const Dashboard = () =>
             <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-4 bg-gradient-to-r from-[#C3E2DC]">
               {/* <!-- Social Traffic --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn} title={t('Newly Registered Members')} UniqueId="assetPrintingId" />
+                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn} title={('Newly Registered Members')} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
