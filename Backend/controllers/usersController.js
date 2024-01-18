@@ -524,7 +524,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
             try {
-
+                await updateUserPendingInvoiceStatus(transaction.userUpdateResult.id);
                 await createMemberLogs(logData);
             }
             catch (error) {
