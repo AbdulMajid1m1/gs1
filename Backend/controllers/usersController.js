@@ -929,8 +929,15 @@ export const getUserDetails = async (req, res, next) => {
                     user_id: { in: userIds }
                 }
             });
+            // sort the users by updated_at
 
-            return [users, allCarts];
+            const sortedUsers = users.sort((a, b) => {
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            });
+
+            return [sortedUsers, allCarts];
+
+
         }, { timeout: 50000 });
 
         // Map carts to their respective users
