@@ -7,6 +7,14 @@ import fs from 'fs';
 import { generateSSCCBarcode } from '../utils/functions/barcodesGenerator.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function checkExpiryDate(expiryDate) {
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+    if (today > expiry) {
+        throw createError(400, 'Subscription expired on ' + expiryDate + '. Please renew your subscription');
+    }
+}
+
 
 const ssccSchema = Joi.object({
     sscc_type: Joi.string().max(255),
@@ -74,9 +82,17 @@ export const createSSCC = async (req, res, next) => {
 
             if (!otherProductSubscriptions) throw createError(400, 'No active subscription found');
 
+            // check expiry date
+
+            checkExpiryDate(otherProductSubscriptions.expiry_date);
+
+
             if (otherProductSubscriptions.other_products_subscription_limit === 0) {
                 throw createError(403, 'Subscription limit exceeded');
             }
+
+
+
 
             const productsCount = otherProductSubscriptions.other_products_subscription_counter;
             const sscc = await generateSSCCBarcode(user.gcpGLNID, productsCount);
@@ -190,6 +206,8 @@ export const createBulkSSCC = async (req, res, next) => {
 
 
             if (!otherProductSubscriptions) throw createError(400, 'No active subscription found');
+
+            checkExpiryDate(otherProductSubscriptions.expiry_date);
 
             // if (otherProductSubscriptions.other_products_subscription_limit === 0) {
             //     throw createError(403, 'Subscription limit exceeded');

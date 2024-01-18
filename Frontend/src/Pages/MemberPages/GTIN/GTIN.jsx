@@ -28,7 +28,7 @@ const Gtin = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
-  const [isExportBarcode, setIsExportBarcode] = useState(false); 
+  const [isExportBarcode, setIsExportBarcode] = useState(false);
   const [totalCategory, setTotalCategory] = useState("");
   const navigate = useNavigate()
 
@@ -55,29 +55,29 @@ const Gtin = () => {
   };
 
 
-   
-    const fetchGtinProducts = async () => {
-       try {
-         const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
-         console.log(response.data);
-     
-        //  setGtinSubscriptions(response?.data?.gtinSubscriptions);
-         setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-         console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-         console.log(totalCategory)
-    
- 
-      
-       } catch (err) {
-         console.log(err);
-       }
-     }
-     
-     
-     
-     useEffect(() => {
-      fetchData(); // Calling the function within useEffect, not inside itself
-      fetchGtinProducts();
+
+  const fetchGtinProducts = async () => {
+    try {
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
+      console.log(response.data);
+
+      //  setGtinSubscriptions(response?.data?.gtinSubscriptions);
+      setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      console.log(totalCategory)
+
+
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+
+  useEffect(() => {
+    fetchData(); // Calling the function within useEffect, not inside itself
+    fetchGtinProducts();
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
@@ -138,26 +138,26 @@ const Gtin = () => {
       toast.error('Please select at least one row for export.');
       return;
     }
-  
+
     // Convert data to Excel format
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(tableSelectedExportRows);
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Selected Rows');
-  
+
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  
+
     // Save Excel file
     saveAs(dataBlob, 'gtin_products.xlsx');
-  
+
     // Print data of selected rows
     console.log('Selected Rows Data:', tableSelectedExportRows);
-  
+
     setTableSelectedExportRows([]);
     setRowSelectionModel([]);
   };
-  
+
 
   const handleExportProductsTemplate = () => {
     // Mapping of original headers to desired headers
@@ -180,25 +180,25 @@ const Gtin = () => {
       size: 'Size',
       barcode: 'GTIN'
     };
-  
+
     // Create a new array with the desired headers in the specified order
     const desiredHeaders = Object.values(headerMapping);
-  
+
     // Create a worksheet with only headers
     const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
-  
+
     // Create a workbook and append the header worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
-  
+
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  
+
     // Save Excel file
     saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
-  
+
 
 
   // // file Import
@@ -225,7 +225,7 @@ const Gtin = () => {
   //         .then((response) => {
   //           // Handle the successful response
   //           console.log(response.data);
-       
+
   //           toast.success('The data has been imported successfully.', {
   //             position: 'top-right',
   //             autoClose: 2000,
@@ -242,7 +242,7 @@ const Gtin = () => {
   //         .catch((error) => {
   //           // Handle the error
   //           console.error(error);
-       
+
   //           toast.error('Something is Wrong', {
   //             position: 'top-right',
   //             autoClose: 2000,
@@ -260,7 +260,7 @@ const Gtin = () => {
   //   };
 
   const [selectedFile, setSelectedFile] = useState(null);
-  
+
   const handleFileInputChange = (event) => {
     const selectedFile = event.target.files[0];
     setIsLoading(true);
@@ -279,7 +279,7 @@ const Gtin = () => {
           if (response.data && response.data.errors && response.data.errors.length > 0) {
             // Display a generic error message
             toast.error(response.data.errors[0].error);
-          } 
+          }
           else {
             // Display a generic success message
             toast.success(response?.data?.message || 'The data has been imported successfully.');
@@ -288,7 +288,7 @@ const Gtin = () => {
           setIsLoading(false);
           // Clear the file input value
           event.target.value = '';
-          
+
           fetchData();
         })
         .catch((error) => {
@@ -316,44 +316,44 @@ const Gtin = () => {
   // Gtin Page Print
   const handleGtinPage = () => {
     if (tableSelectedRows.length === 0) {
-     setError('Please select a row to print.');
-     return;
-   }
-   const printWindow = window.open('', 'Print Window', 'height=400,width=800');
-   const html = '<html><head><title>GTIN 2D Barcode</title>' +
-     '<style>' +
-     '@page { size: 3in 2in; margin: 0; }' +
-     'body { font-size: 13px; line-height: 0.1;}' +
-     '#header { display: flex; justify-content: center;}' +
-     '#imglogo {height: 50px; width: 100px; visibility: hidden;}' +
-     '#itemcode { font-size: 13px; font-weight: 600; display: flex; justify-content: center;}' +
-     '#inside-BRCode { display: flex; justify-content: center; align-items: center; padding: 1px;}' +
-     '#itemSerialNo { font-size: 13px; display: flex; justify-content: center; font-weight: 600; margin-top: 3px;}' +
-     '#Qrcodeserails { height: 100%; width: 100%;}' +
-     '</style>' +
-     '</head><body>' +
-     '<div id="printBarcode"></div>' +
-     '</body></html>';
+      setError('Please select a row to print.');
+      return;
+    }
+    const printWindow = window.open('', 'Print Window', 'height=400,width=800');
+    const html = '<html><head><title>GTIN 2D Barcode</title>' +
+      '<style>' +
+      '@page { size: 3in 2in; margin: 0; }' +
+      'body { font-size: 13px; line-height: 0.1;}' +
+      '#header { display: flex; justify-content: center;}' +
+      '#imglogo {height: 50px; width: 100px; visibility: hidden;}' +
+      '#itemcode { font-size: 13px; font-weight: 600; display: flex; justify-content: center;}' +
+      '#inside-BRCode { display: flex; justify-content: center; align-items: center; padding: 1px;}' +
+      '#itemSerialNo { font-size: 13px; display: flex; justify-content: center; font-weight: 600; margin-top: 3px;}' +
+      '#Qrcodeserails { height: 100%; width: 100%;}' +
+      '</style>' +
+      '</head><body>' +
+      '<div id="printBarcode"></div>' +
+      '</body></html>';
 
-   printWindow.document.write(html);
-   const barcodeContainer = printWindow.document.getElementById('printBarcode');
-   const barcode = document.getElementById('barcode').cloneNode(true);
-   barcodeContainer.appendChild(barcode);
+    printWindow.document.write(html);
+    const barcodeContainer = printWindow.document.getElementById('printBarcode');
+    const barcode = document.getElementById('barcode').cloneNode(true);
+    barcodeContainer.appendChild(barcode);
 
-   const logoImg = new Image();
-   logoImg.src = logo;
+    const logoImg = new Image();
+    logoImg.src = logo;
 
-   logoImg.onload = function () {
-     // printWindow.document.getElementById('imglogo').src = logoImg.src;
-     printWindow.print();
-     printWindow.close();
-       setTimeout(() => {
-         setTableSelectedRows([]);
-         setRowSelectionModel([]);
-        }, 500);
-       
-   };
- }
+    logoImg.onload = function () {
+      // printWindow.document.getElementById('imglogo').src = logoImg.src;
+      printWindow.print();
+      printWindow.close();
+      setTimeout(() => {
+        setTableSelectedRows([]);
+        setRowSelectionModel([]);
+      }, 500);
+
+    };
+  }
 
 
 
@@ -379,24 +379,24 @@ const Gtin = () => {
       '<div id="printBarcode"></div>' +
       '</body></html>';
 
-      printWindow.document.write(html);
-      const barcodeContainer = printWindow.document.getElementById('printBarcode');
-      const barcode = document.getElementById('2dbarcode').cloneNode(true);
-      barcodeContainer.appendChild(barcode);
+    printWindow.document.write(html);
+    const barcodeContainer = printWindow.document.getElementById('printBarcode');
+    const barcode = document.getElementById('2dbarcode').cloneNode(true);
+    barcodeContainer.appendChild(barcode);
 
-      const logoImg = new Image();
-      logoImg.src = logo;
+    const logoImg = new Image();
+    logoImg.src = logo;
 
-      logoImg.onload = function () {
-        // printWindow.document.getElementById('imglogo').src = logoImg.src;
-        printWindow.print();
-        printWindow.close();
-          setTimeout(() => {
-            setTableSelectedRows([]);
-            setRowSelectionModel([]);
-            }, 500);
-          
-      };
+    logoImg.onload = function () {
+      // printWindow.document.getElementById('imglogo').src = logoImg.src;
+      printWindow.print();
+      printWindow.close();
+      setTimeout(() => {
+        setTableSelectedRows([]);
+        setRowSelectionModel([]);
+      }, 500);
+
+    };
   }
 
 
@@ -413,7 +413,7 @@ const Gtin = () => {
     setTableSelectedRows(barcodes);
   }
 
-  
+
 
   return (
     <div>
@@ -443,8 +443,8 @@ const Gtin = () => {
                 <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
                   <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
                   <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
-              </div>
-                )}
+                </div>
+              )}
             </div>
 
             <button
@@ -500,22 +500,25 @@ const Gtin = () => {
 
 
           <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              GCP {memberData?.gcpGLNID}
-            </button>
+            {memberData?.gcpGLNID && (
+              <button
+                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                GCP {memberData.gcpGLNID}
+              </button>
+            )}
+            {totalCategory && (
+              <button
+                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                {totalCategory}
+              </button>
+            )}
+            {memberData?.memberID && (
+              <button
+                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                Member ID {memberData?.memberID}
+              </button>
+            )}
 
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-
-              {totalCategory}
-            </button>
-
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              Member ID {memberData?.memberID}
-            </button>
-    
             <button
               onClick={handleGtinPage}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
