@@ -504,7 +504,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
                         // Update user with new information
                         // get existingUser.gcp_expiry and add 1 year to it
-                        var expiryDate = new Date(existingUser.gcp_expiry);
+                        expiryDate = new Date(existingUser.gcp_expiry);
 
                         // Add one year
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
@@ -669,8 +669,8 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             }, { timeout: 40000 });
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
-            const currentDate = new Date();
-            const renewalYear = currentDate.getFullYear() + 1;
+
+            const renewalYear = expiryDate.getFullYear(); //
 
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
@@ -1400,6 +1400,14 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             }
             console.log("additionalGlnDetails", additionalGlnDetails);
 
+            // fetch gtin_subcriptions data from gtin_subcriptions table
+            const gtinProductDetails = await prisma.gtin_subcriptions.findFirst({
+                where: { user_id: value.userId, isDeleted: false },
+                include: {
+                    gtin_product: true // Include the associated gtin_product
+                }
+            });
+
             // const glnSubscriptions = await prisma.other_products_subcriptions.findFirst({
             //     where: { user_id: value.userId, id: value.otherProductSubscriptionId },
             //     include: {
@@ -1453,7 +1461,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                     membership_otherCategory: user.membership_category,
                     gtin_subscription: {
                         products: {
-                            member_category_description: cartData?.[0].productName,
+                            member_category_description: gtinProductDetails?.gtin_product?.member_category_description,
                         },
                     },
                 },

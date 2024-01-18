@@ -538,7 +538,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         stateName: existingUser.state,
                         cityName: existingUser.city,
                     },
-                    companyID: existingUser.companyID,
+                    companyID: userUpdateResult?.companyID,
                     membership_otherCategory: existingUser.membership_category,
                     gtin_subscription: {
                         products: {
