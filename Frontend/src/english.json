@@ -183,7 +183,16 @@
     "document updated successfully":"document updated successfully",
     "Update Document":"Update Document",
     "Document name":"Document name",
-    "Enter City name":"Enter City name"
+    "Enter City name":"Enter City name",
+
+    "product Packaging":"product Packaging",
+    "Add product Package":"Add product Package",
+    "product package name":"product package name",
+    "Enter Product package Name":"Enter Product package Name",
+    "product package updated successfully":"product package updated successfully",
+    "Update product package":"Update product package",
+    "Enter product pack name":"Enter product pack name",
+    "Update product Package":"Update product Package"
     
    
     

@@ -182,5 +182,14 @@
     "document updated successfully": "تم تحديث المستند بنجاح",
     "Update Document": "تحديث الوثيقة",
     "Document name": "اسم الملف",
-    "Enter City name": "أدخل اسم المدينة"
+    "Enter City name": "أدخل اسم المدينة",
+
+    "product Packaging": "تغليف المنتج",
+    "Add product Package": "إضافة حزمة المنتج",
+    "product package name": "اسم حزمة المنتج",
+    "Enter Product package Name": "أدخل اسم حزمة المنتج",
+    "product package updated successfully": "تم تحديث حزمة المنتج بنجاح",
+    "Update product package": "تحديث حزمة المنتج",
+    "Enter product pack name": "أدخل اسم حزمة المنتج",
+    "Update product Package": "تحديث حزمة المنتج"
 }
