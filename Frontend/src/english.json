@@ -209,7 +209,18 @@
     "product subscription fee":"product subscription fee",
     "Enter code":"Enter code",
     "variant":"variant",
-    "Enter variant":"Enter variant"
+    "Enter variant":"Enter variant",
+    "gcp_code":"gcp_code",
+
+    "Add GCP Type":"Add GCP Type",
+    "GCP Code":"GCP Code",
+    "Enter gcp_code":"Enter gcp_code",
+    "gcp description":"gcp description",
+    "Add gcp":"Add gcp",
+    "GCP type updated successfully":"GCP type updated successfully",
+    "gcp code":"gcp code",
+    "Enter gcp description":"Enter gcp description",
+    "Update gcp code":"Update gcp code"
     
     
    

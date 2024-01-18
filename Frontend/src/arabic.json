@@ -208,5 +208,16 @@
     "product subscription fee": "رسوم الاشتراك في المنتج",
     "Enter code": "ادخل الرمز",
     "variant": "البديل",
-    "Enter variant": "أدخل البديل"
+    "Enter variant": "أدخل البديل",
+    "gcp_code": "أدخل البديل",
+
+    "Add GCP Type": "GCP أضف نوع",
+    "GCP Code": "GCP رمز",
+    "Enter gcp_code": "أدخل gcp_code",
+    "gcp description": "gcp وصف",
+    "Add gcp": "يضيف gcp",
+    "GCP type updated successfully": "GCP تم تحديث النوع بنجاح",
+    "gcp code": "gcp رمز",
+    "Enter gcp description": "أدخل وصف برنامج gcp",
+    "Update gcp code": "ديث كودgcp"
 }
