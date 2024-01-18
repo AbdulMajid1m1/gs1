@@ -5,11 +5,12 @@ import { memberForRenevalColumn } from '../../../../utils/datatablesource'
 import EditIcon from "@mui/icons-material/Edit";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
+import { useTranslation } from 'react-i18next';
 
 const MembersExpiryPage = () => {
     const [memberReneval, setMemberReneval] = useState([]);
     const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
-
+  const { t, i18n } = useTranslation();
 
     const getNewTransferOrder = async () => {
         setMemberRenevalLoader(true);
@@ -22,8 +23,6 @@ const MembersExpiryPage = () => {
               setMemberRenevalLoader(false);
             })
             .catch(error => {
-  
-         
               console.error(error);
               setMemberRenevalLoader(false);
             });
@@ -41,16 +40,16 @@ const MembersExpiryPage = () => {
     , [])
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         <div>
           <AdminDashboardRightHeader
-            title={'Members Expiry Page'}
+            title={`${t('Members Expiry Page')}`}
           />
         </div>
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={memberReneval} title="Members Expiry Page" columnsName={memberForRenevalColumn}
+          <DataTable data={memberReneval} title={`${t('Members Expiry Page')}`} columnsName={memberForRenevalColumn}
             loading={memberRenevalLoader}
             checkboxSelection="disabled"
             secondaryColor="secondary"
@@ -60,14 +59,14 @@ const MembersExpiryPage = () => {
 
             dropDownOptions={[
               {
-                label: "Send Invoice",
+               label: `${t('Send Invoice')}`,
                 icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 // action: fetchMemberInvoiceData,
 
               },
               {
-              label: "Open Profile",
+              label: `${t('Open Profile')}`,
               icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
               ,
               // action: handleOpen,

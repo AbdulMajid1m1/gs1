@@ -228,5 +228,22 @@
     "Create Barcode":"إنشاء الباركود",
     "Country of Sale":"بلد البيع",
     "HS-Code":"رمز النظام المنسق",
-    "Unit Code":"رمز الوحدة"
+    "Unit Code":"رمز الوحدة",
+    "Members Expiry Page":"صفحة انتهاء الأعضاء",
+    "Send Invoice":"إرسال الفاتورة",
+    "Open Profile":"افتح الملف الشخصي",
+    "Page":"صفحة",
+    "Manage Pages":"إدارة الصفحات",
+    "Create Page":"إنشاء صفحة",
+    "Add Sections":"إضافة الأقسام",
+    "Drag Here sections you want to add":"اسحب هنا الأقسام التي تريد إضافتها",
+    "Page Name[Arabic]":"اسم الصفحة [بالعربية]",
+    "Page Name[English]":"اسم الصفحة [بالإنجليزية]",
+    "Page Order":"ترتيب الصفحة",
+    "Page Slug":"الرابط للصفحة",
+    "Seo Description":"وصف SEO",
+    "Custom Data[English]":"البيانات المخصصة[إنجليزي]",
+    "Custom Data[Arabic]":"البيانات المخصصة[عربي]",
+    "Add Page":"إضافة صفحة",
+    "Edit Sections":"تحرير الأقسام"
 }

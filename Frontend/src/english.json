@@ -228,5 +228,22 @@
     "Create Barcode":"Create Barcode",
     "Country of Sale":"Country of Sale",
     "HS-Code":"HS-Code",
-    "Unit Code":"Unit Code"
+    "Unit Code":"Unit Code",
+    "Members Expiry Page":"Members Expiry Page",
+    "Send Invoice":"Send Invoice",
+    "Open Profile":"Open Profile",
+    "Page":"Page",
+    "Manage Pages":"Manage Pages",
+    "Create Page":"Create Page",
+    "Add Sections":"Add Sections",
+    "Drag Here sections you want to add":"Drag Here sections you want to add",
+    "Page Name[Arabic]":"Page Name[Arabic]",
+    "Page Name[English]":"Page Name[English]",
+    "Page Order":"Page Order",
+    "Page Slug":"Page Slug",
+    "Seo Description":"Seo Description",
+    "Custom Data[English]":"Custom Data[English]",
+    "Custom Data[Arabic]":"Custom Data[Arabic]",
+    "Add Page":"Add Page",
+    "Edit Sections":"Edit Sections"
 }

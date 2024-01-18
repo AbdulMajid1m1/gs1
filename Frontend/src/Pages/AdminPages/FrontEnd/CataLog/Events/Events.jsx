@@ -51,7 +51,6 @@ const Events = () => {
         }
     };
     useEffect(() => {
-
         refreshcitiesData() // Calling the function within useEffect, not inside itself
     }, []);
     const handleDelete = async (row) => {
