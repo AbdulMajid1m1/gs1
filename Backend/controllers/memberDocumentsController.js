@@ -503,7 +503,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     explodeGPCCode: []
                 };
 
-
+                console.log("userUpdateResult")
+                console.log(userUpdateResult)
 
                 // Generate PDF from EJS template
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
