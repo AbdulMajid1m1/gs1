@@ -245,5 +245,7 @@
     "Custom Data[English]":"البيانات المخصصة[إنجليزي]",
     "Custom Data[Arabic]":"البيانات المخصصة[عربي]",
     "Add Page":"إضافة صفحة",
-    "Edit Sections":"تحرير الأقسام"
+    "Edit Sections":"تحرير الأقسام",
+    "document Type":"نوع الوثيقة",
+    "Document name":"اسم الملف"
 }
