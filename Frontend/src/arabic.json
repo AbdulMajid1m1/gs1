@@ -170,5 +170,17 @@
     "unit name": "إسم الوحدة",
     "Enter unit name": "أدخل اسم الوحدة",
     "inactive": "غير نشط",
-    "active": "نشيط"
+    "active": "نشيط",
+
+    "Are you sure?": "هل أنت متأكد؟",
+    "You will not be able to recover this document!": "لن تتمكن من استعادة هذه الوثيقة!",
+    "warning": "تحذير",
+    "Yes, delete it!": "نعم، احذفه!",
+    "Add document": "أضف وثيقة",
+    "document name": "اسم الملف",
+    "Enter document Name": "أدخل اسم المستند",
+    "document updated successfully": "تم تحديث المستند بنجاح",
+    "Update Document": "تحديث الوثيقة",
+    "Document name": "اسم الملف",
+    "Enter City name": "أدخل اسم المدينة"
 }

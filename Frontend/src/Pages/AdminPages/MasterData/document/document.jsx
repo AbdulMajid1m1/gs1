@@ -18,9 +18,12 @@ import * as XLSX from 'xlsx';
 import Adddocumment from './adddocument';
 import Updatedocument from './updatedocument';
 import { display } from '@mui/system';
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../../../i18n";
+import LanguageSwitcher from "../../../../switer";
 const Documents = () =>
 {
-
+  const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -84,12 +87,12 @@ const Documents = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this document!',
-      icon: 'warning',
+      title: t('Are you sure?'),
+      text: t('You will not be able to recover this document!'),
+      icon: t('warning'),
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: t('Yes, delete it!'),
+      cancelButtonText: t('No, keep it'),
 
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -206,7 +209,7 @@ const Documents = () =>
       <div className="p-0 h-full sm:ml-72">
         <div>
           <DashboardRightHeader
-            title={'Documents'}
+            title={t('Documents')}
           />
         </div>
 
@@ -219,7 +222,7 @@ const Documents = () =>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
 
                 {/* <label type="button" className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"  htmlFor="Importdata">
@@ -235,7 +238,7 @@ const Documents = () =>
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> Import
+                    <i className="fas fa-file-import mr-1"></i> {t('Import')}
                   </button>
                   <input
                     type="file"
@@ -248,14 +251,14 @@ const Documents = () =>
 
                 <CSVLink data={data}
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" > {t('Export')}   <FileUploadIcon />
                 </CSVLink>
               </div>
 
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title="Documents"
+                  title={t('Documents')}
                   columnsName={document}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -263,7 +266,7 @@ const Documents = () =>
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: t("View"),
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -274,7 +277,7 @@ const Documents = () =>
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: t("Edit"),
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -285,7 +288,7 @@ const Documents = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: t("Delete"),
                       icon: (
                         <DeleteIcon
                           fontSize="small"

@@ -170,7 +170,22 @@
     "unit name":"unit name",
     "Enter unit name":"Enter unit name",
     "inactive":"inactive",
-    "active":"active"
+    "active":"active",
+
+
+    "Are you sure?":"Are you sure?",
+    "You will not be able to recover this document!":"You will not be able to recover this document!",
+    "warning":"warning",
+    "Yes, delete it!":"Yes, delete it!",
+    "Add document":"Add document",
+    "document name":"document name",
+    "Enter document Name":"Enter document Name",
+    "document updated successfully":"document updated successfully",
+    "Update Document":"Update Document",
+    "Document name":"Document name",
+    "Enter City name":"Enter City name"
+    
+   
     
     
     
