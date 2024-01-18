@@ -2271,8 +2271,8 @@ export const approveMembershipRequest = async (req, res, next) => {
         // Generate PDF from EJS template
         const certificatePdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
         // use current date time to generate unique file name
-        CertificatePdfFilename = `${user.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-        const certPdfFilePath = path.join(certificatePdfDirectory, CertificatePdfFilename);
+        let certificatePdfFilename = `${user.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+        const certPdfFilePath = path.join(certificatePdfDirectory, certificatePdfFilename);
         if (!fsSync.existsSync(certificatePdfDirectory)) {
             fsSync.mkdirSync(certificatePdfDirectory, { recursive: true });
         }
