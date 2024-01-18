@@ -2004,6 +2004,7 @@ model users {
   old_member_recheck       Int?                  @default(0, map: "DF_users_old_member_recheck")
   carts                    carts[] // Define the one-to-many relationship
   isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
+  pending_invoices         String                @default("none", map: "DF_users_for_approval") @db.VarChar(50)
   // create a one-to-many relationship with member_history_logs
   member_history_logs      member_history_logs[]
 }
@@ -2077,7 +2078,7 @@ model gln_upgrade_pricing {
 }
 
 model add_gln_cart {
-  id                                String  @id @default(cuid())
+  id                                String @id @default(cuid())
   user_id                           String
   new_gln_id                        String
   other_products_subscription_id    String
@@ -2090,6 +2091,5 @@ model add_gln_cart {
   // make relationship with other_products_subcriptions
   other_products_subcriptions other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
   cart                        String?
-  gln_upgrade_pricing   gln_upgrade_pricing @relation(fields: [new_gln_id], references: [id])
-  
+  gln_upgrade_pricing         gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
 }
