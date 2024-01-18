@@ -1121,7 +1121,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                 user_id: user?.id,
                 admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
             };
-            await updateUserPendingInvoiceStatus(user.id);
+            await updateUserPendingInvoiceStatus(user.id, prisma);
             await createMemberLogs(logData);
 
             return user.email;
