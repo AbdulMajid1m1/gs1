@@ -19,6 +19,7 @@ import { generateRandomTransactionId } from '../utils/utils.js';
 import { cookieOptions } from '../utils/authUtilities.js';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
+import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
