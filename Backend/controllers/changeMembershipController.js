@@ -1121,12 +1121,12 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                 user_id: user?.id,
                 admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
             };
-            await updateUserPendingInvoiceStatus(user.id, prisma);
+
             await createMemberLogs(logData);
 
-            return user.email;
+            return { email: user.email, user: user };
         }, { timeout: 40000 });
-
+        await updateUserPendingInvoiceStatus(result.user.id);
         res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -1330,31 +1330,31 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
                 attachments: attachments
             });
 
-            // Insert Member History log
-            const logData = {
-                subject: 'Upgrade invoice created',
-                // user user memberId
-                // member_id: userUpdateResult.memberID,
-                user_id: user?.id,
-                // TODO: take email form current admin token
-                admin_id: 'admin@gs1sa.link',
-
-            }
 
 
-            TODO: // chec this
-            // if (req?.admin.id) {
-            //     logData.admin_id = admin_email;
-            // logData.created_by_admin = 1;
-            // }
-
-            await updateUserPendingInvoiceStatus(user.id);
-
-            await createMemberLogs(logData);
-
-            return user.email;
+            return { email: user.email, user: user }
         }, { timeout: 40000 });
+        // Insert Member History log
+        const logData = {
+            subject: 'Upgrade invoice created',
+            // user user memberId
+            // member_id: userUpdateResult.memberID,
+            user_id: result.user?.id,
+            // TODO: take email form current admin token
+            admin_id: 'admin@gs1sa.link',
 
+        }
+
+
+        TODO: // chec this
+        // if (req?.admin.id) {
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
+        // }
+
+        await updateUserPendingInvoiceStatus(result.user.id);
+
+        await createMemberLogs(logData);
         res.status(200).json({ message: `Upgrade invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -1553,30 +1553,30 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                 attachments: attachments
             });
 
-            // Insert Member History log
-            const logData = {
-                subject: 'Add GLN invoice created',
-                // user user memberId
-                // member_id: userUpdateResult.memberID,
-                user_id: user?.id,
-                // TODO: take email form current admin token
-                admin_id: 'admin@gs1sa.link',
-
-            }
 
 
-            TODO: // chec this
-            // if (req?.admin.id) {
-            //     logData.admin_id = admin_email;
-            // logData.created_by_admin = 1;
-            // }
-
-            await updateUserPendingInvoiceStatus(user.id);
-            await createMemberLogs(logData);
-
-            return user.email;
+            return { email: user.email, user: user }
         }, { timeout: 40000 });
+        // Insert Member History log
+        const logData = {
+            subject: 'Add GLN invoice created',
+            // user user memberId
+            // member_id: userUpdateResult.memberID,
+            user_id: result.user?.id,
+            // TODO: take email form current admin token
+            admin_id: 'admin@gs1sa.link',
 
+        }
+
+
+        TODO: // chec this
+        // if (req?.admin.id) {
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
+        // }
+
+        await updateUserPendingInvoiceStatus(result.user.id);
+        await createMemberLogs(logData);
         res.status(200).json({ message: `Add GLN invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -2536,17 +2536,17 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                 attachments: attachments
             });
 
-            const logData = {
-                subject: `Downgrade Subscription invoice created`,
-                user_id: user?.id,
-                admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
-            };
-            await updateUserPendingInvoiceStatus(user?.id);
-            await createMemberLogs(logData);
 
-            return user.email;
+
+            return { user: user, transactionId: transactionId };
         }, { timeout: 50000 });
-
+        const logData = {
+            subject: `Downgrade Subscription invoice created`,
+            user_id: result.user.id,
+            admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
+        };
+        await updateUserPendingInvoiceStatus(result.user.id);
+        await createMemberLogs(logData);
         res.status(200).json({ message: `Downgrade Subscription invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);

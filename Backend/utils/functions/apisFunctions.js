@@ -1,7 +1,7 @@
 import prisma from "../../prismaClient.js";
 import { createError } from "../createError.js";
 
-export async function updateUserPendingInvoiceStatus(userId, prisma = prisma) {
+export async function updateUserPendingInvoiceStatus(userId) {
     try {
         const pendingInvoiceCount = await prisma.member_documents.count({
             where: {
