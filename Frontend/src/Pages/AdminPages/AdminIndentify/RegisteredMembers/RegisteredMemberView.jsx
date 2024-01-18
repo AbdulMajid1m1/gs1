@@ -286,9 +286,11 @@ const RegisteredMembersView = () => {
   const fetchSubMembersData = async () => {
     setSubMembersLoader(true);
     try {
-      const response = await newRequest.get(`/users?parent_memberID=${Id}`);
+      // pass memberID as query param
+      const response = await newRequest.get(`/users?parent_memberID=${allUserData?.memberID}`);
 
       // console.log(response.data);
+      console.log(response?.data);
       setSubMenusData(response?.data || []);
       setSubMembersLoader(false)
 
@@ -1001,7 +1003,7 @@ const RegisteredMembersView = () => {
         {isSubMenusPopupVisible && (
           <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData}
             userData={allUserData}
-           />
+          />
         )}
 
         {/* Update Sub Menus component with Handle prop */}
@@ -1037,7 +1039,7 @@ const RegisteredMembersView = () => {
           <PendingApprovedPopUp isVisible={isPendingApprovedPopupVisible} setVisibility={setIsPendingApprovedPopupVisible} fetchAllUserData={fetchAllUserData}
             fetchMemberHistoryData={fetchMemberHistoryData}
             refreshMemberInoviceData={fetchMemberInvoiceData}
-            fetchRegisteredProductsData={fetchRegisteredProductsData} 
+            fetchRegisteredProductsData={fetchRegisteredProductsData}
           />
         )}
 
