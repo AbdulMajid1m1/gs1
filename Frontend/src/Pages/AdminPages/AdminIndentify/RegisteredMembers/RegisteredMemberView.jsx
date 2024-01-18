@@ -124,8 +124,8 @@ const RegisteredMembersView = () => {
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
     try {
-      console.log(gs1MemberData?.memberID);
-      const response = await newRequest.get(`/logs/memberLogs/?user_id=${gs1MemberData?.id}`);
+      console.log(Id);
+      const response = await newRequest.get(`/logs/memberLogs/?user_id=${Id}`);
 
       console.log(response.data);
       setMemberHistoryData(response?.data || []);
@@ -163,7 +163,7 @@ const RegisteredMembersView = () => {
 
   const fetchAllUserData = async () => {
     try {
-      const response = await newRequest.get(`/users?id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/users?id=${Id}`);
       console.log(response.data[0]);
       const data = response?.data[0] || [];
       setAllUserData(data);
@@ -199,7 +199,7 @@ const RegisteredMembersView = () => {
   const fetchMemberDocumentsData = async () => {
     setMemberDocumentsLoader(true);
     try {
-      const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${Id}`);
       // console.log(response.data);
       setMembersDocumentsData(response?.data || []);
       setMemberDocumentsLoader(false);
@@ -215,7 +215,7 @@ const RegisteredMembersView = () => {
   const fetchData = async () => {
     setBrandsLoader(true);
     try {
-      const response = await newRequest.get(`/brands?user_id=${gs1MemberData?.id}`);
+      const response = await newRequest.get(`/brands?user_id=${Id}`);
 
       // console.log(response.data);
       setBrandsData(response?.data || []);
@@ -231,8 +231,8 @@ const RegisteredMembersView = () => {
   const fetchMemberInvoiceData = async () => {
     setMemberInvoiceLoader(true);
     try {
-      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
-      const response = await newRequest.get(`/memberDocuments/invoices?user_id=${gs1MemberData?.id}`);
+      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${Id}`);
+      const response = await newRequest.get(`/memberDocuments/invoices?user_id=${Id}`);
 
       console.log(response.data);
       setMemberInovice(response?.data || []);
@@ -248,8 +248,8 @@ const RegisteredMembersView = () => {
   const fetchMemberbankSlipData = async () => {
     setMemberBankSlipLoader(true);
     try {
-      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
-      const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip`);
+      // const response = await newRequest.get(`/memberDocuments/finance?user_id=${Id}`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${Id}&type=bank_slip`);
 
       // console.log(response.data);
       setMemberBankSlip(response?.data || []);
@@ -267,8 +267,8 @@ const RegisteredMembersView = () => {
     console.log(row);
     // set(true);
     try {
-      // const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=2875842183`);
-      const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=${row[0]?.transaction_id}`);
+      // const response = await newRequest.get(`/memberDocuments?user_id=${Id}&type=bank_slip&transaction_id=2875842183`);
+      const response = await newRequest.get(`/memberDocuments?user_id=${Id}&type=bank_slip&transaction_id=${row[0]?.transaction_id}`);
 
       // console.log(response.data);
       setFilteredMemberDetails(response?.data || []);
@@ -279,14 +279,14 @@ const RegisteredMembersView = () => {
       setIsLoading(false)
     }
 
-    // console.log(gs1MemberData?.id)
+    // console.log(Id)
   }
 
 
   const fetchSubMembersData = async () => {
     setSubMembersLoader(true);
     try {
-      const response = await newRequest.get(`/users?parent_memberID=${gs1MemberData?.memberID}`);
+      const response = await newRequest.get(`/users?parent_memberID=${Id}`);
 
       // console.log(response.data);
       setSubMenusData(response?.data || []);
@@ -303,7 +303,7 @@ const RegisteredMembersView = () => {
   const fetchRegisteredProductsData = async () => {
     setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${gs1MemberData?.id}&isDeleted=false`);
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${Id}&isDeleted=false`);
 
       console.log(response.data);
       // Extract gtinSubscriptions data and flatten the nested gtin_product
