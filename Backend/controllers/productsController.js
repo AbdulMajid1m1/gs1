@@ -12,6 +12,18 @@ import { generateProdcutGTIN, isValidGCPInBarcode } from '../utils/functions/bar
 import { ADMIN_EMAIL } from '../configs/envConfig.js';
 import { sendEmail } from '../services/emailTemplates.js';
 
+
+function checkExpiryDate(expiryDate) {
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+    if (today > expiry) {
+        throw createError(403, 'Subscription expired, please renew your subscription');
+    }
+}
+
+
+
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const getProducts = async (req, res, next) => {
     try {
@@ -153,14 +165,25 @@ export const createProduct = async (req, res, next) => {
             }
 
             const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-                where: { user_id: user.id,isDeleted:false },
+                where: {
+                    user_id: user.id,
+                    isDeleted: false,
+                    status: 'active',
+                },
                 include: { gtin_product: true }
             });
 
-            if (gtinSubscriptions.length === 0) {
-                throw createError(404, 'Subscription not found');
+            if (!gtinSubscriptions) {
+                throw createError(404, `No active GTIN subscription found for the user ${user?.company_name_eng}`);
             }
+
             console.log(gtinSubscriptions)
+            // /check      expiry_date: { gte: new Date() }
+
+            checkExpiryDate(gtinSubscriptions.expiry_date);
+
+
+
             if (gtinSubscriptions?.gtin_subscription_limit === 0) {
                 throw createError(403, 'Subscription limit exceeded, please upgrade your subscription');
 
@@ -244,8 +267,18 @@ const writeErrorsToExcel = (filePath, records) => {
 const insertProduct = async (productData, user, productsCount) => {
     try {
 
-        // check if the brand name exist for same user usin name_ar and companyID
+        // check if user gtin subscription status is active or not
+        // const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
+        //     where: { user_id: user.id, isDeleted: false },
+        //     include: { gtin_product: true }
+        // });
 
+        // if (!gtinSubscriptions) {
+        //     throw createError(404, 'No active GTIN subscription found for the user');
+        // }
+
+
+        // check if the brand name exist for same user usin name_ar and companyID
 
         const checkBrandName = await prisma.brands.findFirst({
             where: {
@@ -376,6 +409,8 @@ export const bulkCreateProduct = async (req, res, next) => {
             throw createError(404, 'User not found')
         }
 
+
+
         // Handle the parent member ID logic if applicable
         // if (user.parent_memberID !== '0' && user.parent_memberID !== null) {
         if (user.parent_memberID !== '0') {
@@ -387,18 +422,27 @@ export const bulkCreateProduct = async (req, res, next) => {
 
             }
         }
-
         const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-            where: { user_id: user.id,isDeleted:false},
+            where: {
+                user_id: user.id,
+                isDeleted: false,
+                status: 'active',
+            },
             include: { gtin_product: true }
         });
 
         if (!gtinSubscriptions) {
             sendEmailFlag = false;
             // throw new Error('Subscription not found')
-            throw createError(404, 'Subscription not found')
+            throw createError(404, `No active GTIN subscription found for the user ${user?.company_name_eng}`)
         }
+
         console.log(gtinSubscriptions)
+        // /check      expiry_date: { gte: new Date() }
+
+         checkExpiryDate(gtinSubscriptions.expiry_date);
+
+    
         if (gtinSubscriptions.gtin_subscription_limit - records.length < 0) {
             sendEmailFlag = false;
             // throw new Error('Subscription limit exceeded, please upgrade your subscription')
