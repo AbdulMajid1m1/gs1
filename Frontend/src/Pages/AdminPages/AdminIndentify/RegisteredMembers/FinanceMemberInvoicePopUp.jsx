@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, userData
+const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, refreshMemberbankSlipData, userData
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
@@ -245,6 +245,7 @@ const handleSubmit = async (e) => {
 
       setLoading(false);
       refreshMemberInoviceData();
+      refreshMemberbankSlipData();
       // MemberbankSlip();
       // fetchAllUserData();
       // fetchMemberbankSlipData();
