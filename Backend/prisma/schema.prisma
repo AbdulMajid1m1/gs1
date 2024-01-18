@@ -2002,7 +2002,7 @@ model users {
   state                    String?               @db.NVarChar(Max)
   zip_code                 String?               @db.VarChar(50)
   old_member_recheck       Int?                  @default(0, map: "DF_users_old_member_recheck")
-  carts                    carts[] // Define the one-to-many relationship
+  carts                    carts[] // Define the one-to-many relationship with carts
   isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
   pending_invoices         String                @default("none", map: "DF_users_for_approval") @db.VarChar(50)
   // create a one-to-many relationship with member_history_logs
