@@ -999,7 +999,9 @@ const RegisteredMembersView = () => {
 
         {/* Add Sub Menus component with Handle prop */}
         {isSubMenusPopupVisible && (
-          <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData} />
+          <SubMenusAddPopUp isVisible={isSubMenusPopupVisible} setVisibility={setIsSubMenusPopupVisible} refreshSubMenus={fetchSubMembersData}
+            userData={allUserData}
+           />
         )}
 
         {/* Update Sub Menus component with Handle prop */}
