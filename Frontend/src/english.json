@@ -192,7 +192,25 @@
     "product package updated successfully":"product package updated successfully",
     "Update product package":"Update product package",
     "Enter product pack name":"Enter product pack name",
-    "Update product Package":"Update product Package"
+    "Update product Package":"Update product Package",
+
+    "Add Other Product":"Add Other Product",
+    "med subscription fee":"med subscription fee",
+    "Enter med subscription fee":"Enter med subscription fee",
+    "code":"code",
+    "Enter product subscription fee":"Enter product subscription fee",
+    "Add other product":"Add other product",
+    "other product updated successfully":"other product updated successfully",
+    "Update otherproduct":"Update otherproduct",
+    "product name":"product name",
+    "Enter product name":"Enter product name",
+    "total no of barcodes":"total no of barcodes",
+    "Enter total no of barcodes":"Enter total no of barcodes",
+    "product subscription fee":"product subscription fee",
+    "Enter code":"Enter code",
+    "variant":"variant",
+    "Enter variant":"Enter variant"
+    
     
    
     

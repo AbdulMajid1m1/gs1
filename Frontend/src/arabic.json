@@ -191,5 +191,22 @@
     "product package updated successfully": "تم تحديث حزمة المنتج بنجاح",
     "Update product package": "تحديث حزمة المنتج",
     "Enter product pack name": "أدخل اسم حزمة المنتج",
-    "Update product Package": "تحديث حزمة المنتج"
+    "Update product Package": "تحديث حزمة المنتج",
+
+    "Add Other Product": "أضف منتج آخر",
+    "med subscription fee": "رسوم الاشتراك في الطب",
+    "Enter med subscription fee": "أدخل رسوم الاشتراك ميد",
+    "code": "شفرة",
+    "Enter product subscription fee": "أدخل رسوم الاشتراك في المنتج",
+    "Add other product": "إضافة منتج آخر",
+    "other product updated successfully": "تم تحديث منتج آخر بنجاح",
+    "Update otherproduct": "تحديث منتج آخر",
+    "product name": "اسم المنتج",
+    "Enter product name": "أدخل اسم المنتج",
+    "total no of barcodes": "إجمالي عدد الباركود",
+    "Enter total no of barcodes": "أدخل العدد الإجمالي للرموز الشريطية",
+    "product subscription fee": "رسوم الاشتراك في المنتج",
+    "Enter code": "ادخل الرمز",
+    "variant": "البديل",
+    "Enter variant": "أدخل البديل"
 }
