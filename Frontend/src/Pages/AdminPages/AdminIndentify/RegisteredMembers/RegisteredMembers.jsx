@@ -342,7 +342,7 @@ const RegisteredMembers = () => {
 
               //   },
               {
-                label: "Delete",
+                label: "Deactivate",
                 icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                 ,
                 action: handleDelete,
