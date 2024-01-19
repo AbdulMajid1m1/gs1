@@ -219,5 +219,24 @@
     "GCP type updated successfully": "GCP تم تحديث النوع بنجاح",
     "gcp code": "gcp رمز",
     "Enter gcp description": "أدخل وصف برنامج gcp",
-    "Update gcp code": "ديث كودgcp"
+    "Update gcp code": "ديث كودgcp",
+
+    "Country of Sales": "بلد المبيعات",
+    "Add Country of Sale": "أضف بلد البيع",
+    "Country Code": "الرقم الدولي",
+    "Alpha2": "ألف 2",
+    "Enter Alpha2": "أدخل ألفا 2",
+    "Alpha3": "ألف 3",
+    "Enter Alpha3": "أدخل ألفا 3",
+    "Enter Country Code": "أدخل رمز البلد",
+    "Country short name": "اسم البلد المختصر",
+    "Enter country Name": "أدخل اسم البلد",
+    "Add country of sales": "إضافة بلد المبيعات",
+    "counrty of sale updated successfully": "تم تحديث بلد البيع بنجاح",
+    "Update country Of Sales": "تحديث بلد المبيعات",
+    "country name": "اسم الدولة",
+    "Enter country name english": "أدخل اسم البلد باللغة الإنجليزية",
+    "Enter country code": "أدخل رمز البلد",
+    "country Name": "اسم الدولة",
+    "country code": "الرقم الدولي"
 }
