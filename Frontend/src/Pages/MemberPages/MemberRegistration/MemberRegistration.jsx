@@ -208,7 +208,7 @@ const MemmberRegisteration = () => {
 
     const handleOtherProductsChange = (event, value) => {
 
-        // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
+        // Check if the selected option is GLN (20 Locations), GLN (10 Location), or GLN (30 Locations)
         const selectedGLN = value.find(
             (option) =>
                 option.product_name === 'GLN (30 Locations)' ||
@@ -365,7 +365,7 @@ const MemmberRegisteration = () => {
                 console.log(response.data);
                 setIsLoading(false);
                 setTimeout(() => {
-                    navigate('/');
+                    // navigate('/');
                 }, 1500);
 
                 toast.success('Member Registered Successfully', {

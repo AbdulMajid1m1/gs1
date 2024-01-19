@@ -224,6 +224,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
         fetchMemberInvoiceData();
         fetchMemberHistoryData();
+        
         // Close the popup
         handleCloseUpgradePopup();
       }
@@ -251,6 +252,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         fetchMemberInvoiceData();
+        handleCloseUpgradePopup();
       }
 
       if (subType === "ADD GLN") {
@@ -266,11 +268,11 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         fetchMemberInvoiceData();
+        handleCloseUpgradePopup();
       }
 
     } catch (err) {
       console.log(err);
-
       toast.error(err.response?.data?.error || "Upgrade request failed!");
     }
     finally {
