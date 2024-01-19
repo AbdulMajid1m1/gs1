@@ -1028,8 +1028,6 @@ const RegisteredMembersView = () => {
           <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
         )} */}
 
-
-
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (
           <UpgradePopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType} fetchMemberInvoiceData={fetchMemberInvoiceData}
