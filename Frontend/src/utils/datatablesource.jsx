@@ -10,13 +10,11 @@ const QRCodeCell = props => {
   return <QRCode value={url} size={40} />;
 };
 
-function ImageEditInputCell(props)
-{
+function ImageEditInputCell(props) {
   const { id, field, fieldUpdated, value, mode } = props;
   const apiRef = useGridApiContext();
 
-  const handleFileChange = (event) =>
-  {
+  const handleFileChange = (event) => {
     const file = event.target?.files?.[0];
 
     if (!file) {
@@ -31,8 +29,7 @@ function ImageEditInputCell(props)
     if (file) {
       const reader = new FileReader();
 
-      reader.onload = () =>
-      {
+      reader.onload = () => {
         const imageValue = reader.result;
         apiRef.current.setEditCellValue({
           id,
@@ -50,8 +47,7 @@ function ImageEditInputCell(props)
     }
   };
 
-  const handleRef = (element) =>
-  {
+  const handleRef = (element) => {
     if (element) {
       const input = element.querySelector('input[type="file"]');
       input?.focus();
@@ -74,16 +70,14 @@ function ImageEditInputCell(props)
   console.log("Value");
   console.log(value);
 }
-const renderImageEditInputCell = (params) =>
-{
+const renderImageEditInputCell = (params) => {
   const { field, fieldUpdated } = params;
   return (
     <ImageEditInputCell {...params} mode="edit" fieldUpdated={fieldUpdated} />
   );
 };
 
-const GTINCell = params =>
-{
+const GTINCell = params => {
   const style = {
     backgroundColor: 'rgb(21 128 61)',
     color: 'white',
@@ -401,8 +395,7 @@ export const ShipmentRequestColumns = [
     field: 'datetime',
     headerName: 'Date Time',
     width: 180,
-    renderCell: params =>
-    {
+    renderCell: params => {
       const dateObject = new Date(params.value); // Assuming the datetime is in a format recognizable by JavaScript's Date constructor
       return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
@@ -438,8 +431,7 @@ export const ShipmentDocColumns = [
     field: 'document_url',
     headerName: 'Document',
     width: 180,
-    renderCell: params =>
-    {
+    renderCell: params => {
       console.log('params');
       console.log(params);
 
@@ -571,8 +563,7 @@ export const productionColumns = [
     headerName: 'Product Id',
     width: 120,
     editable: false,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.product_id[0];
     },
   },
@@ -581,8 +572,7 @@ export const productionColumns = [
     headerName: 'Product Name',
     width: 180,
     editable: false,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.product_id[1];
     },
   },
@@ -627,8 +617,7 @@ export const productionColumns = [
     headerName: 'USER',
     width: 180,
     editable: false,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.user_id[1];
     },
   },
@@ -637,8 +626,7 @@ export const productionColumns = [
     headerName: 'COMPANY',
     width: 180,
     editable: false,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.company_id[1];
     },
   },
@@ -838,8 +826,7 @@ export const fixedAssetsDataColumns = [
     field: 'company_id',
     headerName: 'Company',
     width: 150,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.company_id[1];
     },
     editable: false,
@@ -849,8 +836,7 @@ export const fixedAssetsDataColumns = [
     headerName: 'Currency',
     width: 150,
     // show second item of list
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.currency_id[1];
     },
     editable: false,
@@ -935,8 +921,7 @@ export const inventoryColumn = [
     headerName: 'Product Name',
     width: 180,
     // show first item in list
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.product_id[1];
     },
     editable: false,
@@ -969,8 +954,7 @@ export const inventoryColumn = [
     field: 'product_categ_id',
     headerName: 'Item Category',
     width: 180,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.product_categ_id[1];
     },
     editable: false,
@@ -985,8 +969,7 @@ export const inventoryColumn = [
     field: 'location_id',
     headerName: 'Item Location',
     width: 180,
-    valueGetter: params =>
-    {
+    valueGetter: params => {
       return params.row.location_id[1];
     },
     editable: false,
@@ -1296,8 +1279,7 @@ export const GtinColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.front_image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -1319,8 +1301,7 @@ export const GtinColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.back_image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -1342,8 +1323,7 @@ export const GtinColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image_1), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -1365,8 +1345,7 @@ export const GtinColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image_2), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -1388,8 +1367,7 @@ export const GtinColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image_3), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -1415,8 +1393,7 @@ export const GtinColumn = [
     field: "product_url",
     headerName: "Product URL",
     width: 180,
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       let url = params.value;
       if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'http://' + url;
@@ -2001,8 +1978,7 @@ export const MembersDocumentColumn = [
     headerName: 'Document',
     width: 180,
 
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -2010,8 +1986,7 @@ export const MembersDocumentColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -2075,8 +2050,7 @@ export const MembersDocumentColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2087,8 +2061,7 @@ export const MembersDocumentColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2139,8 +2112,7 @@ export const MembersBrandsColumn = [
     headerName: 'Document',
     width: 180,
 
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -2148,8 +2120,7 @@ export const MembersBrandsColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -2233,8 +2204,7 @@ export const MembersBrandsColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2245,8 +2215,7 @@ export const MembersBrandsColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2278,8 +2247,7 @@ export const AdminBrandsColumn = [
     field: 'brand_certificate',
     headerName: 'Documents',
     width: 180,
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -2287,8 +2255,7 @@ export const AdminBrandsColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -2364,8 +2331,7 @@ export const AdminBrandsColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2375,8 +2341,7 @@ export const AdminBrandsColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2403,8 +2368,7 @@ export const paymentSlipColumn = [
     field: 'document',
     headerName: 'Documents',
     width: 180,
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -2412,8 +2376,7 @@ export const paymentSlipColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -2505,8 +2468,7 @@ export const paymentSlipColumn = [
     type: 'dateTime',
 
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2517,8 +2479,7 @@ export const paymentSlipColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2560,8 +2521,7 @@ export const masterDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -2570,8 +2530,7 @@ export const masterDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2581,8 +2540,7 @@ export const masterDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2605,8 +2563,7 @@ export const megamenuDataColumn = [
     field: 'status',
     headerName: `Status`,
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -2615,8 +2572,7 @@ export const megamenuDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2626,8 +2582,7 @@ export const megamenuDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2680,8 +2635,7 @@ export const CategoriesDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -2690,8 +2644,7 @@ export const CategoriesDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2701,8 +2654,7 @@ export const CategoriesDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2760,8 +2712,7 @@ export const silderDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -2770,8 +2721,7 @@ export const silderDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2781,8 +2731,7 @@ export const silderDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2805,8 +2754,7 @@ export const FeaturedServicesDataColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -2821,8 +2769,7 @@ export const FeaturedServicesDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -2831,8 +2778,7 @@ export const FeaturedServicesDataColumn = [
     headerName: 'Created At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2842,8 +2788,7 @@ export const FeaturedServicesDataColumn = [
     headerName: 'Updated At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2900,8 +2845,7 @@ export const FeaturedEventsDataColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -2916,8 +2860,7 @@ export const FeaturedEventsDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -2926,8 +2869,7 @@ export const FeaturedEventsDataColumn = [
     headerName: 'Created At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2937,8 +2879,7 @@ export const FeaturedEventsDataColumn = [
     headerName: 'Updated At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -2996,8 +2937,7 @@ export const FeaturedArticlesDataColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -3012,8 +2952,7 @@ export const FeaturedArticlesDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3022,8 +2961,7 @@ export const FeaturedArticlesDataColumn = [
     headerName: 'Created At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3033,8 +2971,7 @@ export const FeaturedArticlesDataColumn = [
     headerName: 'Updated At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3072,8 +3009,7 @@ export const ManagePagesDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3082,8 +3018,7 @@ export const ManagePagesDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3093,8 +3028,7 @@ export const ManagePagesDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3116,8 +3050,7 @@ export const GS1PartnersDataColumn = [
           height: '77%',
           objectFit: 'fill',
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -3143,8 +3076,7 @@ export const GS1PartnersDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3153,8 +3085,7 @@ export const GS1PartnersDataColumn = [
     headerName: 'Created At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3164,8 +3095,7 @@ export const GS1PartnersDataColumn = [
     headerName: 'Updated At',
     width: 200,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3189,8 +3119,7 @@ export const BlogCategoriesDataColumn = [
     headerName: 'Created At',
     width: 250,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3200,8 +3129,7 @@ export const BlogCategoriesDataColumn = [
     headerName: 'Updated At',
     width: 250,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3220,8 +3148,7 @@ export const FaqCategoriesDataColumn = [
     headerName: 'Created At',
     width: 250,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3231,8 +3158,7 @@ export const FaqCategoriesDataColumn = [
     headerName: 'Updated At',
     width: 250,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3290,8 +3216,7 @@ export const ManageTeamDataColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -3301,8 +3226,7 @@ export const ManageTeamDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3311,8 +3235,7 @@ export const ManageTeamDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3322,8 +3245,7 @@ export const ManageTeamDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3381,8 +3303,7 @@ export const BoardMembersDataColumn = [
           objectFit: 'contain',
           cursor: 'pointer'
         }}
-        onClick={() =>
-        {
+        onClick={() => {
           window.open(imageLiveUrl(params.row.image), '_blank', 'width=400,height=300,top=0,left=0');
         }}
       />
@@ -3392,8 +3313,7 @@ export const BoardMembersDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3402,8 +3322,7 @@ export const BoardMembersDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3413,8 +3332,7 @@ export const BoardMembersDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3454,8 +3372,7 @@ export const UserGuidepdfDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3464,8 +3381,7 @@ export const UserGuidepdfDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3475,15 +3391,13 @@ export const UserGuidepdfDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
 ];
-const handlepdfDownload = (pdfurl) =>
-{
+const handlepdfDownload = (pdfurl) => {
   const fileUrl = pdfurl;
   saveAs(fileUrl, `${pdfurl}.pdf`);
 };
@@ -3520,8 +3434,7 @@ export const UserGuideVideoDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3530,8 +3443,7 @@ export const UserGuideVideoDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value ? new Date(params.value) : null;
     }
   },
@@ -3540,14 +3452,12 @@ export const UserGuideVideoDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value ? new Date(params.value) : null;
     }
   },
 ];
-const handleVideoDownload = (videoUrl) =>
-{
+const handleVideoDownload = (videoUrl) => {
   const fileUrl = videoUrl;
   saveAs(fileUrl, `${videoUrl}.mp4`);
 };
@@ -3562,8 +3472,7 @@ export const document = [
     field: 'status',
     headerName: 'status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3573,8 +3482,7 @@ export const document = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3584,8 +3492,7 @@ export const document = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3603,8 +3510,7 @@ export const product_packaging = [
     field: 'status',
     headerName: 'status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3614,8 +3520,7 @@ export const product_packaging = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3625,8 +3530,7 @@ export const product_packaging = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3659,8 +3563,7 @@ export const footerMenuDataColumn = [
     field: 'status',
     headerName: 'Status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3669,8 +3572,7 @@ export const footerMenuDataColumn = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3680,8 +3582,7 @@ export const footerMenuDataColumn = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3710,8 +3611,7 @@ export const Other_Products = [
     field: 'status',
     headerName: 'status',
     width: 130,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3735,8 +3635,7 @@ export const Other_Products = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3746,8 +3645,7 @@ export const Other_Products = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3771,8 +3669,7 @@ export const Gcp_types = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3782,8 +3679,7 @@ export const Gcp_types = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3816,8 +3712,7 @@ export const counrty_sales = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3827,8 +3722,7 @@ export const counrty_sales = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3852,8 +3746,7 @@ export const city = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3863,8 +3756,7 @@ export const city = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3888,8 +3780,7 @@ export const state = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3899,8 +3790,7 @@ export const state = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3922,8 +3812,7 @@ export const crnumber__ = [
     field: 'status',
     headerName: 'status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3931,8 +3820,7 @@ export const crnumber__ = [
     field: 'isRegistered',
     headerName: 'isRegistered',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Yes' : 'No';
     },
   },
@@ -3941,8 +3829,7 @@ export const crnumber__ = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3952,8 +3839,7 @@ export const crnumber__ = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3970,8 +3856,7 @@ export const document_type = [
     field: 'status',
     headerName: 'status',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
     },
   },
@@ -3980,8 +3865,7 @@ export const document_type = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -3991,8 +3875,7 @@ export const document_type = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4026,8 +3909,7 @@ export const country__ = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4037,8 +3919,7 @@ export const country__ = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4071,8 +3952,7 @@ export const Hs_code = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4082,8 +3962,7 @@ export const Hs_code = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4116,8 +3995,7 @@ export const unspcs_ = [
     headerName: 'Created At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4127,8 +4005,7 @@ export const unspcs_ = [
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4174,8 +4051,7 @@ export const financeColumn = [
     headerName: 'Document',
     width: 150,
 
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -4183,8 +4059,7 @@ export const financeColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -4240,8 +4115,7 @@ export const financeColumn = [
     width: 180,
     type: 'dateTime',
 
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4252,8 +4126,7 @@ export const financeColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4311,8 +4184,7 @@ export const financePopUpMemberBankSlipColumn = [
     headerName: 'Document',
     width: 180,
 
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -4320,8 +4192,7 @@ export const financePopUpMemberBankSlipColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -4377,8 +4248,7 @@ export const financePopUpMemberBankSlipColumn = [
     width: 180,
     type: 'dateTime',
 
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4389,8 +4259,7 @@ export const financePopUpMemberBankSlipColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4418,8 +4287,7 @@ export const bankSlipColumn = [
     headerName: 'Document',
     width: 180,
 
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -4427,8 +4295,7 @@ export const bankSlipColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -4479,8 +4346,7 @@ export const bankSlipColumn = [
     width: 180,
     type: 'dateTime',
 
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4491,8 +4357,7 @@ export const bankSlipColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -4842,8 +4707,7 @@ export const submenusDataColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
 
@@ -4855,8 +4719,7 @@ export const submenusDataColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
 
@@ -5003,8 +4866,7 @@ export const memberHistoryColumnData = [
     field: 'user.email',
     headerName: 'User Email',
     width: 220,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Access the 'email' property within the 'user' object
       const userEmail = params.row.user ? params.row.user.email : '';
       return userEmail;
@@ -5022,8 +4884,7 @@ export const memberHistoryColumnData = [
     width: 180,
     type: 'dateTime',
 
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -5034,8 +4895,7 @@ export const memberHistoryColumnData = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -5115,8 +4975,7 @@ export const registeredmemberColumn = [
     width: 180,
     type: 'date',
 
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
 
@@ -5145,8 +5004,7 @@ export const productsColumn = [
     field: 'created_at',
     headerName: 'Operation Date',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       const operationDate = new Date(params.row.created_at);
       return operationDate.toISOString().split('T')[0];
     },
@@ -5155,8 +5013,7 @@ export const productsColumn = [
     field: 'admin_id',
     headerName: 'Created By',
     width: 180,
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return params.row.admin_id ? `User ID ${params.row.admin_id}` : 'Unknown';
     },
   },
@@ -5348,8 +5205,7 @@ export const SafetyInformationColumn = [
   {
     field: "logo",
     headerName: "Logo",
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -5389,8 +5245,7 @@ export const RecipeColumn = [
   {
     field: "logo",
     headerName: "Logo",
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -5586,8 +5441,7 @@ export const PackagingCompositionColumn = [
   {
     field: "logo",
     headerName: "Logo",
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -5706,8 +5560,7 @@ export const ElectronicLeafletsColumn = [
     field: "PdfDoc",
     headerName: "Pdf Doc",
     width: 180,
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -5715,8 +5568,7 @@ export const ElectronicLeafletsColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -5817,8 +5669,7 @@ export const ProductContentColumn = [
     width: 180,
     editable: true,
     type: "date",
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       return new Date(params.row.ManufacturingDate);
     },
   },

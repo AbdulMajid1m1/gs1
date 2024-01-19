@@ -18,12 +18,9 @@ import Updatehscode from './updatehscode';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { I18nextProvider, useTranslation } from "react-i18next";
-import i18n from "../../../../i18n";
-import LanguageSwitcher from "../../../../switer";
 const Hscode = () =>
 {
-  const { t } = useTranslation();
+
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -223,7 +220,7 @@ const Hscode = () =>
       <div className="p-0 h-full sm:ml-72">
         <div>
           <DashboardRightHeader
-            title={t('Hs Code')}
+            title={'Hs Code'}
           />
         </div>
 
@@ -257,13 +254,13 @@ const Hscode = () =>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>{t('Add')}
+                  <i className="fas fa-plus mr-2"></i>Add
                 </button>
                 <div className="relative">
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> {t('Import')}
+                    <i className="fas fa-file-import mr-1"></i> Import
                   </button>
                   <input
                     type="file"
@@ -277,14 +274,14 @@ const Hscode = () =>
                 <CSVLink data={data}
 
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" > {t('Export')}   <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
                 </CSVLink>
               </div>
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title={t('Hs Code')}
+                  title="Hs Code"
                   columnsName={Hs_code}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -292,7 +289,7 @@ const Hscode = () =>
 
                   dropDownOptions={[
                     {
-                      label: t("View"),
+                      label: "View",
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -303,7 +300,7 @@ const Hscode = () =>
                       action: handleView,
                     },
                     {
-                      label: t("Edit"),
+                      label: "Edit",
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -314,7 +311,7 @@ const Hscode = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: t("Delete"),
+                      label: "Delete",
                       icon: (
                         <DeleteIcon
                           fontSize="small"

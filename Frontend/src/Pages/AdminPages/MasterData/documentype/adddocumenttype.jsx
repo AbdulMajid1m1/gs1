@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
+  const { t, i18n } = useTranslation();
   const [file_name, setfile_name] = useState("");
   const [status, setstatus] = useState("");
 
@@ -22,7 +24,7 @@ const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
         status: 1,
       });
 
-      toast.success(`file_name ${file_name} has been added successfully.`, {
+      toast.success(`${t('Document Type')} ${file_name} ${t('has been added successfully')}.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -67,16 +69,16 @@ const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Document Type</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('document Type')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Document name</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Document name')}</label>
                     <input
                       type="text"
                       id="file_name"
                       value={file_name}
                       onChange={(e) => setfile_name(e.target.value)}
-                      placeholder="Enter Document name "
+                      placeholder={`${t('Enter')} ${t('Document name')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -90,14 +92,14 @@ const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseCreatePopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   <button
                     type="button"
                     onClick={handleAddCompany}
                     className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                   >
-                    Add Document Type
+                    {t('Add')} {t('document Type')}
                   </button>
                 </div>
               </form>

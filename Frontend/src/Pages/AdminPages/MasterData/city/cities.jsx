@@ -13,9 +13,10 @@ import Updatecity from './updatecity';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { useTranslation } from 'react-i18next';
 const Cities = () =>
 {
-
+  const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [brandsData, setBrandsData] = useState([]);
@@ -87,12 +88,12 @@ const Cities = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this city!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('city')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
     }).then(async (result) =>
@@ -101,7 +102,7 @@ const Cities = () =>
         try {
           const isDeleted = await newRequest.delete("/address/deleteCities/" + row?.id);
           if (isDeleted) {
-            toast.success('City deleted successfully', {
+            toast.success(`${t('Cities')}  ${t('has been deleted')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -206,10 +207,10 @@ const Cities = () =>
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={'Cities'}
+            title={`${t('Cities')}`}
           />
         </div>
 
@@ -217,17 +218,17 @@ const Cities = () =>
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-              <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
                 <div className="relative">
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> Import
+                    <i className="fas fa-file-import mr-1"></i> {t('Import')}
                   </button>
                   <input
                     type="file"
@@ -240,14 +241,14 @@ const Cities = () =>
 
                 <CSVLink data={data}
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" > {t('Export')}  <FileUploadIcon />
                 </CSVLink>
               </div>
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title="Cities"
+                  title={`${t('Cities')}`}
                   columnsName={city}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -255,7 +256,7 @@ const Cities = () =>
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: `${t('View')}`,
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -266,7 +267,7 @@ const Cities = () =>
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: `${t('Edit')}`,
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -277,7 +278,7 @@ const Cities = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: `${t('Delete')}`,
                       icon: (
                         <DeleteIcon
                           fontSize="small"

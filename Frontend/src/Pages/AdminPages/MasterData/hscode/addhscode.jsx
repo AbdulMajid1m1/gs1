@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
-import { I18nextProvider, useTranslation } from "react-i18next";
-import i18n from "../../../../i18n";
-import LanguageSwitcher from "../../../../switer";
+
 const Addhscode = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
-  const { t } = useTranslation();
   const [CNKEY, setCNKEY] = useState("");
   const [HSCODES, setHSCODES] = useState("");
   const [DescriptionEN, setDescriptionEN] = useState("");
@@ -74,38 +71,38 @@ const Addhscode = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add hs code')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add hs code</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('CNKEY')} </label>
+                    <label htmlFor="field1" className="text-secondary">CNKEY </label>
                     <input
                       type="text"
                       id="CNKEY"
                       value={CNKEY}
                       onChange={(e) => setCNKEY(e.target.value)}
-                      placeholder={t('Enter CNKEY')}
+                      placeholder="Enter CNKEY"
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('HSCODES')}</label>
+                    <label htmlFor="field1" className="text-secondary">HSCODES</label>
                     <input
                       type="text"
                       id="HSCODES"
                       value={HSCODES}
                       onChange={(e) => setHSCODES(e.target.value)}
-                      placeholder={t('Enter HSCODES')}
+                      placeholder="Enter HSCODES "
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Description')}</label>
+                    <label htmlFor="field1" className="text-secondary">Description</label>
                     <input
                       type="text"
                       id="DescriptionEN"
                       value={DescriptionEN}
                       onChange={(e) => setDescriptionEN(e.target.value)}
-                      placeholder={t('Enter Description')}
+                      placeholder="Enter Description "
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -119,14 +116,14 @@ const Addhscode = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseCreatePopup}
                   >
-                    {t('Close')} 
+                    Close
                   </button>
                   <button
                     type="button"
                     onClick={handleAddCompany}
                     className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                   >
-                    {t('Add HSCODES')}   
+                    Add HSCODES
                   </button>
                 </div>
               </form>
