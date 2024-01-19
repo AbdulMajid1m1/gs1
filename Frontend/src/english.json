@@ -247,5 +247,13 @@
     "Add Page":"Add Page",
     "Edit Sections":"Edit Sections",
     "document Type":"document Type",
-    "Document name":"Document name"
+    "Document name":"Document name",
+    "city":"city",
+    "Select State":"Select State",
+    "Country name":"Country name",
+    "Select Country":"Select Country",
+    "Country Code":"Country Code",
+    "Country short name":"Country short name",
+    "Cr Activity":"Cr Activity",
+    "state name":"state name"
 }

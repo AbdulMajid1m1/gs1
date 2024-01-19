@@ -247,5 +247,13 @@
     "Add Page":"إضافة صفحة",
     "Edit Sections":"تحرير الأقسام",
     "document Type":"نوع الوثيقة",
-    "Document name":"اسم الملف"
+    "Document name":"اسم الملف",
+    "city":"المدينة",
+    "Select State":"ریاست منتخب کریں۔",
+    "Country name":"اسم البلد",
+    "Select Country":"حدد الدولة",
+    "Country Code":"رمز البلد",
+    "Country short name":"اسم البلد المختصر",
+    "Cr Activity":"نشاط السجل التجاري",
+    "state name":"اسم الولاية"
 }
