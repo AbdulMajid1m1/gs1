@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
+import { useTranslation } from 'react-i18next';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
@@ -23,6 +24,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [typeOfPayment, setTypeOfPayment] = useState([])
   const [totalPrice, setTotalPrice] = useState(0);
+  const { t } = useTranslation();
 
   const handleCloseInvoicePopup = () => {
     setVisibility(false);
@@ -239,9 +241,9 @@ const handleSubmit = async (e) => {
     // console.log(res.data);
     if (res.status === 200) {
       if (selectedStatus === "rejected") {
-        toast.info("Member Account Rejected Successfully");
+        toast.info(`${t('Member Account Rejected Successfully')}`);
       } else {
-        toast.success(res?.data?.message || "User Activated Successfully!");
+        toast.success(res?.data?.message || `${t('User Activated Successfully!')}`);
       }
 
       setLoading(false);
@@ -258,7 +260,7 @@ const handleSubmit = async (e) => {
   } catch (err) {
     console.log(err);
 
-    toast.error(err.response?.data?.error || "Something went wrong!");
+    toast.error(err.response?.data?.error ||  `${t('Something went wrong')}`);
     setLoading(false);
   }
 };
@@ -268,7 +270,6 @@ const handleSubmit = async (e) => {
 // }
 // };
 
-
 return (
   <div>
     {isVisible && (
@@ -276,11 +277,11 @@ return (
         <div className="member-popup-container h-auto sm:w-[45%] w-full">
           <div className="member-popup-form w-full">
             <form onSubmit={handleSubmit} className='w-full'>
-              <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending Invoice for Approval</h2>
+              <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Pending Invoice for Approval')} </h2>
               <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                   <div className="flex flex-row gap-2">
-                    <label htmlFor="approvedRadio" className="text-secondary">Invoice Status </label>
+                    <label htmlFor="approvedRadio" className="text-secondary"> {t('Invoice Status')} </label>
                     <div className="flex flex-row gap-2">
                       <input
                         type="radio"
@@ -291,7 +292,7 @@ return (
                         checked={selectedStatus === "approved"}
                         onChange={() => setSelectedStatus("approved")}
                       />
-                      <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approve</label>
+                      <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">{t('Approve')}</label>
                     </div>
                     <div className="flex flex-row gap-2">
                       <input
@@ -303,19 +304,19 @@ return (
                         checked={selectedStatus === "rejected"}
                         onChange={() => setSelectedStatus("rejected")}
                       />
-                      <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Reject</label>
+                      <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">{t('Reject')}</label>
                     </div>
                   </div>
                 </div>
 
                 {selectedStatus === "rejected" && (
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">Reason for Rejection</label>
+                    <label htmlFor="field2" className="text-secondary">{t('Reason for Rejection')}</label>
                     <input
                       type="text"
                       id="field2"
                       onChange={(e) => setRejected(e.target.value)}
-                      placeholder="Enter reason for rejection"
+                      placeholder={`${t('Enter')} ${t('Reason for Rejection')} `}
                       required
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
@@ -330,7 +331,7 @@ return (
                 {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" ? (
                   <>
                     <div className="flex justify-between items-center">
-                      <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1MemberInvoiceData?.transaction_id}</h2>
+                      <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
                     </div>
 
                     <table>
@@ -371,7 +372,7 @@ return (
                       </tbody>
                       <tfoot>
                         <tr>
-                          <td colSpan="4" className="text-right font-bold">Total:</td>
+                          <td colSpan="4" className="text-right font-bold">{t('Total')}:</td>
                           <td>{totalPrice}</td>
                         </tr>
                       </tfoot>
@@ -380,22 +381,22 @@ return (
                 ) : (
                   <>
                     <div className="flex justify-between items-center">
-                      <h2 className="text-secondary font-sans text-sm mb-2">TRANSACTION ID: <strong>{gs1MemberInvoiceData?.transaction_id}</strong></h2>
+                      <h2 className="text-secondary font-sans text-sm mb-2">{t('Transaction ID')}: <strong>{gs1MemberInvoiceData?.transaction_id}</strong></h2>
                     </div>
                     <div className="flex justify-between items-center">
-                      <h2 className="text-secondary font-sans text-sm mb-2">TYPE OF PAYMENT: <strong>{typeOfPayment}</strong></h2>
+                        <h2 className="text-secondary font-sans text-sm mb-2"> {t('TYPE OF PAYMENT')}: <strong>{typeOfPayment}</strong></h2>
                     </div>
                     {gs1MemberInvoiceData?.type === "downgrade_invoice" && (
                       <div className="flex justify-between items-center">
-                        <h2 className="text-secondary font-sans text-sm mb-2">New Subscription Yearly Fee: <strong>{memberInoviceData?.[0]?.newDowngradeYearlyFee}</strong></h2>
+                          <h2 className="text-secondary font-sans text-sm mb-2">{t('New Subscription Yearly Fee')}: <strong>{memberInoviceData?.[0]?.newDowngradeYearlyFee}</strong></h2>
                       </div>
                     )}
                     <table>
                       <thead>
                         <tr>
-                          <th>PRODUCT</th>
-                          <th>REGISTRATION FEE</th>
-                          {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <th>YEARLY FEE</th>}
+                            <th>{t('PRODUCT')}</th>
+                            <th>{t('REGISTRATION FEE')}</th>
+                          {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <th> {t('YEARLY FEE')}</th>}
                           <th>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? "TOTAL" : "SUB TOTAL"}</th>
                         </tr>
                       </thead>
@@ -414,7 +415,7 @@ return (
                       {gs1MemberInvoiceData?.type !== "downgrade_invoice" && (
                         <tfoot>
                           <tr>
-                            <td colSpan="3" className="text-right font-bold">Total:</td>
+                            <td colSpan="3" className="text-right font-bold">{t('Total')}:</td>
                             <td>{totalPrice}</td>
                           </tr>
                         </tfoot>
@@ -432,7 +433,7 @@ return (
                   className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                   onClick={handleCloseInvoicePopup}
                 >
-                  Close
+                  {t('Close')}
                 </button>
                 <Button
                   variant="contained"
@@ -442,7 +443,7 @@ return (
                   className="w-[70%] ml-2"
                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                 >
-                  Submit
+                  {t('Submit')}
                 </Button>
               </div>
             </form>

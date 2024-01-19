@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
@@ -18,6 +19,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
   const [selectedGtinBarcodes, setSelectedGtinBarcodes] = useState("");
   const [compareGtinBarcodes, setCompareGtinBarcodes] = React.useState([]);
   const [newSubscriptionDetails, setNewSubscriptionDetails] = useState([]);
+  const { t } = useTranslation();
   const handleCloseUpgradePopup = () => {
     setVisibility(false);
   };
@@ -219,7 +221,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
         });
         console.log(res.data);
-        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         // }
 
         fetchMemberInvoiceData();
@@ -236,7 +238,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
         });
         console.log(res.data);
-        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         // }
 
         fetchMemberInvoiceData();
@@ -250,7 +252,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           "gtinUpgradeProductId": selectedGtinBarcodes?.id,
         });
         console.log(res.data);
-        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         fetchMemberInvoiceData();
         handleCloseUpgradePopup();
       }
@@ -266,7 +268,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           otherProductSubscriptionId: selectGLnRow?.id
         });
         console.log(res.data);
-        toast.success(res?.data?.message || "Upgrade request sent successfully!");
+        toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         fetchMemberInvoiceData();
         handleCloseUpgradePopup();
       }
@@ -289,9 +291,9 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{subType} SUBSCRIPTION</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{subType}  {t('Subscription')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                  <label htmlFor="field1" className="text-secondary">Select new subscription</label>
+                  <label htmlFor="field1" className="text-secondary"> {t('Select new subscription')}</label>
                   <Autocomplete
                     id="field1"
                     options={gtinBarcodes}
@@ -329,7 +331,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                           style: { color: "white" },
                         }}
                         className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                        placeholder="Select new subscription"
+                        placeholder={`${t('Select new subscription')}`}
                         required
                       />
                     )}
@@ -347,8 +349,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                 <div className="table-member-inoive px-4 pt-3">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h1 className="text-secondary font-sans font-semibold text">Current Subscription</h1>
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {userData?.transaction_id}</h2>
+                    <h1 className="text-secondary font-sans font-semibold text"> {t('Current Subscription')}</h1>
+                    <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {userData?.transaction_id}</h2>
                   </div>
                   <table>
                     <thead>
@@ -395,7 +397,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan="4" className="text-right font-bold">Total:</td>
+                        <td colSpan="4" className="text-right font-bold"> {t('Total')}:</td>
                         <td>{totalPrice}</td>
                       </tr>
                     </tfoot>
@@ -407,7 +409,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                   <div className="table-member-inoive px-4 pt-3">
                     {/* show the transaction_id in very small  */}
                     <div className="flex justify-between items-center">
-                      <h1 className="text-secondary font-sans font-semibold text">New Subscription</h1>
+                      <h1 className="text-secondary font-sans font-semibold text"> {t('New Subscription')}</h1>
                     </div>
                     <table>
                       <thead>
@@ -437,29 +439,29 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                   <span>
 
 
-                    <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2">New Subscription Invoice Details</h1>
+                    <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2"> {t('New Subscription Invoice Detail')}</h1>
 
                     <div className='mt-2'>
                       <div className='border border-secondary rounded-sm px-4 py-3'>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                         >
-                          REMAINING MONTHS FROM CURRENT SUBSCRITION : <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
+                          {t('REMAINING MONTHS FROM CURRENT SUBSCRITION')}: <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                         >
-                          REMAINING MONTHS FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
+                          {t('REMAINING MONTHS FEE')} : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                         >
-                          NEW SUBSCRIPTION YEARLY FEE : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
+                          {t('NEW SUBSCRIPTION YEARLY FEE')} : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                         >
-                          REMAINING YEALY FEE : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
+                          {t('REMAINING YEALY FEE')} : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1'
                         >
-                          FINAL PRICE : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
+                          {t('FINAL PRICE')} : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
                         </p>
                       </div>
                     </div>
@@ -507,7 +509,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseUpgradePopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   <Button
                     variant="contained"
@@ -517,7 +519,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Send Request
+                    {t('Send Request')}
                   </Button>
                 </div>
               </form>
