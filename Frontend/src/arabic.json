@@ -247,5 +247,16 @@
     "Enter HSCODES": "أدخل هسكودس",
     "Enter Description": "أدخل الوصف",
     "Add HSCODES": "أضف رموز النظام المنسق",
-    "Update hscode": "تحديث رمز النظام المنسق"
+    "Update hscode": "تحديث رمز النظام المنسق",
+
+    "Add UNSPCS": "أضف UNSPSC",
+    "commodity": "سلعة",
+    "Enter commodity": "أدخل السلعة",
+    "title": "عنوان",
+    "Enter title": "أدخل العنوان",
+    "definition": "تعريف",
+    "Enter definition": "أدخل التعريف",
+    "addedBy": "تمت إضافته بواسطة",
+    "Enter addedBy": "أدخل المضافة بواسطة",
+    "Update unspcs": "تحديث Unspsc"
 }

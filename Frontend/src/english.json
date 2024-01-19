@@ -248,7 +248,18 @@
     "Enter HSCODES":"Enter HSCODES",
     "Enter Description":"Enter Description",
     "Add HSCODES":"Add HSCODES",
-    "Update hscode":"Update hscode"
+    "Update hscode":"Update hscode",
+
+    "Add UNSPCS":"Add UNSPCS",
+    "commodity":"commodity",
+    "Enter commodity":"Enter commodity",
+    "title":"title",
+    "Enter title":"Enter title",
+    "definition":"definition",
+    "Enter definition":"Enter definition",
+    "addedBy":"addedBy",
+    "Enter addedBy":"Enter addedBy",
+    "Update unspcs":"Update unspcs"
     
     
    
