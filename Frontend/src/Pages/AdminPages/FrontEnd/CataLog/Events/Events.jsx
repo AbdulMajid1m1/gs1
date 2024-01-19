@@ -16,7 +16,6 @@ import Addevent from './Addevent';
 import Updataevent from './Updataevent';
 import { useTranslation } from 'react-i18next';
 const Events = () => {
-
     const { t, i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
