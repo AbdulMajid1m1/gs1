@@ -238,5 +238,14 @@
     "Enter country name english": "أدخل اسم البلد باللغة الإنجليزية",
     "Enter country code": "أدخل رمز البلد",
     "country Name": "اسم الدولة",
-    "country code": "الرقم الدولي"
+    "country code": "الرقم الدولي",
+    
+    "Add hs code": "أضف رمز النظام المنسق",
+    "CNKEY": "CNKEY",
+    "Enter CNKEY": "أدخل سي إن كي",
+    "HSCODES": "HSCODES",
+    "Enter HSCODES": "أدخل هسكودس",
+    "Enter Description": "أدخل الوصف",
+    "Add HSCODES": "أضف رموز النظام المنسق",
+    "Update hscode": "تحديث رمز النظام المنسق"
 }

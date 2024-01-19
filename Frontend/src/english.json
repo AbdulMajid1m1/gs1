@@ -239,7 +239,16 @@
     "Enter country name english":"Enter country name english",
     "Enter country code":"Enter country code",
     "country Name":"country Name",
-    "country code":"country code"
+    "country code":"country code",
+
+    "Add hs code":"Add hs code",
+    "CNKEY":"CNKEY",
+    "Enter CNKEY":"Enter CNKEY",
+    "HSCODES":"HSCODES",
+    "Enter HSCODES":"Enter HSCODES",
+    "Enter Description":"Enter Description",
+    "Add HSCODES":"Add HSCODES",
+    "Update hscode":"Update hscode"
     
     
    
