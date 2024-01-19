@@ -48,7 +48,7 @@ const RegisteredMembers = () => {
 
   const fetchData = async () => {
     try {
-      const response = await newRequest.get("/users",);
+      const response = await newRequest.get("/users?parent_memberID=0");
 
       console.log(response.data);
       setData(response?.data || []);
@@ -271,15 +271,15 @@ const RegisteredMembers = () => {
     if (row?.status === 'active') {
       // If user is active, show all options
       return dropDownOptions;
-    } 
+    }
     else if (row.product_identity !== 'active') {
       // If user is not active, disable the Renew option
       return dropDownOptions.filter(option => option.label !== 'Renew');
     }
-  
+
     return []; // No options available
   };
-  
+
 
   return (
     <div>

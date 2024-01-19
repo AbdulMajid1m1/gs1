@@ -10,6 +10,13 @@ import { calculateGLN } from '../utils/functions/barcodesGenerator.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function checkGlnExpiryDate(expiryDate) {
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+    if (today > expiry) {
+        throw createError(400, 'Subscription expired on ' + expiryDate + '. Please renew your subscription');
+    }
+}
 
 
 
@@ -74,7 +81,7 @@ export const createGLN = async (req, res, next) => {
                     status: 'active',
                     isDeleted: false,
                     product_identifier_name: {
-                        in: ["GLN (20 Locations)", "GLN (10 Locations)", "GLN (30 Locations)"]
+                        in: ["GLN (20 Locations)", "GLN (10 Location)", "GLN (30 Locations)"]
                     }
                 },
                 include: {
@@ -95,7 +102,8 @@ export const createGLN = async (req, res, next) => {
             }
             console.log(otherProductSubscriptions)
 
-
+            // check expiry date
+            checkGlnExpiryDate(otherProductSubscriptions.expiry_date);
 
 
             if (otherProductSubscriptions?.other_products_subscription_limit == 0) {

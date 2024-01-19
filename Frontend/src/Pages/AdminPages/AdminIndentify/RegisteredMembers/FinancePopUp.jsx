@@ -44,7 +44,8 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   const fetchMemberInvoiceData = async () => {
     try {
       // const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=invoice`);
-      const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${registeredMemberRowData?.id}`);
+      // const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${registeredMemberRowData?.id}`);
+      const response = await newRequest.get(`/memberDocuments/invoices?user_id=${registeredMemberRowData?.id}`);
 
     
       console.log(response.data);

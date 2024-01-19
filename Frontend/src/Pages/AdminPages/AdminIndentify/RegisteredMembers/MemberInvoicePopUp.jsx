@@ -191,6 +191,7 @@ const handleSubmit = async (e) => {
 
   const addGtin = {
     userId: gs1MemberInvoiceData?.user_id,
+    // pass selected row transaction id
     transactionId: gs1MemberInvoiceData?.transaction_id,
   }
   const addGln = {

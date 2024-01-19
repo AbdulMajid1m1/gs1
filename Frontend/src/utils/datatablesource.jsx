@@ -1516,21 +1516,30 @@ export const ViewSsccColumn = [
 ];
 
 export const Gs1AllMembers = [
-  // {
-  //   field: 'gs1_id',
-  //   headerName: 'GS1 ID',
-  //   width: 180,
-  // },
-  // {
-  //   field: 'company_name',
-  //   headerName: 'COMPANY NAME',
-  //   width: 180,
-  // },
+  {
+    field: 'pending_invoices',
+    headerName: 'PENDING INVOICES',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'none' ? 'green' : 'crimson',
+          color: params.row.status === 'none' ? 'green' : 'crimson',
+        }}
+      >
+        {params.row.pending_invoices === 'none' ? 'none' : 'pending for approval'}
+      </div >
+    ),
+  },
   {
     field: 'company_name_eng',
     headerName: 'COMPANY NAME (ENGLISH)',
     width: 180,
   },
+
   {
     field: 'memberID',
     headerName: 'MEMBER ID',
@@ -5876,6 +5885,12 @@ export const ProductContentColumn = [
 
 export const newlyRegisteredMembersColumn = [
   {
+    field: 'profile',
+    headerName: 'Profile',
+    width: 60,
+
+  },
+  {
     field: 'company_name_eng',
     headerName: 'Company Name English',
     width: 180,
@@ -6063,15 +6078,12 @@ export const pendingApprovalColumn = [
 
 export const registerdMemberColumn = [
   {
-    field: 'activityID',
-    headerName: 'Activity ID',
-    width: 180,
+    field: 'profile',
+    headerName: 'Profile',
+    width: 60,
+
   },
-  {
-    field: 'additional_number',
-    headerName: 'Additional Number',
-    width: 180,
-  },
+
   {
     field: 'company_name_eng',
     headerName: 'Company Name English',
@@ -6080,6 +6092,16 @@ export const registerdMemberColumn = [
   {
     field: 'company_name_arabic',
     headerName: 'Company Name Arabic',
+    width: 180,
+  }, 
+  {
+    field: 'activityID',
+    headerName: 'Activity ID',
+    width: 180,
+  },
+  {
+    field: 'additional_number',
+    headerName: 'Additional Number',
     width: 180,
   },
   {
