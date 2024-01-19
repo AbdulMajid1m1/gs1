@@ -14,6 +14,7 @@ import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { generateRandomTransactionId } from '../utils/utils.js';
+import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 
 // in scheema take user_id 
 const renewMembershipSchema = Joi.object({
@@ -405,7 +406,7 @@ export const membershipRenewRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-
+        await updateUserPendingInvoiceStatus(existingUser.id);
         await createMemberLogs(logData);
 
         return res.status(200).json({ message: `Renewal invoice created & sent to ${userEmail} successfully` });
@@ -504,7 +505,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
                         // Update user with new information
                         // get existingUser.gcp_expiry and add 1 year to it
-                        var expiryDate = new Date(existingUser.gcp_expiry);
+                        expiryDate = new Date(existingUser.gcp_expiry);
 
                         // Add one year
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
@@ -669,8 +670,8 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             }, { timeout: 40000 });
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
-            const currentDate = new Date();
-            const renewalYear = currentDate.getFullYear() + 1;
+
+            const renewalYear = expiryDate.getFullYear(); //
 
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
@@ -811,7 +812,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             // }
 
 
-
+            await updateUserPendingInvoiceStatus(existingUser.id);
             await createMemberLogs(logData);
 
 
@@ -1123,9 +1124,9 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
             await createMemberLogs(logData);
 
-            return user.email;
+            return { email: user.email, user: user };
         }, { timeout: 40000 });
-
+        await updateUserPendingInvoiceStatus(result.user.id);
         res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -1329,30 +1330,31 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
                 attachments: attachments
             });
 
-            // Insert Member History log
-            const logData = {
-                subject: 'Upgrade invoice created',
-                // user user memberId
-                // member_id: userUpdateResult.memberID,
-                user_id: user?.id,
-                // TODO: take email form current admin token
-                admin_id: 'admin@gs1sa.link',
-
-            }
 
 
-            TODO: // chec this
-            // if (req?.admin.id) {
-            //     logData.admin_id = admin_email;
-            // logData.created_by_admin = 1;
-            // }
-
-
-            await createMemberLogs(logData);
-
-            return user.email;
+            return { email: user.email, user: user }
         }, { timeout: 40000 });
+        // Insert Member History log
+        const logData = {
+            subject: 'Upgrade invoice created',
+            // user user memberId
+            // member_id: userUpdateResult.memberID,
+            user_id: result.user?.id,
+            // TODO: take email form current admin token
+            admin_id: 'admin@gs1sa.link',
 
+        }
+
+
+        TODO: // chec this
+        // if (req?.admin.id) {
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
+        // }
+
+        await updateUserPendingInvoiceStatus(result.user.id);
+
+        await createMemberLogs(logData);
         res.status(200).json({ message: `Upgrade invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -1399,6 +1401,14 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                 throw createError(404, 'GLN upgrade pricing not found');
             }
             console.log("additionalGlnDetails", additionalGlnDetails);
+
+            // fetch gtin_subcriptions data from gtin_subcriptions table
+            const gtinProductDetails = await prisma.gtin_subcriptions.findFirst({
+                where: { user_id: value.userId, isDeleted: false },
+                include: {
+                    gtin_product: true // Include the associated gtin_product
+                }
+            });
 
             // const glnSubscriptions = await prisma.other_products_subcriptions.findFirst({
             //     where: { user_id: value.userId, id: value.otherProductSubscriptionId },
@@ -1453,7 +1463,7 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                     membership_otherCategory: user.membership_category,
                     gtin_subscription: {
                         products: {
-                            member_category_description: cartData?.[0].productName,
+                            member_category_description: gtinProductDetails?.gtin_product?.member_category_description,
                         },
                     },
                 },
@@ -1543,30 +1553,30 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                 attachments: attachments
             });
 
-            // Insert Member History log
-            const logData = {
-                subject: 'Add GLN invoice created',
-                // user user memberId
-                // member_id: userUpdateResult.memberID,
-                user_id: user?.id,
-                // TODO: take email form current admin token
-                admin_id: 'admin@gs1sa.link',
-
-            }
 
 
-            TODO: // chec this
-            // if (req?.admin.id) {
-            //     logData.admin_id = admin_email;
-            // logData.created_by_admin = 1;
-            // }
-
-
-            await createMemberLogs(logData);
-
-            return user.email;
+            return { email: user.email, user: user }
         }, { timeout: 40000 });
+        // Insert Member History log
+        const logData = {
+            subject: 'Add GLN invoice created',
+            // user user memberId
+            // member_id: userUpdateResult.memberID,
+            user_id: result.user?.id,
+            // TODO: take email form current admin token
+            admin_id: 'admin@gs1sa.link',
 
+        }
+
+
+        TODO: // chec this
+        // if (req?.admin.id) {
+        //     logData.admin_id = admin_email;
+        // logData.created_by_admin = 1;
+        // }
+
+        await updateUserPendingInvoiceStatus(result.user.id);
+        await createMemberLogs(logData);
         res.status(200).json({ message: `Add GLN invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -1777,7 +1787,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
@@ -1814,13 +1824,16 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
                     include: {
                         product: true
                     }
-                }
+                },
+                gln_upgrade_pricing: true
+
             }
 
 
         });
 
         let otherProductSubscription = upgradeCart.other_products_subcriptions;
+        let gln_upgrade_pricing = upgradeCart.gln_upgrade_pricing; // this is the new gln product
         let otherProductSubscriptionProduct = otherProductSubscription.product;
         console.log("upgradeCart", upgradeCart);
         console.log("otherProductSubscription", otherProductSubscription);
@@ -1844,12 +1857,10 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             return res.status(404).send('User not found');
         }
 
-        const totalGlnToAdd = otherProductSubscriptionProduct.total_no_of_barcodes;
+        const totalGlnToAdd = gln_upgrade_pricing.total_no_of_gln;
 
         // user yealy fee
-        let yearly_fee = user.membership_category === "non_med_category" ?
-            otherProductSubscriptionProduct.product_subscription_fee :
-            otherProductSubscriptionProduct.med_subscription_fee;
+        let yearly_fee = gln_upgrade_pricing.price;
 
         console.log("yearly_fee", yearly_fee);
         // Update gtin_subscription_limit in gtin_subscriptions
@@ -1881,7 +1892,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         cart.cart_items = []
 
         cart.cart_items.push({
-            productName: `${otherProductSubscriptionProduct.product_name}`,
+            productName: `Additional GLN (${totalGlnToAdd} GLN)`, // this is the new gln product (gln_upgrade_pricing
             registration_fee: 0,
             yearly_fee: yearly_fee,
         });
@@ -1895,7 +1906,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             secondHeading: "RECEIPT FOR ADDITIONAL GLN",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `Receipt for upgrade of ${totalGlnToAdd} GLN`,
+                registeration: `Receipt for additional ${totalGlnToAdd} GLN`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
@@ -1992,7 +2003,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
@@ -2262,8 +2273,8 @@ export const approveMembershipRequest = async (req, res, next) => {
         // Generate PDF from EJS template
         const certificatePdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
         // use current date time to generate unique file name
-        pdfFilename = `${user.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-        const certPdfFilePath = path.join(certificatePdfDirectory, pdfFilename);
+        let certificatePdfFilename = `${user.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+        const certPdfFilePath = path.join(certificatePdfDirectory, certificatePdfFilename);
         if (!fsSync.existsSync(certificatePdfDirectory)) {
             fsSync.mkdirSync(certificatePdfDirectory, { recursive: true });
         }
@@ -2328,7 +2339,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership request approved successfully and receipt sent to user email.' });
@@ -2525,17 +2536,17 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                 attachments: attachments
             });
 
-            const logData = {
-                subject: `Downgrade Subscription invoice created`,
-                user_id: user?.id,
-                admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
-            };
 
-            await createMemberLogs(logData);
 
-            return user.email;
+            return { user: user, transactionId: transactionId };
         }, { timeout: 50000 });
-
+        const logData = {
+            subject: `Downgrade Subscription invoice created`,
+            user_id: result.user.id,
+            admin_id: 'admin@gs1sa.link', //TODO: change this to current admin email
+        };
+        await updateUserPendingInvoiceStatus(result.user.id);
+        await createMemberLogs(logData);
         res.status(200).json({ message: `Downgrade Subscription invoice created & sent to ${result} successfully` });
     } catch (error) {
         console.error(error);
@@ -3025,7 +3036,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         //     logData.admin_id = admin_email;
         // logData.created_by_admin = 1;
         // }
-
+        await updateUserPendingInvoiceStatus(userId);
         await createMemberLogs(logData);
 
         res.status(200).json({ message: 'Membership downgrade request approved successfully' });

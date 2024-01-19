@@ -6,8 +6,7 @@ import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 const userRouter = express.Router();
 
 // userRouter.post('/', createUser);
-userRouter.post('/',
-    createUser);
+userRouter.post('/', createUser);
 
 userRouter.get('/', getUserDetails);
 

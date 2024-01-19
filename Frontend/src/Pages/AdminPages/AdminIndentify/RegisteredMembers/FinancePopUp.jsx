@@ -44,7 +44,8 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   const fetchMemberInvoiceData = async () => {
     try {
       // const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=invoice`);
-      const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${registeredMemberRowData?.id}`);
+      // const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${registeredMemberRowData?.id}`);
+      const response = await newRequest.get(`/memberDocuments/invoices?user_id=${registeredMemberRowData?.id}`);
 
     
       console.log(response.data);
@@ -143,6 +144,7 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   secondaryColor="secondary"
                                   handleRowClickInParent={handleRowClickInParent}
                                   buttonVisibility={false}
+                                  checkboxSelection={"disabled"}
                                   dropDownOptions={[
                                     {
                                       label: "Activation",
@@ -167,6 +169,7 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   loading={isLoading}
                                   secondaryColor="secondary"
                                   buttonVisibility={false}
+                                  checkboxSelection={"disabled"}
                                   actionColumnVisibility={false}
 
                               uniqueId="journalMovementClDetId"
@@ -194,6 +197,7 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                 {/* Member Invoice component with Handle prop */}
                 {isMemberInvoicePopupVisible && (
                   <FinanceMemberInvoicePopUp isVisible={isMemberInvoicePopupVisible} setVisibility={setIsMemberInvoicePopupVisible} refreshMemberInoviceData={fetchMemberInvoiceData}
+                    refreshMemberbankSlipData={fetchMemberbankSlipData}
                   />
                 )}
 

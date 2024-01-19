@@ -116,7 +116,7 @@ const Gtin = () => {
 
       setCrList(crs);
       setDetails(res?.data[0]);
-
+   
       setOpen(true);
       setAutocompleteLoading(false);
 
@@ -129,23 +129,36 @@ const Gtin = () => {
       setAutocompleteLoading(false);
     }
   }, 400);
-
+  
+  const [totalCategory, setTotalCategory] = useState([])
+  const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
 
   const fetchData = async (value) => {
     setIsLoading(true);
     console.log(value);
+    setAllSearchMemberDetails(value);
     try {
       const response = await newRequest.get(`/products?user_id=${value?.user_id}`);
-      console.log(response.data);
+      const gtinResponse = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${value?.user_id}&isDeleted=false`);
       setData(response?.data || []);
-      setIsLoading(false)
+      setTotalCategory(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      console.log(response.data);
+      // console.log(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      // console.log(totalCategory)
 
+      if (response?.data?.length === 0) {
+        setTotalCategory('Category C' ,[]);
+      }
+
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
+
+  
 
   // const fetchData = async () => {
   //   try {
@@ -265,24 +278,26 @@ const Gtin = () => {
       size: 'Size',
       barcode: 'GTIN'
     };
-
+  
     // Create a new array with the desired headers in the specified order
     const desiredHeaders = Object.values(headerMapping);
-
+  
     // Create a worksheet with only headers
     const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
-
+  
     // Create a workbook and append the header worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
-
+  
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
+  
     // Save Excel file
     saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
+  
+
 
 
 
@@ -353,8 +368,8 @@ const Gtin = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
-      formData.append('user_id', memberData?.id);
-      formData.append('email', memberData?.email);
+      formData.append('user_id', allSearchMemberDetails?.user_id);
+      formData.append('email', allSearchMemberDetails?.email);
 
       newRequest.post('/products/bulkGtin', formData)
         .then((response) => {
@@ -364,7 +379,7 @@ const Gtin = () => {
           if (response.data && response.data.errors && response.data.errors.length > 0) {
             // Display a generic error message
             toast.error(response.data.errors[0].error);
-          }
+          } 
           else {
             // Display a generic success message
             toast.success(response?.data?.message ||  `${t('The data has been imported successfully')}`);
@@ -373,8 +388,8 @@ const Gtin = () => {
           setIsLoading(false);
           // Clear the file input value
           event.target.value = '';
-
-          fetchData();
+          
+          // fetchData();
         })
         .catch((error) => {
           // Handle the error
@@ -572,11 +587,11 @@ const Gtin = () => {
               <input
                 type="file"
                 style={{ display: 'none' }}
-              // onChange={handleFileInputChange}
+                onChange={handleFileInputChange}
               />
               <button
                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
-              // onClick={() => document.querySelector('input[type="file"]').click()}
+                onClick={() => document.querySelector('input[type="file"]').click()}
               >
                 
                 {i18n.language === 'ar' ? (
@@ -592,7 +607,7 @@ const Gtin = () => {
             </div>
 
             <button
-              // onClick={handleExportProductsTemplate}
+              onClick={handleExportProductsTemplate}
               className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
              
               {i18n.language === 'ar' ? (
@@ -616,20 +631,18 @@ const Gtin = () => {
           <div  className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              GCP {data[0]?.gcpGLNID}
+              GCP {allSearchMemberDetails?.gcpGLNID}
             </button>
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-
-              {/* {cartItemData?.[0]?.productName} */}
-              Category C
+               {totalCategory ? `${totalCategory}` : 'Category C'}
             </button>
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               {/* Member ID {memberData?.memberID} */}
-              {t('Member ID')}
+              Member ID
             </button>
 
             <button

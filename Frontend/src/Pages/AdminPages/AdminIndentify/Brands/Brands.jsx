@@ -122,7 +122,7 @@ const Brands = () => {
     console.log(value); 
     console.log(value?.companyID);
     try {
-      const response = await newRequest.get(`/brands?companyID=${value?.companyID}`);
+      const response = await newRequest.get(`/brands?user_id=${value?.id}`);
       console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)

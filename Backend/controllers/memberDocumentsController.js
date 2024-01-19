@@ -503,7 +503,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     explodeGPCCode: []
                 };
 
-
+                console.log("userUpdateResult")
+                console.log(userUpdateResult)
 
                 // Generate PDF from EJS template
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
@@ -538,7 +539,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         stateName: existingUser.state,
                         cityName: existingUser.city,
                     },
-                    companyID: existingUser.companyID,
+                    companyID: userUpdateResult?.companyID,
                     membership_otherCategory: existingUser.membership_category,
                     gtin_subscription: {
                         products: {

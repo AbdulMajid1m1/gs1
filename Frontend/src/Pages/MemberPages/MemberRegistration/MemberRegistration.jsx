@@ -208,7 +208,7 @@ const MemmberRegisteration = () => {
 
     const handleOtherProductsChange = (event, value) => {
 
-        // Check if the selected option is GLN (20 Locations), GLN (10 Locations), or GLN (30 Locations)
+        // Check if the selected option is GLN (20 Locations), GLN (10 Location), or GLN (30 Locations)
         const selectedGLN = value.find(
             (option) =>
                 option.product_name === 'GLN (30 Locations)' ||
@@ -365,7 +365,7 @@ const MemmberRegisteration = () => {
                 console.log(response.data);
                 setIsLoading(false);
                 setTimeout(() => {
-                    navigate('/');
+                    // navigate('/');
                 }, 1500);
 
                 toast.success('Member Registered Successfully', {
@@ -426,10 +426,10 @@ const MemmberRegisteration = () => {
         // Check if the country code is for Saudi Arabia
         if (value.startsWith('966')) {
             // Check for mobile number (should start with '9665')
-            if (value.length > 1 && value[3] !== '5') {
-                setCompanyLandlineError('Mobile number must start with 9665');
-            }
-
+            // if (value.length > 1 && value[3] !== '5') {
+            //     setCompanyLandlineError('Mobile number must start with 9665');
+            // }
+     
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
                 setCompanyLandlineError('Number must be a maximum of 12 digits');
