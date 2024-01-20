@@ -156,37 +156,6 @@
     "Pending Approvals":"Pending Approvals",
     "Registered Members":"Registered Members",
     "Members for Renewal":"Members for Renewal",
-<<<<<<< HEAD
-=======
-
-    "unit_code has been added successfully.":"unit_code has been added successfully.",
-    "Add Unit":"Add Unit",
-    "Unit code":"Unit code",
-    "Enter Unit code":"Enter Unit code",
-    "Unit name":"Unit name",
-    "Enter Unit name":"Enter Unit name",
-    "units updated successfully":"units updated successfully",
-    "Something went wrong!":"Something went wrong!",
-    "Update unit":"Update unit",
-    "unit code":"unit code",
-    "Enter unit code":"Enter unit code",
-    "unit name":"unit name",
-    "Enter unit name":"Enter unit name",
-    "inactive":"inactive",
-    "active":"active",
-    "Rejected": "Rejected",
-
-
-    "Are you sure?":"Are you sure?",
-    "You will not be able to recover this document!":"You will not be able to recover this document!",
-    "warning":"warning",
-    "Yes, delete it!":"Yes, delete it!",
-    "Add document":"Add document",
-    "document name":"document name",
-    "Enter document Name":"Enter document Name",
-    "document updated successfully":"document updated successfully",
-    "Update Document":"Update Document",
->>>>>>> 41d0842c983527c1d16f16d4704596dc7f5fae40
     "Profile":"Profile",
     "Activation":"Activation",
     "Renew":"Renew",
@@ -280,7 +249,6 @@
     "Add Page":"Add Page",
     "Edit Sections":"Edit Sections",
     "document Type":"document Type",
-<<<<<<< HEAD
 
     "unit_code has been added successfully.":"unit_code has been added successfully.",
     "Add Unit":"Add Unit",
@@ -309,8 +277,6 @@
     "Enter document Name":"Enter document Name",
     "document updated successfully":"document updated successfully",
     "Update Document":"Update Document",
-=======
->>>>>>> 41d0842c983527c1d16f16d4704596dc7f5fae40
     "Document name":"Document name",
     "city":"city",
     "Select State":"Select State",
