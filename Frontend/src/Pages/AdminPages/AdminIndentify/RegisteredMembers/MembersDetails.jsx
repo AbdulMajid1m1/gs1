@@ -10,11 +10,12 @@ import { useParams } from 'react-router-dom';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { backendUrl } from '../../../../utils/config';
 import GenerateCertificatePopup from './generateCertificatePopup.jsx'
+import { useTranslation } from 'react-i18next';
 const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath, fetchMemberDocumentsData, }) => {
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
-  console.log(Id); 
+  console.log(Id);
   const { t, i18n } = useTranslation();
   // Use state to manage editable values
   // const [editableData, setEditableData] = useState({
@@ -454,7 +455,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               htmlFor='mobile'
               className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
             >
-              {t('Landline Number')}            
+              {t('Landline Number')}
             </label>
             <div className='flex items-center border-2 w-full h-14 rounded-md'>
               {/* <PhoneInput
