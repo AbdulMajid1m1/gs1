@@ -27,9 +27,11 @@ import SwipeDownIcon from '@mui/icons-material/SwipeDown';
 import UpgradePopUp from './UpgradePopUp';
 import DowngradePopUp from './DowngradePopUp';
 import PendingApprovedPopUp from './PendingApprovedPopUp';
+import { useTranslation } from 'react-i18next';
 
 
 const RegisteredMembersView = () => {
+  const { t, i18n } = useTranslation();
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
 
@@ -454,12 +456,12 @@ const RegisteredMembersView = () => {
   //Brand apis HandleDelete
   const handleDelete = async (row) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this User Account!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('User Account')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -468,7 +470,7 @@ const RegisteredMembersView = () => {
         try {
           const isDeleted = await newRequest.delete("/brands/" + row?.id);
           if (isDeleted) {
-            toast.success('User deleted successfully', {
+            toast.success(`${t('User')}  ${t('has been deleted')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -522,12 +524,14 @@ const RegisteredMembersView = () => {
   // member docuemnts apis HandleDelete
   const handleMemberDelete = async (MemberRow) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this User Account!',
+
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('User Account')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
+      icon: 'warning',
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -536,7 +540,7 @@ const RegisteredMembersView = () => {
         try {
           const isDeleted = await newRequest.delete("/memberDocuments/" + MemberRow?.id);
           if (isDeleted) {
-            toast.success('User deleted successfully', {
+            toast.success(`${t('User')}  ${t('has been deleted')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -589,9 +593,9 @@ const RegisteredMembersView = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div className='bg-[#DAF2EE]'>
-          <DashboardRightHeader title={"GS1 Member Details"} />
+          <DashboardRightHeader title={`${t('GS1 Member Details')}`} />
         </div>
 
         <div className='flex justify-center items-center bg-[#DAF2EE]'>
@@ -607,7 +611,7 @@ const RegisteredMembersView = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}
-                  title="Registered Products"
+                  title={`${t('Registered Products')}`} 
                   columnsName={registeredmemberColumn}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
@@ -617,28 +621,28 @@ const RegisteredMembersView = () => {
                   dropDownOptions={[
 
                     {
-                      label: "Upgrade",
+                      label: `${t('Upgrade')}`,
                       icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleShowUpgradePopup,
 
                     },
                     {
-                      label: "Downgrade",
+                      label: `${t('Downgrade')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleShowDowngradePopup,
 
                     },
                     {
-                      label: "Add GLN",
+                      label: `${t('Add GLN')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleAddGlnClick,
 
                     },
                     {
-                      label: "Add GTIN",
+                      label: `${t('Add GTIN')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleAddGtinClick,
@@ -688,7 +692,7 @@ const RegisteredMembersView = () => {
                     onClick={handleShowAddMemberPopup}
                     className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                   >
-                    Add
+                    {t('Add')}
                   </button>
                 </div>
 
@@ -697,7 +701,7 @@ const RegisteredMembersView = () => {
                     onClick={handleShowCreatePopup}
                     className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                   >
-                    Add
+                    {t('Add')}
                   </button>
                 </div>
               </div>
@@ -708,7 +712,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable2 data={membersDocuemtsData}
-                    title="Member'z Documents"
+                    title={`${t("Member'z Documents")}`} 
                     columnsName={MembersDocumentColumn}
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
@@ -728,7 +732,7 @@ const RegisteredMembersView = () => {
                       // action: handleMemberStatusChange,
                       // },
                       {
-                        label: "Delete",
+                        label: `${t('Delete')}`,
                         icon: (
                           <DeleteIcon
                             fontSize="small"
@@ -750,7 +754,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable data={brandsData}
-                    title="Brands"
+                    title={`${t('Brands')}`} 
                     columnsName={MembersBrandsColumn}
                     loading={brandsLoader}
                     secondaryColor="secondary"
@@ -769,7 +773,7 @@ const RegisteredMembersView = () => {
                       // action: handleView,
                       // },
                       {
-                        label: "Edit",
+                        label: `${t('Edit')}`,
                         icon: (
                           <EditIcon
                             fontSize="small"
@@ -780,7 +784,7 @@ const RegisteredMembersView = () => {
                         action: handleShowUpdatePopup,
                       },
                       {
-                        label: "Delete",
+                        label: `${t('Delete')}`,
                         icon: (
                           <DeleteIcon
                             fontSize="small"
@@ -818,7 +822,7 @@ const RegisteredMembersView = () => {
                   onClick={handleShowAddMemberBankSlipPopup}
                   className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                 >
-                  Add
+                  {t('Add')}
                 </button>
               </div>
 
@@ -827,7 +831,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable data={memberInovice}
-                    title="Member Invoice"
+                    title={`${t('Member Invoice')}`} 
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
@@ -836,7 +840,7 @@ const RegisteredMembersView = () => {
                     buttonVisibility={false}
                     dropDownOptions={[
                       {
-                        label: "Activation",
+                        label: `${t('Activation')}`,
                         icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                         ,
                         action: handleShowMemberInvoicePopup,
@@ -852,7 +856,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable3 data={filteredMemberDetails}
-                    title="Member Bank Slip"
+                    title={`${t('Member Bank Slip')}`} 
                     columnsName={bankSlipColumn}
                     loading={memberBankSlipLoader}
                     secondaryColor="secondary"
@@ -862,7 +866,7 @@ const RegisteredMembersView = () => {
 
                     dropDownOptions={[
                       {
-                        label: "View",
+                        label: `${t('View')}`,
                         icon: (
                           <VisibilityIcon
                             fontSize="small"
@@ -899,18 +903,18 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               <div className='flex justify-between'>
-                <p className='text-blue-500 font-sans font-semibold'>Sub-Members</p>
+                <p className='text-blue-500 font-sans font-semibold'>{t('Sub-Members')}</p>
                 <button
                   onClick={handleShowSubMenusPopup}
                   className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>
-                  <i className="fas fa-plus mr-1"></i>Add
+                  <i className="fas fa-plus mr-1"></i>{t('Add')}
                 </button>
               </div>
 
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
               >
                 <DataTable2 data={subMenusData}
-                  title="Sub-Members"
+                  title={`${t('Sub-Members')}`} 
                   columnsName={submenusDataColumn}
                   loading={subMembersLoader}
                   secondaryColor="secondary"
@@ -918,7 +922,7 @@ const RegisteredMembersView = () => {
 
                   dropDownOptions={[
                     {
-                      label: "Edit",
+                      label: `${t('Edit')}`,
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -948,7 +952,7 @@ const RegisteredMembersView = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-20px' }}
               >
                 <DataTable data={memberHistoryData}
-                  title="Member History"
+                  title={`${t('Member History')}`}
                   columnsName={memberHistoryColumnData}
                   loading={memberHistoryLoader}
                   secondaryColor="secondary"
@@ -957,7 +961,7 @@ const RegisteredMembersView = () => {
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: `${t('View')}`,
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -1030,8 +1034,6 @@ const RegisteredMembersView = () => {
         {/* {isDowngradePopupVisible && (
           <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
         )} */}
-
-
 
         {/* Upgrade component with handleShowUpgradePopup prop */}
         {isUpgradePopupVisible && (

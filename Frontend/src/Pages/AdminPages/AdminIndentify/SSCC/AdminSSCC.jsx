@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import { useTranslation } from 'react-i18next';
   
 
 const AdminSSCC = () => {
@@ -22,7 +23,8 @@ const AdminSSCC = () => {
       tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
     // const memberDataString = sessionStorage.getItem('memberData');
     // const memberData = JSON.parse(memberDataString);
-    // console.log(memberData);
+  // console.log(memberData);
+  const { t, i18n } = useTranslation();
   
     const [updatedRows, setUpdatedRows] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -167,7 +169,7 @@ const AdminSSCC = () => {
           const successMessage = deleteResponse.data.message;
             console.log(successMessage);
 
-            toast.success(successMessage || 'SSCC deleted Successfully', {
+          toast.success(successMessage || `${t('SSCC')}  ${t('deleted successfully')}`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -332,7 +334,7 @@ const handleRowClickInParent = (item) => {
     return (
         <div>
     
-            <div className="p-0 h-full sm:ml-72">
+        <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 {/* <div className='h-auto w-full'>
                     <div className='h-16 w-full shadow-xl flex justify-start items-center px-5 border-l-2 border-t-2 border-r-2 border-[#e49515]'>
                         <p className='sm:text-2xl text-sm font-body'>View SSCC</p>
@@ -340,7 +342,7 @@ const handleRowClickInParent = (item) => {
                 </div> */}
 
                 <div>
-                    <AdminDashboardRightHeader title={"SSCC"}/>
+            <AdminDashboardRightHeader title={`${t('SSCC')}`} />
                 </div>
 
                 {/* <div className='h-auto w-full shadow-xl'> */}
@@ -348,25 +350,60 @@ const handleRowClickInParent = (item) => {
                   <div className="h-auto w-[97%] px-0 pt-4">
                     <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
                     <div>
-                    <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-5 px-3'>
-                        <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                            <i className="fas fa-arrow-left mr-1"></i> Back
-                        </button>
+                    <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-5 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                       
+                    <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                      {i18n.language === 'ar' ? (
+                        <>
+                          {t('Back')} <i className="fas fa-arrow-right ml-1"></i>
+                        </>
+                      ) : (
+                        <>
+                          <i className="fas fa-arrow-left mr-1"></i> {t('Back')}
+                        </>
+                      )}
+                    </button>
 
                         <button onClick={() => navigate('/admin/admin-addsscc')} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                            <i className="fas fa-plus mr-1"></i> Add SSCC
+                     {i18n.language === 'ar' ? (
+                        <>
+                          {t('Add SSCC')} <i className="fas fa-plus mr-1"></i>
+                        </>
+                      ) : (
+                        <>
+                            <i className="fas fa-plus mr-1"></i> {t('Add SSCC')}
+                        </>
+                      )}
                         </button>
 
                         <button 
                         onClick={handleShowBulkPopup} // Show the bulk SSCC popup on click
                           className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                            <i className="fas fa-archive mr-1"></i> Bulk SSCC
+                        
+                      {i18n.language === 'ar' ? (
+                        <>
+                          {t('Bulk SSCC')} <i className="fas fa-archive mr-1"></i> 
+                        </>
+                      ) : (
+                        <>
+                            <i className="fas fa-archive mr-1"></i>  {t('Bulk SSCC')}
+                        </>
+                      )}
                         </button>
 
                         <button 
                         onClick={handleSSCCPage} // Show the bulk SSCC popup on click
                           className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary ">
-                            <i className="fas fa-print mr-1"></i> Print SSCC
+                         
+                      {i18n.language === 'ar' ? (
+                        <>
+                          {t('Print SSCC')} <i className="fas fa-print mr-1"></i>
+                        </>
+                      ) : (
+                        <>
+                            <i className="fas fa-print mr-1"></i>  {t('Print SSCC')}
+                        </>
+                      )}
                         </button>
                     </div>
                 {/* </div> */}
@@ -403,7 +440,7 @@ const handleRowClickInParent = (item) => {
                           error={isSubmitClicked && !selectedCr?.cr}
                           helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                           {...params}
-                          label="Search Members.."
+                          label={`${t('Search Members')}`}
                           InputProps={{
                             ...params.InputProps,
                             endAdornment: (
@@ -439,21 +476,21 @@ const handleRowClickInParent = (item) => {
 
 
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-                <DataTable data={data} title={"SSCC LIST"} columnsName={ViewSsccColumn} backButton={false}
+                <DataTable data={data}  title={`${t('SSCC LIST')}`} columnsName={ViewSsccColumn} backButton={false}
                     loading={isLoading}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}
                     uniqueId="ssccTableId"
                     dropDownOptions={[
                         {
-                          label: "Edit",
+                        label: `${t('Edit')}`,
                           icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                           ,
                           action: handleEdit
           
                         },
                         {
-                          label: "Delete",
+                          label: `${t('Delete')}`,
                           icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                           ,
                           action: handleDelete,

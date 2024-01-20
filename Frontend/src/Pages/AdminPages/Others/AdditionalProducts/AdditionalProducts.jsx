@@ -5,9 +5,11 @@ import DataTable from '../../../../components/Datatable/Datatable'
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import { useNavigate } from 'react-router-dom';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import { useTranslation } from 'react-i18next';
 
 const AdditionalProducts = () => {
   const [IsLoading, setIsLoading] = useState(false);
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState([
     {
       id: 1,
@@ -57,16 +59,16 @@ const AdditionalProducts = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <AdminDashboardRightHeader 
-            title={'Additional Products'}
+            title={`${t('Additional Products')}`} 
           />
         </div>
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={data} title="Additional Products" columnsName={adminPaymentSlipsColumn}
+          <DataTable data={data} title={`${t('Additional Products')}`} columnsName={adminPaymentSlipsColumn}
             loading={IsLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"

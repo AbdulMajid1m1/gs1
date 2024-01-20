@@ -6224,3 +6224,220 @@ export const adminPaymentSlipsColumn = [
 
 
 ]
+
+
+
+
+export const cardsRejectedColumn = [
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'other_products',
+    headerName: 'Other Products',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 180,
+  // },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'Active' ? 'green' : 'red',
+          color: params.row.status === 'Active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'reject_reason',
+    headerName: 'Reject Reason',
+    width: 180,
+  },
+  {
+    field: 'remarks',
+    headerName: 'Remarks',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'city',
+    headerName: 'City',
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: 'Country',
+    width: 180,
+  },
+  {
+    field: 'state',
+    headerName: 'State',
+    width: 180,
+  },
+  {
+    field: 'zip_code',
+    headerName: 'Zip Code',
+    width: 180,
+  },
+  {
+    field: 'pending_invoices',
+    headerName: 'Pending Invoices',
+    width: 180,
+  },
+
+
+
+
+]
+
+
+
+
+export const usersRejectedColumn = [
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'documents',
+    headerName: 'Document',
+    width: 180,
+
+    renderCell: (params) =>
+    {
+      console.log("params");
+      console.log(params);
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated
+        ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () =>
+      {
+        if (fieldUpdated) {
+          // removing the "data:application/pdf;base64," part
+          const base64 = docUrl.split(",")[1];
+          const binary = atob(base64);
+          const binaryLen = binary.length;
+          const buffer = new ArrayBuffer(binaryLen);
+          const view = new Uint8Array(buffer);
+          for (let i = 0; i < binaryLen; i++) {
+            view[i] = binary.charCodeAt(i);
+          }
+          // create Blob from ArrayBuffer
+          const blob = new Blob([view], { type: "application/pdf" });
+
+          // create an object URL from the Blob
+          const objectUrl = URL.createObjectURL(blob);
+
+          // open a link to the Object URL
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = "file.pdf"; // you can set file name here
+          link.click();
+        } else {
+          window.open(docUrl, "_blank");
+        }
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+
+
+
+]

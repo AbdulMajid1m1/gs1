@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import { bankSlipColumn, financeColumn } from '../../../../utils/datatablesource'
+import React, { useEffect, useState } from 'react'
+import { bankSlipColumn, cardsRejectedColumn, usersRejectedColumn } from '../../../../utils/datatablesource'
 import DataTable from '../../../../components/Datatable/Datatable'
 import DataTable3 from '../../../../components/Datatable/Datatable3'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import { I18nextProvider, useTranslation } from "react-i18next";
+import newRequest from '../../../../utils/userRequest'
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 const Rejected = () => {
     const { t, i18n } = useTranslation();
@@ -12,6 +15,66 @@ const Rejected = () => {
     const [usersRejected, setUsersRejected] = useState([])
     const [usersRejectedLoader, setUsersRejectedLoader] = useState(false)
     const [filteredUsersDetails, setFilteredUsersDetails] = useState([])
+
+    const fetchCardRejectedData = async () => {
+        setCardsRejectedLoader(true);
+        try {
+          const response = await newRequest.get(`/users/rejected`);
+    
+          console.log(response.data);
+          setCardsRejected(response?.data || []);
+          setCardsRejectedLoader(false);
+    
+        } catch (err) {
+          console.log(err);
+          setCardsRejectedLoader(false);
+        }
+      };
+
+
+    //   const fetchUserRejectedData = async () => {
+    //     setUsersRejectedLoader(true);
+    //     try {
+    //       const response = await newRequest.get(`/users/rejectedCarts?transaction_id=3949843987`);
+    //       console.log(response.data);
+    //       setUsersRejected(response?.data || []);
+    //       setFilteredUsersDetails(response?.data || []);
+    //       setUsersRejectedLoader(false);
+    
+    //     } catch (err) {
+    //       console.log(err);
+    //       setUsersRejectedLoader(false);
+    //     }
+    //   };
+    
+      const fetchFilteredMemberDetails = async (row) => {
+        console.log(row);
+        setUsersRejectedLoader(true);
+        try {
+          const response = await newRequest.get(`/users/rejectedCarts?transaction_id=${row[0]?.transaction_id}`);
+    
+          console.log(response.data);
+        //   const cartItems = JSON.parse(response?.data[0]?.cart_items);
+        //   console.log(cartItems);
+
+            // setFilteredUsersDetails([...cartItems, ...response?.data]);
+          setFilteredUsersDetails(response?.data || []);
+          setUsersRejectedLoader(false);
+        
+        } 
+        catch (err) {
+          console.log(err);
+            setUsersRejectedLoader(false);
+        }
+    
+      }
+    
+
+    useEffect(() => {
+      fetchCardRejectedData();
+    //   fetchUserRejectedData();
+    }, []);
+
     
   const handleRowClickInParent = (item) => {
     console.log(item);
@@ -21,7 +84,7 @@ const Rejected = () => {
       setFilteredUsersDetails(usersRejected)
       return
     }
-    // fetchFilteredMemberDetails(item);
+    fetchFilteredMemberDetails(item);
     
     }
     
@@ -42,21 +105,22 @@ const Rejected = () => {
                 >
                   <DataTable data={cardsRejected}
                     title="Carts Rejected"
-                    columnsName={financeColumn}
+                    columnsName={cardsRejectedColumn}
                     loading={cardsRejectedLoader}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}
                     checkboxSelection={"disabled"}
                     buttonVisibility={false}
-                    // dropDownOptions={[
-                    //   {
-                    //     label: "Activation",
-                    //     icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                    //     ,
-                    //     action: handleShowMemberInvoicePopup,
-                    //   },
+                    actionColumnVisibility={false}
+                    dropDownOptions={[
+                      {
+                        label: "Activation",
+                        icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                        ,
+                        // action: handleShowMemberInvoicePopup,
+                      },
 
-                    // ]}
+                    ]}
                     uniqueId="memberInvoiceId"
 
                   />
@@ -67,26 +131,25 @@ const Rejected = () => {
                 >
                   <DataTable3 data={filteredUsersDetails}
                     title="Users Rejected"
-                    columnsName={bankSlipColumn}
+                    columnsName={usersRejectedColumn}
                     loading={usersRejectedLoader}
                     secondaryColor="secondary"
                     buttonVisibility={false}
                     checkboxSelection={"disabled"}
                     actionColumnVisibility={false}
-
-                    // dropDownOptions={[
-                    //   {
-                    //     label: "View",
-                    //     icon: (
-                    //       <VisibilityIcon
-                    //         fontSize="small"
-                    //         color="action"
-                    //         style={{ color: "rgb(37 99 235)" }}
-                    //       />
-                    //     ),
-                    //     action: handleView,
-                    //   },
-                    // ]}
+                    dropDownOptions={[
+                      {
+                        label: "View",
+                        icon: (
+                          <VisibilityIcon
+                            fontSize="small"
+                            color="action"
+                            style={{ color: "rgb(37 99 235)" }}
+                          />
+                        ),
+                        // action: handleView,
+                      },
+                    ]}
                     uniqueId="memberBankSlipId"
 
                   />
