@@ -692,7 +692,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         //     // Send email with optional reject reason
         //     await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         // }
-
         if (value.status === 'rejected') {
             // Set the document status to pending
             await prisma.member_documents.update({
@@ -700,69 +699,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
-            // Fetch the user along with their related cart
-            const userWithCart = await prisma.users.findUnique({
-                where: { id: currentDocument.user_id },
-                include: {
-                    carts: true, // This includes the carts related to the user
-                }
-            });
-
-            // Check if user exists
-            if (!userWithCart) {
-                throw createError(404, 'User not found');
-            }
-
-            // Extract user and cart data
-            const { carts, ...userData } = userWithCart;
-            const cartData = carts.length > 0 ? carts[0] : null;
-            // replace carts in userData with rejected_carts
-            userData.rejected_carts = cartData.carts;
-            delete userData.carts;
-            userData.deleted_at = new Date();
-            userData.status = 'rejected';
-            userData.remarks = value.reject_reason;
-            userData.payment_status = 0;
-            // remove member_history_logs 
-            delete userData.member_history_logs;
 
 
-            // Begin a transaction
-            await prisma.$transaction(async (prisma) => {
-                // Create rejected user record
-                const rejectedUser = await prisma.rejected_users.create({
-                    data: {
-                        ...userData,
-                        id: undefined, // Exclude 'id' if it's auto-generated
-                        reject_reason: value.reject_reason,
-                        // Exclude 'carts' field since it's not a column in 'rejected_users'
-                    }
-                });
-
-                // Move cart to rejected_carts if it exists
-                if (cartData) {
-                    await prisma.rejected_carts.create({
-                        data: {
-                            ...cartData,
-                            id: undefined, // Exclude 'id' if it's auto-generated
-                            reject_reason: value.reject_reason,
-                            user_id: rejectedUser.id, // Use the id of the newly created rejected user
-                            // Exclude 'user' field since it's not a column in 'rejected_carts'
-                        }
-                    });
-
-                    // Delete the original cart
-                    await prisma.carts.delete({ where: { id: cartData.id } });
-                }
-
-                // Delete the original user
-                await prisma.users.delete({ where: { id: userData.id } });
-            });
 
             // Send email with optional reject reason
-            await sendStatusUpdateEmail(userData.email, value.status, null, null, value.reject_reason);
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         }
-
 
 
 
