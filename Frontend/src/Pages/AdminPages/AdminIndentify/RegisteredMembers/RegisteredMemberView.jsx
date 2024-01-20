@@ -659,11 +659,11 @@ const RegisteredMembersView = () => {
                     onClick={handlePendingApprovedPopUp}
                     className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
                       }`}
-                    disabled={allUserData.isproductApproved == 1}
+                    disabled={allUserData.isproductApproved === 1 ? true : allUserData.isproductApproved === undefined ? true : false}
                     // show disable cursor if status is not approved
                     style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 0 ? "Pending For Approval" : "Rejected"}
                   </button>
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
