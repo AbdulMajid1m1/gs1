@@ -678,6 +678,20 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
         }
 
+        // if (value.status === 'rejected') {
+        //     // Set the document status to pending
+        //     await prisma.member_documents.update({
+        //         where: { id: documentId },
+        //         data: { status: 'pending' }
+        //     });
+
+
+
+
+        //     // Send email with optional reject reason
+        //     await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
+        // }
+
         if (value.status === 'rejected') {
             // Set the document status to pending
             await prisma.member_documents.update({
@@ -685,18 +699,60 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
+            // Fetch the user along with their related cart in one query
+            const userWithCart = await prisma.users.findUnique({
+                where: { id: currentDocument.user_id },
+                include: {
+                    carts: true, // This includes the carts related to the user
+                }
+            });
 
+            // Check if user exists
+            if (!userWithCart) {
+                throw createError(404, 'User not found');
+            }
 
+            // Extract the user and cart data
+            const { carts, ...userData } = userWithCart;
+            const cartData = carts.length > 0 ? carts[0] : null; // Assuming one cart per user
+
+            // Begin a transaction to handle multiple related operations
+            await prisma.$transaction(async (prisma) => {
+                // Move user to rejected_users
+                await prisma.rejected_users.create({
+                    data: {
+                        ...userData,
+                        reject_reason: value.reject_reason
+                    }
+                });
+
+                // Move cart to rejected_carts if it exists
+                if (cartData) {
+                    await prisma.rejected_carts.create({
+                        data: {
+                            ...cartData,
+                            reject_reason: value.reject_reason,
+                            user_id: userData.id // Linking to the rejected user
+                        }
+                    });
+
+                    // Delete the cart from the carts table
+                    await prisma.carts.delete({ where: { id: cartData.id } });
+                }
+
+                // Delete the user from the users table
+                await prisma.users.delete({ where: { id: userData.id } });
+            });
 
             // Send email with optional reject reason
-            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
+            await sendStatusUpdateEmail(userData.email, value.status, null, null, value.reject_reason);
         }
 
+
+
+
+
         // Delete all documents of type 'bank_slip'
-
-
-
-        // bankslip path in doucment table is like this \uploads\documents\memberDocuments\document-1703229100646.pdf
         for (const document of bankSlipDocuments) {
             const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
             console.log("deletingDocumentPath");
