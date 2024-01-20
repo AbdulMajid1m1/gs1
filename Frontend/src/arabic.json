@@ -347,5 +347,17 @@
     "Click Here PDF Guide":"انقر هنا دليل PDF",
     "(About CR Number)":"(حول رقم السجل التجاري)",
     "Click here if you want to add your CR!":"انقر هنا إذا كنت تريد إضافة سجلك التجاري!",
-    "Continue":"متابعة"
+    "Continue":"متابعة",
+    "UDI":"أودي",
+    "Transaction History":"تاريخ المعاملات",
+    "GS1 Digital Link":"الرابط الرقمي GS1",
+    "Member Profile":"الملف الشخصي للعضو",
+    "Help Desk":"مكتب المساعدة",
+    "Subscribed GTIN":"رقم GTIN المُشترك فيه",
+    "Member Products":"منتجات الأعضاء",
+    "Range of Barcodes":"مجموعة من الباركود",
+    "Barcodes Issued":"تم إصدار الباركود",
+    "Barcodes remaining":"الباركود المتبقية",
+    "Product created Successfully":"تم إنشاء المنتج بنجاح",
+    "GLN Added Successfully":"تمت إضافة GLN بنجاح"
 }

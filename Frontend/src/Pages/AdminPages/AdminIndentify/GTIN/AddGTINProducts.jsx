@@ -1195,7 +1195,7 @@ const AddGTINProducts = () => {
 
 
                         <div>
-                           <span className='text-secondary font-body sm:text-base text-sm'>{t('Front Photo')}</span>
+                           <span className='text-secondary font-body sm:text-base text-sm'>{t('Back Photo')}</span>
                              <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                     <label htmlFor="backImageInput" className="cursor-pointer whitespace-nowrap">
