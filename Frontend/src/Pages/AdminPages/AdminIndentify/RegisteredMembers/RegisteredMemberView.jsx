@@ -597,25 +597,8 @@ const RegisteredMembersView = () => {
 
 
               {/* Registered Products */}
-              <div className='w-full flex justify-end px-6 pt-6 gap-2'>
-                <button
-                  onClick={handlePendingApprovedPopUp}
-                  className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                    }`}
-                  disabled={allUserData.isproductApproved == 1}
-                  // show disable cursor if status is not approved
-                  style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
-                >
-                  {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
-                </button>
-                {/* <button
-                    className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
-                  >
-                    Approved
-                  </button> */}
-              </div>
-
-              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+              
+              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
@@ -660,6 +643,24 @@ const RegisteredMembersView = () => {
                   uniqueId="registeredProductsTableId"
 
                 />
+
+                <div className='w-full flex justify-start px-6 pt-0 py-6 gap-2'>
+                  <button
+                    onClick={handlePendingApprovedPopUp}
+                    className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                      }`}
+                    disabled={allUserData.isproductApproved == 1}
+                    // show disable cursor if status is not approved
+                    style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
+                  >
+                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                  </button>
+                  {/* <button
+                      className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                    >
+                      Approved
+                    </button> */}
+                </div>
 
               </div>
 
