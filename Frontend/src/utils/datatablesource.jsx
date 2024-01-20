@@ -3253,16 +3253,16 @@ export const ManageTeamDataColumn = [
   },
 ];
 
-export const BoardMembersDataColumn = [
+export const BoardMembersDataColumn = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: 'Name',
+    headerName: t('Name'),
     width: 260,
   },
   {
     field: 'job_title',
-    headerName: 'Job Title',
+    headerName: t('Job Title'),
     width: 260,
     renderCell: (params) => (
       <div
@@ -3277,7 +3277,7 @@ export const BoardMembersDataColumn = [
   },
   {
     field: 'description',
-    headerName: 'Description',
+    headerName: t('Description'),
     width: 350,
     renderCell: (params) => (
       <div
@@ -3292,7 +3292,7 @@ export const BoardMembersDataColumn = [
   },
   {
     field: 'image',
-    headerName: 'Image',
+    headerName: t('Image'),
     width: 200,
     renderCell: (params) => (
       < img
@@ -3312,7 +3312,7 @@ export const BoardMembersDataColumn = [
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
@@ -3320,7 +3320,7 @@ export const BoardMembersDataColumn = [
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3330,7 +3330,7 @@ export const BoardMembersDataColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName:  t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

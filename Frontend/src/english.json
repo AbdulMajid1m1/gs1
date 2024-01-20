@@ -386,5 +386,7 @@
     "Barcodes Issued":"Barcodes Issued",
     "Barcodes remaining":"Barcodes remaining",
     "Product created Successfully":"Product created Successfully",
-    "GLN Added Successfully":"GLN Added Successfully"
+    "GLN Added Successfully":"GLN Added Successfully",
+    "Created At":"Created At",
+    "Updated At":"Updated At"
 }
