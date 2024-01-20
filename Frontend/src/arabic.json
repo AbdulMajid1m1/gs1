@@ -248,13 +248,12 @@
     "Add Page":"إضافة صفحة",
     "Edit Sections":"تحرير الأقسام",
     "document Type":"نوع الوثيقة",
-    "Document name":"اسم الملف",
+   
     "city":"المدينة",
     "Select State":"ریاست منتخب کریں۔",
     "Country name":"اسم البلد",
     "Select Country":"حدد الدولة",  
-    "Country Code":"رمز البلد",
-    "Country short name":"اسم البلد المختصر",
+    
     "Cr Activity":"نشاط السجل التجاري",
     "state name":"اسم الولاية",
     "User Account":"حساب المستخدم",
@@ -323,7 +322,7 @@
     "FINAL PRICE":"السعر النهائي",
     "Invoice status updated successfully!":"تم تحديث حالة الفاتورة بنجاح!",
     "Cart item deleted successfully!":"تم حذف عنصر سلة التسوق بنجاح!",
-    "Pending For Approve":"في انتظار الموافقة"
+    "Pending For Approve":"في انتظار الموافقة",
     "Rejected": "مرفوض",
 
     "unit_code has been added successfully.": "تمت إضافة Unit_code بنجاح.",

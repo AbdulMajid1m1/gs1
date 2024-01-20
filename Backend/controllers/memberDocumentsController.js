@@ -807,6 +807,134 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
     }
 };
 
+const regenerateGcpCertificateSchema = Joi.object({
+    userId: Joi.string().required(),
+
+});
+
+
+export const regenerateGcpCertificate = async (req, res, next) => {
+    try {
+        // Validate the request body
+        const { error, value } = regenerateGcpCertificateSchema.validate(req.body);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        // Check if the user exists
+        const existingUser = await prisma.users.findUnique({ where: { id: value.userId } });
+        if (!existingUser) {
+            throw createError(404, 'User not found');
+        }
+
+        // Check if the user has a valid GCP
+        if (!existingUser.gcpGLNID || !existingUser.gln) {
+            throw createError(400, 'User does not have a valid GCP');
+        }
+
+
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        let gcpGLNID = existingUser?.gcpGLNID;
+        const CertificateData = {
+            BACKEND_URL: BACKEND_URL,
+            qrCodeDataURL: qrCodeDataURL,
+
+            user: {
+                company_name_eng: existingUser?.company_name_eng,
+            },
+            general: {
+                gcp_certificate_detail1:
+                    ['Global Trade Item Number(GTIN)',
+                        'Serial Shipping Container Code (SSCC)',
+                        'Global Location Number (GLN)',
+                        'Global Document Type Identifier(GDTI)',
+                        'Global Service Relation Number(GSRN)'
+                    ], // Dummy data, replace with actual detail data from your API
+                gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
+                    'Global Identification Number for',
+                    'Consignment(GSNC)',
+                    'Global Shipment Identification Number (GSIN)'
+                ], // Dummy data, replace with actual detail data from your API
+                gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+            },
+
+            userData: {
+                // add user data here
+                gcpGLNID: gcpGLNID,
+                gln: existingUser?.gln,
+                memberID: existingUser?.memberID,
+                gcp_expiry: existingUser?.gcp_expiry,
+            },
+            // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+            expiryDate: existingUser?.gcp_expiry.toISOString().split('T')[0],
+            explodeGPCCode: []
+        };
+
+        console.log("existingUser")
+        console.log(existingUser)
+
+        // Generate PDF from EJS template
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
+        let pdfFilename = `${existingUser.company_name_eng}-Certificate.pdf`;
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+        if (!fsSync.existsSync(pdfDirectory)) {
+            fsSync.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+        let pdfBuffer = await fs1.readFile(Certificatepath);
+
+        // find the member document with type certificate
+        const currentDocument = await prisma.member_documents.findFirst({
+            where: {
+                user_id: existingUser.id,
+                type: 'certificate',
+            }
+        });
+
+
+        const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', currentDocument.document.replace(/\\/g, '/'));
+        console.log("deletingDocumentPath");
+        console.log(deletingDocumentPath);
+        try {
+            if (fsSync.existsSync(deletingDocumentPath)) {
+                fsSync.unlinkSync(deletingDocumentPath);
+            }
+        } catch (err) {
+            console.error(`Error deleting file: ${deletingDocumentPath}`, err);
+        }
+
+        const updatedDocument = await prisma.member_documents.update({
+            where: { id: currentDocument.id },
+            data: {
+                document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
+            }
+
+        });
+
+        // Send an email based on the updated status use send email function
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: existingUser.email,
+            subject: 'New GCP Certificate',
+            htmlContent: '<p>Your GCP Certificate has been updated.</p>',
+            attachments: [{
+                filename: pdfFilename,
+                content: pdfBuffer,
+                contentType: 'application/pdf'
+            }]
+        });
+
+        return res.json({ message: 'GCP Certificate regenerated successfully' });
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+};
+
+
+
+
 
 // Function to send status update email
 const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '') => {
