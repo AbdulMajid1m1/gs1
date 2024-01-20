@@ -67,6 +67,8 @@ const RegisteredMembersView = () => {
   const [isPendingApprovedPopupVisible, setIsPendingApprovedPopupVisible] = useState(false);
   const [subType, setSubType] = useState("");
   const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
+  const [gcpCertificatePath, setGcpCertificatePath] = useState("");
+
   const handleShowUpgradePopup = (row) => {
     setSubType("UPGRADE")
     setIsUpgradePopupVisible(true);
@@ -204,6 +206,10 @@ const RegisteredMembersView = () => {
       const response = await newRequest.get(`/memberDocuments?user_id=${Id}`);
       // console.log(response.data);
       setMembersDocumentsData(response?.data || []);
+      // Extract the gcp certificate path from the response to use it in the Member details section
+      const gcpCertificatePath = response?.data?.find(item => item?.type === 'certificate')?.document;
+      console.log(gcpCertificatePath);
+      setGcpCertificatePath(gcpCertificatePath);
       setMemberDocumentsLoader(false);
 
     }
@@ -597,11 +603,11 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
+              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} gcpCertificatePath={gcpCertificatePath} />
 
 
               {/* Registered Products */}
-              
+
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}

@@ -893,12 +893,15 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         });
 
 
-        const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', currentDocument.document.replace(/\\/g, '/'));
+        const deletingDocumentPath = path.join(__dirname, '..', 'public', currentDocument.document.replace(/\\/g, '/'));
         console.log("deletingDocumentPath");
         console.log(deletingDocumentPath);
         try {
             if (fsSync.existsSync(deletingDocumentPath)) {
                 fsSync.unlinkSync(deletingDocumentPath);
+                console.log(`File deleted: ${deletingDocumentPath}`);
+            } else {
+                console.log(`File not found: ${deletingDocumentPath}`);
             }
         } catch (err) {
             console.error(`Error deleting file: ${deletingDocumentPath}`, err);
