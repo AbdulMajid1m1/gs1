@@ -20,7 +20,6 @@ import Updatedocument from './updatedocument';
 import { display } from '@mui/system';
 const Documents = () =>
 {
-
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
