@@ -18,9 +18,12 @@ import Updateotherproduct from './updateotherproduct';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../../../i18n";
+import LanguageSwitcher from "../../../../switer";
 const Other_products = () =>
 {
-
+  const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -222,7 +225,7 @@ const Other_products = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={'Other Products'}
+            title={t('Other Products')}
           />
         </div>
 
@@ -256,13 +259,13 @@ const Other_products = () =>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
                 <div className="relative">
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> Import
+                    <i className="fas fa-file-import mr-1"></i> {t('Import')}
                   </button>
                   <input
                     type="file"
@@ -276,14 +279,14 @@ const Other_products = () =>
                 <CSVLink data={data}
 
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >{t('Export')}    <FileUploadIcon />
                 </CSVLink>
               </div>
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title="Other Products"
+                  title={t('Other Products')}
                   columnsName={Other_Products}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -291,7 +294,7 @@ const Other_products = () =>
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: t("View"),
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -302,7 +305,7 @@ const Other_products = () =>
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: t("Edit"),
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -313,7 +316,7 @@ const Other_products = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: t("Delete"),
                       icon: (
                         <DeleteIcon
                           fontSize="small"
