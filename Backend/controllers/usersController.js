@@ -279,9 +279,8 @@ export const sendInvoiceToUser = async (req, res, next) => {
         // Validate user data
         const { error, value } = sendAndSaveInvoiceSchema.validate(req.body);
         if (error) {
-            console.log("error")
             console.log(error)
-            console.log("error")
+            
             return next(createError(400, error.details[0].message));
         }
         // Extract user and cart values
@@ -548,6 +547,61 @@ export const sendInvoiceToUser = async (req, res, next) => {
                     carts: true
                 }
             });
+
+
+
+              // Extract user and cart data
+              const { carts, ...userData } = userUpdateResult;
+              const cartData = carts.length > 0 ? carts[0] : null;
+              // replace carts in userData with rejected_carts
+              userData.rejected_carts = cartData.carts;
+              delete userData.carts;
+              userData.deleted_at = new Date();
+              userData.status = 'rejected';
+              userData.remarks = value.reject_reason;
+              userData.payment_status = 0;
+              // remove member_history_logs 
+              delete userData.member_history_logs;
+  
+  
+              // Begin a transaction
+              await prisma.$transaction(async (prisma) => {
+                  // Create rejected user record
+                  const rejectedUser = await prisma.rejected_users.create({
+                      data: {
+                          ...userData,
+                          id: undefined, // Exclude 'id' if it's auto-generated
+                          reject_reason: value.reject_reason,
+                          // Exclude 'carts' field since it's not a column in 'rejected_users'
+                      }
+                  });
+  
+                  // Move cart to rejected_carts if it exists
+                  if (cartData) {
+                      await prisma.rejected_carts.create({
+                          data: {
+                              ...cartData,
+                              id: undefined, // Exclude 'id' if it's auto-generated
+                              reject_reason: value.reject_reason,
+                              user_id: rejectedUser.id, // Use the id of the newly created rejected user
+                              // Exclude 'user' field since it's not a column in 'rejected_carts'
+                          }
+                      });
+  
+                      // Delete the original cart
+                      await prisma.carts.delete({ where: { id: cartData.id } });
+                  }
+  
+                  // Delete the original user
+                  await prisma.users.delete({ where: { id: userData.id } });
+              });
+
+
+
+
+
+
+
 
             // send email to user that his invoice is rejected with the reason if provided
             // send reject email with appropriate message

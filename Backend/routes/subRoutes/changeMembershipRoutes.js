@@ -11,7 +11,6 @@ router.get('/upgradeMembershipCarts', getUpgradeMembershipCarts);
 // Route for getting add GLN carts
 router.get('/addGlnCarts', getAddGlnCarts);
 
-
 router.post('/renewRequest', membershipRenewRequest);
 
 router.post('/getInvoiceDetailsForUpgradeSubscription', getInvoiceDetailsForUpgradeSubscription);

@@ -429,7 +429,7 @@ const MemmberRegisteration = () => {
             // if (value.length > 1 && value[3] !== '5') {
             //     setCompanyLandlineError('Mobile number must start with 9665');
             // }
-     
+
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
                 setCompanyLandlineError('Number must be a maximum of 12 digits');
@@ -880,11 +880,11 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code</label>
+                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code <span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setZipCode(e.target.value)}
                                     id='zipcode'
-                                    placeholder='Zip Code*'
+                                    placeholder='Zip Code'
                                     // required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
