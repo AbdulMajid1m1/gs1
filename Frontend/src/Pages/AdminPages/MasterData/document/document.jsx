@@ -18,8 +18,13 @@ import * as XLSX from 'xlsx';
 import Adddocumment from './adddocument';
 import Updatedocument from './updatedocument';
 import { display } from '@mui/system';
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../../../i18n";
+import LanguageSwitcher from "../../../../switer";
 const Documents = () =>
 {
+    //eissa    
+    const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();

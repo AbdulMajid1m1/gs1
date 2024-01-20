@@ -155,7 +155,6 @@
     "Pending Approvals": "الموافقات المعلقة",
     "Registered Members": "الأعضاء المسجلين",
     "Members for Renewal": "أعضاء للتجديد",
-<<<<<<< HEAD
     "Profile":"الملف الشخصي",
     "Activation":"التنشيط",
     "Renew":"تجديد العضوية",
@@ -253,7 +252,7 @@
     "city":"المدينة",
     "Select State":"ریاست منتخب کریں۔",
     "Country name":"اسم البلد",
-    "Select Country":"حدد الدولة",
+    "Select Country":"حدد الدولة",  
     "Country Code":"رمز البلد",
     "Country short name":"اسم البلد المختصر",
     "Cr Activity":"نشاط السجل التجاري",
@@ -293,7 +292,7 @@
     "Member Account Rejected Successfully":"تم رفض حساب العضو بنجاح",
     "User Activated Successfully!":"تم تنشيط المستخدم بنجاح!",
     "Pending Invoice for Approval":"فاتورة في انتظار الموافقة",
-    "Invoice Status":"حالة الفاتورة",
+    "Invoice Status":"حالة الفاتورة",   
     "Approve":"حالة الفاتورة",
     "Reject":"رفض",
     "Reason for Rejection":"سبب الرفض",
@@ -325,7 +324,6 @@
     "Invoice status updated successfully!":"تم تحديث حالة الفاتورة بنجاح!",
     "Cart item deleted successfully!":"تم حذف عنصر سلة التسوق بنجاح!",
     "Pending For Approve":"في انتظار الموافقة"
-=======
     "Rejected": "مرفوض",
 
     "unit_code has been added successfully.": "تمت إضافة Unit_code بنجاح.",
@@ -431,5 +429,4 @@
     "addedBy": "تمت إضافته بواسطة",
     "Enter addedBy": "أدخل المضافة بواسطة",
     "Update unspcs": "تحديث Unspsc"
->>>>>>> e69e775ce854cabf45feb9acc353280394af778a
 }
