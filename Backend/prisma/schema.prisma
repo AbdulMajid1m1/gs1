@@ -260,6 +260,29 @@ model carts {
   admin_id       Int?      @default(0, map: "DF_carts_admin_id")
   assign_to      Int?      @default(0, map: "DF_carts_assign_to")
   discount       Float?    @default(0, map: "DF_carts_discount")
+  // rejected_usersId String?
+}
+
+model rejected_carts {
+  id             String         @id @default(cuid())
+  transaction_id String?
+  cart_items     String?        @db.NVarChar(Max)
+  total          Float?
+  documents      String?        @db.NVarChar(Max)
+  request_type   String?        @db.NVarChar(Max)
+  payment_type   String?        @db.NVarChar(Max)
+  user_id        String
+  user           rejected_users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  deleted_at     DateTime?      @db.DateTime
+  reject_reason  String?        @db.Text
+  reject_by      Int?
+  receipt        String?        @db.Text
+  receipt_path   String?        @db.NVarChar(Max)
+  admin_id       Int?           @default(0, map: "DF_rejected_carts_admin_id")
+  assign_to      Int?           @default(0, map: "DF_rejected_carts_assign_to")
+  discount       Float?         @default(0, map: "DF_rejected_carts_discount")
 }
 
 model product_categroies {
@@ -1069,7 +1092,8 @@ model member_history_logs {
   user_id          String
   created_at       DateTime? @default(now()) @db.DateTime
   updated_at       DateTime? @updatedAt @db.DateTime
-  user             users     @relation(fields: [user_id], references: [id])
+  rejected_usersId String?
+  user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model member_important_notifications {
@@ -2004,9 +2028,93 @@ model users {
   old_member_recheck       Int?                  @default(0, map: "DF_users_old_member_recheck")
   carts                    carts[] // Define the one-to-many relationship with carts
   isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
-  pending_invoices         String                @default("none", map: "DF_users_for_approval") @db.VarChar(50)
+  pending_invoices         String                @default("for_review", map: "DF_users_for_approval") @db.VarChar(50)
   // create a one-to-many relationship with member_history_logs
   member_history_logs      member_history_logs[]
+}
+
+model rejected_users {
+  id                       String           @id @default(cuid())
+  user_type                String?          @db.VarChar(20)
+  slug                     String?          @db.NVarChar(Max)
+  location_uk              String?          @db.NVarChar(Max)
+  have_cr                  String?          @db.NVarChar(Max)
+  cr_documentID            String?          @db.NVarChar(100)
+  document_number          String?          @db.NVarChar(Max)
+  fname                    String?          @db.NVarChar(Max)
+  lname                    String?          @db.NVarChar(Max)
+  email                    String?          @db.NVarChar(Max)
+  mobile                   String?          @db.NVarChar(Max)
+  image                    String?          @db.NVarChar(Max)
+  po_box                   String?          @db.NVarChar(Max)
+  mbl_extension            String?          @db.NVarChar(Max)
+  website                  String?          @db.NVarChar(Max)
+  no_of_staff              String?          @db.NVarChar(Max)
+  companyID                String?          @db.NVarChar(Max)
+  district                 String?          @db.NVarChar(Max)
+  building_no              String?          @db.NVarChar(Max)
+  additional_number        String?          @db.NVarChar(Max)
+  other_landline           String?          @db.NVarChar(Max)
+  unit_number              String?          @db.NVarChar(Max)
+  qr_corde                 String?          @db.NVarChar(Max)
+  email_verified_at        DateTime?        @db.DateTime
+  password                 String?          @db.NVarChar(Max)
+  verification_code        Int?
+  cr_number                String?          @db.NVarChar(Max)
+  cr_activity              String?          @db.NVarChar(Max)
+  company_name_eng         String?          @db.NVarChar(Max)
+  company_name_arabic      String?          @db.NVarChar(Max)
+  bussiness_activity       String?          @db.NVarChar(Max)
+  member_category          String?          @db.NVarChar(50)
+  other_products           String?          @db.NVarChar(Max)
+  gpc                      String?          @db.NVarChar(Max)
+  product_addons           String?          @db.NVarChar(Max)
+  total                    Float?
+  contactPerson            String?          @db.NVarChar(Max)
+  companyLandLine          String?          @db.NVarChar(Max)
+  documents                String?          @db.NVarChar(Max)
+  address_image            String?          @db.NVarChar(Max)
+  status                   String?          @default("inactive", map: "DF_rejected_users_status") @db.VarChar(10)
+  is_login                 Int?             @default(0, map: "DF_rejected_users_is_login")
+  payment_type             String?          @db.NVarChar(Max)
+  payment_status           Int?             @default(0, map: "DF_rejected_users_payment_status")
+  online_payment           String?          @db.NVarChar(Max)
+  remember_token           String?          @db.NVarChar(Max)
+  parent_memberID          String?          @default("0", map: "DF_rejected_users_member_id")
+  industryTypes            String?          @db.NVarChar(Max)
+  invoice_file             String?          @db.NVarChar(Max)
+  otp_status               Int?
+  transaction_id           String?
+  created_at               DateTime         @default(now())
+  updated_at               DateTime         @updatedAt
+  gcpGLNID                 String?          @db.VarChar(50)
+  gln                      String?          @db.NVarChar(50)
+  gcp_type                 String?          @db.VarChar(50)
+  deleted_at               DateTime?        @db.DateTime
+  reject_reason            String?          @db.NVarChar(Max)
+  gcp_expiry               DateTime?        @db.DateTime
+  memberID                 String?          @db.NVarChar(Max)
+  user_id                  String?          @db.NVarChar(Max)
+  remarks                  String?          @default("Pending Invoice", map: "DF_rejected_users_remarks") @db.NVarChar(Max)
+  assign_to                Int?             @default(0, map: "DF_rejected_users_to")
+  membership_category      String?          @db.NVarChar(50)
+  membership_category_id   String?          @db.NVarChar(1000)
+  upgradation_disc         Int?             @default(0, map: "DF_rejected_rejected_users_disc")
+  upgradation_disc_amount  Float?           @default(0, map: "DF_rejected_rejected_users_amount")
+  renewal_disc             Int?             @default(0, map: "DF_rejected_users_disc")
+  renewal_disc_amount      Float?           @default(0, map: "DF_rejected_users_renewal_disc_amount")
+  membership_otherCategory String?          @db.NVarChar(50)
+  activityID               Int?             @default(0, map: "DF_rejected_users_activityID")
+  registration_type        String?          @db.NChar(10)
+  city                     String?          @db.NVarChar(Max)
+  country                  String?          @db.NVarChar(Max)
+  state                    String?          @db.NVarChar(Max)
+  zip_code                 String?          @db.VarChar(50)
+  old_member_recheck       Int?             @default(0, map: "DF_rejected_users_old_member_recheck")
+  isproductApproved        Int?             @default(0, map: "DF_rejected_users_isproductApproved")
+  pending_invoices         String           @default("for_review", map: "DF_rejected_users_for_approval") @db.VarChar(50)
+  // create a one-to-many relationship with member_history_logs
+  rejected_carts           rejected_carts[]
 }
 
 model withdraw_gateways {
