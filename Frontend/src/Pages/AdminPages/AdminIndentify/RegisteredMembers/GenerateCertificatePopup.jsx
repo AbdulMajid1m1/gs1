@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const GenerateCertificatePopup = ({ isVisible, setVisibility, userId }) => {
+const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMemberDocumentsData }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     // get the sesstion data
@@ -30,8 +30,10 @@ const GenerateCertificatePopup = ({ isVisible, setVisibility, userId }) => {
                 progress: undefined,
                 theme: "light",
             });
+
             setLoading(false);
             setVisibility(false);
+            fetchMemberDocumentsData()
         } catch (err) {
             console.log(err);
             setLoading(false);

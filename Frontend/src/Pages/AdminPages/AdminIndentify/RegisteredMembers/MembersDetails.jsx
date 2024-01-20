@@ -211,7 +211,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
   return (
     <div>
-      <GenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} />
+      <GenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
 
       {/* Update button */}
       <div className='flex justify-end'>

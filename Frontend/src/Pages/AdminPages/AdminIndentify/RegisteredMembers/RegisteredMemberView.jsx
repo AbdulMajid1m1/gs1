@@ -603,7 +603,7 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} gcpCertificatePath={gcpCertificatePath} />
+              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} gcpCertificatePath={gcpCertificatePath} fetchMemberDocumentsData={fetchMemberDocumentsData} />
 
 
               {/* Registered Products */}

@@ -52,6 +52,7 @@
     "Meta": "Meta",
     "Title": "Title",
     "Yes": "Yes",
+    "No":"No",
     "successfully": "successfully",
     "has been": "has been",
     "Updated Successfully": "Updated Successfully",
@@ -155,6 +156,37 @@
     "Pending Approvals":"Pending Approvals",
     "Registered Members":"Registered Members",
     "Members for Renewal":"Members for Renewal",
+<<<<<<< HEAD
+=======
+
+    "unit_code has been added successfully.":"unit_code has been added successfully.",
+    "Add Unit":"Add Unit",
+    "Unit code":"Unit code",
+    "Enter Unit code":"Enter Unit code",
+    "Unit name":"Unit name",
+    "Enter Unit name":"Enter Unit name",
+    "units updated successfully":"units updated successfully",
+    "Something went wrong!":"Something went wrong!",
+    "Update unit":"Update unit",
+    "unit code":"unit code",
+    "Enter unit code":"Enter unit code",
+    "unit name":"unit name",
+    "Enter unit name":"Enter unit name",
+    "inactive":"inactive",
+    "active":"active",
+    "Rejected": "Rejected",
+
+
+    "Are you sure?":"Are you sure?",
+    "You will not be able to recover this document!":"You will not be able to recover this document!",
+    "warning":"warning",
+    "Yes, delete it!":"Yes, delete it!",
+    "Add document":"Add document",
+    "document name":"document name",
+    "Enter document Name":"Enter document Name",
+    "document updated successfully":"document updated successfully",
+    "Update Document":"Update Document",
+>>>>>>> 41d0842c983527c1d16f16d4704596dc7f5fae40
     "Profile":"Profile",
     "Activation":"Activation",
     "Renew":"Renew",
@@ -248,6 +280,7 @@
     "Add Page":"Add Page",
     "Edit Sections":"Edit Sections",
     "document Type":"document Type",
+<<<<<<< HEAD
 
     "unit_code has been added successfully.":"unit_code has been added successfully.",
     "Add Unit":"Add Unit",
@@ -276,6 +309,8 @@
     "Enter document Name":"Enter document Name",
     "document updated successfully":"document updated successfully",
     "Update Document":"Update Document",
+=======
+>>>>>>> 41d0842c983527c1d16f16d4704596dc7f5fae40
     "Document name":"Document name",
     "city":"city",
     "Select State":"Select State",
@@ -350,5 +385,28 @@
     "FINAL PRICE":"FINAL PRICE",
     "Invoice status updated successfully!":"Invoice status updated successfully!",
     "Cart item deleted successfully!":"Cart item deleted successfully!",
-    "Pending For Approve":"Pending For Approve"
+    "Pending For Approve":"Pending For Approve",
+    "User Not found":"User Not found",
+    "Email Address":"Email Address",
+    "Login Now":"Login Now",
+    "Member Login Successfully":"Member Login Successfully",
+    "Select Activity":"Select Activity",
+    "Forgot Password?":"Forgot Password?",
+    "Click Here to Reset":"Click Here to Reset",
+    "Welcome to GS1 Member Dashboard":"Welcome to GS1 Member Dashboard",
+    "Please Enter Verification Code":"Please Enter Verification Code",
+    "Verify Code":"Verify Code",
+    "Verify Now":"Verify Now",
+    "Welcome To GS1":"Welcome To GS1",
+    "Your Registration & Barcode journey will start here.":"Your Registration & Barcode journey will start here.",
+    "Is your company located in the Kingdom":"Is your company located in the Kingdom",
+    "Do you have CR Number?":"Do you have CR Number?",
+    "Note":"Note:",
+    "*For member registration instructional video.":"*For member registration instructional video.",
+    "Click Here Registration Guide":"Click Here Registration Guide",
+    "*For member registration step by step in pdf format":"*For member registration step by step in pdf format",
+    "Click Here PDF Guide":"Click Here PDF Guide",
+    "(About CR Number)":"(About CR Number)",
+    "Click here if you want to add your CR!":"Click here if you want to add your CR!",
+    "Continue":"Continue"
 }
