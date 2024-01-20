@@ -47,27 +47,27 @@ const Rejected = () => {
     //     }
     //   };
     
-      const fetchFilteredMemberDetails = async (row) => {
-        console.log(row);
-        setUsersRejectedLoader(true);
-        try {
-          const response = await newRequest.get(`/users/rejectedCarts?transaction_id=${row[0]?.transaction_id}`);
+    //   const fetchFilteredMemberDetails = async (row) => {
+    //     console.log(row);
+    //     setUsersRejectedLoader(true);
+    //     try {
+    //       const response = await newRequest.get(`/users/rejectedCarts?transaction_id=${row[0]?.transaction_id}`);
     
-          console.log(response.data);
-        //   const cartItems = JSON.parse(response?.data[0]?.cart_items);
-        //   console.log(cartItems);
+    //       console.log(response.data);
+    //     //   const cartItems = JSON.parse(response?.data[0]?.cart_items);
+    //     //   console.log(cartItems);
 
-            // setFilteredUsersDetails([...cartItems, ...response?.data]);
-          setFilteredUsersDetails(response?.data || []);
-          setUsersRejectedLoader(false);
+    //         // setFilteredUsersDetails([...cartItems, ...response?.data]);
+    //       setFilteredUsersDetails(response?.data || []);
+    //       setUsersRejectedLoader(false);
         
-        } 
-        catch (err) {
-          console.log(err);
-            setUsersRejectedLoader(false);
-        }
+    //     } 
+    //     catch (err) {
+    //       console.log(err);
+    //         setUsersRejectedLoader(false);
+    //     }
     
-      }
+    //   }
     
 
     useEffect(() => {
@@ -76,17 +76,17 @@ const Rejected = () => {
     }, []);
 
     
-  const handleRowClickInParent = (item) => {
-    console.log(item);
-    if (!item || item?.length === 0) {
-      // setTableSelectedRows(data)
-      // setFilteredData(data)
-      setFilteredUsersDetails(usersRejected)
-      return
-    }
-    fetchFilteredMemberDetails(item);
+//   const handleRowClickInParent = (item) => {
+//     console.log(item);
+//     if (!item || item?.length === 0) {
+//       // setTableSelectedRows(data)
+//       // setFilteredData(data)
+//       setFilteredUsersDetails(usersRejected)
+//       return
+//     }
+//     fetchFilteredMemberDetails(item);
     
-    }
+//     }
     
   return (
     <div>
@@ -99,16 +99,14 @@ const Rejected = () => {
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
-              <div className='flex gap-5 flex-wrap'>
-                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                  className='sm:w-[50%] w-full'
+                <div style={{ marginLeft: '-25px', marginRight: '-25px' }}
                 >
                   <DataTable data={cardsRejected}
-                    title="Carts Rejected"
+                    title="Rejected User"
                     columnsName={cardsRejectedColumn}
                     loading={cardsRejectedLoader}
                     secondaryColor="secondary"
-                    handleRowClickInParent={handleRowClickInParent}
+                    // handleRowClickInParent={handleRowClickInParent}
                     checkboxSelection={"disabled"}
                     buttonVisibility={false}
                     actionColumnVisibility={false}
@@ -126,7 +124,7 @@ const Rejected = () => {
                   />
                 </div>
 
-                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
+                {/* <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable3 data={filteredUsersDetails}
@@ -153,10 +151,10 @@ const Rejected = () => {
                     uniqueId="memberBankSlipId"
 
                   />
-                </div>
+                </div> */}
               </div>
 
-            </div>
+            {/* </div> */}
           </div>
         </div>
 
