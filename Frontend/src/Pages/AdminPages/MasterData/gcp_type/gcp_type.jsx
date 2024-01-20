@@ -18,9 +18,12 @@ import UpdategcpType from './updategcpType';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../../../i18n";
+import LanguageSwitcher from "../../../../switer";
 const Gcp_type = () =>
 {
-
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -214,10 +217,10 @@ const Gcp_type = () =>
   };
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={'Gcp_type'}
+            title={t('Gcp_type')}
           />
         </div>
 
@@ -251,13 +254,13 @@ const Gcp_type = () =>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
                 <div className="relative">
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> Import
+                    <i className="fas fa-file-import mr-1"></i>{t('Import')} 
                   </button>
                   <input
                     type="file"
@@ -271,14 +274,14 @@ const Gcp_type = () =>
                 <CSVLink data={data}
 
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >{t('Export')}    <FileUploadIcon />
                 </CSVLink>
               </div>
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title="Gcp_type"
+                  title={t('Gcp_type')}
                   columnsName={Gcp_types}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -286,7 +289,7 @@ const Gcp_type = () =>
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: t("View"),
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -297,7 +300,7 @@ const Gcp_type = () =>
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: t("Edit"),
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -308,7 +311,7 @@ const Gcp_type = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: t("Delete"),
                       icon: (
                         <DeleteIcon
                           fontSize="small"

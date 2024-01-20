@@ -54,6 +54,7 @@ import Categoriesicon from "../../Images/Categories.jpg"
 import MegaMenuicon from "../../Images/Mega Menu.jpg"
 import Catalogicon from "../../Images/Catalgoicon.jpg"
 import footericon from "../../Images/Footericon.png"
+import rejected from "../../Images/rejected.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
@@ -537,6 +538,27 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Notifications')}</p>
+              </div>
+
+
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/notfications' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/notfications')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/notfications')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/rejected' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/rejected', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/rejected')
+                }
+              >
+                <img
+                  src={rejected}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Rejected')}</p>
               </div>
 
             </div>
