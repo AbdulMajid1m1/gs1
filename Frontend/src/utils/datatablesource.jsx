@@ -6353,13 +6353,8 @@ export const cardsRejectedColumn = [
 
 export const usersRejectedColumn = [
   {
-    field: 'company_name_eng',
-    headerName: 'Company Name English',
-    width: 180,
-  },
-  {
-    field: 'company_name_arabic',
-    headerName: 'Company Name Arabic',
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
     width: 180,
   },
   {
