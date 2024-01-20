@@ -31,7 +31,7 @@ const Documents = () =>
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
   const [brandsData, setBrandsData] = useState([]);
   const handleShowCreatePopup = () =>
-  {
+  { 
     setCreatePopupVisibility(true);
   };
   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
