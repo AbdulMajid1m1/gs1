@@ -247,7 +247,8 @@ const CountryofSales = () =>
                             </button>
                           </div> */}
               {/* </div> */}
-              <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
@@ -257,7 +258,7 @@ const CountryofSales = () =>
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i>{t('Import')} 
+                    <i className="fas fa-file-import mr-1"></i>{t('Import')}
                   </button>
                   <input
                     type="file"
