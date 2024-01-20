@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { backendUrl } from '../../../../utils/config';
 import GenerateCertificatePopup from './generateCertificatePopup.jsx'
-const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath }) => {
+const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath, fetchMemberDocumentsData, }) => {
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
@@ -210,7 +210,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
   return (
     <div>
-      <GenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} />
+      <GenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
 
       {/* Update button */}
       <div className='flex justify-end'>
