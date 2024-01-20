@@ -315,13 +315,13 @@ const Units = () =>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
                 <div className="relative">
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> Import
+                    <i className="fas fa-file-import mr-1"></i>{t('Import')} 
                   </button>
                   <input
                     type="file"
@@ -335,14 +335,14 @@ const Units = () =>
                 <CSVLink data={data}
 
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" > {t('Export')}   <FileUploadIcon />
                 </CSVLink>
               </div>
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title="Units"
+                  title={t('Units')}
                   columnsName={masterDataColumn}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -350,7 +350,7 @@ const Units = () =>
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: t("View"),
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -361,7 +361,7 @@ const Units = () =>
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: t("Edit"),
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -372,7 +372,7 @@ const Units = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: t("Delete"),
                       icon: (
                         <DeleteIcon
                           fontSize="small"
