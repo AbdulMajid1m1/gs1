@@ -4038,8 +4038,8 @@ export const financeColumn = [
           paddingRight: '10px',
           borderRadius: '20px',
           border: '2px solid',
-          borderColor: params.row.status === 'Active' ? 'green' : 'red',
-          color: params.row.status === 'Active' ? 'green' : 'red',
+          borderColor: params.row.status === 'approved' ? 'green' : 'red',
+          color: params.row.status === 'approved' ? 'green' : 'red',
         }}
       >
         {params.row.status}
