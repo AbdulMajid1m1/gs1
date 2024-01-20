@@ -704,7 +704,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
-            // Fetch the user along with their related cart in one query
+            // Fetch the user along with their related cart
             const userWithCart = await prisma.users.findUnique({
                 where: { id: currentDocument.user_id },
                 include: {
@@ -717,17 +717,29 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 throw createError(404, 'User not found');
             }
 
-            // Extract the user and cart data
+            // Extract user and cart data
             const { carts, ...userData } = userWithCart;
-            const cartData = carts.length > 0 ? carts[0] : null; // Assuming one cart per user
+            const cartData = carts.length > 0 ? carts[0] : null;
+            // replace carts in userData with rejected_carts
+            userData.rejected_carts = cartData.carts;
+            delete userData.carts;
+            userData.deleted_at = new Date();
+            userData.status = 'rejected';
+            userData.remarks = value.reject_reason;
+            userData.payment_status = 0;
+            // remove member_history_logs 
+            delete userData.member_history_logs;
 
-            // Begin a transaction to handle multiple related operations
+
+            // Begin a transaction
             await prisma.$transaction(async (prisma) => {
-                // Move user to rejected_users
-                await prisma.rejected_users.create({
+                // Create rejected user record
+                const rejectedUser = await prisma.rejected_users.create({
                     data: {
                         ...userData,
-                        reject_reason: value.reject_reason
+                        id: undefined, // Exclude 'id' if it's auto-generated
+                        reject_reason: value.reject_reason,
+                        // Exclude 'carts' field since it's not a column in 'rejected_users'
                     }
                 });
 
@@ -736,16 +748,18 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     await prisma.rejected_carts.create({
                         data: {
                             ...cartData,
+                            id: undefined, // Exclude 'id' if it's auto-generated
                             reject_reason: value.reject_reason,
-                            user_id: userData.id // Linking to the rejected user
+                            user_id: rejectedUser.id, // Use the id of the newly created rejected user
+                            // Exclude 'user' field since it's not a column in 'rejected_carts'
                         }
                     });
 
-                    // Delete the cart from the carts table
+                    // Delete the original cart
                     await prisma.carts.delete({ where: { id: cartData.id } });
                 }
 
-                // Delete the user from the users table
+                // Delete the original user
                 await prisma.users.delete({ where: { id: userData.id } });
             });
 

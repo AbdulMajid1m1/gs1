@@ -1,6 +1,7 @@
 import { Autocomplete, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import CircularProgress from '@mui/material/CircularProgress';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
@@ -568,6 +569,18 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
             />
           </div>
 
+          {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+            <TextField
+              id="companyGCP"
+              label="Company GCP"
+              variant="outlined"
+              value={gs1MemberData?.gcpGLNID}
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+              }}
+            />
+          </div> */}
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyGCP"
@@ -577,6 +590,20 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               InputLabelProps={{
                 shrink: true,
                 style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
+                    <div className='flex gap-1'>
+                      <div className='cursor-pointer hover:text-green-500'>
+                        <VisibilityIcon />
+                      </div>
+                      <div className='cursor-pointer hover:text-green-500'>
+                        <VisibilityIcon />
+                      </div>
+                    </div>
+                  </div>
+                ),
               }}
             />
           </div>
