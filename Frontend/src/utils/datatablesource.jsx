@@ -1503,9 +1503,10 @@ export const Gs1AllMembers = [
           border: '2px solid',
           borderColor: params.row.status === 'none' ? 'green' : 'crimson',
           color: params.row.status === 'none' ? 'green' : 'crimson',
+          display: params.row.pending_invoices === 'none' ? 'none' : 'block',
         }}
       >
-        {params.row.pending_invoices === 'none' ? '' : Params.row.pending_invoices === 'for_review' ? 'For Review' : 'Pending for Approval'}
+        {params.row.pending_invoices === 'none' ? '' : params.row.pending_invoices === 'for_review' ? 'For Review' : 'Pending for Approval'}
       </div >
     ),
   },
