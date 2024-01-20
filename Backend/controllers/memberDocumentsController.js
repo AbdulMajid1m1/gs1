@@ -731,6 +731,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }
         });
 
+        await updateUserPendingInvoiceStatus(currentDocument.user_id)
+
         // return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         if (value.status === 'approved') {
             return res.json({ message: 'Document status updated to approved' });
