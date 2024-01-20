@@ -7,8 +7,10 @@ import { Autocomplete, TextField } from '@mui/material'
 import { toast } from 'react-toastify'
 import { DotLoader } from 'react-spinners'
 import newRequest from '../../../../utils/userRequest'
+import { useTranslation } from 'react-i18next';
 
 const SelectActivity = () => {
+    const { t, i18n } = useTranslation();
     const [activity, setActivity] = React.useState([])
     const [password, setPassword] = React.useState('')
     const [selectedUserActivity, setSelectedUserActivity] = useState("");
@@ -60,7 +62,7 @@ const SelectActivity = () => {
         )
          .then(response => {
                 console.log(response.data)
-                toast.success(response?.data?.message || 'Member Login Successfully', {
+                toast.success(response?.data?.message || `${t('Member Login Successfully')}`, {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: false,
@@ -131,9 +133,9 @@ const SelectActivity = () => {
                 <div className='flex justify-center items-center h-[90%]'>
                     <div className='w-full sm:w-[50%] sm:px-4 px-4 h-auto border-[1px] border-[#021F69] rounded-md shadow-xl py-5'>
                         <form onSubmit={handleSubmit}>
-                            <h2 className='sm:text-2xl text-secondary text-lg font-sans font-bold py-5'>Select Activity<span className='text-red-500'>*</span></h2>
+                            <h2 className={`sm:text-2xl text-secondary text-lg font-sans font-bold py-5 ${i18n.language === 'ar' ? ' text-right' : 'text-left' }`}>{t('Select Activity')}<span className='text-red-500'>*</span></h2>
                         <div className='flex flex-col gap-1'>
-                            <label className='sm:text-2xl text-secondary text-lg font-sans font-normal' htmlFor='test'>Select Activity<span className='text-red-500'>*</span></label>
+                                  <label className={`sm:text-2xl text-secondary text-lg font-sans font-normal ${i18n.language === 'ar' ? ' text-right' : 'text-left' }`} htmlFor='test'>{t('Select Activity')}<span className='text-red-500'>*</span></label>
                                 <Autocomplete
                                     id="test"
                                     options={activity}
@@ -157,7 +159,8 @@ const SelectActivity = () => {
                                                     ...params.InputLabelProps,
                                                     style: { color: "white" },
                                                 }}
-                                                className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                                className={`bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  ${i18n.language === 'ar' ? ' text-right' : 'text-left'
+                                          }`}
                                                 placeholder="CR Activities"
                                             // required
                                             />
@@ -172,22 +175,23 @@ const SelectActivity = () => {
                                         }}
                                     />
 
-                                <label className='sm:text-2xl text-secondary text-lg font-sans font-normal mt-2' htmlFor='password'>Password<span className='text-red-500'>*</span></label>
+                                  <label className={`sm:text-2xl text-secondary text-lg font-sans font-normal mt-2 ${i18n.language === 'ar' ? ' text-right' : 'text-left' }`} htmlFor='password'>{t('Password')}<span className='text-red-500'>*</span></label>
                                 <input 
                                     id='password'
                                     type='password' 
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className='w-full sm:h-12 h-10 border border-[#8E9CAB] bg-[#EFF2F6] rounded-sm p-3 sm:text-lg text-sm font-sans font-normal mt-2'
-                                    placeholder='***************'
+                                      className={`w-full sm:h-12 h-10 border border-[#8E9CAB] bg-[#EFF2F6] rounded-sm p-3 sm:text-lg text-sm font-sans font-normal mt-2 ${i18n.language === 'ar' ? ' text-right' : 'text-left'
+                                          }`} 
+                                          placeholder='***************'
                                     required
                                 />
                                 {/* add that Forgot Password?  Click Here to Reset */}
-                                <p className='text-secondary text-xl font-sans font-normal'>Forgot Password?  <span className='text-[#01A6BC] cursor-pointer'>Click Here to Reset</span></p>
+                                  <p className={`text-secondary text-xl font-sans font-normal ${i18n.language === 'ar' ? ' text-right' : 'text-left' }`}> {t('Forgot Password?')} <span className='text-[#01A6BC] cursor-pointer'>{t('Click Here to Reset')}</span></p>
 
-                                <div className='flex justify-end items-end'>
+                                  <div className={`flex  items-end ${i18n.language === 'ar' ? ' justify-start' : 'justify-end' }`}>
                                     <button 
                                         type='submit' className='bg-primary text-white font-medium w-full sm:w-[35%] sm:h-12 h-10 sm:text-base text-sm rounded-sm mt-5 hover:bg-secondary'>
-                                            Login
+                                          {t('Login')}
                                     </button>
                                 </div>
                             </div>

@@ -6,9 +6,11 @@ import newRequest from '../../../../utils/userRequest'
 import { toast } from 'react-toastify'
 import { DotLoader } from 'react-spinners'
 import DropDownSelection from '../../../UserPages/DropDownSelection/DropDownSelection'
+import { useTranslation } from 'react-i18next';
 
 
 const EmailAddress = () => {
+    const { t, i18n } = useTranslation();
     const [email, setEmail] = React.useState('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate();
@@ -44,7 +46,7 @@ const EmailAddress = () => {
             })
             .catch(err => {
                 console.log(err)
-                toast.error(err?.response?.data?.message || 'User Not found', {
+                toast.error(err?.response?.data?.message || `${t('User Not found')}`, {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: false,
@@ -95,18 +97,18 @@ const EmailAddress = () => {
                 <div className='flex justify-center items-center h-[80%]'>
                     <div className='w-full sm:w-[40%] sm:px-0 px-4'>
                         <form onSubmit={handleSubmit}>
-                            <label className='sm:text-2xl text-secondary text-lg font-sans font-bold' htmlFor='email'>Email Address<span className='text-red-500'>*</span></label>
+                              <label className='sm:text-2xl text-secondary text-lg font-sans font-bold' htmlFor='email'>{t('Email Address')}<span className='text-red-500'>*</span></label>
                         <div className='flex flex-col gap-3'>
                                 <input 
                                     id='email'
                                     type='email' 
                                     onChange={(e) => setEmail(e.target.value)}
                                     className='w-full sm:h-12 h-10 border border-[#8E9CAB] rounded-sm p-3 sm:text-lg text-sm font-sans font-normal mt-2'
-                                    placeholder='Enter Registered Email Address'
+                                    placeholder={`${t('Enter')} ${t('Email Address')}`}
                                     required
                                 />
                                 <button 
-                                    type='submit' className='bg-secondary text-white font-medium w-full sm:h-12 h-10 sm:text-base text-sm rounded-sm mt-5 hover:bg-primary'>Login Now</button>
+                                      type='submit' className='bg-secondary text-white font-medium w-full sm:h-12 h-10 sm:text-base text-sm rounded-sm mt-5 hover:bg-primary'> {t('Login Now')}</button>
                             </div>
                         </form>
                     </div>
