@@ -774,7 +774,7 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         }
 
         // get existingUser.gcp_expiry and add 1 year to it
-        expiryDate = new Date(existingUser.gcp_expiry);
+        let expiryDate = new Date(existingUser.gcp_expiry);
 
         // Add one year
         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
