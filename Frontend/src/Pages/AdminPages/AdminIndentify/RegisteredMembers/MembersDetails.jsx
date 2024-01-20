@@ -7,15 +7,10 @@ import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 import { useParams } from 'react-router-dom';
-<<<<<<< HEAD
-import { useTranslation } from 'react-i18next';
-const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange }) => {
-=======
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { backendUrl } from '../../../../utils/config';
 import GenerateCertificatePopup from './generateCertificatePopup.jsx'
 const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath }) => {
->>>>>>> 95a6c74a4a2e861077c20a067c9eff06b2f7ced5
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
