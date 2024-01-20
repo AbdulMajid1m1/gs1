@@ -6,11 +6,13 @@ import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange }) => {
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
-  console.log(Id);
+  console.log(Id); 
+  const { t, i18n } = useTranslation();
   // Use state to manage editable values
   // const [editableData, setEditableData] = useState({
   //   companyNameEnglish: gs1MemberData?.company_name_eng || '',
@@ -92,7 +94,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
       setIsLoading(false);
 
       // add api message to toast
-      toast.success(response?.data?.message || 'User updated successfully');
+      toast.success(response?.data?.message || `${t('User')} ${t('has been')} ${t('Updated Successfully')}.`);
 
       // refresh all user data
       refreshAllUserData();
@@ -103,7 +105,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
       setIsLoading(false);
 
       // add api message to toast
-      toast.error(error?.response?.data?.error || 'Something went wrong');
+      toast.error(error?.response?.data?.error || `${t('Something went wrong')}`);
 
     }
 
@@ -221,7 +223,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           className="bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600"
           endIcon={IsLoading ? <CircularProgress size={24} color="inherit" /> : null}
         >
-          Update
+          {t('Update')}
         </Button>
       </div>
 
@@ -239,7 +241,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   /> */}
           <TextField
             id="companyNameEnglish"
-            label="Company Name English"
+            label={`${t('Company Name English')}`}
             variant="outlined"
             value={editableData.companyNameEnglish}
             onChange={(e) => handleInputChange('companyNameEnglish', e.target.value)}
@@ -249,7 +251,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
           <TextField
             id="companyNameArabic"
-            label="Company Name Arabic"
+            label={`${t('Company Name Arabic')}`}
             variant="outlined"
             value={editableData.companyNameArabic}
             onChange={(e) => handleInputChange('companyNameArabic', e.target.value)}
@@ -266,7 +268,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                     /> */}
           <TextField
             id="CountryShortName"
-            label="Country Short Name"
+            label={`${t('Country Short Name')}`}
             variant="outlined"
             value={editableData.countryShortName}
             onChange={(e) => handleInputChange('countryShortName', e.target.value)}
@@ -302,7 +304,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   style: { color: "white" },
                 }}
                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                placeholder={gs1MemberData?.country || "Country"}
+                placeholder={gs1MemberData?.country || `${t('Country')}`}
                 required
               />
             )}
@@ -351,7 +353,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   style: { color: "white" },
                 }}
                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                placeholder={gs1MemberData?.state || "State"}
+                placeholder={gs1MemberData?.state || `${t('State')}`}
               // required
               />
             )}
@@ -401,7 +403,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   style: { color: "white" },
                 }}
                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                placeholder={gs1MemberData?.city || "City"}
+                placeholder={gs1MemberData?.city || `${t('City')}`}
                 value={gs1MemberData.city}
               // required
               />
@@ -433,7 +435,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                   /> */}
           <TextField
             id="ZipCode"
-            label="Zip Code"
+            label={`${t('Zip Code')}`}
             variant="outlined"
             value={editableData.zipCode}
             onChange={(e) => handleInputChange('zipCode', e.target.value)}
@@ -446,7 +448,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               htmlFor='mobile'
               className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
             >
-              Landline Number
+              {t('Landline Number')}            
             </label>
             <div className='flex items-center border-2 w-full h-14 rounded-md'>
               {/* <PhoneInput
@@ -491,7 +493,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
           <TextField
             id="Email"
-            label="Email"
+            label={`${t('Email')}`}
             variant="outlined"
             value={gs1MemberData?.email}
             InputLabelProps={{
@@ -505,7 +507,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
       <div className='h-auto w-full mt-8 px-1'>
         <div className='flex justify-between'>
-          <p className='text-blue-500 font-sans font-semibold'>GS1 Member Details</p>
+          <p className='text-blue-500 font-sans font-semibold'> {t('GS1 Member Details')}</p>
           {/* <button className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Change Membership</button> */}
         </div>
 
@@ -513,7 +515,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="crNumber"
-              label="Cr Number"
+              label={`${t('Cr Number')}`}
               variant="outlined"
               value={gs1MemberData?.cr_number}
               InputLabelProps={{
@@ -526,7 +528,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="crActivity"
-              label="Cr Activity"
+              label={`${t('Cr Activity')}`}
               variant="outlined"
               value={gs1MemberData?.cr_activity}
               InputLabelProps={{
@@ -539,7 +541,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyNameEnglish"
-              label="Company Name English"
+              label={`${t('Company Name English')}`}
               variant="outlined"
               value={gs1MemberData?.company_name_eng}
               InputLabelProps={{
@@ -556,7 +558,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyNameArabic"
-              label="Company Name Arabic"
+              label={`${t('Company Name Arabic')}`}
               variant="outlined"
               value={gs1MemberData?.company_name_arabic}
               InputLabelProps={{
@@ -569,7 +571,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyGCP"
-              label="Company GCP"
+              label={`${t('Company GCP')}`}
               variant="outlined"
               value={gs1MemberData?.gcpGLNID}
               InputLabelProps={{
@@ -592,7 +594,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                     /> */}
             <TextField
               id="contactPerson"
-              label="Contact Person"
+              label={`${t('Contact Person')}`}
               variant="outlined"
               value={editableData.contactPerson}
               onChange={(e) => handleInputChange('contactPerson', e.target.value)}
@@ -607,7 +609,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyId"
-              label="Company ID"
+              label={`${t('Company ID')}`}
               variant="outlined"
               value={gs1MemberData?.companyID}
               InputLabelProps={{
@@ -633,7 +635,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                 htmlFor='mobile'
                 className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
               >
-                Mobile No (omit zero)
+                {t('Mobile No (omit zero)')}
               </label>
               <div className='flex items-center border-2 w-full h-14 rounded-md'>
                 <PhoneInput
@@ -663,7 +665,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="memberID"
-              label="Member ID"
+              label={`${t('Member ID')}`}
               variant="outlined"
               value={gs1MemberData?.memberID}
               InputLabelProps={{
@@ -680,7 +682,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyLandline"
-              label="Company Landline"
+              label={`${t('Company Landline')}`}
               variant="outlined"
               value={gs1MemberData?.companyLandLine}
               InputLabelProps={{
@@ -693,7 +695,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="password"
-              label="Password"
+              label={`${t('Password')}`}
               variant="outlined"
               value={userPassword}
               onChange={handlePassword}
@@ -702,13 +704,13 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                 style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
               }}
             />
-            {error && <p className='text-red-500 text-xs'>Password must be 6 digit</p>}
+            {error && <p className='text-red-500 text-xs'>{t('Password must be 6 digit')}</p>}
           </div>
 
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="membershipType"
-              label="Membership Type"
+              label={`${t('Membership Type')}`}
               variant="outlined"
               value={gs1MemberData?.membership_category}
               InputLabelProps={{

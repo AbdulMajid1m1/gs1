@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
@@ -16,6 +17,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
   const [error, setError] = useState('');
+  const { t } = useTranslation();
   // get the sesstion data
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   console.log(gs1MemberData)
@@ -106,7 +108,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
           'Content-Type': 'multipart/form-data',
         },
       });
-      toast.success(response?.data?.message || 'Documents Added Successfully.', {
+      toast.success(response?.data?.message || `${t('Documents Added Successfully')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -156,12 +158,12 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddMemberDocuments} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Member Bank Slip</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Member Bank Slip')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">Transaction Id </label>
+                    <label htmlFor="field2" className="text-secondary">  {t('Transaction Id')} </label>
                     <Autocomplete
                       id="field2"
                       options={transactionId}
@@ -203,7 +205,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field3" className="text-secondary">Upload Documents </label>
+                    <label htmlFor="field3" className="text-secondary">{t('Upload Documents')}</label>
                     <input
                       type="file"
                       id="field3"
@@ -221,7 +223,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseMemberPopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   {/* <button
                                  type="button"
@@ -239,7 +241,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Upload Documents
+                    {t('Upload Documents')}
                   </Button>
                 </div>
               </form>

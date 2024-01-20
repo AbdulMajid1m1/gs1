@@ -22,7 +22,6 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     setVisibility(false);
   };
 
-
   const handleFileChange = (e) => {
     // setError('');
     const file = e.target.files[0];
@@ -58,7 +57,6 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
         },
       });
 
-      toast.success(`Brand ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`);
       toast.success(`${t('Brands')} ${companyName} ${('with Arabic name')}" ${companyNameArabic}" ${t('has been')} ${t('Updated Successfully')}`);
       console.log(response.data);
       refreshBrandData(updateBrandData);

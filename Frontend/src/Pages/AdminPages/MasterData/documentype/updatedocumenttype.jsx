@@ -16,7 +16,6 @@ const Updatedocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
   const [status, setstatus] = useState(updateBrandData?.status || 0);
   const [loading, setLoading] = useState(false);
 
-
   const handleCloseUpdatePopup = () =>
   {
     setVisibility(false);
