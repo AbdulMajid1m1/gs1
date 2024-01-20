@@ -312,14 +312,19 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
     }
 
     try {
+
+        const documentId = req.params.id;
+        if (!documentId) {
+            throw createError(400, 'Document ID is required');
+        }
+
         // Retrieve the current document from the database
         const currentDocument = await prisma.member_documents.findFirst({
             where: { id: documentId }
         });
 
         if (!currentDocument) {
-
-            return next(createError(404, 'Documents not found'));
+            throw createError(404, 'Document not found');
         }
 
 
@@ -328,7 +333,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         // Check if the user exists
         let existingUser = await prisma.users.findUnique({ where: { id: currentDocument.user_id } });
         if (!existingUser) {
+<<<<<<< HEAD
             next(createError(404, 'User not found'));
+=======
+            throw createError(404, 'User not found');
+>>>>>>> e0240db28db401449d59105fba9a0d4357b28c02
         }
 
         let pdfBuffer;
