@@ -611,7 +611,7 @@ const RegisteredMembersView = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}
-                  title={`${t('Registered Products')}`} 
+                  title={`${t('Registered Products')}`}
                   columnsName={registeredmemberColumn}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
@@ -712,7 +712,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable2 data={membersDocuemtsData}
-                    title={`${t("Member'z Documents")}`} 
+                    title={`${t("Member'z Documents")}`}
                     columnsName={MembersDocumentColumn}
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
@@ -754,7 +754,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable data={brandsData}
-                    title={`${t('Brands')}`} 
+                    title={`${t('Brands')}`}
                     columnsName={MembersBrandsColumn}
                     loading={brandsLoader}
                     secondaryColor="secondary"
@@ -831,7 +831,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable data={memberInovice}
-                    title={`${t('Member Invoice')}`} 
+                    title={`${t('Member Invoice')}`}
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
@@ -856,7 +856,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable3 data={filteredMemberDetails}
-                    title={`${t('Member Bank Slip')}`} 
+                    title={`${t('Member Bank Slip')}`}
                     columnsName={bankSlipColumn}
                     loading={memberBankSlipLoader}
                     secondaryColor="secondary"
@@ -914,7 +914,7 @@ const RegisteredMembersView = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
               >
                 <DataTable2 data={subMenusData}
-                  title={`${t('Sub-Members')}`} 
+                  title={`${t('Sub-Members')}`}
                   columnsName={submenusDataColumn}
                   loading={subMembersLoader}
                   secondaryColor="secondary"
@@ -1007,6 +1007,7 @@ const RegisteredMembersView = () => {
             // fetchAllUserData={fetchAllUserData} MemberbankSlip={fetchMemberbankSlipData}
             fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
             fetchRegisteredProductsData={fetchRegisteredProductsData} userData={allUserData}
+            fetchMemberDocumentsData={fetchMemberDocumentsData}
           />
         )}
 
