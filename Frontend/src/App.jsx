@@ -102,6 +102,7 @@ import Pages from "./Pages/AdminPages/FrontEnd/Pages/Pages";
 import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
 import Updatapage from "./Pages/AdminPages/FrontEnd/Pages/Updatapage";
 import BlogPages from "./Pages/UserPages/BlogPages/BlogPages";
+import Rejected from "./Pages/AdminPages/AdminCapture/Rejected/Rejected";
 
 const queryClient = new QueryClient()
 
@@ -252,6 +253,7 @@ const App = () =>
                             <Route path="member-products" element={<MemberProducts />} />
                             <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
                             <Route path="notfications" element={<Notifications />} />
+                            <Route path="rejected" element={<Rejected />} />
                             <Route path="payment-slips" element={<AdminPaymentSlips />} />
 
                             <Route path="gcp-license" element={<GcpLicense />} />
