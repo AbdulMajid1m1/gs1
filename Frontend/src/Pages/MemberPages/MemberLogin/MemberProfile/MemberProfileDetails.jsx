@@ -4,9 +4,13 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import PhoneInput from 'react-phone-input-2';
 import { useParams } from 'react-router-dom';
-const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange }) => {
+import { backendUrl } from '../../../../utils/config';
+import MemberGenerateCertificatePopup from './MemberGenerateCertificatePopUp';
+const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath, fetchMemberDocumentsData, }) => {
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
@@ -37,6 +41,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
   const [mobileNumber, setMobileNumber] = React.useState('');
   const [userPassword, setUserPassword] = React.useState('');
   const [error, setError] = useState(false);
+  const [generateCertificatePopupVisibility, setGenerateCertificatePopupVisibility] = useState(false);
   
   // const handleUpdate = () => {
   //   // Handle the update logic here, e.g., dispatch an action to update data
@@ -205,6 +210,8 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
 
   return (
     <div>
+      <MemberGenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
+
       {/* Update button */}
       <div className='flex justify-end'>
         {/* <button
@@ -567,6 +574,17 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           </div>
 
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+            {/* <TextField
+              id="companyGCP"
+              label="Company GCP"
+              variant="outlined"
+              value={gs1MemberData?.gcpGLNID}
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+              }}
+              
+            /> */}
             <TextField
               id="companyGCP"
               label="Company GCP"
@@ -575,6 +593,25 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
               InputLabelProps={{
                 shrink: true,
                 style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
+                    <div className='flex gap-1 cursor-pointer'>
+                      {gcpCertificatePath && <div onClick={() => window.open(backendUrl + gcpCertificatePath, '_blank')}>
+                        <VisibilityIcon className='cursor-pointer hover:text-primary text-secondary' />
+                      </div>
+                      }
+                      {/* check if gcpcode  */}
+                      {gs1MemberData?.gcpGLNID && (
+                        <div className='cursor-pointer' onClick={() => setGenerateCertificatePopupVisibility(true)}>
+                          <AutorenewIcon className='cursor-pointer hover:text-primary text-secondary' />
+
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ),
               }}
             />
           </div>
