@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
@@ -15,6 +16,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
   const [status, setstatus] = useState(updateBrandData?.status || '');
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { t, i18n } = useTranslation();
 
 
   const handleCloseUpdatePopup = () =>
@@ -52,7 +54,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
 
       });
 
-      toast.success(response?.data?.message || 'cr number updated successfully', {
+      toast.success(response?.data?.message || `${t('Cr Number')} ${t('has been')} ${t('Updated Successfully')}.`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -68,7 +70,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
       handleCloseUpdatePopup();
 
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!', {
+      toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -98,38 +100,38 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update cr number</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Update')} {t('Cr Number')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">cr</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Cr Number')}</label>
                     <input
                       type="text"
                       id="cr"
                       value={cr}
                       onChange={handleInputChange}
                       //   readOnly
-                      placeholder="Enter cr"
+                      placeholder={`${t('Enter')} ${t('Cr Number')} `}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                     {error && <p className="text-red-500 text-xs">{error}</p>}
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">activity</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Cr Activity')}</label>
                     <input
                       type="text"
                       id="activity"
                       value={activity}
                       onChange={(e) => setactivity(e.target.value)}
                       //   readOnly
-                      placeholder="Enter activity"
+                      placeholder={`${t('Enter')} ${t('Cr Activity')} `}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
 
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="status" className="text-secondary">
-                      Status
+                      {t('Status')}
                     </label>
                     <select
                       id="status"
@@ -137,8 +139,8 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="0">inactive</option>
-                      <option value="1">active</option>
+                      <option value="0">{t('Inactive')}</option>
+                      <option value="1">{t('Active')}</option>
                     </select>
                   </div>
 
@@ -152,7 +154,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseUpdatePopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   {/* <button
                                 type="button"
@@ -169,7 +171,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Update Cr number
+                    {t('Update')} {t('Cr Number')}
                   </Button>
                 </div>
               </form>

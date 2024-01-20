@@ -7,8 +7,10 @@ import AdminDashboardRightHeader from '../../../../components/AdminDashboardRigh
 import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 import newRequest from '../../../../utils/userRequest';
+import { useTranslation } from 'react-i18next';
 
 const AdminPaymentSlips = () => {
+  const { t, i18n } = useTranslation();
   const [IsLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -130,10 +132,10 @@ const AdminPaymentSlips = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         <div>
-          <AdminDashboardRightHeader 
-            title={'Payment Slips'}
+          <AdminDashboardRightHeader
+            title={`${t('Payment Slips')}`}
           />
         </div>
 
@@ -174,7 +176,7 @@ const AdminPaymentSlips = () => {
                       error={isSubmitClicked && !selectedSlip?.cr}
                       helperText={isSubmitClicked && !selectedSlip?.cr ? "Products is required" : ""}
                       {...params}
-                      label="Search Members"
+                      label={`${t('Search Members')}`}
                       InputProps={{
                         ...params.InputProps,
                         endAdornment: (
@@ -209,7 +211,7 @@ const AdminPaymentSlips = () => {
 
           <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-            <DataTable data={data} title="Payment Slips" columnsName={paymentSlipColumn}
+            <DataTable data={data} title={`${t('Payment Slips')}`} columnsName={paymentSlipColumn}
               loading={IsLoading}
               checkboxSelection="disabled"
               secondaryColor="secondary"
@@ -219,7 +221,7 @@ const AdminPaymentSlips = () => {
 
               dropDownOptions={[
                 {
-                  label: "Profile",
+                  label: `${t('Profile')}`,
                   icon: (
                     <VisibilityIcon
                       fontSize="small"

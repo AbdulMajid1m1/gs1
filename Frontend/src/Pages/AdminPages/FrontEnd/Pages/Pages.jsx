@@ -58,12 +58,12 @@ const Pages = () => {
     }, []);
     const handleDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this Page!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover this')} ${t('Page')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -72,7 +72,7 @@ const Pages = () => {
                 try {
                     const isDeleted = await newRequest.delete("/deletepages/" + row?.id);
                     if (isDeleted) {
-                        toast.success('Page deleted successfully', {
+                        toast.success(`${t('Page')}  ${t('has been deleted')} ${t('successfully')}!`, {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -82,8 +82,6 @@ const Pages = () => {
                             progress: undefined,
                             theme: "light",
                         });
-
-
                         // filter out the deleted user from the data
                         const filteredData = brandsData.filter((item) => item?.id !== row?.id);
                         setBrandsData(filteredData);
@@ -250,7 +248,7 @@ const Pages = () => {
             <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
                     <DashboardRightHeader
-                        title={'Manage Pages'}
+                        title={`${t('Manage Pages')}`}
                     />
                 </div>
 
@@ -264,20 +262,20 @@ const Pages = () => {
                                     onClick={() => navigate('/admin/Add_Pages')}
                                     
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                                    <i className="fas fa-plus mr-2"></i>Add
+                                    <i className="fas fa-plus mr-2"></i>{t('Add')}
                                 </button>
                                
                                 <CSVLink data={data}
 
                                     type="button"
-                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                                    className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >{t('Export')}<FileUploadIcon />
                                 </CSVLink>
                             </div>
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                                 <DataTable data={data}
-                                    title="Manage Pages"
+                                    title={`${t('Manage Pages')}`}
                                     columnsName={ManagePagesDataColumn}
                                     loading={isLoading}
                                     secondaryColor="secondary"
@@ -285,7 +283,7 @@ const Pages = () => {
 
                                     dropDownOptions={[
                                         {
-                                            label: "View",
+                                            label: `${t('View')}`,
                                             icon: (
                                                 <VisibilityIcon
                                                     fontSize="small"
@@ -296,7 +294,7 @@ const Pages = () => {
                                             action: handleView,
                                         },
                                         {
-                                            label: "Edit",
+                                            label: `${t('Edit')}`,
                                             icon: (
                                                 <EditIcon
                                                     fontSize="small"
@@ -307,7 +305,7 @@ const Pages = () => {
                                             action: handleShowUpdatePopup,
                                         },
                                         {
-                                            label: "Delete",
+                                            label: `${t('Delete')}`,
                                             icon: (
                                                 <DeleteIcon
                                                     fontSize="small"

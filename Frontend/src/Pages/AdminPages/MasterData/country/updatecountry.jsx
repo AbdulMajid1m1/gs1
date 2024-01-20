@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
@@ -16,7 +17,7 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
   const [country_shortName, setcountry_shortName] = useState(updateBrandData?.country_shortName || '');
   const [status, setstatus] = useState(updateBrandData?.status || 0);
   const [loading, setLoading] = useState(false);
-
+  const { t, i18n } = useTranslation();
 
   const handleCloseUpdatePopup = () =>
   {
@@ -40,7 +41,7 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
         status: Number(status),
       });
 
-      toast.success(response?.data?.message || 'Country updated successfully', {
+      toast.success(response?.data?.message || `${t('Country')} ${t('has been')} ${t('Updated Successfully')}.`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -56,7 +57,7 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
       handleCloseUpdatePopup();
 
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!', {
+      toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -86,56 +87,56 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update country</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update')} {t('Country')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">country name</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Country name')} {t('Name[English]')}</label>
                     <input
                       type="text"
                       id="name_en"
                       value={name_en}
                       onChange={(e) => setname_en(e.target.value)}
                       //   readOnly
-                      placeholder="Enter country name english"
+                      placeholder={`${t('Enter')} ${t('Country name')} ${t('Name[English]')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">name arabic</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Country name')} {t('Name[Arabic]')}c</label>
                     <input
                       type="text"
                       id="name_ar"
                       value={name_ar}
                       onChange={(e) => setname_ar(e.target.value)}
                       //   readOnly
-                      placeholder="Enter name arabic"
+                      placeholder={`${t('Enter')} ${t('Country name')} ${t('Name[Arabic]')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">country code</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Country Code')}</label>
                     <input
                       type="text"
                       id="country_code"
                       value={country_code}
                       onChange={(e) => setcountry_code(e.target.value)}
                       //   readOnly
-                      placeholder="Enter country code"
+                      placeholder={`${t('Enter')} ${t('Country Code')} `}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">country shortName</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Country short name')}</label>
                     <input
                       type="text"
                       id="country_shortName"
                       value={country_shortName}
                       onChange={(e) => setcountry_shortName(e.target.value)}
                       //   readOnly
-                      placeholder="Enter country shortName"
+                      placeholder={`${t('Enter')} ${t('Country short name')} `}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -150,7 +151,7 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseUpdatePopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   {/* <button
                                 type="button"
@@ -167,7 +168,7 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Update country
+                    {t('Update')} {t('Country')}
                   </Button>
                 </div>
               </form>

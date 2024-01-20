@@ -1,8 +1,8 @@
-import { useState ,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 import imageicon from '../../../../../Images/imagges.jpg';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto'; 
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import VideoCameraBackSharpIcon from '@mui/icons-material/VideoCameraBackSharp';
 import { useTranslation } from 'react-i18next';
 
@@ -174,7 +174,7 @@ const Addevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                         <label htmlFor="field1" className="text-secondary">{t('Display')}</label>
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <div style={{ marginRight: '10px', border:'1px solid #e4e6fc' }}>
+                                            <div style={{ marginRight: '10px', border: '1px solid #e4e6fc' }}>
                                                 <input
                                                     type="radio"
                                                     id="imageRadio"
@@ -184,13 +184,13 @@ const Addevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     style={{ display: 'none' }}
                                                 />
                                                 <label htmlFor="imageRadio"
-                                                 style={{
-                                                    padding: '5px 10px',
-                                                     cursor: 'pointer',
-                                                     backgroundColor: selectedOption === 'image' ? '#6777ef' : 'transparent',
-                                                      color: selectedOption === 'image' ? 'white' : 'black',
-                                                }}>
-                                                   <InsertPhotoIcon/>
+                                                    style={{
+                                                        padding: '5px 10px',
+                                                        cursor: 'pointer',
+                                                        backgroundColor: selectedOption === 'image' ? '#6777ef' : 'transparent',
+                                                        color: selectedOption === 'image' ? 'white' : 'black',
+                                                    }}>
+                                                    <InsertPhotoIcon />
                                                 </label>
                                             </div>
 
@@ -203,15 +203,15 @@ const Addevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     onChange={handleOptionChange}
                                                     style={{ display: 'none' }}
                                                 />
-                                                <label htmlFor="videoRadio" 
+                                                <label htmlFor="videoRadio"
                                                     style={{
                                                         padding: '5px 10px',
                                                         cursor: 'pointer',
                                                         backgroundColor: selectedOption === 'video' ? '#6777ef' : 'transparent',
                                                         color: selectedOption === 'video' ? 'white' : 'black',
                                                     }}>
-                                                    <VideoCameraBackSharpIcon/>
-                                                    </label>
+                                                    <VideoCameraBackSharpIcon />
+                                                </label>
                                             </div>
                                         </div>
 

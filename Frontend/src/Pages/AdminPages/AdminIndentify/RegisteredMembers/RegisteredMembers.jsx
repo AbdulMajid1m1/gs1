@@ -19,8 +19,10 @@ import RenewPopUp from './RenewPopUp';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import UpgradePopUp from './UpgradePopUp';
 import DowngradePopUp from './DowngradePopUp';
+import { useTranslation } from 'react-i18next';
 
 const RegisteredMembers = () => {
+  const { t, i18n } = useTranslation();
   const [IsLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   // const [gridData, setGridData] = useState([]);
@@ -29,7 +31,6 @@ const RegisteredMembers = () => {
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
   const [filteredData, setFilteredData] = useState([]);
-
 
   // const { isLoading, error, data, isFetching } = useQuery("fatchMembers", async () => {
   //   const response = await newRequest.get("/users",);
@@ -110,12 +111,12 @@ const RegisteredMembers = () => {
 
   const handleDelete = async (row) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this User Account!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('User')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -124,7 +125,7 @@ const RegisteredMembers = () => {
         try {
           const isDeleted = await newRequest.delete("/users/" + row?.id);
           if (isDeleted) {
-            toast.success('User deleted successfully', {
+            toast.success(`${t('User')} ${t('has been deleted')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -158,7 +159,7 @@ const RegisteredMembers = () => {
         } catch (error) {
           // Handle any error that occurred during the deletion
           console.error("Error deleting user:", error);
-          toast.error('Something went wrong while deleting user', {
+          toast.error(`${t('User')} ${t('has been not deleted')} ${t('Delete')}!`, {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -239,7 +240,7 @@ const RegisteredMembers = () => {
         handleShowFinancePopup(row);
       } else {
         // Show an error message
-        toast.error("No invoice data available", {
+        toast.error(`${t('No invoice data available')}`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -254,7 +255,7 @@ const RegisteredMembers = () => {
     catch (err) {
       console.log(err);
       // show the toast message
-      toast.error(err?.response?.data?.message || 'Something went wrong!', {
+      toast.error(err?.response?.data?.message || `${t('Something went wrong')}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -283,16 +284,18 @@ const RegisteredMembers = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <AdminDashboardRightHeader
-            title={'Registered Members'}
+            title={`${t('Registered Members')}`}
           />
         </div>
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={data} title="Registered Members" columnsName={Gs1AllMembers}
+          <DataTable data={data}
+            title={`${t('Registered Members')}`}
+             columnsName={Gs1AllMembers}
             loading={IsLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"
@@ -303,7 +306,7 @@ const RegisteredMembers = () => {
 
             dropDownOptions={[
               {
-                label: "Profile",
+                label: `${t('Profile')}`,
                 icon: (
                   <VisibilityIcon
                     fontSize="small"
@@ -314,14 +317,14 @@ const RegisteredMembers = () => {
                 action: handleView,
               },
               {
-                label: "Activation",
+                label: `${t('Activation')}`,
                 icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 action: fetchMemberInvoiceData,
 
               },
               {
-                label: "Renew",
+                label: `${t('Renew')}`,
                 icon: <PublishedWithChangesIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 action: handleShowRenewPopup,
@@ -342,7 +345,7 @@ const RegisteredMembers = () => {
 
               //   },
               {
-                label: "Deactivate",
+                label: `${t('Delete')}`,
                 icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                 ,
                 action: handleDelete,

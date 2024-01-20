@@ -5,8 +5,10 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
+  const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   console.log(updateBrandData)
@@ -57,7 +59,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
         country_id: Number(selectedDocuments?.id),
       });
 
-      toast.success(response?.data?.message || 'State updated successfully', {
+      toast.success(response?.data?.message || `${t('State')} ${t('has been')} ${t('Updated Successfully')}.`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -73,7 +75,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
       handleCloseUpdatePopup();
 
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!', {
+      toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -103,23 +105,23 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update state</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update')} {t('State')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">state name</label>
+                    <label htmlFor="field1" className="text-secondary">{t('state name')}</label>
                     <input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setname(e.target.value)}
                       //   readOnly
-                      placeholder="Enter state name"
+                      placeholder={`${t('Enter')} ${t('state name')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Country</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Select Country')}</label>
                     <Autocomplete
                       id="field1"
                       options={docuements}
@@ -146,7 +148,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
                             style: { color: "white" },
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Country"
+                          placeholder={`${t('Select Country')}`}
                         // required
                         />
                       )}
@@ -170,7 +172,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseUpdatePopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   {/* <button
                                 type="button"
@@ -187,7 +189,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Update state
+                    {t('Update')} {t('State')}
                   </Button>
                 </div>
               </form>
