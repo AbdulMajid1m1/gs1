@@ -279,9 +279,8 @@ export const sendInvoiceToUser = async (req, res, next) => {
         // Validate user data
         const { error, value } = sendAndSaveInvoiceSchema.validate(req.body);
         if (error) {
-            console.log("error")
             console.log(error)
-            console.log("error")
+            
             return next(createError(400, error.details[0].message));
         }
         // Extract user and cart values
