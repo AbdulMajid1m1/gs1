@@ -955,6 +955,120 @@ export const getUserDetails = async (req, res, next) => {
 };
 
 
+export const getRejectedUserDetails = async (req, res, next) => {
+    try {
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            user_type: Joi.string(),
+            slug: Joi.string(),
+            email: Joi.string().email(),
+            // ... other columns
+            status: Joi.string().valid('active', 'inactive'),
+            reject_reason: Joi.string(),
+            // ... define validation for other allowed columns
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false);
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Construct filter conditions for Prisma query
+        const filterConditions = Object.keys(value).length > 0
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        // Fetch rejected users and their carts
+        const [rejectedUsers, rejectedCarts] = await prisma.$transaction(async (prisma) => {
+            const rejectedUsers = await prisma.rejected_users.findMany({
+                where: filterConditions,
+            });
+
+            // if (rejectedUsers.length === 0) {
+            //     return [rejectedUsers, []];
+            // }
+
+            // const userIds = rejectedUsers.map(user => user.id);
+            // const rejectedCarts = await prisma.rejected_carts.findMany({
+            //     where: {
+            //         user_id: { in: userIds }
+            //     }
+            // });
+
+            // return [rejectedUsers, rejectedCarts];
+            return [rejectedUsers];
+        }, { timeout: 50000 });
+
+
+        return res.json(rejectedUsers);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+export const getCartsDetails = async (req, res, next) => {
+    try {
+        // Define allowable columns for filtering carts
+        const allowedColumns = {
+            id: Joi.string(),
+            user_id: Joi.string(),
+            transaction_id: Joi.string(),
+            // ... other columns as per your carts model
+            status: Joi.string().valid('pending', 'completed', 'rejected'), // Example statuses
+            // ... define validation for other allowed columns
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false);
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Construct filter conditions for Prisma query
+        const filterConditions = Object.keys(value).length > 0
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        // Fetch carts based on filter conditions
+        const carts = await prisma.rejected_carts.findMany({
+            where: filterConditions,
+            // Include additional query options if necessary (e.g., pagination, sorting)
+        });
+
+        return res.json(carts);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
 export const getAdminStatsCounts = async (req, res, next) => {
     try {
         const counts = await prisma.$transaction(async (prisma) => {

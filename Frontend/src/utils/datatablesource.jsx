@@ -1518,7 +1518,7 @@ export const ViewSsccColumn = [
 export const Gs1AllMembers = [
   {
     field: 'pending_invoices',
-    headerName: 'PENDING INVOICES',
+    headerName: 'PENDING TO DO',
     width: 180,
     renderCell: params => (
       <div
@@ -1528,9 +1528,10 @@ export const Gs1AllMembers = [
           border: '2px solid',
           borderColor: params.row.status === 'none' ? 'green' : 'crimson',
           color: params.row.status === 'none' ? 'green' : 'crimson',
+          display: params.row.pending_invoices === 'none' ? 'none' : 'block',
         }}
       >
-        {params.row.pending_invoices === 'none' ? 'none' : 'pending for approval'}
+        {params.row.pending_invoices === 'none' ? '' : params.row.pending_invoices === 'for_review' ? 'For Review' : 'Pending for Approval'}
       </div >
     ),
   },
@@ -6093,7 +6094,7 @@ export const registerdMemberColumn = [
     field: 'company_name_arabic',
     headerName: 'Company Name Arabic',
     width: 180,
-  }, 
+  },
   {
     field: 'activityID',
     headerName: 'Activity ID',
