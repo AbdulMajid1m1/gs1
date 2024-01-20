@@ -869,6 +869,10 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         console.log("existingUser")
         console.log(existingUser)
 
+
+
+
+
         // Generate PDF from EJS template
         const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
         let pdfFilename = `${existingUser.company_name_eng}-Certificate.pdf`;
@@ -877,8 +881,7 @@ export const regenerateGcpCertificate = async (req, res, next) => {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
-        let pdfBuffer = await fs1.readFile(Certificatepath);
+
 
         // find the member document with type certificate
         const currentDocument = await prisma.member_documents.findFirst({
@@ -902,7 +905,8 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         } catch (err) {
             console.error(`Error deleting file: ${deletingDocumentPath}`, err);
         }
-
+        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+        let pdfBuffer = await fs1.readFile(Certificatepath);
         const updatedDocument = await prisma.member_documents.update({
             where: { id: currentDocument.id },
             data: {
