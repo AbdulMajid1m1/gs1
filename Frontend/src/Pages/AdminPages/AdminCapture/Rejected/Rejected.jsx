@@ -53,7 +53,11 @@ const Rejected = () => {
         try {
           const response = await newRequest.get(`/users/rejectedCarts?transaction_id=${row[0]?.transaction_id}`);
     
-          console.log(response.data);
+        //   console.log(response.data);
+        //   convert the cart_items data into json
+          const cartItems = JSON.parse(response?.data[0]?.cart_items);
+          console.log(cartItems);
+
           setFilteredUsersDetails(response?.data || []);
           setUsersRejectedLoader(false);
         

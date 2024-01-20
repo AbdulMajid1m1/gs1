@@ -8,8 +8,10 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { debounce } from '@mui/material/utils';
 import AddCrNumber from './AddCrNumber'
+import { useTranslation } from 'react-i18next';
 
 const GetBarcode = () => {
+  const { t, i18n } = useTranslation();
   const [hasCR, setHasCR] = useState(true); // Default to 'Yes'
   const [allDocuments, setAllDocuments] = useState([]); // Default to 'Yes'
   const [selectedDocument, setSelectedDocument] = useState('');
@@ -216,13 +218,13 @@ const GetBarcode = () => {
           <div className='grid 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 items-center sm:px-12 px-5 py-5'>
             <div>
               <div className='flex flex-col gap-1'>
-                <h2 className='sm:text-3xl text-2xl font-bold font-sans text-secondary'>Welcome To GS1 </h2>
-                <p className='sm:text-xl text-lg font-bold font-sans text-secondary'>Your Registration & Barcode journey will start here.</p>
+                <h2 className='sm:text-3xl text-2xl font-bold font-sans text-secondary'> {t('Welcome To GS1')}</h2>
+                <p className='sm:text-xl text-lg font-bold font-sans text-secondary'>  {t('Your Registration & Barcode journey will start here.')} </p>
               </div>
 
               <div className='flex flex-col font-sans py-4 gap-2'>
                 <div>
-                  <p className='sm:text-xl text-lg font-bold text-secondary'>Is your company located in the Kingdom? <span className='text-[#FF3E01]'>*</span></p>
+                  <p className='sm:text-xl text-lg font-bold text-secondary'>{t('Is your company located in the Kingdom')}?<span className='text-[#FF3E01]'>*</span></p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-4'>
                   <div className='flex items-center gap-2'>
@@ -230,14 +232,14 @@ const GetBarcode = () => {
                       value='yes' onChange={(e) => setLocation(e.target.value)} checked={location === 'yes'}
               
                     />
-                    <label htmlFor="company-yes" className='text-secondary font-medium'>Yes</label>
+                    <label htmlFor="company-yes" className='text-secondary font-medium'> {t('Yes')}</label>
                   </div>
                   <div className='flex items-center gap-2'>
                     <input type="radio" name="company" id="company-no"
                       value='no' onChange={(e) => setLocation(e.target.value)} checked={location === 'no'}
                     />
                     <label htmlFor="company-no" className='text-secondary font-medium'
-                    >No</label>
+                    > {t('No')}</label>
                   </div>
                 </div>
               </div>
@@ -245,7 +247,7 @@ const GetBarcode = () => {
 
               <div className='flex flex-col py-4 gap-2'>
                 <div>
-                  <p className='sm:text-xl text-lg font-bold font-sans text-secondary'>Do you have CR Number? <span className='text-[#FF3E01]'>*</span></p>
+                  <p className='sm:text-xl text-lg font-bold font-sans text-secondary'>{t('Do you have CR Number?')} <span className='text-[#FF3E01]'>*</span></p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-4'>
                   <div className='flex items-center gap-2'>
@@ -256,7 +258,7 @@ const GetBarcode = () => {
                       checked={hasCR}
                       onChange={() => handleRadioChange('yes')}
                     />
-                    <label htmlFor="yes" className='text-secondary font-medium'>Yes</label>
+                    <label htmlFor="yes" className='text-secondary font-medium'> {t('Yes')}</label>
                   </div>
                   <div className='flex items-center gap-2'>
                     <input
@@ -266,16 +268,16 @@ const GetBarcode = () => {
                       checked={!hasCR}
                       onChange={() => handleRadioChange('no')}
                     />
-                    <label htmlFor="no" className='text-secondary font-medium'>No</label>
+                    <label htmlFor="no" className='text-secondary font-medium'>{t('No')}</label>
                   </div>
                 </div>
               </div>
 
 
               <div className='flex flex-col py-4 gap-2'>
-                <h2 className='sm:text-2xl text-xl font-bold font-sans'>Note:</h2>
-                <p className='sm:text-xl text-base font-medium font-sans text-secondary'>*For member registration instructional video. <span className='text-[#FF3E01]'>Click Here Registration Guide</span></p>
-                <p className='sm:text-xl text-base font-medium font-sans text-secondary'>*For member registration step by step in pdf format <span className='text-[#FF3E01]'>Click Here PDF Guide</span></p>
+                <h2 className='sm:text-2xl text-xl font-bold font-sans'>{t('Note')}</h2>
+                <p className='sm:text-xl text-base font-medium font-sans text-secondary'>{t('*For member registration instructional video.')} <span className='text-[#FF3E01]'>{t('Click Here Registration Guide')}</span></p>
+                <p className='sm:text-xl text-base font-medium font-sans text-secondary'>{t('*For member registration step by step in pdf format')} <span className='text-[#FF3E01]'> {t('Click Here PDF Guide')}</span></p>
               </div>
 
             </div>
@@ -284,7 +286,7 @@ const GetBarcode = () => {
               <div className='flex flex-col gap-2 sm:w-[80%] w-full'>
                 {hasCR ? (
                   <>
-                    <label htmlFor="companyName" className='sm:text-xl text-base font-bold font-sans text-secondary'>CR Number <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal text-lg'>(About CR Number)</span></label>
+                    <label htmlFor="companyName" className='sm:text-xl text-base font-bold font-sans text-secondary'> {t('cr number')} <span className='text-[#FF3E01]'>* </span><span className='text-secondary font-normal text-lg'> {t('(About CR Number)')}</span></label>
                     <Autocomplete
                       id="companyName"
                       required
@@ -348,14 +350,14 @@ const GetBarcode = () => {
                     {/* If nothing is select i show that error */}
 
 
-                    <p onClick={handleShowCreatePopup} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>Click here if you want to add your CR!</p>
+                    <p onClick={handleShowCreatePopup} className='font-normal text-secondary font-sans transition-colors duration-300 hover:text-primary cursor-pointer'>{t('Click here if you want to add your CR!')}</p>
 
                   </>
                 ) : (
                   <>
                     <div className=''>
                       <label htmlFor="companyName" className='sm:text-xl text-base font-bold font-sans text-secondary'>
-                        Documents <span className='text-[#FF3E01]'>* </span>
+                          {t('Documents')}<span className='text-[#FF3E01]'>* </span>
                       </label>
                       <Autocomplete
                         id="countryName"

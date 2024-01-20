@@ -4,8 +4,10 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
+  const { t } = useTranslation();
     const [companyName, setCompanyName] = useState("");
     const [companyNameArabic, setCompanyNameArabic] = useState("");
     const [brandCertificate, setBrandCertificate] = useState("");
@@ -69,7 +71,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
         },
         });
 
-      toast.success(`Brand ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
+      toast.success(`${t('Brands')} ${companyName} ${('with Arabic name')}"${companyNameArabic}" ${t('has been added successfully')}.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -114,35 +116,35 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
                            <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Brands</h2>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Brands')}</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">Brand Name EN</label>
+                                 <label htmlFor="field1" className="text-secondary">{t('Brands')} {t('Name[English]')}</label>
                                  <input
                                    type="text"
                                    id="field1"
                                    value={companyName}
                                    onChange={(e) => setCompanyName(e.target.value)}
-                                   placeholder="Enter Brand Name EN"
+                      placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[English]')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field2" className="text-secondary">Brand Name AR </label>
+                                 <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')} </label>
                                  <input
                                    type="text"
                                    id="field2"
                                    value={companyNameArabic}
                                    onChange={(e) => setCompanyNameArabic(e.target.value)}
-                                   placeholder="Enter Brand Name AR"
+                      placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[Arabic]')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
                              </div>
 
                              <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                              <label htmlFor="field3" className="text-secondary">Upload Documents </label>
+                              <label htmlFor="field3" className="text-secondary">{t('Upload Documents')} </label>
                               <input
                                 type="file"
                                 id="field3"
@@ -158,7 +160,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                  onClick={handleCloseCreatePopup}
                                >
-                                 Close
+                                   {t('Close')}
                                </button>
                                {/* <button
                                  type="button"
@@ -175,7 +177,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                 >
-                                  SAVE
+                                  {t('Save')}
                               </Button>
                              </div>
                            </form>
