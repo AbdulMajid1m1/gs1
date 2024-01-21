@@ -776,35 +776,8 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         if (!existingUser.gcpGLNID || !existingUser.gln) {
             throw createError(400, 'User does not have a valid GCP');
         }
+        
 
-        // get existingUser.gcp_expiry and add 1 year to it
-        let expiryDate = new Date(existingUser.gcp_expiry);
-
-        // Add one year
-        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
-        // Check if the original date was February 29th on a leap year
-        if (existingUser.gcp_expiry.getMonth() === 1 && existingUser.gcp_expiry.getDate() === 29) {
-            // Check if the new year is not a leap year
-            if ((expiryDate.getFullYear() % 4 !== 0) ||
-                (expiryDate.getFullYear() % 100 === 0 && expiryDate.getFullYear() % 400 !== 0)) {
-                // Adjust the date to February 28th
-                expiryDate.setDate(28);
-            }
-        }
-
-        console.log("expiryDate");
-        console.log(expiryDate);
-
-        const userUpdateResult = await prisma.users.update({
-            where: { id: value.userId },
-            data: {
-                gcp_expiry: expiryDate,
-                remarks: 'Registered',
-                payment_status: 1,
-                status: 'active'
-            }
-        });
 
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         let gcpGLNID = existingUser?.gcpGLNID;
@@ -836,10 +809,10 @@ export const regenerateGcpCertificate = async (req, res, next) => {
                 gcpGLNID: gcpGLNID,
                 gln: existingUser?.gln,
                 memberID: existingUser?.memberID,
-                gcp_expiry: userUpdateResult?.gcp_expiry,
+                gcp_expiry: existingUser?.gcp_expiry,
             },
             // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-            expiryDate: userUpdateResult?.gcp_expiry.toISOString().split('T')[0],
+            expiryDate: existingUser?.gcp_expiry.toISOString().split('T')[0],
             explodeGPCCode: []
         };
 
