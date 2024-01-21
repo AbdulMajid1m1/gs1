@@ -13,6 +13,7 @@ import ActionDropdown from "../../utils/ActionDropdown";
 import { DataTableContext } from "../../Contexts/DataTableContext";
 import CustomSnakebar from "../../utils/CustomSnackbar";
 import { SnackbarContext } from "../../Contexts/SnackbarContext";
+import { useTranslation } from 'react-i18next';
 import Swal from "sweetalert2";
 // import * as XLSX from 'xlsx';
 
@@ -61,7 +62,7 @@ const DataTable = ({
   const [muiFilteredData, setMuiFilteredData] = useState([]);
   const { rowSelectionModel, setRowSelectionModel, tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
   //   const { openSnackbar } = useContext(SnackbarContext);
-
+  const { t, i18n } = useTranslation();
   const resetSnakeBarMessages = () => {
     setError(null);
     setMessage(null);
@@ -343,7 +344,7 @@ const DataTable = ({
   const actionColumn = [
     {
       field: "action",
-      headerName: "Action",
+      headerName: t('Actions'),
       width: uniqueId === "usersAccountsId" ? 200 : 150,
       renderCell: (params) => (
         <ActionDropdown
