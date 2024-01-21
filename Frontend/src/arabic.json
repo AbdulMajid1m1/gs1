@@ -466,5 +466,6 @@
     "med_subscription_fee": "رسوم الاشتراك في الطب",
     "gcp_description": "وصف gcp",
     "country_code_numeric3": "رمز البلد الرقمي3",
-    "country_name": "اسم الدولة"
+    "country_name": "اسم الدولة",
+    "Actions":"أجراءات"
 }

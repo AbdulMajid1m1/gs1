@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Menu, MenuItem, ListItemIcon, Box } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import { useTranslation } from 'react-i18next';
 // import EditIcon from '@mui/icons-material/Edit';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import UpdateIcon from '@mui/icons-material/Update';
@@ -21,7 +22,8 @@ const ActionDropdown = ({ row, dropDownOptions, getFilteredOptions }) => {
     const isDisabled = filteredOptions.length === 0;
     const handleClose = () => {
         setAnchorEl(null);
-    };
+    }; 
+    const { t, i18n } = useTranslation();
 
     return (
         <div>
@@ -39,7 +41,7 @@ const ActionDropdown = ({ row, dropDownOptions, getFilteredOptions }) => {
                 onClick={handleClick}
                 disabled={isDisabled}
             >
-                Actions
+                {t('Actions')}
             </Button>
             {!isDisabled && (
                 <Menu
