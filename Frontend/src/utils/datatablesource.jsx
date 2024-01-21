@@ -2507,29 +2507,29 @@ export const paymentSlipColumn = [
 
 ];
 
-export const masterDataColumn = [
+export const masterDataColumn =  (t, i18n) => [
 
   {
     field: 'unit_code',
-    headerName: 'Unit Code',
+    headerName: t('Unit Code'),
     width: 180,
   },
   {
     field: 'unit_name',
-    headerName: 'Unit Name',
+    headerName: t('Unit Name'),
     width: 260,
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 180,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -2539,7 +2539,7 @@ export const masterDataColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3463,25 +3463,25 @@ const handleVideoDownload = (videoUrl) => {
   const fileUrl = videoUrl;
   saveAs(fileUrl, `${videoUrl}.mp4`);
 };
-export const document = [
+export const document =(t)=> [
 
   {
     field: 'name',
-    headerName: 'name',
+    headerName: t('name'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 180,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3491,7 +3491,7 @@ export const document = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3501,25 +3501,25 @@ export const document = [
   },
 ];
 
-export const product_packaging = [
+export const product_packaging =(t)=> [
 
   {
     field: 'name',
-    headerName: 'name',
+    headerName: t('name'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 180,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3529,7 +3529,7 @@ export const product_packaging = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3591,50 +3591,50 @@ export const footerMenuDataColumn = [
   },
 ];
 
-export const Other_Products = [
+export const Other_Products =(t)=> [
 
   {
     field: 'product_name',
-    headerName: 'product_name',
+    headerName: t('product_name'),
     width: 260,
   },
   {
     field: 'total_no_of_barcodes',
-    headerName: 'total_no_of_barcodes',
+    headerName: t('total_no_of_barcodes'),
     width: 180,
   },
   {
     field: 'product_subscription_fee',
-    headerName: 'product_subscription_fee',
+    headerName: t('product_subscription_fee'),
     width: 180,
   },
 
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 130,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
   {
     field: 'code',
-    headerName: 'code',
+    headerName: t('code'),
     width: 180,
   },
   {
     field: 'med_subscription_fee',
-    headerName: 'med_subscription_fee',
+    headerName: t('med_subscription_fee'),
     width: 180,
   },
   {
     field: 'variant',
-    headerName: 'variant At',
+    headerName: t('variant'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3644,7 +3644,7 @@ export const Other_Products = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3653,22 +3653,22 @@ export const Other_Products = [
     }
   },
 ];
-export const Gcp_types = [
+export const Gcp_types =(t)=> [
 
   {
     field: 'gcp_code',
-    headerName: 'gcp_code',
+    headerName: t('gcp_code'),
     width: 180,
   },
   {
     field: 'gcp_description',
-    headerName: 'gcp_description',
+    headerName: t('gcp_description'),
     width: 180,
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3678,7 +3678,7 @@ export const Gcp_types = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3687,31 +3687,31 @@ export const Gcp_types = [
     }
   },
 ];
-export const counrty_sales = [
+export const counrty_sales =(t)=> [
 
   {
     field: 'Alpha2',
-    headerName: 'Alpha2',
+    headerName: t('Alpha2'),
     width: 130,
   },
   {
     field: 'Alpha3',
-    headerName: 'Alpha3',
+    headerName: t('Alpha3'),
     width: 130,
   },
   {
     field: 'country_code_numeric3',
-    headerName: 'country_code_numeric3',
+    headerName: t('country_code_numeric3'),
     width: 180,
   },
   {
     field: 'country_name',
-    headerName: 'country_name',
+    headerName: t('country_name'),
     width: 260,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3721,7 +3721,7 @@ export const counrty_sales = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
