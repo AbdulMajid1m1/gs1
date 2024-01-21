@@ -3653,22 +3653,22 @@ export const Other_Products =(t)=> [
     }
   },
 ];
-export const Gcp_types = [
+export const Gcp_types =(t)=> [
 
   {
     field: 'gcp_code',
-    headerName: 'gcp_code',
+    headerName: t('gcp_code'),
     width: 180,
   },
   {
     field: 'gcp_description',
-    headerName: 'gcp_description',
+    headerName: t('gcp_description'),
     width: 180,
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3678,7 +3678,7 @@ export const Gcp_types = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

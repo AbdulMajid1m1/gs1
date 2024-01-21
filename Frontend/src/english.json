@@ -413,5 +413,6 @@
     "total_no_of_barcodes":"total_no_of_barcodes",
     "product_subscription_fee":"product_subscription_fee",
     "med_subscription_fee":"med_subscription_fee",
-    "variant":"variant"
+    "variant":"variant",
+    "gcp_description":"gcp_description"
 }

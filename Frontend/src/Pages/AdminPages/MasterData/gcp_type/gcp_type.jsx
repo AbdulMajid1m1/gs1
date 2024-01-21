@@ -283,7 +283,7 @@ const Gcp_type = () =>
 
                 <DataTable data={data}
                   title={t('Gcp_type')}
-                  columnsName={Gcp_types}
+                  columnsName={Gcp_types(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
