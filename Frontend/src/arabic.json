@@ -476,5 +476,7 @@
     "Upload": "رفع",
     "The Bulk Barcode is not generated": "لا يتم إنشاء الرمز الشريطي المجمع",
     "Generate Bulk SSCC Barcodes": "إنشاء رموز شريطية SSCC مجمعة",
-    "Unit Name":"إسم الوحدة"
+    "Unit Name":"إسم الوحدة",
+    "status":"حالة",
+    "name":"اسم"
 }

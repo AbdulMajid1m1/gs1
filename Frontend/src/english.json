@@ -406,5 +406,7 @@
     "Upload": "Upload",
     "The Bulk Barcode is not generated": "The Bulk Barcode is not generated",
     "Generate Bulk SSCC Barcodes": "Generate Bulk SSCC Barcodes",
-    "Unit Name":"Unit Name"
+    "Unit Name":"Unit Name",
+    "status":"status",
+    "name":"name"
 }

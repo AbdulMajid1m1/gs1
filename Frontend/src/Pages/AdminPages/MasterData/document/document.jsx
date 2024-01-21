@@ -265,7 +265,7 @@ const Documents = () =>
 
                 <DataTable data={data}
                   title={t('Documents')}
-                  columnsName={document}
+                  columnsName={document(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
