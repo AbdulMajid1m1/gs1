@@ -9,7 +9,9 @@ const userRouter = express.Router();
 userRouter.post('/', createUser);
 
 userRouter.get('/', getUserDetails);
+
 userRouter.get('/rejected', getRejectedUserDetails);
+
 userRouter.get('/rejectedCarts', getCartsDetails);
 
 

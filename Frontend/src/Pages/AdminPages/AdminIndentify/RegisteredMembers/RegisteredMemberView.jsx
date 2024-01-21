@@ -67,6 +67,8 @@ const RegisteredMembersView = () => {
   const [isPendingApprovedPopupVisible, setIsPendingApprovedPopupVisible] = useState(false);
   const [subType, setSubType] = useState("");
   const [isUpgradePopupVisible, setIsUpgradePopupVisible] = useState(false);
+  const [gcpCertificatePath, setGcpCertificatePath] = useState("");
+
   const handleShowUpgradePopup = (row) => {
     setSubType("UPGRADE")
     setIsUpgradePopupVisible(true);
@@ -204,6 +206,10 @@ const RegisteredMembersView = () => {
       const response = await newRequest.get(`/memberDocuments?user_id=${Id}`);
       // console.log(response.data);
       setMembersDocumentsData(response?.data || []);
+      // Extract the gcp certificate path from the response to use it in the Member details section
+      const gcpCertificatePath = response?.data?.find(item => item?.type === 'certificate')?.document;
+      console.log(gcpCertificatePath);
+      setGcpCertificatePath(gcpCertificatePath);
       setMemberDocumentsLoader(false);
 
     }
@@ -597,15 +603,15 @@ const RegisteredMembersView = () => {
             <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
 
               {/* All TextFeild comming from Props */}
-              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} />
+              <MembersDetails gs1MemberData={allUserData} refreshAllUserData={fetchAllUserData} editableData={editableData} handleInputChange={handleInputChange} gcpCertificatePath={gcpCertificatePath} fetchMemberDocumentsData={fetchMemberDocumentsData} />
 
 
               {/* Registered Products */}
-              
+
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}
-                  title={`${t('Registered Products')}`} 
+                  title={`${t('Registered Products')}`}
                   columnsName={registeredmemberColumn}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
@@ -653,11 +659,11 @@ const RegisteredMembersView = () => {
                     onClick={handlePendingApprovedPopUp}
                     className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
                       }`}
-                    disabled={allUserData.isproductApproved == 1}
+                    disabled={allUserData.isproductApproved === 1 ? true : allUserData.isproductApproved === undefined ? true : false}
                     // show disable cursor if status is not approved
                     style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 0 ? "Pending For Approval" : "Rejected"}
                   </button>
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
@@ -706,7 +712,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable2 data={membersDocuemtsData}
-                    title={`${t("Member'z Documents")}`} 
+                    title={`${t("Member'z Documents")}`}
                     columnsName={MembersDocumentColumn}
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
@@ -748,7 +754,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable data={brandsData}
-                    title={`${t('Brands')}`} 
+                    title={`${t('Brands')}`}
                     columnsName={MembersBrandsColumn}
                     loading={brandsLoader}
                     secondaryColor="secondary"
@@ -825,7 +831,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable data={memberInovice}
-                    title={`${t('Member Invoice')}`} 
+                    title={`${t('Member Invoice')}`}
                     columnsName={financeColumn}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
@@ -850,7 +856,7 @@ const RegisteredMembersView = () => {
                   className='sm:w-[50%] w-full'
                 >
                   <DataTable3 data={filteredMemberDetails}
-                    title={`${t('Member Bank Slip')}`} 
+                    title={`${t('Member Bank Slip')}`}
                     columnsName={bankSlipColumn}
                     loading={memberBankSlipLoader}
                     secondaryColor="secondary"
@@ -908,7 +914,7 @@ const RegisteredMembersView = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
               >
                 <DataTable2 data={subMenusData}
-                  title={`${t('Sub-Members')}`} 
+                  title={`${t('Sub-Members')}`}
                   columnsName={submenusDataColumn}
                   loading={subMembersLoader}
                   secondaryColor="secondary"
@@ -1001,6 +1007,7 @@ const RegisteredMembersView = () => {
             // fetchAllUserData={fetchAllUserData} MemberbankSlip={fetchMemberbankSlipData}
             fetchAllUserData={fetchAllUserData} fetchMemberHistoryData={fetchMemberHistoryData} fetchMemberbankSlipData={fetchMemberbankSlipData}
             fetchRegisteredProductsData={fetchRegisteredProductsData} userData={allUserData}
+            fetchMemberDocumentsData={fetchMemberDocumentsData}
           />
         )}
 

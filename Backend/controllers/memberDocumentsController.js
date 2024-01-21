@@ -14,6 +14,7 @@ import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
+import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
@@ -692,7 +693,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         //     // Send email with optional reject reason
         //     await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         // }
-
         if (value.status === 'rejected') {
             // Set the document status to pending
             await prisma.member_documents.update({
@@ -700,69 +700,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
-            // Fetch the user along with their related cart
-            const userWithCart = await prisma.users.findUnique({
-                where: { id: currentDocument.user_id },
-                include: {
-                    carts: true, // This includes the carts related to the user
-                }
-            });
-
-            // Check if user exists
-            if (!userWithCart) {
-                throw createError(404, 'User not found');
-            }
-
-            // Extract user and cart data
-            const { carts, ...userData } = userWithCart;
-            const cartData = carts.length > 0 ? carts[0] : null;
-            // replace carts in userData with rejected_carts
-            userData.rejected_carts = cartData.carts;
-            delete userData.carts;
-            userData.deleted_at = new Date();
-            userData.status = 'rejected';
-            userData.remarks = value.reject_reason;
-            userData.payment_status = 0;
-            // remove member_history_logs 
-            delete userData.member_history_logs;
 
 
-            // Begin a transaction
-            await prisma.$transaction(async (prisma) => {
-                // Create rejected user record
-                const rejectedUser = await prisma.rejected_users.create({
-                    data: {
-                        ...userData,
-                        id: undefined, // Exclude 'id' if it's auto-generated
-                        reject_reason: value.reject_reason,
-                        // Exclude 'carts' field since it's not a column in 'rejected_users'
-                    }
-                });
-
-                // Move cart to rejected_carts if it exists
-                if (cartData) {
-                    await prisma.rejected_carts.create({
-                        data: {
-                            ...cartData,
-                            id: undefined, // Exclude 'id' if it's auto-generated
-                            reject_reason: value.reject_reason,
-                            user_id: rejectedUser.id, // Use the id of the newly created rejected user
-                            // Exclude 'user' field since it's not a column in 'rejected_carts'
-                        }
-                    });
-
-                    // Delete the original cart
-                    await prisma.carts.delete({ where: { id: cartData.id } });
-                }
-
-                // Delete the original user
-                await prisma.users.delete({ where: { id: userData.id } });
-            });
 
             // Send email with optional reject reason
-            await sendStatusUpdateEmail(userData.email, value.status, null, null, value.reject_reason);
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         }
-
 
 
 
@@ -789,6 +732,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }
         });
 
+        await updateUserPendingInvoiceStatus(currentDocument.user_id)
+
         // return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
         if (value.status === 'approved') {
             return res.json({ message: 'Document status updated to approved' });
@@ -802,6 +747,142 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         next(err);
     }
 };
+
+const regenerateGcpCertificateSchema = Joi.object({
+    userId: Joi.string().required(),
+
+});
+
+
+export const regenerateGcpCertificate = async (req, res, next) => {
+    try {
+        // Validate the request body
+        const { error, value } = regenerateGcpCertificateSchema.validate(req.body);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        // Check if the user exists
+        const existingUser = await prisma.users.findUnique({ where: { id: value.userId } });
+        if (!existingUser) {
+            throw createError(404, 'User not found');
+        }
+
+        // Check if the user has a valid GCP
+        if (!existingUser.gcpGLNID || !existingUser.gln) {
+            throw createError(400, 'User does not have a valid GCP');
+        }
+        
+
+
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        let gcpGLNID = existingUser?.gcpGLNID;
+        const CertificateData = {
+            BACKEND_URL: BACKEND_URL,
+            qrCodeDataURL: qrCodeDataURL,
+
+            user: {
+                company_name_eng: existingUser?.company_name_eng,
+            },
+            general: {
+                gcp_certificate_detail1:
+                    ['Global Trade Item Number(GTIN)',
+                        'Serial Shipping Container Code (SSCC)',
+                        'Global Location Number (GLN)',
+                        'Global Document Type Identifier(GDTI)',
+                        'Global Service Relation Number(GSRN)'
+                    ], // Dummy data, replace with actual detail data from your API
+                gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
+                    'Global Identification Number for',
+                    'Consignment(GSNC)',
+                    'Global Shipment Identification Number (GSIN)'
+                ], // Dummy data, replace with actual detail data from your API
+                gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+            },
+
+            userData: {
+                // add user data here
+                gcpGLNID: gcpGLNID,
+                gln: existingUser?.gln,
+                memberID: existingUser?.memberID,
+                gcp_expiry: existingUser?.gcp_expiry,
+            },
+            // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+            expiryDate: existingUser?.gcp_expiry.toISOString().split('T')[0],
+            explodeGPCCode: []
+        };
+
+        console.log("existingUser")
+        console.log(existingUser)
+
+
+
+
+
+        // Generate PDF from EJS template
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
+        let pdfFilename = `${existingUser.company_name_eng}-Certificate.pdf`;
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+        if (!fsSync.existsSync(pdfDirectory)) {
+            fsSync.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+
+
+        // find the member document with type certificate
+        const currentDocument = await prisma.member_documents.findFirst({
+            where: {
+                user_id: existingUser.id,
+                type: 'certificate',
+            }
+        });
+
+
+        const deletingDocumentPath = path.join(__dirname, '..', 'public', currentDocument.document.replace(/\\/g, '/'));
+        console.log("deletingDocumentPath");
+        console.log(deletingDocumentPath);
+        try {
+            if (fsSync.existsSync(deletingDocumentPath)) {
+                fsSync.unlinkSync(deletingDocumentPath);
+                console.log(`File deleted: ${deletingDocumentPath}`);
+            } else {
+                console.log(`File not found: ${deletingDocumentPath}`);
+            }
+        } catch (err) {
+            console.error(`Error deleting file: ${deletingDocumentPath}`, err);
+        }
+        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+        let pdfBuffer = await fs1.readFile(Certificatepath);
+        const updatedDocument = await prisma.member_documents.update({
+            where: { id: currentDocument.id },
+            data: {
+                document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
+            }
+
+        });
+
+        // Send an email based on the updated status use send email function
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: existingUser.email,
+            subject: 'New GCP Certificate',
+            htmlContent: '<p>Your GCP Certificate has been updated.</p>',
+            attachments: [{
+                filename: pdfFilename,
+                content: pdfBuffer,
+                contentType: 'application/pdf'
+            }]
+        });
+
+        return res.json({ message: 'GCP Certificate regenerated successfully' });
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+};
+
+
+
 
 
 // Function to send status update email
