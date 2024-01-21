@@ -22,8 +22,12 @@ import helpdesk1 from '../../Images/helpdesk1.png';
 import logout from '../../Images/logout.png';
 import foreigngtin from '../../Images/foreigngtin.png';
 import newRequest from "../../utils/userRequest";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../i18n";
+import LanguageSwitcher from "../../switer";
 
 const SideBar = () => {
+  const { t, i18n } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -112,8 +116,8 @@ const SideBar = () => {
 
   return (
     <div>
-      <div className="h-10 sm:ml-72 mb-6 bg-[#1E3B8B] ">
-        <div className="flex justify-between items-center">
+      <div className={`h-10 mb-6 bg-[#1E3B8B] ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+        <div className={`flex justify-between items-center ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`} >
           <div className="flex items-center">
             <button
               data-drawer-target="logo-sidebar"
@@ -123,7 +127,7 @@ const SideBar = () => {
               className="inline-flex items-center p-2 ml-3 text-sm text-white rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
               onClick={toggleSidebar}
             >
-              <span className="sr-only">Open sidebar</span>
+              <span className="sr-only">{t('Open sidebar')}</span>
               <svg
                 className="w-6 h-6"
                 aria-hidden="true"
@@ -144,8 +148,13 @@ const SideBar = () => {
           </div>
 
           <div
-            className="flex justify-center items-center cursor-pointer mt-1 px-4"
+            className={`flex justify-end items-center px-0   ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}
           >
+            <span>
+              <I18nextProvider i18n={i18n}>
+                <LanguageSwitcher />
+              </I18nextProvider>
+            </span>
            <div className='flex justify-end items-center px-0 mr-4'>
                 <span>
                   <p className="text-white font-sans mr-5 hover:text-primary" 
@@ -182,8 +191,8 @@ const SideBar = () => {
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0`}
+        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >
@@ -202,7 +211,7 @@ const SideBar = () => {
           <hr />
 
           <div
-            className={`main-images-container ${selectedItem === '/member/dashboard' ? 'selected-item' : ''}`}
+            className={`main-images-container ${selectedItem === '/member/dashboard' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => handleItemClick('/member/dashboard')}
             onContextMenu={(event) =>
               handleContextMenu(event, '/member/dashboard')
@@ -214,11 +223,11 @@ const SideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Dashboard</p>
+            <p className="sidebar-text"> {t('Dashboard')}</p>
           </div>
 
           <div
-              className="main-images-container"
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
               onClick={() => setShowFirstData(!showFirstData)}
             >
               <img
@@ -226,7 +235,7 @@ const SideBar = () => {
                 className="main-inside-image bg-white rounded-full"
                 alt=""
               />
-              <p className="sidebar-text">IDENTIFY</p>
+              <p className="sidebar-text">{t('IDENTIFY')}</p>
               {showFirstData ? (
                 <i className='fas fa-solid fa-chevron-up text-white'></i>
               ) : (
@@ -241,7 +250,7 @@ const SideBar = () => {
               >
                 {/* {apiResponse.length === 0 && ( */}
                 <div
-                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   onClick={() => handleItemClick('/member/gtin')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/member/gtin')
@@ -252,17 +261,15 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">GTIN</p>
+                  <p className="sidebar-text">{t('GTIN')}</p>
                 </div>
                  {/* )} */}
-
-
               {apiResponse.length > 0 && (
                <>
                 {/* {apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)') && ( */}
                 {(apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)')) && (
                 <div
-                  className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''}`}
+                      className={`main-images-container ${selectedItem === '/member/gln' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   onClick={() => handleItemClick('/member/gln')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/member/gln')
@@ -273,13 +280,13 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">GLN</p>
+                  <p className="sidebar-text">{t('GLN')}</p>
                 </div>
                  )}
 
               {apiResponse.includes('SSCC') && (
                 <div
-                  className={`main-images-container ${selectedItem === '/member/sscc' ? 'selected-item' : ''}`}
+                      className={`main-images-container ${selectedItem === '/member/sscc' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   onClick={() => handleItemClick('/member/sscc')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/member/sscc')
@@ -290,14 +297,14 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">SSCC</p>
+                  <p className="sidebar-text">{t('SSCC')}</p>
                 </div>
                 )}
 
 
               {apiResponse.includes('Foreign GTIN (for Imported products)') && (
                 <div
-                  className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''}`}
+                      className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   onClick={() => handleItemClick('/member/udi')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/member/udi')
@@ -308,14 +315,14 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Foreign GTIN</p>
+                  <p className="sidebar-text">{t('Foreign GTIN')}</p>
                 </div>
                 )}
 
 
                 {apiResponse.includes('UDI') && (
                 <div
-                  className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''}`}
+                      className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   onClick={() => handleItemClick('/member/udi')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/member/udi')
@@ -326,14 +333,14 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">UDI</p>
+                  <p className="sidebar-text"> {t('UDI')}</p>
                 </div>
                 )}
                  </>
                 )}
 
                 <div 
-                  className={`main-images-container ${selectedItem === '/member/member-brands' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/member/member-brands' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member/member-brands')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member/member-brands')
@@ -344,14 +351,14 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Brands</p>
+                <p className="sidebar-text">{t('Brands')}</p>
                 </div>
               </div>
             )}
 
 
             <div
-              className="main-images-container"
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
               onClick={() => setShowSecondData(!showSecondData)}
             >
             <img
@@ -359,7 +366,7 @@ const SideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">CAPTURE</p>
+            <p className="sidebar-text">{t('CAPTURE')}</p>
             {showSecondData ? (
                 <i className='fas fa-solid fa-chevron-up text-white'></i>
               ) : (
@@ -373,7 +380,7 @@ const SideBar = () => {
                 onClick={toggleSidebar}
               >
                 <div 
-                  className={`main-images-container ${selectedItem === '/member/payment-slips' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/member/payment-slips' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member/payment-slips')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member/payment-slips')
@@ -384,11 +391,11 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Payment Slips</p>
+                <p className="sidebar-text">{t('Payment Slips')}</p>
                 </div>
 
                 <div 
-                  className={`main-images-container ${selectedItem === '/member/transaction-history' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/member/transaction-history' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member/transaction-history')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member/transaction-history')
@@ -399,7 +406,7 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Transaction History</p>
+                <p className="sidebar-text">{t('Transaction History')}</p>
                 </div>
                
 
@@ -408,7 +415,7 @@ const SideBar = () => {
 
 
             <div
-              className="main-images-container"
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
               onClick={() => setShowThirdData(!showThirdData)}
             >
             <img
@@ -416,7 +423,7 @@ const SideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">SHARE</p>
+            <p className="sidebar-text">{t('SHARE')}</p>
             {showThirdData ? (
                 <i className='fas fa-solid fa-chevron-up text-white'></i>
               ) : (
@@ -430,7 +437,7 @@ const SideBar = () => {
                 onClick={toggleSidebar}
               >
                 <div 
-                  className={`main-images-container ${selectedItem === '/member' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/member' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member')
@@ -441,11 +448,11 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Verified by GS1</p>
+                  <p className="sidebar-text">{t('Verified by GS1')}</p>
                 </div>
 
                 <div 
-                  className={`main-images-container ${selectedItem === '/member/' ? 'selected-item' : ''}`}
+                className={`main-images-container ${selectedItem === '/member/' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member/')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member/')
@@ -456,7 +463,7 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">GS1 Digital Link</p>
+                <p className="sidebar-text">{t('GS1 Digital Link')}</p>
                 </div>
                
 
@@ -496,7 +503,7 @@ const SideBar = () => {
                 onClick={toggleSidebar}
               > */}
                 <div 
-                  className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''}`}
+            className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member/member-profile')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member/member-profile')
@@ -507,7 +514,7 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">Member Profile</p>
+                  <p className="sidebar-text"> {t('Member Profile')}</p>
                 </div>
 
                 {/* <div 
@@ -549,7 +556,7 @@ const SideBar = () => {
 
 
           <div
-            className={`main-images-container ${selectedItem === '/member/member-helpdesk' ? 'selected-item' : ''}`}
+            className={`main-images-container ${selectedItem === '/member/member-helpdesk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => handleItemClick('/member/member-helpdesk')}
             onContextMenu={(event) =>
               handleContextMenu(event, '/member/member-helpdesk')
@@ -561,12 +568,12 @@ const SideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Help Desk</p>
+            <p className="sidebar-text">{t('Help Desk')}</p>
           </div>
 
 
           <div
-            className={`main-images-container ${selectedItem === '/member/subscribed-gtin' ? 'selected-item' : ''}`}
+            className={`main-images-container ${selectedItem === '/member/subscribed-gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => handleItemClick('/member/subscribed-gtin')}
             onContextMenu={(event) =>
               handleContextMenu(event, '/member/subscribed-gtin')
@@ -578,11 +585,11 @@ const SideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Subscribed GTIN</p>
+            <p className="sidebar-text">{t('Subscribed GTIN')}</p>
           </div>
 
           <div
-            className={`main-images-container`}
+            className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => navigate('/')}
           >
             <img
@@ -590,20 +597,20 @@ const SideBar = () => {
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Log-out</p>
+            <p className="sidebar-text">{t('Log-out')}</p>
           </div>
 
 
           {/* Implement Any Icon above the Hide Icons */}
           <div className="main-images-container-hide">
             <img src={internal} className="main-inside-image" alt="" />
-            <p className="sidebar-text">Hide</p>
+            <p className="sidebar-text">{t('Hide')}</p>
           </div>
         </div>
 
           {/* This two icons  */}
           <div>
-            <div className="flex justify-between w-[95%] px-2 absolute bottom-0 bg-[#1E3B8B]">
+            <div className={`flex justify-between w-[95%] px-2 absolute bottom-0 bg-[#1E3B8B] ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
               <div className="main-images-container">
                 <img src={isoicon} className="main-inside-image-gs1logo" alt="" />
               </div>
@@ -627,13 +634,13 @@ const SideBar = () => {
               className='context-menu-option'
               onClick={() => handleContextMenuOptionClick('openNewTab')}
             >
-              Open in New Tab
+              {t('Open in New Tab')}
             </div>
             <div
               className='context-menu-option'
               onClick={() => handleContextMenuOptionClick('someOption')}
             >
-              Close
+              {t('Close')}
             </div>
             {/* ...other context menu options... */}
           </div>

@@ -374,5 +374,17 @@
     "Click Here PDF Guide":"Click Here PDF Guide",
     "(About CR Number)":"(About CR Number)",
     "Click here if you want to add your CR!":"Click here if you want to add your CR!",
-    "Continue":"Continue"
+    "Continue":"Continue",
+    "UDI":"UDI",
+    "Transaction History":"Transaction History",
+    "GS1 Digital Link":"GS1 Digital Link",
+    "Member Profile":"Member Profile",
+    "Help Desk":"Help Desk",
+    "Subscribed GTIN":"Subscribed GTIN",
+    "Member Products":"Member Products",
+    "Range of Barcodes":"Range of Barcodes",
+    "Barcodes Issued":"Barcodes Issued",
+    "Barcodes remaining":"Barcodes remaining",
+    "Product created Successfully":"Product created Successfully",
+    "GLN Added Successfully":"GLN Added Successfully"
 }
