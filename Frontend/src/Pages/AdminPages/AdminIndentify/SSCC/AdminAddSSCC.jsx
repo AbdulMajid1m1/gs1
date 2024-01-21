@@ -6,12 +6,14 @@ import { DotLoader } from 'react-spinners'
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 import { useTranslation } from 'react-i18next';
+import newRequest from '../../../../utils/userRequest';
 const AdminAddSSCC = () => {
 
   const navigate = useNavigate();
-  //   const memberDataString = sessionStorage.getItem('memberData');
-  //   const memberData = JSON.parse(memberDataString);
-  //   console.log(memberData);
+  // get the sessionRow data
+  const selectedAddSSCCData = sessionStorage.getItem('selectedAddSSCCData');
+  const SelectedData = JSON.parse(selectedAddSSCCData);
+  console.log(SelectedData);
 
   const { t, i18n } = useTranslation();
   const [palletForm, setShowPalletForm] = React.useState(false);
@@ -49,176 +51,176 @@ const AdminAddSSCC = () => {
 
 
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //     console.log(digitExtension, ssccType, vendorID, vendorName, productID, productDesc, serialNo, itemCode, qty, useBy, batchNo, boxOf);
-  //     console.log(hsn, po, expireDate, vendorLabelID, cartonQty, shipTo, shipDate, vendorItem, description, shortQtyCode, countryOfOrigin, carton);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+      console.log(digitExtension, ssccType, vendorID, vendorName, productID, productDesc, serialNo, itemCode, qty, useBy, batchNo, boxOf);
+      console.log(hsn, po, expireDate, vendorLabelID, cartonQty, shipTo, shipDate, vendorItem, description, shortQtyCode, countryOfOrigin, carton);
 
-  //     const apiRequestBody = {
-  //         // preDigit: digitExtension,
-  //         sscc_type: ssccType,
-  //         product_id: productID,
-  //         // gcpGLNID: 62810008,
-  //         VendorID: vendorID,
-  //         VendorName: vendorName,
-  //         productID: productID,
-  //         description: productDesc,
-  //         SerialNumber: serialNo,
-  //         ItemCode: itemCode,
-  //         Qty: qty,
-  //         UseBy: useBy,
-  //         BatchNo: batchNo,
-  //         Boxof: boxOf,
-  //         // user_id: 3,
-  //         user_id: memberData?.id,
-
-
-  //         // preDigit: 0,
-  //         // sscc_type: 'pallet',
-  //         // product_id: '2',
-  //         // gcpGLNID: 62810008,
-  //         // PalletVendorID: '4',
-  //         // VendorName: 'ventdow',
-  //         // productID: '2',
-  //         // PalletDescription: '4',
-  //         // SerialNumber: '5',
-  //         // ItemCode: '8',
-  //         // PalletQty: '120',
-  //         // UseBy: 'not',
-  //         // BatchNo: 'good',
-  //         // Boxof: 'box',
-  //         // user_id: 3,
-
-  //       };
-
-  //       console.log(apiRequestBody)
-
-  //     if (ssccType === 'pallet') {
-  //       newRequest
-  //         .post('/sscc', apiRequestBody)
-  //         .then((response) => {
-  //           const data = response.data;
-  //           console.log('Pallet API Response:', data);
-  //           setIsLoading(false);
-
-  //           toast.success(response?.data?.message || 'SSCC created successfully.', {
-  //             position: 'top-right',
-  //             autoClose: 2000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: 'light',
-  //           });
-
-  //           setTimeout(() => {
-  //               navigate(-1)
-  //           },1500)
-  //           e.target.reset();
+      const apiRequestBody = {
+          // preDigit: digitExtension,
+          sscc_type: ssccType,
+          product_id: productID,
+          // gcpGLNID: 62810008,
+          VendorID: vendorID,
+          VendorName: vendorName,
+          productID: productID,
+          description: productDesc,
+          SerialNumber: serialNo,
+          ItemCode: itemCode,
+          Qty: qty,
+          UseBy: useBy,
+          BatchNo: batchNo,
+          Boxof: boxOf,
+          // user_id: 3,
+          user_id: SelectedData?.user_id,
 
 
-  //         })
-  //         .catch((error) => {
-  //           console.error('Error calling Pallet API:', error);
-  //           setIsLoading(false);
+          // preDigit: 0,
+          // sscc_type: 'pallet',
+          // product_id: '2',
+          // gcpGLNID: 62810008,
+          // PalletVendorID: '4',
+          // VendorName: 'ventdow',
+          // productID: '2',
+          // PalletDescription: '4',
+          // SerialNumber: '5',
+          // ItemCode: '8',
+          // PalletQty: '120',
+          // UseBy: 'not',
+          // BatchNo: 'good',
+          // Boxof: 'box',
+          // user_id: 3,
 
-  //             toast.error(error?.response?.data?.error || 'Error', {
-  //             position: 'top-right',
-  //             autoClose: 2000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: 'light',
-  //             })
+        };
 
-  //         });
-  //     } else if (ssccType === 'label') {
+        console.log(apiRequestBody)
 
-  //       const labelApiRequestBody = {
-  //         // product_id: '4',
-  //         // // gcpGLNID: 62810008,
-  //         // PalletVendorID: '',
-  //         // VendorName: '',
-  //         // productID: '',
-  //         // reference_id: '8',
-  //         // PalletDescription: '',
-  //         // SerialNumber: '',
-  //         // ItemCode: '',
-  //         // PalletQty: '',
-  //         // UseBy: '',
-  //         // BatchNo: '',
-  //         // Boxof: '',
-  //         // preDigit: digitExtension,
-  //         sscc_type: ssccType,
-  //         user_id: memberData?.id,
-  //         hsn_sku: hsn,
-  //         po_no: po,
-  //         expiraton_date: expireDate,
-  //         VendorID: vendorLabelID,
-  //         Qty: cartonQty,
-  //         ship_to: shipTo,
-  //         ship_date: shipDate,
-  //         vendor_item_no: vendorItem,
-  //         short_qty_code: shortQtyCode,
-  //         description : description,
-  //         country_id: countryOfOrigin,
-  //         carton: carton,
+      if (ssccType === 'pallet') {
+        newRequest
+          .post('/sscc', apiRequestBody)
+          .then((response) => {
+            const data = response.data;
+            console.log('Pallet API Response:', data);
+            setIsLoading(false);
 
-  //       };
+            toast.success(response?.data?.message || 'SSCC created successfully.', {
+              position: 'top-right',
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            });
 
-  //       console.log(labelApiRequestBody)
-
-  //       newRequest
-  //         .post('/sscc', labelApiRequestBody)
-  //         .then((response) => {
-  //           // Handle success response from Label API
-  //           const data = response.data;
-  //           console.log('Label API Response:', data);
-
-  //           toast.success(response?.data?.message || 'SSCC created successfully.', {
-  //             position: 'top-right',
-  //             autoClose: 2000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: 'light',
-  //           });
-
-  //           setIsLoading(false)
-  //           setTimeout(() => {
-  //             navigate(-1)
-  //           },1500)
-  //           e.target.reset();
+            setTimeout(() => {
+                navigate(-1)
+            },1500)
+            e.target.reset();
 
 
-  //         })
-  //         .catch((error) => {
-  //           // Handle error calling Label API
-  //           console.error('Error calling Label API:', error);
+          })
+          .catch((error) => {
+            console.error('Error calling Pallet API:', error);
+            setIsLoading(false);
 
-  //           toast.error(error?.response?.data?.error || 'Error', {
-  //             position: 'top-right',
-  //             autoClose: 2000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: 'light',
-  //             })
+              toast.error(error?.response?.data?.error || 'Error', {
+              position: 'top-right',
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+              })
 
-  //           setIsLoading(false)
-  //         });
+          });
+      } else if (ssccType === 'label') {
+
+        const labelApiRequestBody = {
+          // product_id: '4',
+          // // gcpGLNID: 62810008,
+          // PalletVendorID: '',
+          // VendorName: '',
+          // productID: '',
+          // reference_id: '8',
+          // PalletDescription: '',
+          // SerialNumber: '',
+          // ItemCode: '',
+          // PalletQty: '',
+          // UseBy: '',
+          // BatchNo: '',
+          // Boxof: '',
+          // preDigit: digitExtension,
+          sscc_type: ssccType,
+          user_id: SelectedData?.user_id,
+          hsn_sku: hsn,
+          po_no: po,
+          expiraton_date: expireDate,
+          VendorID: vendorLabelID,
+          Qty: cartonQty,
+          ship_to: shipTo,
+          ship_date: shipDate,
+          vendor_item_no: vendorItem,
+          short_qty_code: shortQtyCode,
+          description : description,
+          country_id: countryOfOrigin,
+          carton: carton,
+
+        };
+
+        console.log(labelApiRequestBody)
+
+        newRequest
+          .post('/sscc', labelApiRequestBody)
+          .then((response) => {
+            // Handle success response from Label API
+            const data = response.data;
+            console.log('Label API Response:', data);
+
+            toast.success(response?.data?.message || 'SSCC created successfully.', {
+              position: 'top-right',
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            });
+
+            setIsLoading(false)
+            setTimeout(() => {
+              navigate(-1)
+            },1500)
+            e.target.reset();
 
 
-  //     }
-  //   };
+          })
+          .catch((error) => {
+            // Handle error calling Label API
+            console.error('Error calling Label API:', error);
+
+            toast.error(error?.response?.data?.error || 'Error', {
+              position: 'top-right',
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+              })
+
+            setIsLoading(false)
+          });
+
+
+      }
+    };
 
 
 
@@ -279,8 +281,8 @@ const AdminAddSSCC = () => {
               </button>
             </div>
 
-            {/* <form onSubmit={handleSubmit}> */}
-            <form>
+            <form onSubmit={handleSubmit}>
+            {/* <form> */}
               <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                   <label htmlFor='extension'>  {t('Extension Digit')}<span className='text-red-600'>*</span></label>
