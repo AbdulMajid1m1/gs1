@@ -286,7 +286,7 @@ const Hscode = () =>
 
                 <DataTable data={data}
                   title={t('Hs Code')}
-                  columnsName={Hs_code}
+                  columnsName={Hs_code(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

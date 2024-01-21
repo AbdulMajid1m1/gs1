@@ -236,7 +236,7 @@
     "Add hs code": "أضف رمز النظام المنسق",
     "CNKEY": "CNKEY",
     "Enter CNKEY": "أدخل سي إن كي",
-    "HSCODES": "HSCODES",
+    "HSCODES": "رموز النظام المنسق",
     "Enter HSCODES": "أدخل هسكودس",
     "Enter Description": "أدخل الوصف",
     "Add HSCODES": "أضف رموز النظام المنسق",
@@ -455,8 +455,8 @@
     "Barcodes remaining":"الباركود المتبقية",
     "Product created Successfully":"تم إنشاء المنتج بنجاح",
     "GLN Added Successfully":"تمت إضافة GLN بنجاح",
-    "Created At":"پر تخلیق کیا گیا۔",
-    "Updated At":"پر اپ ڈیٹ کیا گیا۔",
+    "Created At":"أنشئت في",
+    "Updated At":"تم التحديث في",
     "Unit Name":"إسم الوحدة",
     "status":"حالة",
     "name":"اسم",
@@ -467,5 +467,9 @@
     "gcp_description": "وصف gcp",
     "country_code_numeric3": "رمز البلد الرقمي3",
     "country_name": "اسم الدولة",
-    "Actions":"أجراءات"
+    "Actions":"أجراءات",
+    "Activity":"نشاط",
+    "isRegistered":"مسجل",
+    "AddedBy":"تمت الإضافة بواسطة",
+    "AddBy":"أضف بواسطة"
 }

@@ -3730,22 +3730,22 @@ export const counrty_sales =(t)=> [
     }
   },
 ];
-export const city = [
+export const city = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: 'name',
+    headerName: t('Name'),
     width: 280,
   },
   {
     field: 'state_name',
-    headerName: 'state',
+    headerName: t('State'),
     width: 280,
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3755,7 +3755,7 @@ export const city = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3764,22 +3764,22 @@ export const city = [
     }
   },
 ];
-export const state = [
+export const state = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: 'name',
+    headerName: t('Name'),
     width: 280,
   },
   {
     field: 'country_id',
-    headerName: 'country',
+    headerName: t('Country'),
     width: 180,
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3789,7 +3789,7 @@ export const state = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3798,7 +3798,7 @@ export const state = [
     }
   },
 ];
-export const crnumber__ = [
+export const crnumber__ = (t, i18n) => [
 
   {
     field: 'cr',
@@ -3807,12 +3807,12 @@ export const crnumber__ = [
   },
   {
     field: 'activity',
-    headerName: 'activity',
+    headerName: t('Activity'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
@@ -3820,7 +3820,7 @@ export const crnumber__ = [
   },
   {
     field: 'isRegistered',
-    headerName: 'isRegistered',
+    headerName: t('isRegistered'),
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Yes' : 'No';
@@ -3828,7 +3828,7 @@ export const crnumber__ = [
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3838,7 +3838,7 @@ export const crnumber__ = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3847,16 +3847,16 @@ export const crnumber__ = [
     }
   },
 ];
-export const document_type = [
+export const document_type = (t, i18n) => [
 
   {
     field: 'file_name',
-    headerName: 'Document name',
+    headerName: t('Document name'),
     width: 280,
   },
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
@@ -3864,7 +3864,7 @@ export const document_type = [
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3874,7 +3874,7 @@ export const document_type = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3883,32 +3883,32 @@ export const document_type = [
     }
   },
 ];
-export const country__ = [
+export const country__ = (t, i18n) => [
 
   {
     field: 'name_en',
-    headerName: 'name_en',
+    headerName: t('Name[English]'),
     width: 180,
   },
   {
     field: 'name_ar',
-    headerName: 'name_ar',
+    headerName: t('Name[Arabic]'),
     width: 180,
   },
   {
     field: 'country_shortName',
-    headerName: 'country shortName',
+    headerName: t('Country short name'),
     width: 180,
   },
   {
     field: 'country_code',
-    headerName: 'country_code',
+    headerName: t('Country Code'),
     width: 180,
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3918,7 +3918,7 @@ export const country__ = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3927,7 +3927,7 @@ export const country__ = [
     }
   },
 ];
-export const Hs_code = [
+export const Hs_code = (t, i18n) => [
 
   {
     field: 'CNKEY',
@@ -3936,22 +3936,22 @@ export const Hs_code = [
   },
   {
     field: 'HSCODES',
-    headerName: 'HSCODES',
+    headerName: t('HSCODES'),
     width: 140,
   },
   {
     field: 'DescriptionEN',
-    headerName: 'DescriptionEN',
+    headerName: t('Description'),
     width: 750,
   },
   {
     field: 'addBy',
-    headerName: 'addBy',
+    headerName: t('AddBy'),
     width: 130,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3961,7 +3961,7 @@ export const Hs_code = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3970,31 +3970,31 @@ export const Hs_code = [
     }
   },
 ];
-export const unspcs_ = [
+export const unspcs_ = (t, i18n) => [
 
   {
     field: 'commodity',
-    headerName: 'commodity',
+    headerName: t('commodity'),
     width: 180,
   },
   {
     field: 'title',
-    headerName: 'title',
+    headerName: t('Title'),
     width: 180,
   },
   {
     field: 'definition',
-    headerName: 'definition',
+    headerName: t('definition'),
     width: 180,
   },
   {
     field: 'addedBy',
-    headerName: 'addedBy',
+    headerName: t('AddedBy'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -4004,7 +4004,7 @@ export const unspcs_ = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

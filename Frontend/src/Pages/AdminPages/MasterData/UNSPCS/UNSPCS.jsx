@@ -284,7 +284,7 @@ const UNSPCS = () =>
 
                 <DataTable data={data}
                   title={t('UNSPCS')}
-                  columnsName={unspcs_}
+                  columnsName={unspcs_(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

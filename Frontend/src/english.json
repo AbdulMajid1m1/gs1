@@ -422,5 +422,12 @@
     "gcp_description":"gcp_description",
     "country_code_numeric3":"country_code_numeric3",
     "country_name":"country_name",
-    "Actions":"Actions"
+    "Actions":"Actions",
+    "Activity":"Activity",
+    "isRegistered":"isRegistered",
+    "AddedBy":"AddedBy",
+    "commodity":"commodity",
+    "AddBy":"AddBy",
+     "CNKEY": "CNKEY",
+    "HSCODES": "HSCODES"
 }
