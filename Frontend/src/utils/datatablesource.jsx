@@ -2507,29 +2507,29 @@ export const paymentSlipColumn = [
 
 ];
 
-export const masterDataColumn = [
+export const masterDataColumn =  (t, i18n) => [
 
   {
     field: 'unit_code',
-    headerName: 'Unit Code',
+    headerName: t('Unit Code'),
     width: 180,
   },
   {
     field: 'unit_name',
-    headerName: 'Unit Name',
+    headerName: t('Unit Name'),
     width: 260,
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 180,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -2539,7 +2539,7 @@ export const masterDataColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

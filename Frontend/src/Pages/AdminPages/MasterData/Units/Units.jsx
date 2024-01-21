@@ -342,7 +342,7 @@ const Units = () =>
 
                 <DataTable data={data}
                   title={t('Units')}
-                  columnsName={masterDataColumn}
+                  columnsName={masterDataColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
