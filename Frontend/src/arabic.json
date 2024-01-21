@@ -483,5 +483,7 @@
     "total_no_of_barcodes": "إجمالي عدد الباركود",
     "product_subscription_fee": "رسوم الاشتراك في المنتج",
     "med_subscription_fee": "رسوم الاشتراك في الطب",
-    "gcp_description": "وصف gcp"
+    "gcp_description": "وصف gcp",
+    "country_code_numeric3": "رمز البلد الرقمي3",
+    "country_name": "اسم الدولة"
 }

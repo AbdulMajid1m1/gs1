@@ -414,5 +414,7 @@
     "product_subscription_fee":"product_subscription_fee",
     "med_subscription_fee":"med_subscription_fee",
     "variant":"variant",
-    "gcp_description":"gcp_description"
+    "gcp_description":"gcp_description",
+    "country_code_numeric3":"country_code_numeric3",
+    "country_name":"country_name"
 }

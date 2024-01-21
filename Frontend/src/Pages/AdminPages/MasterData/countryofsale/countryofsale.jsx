@@ -280,7 +280,7 @@ const CountryofSales = () =>
 
                 <DataTable data={data}
                   title={t('Country of Sales')}
-                  columnsName={counrty_sales}
+                  columnsName={counrty_sales(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

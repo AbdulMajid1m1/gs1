@@ -3687,31 +3687,31 @@ export const Gcp_types =(t)=> [
     }
   },
 ];
-export const counrty_sales = [
+export const counrty_sales =(t)=> [
 
   {
     field: 'Alpha2',
-    headerName: 'Alpha2',
+    headerName: t('Alpha2'),
     width: 130,
   },
   {
     field: 'Alpha3',
-    headerName: 'Alpha3',
+    headerName: t('Alpha3'),
     width: 130,
   },
   {
     field: 'country_code_numeric3',
-    headerName: 'country_code_numeric3',
+    headerName: t('country_code_numeric3'),
     width: 180,
   },
   {
     field: 'country_name',
-    headerName: 'country_name',
+    headerName: t('country_name'),
     width: 260,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3721,7 +3721,7 @@ export const counrty_sales = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
