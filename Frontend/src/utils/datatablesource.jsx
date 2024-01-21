@@ -3501,25 +3501,25 @@ export const document =(t)=> [
   },
 ];
 
-export const product_packaging = [
+export const product_packaging =(t)=> [
 
   {
     field: 'name',
-    headerName: 'name',
+    headerName: t('name'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 180,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
 
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3529,7 +3529,7 @@ export const product_packaging = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

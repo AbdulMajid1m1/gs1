@@ -282,7 +282,7 @@ const ProductPackaging = () =>
 
                 <DataTable data={data}
                   title={t('product Packaging')}
-                  columnsName={product_packaging}
+                  columnsName={product_packaging(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
