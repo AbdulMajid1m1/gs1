@@ -408,5 +408,10 @@
     "Generate Bulk SSCC Barcodes": "Generate Bulk SSCC Barcodes",
     "Unit Name":"Unit Name",
     "status":"status",
-    "name":"name"
+    "name":"name",
+    "product_name":"product_name",
+    "total_no_of_barcodes":"total_no_of_barcodes",
+    "product_subscription_fee":"product_subscription_fee",
+    "med_subscription_fee":"med_subscription_fee",
+    "variant":"variant"
 }

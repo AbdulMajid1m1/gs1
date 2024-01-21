@@ -288,7 +288,7 @@ const Other_products = () =>
 
                 <DataTable data={data}
                   title={t('Other Products')}
-                  columnsName={Other_Products}
+                  columnsName={Other_Products(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

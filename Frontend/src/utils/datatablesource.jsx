@@ -3591,50 +3591,50 @@ export const footerMenuDataColumn = [
   },
 ];
 
-export const Other_Products = [
+export const Other_Products =(t)=> [
 
   {
     field: 'product_name',
-    headerName: 'product_name',
+    headerName: t('product_name'),
     width: 260,
   },
   {
     field: 'total_no_of_barcodes',
-    headerName: 'total_no_of_barcodes',
+    headerName: t('total_no_of_barcodes'),
     width: 180,
   },
   {
     field: 'product_subscription_fee',
-    headerName: 'product_subscription_fee',
+    headerName: t('product_subscription_fee'),
     width: 180,
   },
 
   {
     field: 'status',
-    headerName: 'status',
+    headerName: t('status'),
     width: 130,
     valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
+      return params.value === 1 ? t('Active') : t('Inactive');
     },
   },
   {
     field: 'code',
-    headerName: 'code',
+    headerName: t('code'),
     width: 180,
   },
   {
     field: 'med_subscription_fee',
-    headerName: 'med_subscription_fee',
+    headerName: t('med_subscription_fee'),
     width: 180,
   },
   {
     field: 'variant',
-    headerName: 'variant At',
+    headerName: t('variant'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3644,7 +3644,7 @@ export const Other_Products = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

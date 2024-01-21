@@ -478,5 +478,9 @@
     "Generate Bulk SSCC Barcodes": "إنشاء رموز شريطية SSCC مجمعة",
     "Unit Name":"إسم الوحدة",
     "status":"حالة",
-    "name":"اسم"
+    "name":"اسم",
+    "product_name": "اسم المنتج",
+    "total_no_of_barcodes": "إجمالي عدد الباركود",
+    "product_subscription_fee": "رسوم الاشتراك في المنتج",
+    "med_subscription_fee": "رسوم الاشتراك في الطب"
 }
