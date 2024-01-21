@@ -9,9 +9,11 @@ import { paymentSlipColumn } from '../../../utils/datatablesource'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../utils/userRequest'
 import { useQuery } from 'react-query'
+import { useTranslation } from 'react-i18next';
 
 const PaymentSlips = () => {
 
+  const { t, i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigate = useNavigate();
@@ -65,10 +67,10 @@ const PaymentSlips = () => {
 
   return (
     <div>
-        <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
             <div>
                 <DashboardRightHeader 
-                    title={'Payment Slips'}
+            title={`${t('Payment Slips')}`}
                 />
             </div>
 
@@ -78,23 +80,23 @@ const PaymentSlips = () => {
 
                     {/* Buttons */}
                     {/* <div className='h-auto w-full shadow-xl'> */}
-                        <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3'>
+                      <div className={`flex sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                             <button
                               onClick={() => navigate('/member/bank-slip')}
                                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                                 <i className="fas fa-plus mr-1"></i>Upload Documents
+                                 <i className="fas fa-plus mr-1"></i> {t('Upload Documents')}
                             </button>
 
                             <button
                             className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                                 Pendings <i className="fas fa-caret-down ml-1"></i>
+                                  {t('Pendings')} <i className="fas fa-caret-down ml-1"></i>
                             </button>
 
                             <button
                             className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary active:bg-blue-700"
                             // onClick={handleExportProducts}
                             >
-                                 Rejected <i className="fas fa-caret-down ml-1"></i>
+                                   {t('Rejected')}<i className="fas fa-caret-down ml-1"></i>
                             </button>
                           </div>
                         {/* </div> */}
@@ -103,7 +105,7 @@ const PaymentSlips = () => {
                     <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                     <DataTable data={data} 
-                      title="Payment Slips"
+                       title={`${t('Payment Slips')}`}
                        columnsName={paymentSlipColumn}
                         loading={isLoading}
                          secondaryColor="secondary"
@@ -111,7 +113,7 @@ const PaymentSlips = () => {
 
                     dropDownOptions={[
                         {
-                        label: "View",
+                        label: `${t('View')}`,
                         icon: (
                             <VisibilityIcon
                             fontSize="small"

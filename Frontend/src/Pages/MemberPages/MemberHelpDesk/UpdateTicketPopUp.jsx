@@ -5,8 +5,10 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import './TicketPopUp.css'
+import { useTranslation } from 'react-i18next';
 
 const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
+  const { t } = useTranslation();
     const [companyName, setCompanyName] = useState("");
     const [companyNameArabic, setCompanyNameArabic] = useState("");
     // get the sesstion data
@@ -76,28 +78,28 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                       <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">         
                            <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Ticket</h2>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Ticket')}</h2>
                              <div className="flex flex-col sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field1" className="text-secondary">Title<span className='text-red-600'> *</span></label>
+                                 <label htmlFor="field1" className="text-secondary">{t('Title')}<span className='text-red-600'> *</span></label>
                                  <input
                                    type="text"
                                    id="field1"
                                    value={companyName}
                                    onChange={(e) => setCompanyName(e.target.value)}
-                                   placeholder="Sample ticket"
+                                            placeholder={`${t('Enter')} ${t('Title')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 -mt-3">
-                                 <label htmlFor="field2" className="text-secondary">Description<span className='text-red-600'> *</span> </label>
+                                 <label htmlFor="field2" className="text-secondary">{t('Description')}<span className='text-red-600'> *</span> </label>
                                  <textarea
                                    type="text"
                                    id="field2"
                                    value={companyNameArabic}
                                    onChange={(e) => setCompanyNameArabic(e.target.value)}
-                                   placeholder="problem issue need to solve"
+                                   placeholder={`${t('Enter')}${t('Description')}`}
                                    className="border-1 w-full h-28 rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -106,7 +108,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                              <div className="flex flex-col sm:gap-3 gap-3">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                 <label htmlFor="field3" className="text-secondary">Documents/Screenshot<span className='text-red-600'> *</span></label>
+                                 <label htmlFor="field3" className="text-secondary">{t('Documents/Screenshot')}<span className='text-red-600'> *</span></label>
                                  <input
                                    type="file"
                                    id="field3"
@@ -124,7 +126,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                  onClick={handleCloseUpdatePopup}
                                >
-                                 Close
+                                 {t('Close')}
                                </button>
                                {/* <button
                                  type="button"
@@ -141,7 +143,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                 >
-                                  Save
+                                 {t('Save')}
                               </Button>
                              </div>
                            </form>
