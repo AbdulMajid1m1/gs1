@@ -574,11 +574,12 @@ const SideBar = () => {
 
           >
             <img
-              src={helpdesk1}
+              src={gs1logowhite}
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">Subscribed GTIN</p>
+            {/* <p className="sidebar-text">Subscribed GTIN</p> */}
+            <p className="sidebar-text">My GS1</p>
           </div>
 
           <div
