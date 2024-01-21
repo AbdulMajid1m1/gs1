@@ -7,12 +7,15 @@ import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 import { useParams } from 'react-router-dom';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { backendUrl } from '../../../../utils/config';
+import GenerateCertificatePopup from './generateCertificatePopup.jsx'
 import { useTranslation } from 'react-i18next';
-const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange }) => {
+const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath, fetchMemberDocumentsData, }) => {
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
-  console.log(Id); 
+  console.log(Id);
   const { t, i18n } = useTranslation();
   // Use state to manage editable values
   // const [editableData, setEditableData] = useState({
@@ -40,7 +43,8 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
   const [mobileNumber, setMobileNumber] = React.useState('');
   const [userPassword, setUserPassword] = React.useState('');
   const [error, setError] = useState(false);
-  
+  const [generateCertificatePopupVisibility, setGenerateCertificatePopupVisibility] = useState(false);
+
   // const handleUpdate = () => {
   //   // Handle the update logic here, e.g., dispatch an action to update data
   //   console.log('Updated data:', editableData);
@@ -101,7 +105,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
       refreshAllUserData();
 
     }
-    catch (error) {    
+    catch (error) {
       console.log(error);
       setIsLoading(false);
 
@@ -186,16 +190,16 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
     setUserPassword(editableData?.password || '');
   }
-  , []);
-  
+    , []);
+
   useEffect(() => {
     if (editableData) {
-    setMobileNumber(gs1MemberData?.companyLandLine || '');
-    setUserPassword(editableData.password || '');
-  }
+      setMobileNumber(gs1MemberData?.companyLandLine || '');
+      setUserPassword(editableData.password || '');
+    }
   }, [editableData]);
 
-  
+
   const handlePassword = (e) => {
     const value = e.target.value;
     if (value.length <= 6) {
@@ -204,10 +208,12 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
     } else {
       setError(true);
     }
-  } 
+  }
 
   return (
     <div>
+      <GenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
+
       {/* Update button */}
       <div className='flex justify-end'>
         {/* <button
@@ -449,7 +455,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               htmlFor='mobile'
               className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
             >
-              {t('Landline Number')}            
+              {t('Landline Number')}
             </label>
             <div className='flex items-center border-2 w-full h-14 rounded-md'>
               {/* <PhoneInput
@@ -470,22 +476,22 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
                 required
               /> */}
               <PhoneInput
-                    international
-                    country={'sa'}
-                    defaultCountry={'sa'}
-                    value={mobileNumber}
-                    inputProps={{
-                      id: 'mobile',
-                      placeholder: 'Mobile Number',
-                    }}
-                    inputStyle={{
-                      width: '100%',
-                      borderRadius: '0px',
-                      border: 'none',
-                    }}
-                    required
-                    onChange={(value) => setMobileNumber(value)}
-                  />
+                international
+                country={'sa'}
+                defaultCountry={'sa'}
+                value={mobileNumber}
+                inputProps={{
+                  id: 'mobile',
+                  placeholder: 'Mobile Number',
+                }}
+                inputStyle={{
+                  width: '100%',
+                  borderRadius: '0px',
+                  border: 'none',
+                }}
+                required
+                onChange={(value) => setMobileNumber(value)}
+              />
 
             </div>
           </div>
@@ -594,13 +600,18 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               InputProps={{
                 endAdornment: (
                   <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
-                    <div className='flex gap-1'>
-                      <div className='cursor-pointer hover:text-green-500'>
-                        <VisibilityIcon />
+                    <div className='flex gap-1 cursor-pointer'>
+                      {gcpCertificatePath && <div onClick={() => window.open(backendUrl + gcpCertificatePath, '_blank')}>
+                        <VisibilityIcon className='cursor-pointer hover:text-primary text-secondary' />
                       </div>
-                      <div className='cursor-pointer hover:text-green-500'>
-                        <VisibilityIcon />
-                      </div>
+                      }
+                      {/* check if gcpcode  */}
+                      {gs1MemberData?.gcpGLNID && (
+                        <div className='cursor-pointer' onClick={() => setGenerateCertificatePopupVisibility(true)}>
+                          <AutorenewIcon className='cursor-pointer hover:text-primary text-secondary' />
+
+                        </div>
+                      )}
                     </div>
                   </div>
                 ),
@@ -748,10 +759,14 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
           </div>
         </div>
       </div>
+
+
+      {/* {generateCertificatePopupVisibility && ( */}
+      {/* ) */}
+      {/* } */}
+
     </div>
-    //      </div>
-    //     </div>
-    // </div>
+
   )
 }
 

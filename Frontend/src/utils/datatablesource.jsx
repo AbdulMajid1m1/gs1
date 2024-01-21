@@ -4,7 +4,8 @@ import QRCode from 'qrcode.react';
 import { backendUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
+
+
 const QRCodeCell = props => {
   const url = `https://gs1ksa.org/?gtin=${props.value}`;
   return <QRCode value={url} size={40} />;
