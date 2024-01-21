@@ -14,7 +14,10 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
   console.log(gs1MemberData);
   const { Id } = useParams();
   console.log(editableData)
-  console.log(Id);
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
+  console.log(memberData);
+  // console.log(Id);
   // Use state to manage editable values
   // const [editableData, setEditableData] = useState({
   //   companyNameEnglish: gs1MemberData?.company_name_eng || '',
@@ -210,7 +213,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
 
   return (
     <div>
-      <MemberGenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
+      <MemberGenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={memberData?.id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
 
       {/* Update button */}
       <div className='flex justify-end'>
