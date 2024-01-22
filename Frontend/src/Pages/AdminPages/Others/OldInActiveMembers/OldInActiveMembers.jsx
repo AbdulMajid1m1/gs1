@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import { Autocomplete, CircularProgress, TextField, debounce } from '@mui/material';
 import newRequest from '../../../../utils/userRequest';
-import { GtinColumn } from '../../../../utils/datatablesource';
+import { oldInActiveMemberColumn } from '../../../../utils/datatablesource';
 import DataTable from '../../../../components/Datatable/Datatable';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
@@ -66,22 +66,17 @@ const OldInActiveMembers = () => {
       setAutocompleteLoading(true);
       setOpen(true);
 
-      const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+      const res = await newRequest.get(`/migration/user/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
       console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
-          user_id: item.id,
-          gcpGLNID: item.gcpGLNID,
-          gln: item.gln,
-          memberID: item.memberID,
-          companyID: item.companyID,
-          company_name_eng: item.company_name_eng,
-          email: item.email,
-          mobile: item.mobile,
-          gcp_type: item.gcp_type,
+          MemberID: item.MemberID,
+          Email: item.Email,
+          MemberNameE: item.MemberNameE,
+          UserID: item.UserID,
         };
       });
 
@@ -102,25 +97,17 @@ const OldInActiveMembers = () => {
   }, 400);
 
 
-  const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
+  // const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
 
   const fetchData = async (value) => {
     setIsLoading(true);
     console.log(value);
-    setAllSearchMemberDetails(value);
+    // setAllSearchMemberDetails(value);
     try {
-      const response = await newRequest.get(`/products?user_id=${value?.user_id}`);
-      const gtinResponse = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${value?.user_id}&isDeleted=false`);
+      const response = await newRequest.get(`/migration/membershipHistory?MemberID=${value?.MemberID}`);
       setData(response?.data || []);
-      setTotalCategory(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
       console.log(response.data);
-      // console.log(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-      // console.log(totalCategory)
-
-      if (response?.data?.length === 0) {
-        setTotalCategory('Category C' ,[]);
-      }
-
+    
       setIsLoading(false);
     } catch (err) {
       console.log(err);
@@ -148,14 +135,11 @@ const OldInActiveMembers = () => {
               id="companyName"
               required
               options={crList}
-              // gcpGLNID: item.gcpGLNID,
-              // gln: item.gln,
-              // memberID: item.memberID,
-              // companyID: item.companyID,
-              // company_name_eng: item.company_name_eng,
-              // email: item.email,
-              // mobile: item.mobile,
-              getOptionLabel={(option) => (option && option.user_id) ? `${option?.gcpGLNID} - ${option?.company_name_eng} - ${option?.memberID} - ${option?.email} - ${option?.mobile} ` : ''}
+              // MemberID: item.MemberID,
+              // Email: item.Email,
+              // MemberNameE: item.MemberNameE,
+              // UserID: item.UserID,
+              getOptionLabel={(option) => (option && option.MemberID) ? `${option?.Email} - ${option?.MemberNameE} - ${option?.UserID} ` : ''}
               onChange={handleGPCAutoCompleteChange}
               value={selectedCr?.cr}
               onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -169,8 +153,8 @@ const OldInActiveMembers = () => {
                 setOpen(false);
               }}
               renderOption={(props, option) => (
-                <li key={option.user_id} {...props}>
-                  {option ? `${option.gcpGLNID} - ${option.company_name_eng} - ${option.memberID} - ${option.email} - ${option.mobile}` : 'No options'}
+                <li key={option.MemberID} {...props}>
+                  {option ? `${option.MemberID} - ${option.Email} - ${option.MemberNameE} - ${option.UserID} ` : 'No options'}
                 </li>
               )}
 
@@ -218,7 +202,7 @@ const OldInActiveMembers = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title={t('Old Inactive Members')} columnsName={GtinColumn}
+            <DataTable data={data} title={t('Old Inactive Members')} columnsName={oldInActiveMemberColumn}
               loading={isLoading}
               secondaryColor="secondary"
               // handleRowClickInParent={handleRowClickInParent}
