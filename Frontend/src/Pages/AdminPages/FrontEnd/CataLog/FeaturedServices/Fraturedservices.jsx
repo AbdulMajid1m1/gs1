@@ -278,7 +278,7 @@ const Featuredservices = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Featured Services')}`}
-                                    columnsName={FeaturedServicesDataColumn}
+                                    columnsName={FeaturedServicesDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

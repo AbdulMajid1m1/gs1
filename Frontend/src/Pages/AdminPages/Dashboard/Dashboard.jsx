@@ -250,22 +250,22 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-4 bg-gradient-to-r from-[#C3E2DC]">
               {/* <!-- Social Traffic --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn} title={('Newly Registered Members')} UniqueId="assetPrintingId" />
+                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn(t)} title={('Newly Registered Members')} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50  w-full shadow-lg rounded">
-                <DashboardTable data={pendingApprovals} loading={pendingApprovalsLoader} secondaryColor="secondary" columnsName={pendingApprovalColumn} title={t('Pending Approvals')} UniqueId="assetPrintingId" />
+                <DashboardTable data={pendingApprovals} loading={pendingApprovalsLoader} secondaryColor="secondary" columnsName={pendingApprovalColumn(t)} title={t('Pending Approvals')} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn} title={t('Registered Members')} UniqueId="assetPrintingId" />
+                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t('Registered Members')} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn} title={t('Members for Renewal')} UniqueId="assetPrintingId" />
+                <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn(t)} title={t('Members for Renewal')} UniqueId="assetPrintingId" />
               </div>
 
             </div>

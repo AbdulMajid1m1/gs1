@@ -289,7 +289,7 @@ const Events = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Featured Events')}`}
-                                    columnsName={FeaturedEventsDataColumn}
+                                    columnsName={FeaturedEventsDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

@@ -286,7 +286,7 @@ const Articles = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Featured Articles')}`}
-                                    columnsName={FeaturedArticlesDataColumn}
+                                    columnsName={FeaturedArticlesDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

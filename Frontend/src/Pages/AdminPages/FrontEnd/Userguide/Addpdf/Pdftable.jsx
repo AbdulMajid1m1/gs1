@@ -258,7 +258,7 @@ const Pdftable = () => {
             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                    columnsName={UserGuidepdfDataColumn}
+                    columnsName={UserGuidepdfDataColumn(t)}
                     loading={isLoading}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}

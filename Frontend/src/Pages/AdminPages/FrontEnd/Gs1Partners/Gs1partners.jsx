@@ -279,7 +279,7 @@ const Gs1partners = () => {
 
                                 <DataTable data={data}
                                     title={`${t('GS1 Partners')}`}
-                                    columnsName={GS1PartnersDataColumn}
+                                    columnsName={GS1PartnersDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
