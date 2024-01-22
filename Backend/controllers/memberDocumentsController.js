@@ -682,7 +682,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             if (value.migration === true) {
                 // Retrieve MemberID from user's column memberID
-                const memberID = user.memberID;
+                const memberID = existingUser.memberID;
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
                 const oldProducts = await oldGs1Prisma.query(`
@@ -728,7 +728,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Fetch other products subscriptions based on user_id and isDeleted=false
                 const otherProductsSubscriptions = await prisma.other_products_subcriptions.findFirst({
                     where: {
-                        user_id: user.id,
+                        user_id: existingUser.id,
                         isDeleted: false,
                     },
                     include: [{
