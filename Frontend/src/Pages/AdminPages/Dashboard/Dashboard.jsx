@@ -260,7 +260,7 @@ const Dashboard = () => {
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn} title={t('Registered Members')} UniqueId="assetPrintingId" />
+                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn} title={('Registered Members')} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
