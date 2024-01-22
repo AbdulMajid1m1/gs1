@@ -729,7 +729,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Fetch other products subscriptions based on user_id and isDeleted=false
                 // Fetch other products subscriptions based on user_id and isDeleted=false
-                const otherProductsSubscriptions = await prisma.other_products_subcriptions.findFirst({
+                const otherProductsSubscriptions = await prisma.other_products_subcriptions.findMany({
                     where: {
                         user_id: existingUser.user_id, // Use existingUser.user_id
                         isDeleted: false,
@@ -742,7 +742,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 console.log("otherProductsSubscriptions", otherProductsSubscriptions);
                 // Check if the product "GLN (30 Locations)" is found in subscriptions
-                if (otherProductsSubscriptions && otherProductsSubscriptions.product.product_name === "GLN (30 Locations)") {
+                if (otherProductsSubscriptions.length > 0 && otherProductsSubscriptions[0].product.product_name === "GLN (30 Locations)") {
                     // Fetch all records from the old Location table based on some condition (you can modify the condition as needed)
                     const oldLocationData = await oldGs1Prisma.location.findMany({
                         where: {
