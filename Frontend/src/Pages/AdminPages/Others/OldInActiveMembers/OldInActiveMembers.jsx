@@ -15,15 +15,15 @@ const OldInActiveMembers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
-  const [selectedCr, setSelectedCr] = useState(null);
+  const [selectedOldMember, setSelectedOldMember] = useState(null);
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
   const [autocompleteLoading, setAutocompleteLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [crList, setCrList] = useState([]);
+  const [oldMemberList, setOldMemberList] = useState([]);
   const abortControllerRef = React.useRef(null);
 
   const handleGPCAutoCompleteChange = (event, value) => {
-    setSelectedCr(value);
+    setSelectedOldMember(value);
 
 
     // Update the state variable when Autocomplete field is filled
@@ -41,7 +41,7 @@ const OldInActiveMembers = () => {
     console.log(reason);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
-      setCrList([]); // Clear the data list if there is no input
+      setOldMemberList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
       return; // Do not perform search if the input is cleared or an option is selected
     }
@@ -51,7 +51,7 @@ const OldInActiveMembers = () => {
 
     if (!newInputValue || newInputValue.trim() === '') {
       // perform operation when input is cleared
-      setCrList([]);
+      setOldMemberList([]);
       // setSelectedCr(null);
       return;
     }
@@ -80,7 +80,7 @@ const OldInActiveMembers = () => {
         };
       });
 
-      setCrList(crs);
+      setOldMemberList(crs);
       setDetails(res?.data[0]);
    
       setOpen(true);
@@ -90,7 +90,7 @@ const OldInActiveMembers = () => {
 
     } catch (error) {
       console.error(error);
-      setCrList([]); // Clear the data list if an error occurs
+      setOldMemberList([]); // Clear the data list if an error occurs
       setOpen(false);
       setAutocompleteLoading(false);
     }
@@ -134,14 +134,14 @@ const OldInActiveMembers = () => {
             <Autocomplete
               id="companyName"
               required
-              options={crList}
+              options={oldMemberList}
               // MemberID: item.MemberID,
               // Email: item.Email,
               // MemberNameE: item.MemberNameE,
               // UserID: item.UserID,
               getOptionLabel={(option) => (option && option.MemberID) ? `${option?.Email} - ${option?.MemberNameE} - ${option?.UserID} ` : ''}
               onChange={handleGPCAutoCompleteChange}
-              value={selectedCr?.cr}
+              value={selectedOldMember?.cr}
               onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
               loading={autocompleteLoading}
               sx={{ marginTop: '10px' }}
@@ -162,8 +162,8 @@ const OldInActiveMembers = () => {
               renderInput={(params) => (
                 <TextField
                   // required
-                  error={isSubmitClicked && !selectedCr?.cr}
-                  helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
+                  error={isSubmitClicked && !selectedOldMember?.cr}
+                  helperText={isSubmitClicked && !selectedOldMember?.cr ? "Products is required" : ""}
                   {...params}
                   label={`${t('Search Members')}`}
                   InputProps={{
