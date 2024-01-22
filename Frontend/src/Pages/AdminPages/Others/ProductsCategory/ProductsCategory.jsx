@@ -9,26 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const ProductsCategory = () => {
   const [IsLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: "Rahul",
-      email: "hasnain@gmail.com",
-      phone: "03001234567",
-      status: "Active",
-      role: "Admin",
-      date: "12-12-2020",
-    },
-    {
-      id: 2,
-      name: "Hasnain",
-      email: "hasnain@gmail.com",
-      phone: "03069396743",
-      status: "Active",
-      role: "Admin",
-      date: "12-12-2020",
-    },
-  ]);
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
