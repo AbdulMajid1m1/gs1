@@ -425,7 +425,7 @@ export const migrateUser = async (req, res, next) => {
         const mailOptions = {
             subject: 'GS1 Saudi Arabia Invoice',
             html: ` <p>Thank you for your interest in GS1 Saudi Arabia.</p>
-            <p>Please find attached your invoice for your GS1 Saudi Arabia membership.</p>
+            <p>Please find attached invoice for your GS1 Saudi Arabia membership.</p>
             <p>Kindly note that your membership will be activated upon receipt of payment.</p>
             <p>For any queries, please contact us on 920000927 or email us on
             <a href="mailto:
