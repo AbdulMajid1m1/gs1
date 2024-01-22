@@ -295,7 +295,7 @@ const RegisteredMembers = () => {
 
           <DataTable data={data}
             title={`${t('Registered Members')}`}
-             columnsName={Gs1AllMembers}
+             columnsName={Gs1AllMembers(t)}
             loading={IsLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"

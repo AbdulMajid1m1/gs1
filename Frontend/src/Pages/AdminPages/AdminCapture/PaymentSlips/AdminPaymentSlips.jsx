@@ -211,7 +211,7 @@ const AdminPaymentSlips = () => {
 
           <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-            <DataTable data={data} title={`${t('Payment Slips')}`} columnsName={paymentSlipColumn}
+            <DataTable data={data} title={`${t('Payment Slips')}`} columnsName={paymentSlipColumn(t)}
               loading={IsLoading}
               checkboxSelection="disabled"
               secondaryColor="secondary"

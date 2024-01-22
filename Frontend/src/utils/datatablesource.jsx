@@ -1226,7 +1226,7 @@ export const inventoryColumn = [
 //   },
 // ];
 
-export const GtinColumn = [
+export const GtinColumn = (t, i18n) => [
   // {
   //   field: "product_id",
   //   headerName: "Product ID",
@@ -1234,39 +1234,39 @@ export const GtinColumn = [
   // },
   {
     field: "productnameenglish",
-    headerName: "Product Name English",
+    headerName: t('Product Name English'),
     width: 180,
   },
   {
     field: "productnamearabic",
-    headerName: "Product Name Arabic",
+    headerName: t('Product Name Arabic'),
     width: 180,
   },
   {
     field: "BrandName",
-    headerName: "Brand Name English",
+    headerName: t('Brand Name English'),
     width: 180,
   },
   {
     field: "BrandNameAr",
-    headerName: "Brand Name Arabic",
+    headerName: t('Brand Name Arabic'),
     width: 180,
   },
   {
     field: "qrcode",
-    headerName: "QRCode",
+    headerName: t('QRCode'),
     renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
     // width: 50, // Adjust this width as needed
   },
   {
     field: "barcode",
-    headerName: "Barcode",
+    headerName: t('Barcode'),
     renderCell: GTINCell,
     width: 150,
   },
   {
     field: "front_image",
-    headerName: "Front Image",
+    headerName: t('Back Photo'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1288,7 +1288,7 @@ export const GtinColumn = [
   },
   {
     field: "back_image",
-    headerName: "Back Image",
+    headerName: t('Back Photo'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1439,62 +1439,62 @@ export const GtinColumn = [
   // },
 ];
 
-export const GlnColumn = [
+export const GlnColumn = (t, i18n) => [
   {
     field: 'product_id',
-    headerName: 'Product ID',
+    headerName: t('Product ID'),
     width: 180,
   },
   {
     field: 'gcpGLNID',
-    headerName: 'GCP GLN ID',
+    headerName:  t('GCP GLN ID'),
     width: 180,
   },
   {
     field: 'locationNameEn',
-    headerName: 'LOCATION NAME EN',
+    headerName:  t('LOCATION NAME EN'),
     width: 180,
   },
   {
     field: 'locationNameAr',
-    headerName: 'LOCATION NAME AR',
+    headerName: t('LOCATION NAME AR'),
     width: 150,
   },
 
   {
     field: 'GLNBarcodeNumber',
-    headerName: 'GLN Barcode Number',
+    headerName: t('GLN Barcode Number'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'STATUS',
+    headerName: t('Status'),
     width: 180,
   },
 ];
 
-export const ViewSsccColumn = [
+export const ViewSsccColumn = (t, i18n) => [
   {
     field: 'sscc_id',
-    headerName: 'SSCC ID',
+    headerName:  t('SSCC ID'),
     width: 180,
   },
   {
     field: 'sscc_type',
-    headerName: 'Type',
+    headerName:  t('Type'),
     width: 180,
   },
   {
     field: 'SSCCBarcodeNumber',
-    headerName: 'SSCC Barcode Number',
+    headerName:  t('SSCC Barcode Number'),
     width: 280,
   },
 ];
 
-export const Gs1AllMembers = [
+export const Gs1AllMembers = (t, i18n) => [
   {
     field: 'pending_invoices',
-    headerName: 'PENDING TO DO',
+    headerName: t('PENDING TO DO'),
     width: 180,
     renderCell: params => (
       <div
@@ -1513,28 +1513,28 @@ export const Gs1AllMembers = [
   },
   {
     field: 'company_name_eng',
-    headerName: 'COMPANY NAME (ENGLISH)',
+    headerName: t('Company Name English'),
     width: 180,
   },
 
   {
     field: 'memberID',
-    headerName: 'MEMBER ID',
+    headerName: t('Member ID'),
     width: 180,
   },
   {
     field: 'mobile',
-    headerName: 'MOBILE',
+    headerName: t('Mobile'),
     width: 180,
   },
   {
     field: 'remarks',
-    headerName: 'REMARKS',
+    headerName: t('REMARKS'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'STATUS',
+    headerName: t('Status'),
     width: 180,
     renderCell: params => (
       <div
@@ -1554,7 +1554,7 @@ export const Gs1AllMembers = [
   },
   {
     field: 'password',
-    headerName: 'CODE',
+    headerName:  t('CODE'),
     width: 180,
   },
   // {
@@ -1564,12 +1564,12 @@ export const Gs1AllMembers = [
   // },
   {
     field: 'membership_category',
-    headerName: 'MEMBER CATEGORY',
+    headerName: t('MEMBER CATEGORY'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'EMAIL',
+    headerName:  t('Email'),
     width: 220,
   },
   // {
@@ -2224,7 +2224,7 @@ export const MembersBrandsColumn = [
   },
 ];
 
-export const AdminBrandsColumn = [
+export const AdminBrandsColumn = (t, i18n) => [
   // {
   //   field: 'id',
   //   headerName: 'ID',
@@ -2232,12 +2232,12 @@ export const AdminBrandsColumn = [
   // },
   {
     field: 'name',
-    headerName: 'Name',
+    headerName: t('Name'),
     width: 180,
   },
   {
     field: 'name_ar',
-    headerName: 'Name Arabic',
+    headerName: t('Name[Arabic]'),
     width: 180,
   },
   // {
@@ -2247,7 +2247,7 @@ export const AdminBrandsColumn = [
   // },
   {
     field: 'brand_certificate',
-    headerName: 'Documents',
+    headerName: t('Documents'),
     width: 180,
     renderCell: (params) => {
       console.log("params");
@@ -2304,7 +2304,7 @@ export const AdminBrandsColumn = [
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -2329,7 +2329,7 @@ export const AdminBrandsColumn = [
   // },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -2340,7 +2340,7 @@ export const AdminBrandsColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -2350,7 +2350,7 @@ export const AdminBrandsColumn = [
   },
 ];
 
-export const paymentSlipColumn = [
+export const paymentSlipColumn = (t, i18n) => [
   // {
   //   field: 'admin_id',
   //   headerName: 'Admin ID',
@@ -2363,12 +2363,12 @@ export const paymentSlipColumn = [
   // },
   {
     field: 'transaction_id',
-    headerName: 'Transaction ID',
+    headerName: t('Transaction ID'),
     width: 180,
   },
   {
     field: 'document',
-    headerName: 'Documents',
+    headerName: t('Documents'),
     width: 180,
     renderCell: (params) => {
       console.log("params");
@@ -2435,7 +2435,7 @@ export const paymentSlipColumn = [
   // },
   {
     field: 'reject_reason',
-    headerName: 'Reject Reason',
+    headerName:  t('Reject Reason'),
     width: 180,
   },
   // {
@@ -2445,7 +2445,7 @@ export const paymentSlipColumn = [
   // },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -2465,7 +2465,7 @@ export const paymentSlipColumn = [
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName:  t('Created At'),
     // make it date time type
     type: 'dateTime',
 
@@ -2477,7 +2477,7 @@ export const paymentSlipColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName:  t('Updated At'),
     width: 180,
 
     type: 'dateTime',
@@ -2488,12 +2488,12 @@ export const paymentSlipColumn = [
   },
   {
     field: 'deleted_at',
-    headerName: 'Deleted At',
+    headerName: t('Deleted At'),
     width: 180,
   },
   {
     field: 'details',
-    headerName: 'Details',
+    headerName:  t('Details'),
     width: 180,
   },
 
@@ -6042,50 +6042,50 @@ export const registerdMemberColumn = [
 ]
 
 
-export const memberForRenevalColumn = [
+export const memberForRenevalColumn = (t, i18n) => [
   {
     field: 'activityID',
-    headerName: 'Activity ID',
+    headerName: t('Activity ID'),
     width: 180,
   },
   {
     field: 'companyID',
-    headerName: 'Company ID',
+    headerName: t('Company ID'),
     width: 180,
   },
   {
     field: 'company_name_eng',
-    headerName: 'Company Name English',
+    headerName: t('Company Name English') ,
     width: 180,
   },
   {
     field: 'company_name_arabic',
-    headerName: 'Company Name Arabic',
+    headerName: t('Company Name Arabic'),
     width: 180,
   },
   {
     field: 'cr_documentID',
-    headerName: 'CR Document ID',
+    headerName:  t('CR Document ID'),
     width: 180,
   },
   {
     field: 'document_number',
-    headerName: 'Document Number',
+    headerName: t('Document Number'),
     width: 180,
   },
   {
     field: 'contactPerson',
-    headerName: 'Contact Person',
+    headerName: t('Contact Person'),
     width: 180,
   },
   {
     field: 'cr_activity',
-    headerName: 'CR Activity',
+    headerName: t('Cr Activity'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'Email',
+    headerName: t('Email'),
     width: 220,
   },
   {
@@ -6095,7 +6095,7 @@ export const memberForRenevalColumn = [
   },
   {
     field: 'member_category',
-    headerName: 'Member Category',
+    headerName: t('Membership Category'),
     width: 180,
   },
   {
@@ -6115,37 +6115,37 @@ export const memberForRenevalColumn = [
   },
   {
     field: 'transaction_id',
-    headerName: 'Transaction ID',
+    headerName:  t('Transaction ID'),
     width: 180,
   },
   {
     field: 'membership_category',
-    headerName: 'Membership Category',
+    headerName:  t('Membership Category'),
     width: 180,
   },
   {
     field: 'country',
-    headerName: 'Country',
+    headerName: t('Country'),
     width: 180,
   },
   {
     field: 'qr_corde',
-    headerName: 'QR Code',
+    headerName:  t('QR Code'),
     width: 180,
   },
   {
     field: 'mobile',
-    headerName: 'Mobile',
+    headerName: t('Mobile'),
     width: 180,
   },
   {
     field: 'slug',
-    headerName: 'Slug',
+    headerName: t('Slug'),
     width: 180,
   },
   {
     field: 'gcp_expiry',
-    headerName: 'GCP Expiry',
+    headerName: t('GCP Expiry'),
     width: 180,
     // type: 'dateTime',
 
@@ -6155,7 +6155,7 @@ export const memberForRenevalColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
 
     // type: 'dateTime',

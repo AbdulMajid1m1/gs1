@@ -736,7 +736,7 @@ const Gtin = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn}
+            <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn(t)}
               loading={isLoading}
               secondaryColor="secondary"
               handleRowClickInParent={handleRowClickInParent}
