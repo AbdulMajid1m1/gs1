@@ -12,7 +12,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   fetchRegisteredProductsData, userData, fetchMemberDocumentsData,
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
+  console.log("gs1MemberInvoiceData", gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
   const gtinId = sessionStorage.getItem("gtinId");
@@ -343,7 +343,6 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                         <div className="flex justify-between items-center">
                           <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
                         </div>
-
                         <table>
                           <thead>
                             <tr>
