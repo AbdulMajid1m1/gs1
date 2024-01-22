@@ -305,10 +305,6 @@ const updateMemberDocumentStatusSchema = Joi.object({
 });
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
-    const documentId = req.params.id;
-    if (!documentId) {
-        return next(createError(400, 'Document ID is required'));
-    }
 
     // Validate the request body
     const { error, value } = updateMemberDocumentStatusSchema.validate(req.body);
@@ -695,7 +691,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         MemberID: memberID
                     }
                 });
-
+                console.log("oldProducts", oldProducts);
                 // Map and insert data into the new database table Product
                 for (const oldProduct of oldProducts) {
                     const newProduct = {
@@ -726,13 +722,14 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     };
 
                     // Insert the newProduct into the Product table in the new database
-                    await prisma.products.create(newProduct);
+                    const gtinProducts = await prisma.products.create(newProduct);
+                    console.log("gtinProducts", gtinProducts);
                 }
 
 
                 // Fetch other products subscriptions based on user_id and isDeleted=false
                 // Fetch other products subscriptions based on user_id and isDeleted=false
-                const otherProductsSubscriptions = await prismaClient.other_products_subcriptions.findFirst({
+                const otherProductsSubscriptions = await prisma.other_products_subcriptions.findFirst({
                     where: {
                         user_id: existingUser.user_id, // Use existingUser.user_id
                         isDeleted: false,
