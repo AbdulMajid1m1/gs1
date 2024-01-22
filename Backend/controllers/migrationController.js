@@ -409,7 +409,8 @@ export const migrateUser = async (req, res, next) => {
             user_id: createdUser.id,
             doc_type: "member_document",
             status: "pending",
-            uploaded_by: createdUser.email
+            uploaded_by: createdUser.email,
+            no_of_years: yearsToPay,
         }
 
 
