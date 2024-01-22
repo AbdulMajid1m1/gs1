@@ -1080,6 +1080,7 @@ model member_documents {
   uploaded_by    String?
   status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
   reject_reason  String?  @db.VarChar(1000)
+  no_of_years    Int      @default(1, map: "DF_member_documents_no_of_years")
 }
 
 model member_history_logs {
