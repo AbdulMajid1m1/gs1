@@ -156,8 +156,6 @@
     "Pending Approvals": "الموافقات المعلقة",
     "Registered Members": "الأعضاء المسجلين",
     "Members for Renewal": "أعضاء للتجديد",
-<<<<<<< HEAD
-=======
     "Rejected": "مرفوض",
     "Pendings":"في انتظار المراجعة",
     "unit_code has been added successfully.": "تمت إضافة Unit_code بنجاح.",
@@ -253,7 +251,6 @@
     "addedBy": "تمت إضافته بواسطة",
     "Enter addedBy": "أدخل المضافة بواسطة",
     "Update unspcs": "تحديث Unspsc",
->>>>>>> d019ef64dbe2d4d8e8e4bed0cd31e96d101b5a18
     "Profile":"الملف الشخصي",
     "Activation":"التنشيط",
     "Renew":"تجديد العضوية",
