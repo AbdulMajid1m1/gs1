@@ -523,7 +523,7 @@ function mapMemberToNewUser(member) {
         no_of_staff: member.Staff ? member.Staff.toString() : '',
         gcpGLNID: member.GLNID ? member.GLNID.toString() : '',
         gln: member.GLN || '',
-        memberID: member.MemberID ? member.MemberID.toString().replace(/\s/g, ''),
+        memberID: member.MemberID ? member.MemberID.toString().replace(/\s/g, '') : '',
         user_id: member.UserID ? member.UserID.toString() : '',
 
         // Default or logic-based values for other fields
