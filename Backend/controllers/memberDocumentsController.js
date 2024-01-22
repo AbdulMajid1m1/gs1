@@ -700,8 +700,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 for (const oldProduct of oldProducts) {
                     const newProduct = {
                         memberID: oldProduct.MemberID,
-                        productnameenglish: oldProduct.productnameenglish,
-                        productnamearabic: oldProduct.productnamearabic,
+                        productnameenglish: oldProduct.ProductNameE,
+                        productnamearabic: oldProduct.ProductNameA,
                         BrandName: oldProduct.BrandName,
                         // ProductTypeID: oldProduct.ProductType,
                         Origin: oldProduct.Origin,
@@ -714,15 +714,15 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         // ChildProductID: null, 
                         // ChildQuantity: null, 
                         // UOMID: null, 
-                        size: oldProduct.size ? parseFloat(oldProduct.size) : null,
+                        size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
                         // BarCodeID: null, 
-                        barCode: oldProduct.barcode,
+                        barCode: oldProduct.BarCode,
                         // BarCodeURL: null, 
                         // IsActive: oldProduct.status === 1,
                         // CreatedBy: null, 
-                        created_at: oldProduct.created_at, // Use the old created_at value
+                        created_at: oldProduct.CreatedDate, // Use the old created_at value
                         // UpdatedBy: null, 
-                        updated_at: oldProduct.updated_at, // Use the old updated_at value
+                        updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
                     };
 
                     // Insert the newProduct into the Product table in the new database
@@ -736,9 +736,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     where: {
                         user_id: existingUser.user_id, // Use existingUser.user_id
                         isDeleted: false,
-                        product: {
-                            product_name: "GLN (30 Locations)",
+                        include: {
+                            product: true,
                         },
+
                     },
                 });
 
@@ -757,6 +758,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         const newLocation = {
                             // product_id: oldLocation.product_id, 
                             // reference_id: oldLocation.reference_id, 
+
                             locationNameEn: oldLocation.LocationNameE,
                             locationNameAr: oldLocation.LocationNameA,
                             AddressEn: oldLocation.AddressE,
