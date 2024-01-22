@@ -51,7 +51,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   // }
 
   const handleMemberInvoiceData = async () => {
-    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice") {
       try {
 
         // check invoice type
