@@ -51,7 +51,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   // }
 
   const handleMemberInvoiceData = async () => {
-    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice") {
       try {
 
         // check invoice type
@@ -175,6 +175,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const approvedBody = {
       status: selectedStatus,
     };
+    const migrationApprovedBody = {
+      status: selectedStatus,
+      migration: true
+    };
 
     const rejectBody = {
       status: selectedStatus,
@@ -210,6 +214,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     if (gs1MemberInvoiceData?.type === "invoice") {
       apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+    }
+    if (gs1MemberInvoiceData?.type === "migration_invoice") {
+      apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+      requestBody = selectedStatus === "approved" ? migrationApprovedBody : rejectBody;
     }
     else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
@@ -329,7 +337,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 <div className="table-member-inoive px-4">
 
 
-                  {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" ? (
+                  {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice"
+                   ? (
                     <>
                       <div className="flex justify-between items-center">
                         <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
