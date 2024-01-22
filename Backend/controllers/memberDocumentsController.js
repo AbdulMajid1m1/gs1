@@ -686,7 +686,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 const memberID = existingUser.memberID;
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
-                const oldProducts = await oldGs1Prisma.Product.findMany({
+                const oldProducts = await oldGs1Prisma.product.findMany({
                     where: {
                         MemberID: memberID
                     }
