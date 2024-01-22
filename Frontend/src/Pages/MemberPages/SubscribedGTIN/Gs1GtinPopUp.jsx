@@ -221,8 +221,8 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         // }
 
-        fetchMemberInvoiceData();
-        fetchMemberHistoryData();
+        // fetchMemberInvoiceData();
+        // fetchMemberHistoryData();
         // Close the popup
         handleCloseUpgradePopup();
       }
@@ -237,7 +237,7 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         // }
 
-        fetchMemberInvoiceData();
+        // fetchMemberInvoiceData();
         // Close the popup
         handleCloseUpgradePopup();
       }
@@ -249,7 +249,7 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         });
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
-        fetchMemberInvoiceData();
+        // fetchMemberInvoiceData();
       }
 
       if (subType === "ADD GLN") {
@@ -264,7 +264,7 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         });
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
-        fetchMemberInvoiceData();
+        // fetchMemberInvoiceData();
       }
 
     } catch (err) {

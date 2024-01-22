@@ -265,7 +265,7 @@ const Dashboard = () => {
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn} title={t('Members for Renewal')} UniqueId="assetPrintingId" />
+                <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn(t)} title={t('Members for Renewal')} UniqueId="assetPrintingId" />
               </div>
 
             </div>

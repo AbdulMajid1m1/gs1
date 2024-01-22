@@ -267,7 +267,7 @@ const crnumber = () =>
 
                 <DataTable data={data}
                   title={`${t('Cr number')}`}
-                  columnsName={crnumber__}
+                  columnsName={crnumber__(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

@@ -14,11 +14,14 @@ import Addbrands from './addbrands';
 import Updatebrands from './updatebrands';
 import { debounce } from '@mui/material/utils';
 import { DataTableContext } from '../../../Contexts/DataTableContext';
+import { useTranslation } from 'react-i18next';
+
 const MemberBrands = () => {
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+  const { t, i18n } = useTranslation();
 
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
@@ -166,12 +169,12 @@ const MemberBrands = () => {
 
   const handleDelete = async (row) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this cr number!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('cr number')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -180,7 +183,7 @@ const MemberBrands = () => {
         try {
           const isDeleted = await newRequest.delete("/brands/" + row?.id);
           if (isDeleted) {
-            toast.success(isDeleted?.data?.message || 'Brand has been deleted successfully');
+            toast.success(isDeleted?.data?.message || `${t('Brands')}  ${t('deleted successfully')}`);
 
             // filter out the deleted user from the data
             const filteredData = data.filter((item) => item?.id !== row?.id);
@@ -217,10 +220,10 @@ const MemberBrands = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={'Member Brands'}
+            title={`${t('Brands')}`}
           />
         </div>
 
@@ -292,18 +295,18 @@ const MemberBrands = () => {
                 />
               </div> */}
 
-              <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
               </div>
 
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
                 <DataTable data={data}
-                  title="Brands"
+                  title={`${t('Brands')}`}
                   columnsName={AdminBrandsColumn}
                   loading={isLoading}
                   handleRowClickInParent={handleRowClickInParent}
@@ -311,7 +314,7 @@ const MemberBrands = () => {
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: `${t('View')}`,
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -322,7 +325,7 @@ const MemberBrands = () => {
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: `${t('Edit')}`,
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -333,7 +336,7 @@ const MemberBrands = () => {
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: `${t('Delete')}`,
                       icon: (
                         <DeleteIcon
                           fontSize="small"

@@ -103,6 +103,9 @@ import Addpages from "./Pages/AdminPages/FrontEnd/Pages/Addpages";
 import Updatapage from "./Pages/AdminPages/FrontEnd/Pages/Updatapage";
 import BlogPages from "./Pages/UserPages/BlogPages/BlogPages";
 import Rejected from "./Pages/AdminPages/AdminCapture/Rejected/Rejected";
+import AdminUpdateGTIN from "./Pages/AdminPages/AdminIndentify/GTIN/AdminUpdateGTIN";
+import AdminGTINView from "./Pages/AdminPages/AdminIndentify/GTIN/AdminGTINView";
+import AdminUpdateSSCC from "./Pages/AdminPages/AdminIndentify/SSCC/AdminUpdateSSCC";
 
 const queryClient = new QueryClient()
 
@@ -270,10 +273,19 @@ const App = () =>
 
                             <Route path="gtin" element={<Gtin />} />
                             <Route path="admin-gtin" element={<AddGTINProducts />} />
+                            <Route path="admin-update-gtin/:productId" element={<AdminUpdateGTIN />} />
+                            <Route
+                              path="admin-view-gtin/:productId"
+                              element={<AdminGTINView />}
+                            />
+
                             <Route path="gln" element={<Gln />} />
                             <Route path="admin-addgln" element={<AdminAddGLN />} />
+
                             <Route path="sscc" element={<Sscc />} />
                             <Route path="admin-addsscc" element={<AdminAddSSCC />} />
+                            <Route path="admin-update-sscc/:sscc_id" element={<AdminUpdateSSCC />} />
+
                             <Route path="foreign-gtin" element={<ForeignGTIN />} />
 
                             <Route path="front-end" element={<Frontend />} />

@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import newRequest from '../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import { DotLoader } from 'react-spinners'
-
+import { useTranslation } from 'react-i18next';
 
 const BankSlip = () => {
+    const { t, i18n } = useTranslation();
     const [document, setDocument] = useState(null);
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -158,10 +159,10 @@ const BankSlip = () => {
                 </div>
             }
 
-            <div className="p-0 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
                 <div>
                     <DashboardRightHeader
-                        title={'Upload Bank Slip'}
+                        title={`${t('Upload Bank Slip')}`}
                     />
                 </div>
 
@@ -174,14 +175,14 @@ const BankSlip = () => {
                                 <button
                                     onClick={() => navigate(-1)}
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                                    <i className="fas fa-arrow-left mr-1"></i>Back
+                                    <i className="fas fa-arrow-left mr-1"></i>{t('Back')}
                                 </button>
                             </div>
 
                             <form onSubmit={handleSubmit}>
                                 <div className="w-full font-sans sm:text-base text-sm flex flex-col gap-2 px-4">
                                     <label htmlFor="translate">
-                                        Transaction ID<span className="text-red-600"> (TransactionID is Invoice#)</span>
+                                        {t('Transaction ID')}<span className="text-red-600"> {t('(TransactionID is Invoice#)')} </span>
                                     </label>
                                     {/* <input
                             id="translate"
@@ -238,7 +239,7 @@ const BankSlip = () => {
                                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-10 px-4">
                                     <div className="w-full font-body sm:text-base text-sm text-secondary">
                                         <label htmlFor="upload">
-                                            Upload Document<span className="text-red-600">*</span>
+                                            {t('Upload Document')}<span className="text-red-600">*</span>
                                         </label>
                                         <input
                                             // id="upload"
@@ -254,7 +255,7 @@ const BankSlip = () => {
 
                                     <div className="w-full font-sans text-secondary sm:text-base text-sm">
                                         <label htmlFor="desc">
-                                            Description [Optional]
+                                            {t('Description [Optional]')}
                                         </label>
                                         <textarea
                                             id="desc"
@@ -270,7 +271,7 @@ const BankSlip = () => {
                                 <div className='mt-5 px-4'>
                                     <button
                                         className="rounded-full bg-secondary font-body px-5 py-2 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                                        <i className="fas fa-cloud-upload-alt mr-2"></i>Upload
+                                        <i className="fas fa-cloud-upload-alt mr-2"></i> {t('Upload')}
                                     </button>
                                 </div>
                             </form>
