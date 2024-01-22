@@ -733,11 +733,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     where: {
                         user_id: existingUser.user_id, // Use existingUser.user_id
                         isDeleted: false,
-                        include: {
-                            product: true,
-                        },
-
                     },
+                    include: {
+                        product: true,
+                    },
+
                 });
 
                 console.log("otherProductsSubscriptions", otherProductsSubscriptions);
