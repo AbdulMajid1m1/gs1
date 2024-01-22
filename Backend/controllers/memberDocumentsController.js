@@ -727,24 +727,17 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
                 // Fetch other products subscriptions based on user_id and isDeleted=false
-                const otherProductsSubscriptions = await prisma.other_products_subcriptions.findFirst({
+                // Fetch other products subscriptions based on user_id and isDeleted=false
+                const otherProductsSubscriptions = await prismaClient.other_products_subcriptions.findFirst({
                     where: {
-                        user_id: existingUser.id,
+                        user_id: existingUser.user_id, // Use existingUser.user_id
                         isDeleted: false,
-                    },
-                    include: [{
                         product: {
-                            select: {
-                                product_name: true,
-                            }
-                        },
-
-                        where: {
                             product_name: "GLN (30 Locations)",
                         },
-                        required: true, // Ensure the product is found
-                    }],
+                    },
                 });
+
                 console.log("otherProductsSubscriptions", otherProductsSubscriptions);
                 // Check if the product "GLN (30 Locations)" is found in subscriptions
                 if (otherProductsSubscriptions && otherProductsSubscriptions.product.product_name === "GLN (30 Locations)") {
