@@ -708,6 +708,7 @@ export const createUser = async (req, res, next) => {
         // const hashedPassword = bcrypt.hashSync(password, 10);
         // userValue.password = hashedPassword;
         userValue.password = password;
+        userValue.member_type = 'new'; 
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
         userValue.parent_memberID = '0';
         // Start a transaction to ensure both user and cart are inserted

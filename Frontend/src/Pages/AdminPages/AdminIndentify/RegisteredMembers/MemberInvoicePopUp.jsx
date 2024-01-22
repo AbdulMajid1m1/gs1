@@ -175,6 +175,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const approvedBody = {
       status: selectedStatus,
     };
+    const migrationApprovedBody = {
+      status: selectedStatus,
+      migration: true
+    };
 
     const rejectBody = {
       status: selectedStatus,
@@ -210,6 +214,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     if (gs1MemberInvoiceData?.type === "invoice") {
       apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+    }
+    if (gs1MemberInvoiceData?.type === "migration_invoice") {
+      apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+      requestBody = selectedStatus === "approved" ? migrationApprovedBody : rejectBody;
     }
     else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
