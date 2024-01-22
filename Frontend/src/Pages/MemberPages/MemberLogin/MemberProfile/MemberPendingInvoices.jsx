@@ -3,12 +3,14 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const MemberPendingInvoices = ({ isVisible, setVisibility }) => {
     const navigate = useNavigate();
     const handleCloseMemberPendingInvoives = () => {
         setVisibility(false);
-      };
+  };
+  const { t } = useTranslation();
 
     
 
@@ -20,8 +22,8 @@ const MemberPendingInvoices = ({ isVisible, setVisibility }) => {
                        <div className="popup-form w-full">         
                           <form className='w-full'>
                             <div className='flex flex-col gap-4'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>You have pending unsettled Invoice...</h2>
-                                <p className='text-secondary font-sans font-semibold'>If You Already Paid, Click on 'OK' to Upload the Bank Slip</p> 
+                                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('You have pending unsettled Invoice...')}</h2>
+                                <p className='text-secondary font-sans font-semibold'> {t("If You Already Paid, Click on 'OK' to Upload the Bank Slip")}</p> 
                             </div>
 
                             <div className="w-full flex justify-center items-center gap-8 mt-5">
@@ -30,7 +32,7 @@ const MemberPendingInvoices = ({ isVisible, setVisibility }) => {
                                 className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                 onClick={handleCloseMemberPendingInvoives}
                               >
-                                Close
+                                {t('Close')}
                               </button>
                               {/* <button
                                 type="button"
@@ -45,7 +47,7 @@ const MemberPendingInvoices = ({ isVisible, setVisibility }) => {
                                 onClick={() => navigate('/member/bank-slip')}
                                 className="w-[70%] ml-2"
                                 >
-                                OK
+                                 {t('OK')}
                             </Button>
                             </div>
                           </form>

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
+import { useTranslation } from 'react-i18next';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
@@ -18,6 +19,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const { t } = useTranslation();
 
   const handleClosePendingApprovedPopup = () => {
     setVisibility(false);
@@ -66,7 +68,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
       const res = await newRequest.post('/users/sendInvoice', approvedBody);
       
       setLoading(false);
-      toast.success(res.data.message || "Invoice status updated successfully!");
+      toast.success(res.data.message || `${t('Invoice status updated successfully!')}`);
       fetchAllUserData();
         // Close the popup
         handleClosePendingApprovedPopup();
@@ -74,7 +76,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.error || "Something went wrong!");
+      toast.error(err.response?.data?.error || `${t('Something went wrong!')}` );
     }
   };
 
@@ -86,11 +88,11 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
             <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Pending For Approve</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Pending For Approve')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
-                      <label htmlFor="approvedRadio" className="text-secondary">Invoice Status </label>
+                      <label htmlFor="approvedRadio" className="text-secondary">{t('Invoice Status')}</label>
                       <div className="flex flex-row gap-2">
                         <input
                           type="radio"
@@ -101,7 +103,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                           checked={selectedStatus === "approved"}
                           onChange={() => setSelectedStatus("approved")}
                         />
-                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approve</label>
+                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">{t('Approve')}</label>
                       </div>
                       <div className="flex flex-row gap-2">
                         <input
@@ -113,19 +115,19 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                           checked={selectedStatus === "rejected"}
                           onChange={() => setSelectedStatus("rejected")}
                         />
-                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Reject</label>
+                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">{t('Reject')}</label>
                       </div>
                     </div>
                   </div>
 
                   {selectedStatus === "rejected" && (
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                      <label htmlFor="field2" className="text-secondary">Reason for Rejection</label>
+                      <label htmlFor="field2" className="text-secondary">{t('Reason for Rejection')}</label>
                       <input
                         type="text"
                         id="field2"
                         onChange={(e) => setRejected(e.target.value)}
-                        placeholder="Enter reason for rejection"
+                        placeholder={`${t('Enter')} ${t('Reason for Rejection')} `}
                         required
                         className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                       />
@@ -163,7 +165,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan="3" className="text-right font-bold">Total:</td>
+                        <td colSpan="3" className="text-right font-bold">{t('Total')}:</td>
                         <td>{totalPrice}</td>
                       </tr>
                     </tfoot>
@@ -176,7 +178,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleClosePendingApprovedPopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   <Button
                     variant="contained"
@@ -186,7 +188,7 @@ const MemberPendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Submit
+                    {t('Submit')}
                   </Button>
                 </div>
               </form>

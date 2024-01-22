@@ -8,11 +8,13 @@ import dashboardchart from '../../../Images/dashboardchart.png'
 import newRequest from '../../../utils/userRequest'
 import CountdownTimer from './CountdownTimer'
 import Dashboardchart from './DashboardChart'
+import { useTranslation } from 'react-i18next';
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
   // console.log('memberData', memberData);
   const [expiryDate, setExpiryDate] = useState('');
+  const { t, i18n } = useTranslation();
 
   const [gtinSubscriptions, setGtinSubscriptions] = useState([]);
   const [totalCategory, setTotalCategory] = useState('');
@@ -54,19 +56,19 @@ const MemberDashboard = () => {
 
   return (
     <div>
-       <div className="h-full sm:ml-72 bg-slate-100">
+      <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           <div>
             <DashboardRightHeader 
-              title={'Dashboard'}
+            title={t('Dashboard')} 
             />
           </div>
 
-          <div className="flex flex-col justify-center items-center p-4 mt-3">
+        <div className={`flex flex-col justify-center items-center p-4 mt-3 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className="h-auto w-full px-5 py-4 bg-[#225BED] rounded-md">
               <div className='w-full flex justify-between items-center'>
-                <div className='w-full flex flex-col gap-1'>
+                <div className={'w-full flex flex-col gap-1'}>
                     <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: {memberData?.gcpGLNID}</p>
-                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>Member ID: <span>{memberData?.memberID}</span></p>
+                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>{t('Member ID')}: <span>{memberData?.memberID}</span></p>
                 </div>
 
                 <CountdownTimer expiryDate={expiryDate} />
@@ -101,7 +103,7 @@ const MemberDashboard = () => {
                       <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {totalRange -  1}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Range of Barcodes</p>
+                      <p className='font-sans font-normal text-md text-gray-200'>{t('Range of Barcodes')}</p>
                     </div>
                   </div>
               </div>
@@ -112,7 +114,7 @@ const MemberDashboard = () => {
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeIssued}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
+                      <p className='font-sans font-normal text-md text-gray-200'> {t('Barcodes Issued')}</p>
                     </div>
                   </div>
               </div>
@@ -123,7 +125,7 @@ const MemberDashboard = () => {
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeRemaining}</p>
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
-                      <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>
+                      <p className='font-sans font-normal text-md text-gray-200'>{t('Barcodes remaining')}</p>
                     </div>
                   </div>
               </div>
@@ -154,7 +156,7 @@ const MemberDashboard = () => {
                         <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {item.product.total_no_of_barcodes -  1}</p>
                       </div>
                       <div className='w-full text-end -mt-1 px-2'>
-                        <p className='font-sans font-normal text-md text-gray-200'>Range of Barcodes</p>
+                        <p className='font-sans font-normal text-md text-gray-200'>{t('Range of Barcodes')}</p>
                       </div>
                     </div>
                   </div>
@@ -166,7 +168,7 @@ const MemberDashboard = () => {
                         <p className='font-sans font-semibold text-3xl text-white -mt-4'>{item.other_products_subscription_counter}</p>
                       </div>
                       <div className='w-full text-end -mt-1 px-2'>
-                        <p className='font-sans font-normal text-md text-gray-200'>Barcodes Issued</p>
+                        <p className='font-sans font-normal text-md text-gray-200'> {t('Barcodes Issued')}</p>
                       </div>
                     </div>
                   </div>
@@ -178,7 +180,7 @@ const MemberDashboard = () => {
                         <p className='font-sans font-semibold text-3xl text-white -mt-4'>{item.other_products_subscription_limit}</p>
                       </div>
                       <div className='w-full text-end -mt-1 px-2'>
-                        <p className='font-sans font-normal text-md text-gray-200'>Barcodes remaining</p>
+                        <p className='font-sans font-normal text-md text-gray-200'>{t('Barcodes remaining')}</p>
                       </div>
                     </div>
                   </div>
@@ -189,7 +191,7 @@ const MemberDashboard = () => {
             
                 
             <div className='h-auto w-full px-5 py-4'>
-                <p className='text-secondary font-sans text-3xl font-semibold mt-5'>Member Products</p>
+                <p className={`text-secondary font-sans text-3xl font-semibold mt-5 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>{t('Member Products')}</p>
                 {/* <img src={dashboardchart} alt='' /> */}
                 <Dashboardchart />
             </div>

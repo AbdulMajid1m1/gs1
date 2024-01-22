@@ -284,7 +284,7 @@ const Boardmembers = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Board Members')}`}
-                                    columnsName={BoardMembersDataColumn}
+                                    columnsName={BoardMembersDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

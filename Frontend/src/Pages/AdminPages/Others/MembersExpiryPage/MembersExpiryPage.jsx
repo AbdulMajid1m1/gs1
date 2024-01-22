@@ -8,35 +8,35 @@ import AdminDashboardRightHeader from '../../../../components/AdminDashboardRigh
 import { useTranslation } from 'react-i18next';
 
 const MembersExpiryPage = () => {
-    const [memberReneval, setMemberReneval] = useState([]);
-    const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
+  const [memberReneval, setMemberReneval] = useState([]);
+  const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
   const { t, i18n } = useTranslation();
 
-    const getNewTransferOrder = async () => {
-        setMemberRenevalLoader(true);
-        try {
-  
-          newRequest.get("/users/getByGcpExpiry")
-            .then(response => {
-              console.log("MemberReneval", response.data)
-              setMemberReneval(response.data)
-              setMemberRenevalLoader(false);
-            })
-            .catch(error => {
-              console.error(error);
-              setMemberRenevalLoader(false);
-            });
-  
-        }
-        catch (error) {
-          console.log(error);
-  
-        }
-      };
+  const getNewTransferOrder = async () => {
+    setMemberRenevalLoader(true);
+    try {
 
-    useEffect(() => {
-        getNewTransferOrder()
+      newRequest.get("/users/getByGcpExpiry")
+        .then(response => {
+          console.log("MemberReneval", response.data)
+          setMemberReneval(response.data)
+          setMemberRenevalLoader(false);
+        })
+        .catch(error => {
+          console.error(error);
+          setMemberRenevalLoader(false);
+        });
+
     }
+    catch (error) {
+      console.log(error);
+
+    }
+  };
+
+  useEffect(() => {
+    getNewTransferOrder()
+  }
     , [])
   return (
     <div>
@@ -49,7 +49,7 @@ const MembersExpiryPage = () => {
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={memberReneval} title={`${t('Members Expiry Page')}`} columnsName={memberForRenevalColumn}
+          <DataTable data={memberReneval} title={`${t('Members Expiry Page')}`} columnsName={memberForRenevalColumn(t)}
             loading={memberRenevalLoader}
             checkboxSelection="disabled"
             secondaryColor="secondary"
@@ -59,21 +59,21 @@ const MembersExpiryPage = () => {
 
             dropDownOptions={[
               {
-               label: `${t('Send Invoice')}`,
+                label: `${t('Send Invoice')}`,
                 icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 // action: fetchMemberInvoiceData,
 
               },
               {
-              label: `${t('Open Profile')}`,
-              icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-              ,
-              // action: handleOpen,
+                label: `${t('Open Profile')}`,
+                icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                ,
+                // action: handleOpen,
 
               },
 
-        
+
 
             ]}
 
@@ -81,7 +81,7 @@ const MembersExpiryPage = () => {
           />
         </div>
 
-       </div>
+      </div>
     </div>
   )
 }

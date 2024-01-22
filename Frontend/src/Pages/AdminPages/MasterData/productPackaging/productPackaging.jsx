@@ -18,9 +18,12 @@ import Updateproductpack from './updateproductpack';
 import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../../../i18n";
+import LanguageSwitcher from "../../../../switer";
 const ProductPackaging = () =>
 {
-
+  const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -216,7 +219,7 @@ const ProductPackaging = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={'product Packaging'}
+            title={t('product Packaging')}
           />
         </div>
 
@@ -246,17 +249,18 @@ const ProductPackaging = () =>
                             </button>
                           </div> */}
               {/* </div> */}
-              <div className='flex justify-start sm:justify-start items-center flex-wrap gap-2 py-7 px-3'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+
                 <button
                   onClick={handleShowCreatePopup}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add
+                  <i className="fas fa-plus mr-2"></i>{t('Add')}
                 </button>
                 <div className="relative">
                   <button
                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                   >
-                    <i className="fas fa-file-import mr-1"></i> Import
+                    <i className="fas fa-file-import mr-1"></i> {t('Import')}
                   </button>
                   <input
                     type="file"
@@ -270,22 +274,22 @@ const ProductPackaging = () =>
                 <CSVLink data={data}
 
                   type="button"
-                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >  Export  <FileUploadIcon />
+                  className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary" >{t('Export')}    <FileUploadIcon />
                 </CSVLink>
               </div>
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title="product Packaging"
-                  columnsName={product_packaging}
+                  title={t('product Packaging')}
+                  columnsName={product_packaging(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
 
                   dropDownOptions={[
                     {
-                      label: "View",
+                      label: t("View"),
                       icon: (
                         <VisibilityIcon
                           fontSize="small"
@@ -296,7 +300,7 @@ const ProductPackaging = () =>
                       action: handleView,
                     },
                     {
-                      label: "Edit",
+                      label: t("Edit"),
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -307,7 +311,7 @@ const ProductPackaging = () =>
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: "Delete",
+                      label: t("Delete"),
                       icon: (
                         <DeleteIcon
                           fontSize="small"

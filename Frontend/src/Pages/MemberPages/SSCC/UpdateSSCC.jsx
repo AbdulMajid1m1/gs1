@@ -5,9 +5,11 @@ import newRequest from '../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import { DotLoader } from 'react-spinners'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
+import { useTranslation } from 'react-i18next';
 
 
 const UpdateSSCC = () => {
+  const { t, i18n } = useTranslation();
   
   const navigate = useNavigate();
     let { sscc_id } = useParams();
@@ -162,7 +164,7 @@ const UpdateSSCC = () => {
             console.log('Pallet API Response:', data);
             setIsLoading(false);
             
-            toast.success(response?.data?.message || 'SSCC updated successfully.', {
+            toast.success(response?.data?.message || `${t('SSCC updated successfully')}`, {
               position: 'top-right',
               autoClose: 2000,
               hideProgressBar: false,
@@ -239,7 +241,7 @@ const UpdateSSCC = () => {
             const data = response.data;
             console.log('Label API Response:', data);
 
-            toast.success(response?.data?.message || 'SSCC updated successfully.', {
+            toast.success(response?.data?.message || `${t('SSCC updated successfully')}`, {
               position: 'top-right',
               autoClose: 2000,
               hideProgressBar: false,
@@ -307,28 +309,35 @@ const UpdateSSCC = () => {
             }
 
 
-
-        <div className="p-0 h-full sm:ml-72">    
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           {/* <div className='h-auto w-full p-1'> */}
             <div>
                 {/* <div className='h-16 w-full shadow-xl flex justify-start items-center px-10 border-l-2 border-[#e49515]'>
                     <p className='sm:text-2xl text-sm font-body'>Update SSCC</p>
                 </div> */}
                  <div>
-                   <DashboardRightHeader title={"Update SSCC"}/>
+                   <DashboardRightHeader title={`${t('Add SSCC')}`}/>
                 </div>
 
             <div className='h-auto w-full px-0 pt-2 shadow-xl'>
-                <div className='h-auto w-full p-6 shadow-xl'>
+                <div  className={` h-auto w-full p-6 shadow-xlflex ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                     <button onClick={() => navigate(-1)} className="rounded-full bg-[#1E3B8B] font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700">
-                        <i className="fas fa-arrow-left mr-1"></i> Back
+                {i18n.language === 'ar' ? (
+                  <>
+                    {t('Back')} <i className="fas fa-arrow-right ml-1"></i>
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-arrow-left mr-1"></i> {t('Back')}
+                  </>
+                )}
                     </button>
 
 
                 <form onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='extension'>Extension Digit<span className='text-red-600'>*</span></label>
+                            <label htmlFor='extension'>{t('Extension Digit')}<span className='text-red-600'>*</span></label>
                             <select 
                               id='extension' 
                                 type='text'
@@ -336,7 +345,7 @@ const UpdateSSCC = () => {
                                  onChange={(e) => setDigitExtension(e.target.value)} 
                                   className='border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3'
                             >
-                                <option value=''>-Select-</option>
+                                <option value=''>- {t('Select')} -</option>
                                 <option value='0'>0</option>
                                 <option value='1'>1</option>
                                 <option value='2'>2</option>
@@ -348,7 +357,7 @@ const UpdateSSCC = () => {
 
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='sscctype'>SSCC Type<span className='text-red-600'>*</span></label>
+                            <label htmlFor='sscctype'>{t('SSCC Type')}<span className='text-red-600'>*</span></label>
                             <select
                               value={ssccType}
                               // onChange={(e) => {
@@ -361,7 +370,7 @@ const UpdateSSCC = () => {
                                   type='text' 
                                     className='border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3' 
                             >
-                                <option value=''>-Select-</option>
+                                <option value=''>-{t('Select')}-</option>
                                 <option value='pallet'>Pallet</option>
                                 <option value='label'>Label</option>
                             </select>                      
@@ -372,7 +381,7 @@ const UpdateSSCC = () => {
                     <div>
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='vendorid'>VendorID<span className='text-red-600'>*</span></label>
+                        <label htmlFor='vendorid'> {t('VendorID')}<span className='text-red-600'>*</span></label>
                             <input
                               value={vendorID}
                               onChange={(e) => setVendorID(e.target.value)} 
@@ -382,7 +391,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='addressArabic'>Vendor Name<span className='text-red-600'>*</span></label>
+                            <label htmlFor='addressArabic'>{t('Vendor Name')}<span className='text-red-600'>*</span></label>
                             <input
                             value={vendorName}
                             onChange={(e) => setVendorName(e.target.value)} 
@@ -395,7 +404,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='productid'>ProductID<span className='text-red-600'>*</span></label>
+                            <label htmlFor='productid'>{t('ProductID')}<span className='text-red-600'>*</span></label>
                             <input
                               value={productID}
                               onChange={(e) => setProductID(e.target.value)} 
@@ -405,7 +414,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='produvtdesc'>Product Description <span className='text-red-600'>*</span></label>
+                            <label htmlFor='produvtdesc'>{t('Product Description')}<span className='text-red-600'>*</span></label>
                             <input
                             value={productDesc}
                             onChange={(e) => setProductDesc(e.target.value)} 
@@ -418,7 +427,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='serialno'>Serial Number<span className='text-red-600'>*</span></label>
+                            <label htmlFor='serialno'>{t('Serial Number')}<span className='text-red-600'>*</span></label>
                             <input
                               value={serialNo}
                               onChange={(e) => setSerialNo(e.target.value)} 
@@ -428,7 +437,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='itemcode'>Item Code <span className='text-red-600'>*</span></label>
+                            <label htmlFor='itemcode'>{t('Item Code')}<span className='text-red-600'>*</span></label>
                             <input
                             value={itemCode}
                             onChange={(e) => setItemCode(e.target.value)} 
@@ -441,7 +450,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='qty'>Qty<span className='text-red-600'>*</span></label>
+                        <label htmlFor='qty'>{t('Qty')}<span className='text-red-600'>*</span></label>
                             <input
                               value={qty}
                               onChange={(e) => setQty(e.target.value)} 
@@ -451,7 +460,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='useby'>UseBy <span className='text-red-600'>*</span></label>
+                            <label htmlFor='useby'>{t('UseBy')} <span className='text-red-600'>*</span></label>
                             <input
                             value={useBy}
                             onChange={(e) => setUseBy(e.target.value)} 
@@ -464,7 +473,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='batch'>BatchNo<span className='text-red-600'>*</span></label>
+                            <label htmlFor='batch'>{t('BatchNo')}<span className='text-red-600'>*</span></label>
                             <input
                               value={batchNo}
                               onChange={(e) => setBatchNo(e.target.value)} 
@@ -474,7 +483,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='boxof'>Boxof <span className='text-red-600'>*</span></label>
+                            <label htmlFor='boxof'>{t('Boxof')}  <span className='text-red-600'>*</span></label>
                             <input
                             value={boxOf}
                             onChange={(e) => setBoxOf(e.target.value)} 
@@ -491,7 +500,7 @@ const UpdateSSCC = () => {
                     <div>
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='hsn'>HSN SKU Number<span className='text-red-600'>*</span></label>
+                            <label htmlFor='hsn'>{t('HSN SKU Number')}<span className='text-red-600'>*</span></label>
                             <input
                               value={hsn}
                               onChange={(e) => setHSN(e.target.value)} 
@@ -501,7 +510,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='po'>P.O No <span className='text-red-600'>*</span></label>
+                            <label htmlFor='po'>{t('P.O No')}<span className='text-red-600'>*</span></label>
                             <input
                             value={po}
                             onChange={(e) => setPO(e.target.value)} 
@@ -513,7 +522,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='expire'>Expiration Date <span className='text-red-600'>*</span></label>
+                            <label htmlFor='expire'>{t('Expiration Date')}<span className='text-red-600'>*</span></label>
                             <input
                               value={expireDate}
                               onChange={(e) => setExpireDate(e.target.value)} 
@@ -523,7 +532,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='vendorlabelID'>VendorID <span className='text-red-600'>*</span></label>
+                            <label htmlFor='vendorlabelID'>{t('VendorID')}  <span className='text-red-600'>*</span></label>
                             <input
                             value={vendorLabelID}
                             onChange={(e) => setVendorLabelID(e.target.value)} 
@@ -535,7 +544,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='carton'>Carton Quantity <span className='text-red-600'>*</span></label>
+                            <label htmlFor='carton'>{t('Carton Quantity')}<span className='text-red-600'>*</span></label>
                             <input
                               value={cartonQty}
                               onChange={(e) => setCartonQty(e.target.value)} 
@@ -545,7 +554,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='shipto'>Ship TO <span className='text-red-600'>*</span></label>
+                            <label htmlFor='shipto'>{t('Ship TO')}<span className='text-red-600'>*</span></label>
                             <input
                             value={shipTo}
                             onChange={(e) => setShipTo(e.target.value)} 
@@ -557,7 +566,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='shipdate'>Ship Date <span className='text-red-600'>*</span></label>
+                            <label htmlFor='shipdate'>{t('Ship Date')}<span className='text-red-600'>*</span></label>
                             <input
                               value={shipDate}
                               onChange={(e) => setShipDate(e.target.value)} 
@@ -567,7 +576,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='vendorItem'>Vendor Item No <span className='text-red-600'>*</span></label>
+                            <label htmlFor='vendorItem'>{t('Vendor Item No')}<span className='text-red-600'>*</span></label>
                             <input
                             value={vendorItem}
                             onChange={(e) => setVendorItem(e.target.value)} 
@@ -579,7 +588,7 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='description'>Description <span className='text-red-600'>*</span></label>
+                            <label htmlFor='description'>{t('Description')} <span className='text-red-600'>*</span></label>
                             <input
                               value={description}
                               onChange={(e) => setDescription(e.target.value)} 
@@ -589,7 +598,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='showcode'>Short Qty Code <span className='text-red-600'>*</span></label>
+                            <label htmlFor='showcode'>{t('Short Qty Code')} <span className='text-red-600'>*</span></label>
                             <input
                             value={shortQtyCode}
                             onChange={(e) => setShortQtyCode(e.target.value)} 
@@ -601,14 +610,14 @@ const UpdateSSCC = () => {
 
                     <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='country'>Country Of Origin <span className='text-red-600'>*</span></label>
+                            <label htmlFor='country'>{t('Country Of Origin')}<span className='text-red-600'>*</span></label>
                             <select
                             value={countryOfOrigin}
                               onChange={(e) => setCountryOfOrigin(e.target.value)} 
                             id='country' 
                             type='text' className='border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3' 
                             >
-                                <option>-select-</option>
+                                <option>-{t('select')}-</option>
                                 <option value='1'>1</option>
                                 <option value='2'>2</option>
                                 <option value='3'>3</option>
@@ -616,7 +625,7 @@ const UpdateSSCC = () => {
                         </div>
 
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
-                            <label htmlFor='carton'>Carton <span className='text-red-600'>*</span></label>
+                            <label htmlFor='carton'>{t('Carton')} <span className='text-red-600'>*</span></label>
                             <input
                             value={carton}
                             onChange={(e) => setCarton(e.target.value)} 
@@ -629,7 +638,7 @@ const UpdateSSCC = () => {
                     )}
 
                     <button type='submit' className="rounded-full bg-[#1E3B8B] font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-[#4b6fd2] active:bg-blue-700">
-                        <i className="fas fa-check-circle mr-1"></i> Submit
+                        <i className="fas fa-check-circle mr-1"></i>  {t('Submit')}
                     </button>
                 </form>
                 

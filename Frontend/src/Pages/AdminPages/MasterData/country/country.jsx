@@ -249,7 +249,7 @@ const Country = () =>
 
                 <DataTable data={data}
                   title={`${t('Country')}`}
-                  columnsName={country__}
+                  columnsName={country__(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

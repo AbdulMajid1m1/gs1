@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import PhoneInput from 'react-phone-input-2';
+import { useTranslation } from 'react-i18next';
+
 
 const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
     // get the sesstion data
@@ -17,7 +19,9 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
     const [memberType, setMemberType] = useState(subMenusMemberDetails?.user_type);
     const [password, setPassword] = useState('');
     const [memberStatus, setMemberStatus] = useState(subMenusMemberDetails?.status);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
+
 
     
     const handleCloseUpdateSubMenusPopup = () => {
@@ -41,7 +45,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
             "cr_activity": gs1MemberData?.cr_activity,
         });
 
-            toast.success(response?.data?.message || 'Sub Member Added Successfully', {
+            toast.success(response?.data?.message || `${t('Sub Member Added Successfully')}`, {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -89,30 +93,29 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                         <div className="popup-form w-full">         
                            {/* <form className='w-full' onSubmit={handleAddSubMenus}> */}
                            <form className='w-full'>
-                             <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Sub Member</h2>
+                             <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update')}{t('Sub Member')}</h2>
                              
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-5">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field1" className="text-secondary">First Name <span className='text-red-500'>*</span></label>
+                                 <label htmlFor="field1" className="text-secondary">{t('First Name')} <span className='text-red-500'>*</span></label>
                                  <input
                                    type="text"
                                    id="field1"
                                    value={firstName}
                                    onChange={(e) => setFirstName(e.target.value)}
-                                   placeholder="First Name"
+                      placeholder={`${t('First Name')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field2" className="text-secondary">Last Name <span className='text-red-500'>*</span></label>
+                                 <label htmlFor="field2" className="text-secondary">{t('Last Name')}<span className='text-red-500'>*</span></label>
                                  <input
                                    type="text"
                                    id="field2"
                                       value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
-                                        
-                                   placeholder="Last Name"
+                      placeholder={`${t('Last Name')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -120,19 +123,19 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field3" className="text-secondary">Email <span className='text-red-500'>*</span></label>
+                                 <label htmlFor="field3" className="text-secondary">{t('Email')}  <span className='text-red-500'>*</span></label>
                                  <input
                                    type="text"
                                    id="field3"
                                         value={emailAddress}
                                         onChange={(e) => setEmailAddress(e.target.value)}
-                                   placeholder="Email"
+                      placeholder={`${t('Email')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field4" className="text-secondary">Mobile (must omit 0) <span className='text-red-500'>*</span></label>
+                                 <label htmlFor="field4" className="text-secondary">{t('Mobile (must omit 0)')} <span className='text-red-500'>*</span></label>
                                  {/* <input
                                    type="number"
                                    id="field4"
@@ -168,7 +171,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field5" className="text-secondary">Member Type</label>
+                                 <label htmlFor="field5" className="text-secondary">{t('Member Type')}</label>
                                  <select
                                    type="text"
                                    id="field5"
@@ -184,13 +187,13 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                </div>
 
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field6" className="text-secondary">Password</label>
+                                 <label htmlFor="field6" className="text-secondary">{t('Password')}</label>
                                  <input
                                    type="text"
                                    id="field6"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                   placeholder="Password"
+                      placeholder={`${t('Password')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -198,18 +201,18 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
                              <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                 <label htmlFor="field7" className="text-secondary">Member Status</label>
+                                 <label htmlFor="field7" className="text-secondary">{t('Member Status')}</label>
                                  <select
                                    type="text"
                                    id="field7"
                                         value={memberStatus}
                                         onChange={(e) => setMemberStatus(e.target.value)}
-                                   placeholder="Member Status"
+                      placeholder={`${t('Member Status')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                   >
-                                    <option value="">-select status-</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">InActive</option>
+                                    <option value="">-{t('Status')}-</option>
+                      <option value="active">{t('Active')}</option>
+                      <option value="inactive">{t('Inactive')}</option>
                                   </select>
                                </div>
                               </div>
@@ -220,7 +223,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                  className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                  onClick={handleCloseUpdateSubMenusPopup}
                                >
-                                 Close
+                                  {t('Close')}
                                </button>
                                {/* <button
                                  type="button"
@@ -237,7 +240,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                 >
-                                  Save Changes
+                                  {t('SAVE CHANGES')}
                               </Button>
                              </div>
                            </form>

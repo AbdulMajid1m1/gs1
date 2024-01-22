@@ -664,7 +664,7 @@ const RegisteredMembersView = () => {
                     // show disable cursor if status is not approved
                     style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 0 ? "Pending For Approval" : "Rejected"}
+                    {allUserData?.isproductApproved == 1 ? t('Approved') : allUserData?.isproductApproved == 0 ? t('Pending For Approval') : t('Rejected')}
                   </button>
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'

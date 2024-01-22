@@ -4,9 +4,12 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
-
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../../../../i18n";
+import LanguageSwitcher from "../../../../switer";
 const Updateunit = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
+  const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   console.log(updateBrandData)
@@ -82,35 +85,35 @@ const Updateunit = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update unit</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update unit')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">unit code</label>
+                    <label htmlFor="field1" className="text-secondary">{t('unit code')}</label>
                     <input
                       type="text"
                       id="unit_code"
                       value={unit_code}
                       onChange={(e) => setunit_code(e.target.value)}
                       //   readOnly
-                      placeholder="Enter unit code"
+                      placeholder={t('Enter unit code')}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">unit name</label>
+                    <label htmlFor="field1" className="text-secondary">{t('unit name')}</label>
                     <input
                       type="text"
                       id="unit_name"
                       value={unit_name}
                       onChange={(e) => setunit_name(e.target.value)}
                       //   readOnly
-                      placeholder="Enter unit name"
+                      placeholder={t('Enter Unit name')}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="status" className="text-secondary">
-                      Status
+                      {t('Status')} 
                     </label>
                     <select
                       id="status"
@@ -118,8 +121,8 @@ const Updateunit = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="0">inactive</option>
-                      <option value="1">active</option>
+                      <option value="0">{t('inactive')}</option>
+                      <option value="1">{t('active')}</option>
                     </select>
                   </div>
 

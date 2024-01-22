@@ -55,6 +55,7 @@ import MegaMenuicon from "../../Images/Mega Menu.jpg"
 import Catalogicon from "../../Images/Catalgoicon.jpg"
 import footericon from "../../Images/Footericon.png"
 import rejected from "../../Images/rejected.png"
+import inactiveMembers from "../../Images/inactiveMembers.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
@@ -746,6 +747,26 @@ const AdminSideBar = () =>
                 onClick={(event) => handleItemClick('/admin/old-inactive-members', event)}
                 onContextMenu={(event) =>
                   handleContextMenu(event, '/admin/old-inactive-members')
+                }
+              >
+                <img
+                  src={inactiveMembers}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Old Inactive Members')}</p>
+              </div>
+              
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/old-inactive-members')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/old-inactive-members')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/help-desk', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/help-desk')
                 }
               >
                 <img

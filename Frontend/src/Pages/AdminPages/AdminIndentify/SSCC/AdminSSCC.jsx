@@ -15,6 +15,7 @@ import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import { useTranslation } from 'react-i18next';
+import AdminBulkPopUp from './AdminBulkPopUp';
   
 
 const AdminSSCC = () => {
@@ -29,6 +30,7 @@ const AdminSSCC = () => {
     const [updatedRows, setUpdatedRows] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [filteredData, setFilteredData] = useState([]); // for the map markers
+    const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
     const navigate = useNavigate()
     
 
@@ -122,6 +124,7 @@ const AdminSSCC = () => {
     const fetchData = async (value) => {
       setIsLoading(true);
       console.log(value);
+      setAllSearchMemberDetails(value);
       try {
         const response = await newRequest.get(`/sscc?user_id=${value?.user_id}`);
         console.log(response.data);
@@ -156,11 +159,18 @@ const AdminSSCC = () => {
     // }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-  
+    
     const handleEdit = (row) => {
     //   console.log(row);
-      navigate("/member/update-sscc/" + row?.id)
+      navigate("/admin/admin-update-sscc/" + row?.id)
     }
+
+    const handleAddSSCC = (row) => {
+      // console.log(row);
+      navigate('/admin/admin-addsscc')
+      sessionStorage.setItem("selectedAddSSCCData", JSON.stringify(allSearchMemberDetails));
+    }
+  
             
     const handleDelete = async (row) => {
         try {
@@ -364,7 +374,7 @@ const handleRowClickInParent = (item) => {
                       )}
                     </button>
 
-                        <button onClick={() => navigate('/admin/admin-addsscc')} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                        <button onClick={handleAddSSCC} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                      {i18n.language === 'ar' ? (
                         <>
                           {t('Add SSCC')} <i className="fas fa-plus mr-1"></i>
@@ -476,7 +486,7 @@ const handleRowClickInParent = (item) => {
 
 
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-                <DataTable data={data}  title={`${t('SSCC LIST')}`} columnsName={ViewSsccColumn} backButton={false}
+                <DataTable data={data}  title={`${t('SSCC LIST')}`} columnsName={ViewSsccColumn(t)} backButton={false}
                     loading={isLoading}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}
@@ -507,10 +517,11 @@ const handleRowClickInParent = (item) => {
                 </div>
 
 
-                {/* Add Bulk popup component with handlebulkCreatePopup prop */}
-                {/* {isBulkPopupVisible && (
-                  <BulkPopUp isVisible={isBulkPopupVisible} setVisibility={setBulkPopupVisibility} refreshSsccData={fetchData}/>
-                )} */}
+                 {/* Add Bulk popup component with handlebulkCreatePopup prop */}
+                 {isBulkPopupVisible && (
+                  <AdminBulkPopUp isVisible={isBulkPopupVisible} setVisibility={setBulkPopupVisibility} refreshSsccData={fetchData}/>
+                )}
+
 
 
 

@@ -13,9 +13,11 @@ import { useTranslation } from 'react-i18next';
 const AddGTINProducts = () => {
     const abortControllerRef = useRef(null);
     const { t, i18n } = useTranslation();
-    // const memberDataString = sessionStorage.getItem('memberData');
-    // const memberData = JSON.parse(memberDataString);
-    // console.log(memberData);
+    // get the sessionRow data
+    const selectedAddGtinData = sessionStorage.getItem('selectedAddGtinData');
+    const SelectedData = JSON.parse(selectedAddGtinData);
+    console.log(SelectedData);
+
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedBackImage, setSelectedBackImage] = useState(null);
@@ -137,7 +139,7 @@ const AddGTINProducts = () => {
 
     const handleBrandNamesEnglishArabic = async () => {
         try {
-            const response = await newRequest.get(`/brands?user_id=${memberData?.id}`);
+            const response = await newRequest.get(`/brands?user_id=${SelectedData?.user_id}`);
             console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
@@ -211,137 +213,137 @@ const AddGTINProducts = () => {
     // }
 
 
-    // const handleFormSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setIsLoading(true);
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
 
-    //     const formData = new FormData();
-    //     formData.append('user_id', memberData?.id);
-    //     // formData.append('gcpGLNID', memberData?.gcpGLNID);
-    //     // formData.append('import_code', '12345');
-    //     formData.append('productnameenglish', productNameEnglish);
-    //     formData.append('productnamearabic', productNameArabic);
-    //     formData.append('BrandName', selectedBrandNameEnglish);
-    //     formData.append('ProductType', selectedProductType);
-    //     formData.append('Origin', selectedRegion);
-    //     formData.append('PackagingType', selectedPackageType);
-    //     // formData.append('MnfCode', 'MNF123');
-    //     // formData.append('MnfGLN', 'GLN123');
-    //     formData.append('ProvGLN', memberData?.gln);
-    //     formData.append('unit', selectedUnitCode);
-    //     formData.append('size', size);
-    //     // formData.append('childProduct', 'childProd123');
-    //     // formData.append('quantity', '10');
-    //     // formData.append('barcode', '0123456789012');
-    //     formData.append('gpc', gpc?.value);
-    //     // formData.append('gpc_code', 'GPC456');
-    //     formData.append('countrySale', selectedCountry);
-    //     formData.append('HSCODES', hsCode?.value);
-    //     formData.append('HsDescription', descriptionEnglish);
-    //     formData.append('gcp_type',  memberData.gcp_type || 'GCP');
-    //     formData.append('prod_lang', productNameEnglish);
-    //     formData.append('details_page', descriptionEnglish);
-    //     formData.append('details_page_ar', descriptionArabic);
-    //     // formData.append('status', '1');
-    //     formData.append('memberID', memberData?.id);
-    //     // formData.append('admin_id', '1');
-    //     // formData.append('save_as', 'final');
-    //     // formData.append('gtin_type', 'gtin');
-    //     formData.append('product_url', productUrl);
-    //     // formData.append('product_link_url', 'http://productlink.example.com');
-    //     formData.append('BrandNameAr', selectedBrandNameArabic);
-    //     // formData.append('digitalInfoType', '1');
-    //     // formData.append('readyForGepir', '1');
-    //     // formData.append('gepirPosted', '1');
+        const formData = new FormData();
+        formData.append('user_id', SelectedData?.user_id);
+        // formData.append('gcpGLNID', memberData?.gcpGLNID);
+        // formData.append('import_code', '12345');
+        formData.append('productnameenglish', productNameEnglish);
+        formData.append('productnamearabic', productNameArabic);
+        formData.append('BrandName', selectedBrandNameEnglish);
+        formData.append('ProductType', selectedProductType);
+        formData.append('Origin', selectedRegion);
+        formData.append('PackagingType', selectedPackageType);
+        // formData.append('MnfCode', 'MNF123');
+        // formData.append('MnfGLN', 'GLN123');
+        formData.append('ProvGLN', SelectedData?.gln);
+        formData.append('unit', selectedUnitCode);
+        formData.append('size', size);
+        // formData.append('childProduct', 'childProd123');
+        // formData.append('quantity', '10');
+        // formData.append('barcode', '0123456789012');
+        formData.append('gpc', gpc?.value);
+        // formData.append('gpc_code', 'GPC456');
+        formData.append('countrySale', selectedCountry);
+        formData.append('HSCODES', hsCode?.value);
+        formData.append('HsDescription', descriptionEnglish);
+        formData.append('gcp_type',  SelectedData?.gcp_type || 'GCP');
+        formData.append('prod_lang', productNameEnglish);
+        formData.append('details_page', descriptionEnglish);
+        formData.append('details_page_ar', descriptionArabic);
+        // formData.append('status', '1');
+        formData.append('memberID', SelectedData?.user_id);
+        // formData.append('admin_id', '1');
+        // formData.append('save_as', 'final');
+        // formData.append('gtin_type', 'gtin');
+        formData.append('product_url', productUrl);
+        // formData.append('product_link_url', 'http://productlink.example.com');
+        formData.append('BrandNameAr', selectedBrandNameArabic);
+        // formData.append('digitalInfoType', '1');
+        // formData.append('readyForGepir', '1');
+        // formData.append('gepirPosted', '1');
 
-    //     // Append back image file
-    //     const backImageInput = document.querySelector('#backImageInput');
-    //     if (backImageInput.files && backImageInput.files[0]) {
-    //         formData.append('back_image', backImageInput.files[0]);
-    //     }
+        // Append back image file
+        const backImageInput = document.querySelector('#backImageInput');
+        if (backImageInput.files && backImageInput.files[0]) {
+            formData.append('back_image', backImageInput.files[0]);
+        }
 
-    //     // Append front image file
-    //     const imageInput = document.querySelector('#imageInput');
-    //     if (imageInput.files && imageInput.files[0]) {
-    //         formData.append('front_image', imageInput.files[0]);
-    //     }
+        // Append front image file
+        const imageInput = document.querySelector('#imageInput');
+        if (imageInput.files && imageInput.files[0]) {
+            formData.append('front_image', imageInput.files[0]);
+        }
 
-    //     // Append optional image 1 file
-    //     const imageOptional1Input = document.querySelector('#imageOptional1Input');
-    //     if (imageOptional1Input.files && imageOptional1Input.files[0]) {
-    //         formData.append('image_1', imageOptional1Input.files[0]);
-    //     }
+        // Append optional image 1 file
+        const imageOptional1Input = document.querySelector('#imageOptional1Input');
+        if (imageOptional1Input.files && imageOptional1Input.files[0]) {
+            formData.append('image_1', imageOptional1Input.files[0]);
+        }
 
-    //     // Append optional image 2 file
-    //     const imageOptional2Input = document.querySelector('#imageOptional2Input');
-    //     if (imageOptional2Input.files && imageOptional2Input.files[0]) {
-    //         formData.append('image_2', imageOptional2Input.files[0]);
-    //     }
+        // Append optional image 2 file
+        const imageOptional2Input = document.querySelector('#imageOptional2Input');
+        if (imageOptional2Input.files && imageOptional2Input.files[0]) {
+            formData.append('image_2', imageOptional2Input.files[0]);
+        }
 
-    //     // Append optional image 3 file
-    //     const imageOptional3Input = document.querySelector('#imageOptional3Input');
-    //     if (imageOptional3Input.files && imageOptional3Input.files[0]) {
-    //         formData.append('image_3', imageOptional3Input.files[0]);
-    //     }
+        // Append optional image 3 file
+        const imageOptional3Input = document.querySelector('#imageOptional3Input');
+        if (imageOptional3Input.files && imageOptional3Input.files[0]) {
+            formData.append('image_3', imageOptional3Input.files[0]);
+        }
 
-    //     try {
+        try {
 
 
-    //         const response = await newRequest.post(
-    //             '/products',
-    //             formData
-    //         );
+            const response = await newRequest.post(
+                '/products',
+                formData
+            );
 
-    //         console.log(response);
-    //         // openSnackbar('Product Added Successfully', 'success');
-    //         setSelectedImage(null);
-    //         setSelectedBackImage(null);
-    //         setSelectedUnitCode('');
-    //         setSelectedRegion('');
-    //         setSelectedCountry('');
-    //         setSelectedProductDescription('');
-    //         setSelectedProductType('');
-    //         setSelectedPackageType('');
-    //         setGpc(null);
-    //         setGpcCode('');
-    //         setHsCode(null);
-    //         setDescriptionEnglish('');
-    //         setDescriptionArabic('');
-    //         setProductUrl('');
-    //         setSize('');
-    //         setBrandNameEnglish('');
-    //         setBrandNameArabic('');
-    //         setProductNameEnglish('');
-    //         setProductNameArabic('');
-    //         setIsLoading(false);
-    //         toast.success(response?.data?.message || 'Product created Successfully', {
-    //             position: "top-right",
-    //             autoClose: 3000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: true,
-    //             draggable: true
-    //         }); 
+            console.log(response);
+            // openSnackbar('Product Added Successfully', 'success');
+            setSelectedImage(null);
+            setSelectedBackImage(null);
+            setSelectedUnitCode('');
+            setSelectedRegion('');
+            setSelectedCountry('');
+            setSelectedProductDescription('');
+            setSelectedProductType('');
+            setSelectedPackageType('');
+            setGpc(null);
+            setGpcCode('');
+            setHsCode(null);
+            setDescriptionEnglish('');
+            setDescriptionArabic('');
+            setProductUrl('');
+            setSize('');
+            setBrandNameEnglish('');
+            setBrandNameArabic('');
+            setProductNameEnglish('');
+            setProductNameArabic('');
+            setIsLoading(false);
+            toast.success(response?.data?.message || 'Product created Successfully', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            }); 
 
-    //         setTimeout(() => {
-    //             navigate(-1);
-    //         }, 2000);
+            setTimeout(() => {
+                navigate(-1);
+            }, 2000);
 
-    //     }
-    //     catch (error) {
-    //         console.log(error);
-    //         toast.error(error?.response?.data?.error || "Error", {
-    //             position: "top-right",
-    //             autoClose: 3000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: true,
-    //             draggable: true
-    //         });
-    //         setIsLoading(false);
-    //     }
+        }
+        catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.error || "Error", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+            setIsLoading(false);
+        }
 
-    // };
+    };
 
 
 
@@ -585,8 +587,8 @@ const AddGTINProducts = () => {
                     </div>
                     </div>
 
-                    {/* <form onSubmit={handleFormSubmit}> */}
-                    <form>
+                    <form onSubmit={handleFormSubmit}>
+                    {/* <form> */}
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="fields1" className="text-secondary">{t('Product')} {t('Name[English]')}</label>
@@ -1195,7 +1197,7 @@ const AddGTINProducts = () => {
 
 
                         <div>
-                           <span className='text-secondary font-body sm:text-base text-sm'>{t('Front Photo')}</span>
+                           <span className='text-secondary font-body sm:text-base text-sm'>{t('Back Photo')}</span>
                              <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                     <label htmlFor="backImageInput" className="cursor-pointer whitespace-nowrap">

@@ -21,7 +21,6 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useTranslation } from 'react-i18next';
 const DocumentType = () =>
 {
-
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -265,7 +264,7 @@ const DocumentType = () =>
 
                 <DataTable data={data}
                   title={`${t('Document Type')}`}
-                  columnsName={document_type}
+                  columnsName={document_type(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

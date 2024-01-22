@@ -97,7 +97,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
     // Check if required fields are empty
     if (!selectedDocuments) {
-      toast.error('Select Docuemts.', {
+      toast.error(`${t('Select Docuemts')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -110,7 +110,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       return;
     }
     else if (!transactionId) {
-      toast.error('Enter Transaction Id.', {
+      toast.error(`{${t('Enter')} ${t('Transaction Id')} ${t('Name')}}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -123,7 +123,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       return;
     }
     else if (!uploadDocument) {
-      toast.error('Upload Document.', {
+      toast.error(` ${t('Upload Documents')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,

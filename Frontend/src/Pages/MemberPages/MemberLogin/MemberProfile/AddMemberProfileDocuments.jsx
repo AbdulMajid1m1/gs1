@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, refreshHistoryData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
@@ -17,6 +18,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   const [error, setError] = useState('');
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
+  const { t } = useTranslation();
   // console.log(memberData);
 
   const [loading, setLoading] = useState(false);
@@ -95,7 +97,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
     // Check if required fields are empty
     if (!selectedDocuments) {
-      toast.error('Select Docuemts.', {
+      toast.error(` ${t('Select Docuemts')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -108,7 +110,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       return;
     }
     else if (!transactionId) {
-      toast.error('Enter Transaction Id.', {
+      toast.error( `{${ t('Enter') } ${ t('Transaction Id') } ${ t('Name') }}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -121,7 +123,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       return;
     }
     else if (!uploadDocument) {
-      toast.error('Upload Document.', {
+      toast.error(` ${t('Upload Documents')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -152,7 +154,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
           'Content-Type': 'multipart/form-data',
         },
       });
-      toast.success(response?.data?.message || 'Documents Added Successfully.', {
+      toast.success(response?.data?.message || `${t('Documents Added Successfully')}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -204,10 +206,10 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Member Documents</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Member Documents')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Select Documents</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Select Documents')}</label>
                     <Autocomplete
                       id="field1"
                       options={docuements}
@@ -250,7 +252,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label className="text-secondary">Document Type</label>
+                    <label className="text-secondary">{t('Document Type')}</label>
                     <div className="flex w-full justify-center gap-4">
                       <label>
                         <input
@@ -260,7 +262,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                           checked={isBankSlip}
                           onChange={handleRadioChange}
                         />
-                        <span className='ml-2'>Is Bank Slip</span>
+                        <span className='ml-2'>{t('Is Bank Slip')}</span>
                       </label>
                       <label>
                         <input
@@ -270,14 +272,14 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                           checked={!isBankSlip}
                           onChange={handleRadioChange}
                         />
-                        <span className='ml-2'>Is Not Bank Slip</span>
+                        <span className='ml-2'>{t('Is Not Bank Slip')}</span>
                       </label>
                     </div>
                   </div>
 
                   {isBankSlip && (
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                      <label htmlFor="field2" className="text-secondary">Transaction Id </label>
+                      <label htmlFor="field2" className="text-secondary">{t('Transaction Id')} </label>
                       <Autocomplete
                         id="field2"
                         options={transactionId}
@@ -320,7 +322,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                   )}
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field3" className="text-secondary">Upload Documents </label>
+                    <label htmlFor="field3" className="text-secondary"> {t('Upload Documents')}</label>
                     <input
                       type="file"
                       id="field3"
@@ -337,7 +339,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseMemberPopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   {/* <button
                                  type="button"
@@ -354,7 +356,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Upload Documents
+                    {t('Upload Documents')}
                   </Button>
                 </div>
               </form>
