@@ -4,6 +4,7 @@ import newRequest from '../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
+import { useTranslation } from 'react-i18next';
 
 const UpdateBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -15,7 +16,8 @@ const UpdateBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     // const [brandUserId, setBrandUserId] = useState(updateBrandData?.user_id || '');
     const [updateBrandCertificate, setUpdateBrandCertificate] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+  const [error, setError] = useState('');
+  const { t } = useTranslation();
 
 
     const handleCloseUpdatePopup = () => {
@@ -59,7 +61,7 @@ const handleUpdateBrand = async () => {
       },
     });
 
-    toast.success(response?.data?.message || 'Brand updated successfully', {
+    toast.success(response?.data?.message || `${t('Brands')} ${companyName} ${('with Arabic name')}" ${companyNameArabic}" ${t('has been')} ${t('Updated Successfully')}`, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -75,7 +77,7 @@ const handleUpdateBrand = async () => {
     handleCloseUpdatePopup();
 
   } catch (error) {
-    toast.error(error?.response?.data?.message || 'Something went wrong!', {
+    toast.error(error?.response?.data?.message || `${t('Something went wrong!')}`, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -105,30 +107,30 @@ const handleUpdateBrand = async () => {
                      <div className="popup-container h-auto sm:w-[45%] w-full">
                        <div className="popup-form w-full">         
                           <form className='w-full'>
-                            <h2 className='text-secondary font-sans font-semibold text-2xl'>Update Brands</h2>
+                            <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update')} {t('Brands')}</h2>
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary">Brand Name EN</label>
+                                <label htmlFor="field1" className="text-secondary">{t('Brands')} {t('Name[English]')}</label>
                                 <input
                                   type="text"
                                   id="field1"
                                   value={brandName}
                                   onChange={(e) => setBrandName(e.target.value)}
                                 //   readOnly
-                                  placeholder="Enter Brand Name EN"
+                                  placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[English]')}`}
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                               </div>
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary">Brand Name AR </label>
+                                <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')}</label>
                                 <input
                                   type="text"
                                   id="field2"
                                   value={brandNameArabic}
                                   onChange={(e) => setBrandNameArabic(e.target.value)}
                                 //   readOnly
-                                  placeholder="Enter Brand Name AR"
+                                 placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[Arabic]')}`}
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                               </div>
@@ -136,7 +138,7 @@ const handleUpdateBrand = async () => {
 
                             <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field3" className="text-secondary">Status</label>
+                                <label htmlFor="field3" className="text-secondary">{t('Status')}</label>
                                 <select
                                   type="text"
                                   id="field3"
@@ -146,13 +148,13 @@ const handleUpdateBrand = async () => {
                                   placeholder="Enter Brand Name EN"
                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 >
-                                  <option value="active">Active</option>
-                                  <option value="inactive">Inactive</option>
+                                  <option value="active">{t('Active')}</option>
+                                  <option value="inactive">{t('Inactive')}</option>
                                 </select>
                               </div>
 
                               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field4" className="text-secondary">Documents</label>
+                                <label htmlFor="field4" className="text-secondary">{t('Upload Documents')} </label>
                                   <input
                                   type="file"
                                   id="field4"
@@ -169,7 +171,7 @@ const handleUpdateBrand = async () => {
                                 className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                 onClick={handleCloseUpdatePopup}
                               >
-                                Close
+                                 {t('Close')}
                               </button>
                               {/* <button
                                 type="button"
@@ -186,7 +188,7 @@ const handleUpdateBrand = async () => {
                                 className="w-[70%] ml-2"
                                 endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                             >
-                                SAVE CHANGES
+                                {t('SAVE CHANGES')}
                             </Button>
                             </div>
                           </form>

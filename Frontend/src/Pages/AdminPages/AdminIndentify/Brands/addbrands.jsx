@@ -7,6 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+
 const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
   const [companyName, setCompanyName] = useState("");
   const [companyNameArabic, setCompanyNameArabic] = useState("");

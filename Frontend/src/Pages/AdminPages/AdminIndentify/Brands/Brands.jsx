@@ -289,7 +289,7 @@ const Brands = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
                 <DataTable data={data}
                   title={`${t('Brands')}`}
-                  columnsName={AdminBrandsColumn}
+                  columnsName={AdminBrandsColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
 

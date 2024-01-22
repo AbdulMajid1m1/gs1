@@ -11,8 +11,10 @@ import { DataTableContext } from '../../../Contexts/DataTableContext'
 import { useNavigate } from 'react-router-dom'
 import newRequest from '../../../utils/userRequest';
 import Gs1GtinPopUp from './Gs1GtinPopUp';
+import { useTranslation } from 'react-i18next';
 
 const SubscribedGTIN = () => {
+  const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [registeredProductsData, setRegisteredProductsData] = useState([]);
   const [registeredProductsLoader, setRegisteredProductsLoader] = useState(false);
@@ -153,7 +155,7 @@ const SubscribedGTIN = () => {
 
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           <div>
             <DashboardRightHeader title={"My GS1"}/>
           </div>
@@ -248,7 +250,7 @@ const SubscribedGTIN = () => {
                             <button
                             //   onClick={handleShowCreatePopup}
                                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                                 Subscribe Other Product
+                                  {t('Subscribe Other Product')}
                             </button>
                          </div>
                         {/* </div> */}
@@ -257,7 +259,7 @@ const SubscribedGTIN = () => {
                     <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-11px' }}>
 
                     <DataTable data={data} 
-                      title="Subscribe Other Product"
+                      title={`${t('Subscribe Other Product')}`}
                        columnsName={subscribedGtinColumn}
                         loading={isLoading}
                          secondaryColor="secondary"
@@ -266,7 +268,7 @@ const SubscribedGTIN = () => {
 
                     dropDownOptions={[
                         {
-                        label: "Renew Membership",
+                        label: `${t('Renew Membership')}`,
                         icon: (
                             <VisibilityIcon
                             fontSize="small"
@@ -277,7 +279,7 @@ const SubscribedGTIN = () => {
                         action: handleView,
                         },
                         {
-                          label: "Upgrade/Downgrade",
+                          label: `${t('Upgrade/Downgrade')}`,
                           icon: (
                               <EditIcon
                               fontSize="small"

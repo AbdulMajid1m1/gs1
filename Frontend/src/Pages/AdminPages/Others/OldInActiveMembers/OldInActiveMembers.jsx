@@ -202,7 +202,7 @@ const OldInActiveMembers = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title={t('Old Inactive Members')} columnsName={oldInActiveMemberColumn}
+            <DataTable data={data} title={t('Old InActive Members')} columnsName={oldInActiveMemberColumn}
               loading={isLoading}
               secondaryColor="secondary"
               // handleRowClickInParent={handleRowClickInParent}

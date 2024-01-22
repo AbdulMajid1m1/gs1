@@ -5,6 +5,7 @@ import DashboardRightHeader from '../../../components/DashboardRightHeader/Dashb
 import { toast } from 'react-toastify';
 import newRequest from '../../../utils/userRequest';
 import { DotLoader } from 'react-spinners'
+import { useTranslation } from 'react-i18next';
 
 const AddGLN = () => {
     const memberDataString = sessionStorage.getItem('memberData');
@@ -23,7 +24,8 @@ const AddGLN = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [markerPosition, setMarkerPosition] = useState(null);
-    const navigate = useNavigate()
+  const navigate = useNavigate()
+  const { t, i18n } = useTranslation();
 
   
 
@@ -62,7 +64,7 @@ const AddGLN = () => {
           navigate(-1);
         }, 1500);
 
-        toast.success(response?.data?.message || 'GLN Added Successfully', {
+        toast.success(response?.data?.message || `${t('GLN Added Successfully')}`, {
           position: 'top-right',
           autoClose: 2000,
           hideProgressBar: false,
@@ -207,10 +209,10 @@ const AddGLN = () => {
         }
 
 
-        <div className="p-0 h-full sm:ml-72 bg-slate-100">
+        <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
 
         <div>
-          <DashboardRightHeader title={"Add GLN"}/>
+          <DashboardRightHeader title={`${t('Add GLN')}`} />
         </div>
 
             <div className="flex flex-col justify-center items-center p-4">
@@ -228,17 +230,25 @@ const AddGLN = () => {
                         </div>
                     </div>
                     </div>
-                    
+            <div className={`flex ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                 <button onClick={() => navigate(-1)} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                    <i className="fas fa-arrow-left mr-1"></i> Back
+              {i18n.language === 'ar' ? (
+                <>
+                  {t('Back')} <i className="fas fa-arrow-right ml-1"></i>
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-arrow-left mr-1"></i> {t('Back')}
+                </>
+              )}
                 </button>
-
+</div>
 
                 {/* <form onSubmit={handleSubmit}> */}
                   <form>
-                     <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+              <div className={` flex flex-col sm:gap-8 gap-3  sm:justify-between mt-4 ${i18n.language === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'}`}>
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='locationEnglish' className='text-secondary'>Location Name [English]<span className='text-red-600'>*</span></label>
+                            <label htmlFor='locationEnglish' className='text-secondary'>{t('Locations')} {t('Name[English]')}<span className='text-red-600'>*</span></label>
                             <input 
                             onChange={(e) => setLocationEnglish(e.target.value)}
                             value={locationEnglish}
@@ -249,7 +259,7 @@ const AddGLN = () => {
 
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='locationArabic'>Location Name [Arabic]<span className='text-red-600'>*</span></label>
+                            <label htmlFor='locationArabic'>{t('Locations')} {t('Name[Arabic]')}<span className='text-red-600'>*</span></label>
                             <input
                             onChange={(e) => setLocationArabic(e.target.value)} 
                             value={locationArabic}
@@ -259,9 +269,9 @@ const AddGLN = () => {
                     </div>
 
 
-                    <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                    <div className={` flex flex-col sm:gap-8 gap-3  sm:justify-between mt-4 ${i18n.language === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'}`}>
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='addressEnglish' className='text-secondary'>Address [English]<span className='text-red-600'>*</span></label>
+                            <label htmlFor='addressEnglish' className='text-secondary'>{t('Address')} {t('Name[English]')}<span className='text-red-600'>*</span></label>
                             <input
                               value={selectedLocation ? selectedLocation.address : ''}
                             onChange={(e) => setAddressEnglish(e.target.value)} 
@@ -270,7 +280,7 @@ const AddGLN = () => {
                         </div>
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='addressArabic' className='text-secondary'>Address [Arabic]<span className='text-red-600'>*</span></label>
+                            <label htmlFor='addressArabic' className='text-secondary'>{t('Address')} {t('Name[Arabic]')}<span className='text-red-600'>*</span></label>
                             <input
                               value={selectedLocation ? selectedLocation.address : ''}
                             onChange={(e) => setAddressArabic(e.target.value)} 
@@ -279,7 +289,7 @@ const AddGLN = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                    <div className={` flex flex-col sm:gap-8 gap-3  sm:justify-between mt-4 ${i18n.language === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'}`}>
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor='po' className='text-secondary'>P.O.BOX<span className='text-red-600'>*</span></label>
                             <input
@@ -289,7 +299,7 @@ const AddGLN = () => {
                         </div>
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='postal' className='text-secondary'>Postal Code<span className='text-red-600'>*</span></label>
+                            <label htmlFor='postal' className='text-secondary'>{t('Postal Code')}<span className='text-red-600'>*</span></label>
                             <input
                             onChange={(e) => setPostal(e.target.value)} 
                             id='postal' 
@@ -298,9 +308,9 @@ const AddGLN = () => {
                     </div>
 
 
-                    <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
+                    <div className={` flex flex-col sm:gap-8 gap-3  sm:justify-between mt-4 ${i18n.language === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'}`}>
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='longitude' className='text-secondary'>Longitude<span className='text-red-600'>*</span></label>
+                            <label htmlFor='longitude' className='text-secondary'>{t('Longitude')}<span className='text-red-600'>*</span></label>
                             <input
                             // value={localStorage.getItem('longitude')}
                             value={selectedLocation ? selectedLocation.longitude : ''}                  
@@ -310,7 +320,7 @@ const AddGLN = () => {
 
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='Latitude' className='text-secondary'>Latitude<span className='text-red-600'>*</span></label>
+                            <label htmlFor='Latitude' className='text-secondary'>{t('Latitude')}<span className='text-red-600'>*</span></label>
                             <input
                             //  value={localStorage.getItem('latitude')}
                             value={selectedLocation ? selectedLocation.latitude : ''}
@@ -320,16 +330,16 @@ const AddGLN = () => {
 
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor='status' className='text-secondary'>Status<span className='text-red-600'>*</span></label>
+                            <label htmlFor='status' className='text-secondary'> {t('Status')}<span className='text-red-600'>*</span></label>
                             <select 
                                onChange={(e) => setStatus(e.target.value)}
                                 id='status' 
                                 className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                 value={status}
                                 >
-                                <option value=''>-select-</option>
-                                <option value='active'>Active</option>
-                                <option value='inactive'>Inactive</option>
+                                <option value=''>-{t('Select')}-</option>
+                                <option value='active'>{t('Active')}</option>
+                                <option value='inactive'>{t('Inactive')}</option>
                             </select>
                         </div>
                     </div>
@@ -342,7 +352,7 @@ const AddGLN = () => {
                             <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                 <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary hover:bg-primary text-white font-body">
                                 <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
-                                    Select Image
+                                   {t('Select Image')}
                                     <input
                                     type="file"
                                     id="imageInput"
@@ -437,9 +447,9 @@ const AddGLN = () => {
         </>
       )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={`flex ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                 <button type='submit' className="rounded-sm bg-secondary font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-primary">
-                    <i className="fas fa-check-circle mr-1"></i> Submit
+                    <i className="fas fa-check-circle mr-1"></i> {t('Submit')}
                 </button>
             </form>
            </div>

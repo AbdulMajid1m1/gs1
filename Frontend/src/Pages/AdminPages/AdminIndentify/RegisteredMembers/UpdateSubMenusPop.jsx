@@ -199,7 +199,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
                 <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field7" className="text-secondary">Member Status</label>
+                    <label htmlFor="field7" className="text-secondary">{t('Member Status')}</label>
                     <select
                       type="text"
                       id="field7"

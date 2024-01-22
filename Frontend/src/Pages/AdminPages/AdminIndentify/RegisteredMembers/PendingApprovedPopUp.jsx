@@ -94,7 +94,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
     } catch (err) {
       console.log(err);
-      toast.error(err.response?.data?.error || "Something went wrong!");
+      toast.error(err.response?.data?.error || `${t('Something went wrong!')}`);
     }
   };
   // create a useEffect to calculate the total price of the cart items
