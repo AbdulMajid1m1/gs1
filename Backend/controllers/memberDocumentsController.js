@@ -686,9 +686,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 const memberID = existingUser.memberID;
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
-                const oldProducts = await oldGs1Prisma.query(`
-                    SELECT * FROM Mem.products WHERE MemberID = ${memberID}
-                `);
+                const oldProducts = await prisma.products.findMany({
+                    where: {
+                        MemberID: memberID
+                    }
+                });
 
                 // Map and insert data into the new database table Product
                 for (const oldProduct of oldProducts) {
@@ -744,9 +746,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Check if the product "GLN (30 Locations)" is found in subscriptions
                 if (otherProductsSubscriptions && otherProductsSubscriptions.product.product_name === "GLN (30 Locations)") {
                     // Fetch all records from the old Location table based on some condition (you can modify the condition as needed)
-                    const oldLocationData = await oldGs1Prisma.query(`
-                        SELECT * FROM Location WHERE MemberID = ${memberID}
-                    `);
+                    const oldLocationData = await oldGs1Prisma.location.findMany({
+                        where: {
+                            MemberID: memberID,
+                        },
+                    });
 
                     // Iterate through the oldLocationData and insert into add_member_gln_products
                     for (const oldLocation of oldLocationData) {
