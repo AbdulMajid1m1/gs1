@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
-import { Autocomplete, CircularProgress, TextField, debounce } from '@mui/material';
+import { Autocomplete, Button, CircularProgress, TextField, debounce } from '@mui/material';
 import newRequest from '../../../../utils/userRequest';
 import { oldInActiveMemberColumn } from '../../../../utils/datatablesource';
 import DataTable from '../../../../components/Datatable/Datatable';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from 'react-toastify';
 
 const OldInActiveMembers = () => {
   const { t, i18n } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [migrateButtonLoader, setMigrateButtonLoader] = useState(false);
   const [data, setData] = useState([]);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [selectedOldMember, setSelectedOldMember] = useState(null);
@@ -35,7 +37,7 @@ const OldInActiveMembers = () => {
   }
 
   const [details, setDetails] = useState([])
-
+  
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
     console.log(reason);
@@ -48,7 +50,7 @@ const OldInActiveMembers = () => {
     if (reason === 'option') {
       return; // Do not perform search if the option is selected
     }
-
+    
     if (!newInputValue || newInputValue.trim() === '') {
       // perform operation when input is cleared
       setOldMemberList([]);
@@ -70,7 +72,7 @@ const OldInActiveMembers = () => {
         signal: abortControllerRef.current.signal
       });
       console.log(res);
-
+      
       const crs = res?.data?.map(item => {
         return {
           MemberID: item.MemberID,
@@ -85,9 +87,9 @@ const OldInActiveMembers = () => {
    
       setOpen(true);
       setAutocompleteLoading(false);
-
+      
       // fetchData();
-
+      
     } catch (error) {
       console.error(error);
       setOldMemberList([]); // Clear the data list if an error occurs
@@ -95,10 +97,10 @@ const OldInActiveMembers = () => {
       setAutocompleteLoading(false);
     }
   }, 400);
-
-
+  
+  
   // const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
-
+  
   const fetchData = async (value) => {
     setIsLoading(true);
     console.log(value);
@@ -117,6 +119,31 @@ const OldInActiveMembers = () => {
 
 
 
+
+  const handleMigrateAndGenerateMember = async () => {
+    setMigrateButtonLoader(true);
+    // console.log(selectedOldMember);
+    if (!selectedOldMember) {
+      toast.info('Please select a member first');
+      setMigrateButtonLoader(false); 
+      return;
+    }
+
+    try {
+      const res = await newRequest.post('/migration/migrateUser', {
+        "MemberID": selectedOldMember?.MemberID,
+      });
+      console.log(res);
+      toast.success(res?.data?.message || 'Member migrated successfully');
+      setMigrateButtonLoader(false);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || 'Failed to migrate member');
+      setMigrateButtonLoader(false);
+    }
+  }
+
+  
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
@@ -141,7 +168,7 @@ const OldInActiveMembers = () => {
               // UserID: item.UserID,
               getOptionLabel={(option) => (option && option.MemberID) ? `${option?.Email} - ${option?.MemberNameE} - ${option?.UserID} ` : ''}
               onChange={handleGPCAutoCompleteChange}
-              value={selectedOldMember?.cr}
+              value={selectedOldMember}
               onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
               loading={autocompleteLoading}
               sx={{ marginTop: '10px' }}
@@ -234,20 +261,22 @@ const OldInActiveMembers = () => {
 
                 <div className='w-full flex justify-start px-6 pt-2 py-6 gap-2'>
                   {/* <button
-                    onClick={handlePendingApprovedPopUp}
-                    className={`font-sans font-normal text-sm px-4 py-1 rounded-full hover:bg-blue-600 ${allUserData?.isproductApproved == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                      }`}
-                    disabled={allUserData.isproductApproved === 1 ? true : allUserData.isproductApproved === undefined ? true : false}
-                    // show disable cursor if status is not approved
-                    style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
-                  >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 0 ? "Pending For Approval" : "Rejected"}
-                  </button> */}
-                  <button
+                    onClick={handleMigrateAndGenerateMember}
                       className='bg-secondary font-sans font-normal text-sm px-6 py-2 text-white rounded-full hover:bg-primary'
                     >
                       Migrate & Generate Invoice
-                    </button>
+                    </button> */}
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                      type="button"
+                      onClick={handleMigrateAndGenerateMember}
+                      disabled={migrateButtonLoader}
+                      className="ml-2"
+                      endIcon={migrateButtonLoader ? <CircularProgress size={24} color="inherit" /> : null}
+                      >
+                      Migrate & Generate Invoice
+                    </Button>
                 </div>
           </div>
 
