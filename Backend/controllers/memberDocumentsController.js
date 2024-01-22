@@ -684,7 +684,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             });
 
-            if (migration === true) {
+            if (value.migration === true) {
                 // Retrieve MemberID from user's column memberID
                 const memberID = user.memberID;
 
