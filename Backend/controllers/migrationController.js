@@ -148,10 +148,10 @@ export const migrateUser = async (req, res, next) => {
         let TypeOfPaymentText = "Registration for the year ";
 
         if (yearsToPay === 1) {
-            TypeOfPaymentText += currentYear;
+            TypeOfPaymentText += currentYear - 1;
         } else {
             for (let i = 0; i < yearsToPay; i++) {
-                TypeOfPaymentText += currentYear + i;
+                TypeOfPaymentText += currentYear - 1 + i;
                 if (i < yearsToPay - 1) {
                     TypeOfPaymentText += " & ";
                 }
