@@ -121,9 +121,11 @@ const OldInActiveMembers = () => {
 
 
   const handleMigrateAndGenerateMember = async () => {
+    setMigrateButtonLoader(true);
     // console.log(selectedOldMember);
     if (!selectedOldMember) {
       toast.info('Please select a member first');
+      setMigrateButtonLoader(false); 
       return;
     }
 
