@@ -15,6 +15,7 @@ import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
+import { oldGs1Prisma } from '../prismaMultiClinets.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
