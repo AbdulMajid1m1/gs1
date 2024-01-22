@@ -687,7 +687,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             if (value.migration === true) {
                 // Retrieve MemberID from user's column memberID
-                const memberID = existingUser.memberID;
+                const memberID = +existingUser.memberID
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
                 const oldProducts = await oldGs1Prisma.product.findMany({
@@ -753,7 +753,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Check if the product "GLN (30 Locations)" is found in subscriptions
                 if (otherProductsSubscriptions && otherProductsSubscriptions.product.product_name === "GLN (30 Locations)") {
                     // Fetch all records from the old Location table based on some condition (you can modify the condition as needed)
-                    const oldLocationData = await oldGs1Prisma.Location.findMany({
+                    const oldLocationData = await oldGs1Prisma.location.findMany({
                         where: {
                             MemberID: memberID,
                         },
