@@ -1495,7 +1495,7 @@ export const Gs1AllMembers = (t, i18n) => [
   {
     field: 'member_type',
     headerName: t('MEMBER TYPE'),
-    width: 180,
+    width: 120,
     renderCell: params => (
       <div
         style={{
