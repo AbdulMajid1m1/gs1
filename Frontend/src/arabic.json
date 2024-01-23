@@ -532,5 +532,8 @@
     "Create Ticket":"إنشاء تذكرة",
     "Approved":"تمت الموافقة عليه بواسطة",
     "Subscribe Other Product":"اشترك في منتج آخر",
-    "My GS1":"بلدي GS1"
+    "My GS1":"بلدي GS1",
+    "Pending Invoices":"الفواتير المعلقة",
+    "Remarks":"ملاحظات",
+    "City":"المدينة"
 }
