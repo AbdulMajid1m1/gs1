@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import { useTranslation } from 'react-i18next';
+import AdminGpcPopUp from './AdminGpcPopUp';
 
 
 const AddGTINProducts = () => {
@@ -539,6 +540,12 @@ const AddGTINProducts = () => {
     }
 
 
+    const [isGpcPopUpVisible, setIsGpcPopUpVisible] = useState(false);
+
+    const handleGpcPopUp = () => {
+        setIsGpcPopUpVisible(true);
+    };
+
 
 
     return (
@@ -984,9 +991,9 @@ const AddGTINProducts = () => {
 
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                <label htmlFor="field10" className="text-secondary">GPC</label>
+                                <label htmlFor="field10" className="text-secondary">GPC <span className='text-red-500 text-sm cursor-pointer' onClick={handleGpcPopUp}>(What is GPC?)</span></label>
                                 <Autocomplete
-                                    id="field10"
+                                    // id="field10"
                                     required
                                     options={gpcList}
                                     getOptionLabel={(option) => (option && option?.value) ? option?.value : ''}
@@ -1308,6 +1315,11 @@ const AddGTINProducts = () => {
                 </div>
             </form>
 
+
+            
+            {isGpcPopUpVisible && (
+            <AdminGpcPopUp isVisible={isGpcPopUpVisible} setVisibility={setIsGpcPopUpVisible}/>
+            )}
 
                     </div>
                 </div>

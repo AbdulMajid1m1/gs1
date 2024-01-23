@@ -134,7 +134,7 @@ const HelpDesk = () => {
 
                     <DataTable data={data} 
                     title={`${t('Help Desk')}`}
-                       columnsName={helpDeskColumn}
+                       columnsName={helpDeskColumn(t)}
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}

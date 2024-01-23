@@ -192,7 +192,10 @@ const Gtin = () => {
   };
 
   const handleAddGtin = (row) => {
-    // console.log(row);
+    if (!allSearchMemberDetails) {
+      toast.error(`${t('Please select a member first')}!`);
+      return;
+    }
     navigate("/admin/admin-gtin");
     sessionStorage.setItem("selectedAddGtinData", JSON.stringify(allSearchMemberDetails));
   }
