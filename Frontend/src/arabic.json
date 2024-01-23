@@ -483,7 +483,7 @@
     "GLN Barcode Number":"رقم الباركود GLN",
     "LOCATION NAME EN":"اسم الموقع EN",
     "LOCATION NAME AR":"اسم الموقع AR",
-    "GCP GLN ID":"GCP GLN ID",
+    "GCP GLN ID":"معرف GCP GLN",
     "Product ID":"معرف المنتج",
     "Type":"يكتب",
     "SSCC Barcode Number":"رقم الباركود SSCC",
@@ -552,6 +552,15 @@
     "GPC Type":"أنواع GPC",
     "counrty of sale":"بلد البيع",
     "HsCode":"كود هس",
-    "Something went wrong while deleting user":"حدث خطأ ما أثناء حذف المستخدم"
+    "Something went wrong while deleting user":"حدث خطأ ما أثناء حذف المستخدم",
+    "Complete Data":"بيانات كاملة",
+    "This number is registered to company":"هذا الرقم مسجل بالشركة",
+    "Packaging Type":"نوع التغليف",
+    "Optional Image 1":"الصورة الاختيارية 1",
+    "Optional Image 2":"الصورة الاختيارية 2",
+    "Optional Image 3":"الصورة الاختيارية 3",
+    "Unit":"وحدة",
+    "Phone":"هاتف",
+    "Role":"دور"
 
 }

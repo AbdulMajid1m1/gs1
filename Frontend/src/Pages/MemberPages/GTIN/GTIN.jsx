@@ -17,7 +17,7 @@ import Barcode from "react-barcode";
 import bwipjs from "bwip-js";
 import { useTranslation } from 'react-i18next';
 
-const Gtin = () => {
+const  Gtin = () => {
   const [data, setData] = useState([]);
   const { t, i18n } = useTranslation();
 
@@ -558,7 +558,7 @@ const Gtin = () => {
             {memberData?.memberID && (
               <button
                 className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                Member ID {memberData?.memberID}
+                {t('Member ID')} {memberData?.memberID}
               </button>
             )}
 

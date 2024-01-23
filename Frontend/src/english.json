@@ -508,5 +508,14 @@
     "GPC Type":"GPC Type",
     "counrty of sale":"counrty of sale",
     "HsCode":"HsCode",
-    "Something went wrong while deleting user":"Something went wrong while deleting user"
+    "Something went wrong while deleting user":"Something went wrong while deleting user",
+    "Complete Data":"Complete Data",
+    "This number is registered to company":"This number is registered to company",
+    "Packaging Type":"Packaging Type",
+    "Optional Image 1":"Optional Image 1",
+    "Optional Image 2":"Optional Image 2",
+    "Optional Image 3":"Optional Image 3",
+    "Unit":"Unit",
+    "Phone":"Phone",
+    "Role":"Role"
 }

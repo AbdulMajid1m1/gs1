@@ -988,7 +988,7 @@ const MemmberRegisteration = () => {
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
                                 >GTIN 
                                     <span className='text-red-600'>*</span>
-                                    {t('(Barcode)')}
+                                    {t('Barcode')}
                                     <img src={barcodeImage} className='h-10 w-auto' alt='' />
                                 </label>
 

@@ -1310,7 +1310,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_1",
-    headerName: "Optional Image 1",
+    headerName: t('Optional Image 1'), 
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1332,7 +1332,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_2",
-    headerName: "Optional Image 2",
+    headerName: t('Optional Image 2'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1354,7 +1354,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_3",
-    headerName: "Optional Image 3",
+    headerName: t('Optional Image 3'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1392,7 +1392,7 @@ export const GtinColumn = (t, i18n) => [
   // },
   {
     field: "product_url",
-    headerName: "Product URL",
+    headerName:  t('Product URL'),
     width: 180,
     renderCell: (params) => {
       let url = params.value;
@@ -1409,27 +1409,27 @@ export const GtinColumn = (t, i18n) => [
 
   {
     field: 'ProductType',
-    headerName: 'Product Type',
+    headerName:  t('Product Type'),
     width: 180,
   },
   {
     field: 'Origin',
-    headerName: 'Origin',
+    headerName:  t('Origin'), 
     width: 180,
   },
   {
     field: 'PackagingType',
-    headerName: 'Packaging Type',
+    headerName: t('Packaging Type'),
     width: 180,
   },
   {
     field: 'unit',
-    headerName: 'Unit',
+    headerName: t('Unit'),
     width: 180,
   },
   {
     field: 'size',
-    headerName: 'Size',
+    headerName: t('Size'),
     width: 180,
   },
   // {
@@ -2691,7 +2691,7 @@ export const silderDataColumn = (t) => [
     width: 200,
   }, {
     field: 'link',
-    headerName: 'Link',
+    headerName: t('Link'),
     width: 200,
   },
   {
