@@ -259,7 +259,7 @@ const Userguideveido = () => {
             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                    columnsName={UserGuideVideoDataColumn}
+                    columnsName={UserGuideVideoDataColumn(t)}
                     loading={isLoading}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}

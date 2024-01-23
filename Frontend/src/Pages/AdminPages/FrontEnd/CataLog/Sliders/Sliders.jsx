@@ -293,7 +293,7 @@ const Sliders = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Sliders')}`}
-                                    columnsName={silderDataColumn}
+                                    columnsName={silderDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

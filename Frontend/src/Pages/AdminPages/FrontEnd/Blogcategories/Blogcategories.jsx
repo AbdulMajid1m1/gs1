@@ -284,7 +284,7 @@ const Blogcategories = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Blog Categories')}`}
-                                    columnsName={BlogCategoriesDataColumn}
+                                    columnsName={BlogCategoriesDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

@@ -276,7 +276,7 @@ const Pages = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Manage Pages')}`}
-                                    columnsName={ManagePagesDataColumn}
+                                    columnsName={ManagePagesDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
