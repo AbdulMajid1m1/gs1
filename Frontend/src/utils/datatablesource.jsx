@@ -1310,7 +1310,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_1",
-    headerName: "Optional Image 1",
+    headerName: t('Optional Image 1'), 
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1332,7 +1332,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_2",
-    headerName: "Optional Image 2",
+    headerName: t('Optional Image 2'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1354,7 +1354,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_3",
-    headerName: "Optional Image 3",
+    headerName: t('Optional Image 3'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1392,7 +1392,7 @@ export const GtinColumn = (t, i18n) => [
   // },
   {
     field: "product_url",
-    headerName: "Product URL",
+    headerName:  t('Product URL'),
     width: 180,
     renderCell: (params) => {
       let url = params.value;
@@ -1409,27 +1409,27 @@ export const GtinColumn = (t, i18n) => [
 
   {
     field: 'ProductType',
-    headerName: 'Product Type',
+    headerName:  t('Product Type'),
     width: 180,
   },
   {
     field: 'Origin',
-    headerName: 'Origin',
+    headerName:  t('Origin'), 
     width: 180,
   },
   {
     field: 'PackagingType',
-    headerName: 'Packaging Type',
+    headerName: t('Packaging Type'),
     width: 180,
   },
   {
     field: 'unit',
-    headerName: 'Unit',
+    headerName: t('Unit'),
     width: 180,
   },
   {
     field: 'size',
-    headerName: 'Size',
+    headerName: t('Size'),
     width: 180,
   },
   // {
@@ -2713,7 +2713,7 @@ export const silderDataColumn = (t) => [
     width: 200,
   }, {
     field: 'link',
-    headerName: 'Link',
+    headerName: t('Link'),
     width: 200,
   },
   {
@@ -3575,7 +3575,7 @@ export const footerMenuDataColumn = (t) => [
   },
   {
     field: 'url',
-    headerName: 'Url',
+    headerName: t('Url'),
     width: 260,
   },
   {
@@ -3953,7 +3953,7 @@ export const Hs_code = (t, i18n) => [
 
   {
     field: 'CNKEY',
-    headerName: 'CNKEY',
+    headerName: t('CNKEY'),
     width: 180,
   },
   {
@@ -6082,7 +6082,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'location_uk',
-    headerName: 'Location UK',
+    headerName:  t('Location UK'),
     width: 180,
   },
   {
@@ -6092,12 +6092,12 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'membership_otherCategory',
-    headerName: 'Membership Other Category',
+    headerName:  t('Membership Other Category'),
     width: 180,
   },
   {
     field: 'gcpGLNID',
-    headerName: 'GCP GLN ID',
+    headerName: t('GCP GLN ID'),
     width: 180,
   },
   {
@@ -6230,7 +6230,7 @@ export const cardsRejectedColumn = (t, i18n) => [
   },
   {
     field: 'other_products',
-    headerName: 'Other Products',
+    headerName:  t('Other Products') ,
     width: 180,
   },
   {
@@ -6425,40 +6425,40 @@ export const usersRejectedColumn = [
 
 
 
-export const oldInActiveMemberColumn = [
+export const oldInActiveMemberColumn = (t, i18n) => [
   {
     field: 'MembershipID',
-    headerName: 'Member Ship ID',
+    headerName: t('Member Ship ID'),
     width: 180,
   },
   {
     field: 'MembershipYear',
-    headerName: 'Membership Year',
+    headerName: t('Membership Year'),
     width: 180,
   },
   {
     field: 'ApprovedBy',
-    headerName: 'Approved By',
+    headerName:  t('Approved By'),
     width: 180,
   },
   {
     field: 'Amount',
-    headerName: 'Amount',
+    headerName: t('Amount'),
     width: 180,
   },
   {
     field: 'Description',
-    headerName: 'Description',
+    headerName: t('Description'),
     width: 180,
   },
   {
     field: 'ModeOfPayment',
-    headerName: 'Mode Of Payment',
+    headerName:  t('Mode Of Payment'),
     width: 180,
   },
   {
     field: 'PaymentDate',
-    headerName: 'Payment Date',
+    headerName:  t('Payment Date'),
     width: 180,
 
     type: 'dateTime',
@@ -6469,7 +6469,7 @@ export const oldInActiveMemberColumn = [
   },
   {
     field: 'Status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -6489,7 +6489,7 @@ export const oldInActiveMemberColumn = [
   },
   {
     field: 'UpdatedDate',
-    headerName: 'Updated Date',
+    headerName: t('Updated Date'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {

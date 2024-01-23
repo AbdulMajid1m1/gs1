@@ -649,7 +649,7 @@ const Gtin = () => {
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              Member ID {allSearchMemberDetails?.memberID}
+              {t('Member ID')} {allSearchMemberDetails?.memberID}
               {/* Member ID */}
             </button>
 

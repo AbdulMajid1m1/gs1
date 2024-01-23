@@ -83,7 +83,7 @@ const Rejected = () => {
                 <div style={{ marginLeft: '-25px', marginRight: '-25px' }}
                 >
                   <DataTable data={cardsRejected}
-                    title="Rejected User"
+                    title={t('Rejected')}
                     columnsName={cardsRejectedColumn(t)}
                     loading={cardsRejectedLoader}
                     secondaryColor="secondary"

@@ -671,7 +671,7 @@ const MemberProfile = () => {
                     // show disable cursor if status is not approved
                     style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                    {allUserData?.isproductApproved == 1 ? t('Approved') : allUserData?.isproductApproved == 2 ? t('Rejected') : t('Pending For Approval')}
                   </button>
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
