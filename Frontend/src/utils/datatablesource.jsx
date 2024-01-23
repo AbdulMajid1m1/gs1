@@ -6451,18 +6451,8 @@ export const oldInActiveMemberColumn = [
     width: 180,
   },
   {
-    field: 'MemberID',
-    headerName: 'Member ID',
-    width: 180,
-  },
-  {
     field: 'MembershipYear',
     headerName: 'Membership Year',
-    width: 180,
-  },
-  {
-    field: 'MembershipTypeID',
-    headerName: 'Membership Type ID',
     width: 180,
   },
   {
@@ -6473,6 +6463,11 @@ export const oldInActiveMemberColumn = [
   {
     field: 'Amount',
     headerName: 'Amount',
+    width: 180,
+  },
+  {
+    field: 'Description',
+    headerName: 'Description',
     width: 180,
   },
   {
@@ -6491,11 +6486,6 @@ export const oldInActiveMemberColumn = [
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }    
-  },
-  {
-    field: 'TransactionID',
-    headerName: 'Transaction ID',
-    width: 180,
   },
   {
     field: 'Status',
@@ -6518,27 +6508,6 @@ export const oldInActiveMemberColumn = [
     ),
   },
   {
-    field: 'CreatedBy',
-    headerName: 'Created By',
-    width: 180,
-  },
-  {
-    field: 'CreatedDate',
-    headerName: 'Created Date',
-    width: 180,
-    type: 'dateTime',
-    valueGetter: (params) =>
-    {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }
-  },
-  {
-    field: 'UpdatedBy',
-    headerName: 'Updated By',
-    width: 180,
-  },
-  {
     field: 'UpdatedDate',
     headerName: 'Updated Date',
     width: 180,
@@ -6549,26 +6518,57 @@ export const oldInActiveMemberColumn = [
       return params.value ? new Date(params.value) : null;
     }
   },
-  {
-    field: 'Description',
-    headerName: 'Description',
-    width: 180,
-  },
-  {
-    field: 'InitiatedType',
-    headerName: 'Initiated Type',
-    width: 180,
-  },
-  {
-    field: 'InitiatedBy',
-    headerName: 'Initiated By',
-    width: 180,
-  },
-  {
-    field: 'Reason',
-    headerName: 'Reason',
-    width: 180,
-  },
+  // {
+  //   field: 'MemberID',
+  //   headerName: 'Member ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'MembershipTypeID',
+  //   headerName: 'Membership Type ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'TransactionID',
+  //   headerName: 'Transaction ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'CreatedBy',
+  //   headerName: 'Created By',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'CreatedDate',
+  //   headerName: 'Created Date',
+  //   width: 180,
+  //   type: 'dateTime',
+  //   valueGetter: (params) =>
+  //   {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+  // {
+  //   field: 'UpdatedBy',
+  //   headerName: 'Updated By',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'InitiatedType',
+  //   headerName: 'Initiated Type',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'InitiatedBy',
+  //   headerName: 'Initiated By',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'Reason',
+  //   headerName: 'Reason',
+  //   width: 180,
+  // },
   
   
   
