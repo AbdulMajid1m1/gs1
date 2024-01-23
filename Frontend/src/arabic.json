@@ -529,5 +529,6 @@
     "Registered Date":"تاريخ التسجيل",
     "Expiry date":"تاريخ الانتهاء",
     "Ticket ID":"معرف التذكرة",
-    "Create Ticket":"إنشاء تذكرة"
+    "Create Ticket":"إنشاء تذكرة",
+    "Approved":"تمت الموافقة عليه بواسطة"
 }

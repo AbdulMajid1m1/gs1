@@ -171,7 +171,7 @@ const SubscribedGTIN = () => {
               >
                 <DataTable data={registeredProductsData}
                   title="Registered Products"
-                  columnsName={registeredmemberColumn}
+                  columnsName={registeredmemberColumn(t)}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
                   // actionColumnVisibility={false}
@@ -180,28 +180,28 @@ const SubscribedGTIN = () => {
                   dropDownOptions={[
 
                     {
-                      label: "Upgrade",
+                     label: `${t('Upgrade')}`,
                       icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleShowUpgradePopup,
 
                     },
                     {
-                      label: "Downgrade",
+                      label: `${t('Downgrade')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleShowDowngradePopup,
 
                     },
                     {
-                      label: "Add GLN",
+                      label: `${t('Add GLN')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleAddGlnClick,
 
                     },
                     {
-                      label: "Add GTIN",
+                      label: `${t('Add GTIN')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleAddGtinClick,
@@ -221,7 +221,7 @@ const SubscribedGTIN = () => {
                     // show disable cursor if status is not approved
                     style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                    {allUserData?.isproductApproved == 1 ? `${t('Approved')}` : allUserData?.isproductApproved == 2 ? `${t('Rejected')}` :  `${t('Pending For Approval')}`}
                   </button>
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
