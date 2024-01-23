@@ -157,7 +157,7 @@ const SubscribedGTIN = () => {
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           <div>
-            <DashboardRightHeader title={"My GS1"}/>
+          <DashboardRightHeader  title={`${t('My GS1')}`} />
           </div>
   
 
@@ -170,8 +170,8 @@ const SubscribedGTIN = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}
-                  title="Registered Products"
-                  columnsName={registeredmemberColumn}
+                  title={`${t('Registered Products')}`}
+                  columnsName={registeredmemberColumn(t)}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
                   // actionColumnVisibility={false}
@@ -180,28 +180,28 @@ const SubscribedGTIN = () => {
                   dropDownOptions={[
 
                     {
-                      label: "Upgrade",
+                     label: `${t('Upgrade')}`,
                       icon: <UpgradeIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleShowUpgradePopup,
 
                     },
                     {
-                      label: "Downgrade",
+                      label: `${t('Downgrade')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleShowDowngradePopup,
 
                     },
                     {
-                      label: "Add GLN",
+                      label: `${t('Add GLN')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleAddGlnClick,
 
                     },
                     {
-                      label: "Add GTIN",
+                      label: `${t('Add GTIN')}`,
                       icon: <SwipeDownIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleAddGtinClick,
@@ -221,7 +221,7 @@ const SubscribedGTIN = () => {
                     // show disable cursor if status is not approved
                     style={{ cursor: allUserData.isproductApproved == 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    {allUserData?.isproductApproved == 1 ? 'Approved' : allUserData?.isproductApproved == 2 ? "Rejected" : "Pending For Approval"}
+                    {allUserData?.isproductApproved == 1 ? `${t('Approved')}` : allUserData?.isproductApproved == 2 ? `${t('Rejected')}` :  `${t('Pending For Approval')}`}
                   </button>
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
@@ -260,7 +260,7 @@ const SubscribedGTIN = () => {
 
                     <DataTable data={data} 
                       title={`${t('Subscribe Other Product')}`}
-                       columnsName={subscribedGtinColumn}
+                       columnsName={subscribedGtinColumn(t)}
                         loading={isLoading}
                          secondaryColor="secondary"
                           // handleRowClickInParent={handleRowClickInParent}

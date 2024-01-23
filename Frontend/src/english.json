@@ -484,5 +484,12 @@
     "Name Arabic":"Name Arabic",
     "Admin Email":"Admin Email",
     "Subject":"Subject",
-    "User Email":"User Email"
+    "User Email":"User Email",
+    "Registered Date":"Registered Date",
+    "Expiry date":"Expiry date",
+    "Ticket ID":"Ticket ID",
+    "My GS1":"My GS1",
+    "Pending Invoices":"Pending Invoices",
+    "Remarks":"Remarks",
+    "City":"City"
 }

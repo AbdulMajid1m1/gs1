@@ -49,7 +49,7 @@ const ProductsCategory = () => {
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={data} title={`${t('Products Category')}`} columnsName={adminPaymentSlipsColumn}
+          <DataTable data={data} title={`${t('Products Category')}`} columnsName={adminPaymentSlipsColumn(t)}
             loading={IsLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"
