@@ -177,7 +177,7 @@ model Member {
   UpdatedDate       DateTime            @db.DateTime
   MembershipTypeID  Int?
   OtherIndustry     String?             @db.NVarChar(50)
-  IntID             Int?
+  IntID             String?
   Contact           Contact[]
   Location          Location[]
   City              City?               @relation(fields: [CityID], references: [CityID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Member_City")
