@@ -586,7 +586,7 @@ const SideBar = () => {
               alt=""
             />
             {/* <p className="sidebar-text">Subscribed GTIN</p> */}
-            <p className="sidebar-text">My GS1</p>
+            <p className="sidebar-text"> {t('My GS1')}</p>
           </div>
 
           <div

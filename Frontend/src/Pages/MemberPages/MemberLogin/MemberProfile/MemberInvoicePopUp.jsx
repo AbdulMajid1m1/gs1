@@ -162,10 +162,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                   <table>
                     <thead>
                       <tr>
-                        <th>PRODUCT</th>
-                        <th>REGISTRATION FEE</th>
-                        <th>YEARLY FEE</th>
-                        <th>PRICE</th>
+                        <th> {t('PRODUCT')}</th>
+                        <th> {t('REGISTRATION FEE')}</th>
+                        <th>{t('YEARLY FEE ')}</th>
+                        <th> {t('PRICE')}</th>
                       </tr>
                     </thead>
                     <tbody>
