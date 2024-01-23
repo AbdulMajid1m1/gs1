@@ -837,26 +837,28 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
         // Delete all documents of type 'bank_slip'
-        for (const document of bankSlipDocuments) {
-            const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
-            console.log("deletingDocumentPath");
-            console.log(deletingDocumentPath);
-            try {
-                if (fsSync.existsSync(deletingDocumentPath)) {
-                    fsSync.unlinkSync(deletingDocumentPath);
+        if (value.checkBankSlip) {
+            for (const document of bankSlipDocuments) {
+                const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
+                console.log("deletingDocumentPath");
+                console.log(deletingDocumentPath);
+                try {
+                    if (fsSync.existsSync(deletingDocumentPath)) {
+                        fsSync.unlinkSync(deletingDocumentPath);
+                    }
+                } catch (err) {
+                    console.error(`Error deleting file: ${deletingDocumentPath}`, err);
                 }
-            } catch (err) {
-                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
             }
-        }
 
-        const deletedResult = await prisma.member_documents.deleteMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
-            }
-        });
+            const deletedResult = await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+            });
+        }
 
         await updateUserPendingInvoiceStatus(currentDocument.user_id)
 
