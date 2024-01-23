@@ -157,7 +157,7 @@ const SubscribedGTIN = () => {
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           <div>
-            <DashboardRightHeader title={"My GS1"}/>
+          <DashboardRightHeader  title={`${t('My GS1')}`} />
           </div>
   
 
@@ -170,7 +170,7 @@ const SubscribedGTIN = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '24px' }}
               >
                 <DataTable data={registeredProductsData}
-                  title="Registered Products"
+                  title={`${t('Registered Products')}`}
                   columnsName={registeredmemberColumn(t)}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
