@@ -503,5 +503,10 @@
     "Company Name [Arabic]":"Company Name [Arabic]",
     "Bank Transfer":"Bank Transfer",
     "Member Registered Successfully":"Member Registered Successfully",
-    "Number must be a maximum of 12 digits":"Number must be a maximum of 12 digits"
+    "Number must be a maximum of 12 digits":"Number must be a maximum of 12 digits",
+    "Product Package":"Product Package",
+    "GPC Type":"GPC Type",
+    "counrty of sale":"counrty of sale",
+    "HsCode":"HsCode",
+    "Something went wrong while deleting user":"Something went wrong while deleting user"
 }

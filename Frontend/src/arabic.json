@@ -547,6 +547,11 @@
     "Company Name [Arabic]":"اسم الشركة [عربي]",
     "Bank Transfer":"التحويل المصرفي",
     "Member Registered Successfully":"تم تسجيل العضو بنجاح",
-    "Number must be a maximum of 12 digits":"يجب أن يكون الرقم بحد أقصى 12 رقمًا"
+    "Number must be a maximum of 12 digits":"يجب أن يكون الرقم بحد أقصى 12 رقمًا",
+    "Product Package":"حزمة المنتج",
+    "GPC Type":"أنواع GPC",
+    "counrty of sale":"بلد البيع",
+    "HsCode":"كود هس",
+    "Something went wrong while deleting user":"حدث خطأ ما أثناء حذف المستخدم"
 
 }
