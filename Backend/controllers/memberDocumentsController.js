@@ -688,11 +688,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 const memberID = +existingUser.memberID
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
-                const oldProducts = await oldGs1Prisma.product.findMany({
+                const oldProducts = await oldGs1Prisma.Product.findMany({
                     where: {
                         MemberID: memberID
                     }
                 });
+                
                 console.log("oldProducts", oldProducts);
                 // Map and insert data into the new database table Product
                 for (const oldProduct of oldProducts) {
