@@ -111,6 +111,7 @@ const Gtin = () => {
           company_name_eng: item.company_name_eng,
           email: item.email,
           mobile: item.mobile,
+          gcp_type: item.gcp_type,
         };
       });
 
@@ -181,17 +182,21 @@ const Gtin = () => {
 
   const handleEdit = (row) => {
     console.log(row);
-    navigate("/member/upate-gtin-product/" + row?.id);
+    navigate("/admin/admin-update-gtin/" + row?.id);
     // navigate("/upate-gtin-product/" + row?.id);
   };
 
   const handleView = (row) => {
     console.log(row);
-    navigate("/member/view-gtin-product/" + row?.id);
+    navigate("/admin/admin-view-gtin/" + row?.id);
   };
-  const handleUpdate = (row) => {
-    console.log(row);
+
+  const handleAddGtin = (row) => {
+    // console.log(row);
+    navigate("/admin/admin-gtin");
+    sessionStorage.setItem("selectedAddGtinData", JSON.stringify(allSearchMemberDetails));
   }
+
   const handleDigitalUrlInfo = (row) => {
     sessionStorage.setItem("selectedGtinData", JSON.stringify(row));
     navigate("/member/digitalurl")
@@ -530,7 +535,7 @@ const Gtin = () => {
           </div>
           <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
-              onClick={() => navigate('/admin/admin-gtin')}
+              onClick={handleAddGtin}
               className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
              
               {i18n.language === 'ar' ? (
@@ -641,8 +646,8 @@ const Gtin = () => {
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              {/* Member ID {memberData?.memberID} */}
-              Member ID
+              Member ID {allSearchMemberDetails?.memberID}
+              {/* Member ID */}
             </button>
 
             <button

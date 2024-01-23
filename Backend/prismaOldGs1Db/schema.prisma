@@ -1,0 +1,530 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../node_modules/@prisma/clientOldGs1Db"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("OLD_GS1_DB_URL")
+  schemas  = ["MEM", "dbo", "FW", "MST"]
+}
+
+model Advertisement {
+  AdvertisementID       Int       @id(map: "PK_Advertisement") @default(autoincrement())
+  AdvertisementContectE String    @db.NVarChar(Max)
+  AdvertisementContectA String    @db.NVarChar(Max)
+  Status                String    @db.VarChar(50)
+  CreatedBy             Int
+  CreatedDate           DateTime  @db.DateTime
+  UpdatedBy             Int
+  UpdatedDate           DateTime  @db.DateTime
+  FromDate              DateTime? @db.DateTime
+  ToDate                DateTime? @db.DateTime
+
+  @@schema("MST")
+}
+
+model AppLogs {
+  LogID   Int      @id(map: "PK_Logs") @default(autoincrement())
+  LogDate DateTime @db.DateTime
+  Message String?  @db.NVarChar(2000)
+  LogIP   String   @db.VarChar(50)
+  Info    String?
+
+  @@schema("FW")
+}
+
+model City {
+  CityID      Int        @id(map: "PK_City") @default(autoincrement())
+  CityNameE   String     @db.VarChar(250)
+  CityNameA   String     @db.NVarChar(250)
+  RegionID    Int
+  TelCode     Int
+  IsActive    Boolean
+  CreatedBy   Int
+  CreatedDate DateTime   @db.DateTime
+  UpdatedBy   Int
+  UpdatedDate DateTime   @db.DateTime
+  Region      Region     @relation(fields: [RegionID], references: [RegionID], onUpdate: NoAction, map: "FK_City_Region")
+  Location    Location[]
+  Member      Member[]
+
+  @@schema("MST")
+}
+
+model Contact {
+  ContactID     Int      @id(map: "PK_Contact") @default(autoincrement())
+  ContactNameE  String   @db.NVarChar(250)
+  ContactNameA  String   @db.NVarChar(250)
+  ContactType   String?  @db.VarChar(10)
+  MemberID      Int
+  Designation   String?  @db.NVarChar(250)
+  Mobile        String?  @db.VarChar(20)
+  EmailID       String   @db.VarChar(250)
+  IsNumIncharge Boolean?
+  IsResponsible Boolean?
+  IsSignatory   Boolean?
+  IsActive      Boolean?
+  CreatedBy     Int
+  CreatedDate   DateTime @db.DateTime
+  UpdatedBy     Int
+  UpdatedDate   DateTime @db.DateTime
+  Member        Member   @relation(fields: [MemberID], references: [MemberID], onUpdate: NoAction, map: "FK_Contact_Member")
+
+  @@schema("MEM")
+}
+
+model Country {
+  CountryID      Int      @id(map: "PK_Country") @default(autoincrement())
+  CountryNameE   String   @db.VarChar(250)
+  CountryNameA   String   @db.NVarChar(250)
+  GS1CountryCode Int
+  IsActive       Boolean
+  CreatedBy      Int
+  CreatedDate    DateTime @db.DateTime
+  UpdatedBy      Int
+  UpdatedDate    DateTime @db.DateTime
+  Region         Region[]
+
+  @@schema("MST")
+}
+
+model GS1Products {
+  GS1ProductsID               Int      @id(map: "PK_GS1Products") @default(autoincrement())
+  ProductKey                  String   @db.NVarChar(50)
+  DescriptionForUnsubscribedE String   @db.NVarChar(Max)
+  DescriptionForUnsubscribedA String   @db.NVarChar(Max)
+  DescriptionForSubscribedE   String   @db.NVarChar(Max)
+  DescriptionForSubscribedA   String   @db.NVarChar(Max)
+  ProcessDocument             String   @db.NVarChar(100)
+  IsActive                    String   @db.VarChar(20)
+  CreatedBy                   Int
+  CreatedDate                 DateTime @db.DateTime
+  UpdatedDate                 DateTime @db.DateTime
+  UpdatedBy                   Int
+
+  @@schema("MEM")
+}
+
+model Location {
+  LocationID     Int      @id(map: "PK_Location") @default(autoincrement())
+  MemberID       Int
+  LocationNameE  String   @db.NVarChar(250)
+  LocationNameA  String   @db.NVarChar(250)
+  AddressE       String   @db.NVarChar(250)
+  AddressA       String   @db.NVarChar(250)
+  POBox          Int?
+  PostalCode     String?  @db.VarChar(50)
+  StreetNames    String   @db.NVarChar(100)
+  CityID         Int
+  LocationCRNo   String   @db.VarChar(20)
+  OfficeTelNo    String   @db.VarChar(20)
+  OfficeFaxNo    String?  @db.VarChar(20)
+  Contact1       String   @db.NVarChar(100)
+  Contact1Email  String   @db.VarChar(100)
+  Contact1Mobile String   @db.VarChar(20)
+  Contact2       String   @db.NVarChar(100)
+  Contact2Email  String   @db.VarChar(100)
+  Contact2Mobile String   @db.VarChar(20)
+  Longitude      String   @db.VarChar(100)
+  Latitude       String   @db.VarChar(100)
+  GLNId          Int?
+  GLN            String?  @db.VarChar(20)
+  IsActive       Boolean
+  CreatedBy      Int
+  CreatedDate    DateTime @db.DateTime
+  UpdatedBy      Int
+  UpdatedDate    DateTime @db.DateTime
+  City           City     @relation(fields: [CityID], references: [CityID], onUpdate: NoAction, map: "FK_Location_City")
+  Member         Member   @relation(fields: [MemberID], references: [MemberID], onUpdate: NoAction, map: "FK_Location_Member")
+
+  @@schema("MEM")
+}
+
+model Member {
+  MemberID          Int                 @id(map: "PK_Company") @default(autoincrement())
+  UserID            Int?
+  MemberNameE       String              @db.NVarChar(250)
+  MemberNameA       String              @db.NVarChar(250)
+  MemberType        String              @db.Char(1)
+  Address1          String?             @db.NVarChar(250)
+  Address2          String?             @db.NVarChar(250)
+  POBox             String?             @db.VarChar(10)
+  CityID            Int?
+  Phone1            String?             @db.VarChar(20)
+  Phone2            String?             @db.VarChar(20)
+  Fax               String?             @db.VarChar(20)
+  Staff             Int
+  Email             String?             @db.VarChar(50)
+  Website           String?             @db.VarChar(250)
+  IndustryTypeID    String?             @db.VarChar(1000)
+  FieldOfWorkID     String?             @db.VarChar(1000)
+  OtherFieldOfWork  String?             @db.NVarChar(500)
+  Products          String?             @db.VarChar(1000)
+  GS1Prefix         Int?
+  MOCRegNo          String?             @db.VarChar(50)
+  MOCRegDate        DateTime?           @db.Date
+  MOCRegCert        String?             @db.VarChar(250)
+  GLNID             Int?
+  GLN               String?             @db.VarChar(50)
+  Is14              Boolean?
+  Status            String              @db.VarChar(20)
+  Parent            Int?
+  CreatedBy         Int
+  CreatedDate       DateTime            @db.DateTime
+  UpdatedBy         Int
+  UpdatedDate       DateTime            @db.DateTime
+  MembershipTypeID  Int?
+  OtherIndustry     String?             @db.NVarChar(50)
+  IntID             Int?
+  Contact           Contact[]
+  Location          Location[]
+  City              City?               @relation(fields: [CityID], references: [CityID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Member_City")
+  Member            Member?             @relation("MemberToMember", fields: [Parent], references: [MemberID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Member_Member")
+  other_Member      Member[]            @relation("MemberToMember")
+  MembershipType    MembershipType?     @relation(fields: [MembershipTypeID], references: [MembershipTypeID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Member_MembershipType")
+  User              User?               @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Member_User")
+  MemberDocument    MemberDocument[]
+  MembershipHistory MembershipHistory[]
+  Product           Product[]
+
+  @@schema("MEM")
+}
+
+model MemberDocument {
+  MemberDocumentID  Int                 @id(map: "PK_DocManager") @default(autoincrement())
+  MemberID          Int?
+  UserPathName      String?             @db.NVarChar(250)
+  SystemPathName    String?             @db.NVarChar(100)
+  IsActive          Boolean
+  CreatedBy         Int
+  CreatedDate       DateTime            @db.DateTime
+  UpdatedBy         Int?
+  UpdatedDate       DateTime?           @db.DateTime
+  Member            Member?             @relation(fields: [MemberID], references: [MemberID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DocumentManager_Member")
+  MembershipHistory MembershipHistory[]
+
+  @@schema("MEM")
+}
+
+model MembershipHistory {
+  MembershipID      Int             @id(map: "PK_CompanyMembership") @default(autoincrement())
+  MemberID          Int?
+  MembershipYear    Int?
+  MembershipTypeID  Int
+  ApprovedBy        Int
+  Amount            Decimal         @db.Decimal(10, 2)
+  ModeOfPayment     String          @db.VarChar(10)
+  PaymentDate       DateTime        @db.DateTime
+  TransactionID     Int?
+  Status            String          @db.VarChar(10)
+  CreatedBy         Int
+  CreatedDate       DateTime        @default(now(), map: "DF_MembershipHistory_CreatedDate") @db.DateTime
+  UpdatedBy         Int
+  UpdatedDate       DateTime        @db.DateTime
+  Description       String?         @db.VarChar(50)
+  InitiatedType     String?         @db.VarChar(10)
+  InitiatedBy       Int?
+  Reason            String?         @db.NVarChar(Max)
+  PGRef             String?         @db.VarChar(50)
+  OtherDiscount     Decimal?        @db.Decimal(10, 2)
+  Products          String?         @db.NVarChar(500)
+  MerchantReference String?         @db.NVarChar(50)
+  CertificationID   Int?
+  Member            Member?         @relation(fields: [MemberID], references: [MemberID], onDelete: NoAction, onUpdate: NoAction, map: "FK_MembershipHistory_Member")
+  MemberDocument    MemberDocument? @relation(fields: [CertificationID], references: [MemberDocumentID], onDelete: NoAction, onUpdate: NoAction, map: "FK_MembershipHistory_MemberDocument")
+
+  @@schema("MEM")
+}
+
+model MembershipType {
+  MembershipTypeID    Int                   @id(map: "PK_MembershipType") @default(autoincrement())
+  MembershipNameE     String                @db.VarChar(250)
+  MembershipNameA     String                @db.NVarChar(250)
+  Description         String                @db.NVarChar(Max)
+  MaxLength           Int?
+  IsActive            Boolean
+  CreatedBy           Int
+  CreatedDate         DateTime              @db.DateTime
+  UpdatedBy           Int
+  UpdatedDate         DateTime              @db.DateTime
+  Member              Member[]
+  MembershipTypeFee   MembershipTypeFee[]
+  MembershipTypeRange MembershipTypeRange[]
+
+  @@schema("MEM")
+}
+
+model MembershipTypeFee {
+  MembershipTypeFeeID Int            @id(map: "PK_MembershipTypeFee") @default(autoincrement())
+  MembershipTypeID    Int
+  Product             String         @db.VarChar(50)
+  AnnualFee           Decimal        @db.Decimal(10, 2)
+  RegistrationFee     Decimal        @db.Decimal(10, 2)
+  IsActive            Boolean
+  CreatedBy           Int
+  CreatedDate         DateTime       @db.DateTime
+  UpdatedBy           Int
+  UpdatedDate         DateTime       @db.DateTime
+  MembershipType      MembershipType @relation(fields: [MembershipTypeID], references: [MembershipTypeID], onUpdate: NoAction, map: "FK_MembershipTypeFee_MembershipType")
+
+  @@schema("MEM")
+}
+
+model MembershipTypeRange {
+  MembershipTypeRangeID Int            @id(map: "PK_MembershipTypeRange") @default(autoincrement())
+  MembershipTypeID      Int
+  RangeFrom             Int
+  RangeTo               Int
+  MaxLength             Int
+  IsActive              Boolean
+  CreatedBy             Int
+  CreatedDate           DateTime       @db.DateTime
+  UpdatedBy             Int
+  UpdatedDate           DateTime       @db.DateTime
+  MembershipType        MembershipType @relation(fields: [MembershipTypeID], references: [MembershipTypeID], onUpdate: NoAction, map: "FK_MembershipTypeRange_MembershipType")
+
+  @@schema("MEM")
+}
+
+model Menu {
+  MenuID      Int       @id(map: "PK_Menu") @default(autoincrement())
+  Context     String    @db.VarChar(10)
+  DisplayText String    @db.VarChar(50)
+  Target      String    @db.VarChar(100)
+  IsParent    Boolean
+  ParentID    Int?
+  MenuOrder   Int
+  IsActive    Boolean
+  CreatedBy   Int?
+  CreatedDate DateTime? @db.DateTime
+  UpdatedBy   Int?
+  UpdatedDate DateTime? @db.DateTime
+
+  @@schema("FW")
+}
+
+model PortalPages {
+  MenuID           Int              @id(map: "PK_PortalPages") @default(autoincrement())
+  MenuLink         String           @db.VarChar(50)
+  LabelE           String           @db.VarChar(50)
+  LabelA           String           @db.NVarChar(50)
+  HTMLE            String           @db.VarChar(250)
+  HTMLA            String           @db.VarChar(250)
+  IsLocked         Boolean
+  IsParent         Boolean
+  IDDetails        String           @db.VarChar(50)
+  ParentID         Int
+  CreatedBy        Int
+  CreatedDate      DateTime         @db.DateTime
+  UpdateBy         Int
+  UpdatedDate      DateTime         @db.DateTime
+  PortalTemplateID Int?
+  MenuOrder        Int?
+  Place            String           @db.VarChar(15)
+  Status           String?          @db.VarChar(15)
+  ContentType      String?          @db.VarChar(20)
+  HasContent       Boolean?
+  PortalTemplates  PortalTemplates? @relation(fields: [PortalTemplateID], references: [PortalTemplateID], onDelete: NoAction, onUpdate: NoAction, map: "FK_PortalPages_PortalTemplates")
+
+  @@schema("MEM")
+}
+
+model PortalTemplates {
+  PortalTemplateID   Int           @id(map: "PK_PortalTemplates") @default(autoincrement())
+  PortalTemplateName String        @db.VarChar(50)
+  IsActive           Boolean
+  CreatedBy          Int
+  CreatedDate        DateTime      @db.DateTime
+  UpdatedBy          Int?
+  UpdatedDate        DateTime?     @db.DateTime
+  PortalPages        PortalPages[]
+
+  @@schema("MEM")
+}
+
+model Product {
+  ProductID        Int      @id(map: "PK_Product") @default(autoincrement())
+  MemberID         Int
+  ProductNameE     String   @db.NVarChar(250)
+  ProductNameA     String   @db.NVarChar(250)
+  BrandName        String?  @db.NVarChar(250)
+  ProductTypeID    Int
+  Origin           String?  @db.NVarChar(250)
+  ColorID          Int?
+  PackagingTypeID  Int?
+  PackagingLevelID Int?
+  MnfCode          String?  @db.VarChar(250)
+  MnfGLN           String?  @db.VarChar(50)
+  ProvGLN          String?  @db.VarChar(50)
+  ImageURL         String?  @db.VarChar(250)
+  DetailsPage      String?  @db.VarChar(250)
+  ChildProductID   Int?
+  ChildQuantity    Int?
+  UOMID            Int
+  Size             Decimal? @db.Decimal(10, 2)
+  BarCodeID        Int?
+  BarCode          String?  @db.VarChar(50)
+  BarCodeURL       String?  @db.NChar(10)
+  IsActive         Boolean
+  CreatedBy        Int
+  CreatedDate      DateTime @db.DateTime
+  UpdatedBy        Int
+  UpdatedDate      DateTime @db.DateTime
+  Member           Member   @relation(fields: [MemberID], references: [MemberID], onUpdate: NoAction, map: "FK_Product_Member")
+
+  @@schema("MEM")
+}
+
+model RefData {
+  RefID       Int      @id(map: "PK_RefData") @default(autoincrement())
+  Context     String   @db.VarChar(10)
+  NameE       String   @db.VarChar(250)
+  NameA       String   @db.NVarChar(250)
+  Description String   @db.NVarChar(250)
+  IsActive    Boolean
+  CreatedBy   Int
+  CreatedDate DateTime @db.DateTime
+  UpdatedBy   Int
+  UpdatedDate DateTime @db.DateTime
+
+  @@schema("MST")
+}
+
+model Region {
+  RegionID    Int      @id(map: "PK_Region") @default(autoincrement())
+  RegionNameE String   @db.VarChar(50)
+  RegionNameA String   @db.NVarChar(50)
+  CountryID   Int
+  IsActive    Boolean
+  CreatedBy   Int
+  CreatedDate DateTime @db.DateTime
+  UpdatedBy   Int
+  UpdatedDate DateTime @db.DateTime
+  City        City[]
+  Country     Country  @relation(fields: [CountryID], references: [CountryID], onUpdate: NoAction, map: "FK_Region_Country")
+
+  @@schema("MST")
+}
+
+model ReportSetup {
+  ReportSetupId Int      @id(map: "PK_ReportSetup") @default(autoincrement())
+  Title_EN      String?  @db.NVarChar(250)
+  Title_AR      String?  @db.NVarChar(250)
+  ReportQuery   String?  @db.NVarChar(Max)
+  CreatedBy     Int
+  CreatedDate   DateTime @db.DateTime
+  UpdatedBy     Int
+  UpdatedDate   DateTime @db.DateTime
+  Enabled       Boolean
+
+  @@schema("FW")
+}
+
+model Role {
+  RoleID      Int           @id(map: "PK_Roles") @default(autoincrement())
+  RoleNameE   String?       @db.NVarChar(50)
+  IsActive    Boolean
+  CreatedBy   Int
+  CreatedDate DateTime      @db.DateTime
+  UpdatedBy   Int
+  UpdatedDate DateTime      @db.DateTime
+  RoleNameA   String?       @db.NVarChar(50)
+  UserRoleMap UserRoleMap[]
+
+  @@schema("FW")
+}
+
+model RoleMenuMap {
+  RoleMenuMapID Int     @id(map: "PK_RoleMenuMap") @default(autoincrement())
+  RoleID        Int
+  MenuID        Int
+  IsActive      Boolean
+
+  @@schema("FW")
+}
+
+model Setting {
+  SettingID    Int     @id(map: "PK_Setting") @default(autoincrement())
+  SettingKey   String  @db.VarChar(50)
+  SettingValue String  @db.NVarChar(Max)
+  Description  String? @db.VarChar(Max)
+  HTML         String? @db.VarChar(Max)
+
+  @@schema("FW")
+}
+
+model User {
+  UserID      Int           @id(map: "PK_User") @default(autoincrement())
+  UserType    String        @db.Char(1)
+  UserName    String        @db.VarChar(50)
+  Password    String        @db.VarChar(50)
+  DisplayName String?       @db.NVarChar(50)
+  Mobile      String?       @db.VarChar(20)
+  IsActive    Boolean
+  CreatedBy   Int
+  CreatedDate DateTime      @db.DateTime
+  UpdatedBy   Int
+  UpdatedDate DateTime      @db.DateTime
+  Title       String?       @db.VarChar(50)
+  Address     String?       @db.VarChar(50)
+  Note        String?       @db.VarChar(50)
+  City        String?       @db.VarChar(50)
+  Country     String?       @db.VarChar(50)
+  Member      Member[]
+  UserRoleMap UserRoleMap[]
+
+  @@schema("FW")
+}
+
+model UserRoleMap {
+  UserRoleMapID Int  @id(map: "PK_UserRole") @default(autoincrement())
+  UserID        Int
+  RoleID        Int
+  Role          Role @relation(fields: [RoleID], references: [RoleID], onUpdate: NoAction, map: "FK_UserRole_Role")
+  User          User @relation(fields: [UserID], references: [UserID], onUpdate: NoAction, map: "FK_UserRole_User")
+
+  @@schema("FW")
+}
+
+model MemberRenewed {
+  id               Int       @id(map: "PK_Company2") @default(autoincrement())
+  UserID           Int?
+  MemberNameE      String    @db.NVarChar(250)
+  MemberNameA      String    @db.NVarChar(250)
+  MemberType       String    @db.Char(1)
+  Address1         String?   @db.NVarChar(250)
+  Address2         String?   @db.NVarChar(250)
+  POBox            String?   @db.VarChar(10)
+  CityID           Int?
+  Phone1           String?   @db.VarChar(20)
+  Phone2           String?   @db.VarChar(20)
+  Fax              String?   @db.VarChar(20)
+  Staff            Int
+  Email            String?   @db.VarChar(50)
+  Website          String?   @db.VarChar(250)
+  IndustryTypeID   String?   @db.VarChar(1000)
+  FieldOfWorkID    String?   @db.VarChar(1000)
+  OtherFieldOfWork String?   @db.NVarChar(500)
+  Products         String?   @db.VarChar(1000)
+  GS1Prefix        Int?
+  MOCRegNo         String?   @db.VarChar(50)
+  MOCRegDate       DateTime? @db.Date
+  MOCRegCert       String?   @db.VarChar(250)
+  GLNID            Int?
+  GLN              String?   @db.VarChar(50)
+  Is14             Boolean?
+  Status           String    @db.VarChar(20)
+  Parent           Int?
+  CreatedBy        Int
+  CreatedDate      DateTime  @db.DateTime
+  UpdatedBy        Int
+  UpdatedDate      DateTime  @db.DateTime
+  MembershipTypeID Int?
+  OtherIndustry    String?   @db.NVarChar(50)
+  IntID            Int?
+  MemberID         String?   @db.NChar(10)
+
+  @@schema("MEM")
+}

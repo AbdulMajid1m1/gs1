@@ -15,6 +15,7 @@ import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
+import { oldGs1Prisma } from '../prismaMultiClinets.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
@@ -141,6 +142,7 @@ export const getMemberInvoices = async (req, res, next) => {
                     {
                         OR: [
                             { type: 'invoice' },
+                            { type: 'migration_invoice' },
                             { type: 'renewal_invoice' },
                             { type: 'upgrade_invoice' },
                             { type: 'downgrade_invoice' },
@@ -174,6 +176,7 @@ export const getMemberPendingInvoices = async (req, res, next) => {
                         OR: [
                             { type: 'invoice' },
                             { type: 'renewal_invoice' },
+                            { type: 'migration_invoice' },
                             { type: 'upgrade_invoice' },
                             { type: 'downgrade_invoice' },
                             { type: "additional_gln_invoice" },
@@ -298,6 +301,7 @@ export const updateMemberDocument = async (req, res, next) => {
 const updateMemberDocumentStatusSchema = Joi.object({
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
+    migration: Joi.boolean().default(false),
 });
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
@@ -677,6 +681,126 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             });
 
+            if (value.migration === true) {
+                // Retrieve MemberID from user's column memberID
+                const memberID = +existingUser.memberID
+
+                // Fetch products from oldGs1Prisma table Mem.products based on MemberID
+                const oldProducts = await oldGs1Prisma.product.findMany({
+                    where: {
+                        MemberID: memberID
+                    }
+                });
+                console.log("oldProducts", oldProducts);
+                // Map and insert data into the new database table Product
+                for (const oldProduct of oldProducts) {
+                    const newProduct = {
+                        memberID: oldProduct.MemberID,
+                        productnameenglish: oldProduct.ProductNameE,
+                        productnamearabic: oldProduct.ProductNameA,
+                        BrandName: oldProduct.BrandName,
+                        // ProductTypeID: oldProduct.ProductType,
+                        Origin: oldProduct.Origin,
+                        // ColorID: null, 
+                        // PackagingTypeID: null, 
+                        // PackagingLevelID: null, 
+                        MnfCode: oldProduct.MnfCode,
+                        MnfGLN: oldProduct.MnfGLN,
+                        ProvGLN: oldProduct.ProvGLN,
+                        // ChildProductID: null, 
+                        // ChildQuantity: null, 
+                        // UOMID: null, 
+                        size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
+                        // BarCodeID: null, 
+                        barCode: oldProduct.BarCode,
+                        // BarCodeURL: null, 
+                        // IsActive: oldProduct.status === 1,
+                        // CreatedBy: null, 
+                        created_at: oldProduct.CreatedDate, // Use the old created_at value
+                        // UpdatedBy: null, 
+                        updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
+                    };
+
+                    // Insert the newProduct into the Product table in the new database
+                    const gtinProducts = await prisma.products.create(newProduct);
+                    console.log("gtinProducts", gtinProducts);
+                }
+
+
+                // Fetch other products subscriptions based on user_id and isDeleted=false
+                // Fetch other products subscriptions based on user_id and isDeleted=false
+                const otherProductsSubscriptions = await prisma.other_products_subcriptions.findMany({
+                    where: {
+                        user_id: existingUser.user_id, // Use existingUser.user_id
+                        isDeleted: false,
+                    },
+                    include: {
+                        product: true,
+                    },
+
+                });
+
+                console.log("otherProductsSubscriptions", otherProductsSubscriptions);
+                // Check if the product "GLN (30 Locations)" is found in subscriptions
+                if (otherProductsSubscriptions.length > 0 && otherProductsSubscriptions[0].product.product_name === "GLN (30 Locations)") {
+                    // Fetch all records from the old Location table based on some condition (you can modify the condition as needed)
+                    const oldLocationData = await oldGs1Prisma.location.findMany({
+                        where: {
+                            MemberID: memberID,
+                        },
+                    });
+
+                    // Iterate through the oldLocationData and insert into add_member_gln_products
+                    for (const oldLocation of oldLocationData) {
+                        const newLocation = {
+                            // product_id: oldLocation.product_id, 
+                            // reference_id: oldLocation.reference_id, 
+
+                            locationNameEn: oldLocation.LocationNameE,
+                            locationNameAr: oldLocation.LocationNameA,
+                            AddressEn: oldLocation.AddressE,
+                            AddressAr: oldLocation.AddressA,
+                            pobox: oldLocation.POBox.toString(),
+                            postal_code: oldLocation.PostalCode,
+                            // country_id: null, 
+                            // state_id: null, 
+                            city_id: oldLocation.CityID.toString(),
+                            // licence_no: oldLocation.LocationCRNo,
+                            locationCRNumber: oldLocation.LocationCRNo,
+                            office_tel: oldLocation.OfficeTelNo,
+                            // tel_extension: null, 
+                            office_fax: oldLocation.OfficeFaxNo,
+                            // fax_extension: null, 
+                            contact1Name: oldLocation.Contact1,
+                            contact1Email: oldLocation.Contact1Email,
+                            contact1Mobile: oldLocation.Contact1Mobile,
+                            contact2Name: oldLocation.Contact2,
+                            contact2Email: oldLocation.Contact2Email,
+                            contact2Mobile: oldLocation.Contact2Mobile,
+                            longitude: oldLocation.Longitude,
+                            latitude: oldLocation.Latitude,
+                            // image: null, 
+                            GLNBarcodeNumber: oldLocation.GLN,
+                            // GLNBarcodeNumber_without_check: null, 
+                            status: oldLocation.IsActive.toString(), // Map the boolean to string
+                            user_id: existingUser.user_id,
+                            created_at: oldLocation.CreatedDate, // Use the old created_at value
+                            updated_at: oldLocation.UpdatedDate, // Use the old updated_at value
+                            gcpGLNID: oldLocation.GLNId,
+                            deleted_at: null, // No deletion date in old data
+                            // admin_id: "0", // Default value as "0"
+                        };
+
+                        // Insert the newLocation into the add_member_gln_products table
+                        await prisma.add_member_gln_products.create(newLocation);
+                    }
+                }
+            }
+
+
+
+
+
 
         }
 
@@ -772,7 +896,7 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         if (!existingUser.gcpGLNID || !existingUser.gln) {
             throw createError(400, 'User does not have a valid GCP');
         }
-        
+
 
 
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');

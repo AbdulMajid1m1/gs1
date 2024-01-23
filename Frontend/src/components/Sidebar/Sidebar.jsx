@@ -503,7 +503,7 @@ const SideBar = () => {
                 onClick={toggleSidebar}
               > */}
                 <div 
-            className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                  className={`main-images-container ${selectedItem === '/member/member-profile' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                     onClick={() => handleItemClick('/member/member-profile')}
                       onContextMenu={(event) =>
                          handleContextMenu(event, '/member/member-profile')
@@ -514,7 +514,7 @@ const SideBar = () => {
                     className="main-inside-image bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text"> {t('Member Profile')}</p>
+                  <p className="sidebar-text"> {t('My Profile')}</p>
                 </div>
 
                 {/* <div 
@@ -581,11 +581,12 @@ const SideBar = () => {
 
           >
             <img
-              src={helpdesk1}
+              src={gs1logowhite}
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">{t('Subscribed GTIN')}</p>
+            {/* <p className="sidebar-text">Subscribed GTIN</p> */}
+            <p className="sidebar-text">My GS1</p>
           </div>
 
           <div

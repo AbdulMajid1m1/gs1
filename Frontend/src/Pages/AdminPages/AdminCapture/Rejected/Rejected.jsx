@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { bankSlipColumn, cardsRejectedColumn, usersRejectedColumn } from '../../../../utils/datatablesource'
+import { cardsRejectedColumn, usersRejectedColumn } from '../../../../utils/datatablesource'
 import DataTable from '../../../../components/Datatable/Datatable'
 import DataTable3 from '../../../../components/Datatable/Datatable3'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import { I18nextProvider, useTranslation } from "react-i18next";
 import newRequest from '../../../../utils/userRequest'
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 const Rejected = () => {
     const { t, i18n } = useTranslation();
     const [cardsRejected, setCardsRejected] = useState([])
     const [cardsRejectedLoader, setCardsRejectedLoader] = useState(false)
-    const [usersRejected, setUsersRejected] = useState([])
     const [usersRejectedLoader, setUsersRejectedLoader] = useState(false)
     const [filteredUsersDetails, setFilteredUsersDetails] = useState([])
 
@@ -31,22 +29,6 @@ const Rejected = () => {
         }
       };
 
-
-    //   const fetchUserRejectedData = async () => {
-    //     setUsersRejectedLoader(true);
-    //     try {
-    //       const response = await newRequest.get(`/users/rejectedCarts?transaction_id=3949843987`);
-    //       console.log(response.data);
-    //       setUsersRejected(response?.data || []);
-    //       setFilteredUsersDetails(response?.data || []);
-    //       setUsersRejectedLoader(false);
-    
-    //     } catch (err) {
-    //       console.log(err);
-    //       setUsersRejectedLoader(false);
-    //     }
-    //   };
-    
     //   const fetchFilteredMemberDetails = async (row) => {
     //     console.log(row);
     //     setUsersRejectedLoader(true);
@@ -57,7 +39,6 @@ const Rejected = () => {
     //     //   const cartItems = JSON.parse(response?.data[0]?.cart_items);
     //     //   console.log(cartItems);
 
-    //         // setFilteredUsersDetails([...cartItems, ...response?.data]);
     //       setFilteredUsersDetails(response?.data || []);
     //       setUsersRejectedLoader(false);
         
@@ -102,7 +83,7 @@ const Rejected = () => {
                 <div style={{ marginLeft: '-25px', marginRight: '-25px' }}
                 >
                   <DataTable data={cardsRejected}
-                    title="Rejected User"
+                    title="Rejected User"d
                     columnsName={cardsRejectedColumn}
                     loading={cardsRejectedLoader}
                     secondaryColor="secondary"

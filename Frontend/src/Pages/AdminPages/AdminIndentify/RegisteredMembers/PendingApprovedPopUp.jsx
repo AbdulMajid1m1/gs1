@@ -63,7 +63,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     try {
       const res = await newRequest.delete(`/gtinProducts/deleteotherProductsSubscriptionsFromAdmin?id=${item.id}&transaction_id=${gs1MemberData?.transaction_id}&product_id=${item?.product_id}`);
       console.log(res.data);
-      toast.success(res?.data?.message ?? `${t('Cart item deleted successfully!')}`);
+      toast.success(res?.data?.message ?? `${('Cart item deleted successfully!')}`);
 
       // Remove the deleted item from the cart based on id  
       const updatedCartItems = memberInoviceData?.otherProductSubscriptions?.filter((cartItem) => cartItem.id !== item.id);
@@ -140,7 +140,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       const res = await newRequest.post('/users/sendInvoice', approvedBody);
 
       setLoading(false);
-      toast.success(res?.data?.message || `${t('Invoice status updated successfully!')}`);
+      toast.success(res?.data?.message || `${('Invoice status updated successfully!')}`);
       fetchAllUserData();
       // Close the popup
       handleClosePendingApprovedPopup();

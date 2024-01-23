@@ -6406,3 +6406,135 @@ export const usersRejectedColumn = [
 
 
 ]
+
+
+
+export const oldInActiveMemberColumn = [
+  {
+    field: 'MembershipID',
+    headerName: 'Member Ship ID',
+    width: 180,
+  },
+  {
+    field: 'MembershipYear',
+    headerName: 'Membership Year',
+    width: 180,
+  },
+  {
+    field: 'ApprovedBy',
+    headerName: 'Approved By',
+    width: 180,
+  },
+  {
+    field: 'Amount',
+    headerName: 'Amount',
+    width: 180,
+  },
+  {
+    field: 'Description',
+    headerName: 'Description',
+    width: 180,
+  },
+  {
+    field: 'ModeOfPayment',
+    headerName: 'Mode Of Payment',
+    width: 180,
+  },
+  {
+    field: 'PaymentDate',
+    headerName: 'Payment Date',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  {
+    field: 'Status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.Status === 'Active' ? 'green' : 'red',
+          color: params.row.Status === 'Active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.Status}
+      </div>
+    ),
+  },
+  {
+    field: 'UpdatedDate',
+    headerName: 'Updated Date',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  // {
+  //   field: 'MemberID',
+  //   headerName: 'Member ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'MembershipTypeID',
+  //   headerName: 'Membership Type ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'TransactionID',
+  //   headerName: 'Transaction ID',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'CreatedBy',
+  //   headerName: 'Created By',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'CreatedDate',
+  //   headerName: 'Created Date',
+  //   width: 180,
+  //   type: 'dateTime',
+  //   valueGetter: (params) =>
+  //   {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+  // {
+  //   field: 'UpdatedBy',
+  //   headerName: 'Updated By',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'InitiatedType',
+  //   headerName: 'Initiated Type',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'InitiatedBy',
+  //   headerName: 'Initiated By',
+  //   width: 180,
+  // },
+  // {
+  //   field: 'Reason',
+  //   headerName: 'Reason',
+  //   width: 180,
+  // },
+  
+  
+  
+];

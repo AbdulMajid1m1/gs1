@@ -24,6 +24,8 @@ import changeMembershipRoutes from './subRoutes/changeMembershipRoutes.js';
 
 import ssccRoutes from './subRoutes/ssccRoutes.js';
 
+import migrationRoutes from './subRoutes/migrationRoutes.js';
+
 const router = express.Router();
 
 
@@ -71,5 +73,7 @@ router.use('/sscc', ssccRoutes);
 router.use('/changeMembership', changeMembershipRoutes);
 
 router.use("/gtinUpgrade", gtinUpgrageRoutes);
+
+router.use("/migration", migrationRoutes);
 
 export default router;

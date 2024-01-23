@@ -12,7 +12,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   fetchRegisteredProductsData, userData, fetchMemberDocumentsData,
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
+  console.log("gs1MemberInvoiceData", gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
   const gtinId = sessionStorage.getItem("gtinId");
@@ -51,7 +51,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   // }
 
   const handleMemberInvoiceData = async () => {
-    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice") {
       try {
 
         // check invoice type
@@ -175,6 +175,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const approvedBody = {
       status: selectedStatus,
     };
+    const migrationApprovedBody = {
+      status: selectedStatus,
+      migration: true
+    };
 
     const rejectBody = {
       status: selectedStatus,
@@ -210,6 +214,10 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     if (gs1MemberInvoiceData?.type === "invoice") {
       apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
       requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+    }
+    if (gs1MemberInvoiceData?.type === "migration_invoice") {
+      apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+      requestBody = selectedStatus === "approved" ? migrationApprovedBody : rejectBody;
     }
     else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
       apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
@@ -329,101 +337,108 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                 <div className="table-member-inoive px-4">
 
 
-                  {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" ? (
-                    <>
-                      <div className="flex justify-between items-center">
-                        <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
-                      </div>
-
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>PRODUCT</th>
-                            <th>REGISTRATION FEE</th>
-                            <th>YEARLY FEE</th>
-                            <th>EXPIRY DATE</th>
-                            <th>PRICE</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
-                            const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
-                            return (
-                              <tr key={'gtin_product' + index}>
-                                <td>{item?.gtin_product?.member_category_description}</td>
-                                <td>{item?.price}</td>
-                                <td>{item?.gtin_subscription_total_price}</td>
-                                <td>{expiryDate}</td>
-                                <td>{item?.gtin_subscription_total_price + item?.price}</td>
-                              </tr>
-                            );
-                          })}
-                          {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
-                            const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
-                            return (
-                              <tr key={'other_products' + index}>
-                                <td>{item?.product?.product_name}</td>
-                                <td>{item?.price}</td>
-                                <td>{item?.other_products_subscription_total_price}</td>
-                                <td>{expiryDate}</td>
-                                <td>{item?.other_products_subscription_total_price + item?.price}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <td colSpan="4" className="text-right font-bold">{t('Total')}:</td>
-                            <td>{totalPrice}</td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex justify-between items-center">
-                        <h2 className="text-secondary font-sans text-sm mb-2">{t('Transaction ID')}: <strong>{gs1MemberInvoiceData?.transaction_id}</strong></h2>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <h2 className="text-secondary font-sans text-sm mb-2"> {t('TYPE OF PAYMENT')}: <strong>{typeOfPayment}</strong></h2>
-                      </div>
-                      {gs1MemberInvoiceData?.type === "downgrade_invoice" && (
+                  {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice"
+                    ? (
+                      <>
                         <div className="flex justify-between items-center">
-                          <h2 className="text-secondary font-sans text-sm mb-2">{t('New Subscription Yearly Fee')}: <strong>{memberInoviceData?.[0]?.newDowngradeYearlyFee}</strong></h2>
+                          <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
                         </div>
-                      )}
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>{t('PRODUCT')}</th>
-                            <th>{t('REGISTRATION FEE')}</th>
-                            {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <th> {t('YEARLY FEE')}</th>}
-                            <th>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? "TOTAL" : "SUB TOTAL"}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {memberInoviceData?.map((item, index) => {
-                            return (
-                              <tr key={'gtin_product' + index}>
-                                <td>{item?.productName}</td>
-                                <td>{item?.registrationFee}</td>
-                                {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <td>{item?.yearlyFee}</td>}
-                                <td>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? item?.registrationFee + item?.yearlyFee : item?.registrationFee + item?.yearlyFee}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                        {gs1MemberInvoiceData?.type !== "downgrade_invoice" && (
-                          <tfoot>
+                        <table>
+                          <thead>
                             <tr>
-                              <td colSpan="3" className="text-right font-bold">{t('Total')}:</td>
-                              <td>{totalPrice}</td>
+                              <th>PRODUCT</th>
+                              <th>REGISTRATION FEE</th>
+                              <th>YEARLY FEE</th>
+                              <th>EXPIRY DATE</th>
+                              <th>PRICE</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                              const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                              return (
+                                <tr key={'gtin_product' + index}>
+                                  <td>{item?.gtin_product?.member_category_description}</td>
+                                  <td>{item?.price}</td>
+                                  <td>{item?.gtin_subscription_total_price}</td>
+                                  <td>{expiryDate}</td>
+                                  <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                                </tr>
+                              );
+                            })}
+                            {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
+                              const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                              return (
+                                <tr key={'other_products' + index}>
+                                  <td>{item?.product?.product_name}</td>
+                                  <td>{item?.price}</td>
+                                  <td>{item?.other_products_subscription_total_price}</td>
+                                  <td>{expiryDate}</td>
+                                  <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                          <tfoot
+                          >
+                            <tr
+
+                              className='font-bold bg-secondary text-white'>
+                              <td
+                                style={{ fontSize: '16px' }}
+                                colSpan="2" className="text-right font-bold ">{t('Total (total * No of years)')}</td>
+                              <td
+                                style={{ fontSize: '16px' }}
+                                colSpan="3">{totalPrice} * {gs1MemberInvoiceData?.no_of_years} = {totalPrice * gs1MemberInvoiceData?.no_of_years}</td>
                             </tr>
                           </tfoot>
+                        </table>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex justify-between items-center">
+                          <h2 className="text-secondary font-sans text-sm mb-2">{t('Transaction ID')}: <strong>{gs1MemberInvoiceData?.transaction_id}</strong></h2>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <h2 className="text-secondary font-sans text-sm mb-2"> {t('TYPE OF PAYMENT')}: <strong>{typeOfPayment}</strong></h2>
+                        </div>
+                        {gs1MemberInvoiceData?.type === "downgrade_invoice" && (
+                          <div className="flex justify-between items-center">
+                            <h2 className="text-secondary font-sans text-sm mb-2">{t('New Subscription Yearly Fee')}: <strong>{memberInoviceData?.[0]?.newDowngradeYearlyFee}</strong></h2>
+                          </div>
                         )}
-                      </table>
-                    </>
-                  )}
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>{t('PRODUCT')}</th>
+                              <th>{t('REGISTRATION FEE')}</th>
+                              {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <th> {t('YEARLY FEE')}</th>}
+                              <th>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? "TOTAL" : "SUB TOTAL"}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {memberInoviceData?.map((item, index) => {
+                              return (
+                                <tr key={'gtin_product' + index}>
+                                  <td>{item?.productName}</td>
+                                  <td>{item?.registrationFee}</td>
+                                  {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <td>{item?.yearlyFee}</td>}
+                                  <td>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? item?.registrationFee + item?.yearlyFee : item?.registrationFee + item?.yearlyFee}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                          {gs1MemberInvoiceData?.type !== "downgrade_invoice" && (
+                            <tfoot>
+                              <tr>
+                                <td colSpan="3" className="text-right font-bold">{t('Total')}:</td>
+                                <td>{totalPrice}</td>
+                              </tr>
+                            </tfoot>
+                          )}
+                        </table>
+                      </>
+                    )}
 
 
                 </div>

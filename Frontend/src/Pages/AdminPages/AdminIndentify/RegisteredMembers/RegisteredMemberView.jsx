@@ -407,6 +407,7 @@ const RegisteredMembersView = () => {
         theme: "light",
       });
     } else {
+      console.log("rorr", row);
       // If status is not 'approved', proceed with showing the popup
       setIsMemberInvoicePopupVisible(true);
       sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));

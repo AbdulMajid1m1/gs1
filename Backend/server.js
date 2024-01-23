@@ -60,12 +60,12 @@ app.get('/renderInvoice', async (req, res) => {
     // Define your dummy data here
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
-        type:"downgrade",
+        type: "downgrade",
         memberData: {
             // add New Rigistriont with current date
             registeration: `New Registration ${new Date().toLocaleDateString()}`,
             qrCodeDataURL: qrCodeDataURL,
-            
+            yearsToPay: 2,
             // Assuming $addMember->id is already known
             company_name_eng: 'Sample Company',
             mobile: '+966-123-456789',
@@ -114,7 +114,7 @@ app.get('/renderInvoice', async (req, res) => {
             year: new Date().getFullYear(),
         },
         custom_amount: 100, // Example custom amount
-       
+
         general: {
             service_default_image: 'default_service_image.png',
             logo: 'company_logo.png',
@@ -130,7 +130,7 @@ app.get('/renderInvoice', async (req, res) => {
     };
 
     // Render the EJS template with the dummy data
-    res.render('pdf/customInvoice', { data });
+    res.render('pdf/oldMembersCustomInvoice', { data });
 });
 
 // Define your API route to render the certificate

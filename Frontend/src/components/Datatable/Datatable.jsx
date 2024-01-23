@@ -607,7 +607,6 @@ const DataTable = ({
 
         <MuiCustomTable
 
-
           secondaryColor={secondaryColor ? secondaryColor : null}
           loading={loading}
           getRowClassName={(params) =>
