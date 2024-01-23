@@ -517,8 +517,10 @@ function mapMembershipTypeToCategory(membershipName) {
             return "Category C ( 1,000 Barcodes )";
         case "Category A+ : up to 1,000,000 products":
             return "Category F (100,000 Barcodes )";
+        case "Category A : up to 100,000 products":
+            return "Category F (100,000 Barcodes )";
         case "Medical Category":
-            return "Category F (100,000 Barcodes )"; // Note: Different pricing applies
+            return "Category F (100,000 Barcodes )";
         default:
             return null;
     }
