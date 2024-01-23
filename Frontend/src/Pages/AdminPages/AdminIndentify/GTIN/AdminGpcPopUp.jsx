@@ -63,7 +63,7 @@ const AdminGpcPopUp = ({ isVisible, setVisibility }) => {
                                         </p>
                                     </div>
                                 ))}
-                            </form>
+                            </form>   
                         </div>
                     </div>
                 </div>
