@@ -1968,7 +1968,7 @@ model users {
   no_of_staff         String?   @db.NVarChar(Max)
   companyID           String?   @db.NVarChar(Max)
   district            String?   @db.NVarChar(Max)
-  building_no         String?   @db.NVarChar(Max)
+  building_no         String?      @db.NVarChar(Max)
   additional_number   String?   @db.NVarChar(Max)
   other_landline      String?   @db.NVarChar(Max)
   unit_number         String?   @db.NVarChar(Max)
