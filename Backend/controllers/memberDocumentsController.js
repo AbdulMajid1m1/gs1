@@ -302,6 +302,7 @@ const updateMemberDocumentStatusSchema = Joi.object({
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
     migration: Joi.boolean().default(false),
+    checkBankSlip: Joi.boolean().default(true),
 });
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
@@ -342,17 +343,18 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let pdfFilename;
         let cart;
 
-        const bankSlipDocuments = await prisma.member_documents.findMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
+        if (value.checkBankSlip) {
+            const bankSlipDocuments = await prisma.member_documents.findMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+            });
+            if (bankSlipDocuments.length === 0) {
+                return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
             }
-        });
-        if (bankSlipDocuments.length === 0) {
-            return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
         }
-
 
         if (value.status === 'approved') {
             await prisma.$transaction(async (prisma) => {

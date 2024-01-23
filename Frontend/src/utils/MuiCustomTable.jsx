@@ -70,6 +70,8 @@ export const MuiCustomTable = styled(DataGrid)(({ theme, secondaryColor }) => {
             borderRadius: 0,
         },
         iconSeparator: '#FFFFFF',
+        grayHeader: '#A9A9A9', // Replace with your desired gray header color
+
     };
 
     const colorOptions = {
@@ -97,7 +99,12 @@ export const MuiCustomTable = styled(DataGrid)(({ theme, secondaryColor }) => {
         },
     };
 
-    const colors = secondaryColor === 'secondary' ? colorOptions['secondary'] : defaultColors;
+    // const colors = secondaryColor === 'secondary' ? colorOptions['secondary'] : defaultColors;
+    const colors = secondaryColor === 'secondary'
+    ? colorOptions['secondary']
+    : secondaryColor === 'gray'
+        ? { ...defaultColors, ...{ columnHeader: defaultColors.grayHeader } }
+        : defaultColors;
 
     return {
 

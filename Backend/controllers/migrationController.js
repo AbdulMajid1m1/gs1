@@ -39,7 +39,7 @@ export const searchMembers = async (req, res, next) => {
             'MemberNameA',
             'Email',
             'GLN',
-            'IntID',
+            // 'IntID'
             // Add other searchable columns as needed
         ];
 
@@ -52,7 +52,7 @@ export const searchMembers = async (req, res, next) => {
         };
 
         // Fetch the top 30 latest records that match the search conditions
-        const members = await oldGs1Prisma.member.findMany({
+        const members = await oldGs1Prisma.Member.findMany({
             where: searchConditions,
             orderBy: { CreatedDate: 'desc' }, // Sort by CreatedDate in descending order
             take: 30, // Limit to 30 records
@@ -112,6 +112,45 @@ export const getMembershipHistory = async (req, res, next) => {
         const yearsToPay = currentYear - latestMembership.MembershipYear;
 
 
+
+
+        const member = await oldGs1Prisma.Member.findUnique({
+            where: { MemberID: MemberID },
+            include: { MembershipType: true },
+        });
+        if (!member) {
+            return res.status(404).json({ message: 'Member not found.' });
+        }
+
+        // Fetch pricing information
+        const membershipType = member.MembershipType;
+
+        // Map old member data to new user schema
+        // Map MembershipNameE to product categories and pricing
+        const productPricing = await prisma.gtin_products.findMany({
+            where: {
+                member_category_description: mapMembershipTypeToCategory(membershipType.MembershipNameE),
+            },
+        });
+
+
+        if (productPricing.length == 0) {
+            throw createError(400, "No product pricing found for this member.");
+        }
+
+        let yearly_fee;
+        if (membershipType.MembershipNameE === "Medical Category") {
+            yearly_fee = productPricing?.[0]?.med_yearly_subscription_fee;
+        } else {
+            yearly_fee = productPricing?.[0]?.gtin_yearly_subscription_fee;
+        }
+
+
+
+
+
+
+
         // Check if any filter conditions are provided
         const hasFilterConditions = Object.keys(value).length > 0;
 
@@ -135,6 +174,7 @@ export const getMembershipHistory = async (req, res, next) => {
         const response = {
             MemberID: MemberID,
             YearsToPay: yearsToPay,
+            yearlyAmount: yearly_fee,
             MembershipHistory: membershipHistory,
         };
 
@@ -177,11 +217,10 @@ export const migrateUser = async (req, res, next) => {
         const currentYear = new Date().getFullYear();
         const yearsToPay = currentYear - latestMembership.MembershipYear;
         // show current year in the invoice
-        let TypeOfPaymentText = `Registration for the year ${currentYear}`;
+        let TypeOfPaymentText = `Renewal up to year ${currentYear}`;
 
-        console.log("currentYear", currentYear, "latestMembership.MembershipYear", latestMembership.MembershipYear, "yearsToPay", yearsToPay);        // Fetch the member's products
 
-        const member = await oldGs1Prisma.member.findUnique({
+        const member = await oldGs1Prisma.Member.findUnique({
             where: { MemberID: MemberID },
             include: { MembershipType: true },
         });
@@ -219,13 +258,11 @@ export const migrateUser = async (req, res, next) => {
         let cart_items = [];
 
 
-        let registration_fee;
+        let registration_fee = 0;
         let yearly_fee;
         if (membershipType.MembershipNameE === "Medical Category") {
-            registration_fee = productPricing?.[0]?.med_registration_fee;
             yearly_fee = productPricing?.[0]?.med_yearly_subscription_fee;
         } else {
-            registration_fee = productPricing?.[0]?.member_registration_fee;
             yearly_fee = productPricing?.[0]?.gtin_yearly_subscription_fee;
         }
 
@@ -234,8 +271,8 @@ export const migrateUser = async (req, res, next) => {
             "productID": productPricing?.[0]?.id,
             "productName": productPricing?.[0]?.member_category_description,
             "registration_fee": registration_fee.toString(), // Convert to string
-            "yearly_fee": yearly_fee.toString(), // Convert to string
-            "price": registration_fee + yearly_fee?.toString(), // Convert to string
+            "yearly_fee": yearsToPay === 0 ? 0 : yearly_fee.toString(),
+            "price": (Number(registration_fee) + Number(yearly_fee)).toString(),
             "product_type": productPricing?.[0]?.type,
         })
 
@@ -272,7 +309,7 @@ export const migrateUser = async (req, res, next) => {
                 productID: product.id,
                 productName: product.product_name,
                 registration_fee: 0,
-                yearly_fee: membershipType.MembershipNameE === "Medical Category" ? product.med_subscription_fee : product.product_subscription_fee.toString(),
+                yearly_fee: yearsToPay > 0 ? membershipType.MembershipNameE === "Medical Category" ? product.med_subscription_fee : product.product_subscription_fee.toString() : 0,
                 price: membershipType.MembershipNameE === "Medical Category" ? product.med_subscription_fee : product.product_subscription_fee.toString(),
                 product_type: 'other_products',
             };
@@ -283,7 +320,7 @@ export const migrateUser = async (req, res, next) => {
         console.log("cart_items", cart_items);
 
         // Generate a unique transaction ID
-        const transactionId = generateRandomTransactionId(10); // Implement this function as needed
+        const transactionId = generateRandomTransactionId(10);
         newUser.transaction_id = transactionId;
 
 
@@ -517,8 +554,10 @@ function mapMembershipTypeToCategory(membershipName) {
             return "Category C ( 1,000 Barcodes )";
         case "Category A+ : up to 1,000,000 products":
             return "Category F (100,000 Barcodes )";
+        case "Category A : up to 100,000 products":
+            return "Category F (100,000 Barcodes )";
         case "Medical Category":
-            return "Category F (100,000 Barcodes )"; // Note: Different pricing applies
+            return "Category F (100,000 Barcodes )";
         default:
             return null;
     }
@@ -532,7 +571,8 @@ function mapMembershipTypeToCategory(membershipName) {
 function mapMemberToNewUser(member) {
     let newUser = {
         // Direct mappings from Member to users
-        email: member.Email || '',
+        // email: member.Email || '',
+        email: 'abdulmajid1m1@gmail.com',
         fname: member.MemberNameE || '',
         lname: member.MemberNameA || '',
         mobile: member.Phone1 || '',
@@ -545,6 +585,7 @@ function mapMemberToNewUser(member) {
         gcpGLNID: member.GLNID ? member.GLNID.toString() : '',
         gln: member.GLN || '',
         memberID: member.MemberID ? member.MemberID.toString().replace(/\s/g, '') : '',
+        companyID: member.IntID ? member.IntID.toString() : '',
         user_id: member.UserID ? member.UserID.toString() : '',
 
         // Default or logic-based values for other fields
