@@ -370,7 +370,7 @@ const MemmberRegisteration = () => {
                     // navigate('/');
                 }, 1500);
 
-                toast.success('Member Registered Successfully', {
+                toast.success(`${t('Member Registered Successfully')}`, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -386,7 +386,7 @@ const MemmberRegisteration = () => {
                 console.log(err);
                 setIsLoading(false);
 
-                toast.error(err?.response?.data?.error || "Something went wrong!", {
+                toast.error(err?.response?.data?.error || `${t('Something went wrong!')}`, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -434,7 +434,7 @@ const MemmberRegisteration = () => {
 
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
-                setCompanyLandlineError('Number must be a maximum of 12 digits');
+                setCompanyLandlineError(`${t('Number must be a maximum of 12 digits') }`);
             }
         }
 

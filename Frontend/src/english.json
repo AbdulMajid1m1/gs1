@@ -501,5 +501,7 @@
     "(Omit Zero)":"(Omit Zero)",
     "Company Name [English]":"Company Name [English]",
     "Company Name [Arabic]":"Company Name [Arabic]",
-    "Bank Transfer":"Bank Transfer"
+    "Bank Transfer":"Bank Transfer",
+    "Member Registered Successfully":"Member Registered Successfully",
+    "Number must be a maximum of 12 digits":"Number must be a maximum of 12 digits"
 }
