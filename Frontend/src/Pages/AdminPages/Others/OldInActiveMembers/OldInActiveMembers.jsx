@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import { Autocomplete, Button, CircularProgress, TextField, debounce } from '@mui/material';
@@ -16,6 +16,7 @@ const OldInActiveMembers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [migrateButtonLoader, setMigrateButtonLoader] = useState(false);
   const [data, setData] = useState([]);
+  const [YearsToPay, setYearsToPay] = useState([]);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [selectedOldMember, setSelectedOldMember] = useState(null);
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
@@ -76,7 +77,7 @@ const OldInActiveMembers = () => {
       const crs = res?.data?.map(item => {
         return {
           IntID: item.IntID,
-          // MemberID: item.MemberID,
+          MemberID: item.MemberID,
           Phone1: item.Phone1,
           MemberNameE: item.MemberNameE,
           MemberNameA: item.MemberNameA,
@@ -104,16 +105,18 @@ const OldInActiveMembers = () => {
   
   
   // const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
-  
+
   const fetchData = async (value) => {
     setIsLoading(true);
     console.log(value);
     // setAllSearchMemberDetails(value);
     try {
       const response = await newRequest.get(`/migration/membershipHistory?MemberID=${value?.MemberID}`);
-      setData(response?.data || []);
+      // const response = await newRequest.get(`/migration/membershipHistory?MemberID=521`);
+      setData(response?.data?.MembershipHistory || []);
+      setYearsToPay(response?.data?.YearsToPay || [])
       console.log(response.data);
-    
+     
       setIsLoading(false);
     } catch (err) {
       console.log(err);
@@ -121,6 +124,10 @@ const OldInActiveMembers = () => {
     }
   };
 
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
 
 
@@ -233,13 +240,14 @@ const OldInActiveMembers = () => {
           
           <div  className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              Renewal upto The current Year(s)
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
+            >
+              Renewal upto The Year {new Date().getFullYear()}
             </button>
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-               2024 Remaining No. of Months
+               Number Of Year: {YearsToPay}
             </button>
 
             <button
