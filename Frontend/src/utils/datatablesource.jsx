@@ -1502,11 +1502,11 @@ export const Gs1AllMembers = (t, i18n) => [
           padding: '4px 8px',
           borderRadius: '10px',
           border: '2px solid',
-          background: params.row.member_type === 'new' ? 'green' : 'crimson',
+          background: params.row.member_type === 'old' ? 'green' : 'crimson',
           color: "white",
         }}
       >
-        {params.row.member_type === 'new' ? 'New' : 'Old'}
+        {params.row.member_type === 'old' ? 'Old' : 'New'}
       </div >
     ),
   },
