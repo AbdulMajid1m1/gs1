@@ -303,7 +303,7 @@
                 <% }); %>
 
                 <tr style="background-color: #003D79; color: white; font-weight: bold;">
-                    <td colspan="10" class="text-bold p-text text-left">Total (Total * No of Years)</td>
+                    <td colspan="10" class="text-bold p-text text-left">Total (No of Years - <%= data.memberData.yearsToPay %>)</td>
                     <% let totalPrice = 0; %>
                     <% data.cart.cart_items.forEach((item) => { %>
                         <% if (data.type === 'downgrade') { %>
@@ -313,7 +313,7 @@
                         <% } %>
                     <% }); %>
                     <% let totalPriceWithYears = totalPrice * data.memberData.yearsToPay; %>
-                    <td colspan="2" class="text-bold p-text text-right"><%= totalPrice %> * <%= data.memberData.yearsToPay %> = <%= totalPriceWithYears %></td>
+                    <td colspan="2" class="text-bold p-text text-right"><%= totalPriceWithYears %></td>
                 </tr>
             </table><br>
 
