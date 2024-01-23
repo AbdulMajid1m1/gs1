@@ -491,5 +491,15 @@
     "My GS1":"My GS1",
     "Pending Invoices":"Pending Invoices",
     "Remarks":"Remarks",
-    "City":"City"
+    "City":"City",
+    "Member Registration":"Member Registration",
+    "Your Subscription":"Your Subscription",
+    "Subscription Summary":"Subscription Summary",
+    "Select Industries Releated to your Business":"Select Industries Releated to your Business",
+    "Membership category":"Membership category",
+    "Mobile Number":"Mobile Number",
+    "(Omit Zero)":"(Omit Zero)",
+    "Company Name [English]":"Company Name [English]",
+    "Company Name [Arabic]":"Company Name [Arabic]",
+    "Bank Transfer":"Bank Transfer"
 }

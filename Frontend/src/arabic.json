@@ -535,5 +535,16 @@
     "My GS1":"بلدي GS1",
     "Pending Invoices":"الفواتير المعلقة",
     "Remarks":"ملاحظات",
-    "City":"المدينة"
+    "City":"المدينة",
+    "Member Registration":"تسجيل عضو",
+    "Your Subscription":"اشتراكك",
+    "Subscription Summary":"ملخص الاشتراك",
+    "Select Industries Releated to your Business":"حدد الصناعات ذات الصلة بعملك",
+    "Membership category":"فئة العضوية",
+    "Mobile Number":"رقم الهاتف المحمول",
+    "(Omit Zero)":"(حذف الصفر)",
+    "Company Name [English]":"اسم الشركة [إنجليزي]",
+    "Company Name [Arabic]":"اسم الشركة [عربي]",
+    "Bank Transfer":"التحويل المصرفي"
+
 }
