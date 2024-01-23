@@ -325,7 +325,7 @@ const Categories = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Mega Menu')} ${t('Categories')}`}
-                                    columnsName={CategoriesDataColumn}
+                                    columnsName={CategoriesDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

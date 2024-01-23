@@ -284,7 +284,7 @@ const Manageteam = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Manage Team')}`}
-                                    columnsName={ManageTeamDataColumn}
+                                    columnsName={ManageTeamDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

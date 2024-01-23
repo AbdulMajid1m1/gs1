@@ -407,6 +407,7 @@ const RegisteredMembersView = () => {
         theme: "light",
       });
     } else {
+      console.log("rorr", row);
       // If status is not 'approved', proceed with showing the popup
       setIsMemberInvoicePopupVisible(true);
       sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
@@ -612,7 +613,7 @@ const RegisteredMembersView = () => {
               >
                 <DataTable data={registeredProductsData}
                   title={`${t('Registered Products')}`}
-                  columnsName={registeredmemberColumn}
+                  columnsName={registeredmemberColumn(t)}
                   loading={registeredProductsLoader}
                   secondaryColor="secondary"
                   // actionColumnVisibility={false}
@@ -713,7 +714,7 @@ const RegisteredMembersView = () => {
                 >
                   <DataTable2 data={membersDocuemtsData}
                     title={`${t("Member'z Documents")}`}
-                    columnsName={MembersDocumentColumn}
+                    columnsName={MembersDocumentColumn(t)}
                     loading={memberDocumentsLoader}
                     secondaryColor="secondary"
                     checkboxSelection={"disabled"}
@@ -755,7 +756,7 @@ const RegisteredMembersView = () => {
                 >
                   <DataTable data={brandsData}
                     title={`${t('Brands')}`}
-                    columnsName={MembersBrandsColumn}
+                    columnsName={MembersBrandsColumn(t)}
                     loading={brandsLoader}
                     secondaryColor="secondary"
                     checkboxSelection={"disabled"}
@@ -832,7 +833,7 @@ const RegisteredMembersView = () => {
                 >
                   <DataTable data={memberInovice}
                     title={`${t('Member Invoice')}`}
-                    columnsName={financeColumn}
+                    columnsName={financeColumn(t)}
                     loading={memberInvoiceLoader}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}
@@ -857,7 +858,7 @@ const RegisteredMembersView = () => {
                 >
                   <DataTable3 data={filteredMemberDetails}
                     title={`${t('Member Bank Slip')}`}
-                    columnsName={bankSlipColumn}
+                    columnsName={bankSlipColumn(t)}
                     loading={memberBankSlipLoader}
                     secondaryColor="secondary"
                     buttonVisibility={false}
@@ -915,7 +916,7 @@ const RegisteredMembersView = () => {
               >
                 <DataTable2 data={subMenusData}
                   title={`${t('Sub-Members')}`}
-                  columnsName={submenusDataColumn}
+                  columnsName={submenusDataColumn(t)}
                   loading={subMembersLoader}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}
@@ -953,7 +954,7 @@ const RegisteredMembersView = () => {
               >
                 <DataTable data={memberHistoryData}
                   title={`${t('Member History')}`}
-                  columnsName={memberHistoryColumnData}
+                  columnsName={memberHistoryColumnData(t)}
                   loading={memberHistoryLoader}
                   secondaryColor="secondary"
                   checkboxSelection={"disabled"}

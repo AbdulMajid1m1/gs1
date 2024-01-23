@@ -279,7 +279,7 @@ const Faqcategories = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Faq Categories')}`}
-                                    columnsName={FaqCategoriesDataColumn}
+                                    columnsName={FaqCategoriesDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
