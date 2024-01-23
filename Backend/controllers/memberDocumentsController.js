@@ -312,7 +312,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
     if (error) {
         return next(createError(400, error.details[0].message));
     }
-
+    console.log("checkBankSlip", value.checkBankSlip)
     try {
 
         const documentId = req.params.id;
@@ -352,7 +352,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             });
             if (bankSlipDocuments.length === 0) {
-                return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
+                throw createError(400, 'Bank slip document is required');
             }
         }
 
