@@ -257,6 +257,7 @@ const OldInActiveMembers = () => {
               // handleRowClickInParent={handleRowClickInParent}
               uniqueId="customerListId"
               actionColumnVisibility={false}
+              showToolbarSlot={false}
               checkboxSelection={'disabled'}
 
               dropDownOptions={[

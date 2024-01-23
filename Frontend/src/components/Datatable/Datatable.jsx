@@ -48,6 +48,7 @@ const DataTable = ({
   handleAddUser,
   getFilteredOptions,
   globalSearch = false,
+  showToolbarSlot,
 }) => {
   const navigate = useNavigate();
   const [qrcodeValue, setQRCodeValue] = useState("");
@@ -620,7 +621,8 @@ const DataTable = ({
           onProcessRowUpdateError={(params, error) => {
             console.log(error);
           }}
-          slots={{ toolbar: GridToolbar }}
+          // slots={{ toolbar: GridToolbar }}
+            slots={{ toolbar: showToolbarSlot !== false ? GridToolbar : undefined }}
           // rows={filteredData}
           rows={muiFilteredData}
 
