@@ -1447,12 +1447,12 @@ export const GlnColumn = (t, i18n) => [
   },
   {
     field: 'gcpGLNID',
-    headerName:  t('GCP GLN ID'),
+    headerName: t('GCP GLN ID'),
     width: 180,
   },
   {
     field: 'locationNameEn',
-    headerName:  t('LOCATION NAME EN'),
+    headerName: t('LOCATION NAME EN'),
     width: 180,
   },
   {
@@ -1476,22 +1476,40 @@ export const GlnColumn = (t, i18n) => [
 export const ViewSsccColumn = (t, i18n) => [
   {
     field: 'sscc_id',
-    headerName:  t('SSCC ID'),
+    headerName: t('SSCC ID'),
     width: 180,
   },
   {
     field: 'sscc_type',
-    headerName:  t('Type'),
+    headerName: t('Type'),
     width: 180,
   },
   {
     field: 'SSCCBarcodeNumber',
-    headerName:  t('SSCC Barcode Number'),
+    headerName: t('SSCC Barcode Number'),
     width: 280,
   },
 ];
 
 export const Gs1AllMembers = (t, i18n) => [
+  {
+    field: 'member_type',
+    headerName: t('MEMBER TYPE'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: '2px solid',
+          background: params.row.member_type === 'old' ? 'green' : 'crimson',
+          color: "white",
+        }}
+      >
+        {params.row.member_type === 'old' ? 'Old' : 'New'}
+      </div >
+    ),
+  },
   {
     field: 'pending_invoices',
     headerName: t('PENDING TO DO'),
@@ -1516,12 +1534,16 @@ export const Gs1AllMembers = (t, i18n) => [
     headerName: t('Company Name English'),
     width: 180,
   },
-
   {
-    field: 'memberID',
-    headerName: t('Member ID'),
-    width: 180,
+    field: 'companyID',
+    headerName: 'Company ID',
+    width: 140,
   },
+  // {
+  //   field: 'memberID',
+  //   headerName: t('Member ID'),
+  //   width: 180,
+  // },
   {
     field: 'mobile',
     headerName: t('Mobile'),
@@ -1554,7 +1576,7 @@ export const Gs1AllMembers = (t, i18n) => [
   },
   {
     field: 'password',
-    headerName:  t('CODE'),
+    headerName: t('CODE'),
     width: 180,
   },
   // {
@@ -1569,7 +1591,7 @@ export const Gs1AllMembers = (t, i18n) => [
   },
   {
     field: 'email',
-    headerName:  t('Email'),
+    headerName: t('Email'),
     width: 220,
   },
   // {
@@ -2070,7 +2092,7 @@ export const MembersDocumentColumn = (t, i18n) => [
   },
   {
     field: 'doc_type',
-    headerName:  t('Doc Type'),
+    headerName: t('Doc Type'),
     width: 180,
   },
   // {
@@ -2111,7 +2133,7 @@ export const MembersBrandsColumn = (t, i18n) => [
   },
   {
     field: 'brand_certificate',
-    headerName:   t('Document'),
+    headerName: t('Document'),
     width: 180,
 
     renderCell: (params) => {
@@ -2167,7 +2189,7 @@ export const MembersBrandsColumn = (t, i18n) => [
   },
   {
     field: 'name_ar',
-    headerName:  t('Name Arabic'),
+    headerName: t('Name Arabic'),
     width: 180,
   },
   // {
@@ -2435,7 +2457,7 @@ export const paymentSlipColumn = (t, i18n) => [
   // },
   {
     field: 'reject_reason',
-    headerName:  t('Reject Reason'),
+    headerName: t('Reject Reason'),
     width: 180,
   },
   // {
@@ -2465,7 +2487,7 @@ export const paymentSlipColumn = (t, i18n) => [
   },
   {
     field: 'created_at',
-    headerName:  t('Created At'),
+    headerName: t('Created At'),
     // make it date time type
     type: 'dateTime',
 
@@ -2477,7 +2499,7 @@ export const paymentSlipColumn = (t, i18n) => [
   },
   {
     field: 'updated_at',
-    headerName:  t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
 
     type: 'dateTime',
@@ -2493,7 +2515,7 @@ export const paymentSlipColumn = (t, i18n) => [
   },
   {
     field: 'details',
-    headerName:  t('Details'),
+    headerName: t('Details'),
     width: 180,
   },
 
@@ -2507,7 +2529,7 @@ export const paymentSlipColumn = (t, i18n) => [
 
 ];
 
-export const masterDataColumn =  (t, i18n) => [
+export const masterDataColumn = (t, i18n) => [
 
   {
     field: 'unit_code',
@@ -2600,12 +2622,12 @@ export const CategoriesDataColumn = (t, i18n) => [
   },
   {
     field: 'category_name_ar',
-    headerName:  t('Category Name[Arabic]'),
+    headerName: t('Category Name[Arabic]'),
     width: 260,
   },
   {
     field: 'megamenu_id',
-    headerName:t('Mega Menu'),
+    headerName: t('Mega Menu'),
     width: 200,
   },
   {
@@ -2672,7 +2694,7 @@ export const silderDataColumn = (t) => [
   },
   {
     field: 'description',
-    headerName:t('Description'),
+    headerName: t('Description'),
     width: 500,
     renderCell: (params) => (
       <div
@@ -2764,12 +2786,12 @@ export const FeaturedServicesDataColumn = (t) => [
   },
   {
     field: 'link',
-    headerName:   t('Link'),
+    headerName: t('Link'),
     width: 200,
   },
   {
     field: 'status',
-    headerName:  t('status'),
+    headerName: t('status'),
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
@@ -2835,7 +2857,7 @@ export const FeaturedEventsDataColumn = (t) => [
   },
   {
     field: 'image',
-    headerName:  t('Image'),
+    headerName: t('Image'),
     width: 200,
     renderCell: (params) => (
       < img
@@ -2855,7 +2877,7 @@ export const FeaturedEventsDataColumn = (t) => [
   },
   {
     field: 'link',
-    headerName:  t('Link'),
+    headerName: t('Link'),
     width: 200,
   },
   {
@@ -2888,7 +2910,7 @@ export const FeaturedEventsDataColumn = (t) => [
   },
 ];
 
-export const FeaturedArticlesDataColumn = (t) =>  [
+export const FeaturedArticlesDataColumn = (t) => [
   {
     field: 'title',
     headerName: t('Title[English]'),
@@ -3191,7 +3213,7 @@ export const ManageTeamDataColumn = (t, i18n) => [
   },
   {
     field: 'description',
-    headerName: t('Description'), 
+    headerName: t('Description'),
     width: 350,
     renderCell: (params) => (
       <div
@@ -3331,7 +3353,7 @@ export const BoardMembersDataColumn = (t, i18n) => [
   },
   {
     field: 'updated_at',
-    headerName:  t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3350,7 +3372,7 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
   },
   {
     field: 'Download',
-    headerName:  t('Download'),
+    headerName: t('Download'),
     width: 250,
     renderCell: (params) => (
       <button
@@ -3372,7 +3394,7 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
   },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 180,
     valueGetter: (params) => {
       return params.value === 1 ? 'Active' : 'Inactive';
@@ -3380,7 +3402,7 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
   },
   {
     field: 'created_at',
-    headerName:  t('Created At'),
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -3463,7 +3485,7 @@ const handleVideoDownload = (videoUrl) => {
   const fileUrl = videoUrl;
   saveAs(fileUrl, `${videoUrl}.mp4`);
 };
-export const document =(t)=> [
+export const document = (t) => [
 
   {
     field: 'name',
@@ -3501,7 +3523,7 @@ export const document =(t)=> [
   },
 ];
 
-export const product_packaging =(t)=> [
+export const product_packaging = (t) => [
 
   {
     field: 'name',
@@ -3591,7 +3613,7 @@ export const footerMenuDataColumn = (t) => [
   },
 ];
 
-export const Other_Products =(t)=> [
+export const Other_Products = (t) => [
 
   {
     field: 'product_name',
@@ -3653,7 +3675,7 @@ export const Other_Products =(t)=> [
     }
   },
 ];
-export const Gcp_types =(t)=> [
+export const Gcp_types = (t) => [
 
   {
     field: 'gcp_code',
@@ -3687,7 +3709,7 @@ export const Gcp_types =(t)=> [
     }
   },
 ];
-export const counrty_sales =(t)=> [
+export const counrty_sales = (t) => [
 
   {
     field: 'Alpha2',
@@ -4022,7 +4044,7 @@ export const financeColumn = (t, i18n) => [
   // },
   {
     field: 'type',
-    headerName:  t('Type'),
+    headerName: t('Type'),
     width: 120,
   },
   {
@@ -4047,7 +4069,7 @@ export const financeColumn = (t, i18n) => [
   },
   {
     field: 'document',
-    headerName:  t('Document'),
+    headerName: t('Document'),
     width: 150,
 
     renderCell: (params) => {
@@ -4110,7 +4132,7 @@ export const financeColumn = (t, i18n) => [
   // },
   {
     field: 'created_at',
-    headerName:  t('Created At'),
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
 
@@ -4359,7 +4381,7 @@ export const bankSlipColumn = (t, i18n) => [
   },
   {
     field: 'doc_type',
-    headerName:  t('Doc Type'),
+    headerName: t('Doc Type'),
     width: 180,
   },
 
@@ -4375,17 +4397,17 @@ export const helpDeskColumn = (t, i18n) => [
   },
   {
     field: 'ticket_id',
-    headerName:  t('Ticket ID'),
+    headerName: t('Ticket ID'),
     width: 180,
   },
   {
     field: 'subject',
-    headerName:  t('Subject'),
+    headerName: t('Subject'),
     width: 180,
   },
   {
     field: 'priority',
-    headerName:  t('Priority'),
+    headerName: t('Priority'),
     width: 180,
   },
   {
@@ -4395,7 +4417,7 @@ export const helpDeskColumn = (t, i18n) => [
   },
   {
     field: 'updated_at',
-    headerName:t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
   },
 
@@ -4412,7 +4434,7 @@ export const subscribedGtinColumn = (t, i18n) => [
   },
   {
     field: 'Description',
-    headerName:  t('Description'),
+    headerName: t('Description'),
     width: 180,
   },
   {
@@ -4422,7 +4444,7 @@ export const subscribedGtinColumn = (t, i18n) => [
   },
   {
     field: 'Expiry_date',
-    headerName:  t('Expiry date'),
+    headerName: t('Expiry date'),
     width: 180,
   },
 
@@ -4478,7 +4500,7 @@ export const submenusDataColumn = (t, i18n) => [
   },
   {
     field: 'email',
-    headerName:  t('Email'),
+    headerName: t('Email'),
     width: 220,
   },
   {
@@ -4633,7 +4655,7 @@ export const submenusDataColumn = (t, i18n) => [
   // },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 180,
   },
   // {
@@ -4700,7 +4722,7 @@ export const submenusDataColumn = (t, i18n) => [
   },
   {
     field: 'updated_at',
-    headerName:  t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
 
     type: 'dateTime',
@@ -4839,7 +4861,7 @@ export const memberHistoryColumnData = (t) => [
   // },
   {
     field: 'subject',
-    headerName:t('Subject'),
+    headerName: t('Subject'),
     width: 280,
   },
 
@@ -4907,12 +4929,12 @@ export const registeredmemberColumn = (t) => [
 
   {
     field: 'subscription_limit',
-    headerName:  t('Remaining limit'),
+    headerName: t('Remaining limit'),
     width: 120,
   },
   {
     field: 'price',
-    headerName:  t('Registration fee'),
+    headerName: t('Registration fee'),
     width: 120,
 
 
@@ -4930,7 +4952,7 @@ export const registeredmemberColumn = (t) => [
   // },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -5769,7 +5791,7 @@ export const newlyRegisteredMembersColumn = (t, i18n) => [
   },
   {
     field: 'city',
-    headerName: t('City') ,
+    headerName: t('City'),
     width: 180,
   },
   {
@@ -5852,7 +5874,7 @@ export const pendingApprovalColumn = (t, i18n) => [
   },
   {
     field: 'country',
-    headerName:  t('Country'),
+    headerName: t('Country'),
     width: 180,
   },
   {
@@ -5862,12 +5884,12 @@ export const pendingApprovalColumn = (t, i18n) => [
   },
   {
     field: 'mobile',
-    headerName:  t('Mobile'),
+    headerName: t('Mobile'),
     width: 180,
   },
   {
     field: 'slug',
-    headerName:  t('Slug'),
+    headerName: t('Slug'),
     width: 180,
   },
   {
@@ -5900,7 +5922,7 @@ export const pendingApprovalColumn = (t, i18n) => [
 export const registerdMemberColumn = (t, i18n) => [
   {
     field: 'profile',
-    headerName:  t('Profile'),
+    headerName: t('Profile'),
     width: 60,
 
   },
@@ -5957,22 +5979,22 @@ export const registerdMemberColumn = (t, i18n) => [
   },
   {
     field: 'membership_category',
-    headerName: t('Membership Category') ,
+    headerName: t('Membership Category'),
     width: 180,
   },
   {
     field: 'other_landline',
-    headerName:  t('Other Landline'),
+    headerName: t('Other Landline'),
     width: 180,
   },
   {
     field: 'user_type',
-    headerName: t('User Type') ,
+    headerName: t('User Type'),
     width: 180,
   },
   {
     field: 'qr_corde',
-    headerName:  t('QR Code'),
+    headerName: t('QR Code'),
     width: 180,
   },
   {
@@ -5982,12 +6004,12 @@ export const registerdMemberColumn = (t, i18n) => [
   },
   {
     field: 'slug',
-    headerName:  t('Slug'),
+    headerName: t('Slug'),
     width: 180,
   },
   {
     field: 'gcp_expiry',
-    headerName:  t('GCP Expiry'),
+    headerName: t('GCP Expiry'),
     width: 180,
     // type: 'dateTime',
 
@@ -6025,7 +6047,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'company_name_eng',
-    headerName: t('Company Name English') ,
+    headerName: t('Company Name English'),
     width: 180,
   },
   {
@@ -6035,7 +6057,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'cr_documentID',
-    headerName:  t('CR Document ID'),
+    headerName: t('CR Document ID'),
     width: 180,
   },
   {
@@ -6085,12 +6107,12 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'transaction_id',
-    headerName:  t('Transaction ID'),
+    headerName: t('Transaction ID'),
     width: 180,
   },
   {
     field: 'membership_category',
-    headerName:  t('Membership Category'),
+    headerName: t('Membership Category'),
     width: 180,
   },
   {
@@ -6100,7 +6122,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'qr_corde',
-    headerName:  t('QR Code'),
+    headerName: t('QR Code'),
     width: 180,
   },
   {
@@ -6145,12 +6167,12 @@ export const adminPaymentSlipsColumn = (t, i18n) => [
   },
   {
     field: 'email',
-    headerName:  t('Email'),
+    headerName: t('Email'),
     width: 180,
   },
   {
     field: 'phone',
-    headerName:  t('Phone'),
+    headerName: t('Phone'),
     width: 180,
   },
   // {
@@ -6160,7 +6182,7 @@ export const adminPaymentSlipsColumn = (t, i18n) => [
   // },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -6185,7 +6207,7 @@ export const adminPaymentSlipsColumn = (t, i18n) => [
   },
   {
     field: 'date',
-    headerName:  t('Date'),
+    headerName: t('Date'),
     width: 180,
   },
 
@@ -6243,61 +6265,59 @@ export const cardsRejectedColumn = (t, i18n) => [
   },
   {
     field: 'transaction_id',
-    headerName:  t('Transaction ID'),
+    headerName: t('Transaction ID'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName:  t('Created At'),
+    headerName: t('Created At'),
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
   {
     field: 'updated_at',
-    headerName:  t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
   {
     field: 'reject_reason',
-    headerName:  t('Reject Reason'),
+    headerName: t('Reject Reason'),
     width: 180,
   },
   {
     field: 'remarks',
-    headerName:  t('Remarks'),
+    headerName: t('Remarks'),
     width: 180,
   },
   {
     field: 'membership_category',
-    headerName:  t('Membership Category'),
+    headerName: t('Membership Category'),
     width: 180,
   },
   {
     field: 'city',
-    headerName:  t('City'),
+    headerName: t('City'),
     width: 180,
   },
   {
     field: 'country',
-    headerName:   t('Country'),
+    headerName: t('Country'),
     width: 180,
   },
   {
     field: 'state',
-    headerName:   t('State'),
+    headerName: t('State'),
     width: 180,
   },
   {
@@ -6307,7 +6327,7 @@ export const cardsRejectedColumn = (t, i18n) => [
   },
   {
     field: 'pending_invoices',
-    headerName:   t('Pending Invoices'),
+    headerName: t('Pending Invoices'),
     width: 180,
   },
 
@@ -6328,8 +6348,7 @@ export const usersRejectedColumn = [
     headerName: 'Document',
     width: 180,
 
-    renderCell: (params) =>
-    {
+    renderCell: (params) => {
       console.log("params");
       console.log(params);
       const fieldUpdated = params?.row?.[params.field]?.isUpdate;
@@ -6337,8 +6356,7 @@ export const usersRejectedColumn = [
         ? params?.row?.[params.field]?.dataURL
         : imageLiveUrl(params.row[params.field]);
 
-      const onClickIcon = () =>
-      {
+      const onClickIcon = () => {
         if (fieldUpdated) {
           // removing the "data:application/pdf;base64," part
           const base64 = docUrl.split(",")[1];
@@ -6384,8 +6402,7 @@ export const usersRejectedColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -6396,8 +6413,7 @@ export const usersRejectedColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -6446,11 +6462,10 @@ export const oldInActiveMemberColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   {
     field: 'Status',
@@ -6477,8 +6492,7 @@ export const oldInActiveMemberColumn = [
     headerName: 'Updated Date',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
@@ -6534,7 +6548,7 @@ export const oldInActiveMemberColumn = [
   //   headerName: 'Reason',
   //   width: 180,
   // },
-  
-  
-  
+
+
+
 ];
