@@ -282,7 +282,7 @@ const Footermenu = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Footer menu')}`}
-                                    columnsName={footerMenuDataColumn}
+                                    columnsName={footerMenuDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}

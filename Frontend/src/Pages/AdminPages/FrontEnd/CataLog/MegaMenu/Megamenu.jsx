@@ -299,7 +299,7 @@ const Megamenu = () => {
 
                                 <DataTable data={data}
                                     title={`${t('Mega Menu')}`}
-                                    columnsName={megamenuDataColumn}
+                                    columnsName={megamenuDataColumn(t)}
                                     loading={isLoading}
                                     secondaryColor="secondary"
                                     handleRowClickInParent={handleRowClickInParent}
