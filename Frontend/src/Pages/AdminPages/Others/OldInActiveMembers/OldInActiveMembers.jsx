@@ -43,8 +43,11 @@ const OldInActiveMembers = () => {
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
     console.log(reason);
+    console.log(newInputValue);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
+      console.log('clear');
+      console.log(newInputValue);
       setOldMemberList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
       return; // Do not perform search if the input is cleared or an option is selected
@@ -97,7 +100,7 @@ const OldInActiveMembers = () => {
       // fetchData();
 
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setOldMemberList([]); // Clear the data list if an error occurs
       setOpen(false);
       setAutocompleteLoading(false);
@@ -180,7 +183,8 @@ const OldInActiveMembers = () => {
                   // MemberNameE: item.MemberNameE,
                   // MemberNameA: item.MemberNameA,
                   // Email: item.Email,
-                  getOptionLabel={(option) => (option && option.IntID) ? `${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : ''}
+                  // getOptionLabel={(option) => (option && option.IntID) ? `${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : 'no'}
+                  getOptionLabel={(option) => (option && option.IntID) ? `${option?.IntID} - ${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : ''}
                   onChange={handleGPCAutoCompleteChange}
                   value={selectedOldMember}
                   onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
