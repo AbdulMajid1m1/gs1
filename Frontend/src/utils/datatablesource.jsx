@@ -4367,7 +4367,7 @@ export const bankSlipColumn = (t, i18n) => [
 
 ];
 
-export const helpDeskColumn = [
+export const helpDeskColumn = (t, i18n) => [
   {
     field: 'id',
     headerName: 'ID',
@@ -4375,27 +4375,27 @@ export const helpDeskColumn = [
   },
   {
     field: 'ticket_id',
-    headerName: 'Ticket ID',
+    headerName:  t('Ticket ID'),
     width: 180,
   },
   {
     field: 'subject',
-    headerName: 'Subject',
+    headerName:  t('Subject'),
     width: 180,
   },
   {
     field: 'priority',
-    headerName: 'Priority',
+    headerName:  t('Priority'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName:t('Updated At'),
     width: 180,
   },
 
@@ -4404,25 +4404,25 @@ export const helpDeskColumn = [
 
 ]
 
-export const subscribedGtinColumn = [
+export const subscribedGtinColumn = (t, i18n) => [
   {
     field: 'Product',
-    headerName: 'Product',
+    headerName: t('Product'),
     width: 180,
   },
   {
     field: 'Description',
-    headerName: 'Description',
+    headerName:  t('Description'),
     width: 180,
   },
   {
     field: 'Registered_Date',
-    headerName: 'Registered Date',
+    headerName: t('Registered Date'),
     width: 180,
   },
   {
     field: 'Expiry_date',
-    headerName: 'Expiry date',
+    headerName:  t('Expiry date'),
     width: 180,
   },
 
@@ -6195,15 +6195,15 @@ export const adminPaymentSlipsColumn = (t, i18n) => [
 ]
 
 
-export const cardsRejectedColumn = [
+export const cardsRejectedColumn = (t, i18n) => [
   {
     field: 'company_name_eng',
-    headerName: 'Company Name English',
+    headerName: t('Company Name English'),
     width: 180,
   },
   {
     field: 'company_name_arabic',
-    headerName: 'Company Name Arabic',
+    headerName: t('Company Name Arabic'),
     width: 180,
   },
   {
@@ -6213,7 +6213,7 @@ export const cardsRejectedColumn = [
   },
   {
     field: 'contactPerson',
-    headerName: 'Contact Person',
+    headerName: t('Contact Person'),
     width: 180,
   },
   // {
@@ -6223,7 +6223,7 @@ export const cardsRejectedColumn = [
   // },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -6243,12 +6243,12 @@ export const cardsRejectedColumn = [
   },
   {
     field: 'transaction_id',
-    headerName: 'Transaction ID',
+    headerName:  t('Transaction ID'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName:  t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -6260,7 +6260,7 @@ export const cardsRejectedColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName:  t('Updated At'),
     width: 180,
 
     type: 'dateTime',
@@ -6272,42 +6272,42 @@ export const cardsRejectedColumn = [
   },
   {
     field: 'reject_reason',
-    headerName: 'Reject Reason',
+    headerName:  t('Reject Reason'),
     width: 180,
   },
   {
     field: 'remarks',
-    headerName: 'Remarks',
+    headerName:  t('Remarks'),
     width: 180,
   },
   {
     field: 'membership_category',
-    headerName: 'Membership Category',
+    headerName:  t('Membership Category'),
     width: 180,
   },
   {
     field: 'city',
-    headerName: 'City',
+    headerName:  t('City'),
     width: 180,
   },
   {
     field: 'country',
-    headerName: 'Country',
+    headerName:   t('Country'),
     width: 180,
   },
   {
     field: 'state',
-    headerName: 'State',
+    headerName:   t('State'),
     width: 180,
   },
   {
     field: 'zip_code',
-    headerName: 'Zip Code',
+    headerName: t('Zip Code'),
     width: 180,
   },
   {
     field: 'pending_invoices',
-    headerName: 'Pending Invoices',
+    headerName:   t('Pending Invoices'),
     width: 180,
   },
 

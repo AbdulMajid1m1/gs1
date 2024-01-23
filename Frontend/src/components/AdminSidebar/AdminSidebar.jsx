@@ -350,7 +350,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('GTIN')}</p>
+                <p className="sidebar-text">{t('GTIN (Barcode)')}</p>
               </div>
 
               <div
@@ -370,7 +370,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('GLN')}</p>
+                <p className="sidebar-text">{t('GLN (Location)')}</p>
               </div>
 
               <div

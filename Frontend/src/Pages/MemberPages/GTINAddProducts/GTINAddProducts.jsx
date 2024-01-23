@@ -8,6 +8,7 @@ import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
 import newRequest from '../../../utils/userRequest';
 import { useTranslation } from 'react-i18next';
+import MemberGpcPopUp from './MemberGpcPopUp';
 
 
 const GTINAddProducts = () => {
@@ -537,6 +538,12 @@ const GTINAddProducts = () => {
     }
 
 
+    const [isMemberGpcPopUpVisible, setIsMemberGpcPopUpVisible] = useState(false);
+
+    const handleMemberGpcPopUp = () => {
+        setIsMemberGpcPopUpVisible(true);
+    };
+
 
 
     return (
@@ -979,7 +986,7 @@ const GTINAddProducts = () => {
 
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                <label htmlFor="field10" className="text-secondary">GPC</label>
+                                <label htmlFor="field10" className="text-secondary">GPC <span className='text-red-500 text-sm cursor-pointer' onClick={handleMemberGpcPopUp}>(What is GPC?)</span></label>
                                 <Autocomplete
                                     id="field10"
                                     required
@@ -1303,6 +1310,10 @@ const GTINAddProducts = () => {
                 </div>
             </form>
 
+
+            {isMemberGpcPopUpVisible && (
+            <MemberGpcPopUp isVisible={isMemberGpcPopUpVisible} setVisibility={setIsMemberGpcPopUpVisible}/>
+            )}
 
                     </div>
                 </div>

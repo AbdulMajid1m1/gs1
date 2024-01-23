@@ -261,7 +261,7 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">{t('GTIN')}</p>
+                  <p className="sidebar-text">{t('GTIN (Barcode)')}</p>
                 </div>
                  {/* )} */}
               {apiResponse.length > 0 && (
@@ -280,7 +280,7 @@ const SideBar = () => {
                     className="main-inside-sidebar bg-white rounded-full"
                     alt=""
                   />
-                  <p className="sidebar-text">{t('GLN')}</p>
+                  <p className="sidebar-text">{t('GLN (Location)')}</p>
                 </div>
                  )}
 
