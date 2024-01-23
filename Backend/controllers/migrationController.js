@@ -39,6 +39,7 @@ export const searchMembers = async (req, res, next) => {
             'MemberNameA',
             'Email',
             'GLN',
+            'IntID',
             // Add other searchable columns as needed
         ];
 
@@ -51,7 +52,7 @@ export const searchMembers = async (req, res, next) => {
         };
 
         // Fetch the top 30 latest records that match the search conditions
-        const members = await oldGs1Prisma.Member.findMany({
+        const members = await oldGs1Prisma.member.findMany({
             where: searchConditions,
             orderBy: { CreatedDate: 'desc' }, // Sort by CreatedDate in descending order
             take: 30, // Limit to 30 records
@@ -70,7 +71,7 @@ export const getMembershipHistory = async (req, res, next) => {
         // Define allowable columns for filtering
         const allowedColumns = {
             MembershipID: Joi.number(),
-            MemberID: Joi.number(),
+            MemberID: Joi.number().required(),
             MembershipYear: Joi.number(),
             MembershipTypeID: Joi.number(),
             // ... define validation for other allowed columns
@@ -84,11 +85,32 @@ export const getMembershipHistory = async (req, res, next) => {
             }, {})
         ).unknown(false);
 
+
+
         // Validate the request query
         const { error, value } = filterSchema.validate(req.query);
         if (error) {
             return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
         }
+        // get the member id from the query
+        const { MemberID } = value;
+        const latestMembership = await oldGs1Prisma.membershipHistory.findFirst({
+            where: {
+                MemberID: MemberID,
+                Status: 'active',
+            },
+            orderBy: {
+                MembershipYear: 'desc',
+            },
+        });
+        if (!latestMembership) {
+            return res.status(404).json({ message: 'No active membership history found for this member.' });
+        }
+
+        // Calculate the number of years the user has to pay
+        const currentYear = new Date().getFullYear();
+        const yearsToPay = currentYear - latestMembership.MembershipYear;
+
 
         // Check if any filter conditions are provided
         const hasFilterConditions = Object.keys(value).length > 0;
@@ -107,7 +129,17 @@ export const getMembershipHistory = async (req, res, next) => {
         });
 
         membershipHistory.sort((a, b) => b.MembershipYear - a.MembershipYear);
-        return res.json(membershipHistory);
+
+
+        // Construct response
+        const response = {
+            MemberID: MemberID,
+            YearsToPay: yearsToPay,
+            MembershipHistory: membershipHistory,
+        };
+
+
+        return res.json(response);
     } catch (error) {
         console.log(error);
         next(error);
@@ -144,19 +176,8 @@ export const migrateUser = async (req, res, next) => {
         // Calculate the number of years the user has to pay
         const currentYear = new Date().getFullYear();
         const yearsToPay = currentYear - latestMembership.MembershipYear;
-
-        let TypeOfPaymentText = "Registration for the year ";
-
-        if (yearsToPay === 1) {
-            TypeOfPaymentText += currentYear - 1;
-        } else {
-            for (let i = 0; i < yearsToPay; i++) {
-                TypeOfPaymentText += currentYear - 1 + i;
-                if (i < yearsToPay - 1) {
-                    TypeOfPaymentText += " & ";
-                }
-            }
-        }
+        // show current year in the invoice
+        let TypeOfPaymentText = `Registration for the year ${currentYear}`;
 
         console.log("currentYear", currentYear, "latestMembership.MembershipYear", latestMembership.MembershipYear, "yearsToPay", yearsToPay);        // Fetch the member's products
 
