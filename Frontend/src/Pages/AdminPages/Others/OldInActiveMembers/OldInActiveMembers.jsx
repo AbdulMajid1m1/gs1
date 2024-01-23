@@ -75,10 +75,12 @@ const OldInActiveMembers = () => {
       
       const crs = res?.data?.map(item => {
         return {
+          IntID: item.IntID,
           MemberID: item.MemberID,
-          Email: item.Email,
           MemberNameE: item.MemberNameE,
-          UserID: item.UserID,
+          MemberNameA: item.MemberNameA,
+          Email: item.Email,
+          // UserID: item.UserID,
         };
       });
 
@@ -162,11 +164,12 @@ const OldInActiveMembers = () => {
               id="companyName"
               required
               options={oldMemberList}
+              // IntID: item.IntID,
               // MemberID: item.MemberID,
-              // Email: item.Email,
               // MemberNameE: item.MemberNameE,
-              // UserID: item.UserID,
-              getOptionLabel={(option) => (option && option.MemberID) ? `${option?.Email} - ${option?.MemberNameE} - ${option?.UserID} ` : ''}
+              // MemberNameA: item.MemberNameA,
+              // Email: item.Email,
+              getOptionLabel={(option) => (option && option.IntID) ? `${option?.MemberID} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email}` : ''}
               onChange={handleGPCAutoCompleteChange}
               value={selectedOldMember}
               onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -180,8 +183,8 @@ const OldInActiveMembers = () => {
                 setOpen(false);
               }}
               renderOption={(props, option) => (
-                <li key={option.MemberID} {...props}>
-                  {option ? `${option.MemberID} - ${option.Email} - ${option.MemberNameE} - ${option.UserID} ` : 'No options'}
+                <li key={option.IntID} {...props}>
+                  {option ? `${option.IntID} - ${option.MemberID} - ${option.MemberNameE} - ${option.MemberNameA} - ${option.Email} ` : 'No options'}
                 </li>
               )}
 
@@ -225,13 +228,30 @@ const OldInActiveMembers = () => {
 
           </div>
 
+          
+          <div  className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+            <button
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              Renewal upto The current Year(s)
+            </button>
 
+            <button
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+               2024 Remaining No. of Months
+            </button>
+
+            <button
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              Amount
+            </button>
+
+          </div>
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
             <DataTable data={data} title={t('Old InActive Members')} columnsName={oldInActiveMemberColumn}
               loading={isLoading}
-              secondaryColor="secondary"
+              secondaryColor="gray"
               // handleRowClickInParent={handleRowClickInParent}
               uniqueId="customerListId"
               actionColumnVisibility={false}
