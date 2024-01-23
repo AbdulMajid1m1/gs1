@@ -52,7 +52,7 @@ export const searchMembers = async (req, res, next) => {
         };
 
         // Fetch the top 30 latest records that match the search conditions
-        const members = await oldGs1Prisma.member.findMany({
+        const members = await oldGs1Prisma.Member.findMany({
             where: searchConditions,
             orderBy: { CreatedDate: 'desc' }, // Sort by CreatedDate in descending order
             take: 30, // Limit to 30 records
@@ -177,9 +177,8 @@ export const migrateUser = async (req, res, next) => {
         const currentYear = new Date().getFullYear();
         const yearsToPay = currentYear - latestMembership.MembershipYear;
         // show current year in the invoice
-        let TypeOfPaymentText = `Registration for the year ${currentYear}`;
+        let TypeOfPaymentText = `Renewal up to year ${currentYear}`;
 
-        console.log("currentYear", currentYear, "latestMembership.MembershipYear", latestMembership.MembershipYear, "yearsToPay", yearsToPay);        // Fetch the member's products
 
         const member = await oldGs1Prisma.member.findUnique({
             where: { MemberID: MemberID },
@@ -547,6 +546,7 @@ function mapMemberToNewUser(member) {
         gcpGLNID: member.GLNID ? member.GLNID.toString() : '',
         gln: member.GLN || '',
         memberID: member.MemberID ? member.MemberID.toString().replace(/\s/g, '') : '',
+        companyID: member.IntID ? member.IntID.toString() : '',
         user_id: member.UserID ? member.UserID.toString() : '',
 
         // Default or logic-based values for other fields
