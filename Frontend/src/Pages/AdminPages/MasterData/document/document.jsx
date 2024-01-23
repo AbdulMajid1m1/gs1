@@ -92,13 +92,12 @@ const Documents = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this document!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('Document')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
-
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
     }).then(async (result) =>
@@ -107,7 +106,7 @@ const Documents = () =>
         try {
           const isDeleted = await newRequest.delete("/deletecr_documents/" + row?.id);
           if (isDeleted) {
-            toast.success('documents deleted successfully', {
+            toast.success(`${t('Document')} ${t('Delete')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -138,7 +137,7 @@ const Documents = () =>
         } catch (error) {
 
           console.error("Error deleting user:", error);
-          toast.error('Something went wrong while deleting user', {
+          toast.error(`${t('Document')} ${t('has been not deleted')}!`, {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,

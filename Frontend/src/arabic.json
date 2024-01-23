@@ -534,5 +534,23 @@
     "My GS1":"بلدي GS1",
     "Pending Invoices":"الفواتير المعلقة",
     "Remarks":"ملاحظات",
-    "City":"المدينة"
+    "City":"المدينة",
+    "Member Registration":"تسجيل عضو",
+    "Your Subscription":"اشتراكك",
+    "Subscription Summary":"ملخص الاشتراك",
+    "Select Industries Releated to your Business":"حدد الصناعات ذات الصلة بعملك",
+    "Membership category":"فئة العضوية",
+    "Mobile Number":"رقم الهاتف المحمول",
+    "(Omit Zero)":"(حذف الصفر)",
+    "Company Name [English]":"اسم الشركة [إنجليزي]",
+    "Company Name [Arabic]":"اسم الشركة [عربي]",
+    "Bank Transfer":"التحويل المصرفي",
+    "Member Registered Successfully":"تم تسجيل العضو بنجاح",
+    "Number must be a maximum of 12 digits":"يجب أن يكون الرقم بحد أقصى 12 رقمًا",
+    "Product Package":"حزمة المنتج",
+    "GPC Type":"أنواع GPC",
+    "counrty of sale":"بلد البيع",
+    "HsCode":"كود هس",
+    "Something went wrong while deleting user":"حدث خطأ ما أثناء حذف المستخدم"
+
 }
