@@ -44,7 +44,7 @@ export const searchMembers = async (req, res, next) => {
         const searchConditions = {
             OR: searchableColumns.map(column => ({
                 [column]: {
-                    startsWith: keyword.toLowerCase(), // Use startsWith operator
+                    startsWith: keyword.toLowerCase(), // Use 
                 },
             })),
         };
