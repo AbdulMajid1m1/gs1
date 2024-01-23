@@ -525,5 +525,9 @@
     "Name Arabic":"الاسم عربي",
     "Admin Email":"البريد الإلكتروني المشرف",
     "Subject":"موضوع",
-    "User Email":"البريد الالكتروني للمستخدم"
+    "User Email":"البريد الالكتروني للمستخدم",
+    "Registered Date":"تاريخ التسجيل",
+    "Expiry date":"تاريخ الانتهاء",
+    "Ticket ID":"معرف التذكرة",
+    "Create Ticket":"إنشاء تذكرة"
 }

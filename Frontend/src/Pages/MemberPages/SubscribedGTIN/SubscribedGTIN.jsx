@@ -122,7 +122,7 @@ const SubscribedGTIN = () => {
 
                     <DataTable data={data} 
                       title={`${t('Subscribed GTIN')}`}
-                       columnsName={subscribedGtinColumn}
+                       columnsName={subscribedGtinColumn(t)}
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}
@@ -195,7 +195,7 @@ const SubscribedGTIN = () => {
 
                     <DataTable data={data} 
                       title={`${t('Subscribe Other Product')}`}
-                       columnsName={subscribedGtinColumn}
+                       columnsName={subscribedGtinColumn(t)}
                         loading={isLoading}
                          secondaryColor="secondary"
                           handleRowClickInParent={handleRowClickInParent}

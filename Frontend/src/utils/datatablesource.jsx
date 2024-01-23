@@ -4367,7 +4367,7 @@ export const bankSlipColumn = (t, i18n) => [
 
 ];
 
-export const helpDeskColumn = [
+export const helpDeskColumn = (t, i18n) => [
   {
     field: 'id',
     headerName: 'ID',
@@ -4375,27 +4375,27 @@ export const helpDeskColumn = [
   },
   {
     field: 'ticket_id',
-    headerName: 'Ticket ID',
+    headerName:  t('Ticket ID'),
     width: 180,
   },
   {
     field: 'subject',
-    headerName: 'Subject',
+    headerName:  t('Subject'),
     width: 180,
   },
   {
     field: 'priority',
-    headerName: 'Priority',
+    headerName:  t('Priority'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName:t('Updated At'),
     width: 180,
   },
 
@@ -4404,25 +4404,25 @@ export const helpDeskColumn = [
 
 ]
 
-export const subscribedGtinColumn = [
+export const subscribedGtinColumn = (t, i18n) => [
   {
     field: 'Product',
-    headerName: 'Product',
+    headerName: t('Product'),
     width: 180,
   },
   {
     field: 'Description',
-    headerName: 'Description',
+    headerName:  t('Description'),
     width: 180,
   },
   {
     field: 'Registered_Date',
-    headerName: 'Registered Date',
+    headerName: t('Registered Date'),
     width: 180,
   },
   {
     field: 'Expiry_date',
-    headerName: 'Expiry date',
+    headerName:  t('Expiry date'),
     width: 180,
   },
 

@@ -68,7 +68,7 @@ const AdditionalProducts = () => {
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={data} title={`${t('Additional Products')}`} columnsName={adminPaymentSlipsColumn}
+          <DataTable data={data} title={`${t('Additional Products')}`} columnsName={adminPaymentSlipsColumn(t)}
             loading={IsLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"
