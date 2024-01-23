@@ -571,7 +571,8 @@ function mapMembershipTypeToCategory(membershipName) {
 function mapMemberToNewUser(member) {
     let newUser = {
         // Direct mappings from Member to users
-        email: member.Email || '',
+        // email: member.Email || '',
+        email: 'abdulmajid1m1@gmail.com',
         fname: member.MemberNameE || '',
         lname: member.MemberNameA || '',
         mobile: member.Phone1 || '',
