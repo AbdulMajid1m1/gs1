@@ -30,25 +30,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     setVisibility(false);
   };
 
-  // const handleMemberInvoiceData = async () => {
-  //   try {
-  //     const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
-  //     console.log(res.data);
-  //     setMemberInvoiceData(res.data);
 
-  //     let total = 0;
-  //     const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-  //     cartItems.forEach((item) => {
-  //       total += parseInt(item.price); // Make sure to parse the price as an integer
-  //     });
-  //     setTotalPrice(total);
-  //   }
-  //   catch (err) {
-  //     console.log(err);
-  //   }
-
-
-  // }
 
   const handleMemberInvoiceData = async () => {
     if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice") {
@@ -177,7 +159,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     };
     const migrationApprovedBody = {
       status: selectedStatus,
-      migration: true
+      migration: true,
+      checkBankSlip: false
     };
 
     const rejectBody = {
@@ -360,7 +343,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                                 <tr key={'gtin_product' + index}>
                                   <td>{item?.gtin_product?.member_category_description}</td>
                                   <td>{item?.price}</td>
-                                  <td>{item?.gtin_subscription_total_price}</td>
+                                  <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.gtin_subscription_total_price : 0}</td>
                                   <td>{expiryDate}</td>
                                   <td>{item?.gtin_subscription_total_price + item?.price}</td>
                                 </tr>
@@ -372,7 +355,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                                 <tr key={'other_products' + index}>
                                   <td>{item?.product?.product_name}</td>
                                   <td>{item?.price}</td>
-                                  <td>{item?.other_products_subscription_total_price}</td>
+                                  <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
                                   <td>{expiryDate}</td>
                                   <td>{item?.other_products_subscription_total_price + item?.price}</td>
                                 </tr>
