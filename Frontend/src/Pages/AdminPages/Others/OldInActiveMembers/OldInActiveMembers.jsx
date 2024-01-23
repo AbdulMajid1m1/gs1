@@ -234,6 +234,8 @@ const OldInActiveMembers = () => {
               secondaryColor="secondary"
               // handleRowClickInParent={handleRowClickInParent}
               uniqueId="customerListId"
+              actionColumnVisibility={false}
+              checkboxSelection={'disabled'}
 
               dropDownOptions={[
                 {
