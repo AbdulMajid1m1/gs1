@@ -39,7 +39,7 @@ export const searchMembers = async (req, res, next) => {
             'MemberNameA',
             'Email',
             'GLN',
-            'IntID',
+            // 'IntID'
             // Add other searchable columns as needed
         ];
 
@@ -52,7 +52,7 @@ export const searchMembers = async (req, res, next) => {
         };
 
         // Fetch the top 30 latest records that match the search conditions
-        const members = await oldGs1Prisma.member.findMany({
+        const members = await oldGs1Prisma.Member.findMany({
             where: searchConditions,
             orderBy: { CreatedDate: 'desc' }, // Sort by CreatedDate in descending order
             take: 30, // Limit to 30 records
@@ -114,7 +114,7 @@ export const getMembershipHistory = async (req, res, next) => {
 
 
 
-        const member = await oldGs1Prisma.member.findUnique({
+        const member = await oldGs1Prisma.Member.findUnique({
             where: { MemberID: MemberID },
             include: { MembershipType: true },
         });
@@ -220,7 +220,7 @@ export const migrateUser = async (req, res, next) => {
         let TypeOfPaymentText = `Renewal up to year ${currentYear}`;
 
 
-        const member = await oldGs1Prisma.member.findUnique({
+        const member = await oldGs1Prisma.Member.findUnique({
             where: { MemberID: MemberID },
             include: { MembershipType: true },
         });
