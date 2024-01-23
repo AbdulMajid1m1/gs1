@@ -312,7 +312,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
     if (error) {
         return next(createError(400, error.details[0].message));
     }
-
+    console.log("checkBankSlip", value.checkBankSlip)
     try {
 
         const documentId = req.params.id;
@@ -352,7 +352,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             });
             if (bankSlipDocuments.length === 0) {
-                return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
+                throw createError(400, 'Bank slip document is required');
             }
         }
 
@@ -688,16 +688,17 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 const memberID = +existingUser.memberID
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
-                const oldProducts = await oldGs1Prisma.product.findMany({
+                const oldProducts = await oldGs1Prisma.Product.findMany({
                     where: {
                         MemberID: memberID
                     }
                 });
+                
                 console.log("oldProducts", oldProducts);
                 // Map and insert data into the new database table Product
                 for (const oldProduct of oldProducts) {
                     const newProduct = {
-                        memberID: oldProduct.MemberID,
+                        memberID: oldProduct?.MemberID?.toString(),
                         productnameenglish: oldProduct.ProductNameE,
                         productnamearabic: oldProduct.ProductNameA,
                         BrandName: oldProduct.BrandName,
@@ -837,26 +838,28 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
         // Delete all documents of type 'bank_slip'
-        for (const document of bankSlipDocuments) {
-            const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
-            console.log("deletingDocumentPath");
-            console.log(deletingDocumentPath);
-            try {
-                if (fsSync.existsSync(deletingDocumentPath)) {
-                    fsSync.unlinkSync(deletingDocumentPath);
+        if (value.checkBankSlip) {
+            for (const document of bankSlipDocuments) {
+                const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
+                console.log("deletingDocumentPath");
+                console.log(deletingDocumentPath);
+                try {
+                    if (fsSync.existsSync(deletingDocumentPath)) {
+                        fsSync.unlinkSync(deletingDocumentPath);
+                    }
+                } catch (err) {
+                    console.error(`Error deleting file: ${deletingDocumentPath}`, err);
                 }
-            } catch (err) {
-                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
             }
-        }
 
-        const deletedResult = await prisma.member_documents.deleteMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
-            }
-        });
+            const deletedResult = await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+            });
+        }
 
         await updateUserPendingInvoiceStatus(currentDocument.user_id)
 

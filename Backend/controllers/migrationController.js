@@ -18,8 +18,6 @@ import { sendEmail } from '../services/emailTemplates.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const searchMembers = async (req, res, next) => {
     try {
-
-
         // Define the validation schema
         const schema = Joi.object({
             keyword: Joi.string().required(),
@@ -39,14 +37,14 @@ export const searchMembers = async (req, res, next) => {
             'MemberNameA',
             'Email',
             'GLN',
-            // 'IntID'
+            'IntID'
             // Add other searchable columns as needed
         ];
 
         const searchConditions = {
             OR: searchableColumns.map(column => ({
                 [column]: {
-                    contains: keyword.toLowerCase(), // Convert keyword to lowercase
+                    startsWith: keyword.toLowerCase(), // Use 
                 },
             })),
         };
@@ -64,6 +62,7 @@ export const searchMembers = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 export const getMembershipHistory = async (req, res, next) => {
@@ -571,7 +570,8 @@ function mapMembershipTypeToCategory(membershipName) {
 function mapMemberToNewUser(member) {
     let newUser = {
         // Direct mappings from Member to users
-        // email: member.Email || '',
+        // email: member.Email || '', 
+        // TODO: uncomment the above line and remove the below line
         email: 'abdulmajid1m1@gmail.com',
         fname: member.MemberNameE || '',
         lname: member.MemberNameA || '',
