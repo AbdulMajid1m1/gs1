@@ -372,7 +372,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                                 colSpan="2" className="text-right font-bold ">{t(`Total (No of years - ${gs1MemberInvoiceData?.no_of_years})`)}</td>
                               <td
                                 style={{ fontSize: '16px' }}
-                                colSpan="3">= {totalPrice * gs1MemberInvoiceData?.no_of_years}</td>
+                                colSpan="3"> {totalPrice * gs1MemberInvoiceData?.no_of_years}</td>
                             </tr>
                           </tfoot>
                         </table>
