@@ -76,10 +76,12 @@ const OldInActiveMembers = () => {
       const crs = res?.data?.map(item => {
         return {
           IntID: item.IntID,
-          MemberID: item.MemberID,
+          // MemberID: item.MemberID,
+          Phone1: item.Phone1,
           MemberNameE: item.MemberNameE,
           MemberNameA: item.MemberNameA,
           Email: item.Email,
+          GLNID: item.GLNID,
           // UserID: item.UserID,
         };
       });
@@ -169,7 +171,7 @@ const OldInActiveMembers = () => {
               // MemberNameE: item.MemberNameE,
               // MemberNameA: item.MemberNameA,
               // Email: item.Email,
-              getOptionLabel={(option) => (option && option.IntID) ? `${option?.MemberID} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email}` : ''}
+              getOptionLabel={(option) => (option && option.IntID) ? `${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : ''}
               onChange={handleGPCAutoCompleteChange}
               value={selectedOldMember}
               onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -184,7 +186,7 @@ const OldInActiveMembers = () => {
               }}
               renderOption={(props, option) => (
                 <li key={option.IntID} {...props}>
-                  {option ? `${option.IntID} - ${option.MemberID} - ${option.MemberNameE} - ${option.MemberNameA} - ${option.Email} ` : 'No options'}
+                  {option ? `${option.IntID} - ${option.Phone1} - ${option.MemberNameE} - ${option.MemberNameA} - ${option.Email} - ${option?.GLNID}` : 'No options'}
                 </li>
               )}
 
