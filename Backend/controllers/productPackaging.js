@@ -3,8 +3,6 @@ import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 
-
-
 const productPackagSchema = Joi.object({
     name: Joi.string().max(255).required(),
     status: Joi.number().valid(0, 1).required(),
@@ -29,6 +27,7 @@ export const createProductPackag = async (req, res, next) => {
         next(error);
     }
 };
+
 export const getAllproductPackagSchema = async (req, res, next) => {
     try {
         const AllUNSPSC = await prisma.product_packagings.findMany({

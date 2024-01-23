@@ -39,7 +39,7 @@ export const searchMembers = async (req, res, next) => {
             'MemberNameA',
             'Email',
             'GLN',
-            // 'IntID'
+            'IntID'
             // Add other searchable columns as needed
         ];
 
@@ -571,7 +571,8 @@ function mapMembershipTypeToCategory(membershipName) {
 function mapMemberToNewUser(member) {
     let newUser = {
         // Direct mappings from Member to users
-        // email: member.Email || '',
+        // email: member.Email || '', 
+        // TODO: uncomment the above line and remove the below line
         email: 'abdulmajid1m1@gmail.com',
         fname: member.MemberNameE || '',
         lname: member.MemberNameA || '',
