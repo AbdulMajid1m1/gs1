@@ -18,8 +18,6 @@ import { sendEmail } from '../services/emailTemplates.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const searchMembers = async (req, res, next) => {
     try {
-
-
         // Define the validation schema
         const schema = Joi.object({
             keyword: Joi.string().required(),
@@ -46,7 +44,7 @@ export const searchMembers = async (req, res, next) => {
         const searchConditions = {
             OR: searchableColumns.map(column => ({
                 [column]: {
-                    contains: keyword.toLowerCase(), // Convert keyword to lowercase
+                    startsWith: keyword.toLowerCase(), // Use startsWith operator
                 },
             })),
         };
@@ -64,6 +62,7 @@ export const searchMembers = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 export const getMembershipHistory = async (req, res, next) => {
