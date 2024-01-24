@@ -468,12 +468,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             status: 'active',
                             expiry_date: item.expiry_date
                         }));
-                        try {
-                            const result = await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
-                            console.log("GTIN Subscription Histories created successfully:", result);
-                        } catch (error) {
-                            console.error("Error in creating GTIN Subscription Histories:", error);
-                        }
+
+                        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+
                         const otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
                             ...(item.react_no && { react_no: item.react_no }),
                             transaction_id: item.transaction_id,
@@ -484,12 +481,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             expiry_date: item.expiry_date,
                         }));
 
-                        try {
-                            const result = await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
-                            console.log("Other Products Subscription Histories created successfully:", result);
-                        } catch (error) {
-                            console.error("Error in creating Other Products Subscription Histories:", error);
-                        }
+
+                        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
 
 
                         // update isRegistered in crs to 1 by  cr_number and cr_activity
