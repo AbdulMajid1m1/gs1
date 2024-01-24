@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { getMembershipHistory, migrateUser, searchMembers } from '../../controllers/migrationController.js';
+import { exportMembersToExcel, getMembershipHistory, migrateUser, searchMembers } from '../../controllers/migrationController.js';
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.get('/membershipHistory', getMembershipHistory);
 
 router.post("/migrateUser", migrateUser)
 
-
+router.get('/exportMembers', exportMembersToExcel);
 
 
 export default router;
