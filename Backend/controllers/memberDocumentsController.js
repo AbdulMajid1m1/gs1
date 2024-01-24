@@ -342,9 +342,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let userUpdateResult;
         let pdfFilename;
         let cart;
-
+        let bankSlipDocuments;
         if (value.checkBankSlip) {
-            const bankSlipDocuments = await prisma.member_documents.findMany({
+            bankSlipDocuments = await prisma.member_documents.findMany({
                 where: {
                     user_id: currentDocument.user_id,
                     transaction_id: currentDocument.transaction_id,
