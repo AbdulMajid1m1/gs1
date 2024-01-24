@@ -705,12 +705,14 @@ export async function exportMembersToExcel(req, res) {
         const dataForExcel = members.map(member => {
             const latestMembership = latestMemberships[member.MemberID];
             let yearsToPay = 0;
-            let totalAmount = 0;
+            let yearlyPrice = 0;
             if (latestMembership) {
                 yearsToPay = currentYear - latestMembership.MembershipYear;
-                totalAmount = Number(latestMembership.Amount) || 0;
+                yearlyPrice = Number(latestMembership.Amount) || 0;
             }
-         
+
+            let totalAmount = yearsToPay * yearlyPrice;
+
             return {
                 companyID: member.IntID,
                 MemberNameE: member.MemberNameE,
@@ -722,7 +724,8 @@ export async function exportMembersToExcel(req, res) {
                 Website: member.Website,
                 Products: member.Products,
                 NoOfYear: yearsToPay,
-                TotalAmount: totalAmount
+                Yearly Price: yearlyPrice,
+                TotalAmount: totalAmount,
             };
         });
 
