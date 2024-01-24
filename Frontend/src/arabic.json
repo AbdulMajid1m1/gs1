@@ -107,7 +107,7 @@
     "Payment Slips": "قسائم الدفع",
     "Notifications": "إشعارات",
     "SHARE": "يشارك",
-    "GCP Licenses": "تراخيص Google Cloud Platform",
+    "GCP Licenses": "تراخيص GCP",
     "Verified by GS1": "تم التحقق منها بواسطة GS1",
     "GS1 Registries": "سجلات GS1",
     "OTHERS": "آحرون",
@@ -582,6 +582,8 @@
     "Pending For Approval":"في انتظار لموافقة",
     "My Profile":"ملفي",
     "PRICE":"سعر",
-    "EXPIRY DATE":"تاريخ الانتهاء"
+    "EXPIRY DATE":"تاريخ الانتهاء",
+    "GTIN (Barcode)":"رقم GTIN (الرمز الشريطي)",
+    "GLN (Location)":"GLN (الموقع)"
 
 }

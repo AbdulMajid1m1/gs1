@@ -334,7 +334,7 @@
     "Add Sub Member":"Add Sub Member",
     "First Name":"First Name",
     "Last Name":"Last Name",
-    "Member Type":"Member Type",
+    "Member Type":"MEMBER TYPE",
     "Member Status":"Member Status",
     "Sub Member":"Sub Member",
     "Mobile (must omit 0)":"Mobile (must omit 0)",
@@ -536,5 +536,7 @@
     "My Profile":"My Profile",
     "PRICE":"PRICE",
     "EXPIRY DATE":"EXPIRY DATE",
-    "DELETE":"DELETE"
+    "DELETE":"DELETE",
+    "GTIN (Barcode)":"GTIN (Barcode)",
+    "GLN (Location)":"GLN (Location)"
 }

@@ -754,7 +754,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Old Inactive Members')}</p>
+                <p className="sidebar-text">{t('Old InActive Members')}</p>
               </div>
               
               <div

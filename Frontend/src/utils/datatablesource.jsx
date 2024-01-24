@@ -1494,7 +1494,7 @@ export const ViewSsccColumn = (t, i18n) => [
 export const Gs1AllMembers = (t, i18n) => [
   {
     field: 'member_type',
-    headerName: t('MEMBER TYPE'),
+    headerName: t('Member Type'),
     width: 120,
     renderCell: params => (
       <div
@@ -1536,7 +1536,7 @@ export const Gs1AllMembers = (t, i18n) => [
   },
   {
     field: 'companyID',
-    headerName: 'Company ID',
+    headerName:  t('Company ID'),
     width: 140,
   },
   // {
@@ -3532,7 +3532,7 @@ export const product_packaging = (t) => [
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -6590,15 +6590,15 @@ export const oldInActiveMemberColumn = (t, i18n) => [
 
 
 
-export const productsCategoryColumn = [
+export const productsCategoryColumn = (t, i18n) => [
   {
     field: 'name',
-    headerName: 'Name',
+    headerName:t('Name'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -6618,7 +6618,7 @@ export const productsCategoryColumn = [
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -6630,7 +6630,7 @@ export const productsCategoryColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) =>
