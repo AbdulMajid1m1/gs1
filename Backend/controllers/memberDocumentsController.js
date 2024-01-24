@@ -395,7 +395,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         });
 
                         // Update GTIN subscriptions for the user
-                        const activatedGtinProducts = await prisma.gtin_subcriptions.updateMany({
+                        await prisma.gtin_subcriptions.updateMany({
                             // update based on the transaction ID
                             where: { transaction_id: currentDocument.transaction_id },
                             data: {
@@ -406,6 +406,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                             }
                         });
+
+                        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+                            where: { transaction_id: currentDocument.transaction_id },
+                        });
+
 
                         // Fetch the necessary data from other_products table
                         const products = await prisma.other_products.findMany({
@@ -424,7 +429,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 ? product.product_subscription_fee
                                 : product.med_subscription_fee;
 
-                            let activatedGtinProduct = await prisma.other_products_subcriptions.updateMany({
+                            await prisma.other_products_subcriptions.updateMany({
                                 where: {
                                     product_id: product.id,
                                     isDeleted: false,
@@ -437,8 +442,17 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                     expiry_date: expiryDate // Update the expiry date
                                 }
                             });
+                            // now get the updated records and push them to the array
 
-                            activatedOtherProducts = [...activatedOtherProducts, ...activatedGtinProduct];
+                            let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+                                where: {
+                                    product_id: product.id,
+                                    isDeleted: false,
+                                    transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
+                                },
+
+                            });
+                            activatedOtherProducts.push(...activatedOtherProduct);
                         }
 
                         console.log("activatedGtinProducts", activatedGtinProducts);
