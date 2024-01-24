@@ -198,7 +198,7 @@ const AdminSideBar = () =>
                 </I18nextProvider>
               </span>
               <span className="w-100">
-                <p className="text-white font-sans mr-5 hover:text-primary "
+                <p className={`text-white font-sans hover:text-primary ${i18n.language === 'ar' ? ' sm-mr-10 ml-5' : 'mr-5 sm-ml-5'}`}
                   onClick={() => handleItemClickGs1website('/')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/')
@@ -231,8 +231,8 @@ const AdminSideBar = () =>
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : `${i18n.language === 'ar' ? 'right-0 translate-x-full' : ' -translate-x-full left-0'}`
-          } sm:translate-x-0`}
+        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >

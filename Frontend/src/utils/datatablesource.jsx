@@ -3655,7 +3655,7 @@ export const Other_Products = (t) => [
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName:t('Status'),
     width: 120,
     renderCell: params => (
       <div
