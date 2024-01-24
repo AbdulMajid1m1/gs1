@@ -36,6 +36,7 @@
     "Update": "تحديث",
     "Status": "حالة",
     "Delete": "حذف",
+    "DELETE": "حذف",
     "Import": "استيراد",
     "Export": "تصدير",
     "Close": "إغلاق",
@@ -106,7 +107,7 @@
     "Payment Slips": "قسائم الدفع",
     "Notifications": "إشعارات",
     "SHARE": "يشارك",
-    "GCP Licenses": "تراخيص Google Cloud Platform",
+    "GCP Licenses": "تراخيص GCP",
     "Verified by GS1": "تم التحقق منها بواسطة GS1",
     "GS1 Registries": "سجلات GS1",
     "OTHERS": "آحرون",
@@ -579,6 +580,9 @@
     "Documents/Screenshot":"المستندات/لقطة الشاشة",
     "Pending For Approval":"في انتظار لموافقة",
     "My Profile":"ملفي",
-    "PRICE":"سعر"
+    "PRICE":"سعر",
+    "EXPIRY DATE":"تاريخ الانتهاء",
+    "GTIN (Barcode)":"رقم GTIN (الرمز الشريطي)",
+    "GLN (Location)":"GLN (الموقع)"
 
 }
