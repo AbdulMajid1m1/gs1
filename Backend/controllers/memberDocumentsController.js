@@ -699,8 +699,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 const newProduct = oldProducts.map((oldProduct) => ({
                     user_id: existingUser.id,
-                    gcpGLNID: "123123",
-                    prod_lang: "123",
+                    gcpGLNID: existingUser.gcpGLNID,
+                    prod_lang: existingUser.product_addons, // check this later
                     memberID: oldProduct?.MemberID?.toString(),
                     productnameenglish: oldProduct.ProductNameE,
                     productnamearabic: oldProduct.ProductNameA,
@@ -709,7 +709,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     MnfCode: oldProduct.MnfCode,
                     MnfGLN: oldProduct.MnfGLN,
                     ProvGLN: oldProduct.ProvGLN,
-                    size: oldProduct.Size ? oldProduct.Size.toString() : "",
+                    size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
                     barcode: oldProduct.BarCode,
                     created_at: oldProduct.CreatedDate, // Use the old created_at value
                     updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
