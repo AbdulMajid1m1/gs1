@@ -357,6 +357,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         }
 
         if (value.status === 'approved') {
+            let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
@@ -458,7 +459,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         console.log("activatedGtinProducts", activatedGtinProducts);
                         console.log("activatedOtherProducts", activatedOtherProducts);
 
-                        const gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
+                        gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
                             ...(item.react_no && { react_no: item.react_no }),
                             transaction_id: item.transaction_id,
                             pkg_id: item.pkg_id,
@@ -468,10 +469,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             status: 'active',
                             expiry_date: item.expiry_date
                         }));
+                        console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
-                        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
-
-                        const otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
+                        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
                             ...(item.react_no && { react_no: item.react_no }),
                             transaction_id: item.transaction_id,
                             product_id: item.product_id,
@@ -482,7 +482,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         }));
 
 
-                        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
 
 
                         // update isRegistered in crs to 1 by  cr_number and cr_activity
@@ -576,6 +575,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
+
+
+            await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+
+            await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
             let cartData = JSON.parse(cart.cart_items);
