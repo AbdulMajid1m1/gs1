@@ -15,6 +15,7 @@ import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { sendEmail } from '../services/emailTemplates.js';
+import XLSX from 'xlsx';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const searchMembers = async (req, res, next) => {
     try {
@@ -652,3 +653,167 @@ function mapMemberToNewUser(member) {
 
     return newUser;
 }
+
+export async function exportMembersToExcel(req, res) {
+    try {
+        // Fetch members with email containing 'migration'
+        const members = await oldGs1Prisma.Member.findMany({
+            where: {
+                Email: {
+                    contains: 'migration'
+                }
+            },
+            select: {
+                MemberID: true,
+                IntID: true,
+                MemberNameE: true,
+                MemberNameA: true,
+                Address1: true,
+                Phone1: true,
+                Phone2: true,
+                Email: true,
+                Website: true,
+                Products: true
+            }
+        });
+
+        // Extract MemberIDs
+        const memberIDs = members.map(member => member.MemberID);
+
+        // Fetch all relevant membership histories
+        const allMemberships = await oldGs1Prisma.membershipHistory.findMany({
+            where: {
+                MemberID: { in: memberIDs },
+                Status: 'active',
+            }
+        });
+
+        // Process to find the latest membership history for each member
+        const latestMemberships = memberIDs.reduce((acc, memberId) => {
+            const memberHistories = allMemberships.filter(m => m.MemberID === memberId);
+            const latestHistory = memberHistories.reduce((latest, current) => {
+                return (latest.MembershipYear > current.MembershipYear) ? latest : current;
+            }, memberHistories[0] || null);
+
+            acc[memberId] = latestHistory;
+            return acc;
+        }, {});
+
+        const currentYear = new Date().getFullYear();
+
+        // Map data to Excel format
+        const dataForExcel = members.map(member => {
+            const latestMembership = latestMemberships[member.MemberID];
+            let yearsToPay = 0;
+            let totalAmount = 0;
+            if (latestMembership) {
+                yearsToPay = currentYear - latestMembership.MembershipYear;
+                totalAmount = Number(latestMembership.Amount) || 0;
+            }
+         
+            return {
+                companyID: member.IntID,
+                MemberNameE: member.MemberNameE,
+                MemberNameA: member.MemberNameA,
+                Address1: member.Address1,
+                Phone1: member.Phone1,
+                Phone2: member.Phone2,
+                Email: member.Email,
+                Website: member.Website,
+                Products: member.Products,
+                NoOfYear: yearsToPay,
+                TotalAmount: totalAmount
+            };
+        });
+
+        // Create a new workbook
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+
+        // Append worksheet to workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Members');
+
+        // Generate buffer
+        const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
+        // Set headers to return a downloadable file
+        res.setHeader('Content-Disposition', 'attachment; filename=members.xlsx');
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        // Send the buffer
+        res.send(buffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred while exporting members data.');
+    }
+}
+
+// export async function exportMembersToExcel(req, res) {
+//     try {
+//         // Fetch members with email containing 'migration'
+//         const members = await oldGs1Prisma.Member.findMany({
+//             where: {
+//                 Email: {
+//                     contains: 'migration'
+//                 }
+//             }
+//         });
+
+//         // Fetch latest membership history for each member and calculate years and amount
+//         for (const member of members) {
+//             const latestMembership = await oldGs1Prisma.membershipHistory.findFirst({
+//                 where: {
+//                     MemberID: member.MemberID,
+//                     Status: 'active',
+//                 },
+//                 orderBy: {
+//                     MembershipYear: 'desc',
+//                 },
+//             });
+
+//             if (latestMembership) {
+//                 const currentYear = new Date().getFullYear();
+//                 member.YearsToPay = currentYear - latestMembership.MembershipYear;
+//                 member.TotalAmount = latestMembership.Amount;
+//             } else {
+//                 member.YearsToPay = 0;
+//                 member.TotalAmount = 0;
+//             }
+//         }
+
+//         // Map data to Excel format
+//         const dataForExcel = members.map(member => ({
+//             companyID: member.IntID,
+//             MemberNameE: member.MemberNameE,
+//             MemberNameA: member.MemberNameA,
+//             Address1: member.Address1,
+//             Phone1: member.Phone1,
+//             Phone2: member.Phone2,
+//             Email: member.Email,
+//             Website: member.Website,
+//             Products: member.Products,
+//             NoOfYear: member.YearsToPay,
+//             TotalAmount: member.TotalAmount
+//         }));
+
+//         // Create a new workbook
+//         const workbook = XLSX.utils.book_new();
+//         const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+
+//         // Append worksheet to workbook
+//         XLSX.utils.book_append_sheet(workbook, worksheet, 'Members');
+
+//         // Generate buffer
+//         const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
+//         // Set headers to return a downloadable file
+//         res.setHeader('Content-Disposition', 'attachment; filename=members.xlsx');
+//         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+//         // Send the buffer
+//         res.send(buffer);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('An error occurred while exporting members data.');
+//     }
+// }
