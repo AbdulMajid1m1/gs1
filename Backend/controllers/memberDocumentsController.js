@@ -709,8 +709,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     MnfCode: oldProduct.MnfCode,
                     MnfGLN: oldProduct.MnfGLN,
                     ProvGLN: oldProduct.ProvGLN,
-                    size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
-                    barCode: oldProduct.BarCode,
+                    size: oldProduct.Size ? oldProduct.Size.toString() : "",
+                    barcode: oldProduct.BarCode,
                     created_at: oldProduct.CreatedDate, // Use the old created_at value
                     updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
                 }));
