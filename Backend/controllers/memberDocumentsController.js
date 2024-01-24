@@ -698,7 +698,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Map and insert data into the new database table Product
                 for (const oldProduct of oldProducts) {
                     const newProduct = {
-                        memberID: oldProduct?.MemberID?.toString(),
+                        // memberID: oldProduct?.MemberID?.toString(),
                         productnameenglish: oldProduct.ProductNameE,
                         productnamearabic: oldProduct.ProductNameA,
                         BrandName: oldProduct.BrandName,
