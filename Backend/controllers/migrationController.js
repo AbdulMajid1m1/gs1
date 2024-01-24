@@ -751,72 +751,67 @@ export async function exportMembersToExcel(req, res) {
     }
 }
 
-// export async function exportMembersToExcel(req, res) {
-//     try {
-//         // Fetch members with email containing 'migration'
-//         const members = await oldGs1Prisma.Member.findMany({
-//             where: {
-//                 Email: {
-//                     contains: 'migration'
-//                 }
-//             }
-//         });
 
-//         // Fetch latest membership history for each member and calculate years and amount
-//         for (const member of members) {
-//             const latestMembership = await oldGs1Prisma.membershipHistory.findFirst({
-//                 where: {
-//                     MemberID: member.MemberID,
-//                     Status: 'active',
-//                 },
-//                 orderBy: {
-//                     MembershipYear: 'desc',
-//                 },
-//             });
 
-//             if (latestMembership) {
-//                 const currentYear = new Date().getFullYear();
-//                 member.YearsToPay = currentYear - latestMembership.MembershipYear;
-//                 member.TotalAmount = latestMembership.Amount;
-//             } else {
-//                 member.YearsToPay = 0;
-//                 member.TotalAmount = 0;
-//             }
-//         }
+export const getgs1DbYearlyReport = async (req, res) => {
+    try {
+        const year = parseInt(req.query.year);
+        if (!year) {
+            return res.status(400).send('Invalid year provided');
+        }
 
-//         // Map data to Excel format
-//         const dataForExcel = members.map(member => ({
-//             companyID: member.IntID,
-//             MemberNameE: member.MemberNameE,
-//             MemberNameA: member.MemberNameA,
-//             Address1: member.Address1,
-//             Phone1: member.Phone1,
-//             Phone2: member.Phone2,
-//             Email: member.Email,
-//             Website: member.Website,
-//             Products: member.Products,
-//             NoOfYear: member.YearsToPay,
-//             TotalAmount: member.TotalAmount
-//         }));
+        // Fetch records from database
+        const records = await oldGs1Prisma.MembershipHistory.findMany({
+            where: {
+                PaymentDate: {
+                    gte: new Date(`${year}-01-01`),
+                    lt: new Date(`${year + 1}-01-01`)
+                }
+            }
+        });
 
-//         // Create a new workbook
-//         const workbook = XLSX.utils.book_new();
-//         const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+        // Aggregate data
+        let monthlyData = initializeMonthlyData(year);
 
-//         // Append worksheet to workbook
-//         XLSX.utils.book_append_sheet(workbook, worksheet, 'Members');
+        records.forEach(record => {
+            const month = record.PaymentDate.getMonth(); // 0-indexed month
+            const amount = parseFloat(record.Amount);
+            if (record.Description && record.Description.includes("Renewal")) {
+                monthlyData[month].Renewal += amount;
+            } else {
+                monthlyData[month].New += amount;
+            }
+            // Calculate the total for the month (Renewal + New)
+            monthlyData[month].Total = monthlyData[month].Renewal + monthlyData[month].New;
+        });
 
-//         // Generate buffer
-//         const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+        // Create Excel
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(Object.values(monthlyData));
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Yearly Report');
 
-//         // Set headers to return a downloadable file
-//         res.setHeader('Content-Disposition', 'attachment; filename=members.xlsx');
-//         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // Send as download
+        const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+        res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.send(buffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error generating report');
+    }
 
-//         // Send the buffer
-//         res.send(buffer);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('An error occurred while exporting members data.');
-//     }
-// }
+};
+
+
+
+const initializeMonthlyData = (year) => {
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    let monthlyData = {};
+    months.forEach((month, index) => {
+        monthlyData[index] = { Month: `${month} ${year}`, New: 0, Renewal: 0 };
+    });
+    return monthlyData;
+};
