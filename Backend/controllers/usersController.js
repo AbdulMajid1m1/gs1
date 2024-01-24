@@ -280,7 +280,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
         const { error, value } = sendAndSaveInvoiceSchema.validate(req.body);
         if (error) {
             console.log(error)
-            
+
             return next(createError(400, error.details[0].message));
         }
         // Extract user and cart values
@@ -550,51 +550,51 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
 
 
-              // Extract user and cart data
-              const { carts, ...userData } = userUpdateResult;
-              const cartData = carts.length > 0 ? carts[0] : null;
-              // replace carts in userData with rejected_carts
-              userData.rejected_carts = cartData.carts;
-              delete userData.carts;
-              userData.deleted_at = new Date();
-              userData.status = 'rejected';
-              userData.remarks = value.reject_reason;
-              userData.payment_status = 0;
-              // remove member_history_logs 
-              delete userData.member_history_logs;
-  
-  
-              // Begin a transaction
-              await prisma.$transaction(async (prisma) => {
-                  // Create rejected user record
-                  const rejectedUser = await prisma.rejected_users.create({
-                      data: {
-                          ...userData,
-                          id: undefined, // Exclude 'id' if it's auto-generated
-                          reject_reason: value.reject_reason,
-                          // Exclude 'carts' field since it's not a column in 'rejected_users'
-                      }
-                  });
-  
-                  // Move cart to rejected_carts if it exists
-                  if (cartData) {
-                      await prisma.rejected_carts.create({
-                          data: {
-                              ...cartData,
-                              id: undefined, // Exclude 'id' if it's auto-generated
-                              reject_reason: value.reject_reason,
-                              user_id: rejectedUser.id, // Use the id of the newly created rejected user
-                              // Exclude 'user' field since it's not a column in 'rejected_carts'
-                          }
-                      });
-  
-                      // Delete the original cart
-                      await prisma.carts.delete({ where: { id: cartData.id } });
-                  }
-  
-                  // Delete the original user
-                  await prisma.users.delete({ where: { id: userData.id } });
-              });
+            // Extract user and cart data
+            const { carts, ...userData } = userUpdateResult;
+            const cartData = carts.length > 0 ? carts[0] : null;
+            // replace carts in userData with rejected_carts
+            userData.rejected_carts = cartData.carts;
+            delete userData.carts;
+            userData.deleted_at = new Date();
+            userData.status = 'rejected';
+            userData.remarks = value.reject_reason;
+            userData.payment_status = 0;
+            // remove member_history_logs 
+            delete userData.member_history_logs;
+
+
+            // Begin a transaction
+            await prisma.$transaction(async (prisma) => {
+                // Create rejected user record
+                const rejectedUser = await prisma.rejected_users.create({
+                    data: {
+                        ...userData,
+                        id: undefined, // Exclude 'id' if it's auto-generated
+                        reject_reason: value.reject_reason,
+                        // Exclude 'carts' field since it's not a column in 'rejected_users'
+                    }
+                });
+
+                // Move cart to rejected_carts if it exists
+                if (cartData) {
+                    await prisma.rejected_carts.create({
+                        data: {
+                            ...cartData,
+                            id: undefined, // Exclude 'id' if it's auto-generated
+                            reject_reason: value.reject_reason,
+                            user_id: rejectedUser.id, // Use the id of the newly created rejected user
+                            // Exclude 'user' field since it's not a column in 'rejected_carts'
+                        }
+                    });
+
+                    // Delete the original cart
+                    await prisma.carts.delete({ where: { id: cartData.id } });
+                }
+
+                // Delete the original user
+                await prisma.users.delete({ where: { id: userData.id } });
+            });
 
 
 
@@ -708,7 +708,7 @@ export const createUser = async (req, res, next) => {
         // const hashedPassword = bcrypt.hashSync(password, 10);
         // userValue.password = hashedPassword;
         userValue.password = password;
-        userValue.member_type = 'new'; 
+        userValue.member_type = 'new';
         userValue.industryTypes = JSON.stringify(userValue.industryTypes);
         userValue.parent_memberID = '0';
         // Start a transaction to ensure both user and cart are inserted
@@ -953,23 +953,23 @@ export const getUserDetails = async (req, res, next) => {
         // if there is no filter conditions, fetch all users without carts
         if (!hasFilterConditions) {
             const users = await prisma.users.findMany({
-                where: filterConditions
+                where: filterConditions,
+                orderBy: { updated_at: 'desc' },
             });
 
             //sort the users by updated_at
 
-            const sortedUsers = users.sort((a, b) => {
-                return new Date(b.updated_at) - new Date(a.updated_at);
-            });
 
 
 
-            return res.json(sortedUsers);
+
+            return res.json(users);
         }
         const [users, allCarts] = await prisma.$transaction(async (prisma) => {
             // Fetch users based on filter conditions
             const users = await prisma.users.findMany({
                 where: filterConditions,
+                orderBy: { updated_at: 'desc' },
             });
 
             // If no users are found, return early
@@ -986,11 +986,9 @@ export const getUserDetails = async (req, res, next) => {
             });
             // sort the users by updated_at
 
-            const sortedUsers = users.sort((a, b) => {
-                return new Date(b.updated_at) - new Date(a.updated_at);
-            });
 
-            return [sortedUsers, allCarts];
+
+            return [users, allCarts];
 
 
         }, { timeout: 50000 });
