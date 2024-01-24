@@ -109,6 +109,8 @@ import AdminUpdateSSCC from "./Pages/AdminPages/AdminIndentify/SSCC/AdminUpdateS
 import KPIReport from "./Pages/AdminPages/AdminTab/Reports/KPIReport/KPIReport";
 import MemberActivityReport from "./Pages/AdminPages/AdminTab/Reports/MemberActivityReport/MemberActivityReport";
 import AdminActivityReport from "./Pages/AdminPages/AdminTab/Reports/AdminActivityReport/AdminActivityReport";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 const queryClient = new QueryClient()
 
@@ -133,6 +135,21 @@ const App = () =>
       </div>
     );
   };
+
+  const UserLayout = ({ children }) =>
+  {
+    return (
+      <div>
+        <div className='sticky top-0 z-50 bg-white'>
+        <Header />
+        </div>
+        <main className="mx-auto flex max-w-[1760px] flex-col justify-center">
+          {children}
+        </main>
+        <Footer />
+      </div>
+    );
+  };
   return (
     <>
 
@@ -143,7 +160,18 @@ const App = () =>
             <div>
               <BrowserRouter>
                 <Routes>
-                  <Route path="/" element={<HomePage />} />
+                  <Route
+                    path="/"
+                    element={
+                    <UserLayout>
+                       <Routes>
+                        {/* <Route path="/" element={<HomePage />} /> */}
+                        <Route index element={<HomePage />} />
+                       </Routes>
+                    </UserLayout>
+                    }
+                  />
+
                   <Route path="/get-barcode" element={<GetBarcode />} />
                   <Route path="/member-registration" element={<MemmberRegisteration />} />
                   <Route path="/email-address" element={<EmailAddress />} />
@@ -151,7 +179,8 @@ const App = () =>
                   <Route path="/verify-code" element={<VerifyCode />} />
                   <Route path="/:id" element={<BlogPages />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
-
+                  
+                  
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
