@@ -971,7 +971,7 @@ export const getUserDetails = async (req, res, next) => {
                 where: filterConditions,
                 orderBy: { updated_at: 'desc' },
                 // get top 10
-                take: 10
+                // take: 10
             });
 
             // If no users are found, return early
