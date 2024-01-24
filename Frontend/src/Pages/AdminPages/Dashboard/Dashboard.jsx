@@ -67,9 +67,28 @@ const Dashboard = () => {
       newRequest.get("/users?status=inactive")
         .then(response => {
           console.log(response.data)
-          setPendingApprovals(response.data)
+          let data = response.data.map((item) => ({
+            ...item, profile: (
+              <Link
+                className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+                to={`/admin/registered-members/view-registered-member/${item.id}`}
+              >
+                <PersonIcon
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                  }}
+                />
+              </Link>
+            ),
+          }));
+          setPendingApprovals(data)
           setPendingApprovalsLoader(false);
         })
+          
+          //   setPendingApprovals(response.data)
+        //   setPendingApprovalsLoader(false);
+        // })
         .catch(error => {
 
 
@@ -131,9 +150,27 @@ const Dashboard = () => {
       newRequest.get("/users/getByGcpExpiry")
         .then(response => {
           console.log("MemberReneval", response.data)
-          setMemberReneval(response.data)
+          let data = response.data.map((item) => ({
+            ...item, profile: (
+              <Link
+                className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+                to={`/admin/registered-members/view-registered-member/${item.id}`}
+              >
+                <PersonIcon
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                  }}
+                />
+              </Link>
+            ),
+          }));
+          setMemberReneval(data)
           setMemberRenevalLoader(false);
         })
+          //   setMemberReneval(response.data)
+        //   setMemberRenevalLoader(false);
+        // })
         .catch(error => {
 
 

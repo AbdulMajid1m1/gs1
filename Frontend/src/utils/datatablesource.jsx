@@ -5856,10 +5856,16 @@ export const newlyRegisteredMembersColumn = (t, i18n) => [
 
 
 export const pendingApprovalColumn = (t, i18n) => [
+  // {
+  //   field: 'activityID',
+  //   headerName: t('Activity ID'),
+  //   width: 180,
+  // },
   {
-    field: 'activityID',
-    headerName: t('Activity ID'),
-    width: 180,
+    field: 'profile',
+    headerName:  t('Profile'),
+    width: 60,
+
   },
   {
     field: 'company_name_eng',
@@ -6069,10 +6075,16 @@ export const registerdMemberColumn = (t, i18n) => [
 
 
 export const memberForRenevalColumn = (t, i18n) => [
+  // {
+  //   field: 'activityID',
+  //   headerName: t('Activity ID'),
+  //   width: 180,
+  // },
   {
-    field: 'activityID',
-    headerName: t('Activity ID'),
-    width: 180,
+    field: 'profile',
+    headerName:  t('Profile'),
+    width: 60,
+
   },
   {
     field: 'companyID',
@@ -6639,6 +6651,108 @@ export const productsCategoryColumn = (t, i18n) => [
       return params.value ? new Date(params.value) : null;
     }
   },
+  
+  
+  
+];
+
+
+
+
+export const KpiReportColumn = [
+  {
+    field: 'transactionType',
+    headerName: 'Transaction type',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'Downgrade' : 'Renew',
+          color: params.row.status === 1 ? 'Downgrade' : 'Renew',
+        }}
+      >
+        {params.row.status === 1 ? 'Downgrade' : 'Renew'}
+      </div>
+    ),
+  },
+  {
+    field: 'date',
+    headerName: 'Date',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  {
+    field: 'companyId',
+    headerName: 'Company ID',
+    width: 180,
+  },
+  {
+    field: 'company',
+    headerName: 'Company',
+    width: 180,
+  },
+  {
+    field: 'amount',
+    headerName: 'Amount',
+    width: 180,
+  },
+  {
+    field: 'products',
+    headerName: 'Products',
+    width: 180,
+  },
+  {
+    field: 'actionby',
+    headerName: 'Action By',
+    width: 180,
+  },
+  
+  
+  
+];
+
+
+
+export const AdminActivityReportColumn = [
+  {
+    field: 'details',
+    headerName: 'Details',
+    width: 380,
+  },
+  {
+    field: 'ipaddress',
+    headerName: 'IP Address',
+    width: 220,
+  },
+  {
+    field: 'admin',
+    headerName: 'Admins',
+    width: 180,
+  },
+  {
+    field: 'date',
+    headerName: 'Date',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+
   
   
   

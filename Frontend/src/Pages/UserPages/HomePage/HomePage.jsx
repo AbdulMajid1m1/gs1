@@ -18,7 +18,7 @@ const HomePage = () =>
 
       {/* Nav */}
       <div className='sticky top-0 z-50 bg-white'>
-        <Header />
+        {/* <Header /> */}
       </div>
 
       {/* DropDown */}
@@ -53,7 +53,7 @@ const HomePage = () =>
         </div> */}
 
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
       {/* Footer End */}
 
     </div>
