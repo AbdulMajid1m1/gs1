@@ -6659,10 +6659,10 @@ export const productsCategoryColumn = (t, i18n) => [
 
 
 
-export const KpiReportColumn = [
+export const KpiReportColumn = (t, i18n) => [
   {
     field: 'transactionType',
-    headerName: 'Transaction type',
+    headerName: t('Transaction type'),
     width: 120,
     renderCell: params => (
       <div
@@ -6682,7 +6682,7 @@ export const KpiReportColumn = [
   },
   {
     field: 'date',
-    headerName: 'Date',
+    headerName:t('Date'),
     width: 180,
 
     type: 'dateTime',
@@ -6694,27 +6694,27 @@ export const KpiReportColumn = [
   },
   {
     field: 'companyId',
-    headerName: 'Company ID',
+    headerName:  t('Company ID'),
     width: 180,
   },
   {
     field: 'company',
-    headerName: 'Company',
+    headerName:  t('Company'),
     width: 180,
   },
   {
     field: 'amount',
-    headerName: 'Amount',
+    headerName: t('Amount'),
     width: 180,
   },
   {
     field: 'products',
-    headerName: 'Products',
+    headerName: t('Products'),
     width: 180,
   },
   {
     field: 'actionby',
-    headerName: 'Action By',
+    headerName: t('Action Byame'),
     width: 180,
   },
   
@@ -6724,25 +6724,25 @@ export const KpiReportColumn = [
 
 
 
-export const AdminActivityReportColumn = [
+export const AdminActivityReportColumn = (t, i18n) => [
   {
     field: 'details',
-    headerName: 'Details',
+    headerName: t('Details'),
     width: 380,
   },
   {
     field: 'ipaddress',
-    headerName: 'IP Address',
+    headerName: t('IP Address'),
     width: 220,
   },
   {
     field: 'admin',
-    headerName: 'Admins',
+    headerName: t('Admins'),
     width: 180,
   },
   {
     field: 'date',
-    headerName: 'Date',
+    headerName: t('Date'),
     width: 180,
 
     type: 'dateTime',

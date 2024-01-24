@@ -66,12 +66,12 @@ const AdminActivityReport = () => {
                           <button
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
                           >
-                            View Admin Activity
+                             {t('View Admin Activity')}
                           </button>
                           <button
                             className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
                           >
-                            Download Excel
+                             {t('Download Excel')}
                           </button>
                       </div>
                   
@@ -89,7 +89,7 @@ const AdminActivityReport = () => {
 
                   <DataTable data={data}
                   title={t('Admin Activity Chart')}
-                  columnsName={AdminActivityReportColumn}
+                  columnsName={AdminActivityReportColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   actionColumnVisibility={false}
