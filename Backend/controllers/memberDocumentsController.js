@@ -698,6 +698,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 // Map and insert data into the new database table Product
 
                 const newProduct = oldProducts.map((oldProduct) => ({
+                    user_id: existingUser.id,
                     memberID: oldProduct?.MemberID?.toString(),
                     productnameenglish: oldProduct.ProductNameE,
                     productnamearabic: oldProduct.ProductNameA,
@@ -766,7 +767,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         latitude: oldLocation.Latitude,
                         GLNBarcodeNumber: oldLocation.GLN,
                         status: oldLocation.IsActive.toString(),
-                        user_id: existingUser.user_id,
+                        user_id: existingUser.id,
                         created_at: oldLocation.CreatedDate,
                         updated_at: oldLocation.UpdatedDate,
                         gcpGLNID: oldLocation.GLNId,
