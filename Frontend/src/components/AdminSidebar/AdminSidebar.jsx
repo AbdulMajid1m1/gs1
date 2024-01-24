@@ -62,7 +62,7 @@ import LanguageSwitcher from "../../switer";
 
 const AdminSideBar = () =>
 {
-  const { t, i18n } = useTranslation();
+  const {t , i18n } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
