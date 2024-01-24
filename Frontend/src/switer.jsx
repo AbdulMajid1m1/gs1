@@ -17,7 +17,7 @@ const LanguageSwitcher = () =>
         i18n.changeLanguage(language);
     }; 
     const [isActive, setIsActive] = useState(false);
-    const [currentOption, setCurrentOption] = useState('en');
+    const [currentOption, setCurrentOption] = useState('ar');
 
     const handleToggle = () => {
         setIsActive(!isActive);

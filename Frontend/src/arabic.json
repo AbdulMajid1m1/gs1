@@ -36,6 +36,7 @@
     "Update": "تحديث",
     "Status": "حالة",
     "Delete": "حذف",
+    "DELETE": "حذف",
     "Import": "استيراد",
     "Export": "تصدير",
     "Close": "إغلاق",
@@ -580,6 +581,7 @@
     "Documents/Screenshot":"المستندات/لقطة الشاشة",
     "Pending For Approval":"في انتظار لموافقة",
     "My Profile":"ملفي",
-    "PRICE":"سعر"
+    "PRICE":"سعر",
+    "EXPIRY DATE":"تاريخ الانتهاء"
 
 }

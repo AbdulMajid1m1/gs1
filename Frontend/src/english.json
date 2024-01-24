@@ -534,5 +534,7 @@
     "Membership Other Category":"Membership Other Category",
     "Url":"Url",
     "My Profile":"My Profile",
-    "PRICE":"PRICE"
+    "PRICE":"PRICE",
+    "EXPIRY DATE":"EXPIRY DATE",
+    "DELETE":"DELETE"
 }
