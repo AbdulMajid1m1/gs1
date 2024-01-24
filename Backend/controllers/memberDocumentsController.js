@@ -713,79 +713,76 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }));
                 console.log("newProduct", newProduct);
                 // Insert the newProduct into the Product table in the new database
-                const gtinProducts = await prisma.gtin_products.createMany({
+                const gtinProducts = await prisma.products.createMany({
                     data: newProduct,
                 });
 
                 console.log("gtinProducts", gtinProducts);
-            }
 
 
-            // Fetch other products subscriptions based on user_id and isDeleted=false
-            // Fetch other products subscriptions based on user_id and isDeleted=false
-            const otherProductsSubscriptions = await prisma.other_products_subcriptions.findMany({
-                where: {
-                    user_id: existingUser.user_id, // Use existingUser.user_id
-                    isDeleted: false,
-                },
-                include: {
-                    product: true,
-                },
 
-            });
-
-            console.log("otherProductsSubscriptions", otherProductsSubscriptions);
-            // Check if the product "GLN (30 Locations)" is found in subscriptions
-            if (otherProductsSubscriptions.length > 0 && otherProductsSubscriptions[0].product.product_name === "GLN (30 Locations)") {
-                // Fetch all records from the old Location table based on some condition (you can modify the condition as needed)
-                const oldLocationData = await oldGs1Prisma.location.findMany({
+                // Fetch other products subscriptions based on user_id and isDeleted=false
+                // Fetch other products subscriptions based on user_id and isDeleted=false
+                const otherProductsSubscriptions = await prisma.other_products_subcriptions.findMany({
                     where: {
-                        MemberID: memberID,
+                        user_id: existingUser.user_id, // Use existingUser.user_id
+                        isDeleted: false,
                     },
+                    include: {
+                        product: true,
+                    },
+
                 });
 
-                // Iterate through the oldLocationData and insert into add_member_gln_products
-                const newLocations = oldLocationData.map((oldLocation) => ({
-                    locationNameEn: oldLocation.LocationNameE,
-                    locationNameAr: oldLocation.LocationNameA,
-                    AddressEn: oldLocation.AddressE,
-                    AddressAr: oldLocation.AddressA,
-                    pobox: oldLocation.POBox.toString(),
-                    postal_code: oldLocation.PostalCode,
-                    city_id: oldLocation.CityID.toString(),
-                    locationCRNumber: oldLocation.LocationCRNo,
-                    office_tel: oldLocation.OfficeTelNo,
-                    office_fax: oldLocation.OfficeFaxNo,
-                    contact1Name: oldLocation.Contact1,
-                    contact1Email: oldLocation.Contact1Email,
-                    contact1Mobile: oldLocation.Contact1Mobile,
-                    contact2Name: oldLocation.Contact2,
-                    contact2Email: oldLocation.Contact2Email,
-                    contact2Mobile: oldLocation.Contact2Mobile,
-                    longitude: oldLocation.Longitude,
-                    latitude: oldLocation.Latitude,
-                    GLNBarcodeNumber: oldLocation.GLN,
-                    status: oldLocation.IsActive.toString(),
-                    user_id: existingUser.user_id,
-                    created_at: oldLocation.CreatedDate,
-                    updated_at: oldLocation.UpdatedDate,
-                    gcpGLNID: oldLocation.GLNId,
-                    deleted_at: null,
-                }));
+                console.log("otherProductsSubscriptions", otherProductsSubscriptions);
+                // Check if the product "GLN (30 Locations)" is found in subscriptions
+                if (otherProductsSubscriptions.length > 0 && otherProductsSubscriptions[0].product.product_name === "GLN (30 Locations)") {
+                    // Fetch all records from the old Location table based on some condition (you can modify the condition as needed)
+                    const oldLocationData = await oldGs1Prisma.location.findMany({
+                        where: {
+                            MemberID: memberID,
+                        },
+                    });
 
-                // Insert the newLocations into the add_member_gln_products table
-                await prisma.add_member_gln_products.createMany({
-                    data: newLocations,
-                });
+                    // Iterate through the oldLocationData and insert into add_member_gln_products
+                    const newLocations = oldLocationData.map((oldLocation) => ({
+                        locationNameEn: oldLocation.LocationNameE,
+                        locationNameAr: oldLocation.LocationNameA,
+                        AddressEn: oldLocation.AddressE,
+                        AddressAr: oldLocation.AddressA,
+                        pobox: oldLocation.POBox.toString(),
+                        postal_code: oldLocation.PostalCode,
+                        city_id: oldLocation.CityID.toString(),
+                        locationCRNumber: oldLocation.LocationCRNo,
+                        office_tel: oldLocation.OfficeTelNo,
+                        office_fax: oldLocation.OfficeFaxNo,
+                        contact1Name: oldLocation.Contact1,
+                        contact1Email: oldLocation.Contact1Email,
+                        contact1Mobile: oldLocation.Contact1Mobile,
+                        contact2Name: oldLocation.Contact2,
+                        contact2Email: oldLocation.Contact2Email,
+                        contact2Mobile: oldLocation.Contact2Mobile,
+                        longitude: oldLocation.Longitude,
+                        latitude: oldLocation.Latitude,
+                        GLNBarcodeNumber: oldLocation.GLN,
+                        status: oldLocation.IsActive.toString(),
+                        user_id: existingUser.user_id,
+                        created_at: oldLocation.CreatedDate,
+                        updated_at: oldLocation.UpdatedDate,
+                        gcpGLNID: oldLocation.GLNId,
+                        deleted_at: null,
+                    }));
+
+                    // Insert the newLocations into the add_member_gln_products table
+                    await prisma.add_member_gln_products.createMany({
+                        data: newLocations,
+                    });
+                }
             }
+
+
+
         }
-
-
-
-
-
-
-    }
 
         // if (value.status === 'rejected') {
         //     // Set the document status to pending
@@ -801,60 +798,60 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         //     await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         // }
         if (value.status === 'rejected') {
-        // Set the document status to pending
-        await prisma.member_documents.update({
-            where: { id: documentId },
-            data: { status: 'pending' }
-        });
+            // Set the document status to pending
+            await prisma.member_documents.update({
+                where: { id: documentId },
+                data: { status: 'pending' }
+            });
 
 
 
 
-        // Send email with optional reject reason
-        await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
-    }
-
-
-
-
-    // Delete all documents of type 'bank_slip'
-    if (value.checkBankSlip) {
-        for (const document of bankSlipDocuments) {
-            const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
-            console.log("deletingDocumentPath");
-            console.log(deletingDocumentPath);
-            try {
-                if (fsSync.existsSync(deletingDocumentPath)) {
-                    fsSync.unlinkSync(deletingDocumentPath);
-                }
-            } catch (err) {
-                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
-            }
+            // Send email with optional reject reason
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         }
 
-        const deletedResult = await prisma.member_documents.deleteMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
+
+
+
+        // Delete all documents of type 'bank_slip'
+        if (value.checkBankSlip) {
+            for (const document of bankSlipDocuments) {
+                const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
+                console.log("deletingDocumentPath");
+                console.log(deletingDocumentPath);
+                try {
+                    if (fsSync.existsSync(deletingDocumentPath)) {
+                        fsSync.unlinkSync(deletingDocumentPath);
+                    }
+                } catch (err) {
+                    console.error(`Error deleting file: ${deletingDocumentPath}`, err);
+                }
             }
-        });
-    }
 
-    await updateUserPendingInvoiceStatus(currentDocument.user_id)
+            const deletedResult = await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+            });
+        }
 
-    // return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
-    if (value.status === 'approved') {
-        return res.json({ message: 'Document status updated to approved' });
-    }
-    else {
-        return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
-    }
+        await updateUserPendingInvoiceStatus(currentDocument.user_id)
 
-} catch (err) {
-    console.log(err);
-    next(err);
-}
+        // return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
+        if (value.status === 'approved') {
+            return res.json({ message: 'Document status updated to approved' });
+        }
+        else {
+            return res.json({ message: 'Document status updated to pending and bank slip documents deleted' });
+        }
+
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
 };
 
 const regenerateGcpCertificateSchema = Joi.object({
