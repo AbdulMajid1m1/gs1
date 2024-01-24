@@ -724,7 +724,7 @@ export async function exportMembersToExcel(req, res) {
                 Website: member.Website,
                 Products: member.Products,
                 NoOfYear: yearsToPay,
-                Yearly Price: yearlyPrice,
+                YearlyPrice: yearlyPrice,
                 TotalAmount: totalAmount,
             };
         });
