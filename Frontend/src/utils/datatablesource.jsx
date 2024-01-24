@@ -3532,13 +3532,24 @@ export const product_packaging = (t) => [
   },
   {
     field: 'status',
-    headerName: t('status'),
-    width: 180,
-    valueGetter: (params) => {
-      return params.value === 1 ? t('Active') : t('Inactive');
-    },
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
   },
-
   {
     field: 'created_at',
     headerName: t('Created At'),
@@ -3585,11 +3596,23 @@ export const footerMenuDataColumn = (t) => [
   },
   {
     field: 'status',
-    headerName: t('status'),
-    width: 180,
-    valueGetter: (params) => {
-      return params.value === 1 ? 'Active' : 'Inactive';
-    },
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
   },
   {
     field: 'created_at',
@@ -3630,14 +3653,25 @@ export const Other_Products = (t) => [
     headerName: t('product_subscription_fee'),
     width: 180,
   },
-
   {
     field: 'status',
-    headerName: t('status'),
-    width: 130,
-    valueGetter: (params) => {
-      return params.value === 1 ? t('Active') : t('Inactive');
-    },
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
   },
   {
     field: 'code',
@@ -6551,4 +6585,61 @@ export const oldInActiveMemberColumn = [
 
 
 
+];
+
+
+
+
+export const productsCategoryColumn = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  
+  
+  
 ];
