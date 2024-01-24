@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
-import { createMemberLogs } from '../utils/functions/historyLogs.js';
+import { createGtinSubscriptionHistory, createMemberLogs, createOtherProductsSubscriptionHistory } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 import { oldGs1Prisma } from '../prismaMultiClinets.js';
@@ -395,7 +395,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         });
 
                         // Update GTIN subscriptions for the user
-                        await prisma.gtin_subcriptions.updateMany({
+                        const activatedGtinProducts = await prisma.gtin_subcriptions.updateMany({
                             // update based on the transaction ID
                             where: { transaction_id: currentDocument.transaction_id },
                             data: {
@@ -416,7 +416,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 med_subscription_fee: true,
                             }
                         });
-
+                        let activatedOtherProducts = [];
                         // Update other_products_subcriptions table for each product
                         for (const product of products) {
                             console.log("product", product);
@@ -424,7 +424,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 ? product.product_subscription_fee
                                 : product.med_subscription_fee;
 
-                            await prisma.other_products_subcriptions.updateMany({
+                            let activatedGtinProduct = await prisma.other_products_subcriptions.updateMany({
                                 where: {
                                     product_id: product.id,
                                     isDeleted: false,
@@ -437,6 +437,44 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                     expiry_date: expiryDate // Update the expiry date
                                 }
                             });
+
+                            activatedOtherProducts = [...activatedOtherProducts, ...activatedGtinProduct];
+                        }
+
+                        console.log("activatedGtinProducts", activatedGtinProducts);
+                        console.log("activatedOtherProducts", activatedOtherProducts);
+
+                        const gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
+                            ...(item.react_no && { react_no: item.react_no }),
+                            transaction_id: item.transaction_id,
+                            pkg_id: item.pkg_id,
+                            user_id: item.user_id,
+                            price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+                            request_type: item.request_type,
+                            status: 'active',
+                            expiry_date: item.expiry_date
+                        }));
+                        try {
+                            const result = await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+                            console.log("GTIN Subscription Histories created successfully:", result);
+                        } catch (error) {
+                            console.error("Error in creating GTIN Subscription Histories:", error);
+                        }
+                        const otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
+                            ...(item.react_no && { react_no: item.react_no }),
+                            transaction_id: item.transaction_id,
+                            product_id: item.product_id,
+                            user_id: item.user_id,
+                            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+                            status: 'active',
+                            expiry_date: item.expiry_date,
+                        }));
+
+                        try {
+                            const result = await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+                            console.log("Other Products Subscription Histories created successfully:", result);
+                        } catch (error) {
+                            console.error("Error in creating Other Products Subscription Histories:", error);
                         }
 
 
@@ -472,7 +510,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
                             });
                         }
+
+
+
                     }
+
                 }
                 const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
                 let gcpGLNID = userUpdateResult?.gcpGLNID;
@@ -636,16 +678,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: value.status }
             });
 
-
-            // Insert Member History log
-            // const logData = {
-            //     // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
-            //     subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
-            //     // user user memberId
-            //     // member_id: value.memberID,
-            //     user_id: value.user_id,
-            //     // TODO: add middleware for current admin token 
-            // }
 
 
 
