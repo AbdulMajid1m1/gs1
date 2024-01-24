@@ -191,14 +191,14 @@ const AdminSideBar = () =>
           <div
             className={`flex justify-center items-center cursor-pointer -mt-1 px-4 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}
           >
-            <div className={`flex justify-end items-center px-0   ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}>
+            <div className={`flex justify-end items-center px-0 ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}>
               <span>
                 <I18nextProvider i18n={i18n}>
                   <LanguageSwitcher />
                 </I18nextProvider>
               </span>
-              <span>
-                <p className="text-white font-sans mr-5 hover:text-primary"
+              <span className="w-100">
+                <p className="text-white font-sans mr-5 hover:text-primary "
                   onClick={() => handleItemClickGs1website('/')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/')
@@ -231,8 +231,8 @@ const AdminSideBar = () =>
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
+        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : `${i18n.language === 'ar' ? 'right-0 translate-x-full' : ' -translate-x-full left-0'}`
+          } sm:translate-x-0`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >
