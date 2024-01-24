@@ -58,7 +58,6 @@ const KPIReport = () => {
                     loading={isLoading}
                     secondaryColor="secondary"
                     actionColumnVisibility={false}
-                    showToolbarSlot={false}
                     // handleRowClickInParent={handleRowClickInParent}
 
                     // dropDownOptions={[
