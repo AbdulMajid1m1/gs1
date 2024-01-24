@@ -693,41 +693,35 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         MemberID: memberID
                     }
                 });
-                
+
                 console.log("oldProducts", oldProducts);
                 // Map and insert data into the new database table Product
-                for (const oldProduct of oldProducts) {
-                    const newProduct = {
-                        memberID: oldProduct?.MemberID?.toString(),
-                        productnameenglish: oldProduct.ProductNameE,
-                        productnamearabic: oldProduct.ProductNameA,
-                        BrandName: oldProduct.BrandName,
-                        // ProductTypeID: oldProduct.ProductType,
-                        Origin: oldProduct.Origin,
-                        // ColorID: null, 
-                        // PackagingTypeID: null, 
-                        // PackagingLevelID: null, 
-                        MnfCode: oldProduct.MnfCode,
-                        MnfGLN: oldProduct.MnfGLN,
-                        ProvGLN: oldProduct.ProvGLN,
-                        // ChildProductID: null, 
-                        // ChildQuantity: null, 
-                        // UOMID: null, 
-                        size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
-                        // BarCodeID: null, 
-                        barCode: oldProduct.BarCode,
-                        // BarCodeURL: null, 
-                        // IsActive: oldProduct.status === 1,
-                        // CreatedBy: null, 
-                        created_at: oldProduct.CreatedDate, // Use the old created_at value
-                        // UpdatedBy: null, 
-                        updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
-                    };
 
-                    // Insert the newProduct into the Product table in the new database
-                    const gtinProducts = await prisma.products.create(newProduct);
-                    console.log("gtinProducts", gtinProducts);
-                }
+                const newProduct = oldProducts.map((oldProduct) => ({
+                    user_id: existingUser.id,
+                    gcpGLNID: existingUser.gcpGLNID,
+                    prod_lang: existingUser.product_addons, // check this later
+                    memberID: oldProduct?.MemberID?.toString(),
+                    productnameenglish: oldProduct.ProductNameE,
+                    productnamearabic: oldProduct.ProductNameA,
+                    BrandName: oldProduct.BrandName,
+                    Origin: oldProduct.Origin,
+                    MnfCode: oldProduct.MnfCode,
+                    MnfGLN: oldProduct.MnfGLN,
+                    ProvGLN: oldProduct.ProvGLN,
+                    size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
+                    barcode: oldProduct.BarCode,
+                    created_at: oldProduct.CreatedDate, // Use the old created_at value
+                    updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
+                }));
+                console.log("newProduct", newProduct);
+                // Insert the newProduct into the Product table in the new database
+                const gtinProducts = await prisma.products.createMany({
+                    data: newProduct,
+                });
+
+                console.log("gtinProducts", gtinProducts);
+
 
 
                 // Fetch other products subscriptions based on user_id and isDeleted=false
@@ -754,54 +748,40 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     });
 
                     // Iterate through the oldLocationData and insert into add_member_gln_products
-                    for (const oldLocation of oldLocationData) {
-                        const newLocation = {
-                            // product_id: oldLocation.product_id, 
-                            // reference_id: oldLocation.reference_id, 
+                    const newLocations = oldLocationData.map((oldLocation) => ({
+                        locationNameEn: oldLocation.LocationNameE,
+                        locationNameAr: oldLocation.LocationNameA,
+                        AddressEn: oldLocation.AddressE,
+                        AddressAr: oldLocation.AddressA,
+                        pobox: oldLocation.POBox.toString(),
+                        postal_code: oldLocation.PostalCode,
+                        city_id: oldLocation.CityID.toString(),
+                        locationCRNumber: oldLocation.LocationCRNo,
+                        office_tel: oldLocation.OfficeTelNo,
+                        office_fax: oldLocation.OfficeFaxNo,
+                        contact1Name: oldLocation.Contact1,
+                        contact1Email: oldLocation.Contact1Email,
+                        contact1Mobile: oldLocation.Contact1Mobile,
+                        contact2Name: oldLocation.Contact2,
+                        contact2Email: oldLocation.Contact2Email,
+                        contact2Mobile: oldLocation.Contact2Mobile,
+                        longitude: oldLocation.Longitude,
+                        latitude: oldLocation.Latitude,
+                        GLNBarcodeNumber: oldLocation.GLN,
+                        status: oldLocation.IsActive.toString(),
+                        user_id: existingUser.id,
+                        created_at: oldLocation.CreatedDate,
+                        updated_at: oldLocation.UpdatedDate,
+                        gcpGLNID: oldLocation.GLNId,
+                        deleted_at: null,
+                    }));
 
-                            locationNameEn: oldLocation.LocationNameE,
-                            locationNameAr: oldLocation.LocationNameA,
-                            AddressEn: oldLocation.AddressE,
-                            AddressAr: oldLocation.AddressA,
-                            pobox: oldLocation.POBox.toString(),
-                            postal_code: oldLocation.PostalCode,
-                            // country_id: null, 
-                            // state_id: null, 
-                            city_id: oldLocation.CityID.toString(),
-                            // licence_no: oldLocation.LocationCRNo,
-                            locationCRNumber: oldLocation.LocationCRNo,
-                            office_tel: oldLocation.OfficeTelNo,
-                            // tel_extension: null, 
-                            office_fax: oldLocation.OfficeFaxNo,
-                            // fax_extension: null, 
-                            contact1Name: oldLocation.Contact1,
-                            contact1Email: oldLocation.Contact1Email,
-                            contact1Mobile: oldLocation.Contact1Mobile,
-                            contact2Name: oldLocation.Contact2,
-                            contact2Email: oldLocation.Contact2Email,
-                            contact2Mobile: oldLocation.Contact2Mobile,
-                            longitude: oldLocation.Longitude,
-                            latitude: oldLocation.Latitude,
-                            // image: null, 
-                            GLNBarcodeNumber: oldLocation.GLN,
-                            // GLNBarcodeNumber_without_check: null, 
-                            status: oldLocation.IsActive.toString(), // Map the boolean to string
-                            user_id: existingUser.user_id,
-                            created_at: oldLocation.CreatedDate, // Use the old created_at value
-                            updated_at: oldLocation.UpdatedDate, // Use the old updated_at value
-                            gcpGLNID: oldLocation.GLNId,
-                            deleted_at: null, // No deletion date in old data
-                            // admin_id: "0", // Default value as "0"
-                        };
-
-                        // Insert the newLocation into the add_member_gln_products table
-                        await prisma.add_member_gln_products.create(newLocation);
-                    }
+                    // Insert the newLocations into the add_member_gln_products table
+                    await prisma.add_member_gln_products.createMany({
+                        data: newLocations,
+                    });
                 }
             }
-
-
-
 
 
 

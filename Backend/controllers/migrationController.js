@@ -15,6 +15,7 @@ import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { sendEmail } from '../services/emailTemplates.js';
+import XLSX from 'xlsx';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const searchMembers = async (req, res, next) => {
     try {
@@ -652,3 +653,165 @@ function mapMemberToNewUser(member) {
 
     return newUser;
 }
+
+export async function exportMembersToExcel(req, res) {
+    try {
+        // Fetch members with email containing 'migration'
+        const members = await oldGs1Prisma.Member.findMany({
+            where: {
+                Email: {
+                    contains: 'migration'
+                }
+            },
+            select: {
+                MemberID: true,
+                IntID: true,
+                MemberNameE: true,
+                MemberNameA: true,
+                Address1: true,
+                Phone1: true,
+                Phone2: true,
+                Email: true,
+                Website: true,
+                Products: true
+            }
+        });
+
+        // Extract MemberIDs
+        const memberIDs = members.map(member => member.MemberID);
+
+        // Fetch all relevant membership histories
+        const allMemberships = await oldGs1Prisma.membershipHistory.findMany({
+            where: {
+                MemberID: { in: memberIDs },
+                Status: 'active',
+            }
+        });
+
+        // Process to find the latest membership history for each member
+        const latestMemberships = memberIDs.reduce((acc, memberId) => {
+            const memberHistories = allMemberships.filter(m => m.MemberID === memberId);
+            const latestHistory = memberHistories.reduce((latest, current) => {
+                return (latest.MembershipYear > current.MembershipYear) ? latest : current;
+            }, memberHistories[0] || null);
+
+            acc[memberId] = latestHistory;
+            return acc;
+        }, {});
+
+        const currentYear = new Date().getFullYear();
+
+        // Map data to Excel format
+        const dataForExcel = members.map(member => {
+            const latestMembership = latestMemberships[member.MemberID];
+            let yearsToPay = 0;
+            let yearlyPrice = 0;
+            if (latestMembership) {
+                yearsToPay = currentYear - latestMembership.MembershipYear;
+                yearlyPrice = Number(latestMembership.Amount) || 0;
+            }
+
+            let totalAmount = yearsToPay * yearlyPrice;
+
+            return {
+                companyID: member.IntID,
+                MemberNameE: member.MemberNameE,
+                MemberNameA: member.MemberNameA,
+                Address1: member.Address1,
+                Phone1: member.Phone1,
+                Phone2: member.Phone2,
+                Email: member.Email,
+                Website: member.Website,
+                Products: member.Products,
+                NoOfYear: yearsToPay,
+                YearlyPrice: yearlyPrice,
+                TotalAmount: totalAmount,
+            };
+        });
+
+        // Create a new workbook
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+
+        // Append worksheet to workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Members');
+
+        // Generate buffer
+        const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
+        // Set headers to return a downloadable file
+        res.setHeader('Content-Disposition', 'attachment; filename=members.xlsx');
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        // Send the buffer
+        res.send(buffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred while exporting members data.');
+    }
+}
+
+
+
+export const getgs1DbYearlyReport = async (req, res) => {
+    try {
+        const year = parseInt(req.query.year);
+        if (!year) {
+            return res.status(400).send('Invalid year provided');
+        }
+
+        // Fetch records from database
+        const records = await oldGs1Prisma.MembershipHistory.findMany({
+            where: {
+                PaymentDate: {
+                    gte: new Date(`${year}-01-01`),
+                    lt: new Date(`${year + 1}-01-01`)
+                }
+            }
+        });
+
+        // Aggregate data
+        let monthlyData = initializeMonthlyData(year);
+
+        records.forEach(record => {
+            const month = record.PaymentDate.getMonth(); // 0-indexed month
+            const amount = parseFloat(record.Amount);
+            if (record.Description && record.Description.includes("Renewal")) {
+                monthlyData[month].Renewal += amount;
+            } else {
+                monthlyData[month].New += amount;
+            }
+            // Calculate the total for the month (Renewal + New)
+            monthlyData[month].Total = monthlyData[month].Renewal + monthlyData[month].New;
+        });
+
+        // Create Excel
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(Object.values(monthlyData));
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Yearly Report');
+
+        // Send as download
+        const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+        res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.send(buffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error generating report');
+    }
+
+};
+
+
+
+const initializeMonthlyData = (year) => {
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    let monthlyData = {};
+    months.forEach((month, index) => {
+        monthlyData[index] = { Month: `${month} ${year}`, New: 0, Renewal: 0 };
+    });
+    return monthlyData;
+};
