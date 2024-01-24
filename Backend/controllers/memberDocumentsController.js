@@ -699,6 +699,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 const newProduct = oldProducts.map((oldProduct) => ({
                     user_id: existingUser.id,
+                    gcpGLNID: "123123",
+                    prod_lang: "123",
                     memberID: oldProduct?.MemberID?.toString(),
                     productnameenglish: oldProduct.ProductNameE,
                     productnamearabic: oldProduct.ProductNameA,
