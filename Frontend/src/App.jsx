@@ -106,6 +106,9 @@ import Rejected from "./Pages/AdminPages/AdminCapture/Rejected/Rejected";
 import AdminUpdateGTIN from "./Pages/AdminPages/AdminIndentify/GTIN/AdminUpdateGTIN";
 import AdminGTINView from "./Pages/AdminPages/AdminIndentify/GTIN/AdminGTINView";
 import AdminUpdateSSCC from "./Pages/AdminPages/AdminIndentify/SSCC/AdminUpdateSSCC";
+import KPIReport from "./Pages/AdminPages/AdminTab/Reports/KPIReport/KPIReport";
+import MemberActivityReport from "./Pages/AdminPages/AdminTab/Reports/MemberActivityReport/MemberActivityReport";
+import AdminActivityReport from "./Pages/AdminPages/AdminTab/Reports/AdminActivityReport/AdminActivityReport";
 
 const queryClient = new QueryClient()
 
@@ -291,7 +294,12 @@ const App = () =>
                             <Route path="front-end" element={<Frontend />} />
                             <Route path="settings" element={<Settings />} />
                             <Route path="master-data" element={<MasterData />} />
+
                             <Route path="reports" element={<Reports />} />
+                            <Route path="kpi-report" element={<KPIReport />} />
+                            <Route path="member-activity-report" element={<MemberActivityReport />} />
+                            <Route path="admin-activity-report" element={<AdminActivityReport />} />
+                            
 
                             <Route path="units" element={<Units />} />
                             <Route path="Documents" element={<Documents />} />;
