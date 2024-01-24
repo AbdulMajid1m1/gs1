@@ -970,6 +970,8 @@ export const getUserDetails = async (req, res, next) => {
             const users = await prisma.users.findMany({
                 where: filterConditions,
                 orderBy: { updated_at: 'desc' },
+                // get top 10
+                take: 10
             });
 
             // If no users are found, return early
