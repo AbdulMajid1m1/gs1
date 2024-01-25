@@ -62,12 +62,12 @@ const AdditionalProducts = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this product package!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('Products Category')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -77,7 +77,7 @@ const AdditionalProducts = () =>
         try {
           const isDeleted = await newRequest.delete("/productCategories/" + row?.id);
           if (isDeleted) {
-            toast.success('Products Category deleted successfully');
+            toast.success(`${t('Products Category')} ${t('Delete')} ${t('successfully')}!`);
 
 
             // filter out the deleted user from the data

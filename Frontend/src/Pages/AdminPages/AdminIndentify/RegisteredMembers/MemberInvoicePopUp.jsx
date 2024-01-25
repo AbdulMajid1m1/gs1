@@ -329,11 +329,11 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                         <table>
                           <thead>
                             <tr>
-                              <th>PRODUCT</th>
-                              <th>REGISTRATION FEE</th>
-                              <th>YEARLY FEE</th>
-                              <th>EXPIRY DATE</th>
-                              <th>PRICE</th>
+                              <th> {t('PRODUCT')}</th>
+                              <th> {t('REGISTRATION FEE')}</th>
+                              <th> {t('YEARLY FEE')}</th>
+                              <th> {t('EXPIRY DATE')}</th>
+                              <th> {t('PRICE')}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -369,7 +369,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                               className='font-bold bg-secondary text-white'>
                               <td
                                 style={{ fontSize: '16px' }}
-                                colSpan="2" className="text-right font-bold ">{t(`Total (No of years - ${gs1MemberInvoiceData?.no_of_years})`)}</td>
+                                colSpan="2" className="text-right font-bold "> {t('Total')} {t('(No of years -')} {t(` ${gs1MemberInvoiceData?.no_of_years})`)}</td>
                               <td
                                 style={{ fontSize: '16px' }}
                                 colSpan="3"> {totalPrice * gs1MemberInvoiceData?.no_of_years}</td>

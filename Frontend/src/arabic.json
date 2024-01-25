@@ -606,6 +606,13 @@
     "Download Excel":"تحميل اكسل",
     "Admin Activity Chart":"مخطط نشاط المشرف",
     "Admin Activity":"نشاط المشرف",
-    "Member Activity":"نشاط العضو"
+    "Member Activity":"نشاط العضو",
+    "IP Address":"عنوان IP",
+    "Renew Invoice":"تجديد الفاتورة",
+    "New GCP":"جديد GCP",
+    "Renew request failed!":"فشل طلب التجديد!",
+    "Renew request sent successfully!":"تم إرسال طلب التجديد بنجاح!",
+    "(No of years -":"(عدد السنوات -",
+    "other product":"منتج آخر"
 
 }

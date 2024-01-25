@@ -36,14 +36,14 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
         status: Number(status),
       });
 
-      toast.success(response?.data?.message || 'Products Category Updated Successfully');
+      toast.success(response?.data?.message || `${t('Products Category')} ${t('has been')} ${t('Updated Successfully')}.`);
 
       console.log(response.data);
       refreshProductsCategory();
       handleCloseUpdatePopup();
 
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!');
+      toast.error(error?.response?.data?.message || `${t('Something went wrong!')}`);
 
       console.log(error);
     }
@@ -64,7 +64,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateBrand} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Products Category')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('Products Category')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">{t('Name')}</label>
@@ -74,7 +74,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
                       value={name}
                       onChange={(e) => setname(e.target.value)}
                       //   readOnly
-                      placeholder={t('Enter Name')}
+                      placeholder={`${t('Enter')} ${t('Name')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -89,7 +89,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="">{t('-Select Status-')}</option>
+                      <option value="">-{t('Status')}-</option>
                       <option value="1">{t('active')}</option>
                       <option value="2">{t('inactive')}</option>
                     </select>
@@ -122,7 +122,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Update Products Category')} 
+                    {t('Update')} {t('Products Category')} 
                   </Button>
                 </div>
               </form>

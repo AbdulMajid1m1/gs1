@@ -29,7 +29,7 @@ const [loading, setLoading] = useState(false);
         status: status,
       });
 
-      toast.success(`name ${name} has been added successfully.`, {
+      toast.success(`${t('Products Category')} ${name} ${t('has been added successfully')}.`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -66,7 +66,6 @@ const [loading, setLoading] = useState(false);
 
   };
 
-
   return (
     <div>
       {/* create the post api popup */}
@@ -84,14 +83,14 @@ const [loading, setLoading] = useState(false);
                       id="field1"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder={t('Enter Name')}
+                       placeholder={`${t('Enter')} ${t('Name')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">{t('Select Status')}</label>
+                    <label htmlFor="field2" className="text-secondary">{t('Status')}</label>
                     <select
                       type="text"
                       id="field2"
@@ -99,9 +98,9 @@ const [loading, setLoading] = useState(false);
                       onChange={(e) => setStatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                        <option value="">{t('-Select Status-')}</option>
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
+                        <option value="">-{t('Status')}-</option>
+                        <option value="1">{t('Active')}</option>
+                        <option value="2">{t('Inactive')}</option>
                     </select>
                   </div>
 
