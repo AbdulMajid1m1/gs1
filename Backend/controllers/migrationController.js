@@ -808,107 +808,77 @@ export const getgs1NewDbYearlyReport = async (req, res) => {
             return res.status(400).send('Invalid year provided');
         }
 
-        const otherProductsRecords = await prisma.other_products_subscription_histories.findMany({
+        // Fetch records from both tables with additional condition for other_products
+        const otherProductsSubscriptions = await prisma.other_products_subscription_histories.findMany({
             where: {
                 created_at: {
                     gte: new Date(`${year}-01-01`),
                     lt: new Date(`${year + 1}-01-01`)
                 },
-                // status: 'active'
+                status: 'approved',
+                product: {
+                    product_name: {
+                        contains: 'GLN',
+                    }
+                }
+            },
+            include: {
+                product: true // include the related product data
             }
         });
 
-        const gtinRecords = await prisma.gtin_subscription_histories.findMany({
+        const gtinSubscriptions = await prisma.gtin_subscription_histories.findMany({
             where: {
-                pkg_date: {
+                created_at: {
                     gte: new Date(`${year}-01-01`),
                     lt: new Date(`${year + 1}-01-01`)
                 },
-                // status: 'active'
+                status: 'approved'
             }
         });
 
-        const records = [...otherProductsRecords, ...gtinRecords];
-
-        // Aggregate data
+        // Combine and process records
+        const combinedRecords = [...otherProductsSubscriptions, ...gtinSubscriptions];
         let monthlyData = initializeMonthlyData(year);
 
-        records.forEach(record => {
-            const month = record.created_at.getMonth(); // 0-indexed month
-            const amount = parseFloat(record.price);
-            if (record.Description && record.Description.includes("Renewal")) {
+        combinedRecords.forEach(record => {
+            if (!record.created_at) {
+                return; // Skip this record if created_at is undefined
+            }
+
+            const month = record.created_at.getMonth();
+            let amount = 0;
+
+            // Check if price is a number and defined
+            if (record.price && !isNaN(record.price)) {
+                amount = parseFloat(record.price);
+            }
+
+            // Check if request_type is defined and includes "renew"
+            if (record.request_type && record.request_type.includes("renew")) {
                 monthlyData[month].Renewal += amount;
             } else {
                 monthlyData[month].New += amount;
             }
-            // Calculate the total for the month (Renewal + New)
+
             monthlyData[month].Total = monthlyData[month].Renewal + monthlyData[month].New;
         });
 
-        // Create Excel
+        // Create and send Excel report
         const workbook = XLSX.utils.book_new();
         const worksheet = XLSX.utils.json_to_sheet(Object.values(monthlyData));
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Yearly Report');
 
-        // Send as download
         const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
         res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.send(buffer);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error generating report');
+        res.status(500).send('Error generating report', error.message);
     }
-
 };
 
-// Define the new controller and route
-// export const getgs1NewDbYearlyReport = async (req, res) => {
-//     try {
-//         const year = parseInt(req.query.year);
-//         if (!year) {
-//             return res.status(400).send('Invalid year provided');
-//         }
-
-//         // Fetch records from other_products_subscription_histories and gtin_subscription_histories tables
-//         const otherProductsRecords = await prisma.other_products_subscription_histories.findMany({
-//             where: {
-//                 created_at: {
-//                     gte: new Date(`${year}-01-01`),
-//                     lt: new Date(`${year + 1}-01-01`)
-//                 },
-//                 status: 'active'
-//             }
-//         });
-
-//         const gtinRecords = await prisma.gtin_subscription_histories.findMany({
-//             where: {
-//                 pkg_date: {
-//                     gte: new Date(`${year}-01-01`),
-//                     lt: new Date(`${year + 1}-01-01`)
-//                 },
-//                 status: 'active'
-//             }
-//         });
-
-//         // Combine data from both tables
-//         const combinedRecords = [...otherProductsRecords, ...gtinRecords];
-
-//         // Create Excel
-//         const workbook = XLSX.utils.book_new();
-//         const worksheet = XLSX.utils.json_to_sheet(combinedRecords);
-//         XLSX.utils.book_append_sheet(workbook, worksheet, 'Yearly Report');
-
-//         // Send as download
-//         const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-//         res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
-//         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//         res.send(buffer);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error generating report');
-//     }
-// };
 
 
 const initializeMonthlyData = (year) => {
