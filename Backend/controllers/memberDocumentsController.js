@@ -465,8 +465,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             pkg_id: item.pkg_id,
                             user_id: item.user_id,
                             price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                            request_type: item.request_type,
-                            status: 'active',
+                            request_type: 'registration',
+                            status: 'approved',
                             expiry_date: item.expiry_date
                         }));
                         console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
@@ -477,7 +477,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             product_id: item.product_id,
                             user_id: item.user_id,
                             price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                            status: 'active',
+                            status: 'approved',
+                            request_type: 'registration',
                             expiry_date: item.expiry_date,
                         }));
 
