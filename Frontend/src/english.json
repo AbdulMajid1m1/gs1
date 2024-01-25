@@ -562,6 +562,12 @@
     "Admin Activity Chart":"Admin Activity Chart",
     "Admin Activity":"Admin Activity",
     "Member Activity":"Member Activity",
-    "IP Address":"IP Address"
+    "IP Address":"IP Address",
+    "Renew Invoice":"Renew Invoice",
+    "New GCP":"New GCP",
+    "Renew request failed!":"Renew request failed!",
+    "Renew request sent successfully!":"Renew request sent successfully!",
+    "(No of years -":"(No of years -",
+    "other product":"other product"
     
 }

@@ -355,11 +355,11 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                   <table>
                     <thead>
                       <tr>
-                        <th>PRODUCT</th>
-                        <th>REGISTRATION FEE</th>
-                        <th>YEARLY FEE</th>
-                        <th>EXPIRY DATE</th>
-                        <th>PRICE</th>
+                        <th>{t('PRODUCT')}</th>
+                        <th> {t('REGISTRATION FEE')}</th>
+                        <th> {t('YEARLY FEE')}</th>
+                        <th> {t('EXPIRY DATE')}</th>
+                        <th> {t('PRICE')}</th>
 
                       </tr>
                     </thead>
@@ -414,9 +414,9 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                     <table>
                       <thead>
                         <tr>
-                          <th>PRODUCT</th>
-                          <th>REGISTRATION FEE</th>
-                          <th>YEARLY FEE</th>
+                          <th>{t('PRODUCT')}</th>
+                          <th> {t('REGISTRATION FEE')}</th>
+                          <th> {t('YEARLY FEE')}</th>
 
 
                         </tr>
