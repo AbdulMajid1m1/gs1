@@ -26,6 +26,10 @@ import ssccRoutes from './subRoutes/ssccRoutes.js';
 
 import migrationRoutes from './subRoutes/migrationRoutes.js';
 
+import additionalProductsRoutes from './subRoutes/additionalProductsRoutes.js';
+
+import gtinProductCategoriesRoutes from './subRoutes/gtinProductCategoriesRoutes.js';
+
 const router = express.Router();
 
 
@@ -75,5 +79,9 @@ router.use('/changeMembership', changeMembershipRoutes);
 router.use("/gtinUpgrade", gtinUpgrageRoutes);
 
 router.use("/migration", migrationRoutes);
+
+router.use("/additionalProducts", additionalProductsRoutes);
+
+router.use("/gtinProductCategories", gtinProductCategoriesRoutes);
 
 export default router;
