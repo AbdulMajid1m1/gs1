@@ -302,7 +302,7 @@ const MemmberRegisteration = () => {
                 "productName": item.product,
                 "registration_fee": item.registrationFee.toString(), // Convert to string
                 "yearly_fee": item.yearlyFee.toString(), // Convert to string
-                "price": item.price.toString(), // Convert to string
+                "price": item.price.toString(), 
                 "product_type": item.product_type,
             })
 

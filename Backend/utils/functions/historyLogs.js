@@ -12,3 +12,27 @@ export const createMemberLogs = async (data) => {
         console.log(error);
     }
 }
+
+
+
+export const createGtinSubscriptionHistory = async (data) => {
+    try {
+        return await prisma.gtin_subscription_histories.createMany({
+            data
+        });
+    } catch (error) {
+        // Handle the error gracefully
+        console.error('Error creating GTIN Subscription History:', error);
+    }
+}
+
+export const createOtherProductsSubscriptionHistory = async (data) => {
+    try {
+        return await prisma.other_products_subscription_histories.createMany({
+            data
+        });
+    } catch (error) {
+        // Handle the error gracefully
+        console.error('Error creating Other Products Subscription History:', error);
+    }
+}

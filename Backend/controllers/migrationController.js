@@ -766,7 +766,8 @@ export const getgs1DbYearlyReport = async (req, res) => {
                 PaymentDate: {
                     gte: new Date(`${year}-01-01`),
                     lt: new Date(`${year + 1}-01-01`)
-                }
+                },
+                Status: 'Active'
             }
         });
 
@@ -800,6 +801,83 @@ export const getgs1DbYearlyReport = async (req, res) => {
         res.status(500).send('Error generating report');
     }
 
+};
+export const getgs1NewDbYearlyReport = async (req, res) => {
+    try {
+        const year = parseInt(req.query.year);
+        if (!year) {
+            return res.status(400).send('Invalid year provided');
+        }
+
+        // Fetch records from both tables with additional condition for other_products
+        const otherProductsSubscriptions = await prisma.other_products_subscription_histories.findMany({
+            where: {
+                created_at: {
+                    gte: new Date(`${year}-01-01`),
+                    lt: new Date(`${year + 1}-01-01`)
+                },
+                status: 'approved',
+                product: {
+                    product_name: {
+                        contains: 'GLN',
+                    }
+                }
+            },
+            include: {
+                product: true // include the related product data
+            }
+        });
+
+        const gtinSubscriptions = await prisma.gtin_subscription_histories.findMany({
+            where: {
+                created_at: {
+                    gte: new Date(`${year}-01-01`),
+                    lt: new Date(`${year + 1}-01-01`)
+                },
+                status: 'approved'
+            }
+        });
+
+        // Combine and process records
+        const combinedRecords = [...otherProductsSubscriptions, ...gtinSubscriptions];
+        let monthlyData = initializeMonthlyData(year);
+
+        combinedRecords.forEach(record => {
+            if (!record.created_at) {
+                return; // Skip this record if created_at is undefined
+            }
+
+            const month = record.created_at.getMonth();
+            let amount = 0;
+
+            // Check if price is a number and defined
+            if (record.price && !isNaN(record.price)) {
+                amount = parseFloat(record.price);
+            }
+
+            // Check if request_type is defined and includes "renew"
+            if (record.request_type && record.request_type.includes("renew")) {
+                monthlyData[month].Renewal += amount;
+            } else {
+                monthlyData[month].New += amount;
+            }
+
+            monthlyData[month].Total = monthlyData[month].Renewal + monthlyData[month].New;
+        });
+
+        // Create and send Excel report
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(Object.values(monthlyData));
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Yearly Report');
+
+        const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+        res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.send(buffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error generating report', error.message);
+    }
 };
 
 
