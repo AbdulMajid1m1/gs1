@@ -212,10 +212,10 @@ model brands {
   name_ar           String   @db.NVarChar(255)
   status            String   @default("inactive", map: "DF__brands__status__092A4EB5") @db.NVarChar(255)
   user_id           String
-  companyID         String?
-  brand_certificate String?  @db.NVarChar(Max)
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
+  companyID         String?
+  brand_certificate String?  @db.NVarChar(Max)
 }
 
 model brandsForApproval {
@@ -249,7 +249,6 @@ model carts {
   request_type   String?   @db.NVarChar(Max)
   payment_type   String?   @db.NVarChar(Max)
   user_id        String
-  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
   deleted_at     DateTime? @db.DateTime
@@ -260,7 +259,7 @@ model carts {
   admin_id       Int?      @default(0, map: "DF_carts_admin_id")
   assign_to      Int?      @default(0, map: "DF_carts_assign_to")
   discount       Float?    @default(0, map: "DF_carts_discount")
-  // rejected_usersId String?
+  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model rejected_carts {
@@ -272,7 +271,6 @@ model rejected_carts {
   request_type   String?        @db.NVarChar(Max)
   payment_type   String?        @db.NVarChar(Max)
   user_id        String
-  user           rejected_users @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at     DateTime       @default(now())
   updated_at     DateTime       @updatedAt
   deleted_at     DateTime?      @db.DateTime
@@ -283,6 +281,7 @@ model rejected_carts {
   admin_id       Int?           @default(0, map: "DF_rejected_carts_admin_id")
   assign_to      Int?           @default(0, map: "DF_rejected_carts_assign_to")
   discount       Float?         @default(0, map: "DF_rejected_carts_discount")
+  user           rejected_users @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model product_categroies {
@@ -379,9 +378,9 @@ model crs {
   cr           String?  @db.NVarChar(Max)
   activity     String?  @db.NVarChar(Max)
   status       Int?
-  isRegistered Int      @default(0, map: "DF_crs_isRegistered")
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now()) @updatedAt
+  isRegistered Int      @default(0, map: "DF_crs_isRegistered")
 }
 
 model email_reminders {
@@ -736,69 +735,67 @@ model gtin_non_compliants {
 }
 
 model gtin_products {
-  id                             String              @id @default(cuid())
-  member_category_description    String?             @db.NVarChar(Max)
+  id                             String                        @id @default(cuid())
+  member_category_description    String?                       @db.NVarChar(Max)
   total_no_of_barcodes           Int?
   member_registration_fee        Int?
   gtin_yearly_subscription_fee   Int?
-  type                           String?             @db.NVarChar(Max)
+  type                           String?                       @db.NVarChar(Max)
   status                         Int?
-  gcp_start_range                String?             @db.VarChar(50)
-  quotation                      String?             @db.NVarChar(Max)
-  allow_otherProducts            String?             @db.NVarChar(Max)
-  gcp_type                       String?             @db.VarChar(50)
-  gtin_order                     String?             @db.NVarChar(50)
-  created_at                     DateTime?           @db.DateTime
-  updated_at                     DateTime?           @db.DateTime
-  member_category_description_ar String?             @db.NVarChar(Max)
+  gcp_start_range                String?                       @db.VarChar(50)
+  quotation                      String?                       @db.NVarChar(Max)
+  allow_otherProducts            String?                       @db.NVarChar(Max)
+  gcp_type                       String?                       @db.VarChar(50)
+  gtin_order                     String?                       @db.NVarChar(50)
+  created_at                     DateTime?                     @db.DateTime
+  updated_at                     DateTime?                     @db.DateTime
+  member_category_description_ar String?                       @db.NVarChar(Max)
   med_registration_fee           Float?
   med_yearly_subscription_fee    Float?
-  // Define a one-to-many relation with gtin_subscriptions
   gtin_subcriptions              gtin_subcriptions[]
+  gtin_subscription_histories    gtin_subscription_histories[]
 }
 
 model gtin_subcriptions {
-  id             String  @id @default(cuid())
-  react_no       Int?
-  transaction_id String?
-  pkg_id         String
-
-  price        Float?
-  request_type String?   @db.NVarChar(Max)
-  status       String?   @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
-  user_id      String?
-  createdBy    String?
-  created_at   DateTime? @default(now())
-  updated_at   DateTime? @updatedAt
-  deleted_at   DateTime? @db.DateTime
-  isDeleted    Boolean?  @default(false)
-  expiry_date  DateTime? @db.DateTime
-
-  gtin_subscription_limit       Float @default(0)
-  gtin_subscription_counter     Float @default(0)
-  gtin_subscription_total_price Float @default(0)
-
-  // Define a foreign key relationship with gtin_products
-  gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id                            String        @id @default(cuid())
+  react_no                      Int?
+  transaction_id                String?
+  pkg_id                        String
+  price                         Float?
+  request_type                  String?       @db.NVarChar(Max)
+  status                        String?       @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
+  user_id                       String?
+  createdBy                     String?
+  created_at                    DateTime?     @default(now())
+  updated_at                    DateTime?     @updatedAt
+  deleted_at                    DateTime?     @db.DateTime
+  expiry_date                   DateTime?     @db.DateTime
+  gtin_subscription_counter     Float         @default(0)
+  gtin_subscription_limit       Float         @default(0)
+  gtin_subscription_total_price Float         @default(0)
+  isDeleted                     Boolean?      @default(false)
+  gtin_product                  gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
 }
 
 model gtin_subscription_histories {
-  id             BigInt    @id(map: "PK_gtin_subscription_histories") @default(autoincrement())
+  id             String        @id @default(cuid())
   react_no       Int?
-  transaction_id Int?
-  pkg_id         Int?
-  pkg_date       DateTime? @db.DateTime
-  user_id        Int?      @default(0, map: "DF_gtin_subscription_histories_user_id")
+  transaction_id String?
+  pkg_id         String
+  pkg_date       DateTime?     @default(now()) @db.DateTime
+  user_id        String
   price          Float?
-  request_type   String?   @db.NVarChar(Max)
-  document       String?   @db.NVarChar(Max)
-  payment_type   String?   @db.NVarChar(Max)
-  status         String?   @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
-  createdBy      Int?      @default(0, map: "DF_gtin_subscription_histories_createdBy")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  deleted_at     DateTime? @db.DateTime
-  expiry_date    DateTime? @db.DateTime
+  request_type   String?       @db.NVarChar(Max)
+  document       String?       @db.NVarChar(Max)
+  payment_type   String?       @db.NVarChar(Max)
+  status         String?       @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
+  createdBy      Int?          @default(0, map: "DF_gtin_subscription_histories_createdBy")
+  created_at     DateTime?     @default(now()) @db.DateTime
+  updated_at     DateTime?     @updatedAt
+  deleted_at     DateTime?     @db.DateTime
+  expiry_date    DateTime?     @db.DateTime
+  user           users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  gtin_product   gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
 }
 
 model help_desk_comments {
@@ -916,8 +913,8 @@ model mega_menu_categories {
   status           Int?
   created_at       DateTime?      @default(now()) @db.DateTime
   updated_at       DateTime       @default(now()) @db.DateTime
+  footer_menus     footer_menus[]
   mega_menus       mega_menus?    @relation(fields: [megamenu_id], references: [id])
-  footer_menus     footer_menus[] // Removed the explicit relation field here
 }
 
 model footer_menus {
@@ -1077,22 +1074,20 @@ model member_documents {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
-  uploaded_by    String?
   status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
   reject_reason  String?  @db.VarChar(1000)
+  uploaded_by    String?
   no_of_years    Int      @default(1, map: "DF_member_documents_no_of_years")
 }
 
 model member_history_logs {
   id               String    @id @default(cuid())
   subject          String    @db.NVarChar(255)
-  // member_id  String?
   admin_id         String?
-  // add colum to check if admin created this log or not
-  created_by_admin Boolean?  @default(false, map: "DF_member_history_logs_created_by_admin")
-  user_id          String
   created_at       DateTime? @default(now()) @db.DateTime
   updated_at       DateTime? @updatedAt @db.DateTime
+  user_id          String
+  created_by_admin Boolean?  @default(false, map: "DF_member_history_logs_created_by_admin")
   rejected_usersId String?
   user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
@@ -1422,18 +1417,18 @@ model old_users {
 }
 
 model other_products {
-  id                          String                        @id @default(cuid())
-  product_name                String?                       @db.NVarChar(Max)
-  total_no_of_barcodes        Float?
-  product_subscription_fee    Float?
-  code                        String?                       @db.NVarChar(Max)
-  status                      Int?
-  created_at                  DateTime                      @default(now())
-  updated_at                  DateTime                      @updatedAt
-  med_subscription_fee        Float?
-  variant                     String?                       @db.NVarChar(10)
-  // Define a one-to-many relationship with other_products_subscriptions
-  other_products_subcriptions other_products_subcriptions[]
+  id                                    String                                  @id @default(cuid())
+  product_name                          String?                                 @db.NVarChar(Max)
+  total_no_of_barcodes                  Float?
+  product_subscription_fee              Float?
+  code                                  String?                                 @db.NVarChar(Max)
+  status                                Int?
+  created_at                            DateTime                                @default(now())
+  updated_at                            DateTime                                @updatedAt
+  med_subscription_fee                  Float?
+  variant                               String?                                 @db.NVarChar(10)
+  other_products_subcriptions           other_products_subcriptions[]
+  other_products_subscription_histories other_products_subscription_histories[]
 }
 
 model other_products_subcriptions {
@@ -1448,36 +1443,36 @@ model other_products_subcriptions {
   created_at                              DateTime       @default(now())
   updated_at                              DateTime       @updatedAt
   deleted_at                              DateTime?      @db.DateTime
-  isDeleted                               Boolean?       @default(false)
   expiry_date                             DateTime?      @db.DateTime
-  other_products_subscription_limit       Float          @default(0)
   other_products_subscription_counter     Float          @default(0)
+  other_products_subscription_limit       Float          @default(0)
   other_products_subscription_total_price Float          @default(0)
-  product_identifier_name                 String?        @db.NVarChar(255) // to store product name like gln for gln sscc for sscc for query purpose
-  // Define the relationship to other_products based on product_id
-  product                                 other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  // define the relationship to  gln-cart
+  product_identifier_name                 String?        @db.NVarChar(255)
+  isDeleted                               Boolean?       @default(false)
   gln_cart                                add_gln_cart[]
+  product                                 other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
 }
 
 model other_products_subscription_histories {
-  id             BigInt    @id(map: "PK_other_products_subscription_histories") @default(autoincrement())
+  id             String         @id @default(cuid())
   react_no       Int?
-  transaction_id Int?
-  product_id     Int?
-  other_date     DateTime? @db.DateTime
-  user_id        Int?      @default(0, map: "DF_other_products_subscription_histories_user_id")
+  transaction_id String
+  product_id     String
+  other_date     DateTime?      @db.DateTime
+  user_id        String
   price          Float?
-  request_type   String?   @db.NVarChar(Max)
-  document       String?   @db.NVarChar(Max)
-  payment_type   String?   @db.NVarChar(Max)
-  status         String?   @default("pending", map: "DF_other_products_subscription_histories_status") @db.VarChar(255)
-  createdBy      Int?      @default(0, map: "DF_other_products_subscription_histories_createdBy")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  deleted_at     DateTime? @db.DateTime
-  expiry_date    DateTime? @db.DateTime
-  admin_id       Int?      @default(0, map: "DF_other_products_subscription_histories_admin_id")
+  request_type   String?        @db.NVarChar(Max)
+  document       String?        @db.NVarChar(Max)
+  payment_type   String?        @db.NVarChar(Max)
+  status         String?        @default("pending", map: "DF_other_products_subscription_histories_status") @db.VarChar(255)
+  createdBy      String?        @db.NVarChar(255)
+  created_at     DateTime?      @default(now())
+  updated_at     DateTime?      @updatedAt
+  deleted_at     DateTime?      @db.DateTime
+  expiry_date    DateTime?      @db.DateTime
+  admin_id       String?
+  product        other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user           users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model our_teams {
@@ -1596,9 +1591,6 @@ model products {
   size               String?   @db.VarChar(50)
   front_image        String?   @db.VarChar(255)
   back_image         String?   @db.VarChar(255)
-  image_1            String?   @db.VarChar(255)
-  image_2            String?   @db.VarChar(255)
-  image_3            String?   @db.VarChar(255)
   childProduct       String?   @db.VarChar(255)
   quantity           String?   @db.NVarChar(10)
   barcode            String?   @db.NVarChar(50)
@@ -1625,6 +1617,9 @@ model products {
   digitalInfoType    Int?
   readyForGepir      String?   @default("0", map: "DF_products_readyForGepir") @db.NChar(10)
   gepirPosted        String?   @default("0", map: "DF_products_gepirPosted") @db.NChar(10)
+  image_1            String?   @db.VarChar(255)
+  image_2            String?   @db.VarChar(255)
+  image_3            String?   @db.VarChar(255)
 }
 
 model products_udis {
@@ -1950,89 +1945,89 @@ model user_guide_videos {
 }
 
 model users {
-  id                  String    @id @default(cuid())
-  user_type           String?   @db.VarChar(20)
-  slug                String?   @db.NVarChar(Max)
-  location_uk         String?   @db.NVarChar(Max)
-  have_cr             String?   @db.NVarChar(Max)
-  cr_documentID       String?   @db.NVarChar(100)
-  document_number     String?   @db.NVarChar(Max)
-  fname               String?   @db.NVarChar(Max)
-  lname               String?   @db.NVarChar(Max)
-  email               String?   @db.NVarChar(Max)
-  mobile              String?   @db.NVarChar(Max)
-  image               String?   @db.NVarChar(Max)
-  po_box              String?   @db.NVarChar(Max)
-  mbl_extension       String?   @db.NVarChar(Max)
-  website             String?   @db.NVarChar(Max)
-  no_of_staff         String?   @db.NVarChar(Max)
-  companyID           String?   @db.NVarChar(Max)
-  district            String?   @db.NVarChar(Max)
-  building_no         String?   @db.NVarChar(Max)
-  additional_number   String?   @db.NVarChar(Max)
-  other_landline      String?   @db.NVarChar(Max)
-  unit_number         String?   @db.NVarChar(Max)
-  qr_corde            String?   @db.NVarChar(Max)
-  email_verified_at   DateTime? @db.DateTime
-  password            String?   @db.NVarChar(Max)
-  verification_code   Int?
-  cr_number           String?   @db.NVarChar(Max)
-  cr_activity         String?   @db.NVarChar(Max)
-  company_name_eng    String?   @db.NVarChar(Max)
-  company_name_arabic String?   @db.NVarChar(Max)
-  bussiness_activity  String?   @db.NVarChar(Max)
-  member_category     String?   @db.NVarChar(50)
-  other_products      String?   @db.NVarChar(Max)
-  gpc                 String?   @db.NVarChar(Max)
-  product_addons      String?   @db.NVarChar(Max)
-  total               Float?
-  contactPerson       String?   @db.NVarChar(Max)
-  companyLandLine     String?   @db.NVarChar(Max)
-  documents           String?   @db.NVarChar(Max)
-  address_image       String?   @db.NVarChar(Max)
-  status              String?   @default("inactive", map: "DF_users_status") @db.VarChar(10)
-  is_login            Int?      @default(0, map: "DF_users_is_login")
-  payment_type        String?   @db.NVarChar(Max)
-  payment_status      Int?      @default(0, map: "DF_users_payment_status")
-  online_payment      String?   @db.NVarChar(Max)
-  remember_token      String?   @db.NVarChar(Max)
-  parent_memberID     String?   @default("0", map: "DF_parent_member_id")
-  industryTypes       String?   @db.NVarChar(Max)
-  invoice_file        String?   @db.NVarChar(Max)
-  otp_status          Int?
-  transaction_id      String?
-  created_at          DateTime  @default(now())
-  updated_at          DateTime  @updatedAt
-  gcpGLNID            String?   @db.VarChar(50)
-  gln                 String?   @db.NVarChar(50)
-  gcp_type            String?   @db.VarChar(50)
-  deleted_at          DateTime? @db.DateTime
-  gcp_expiry          DateTime? @db.DateTime
-  memberID            String?   @db.NVarChar(Max)
-  member_type         String?   @db.NVarChar(Max)
-  user_id             String?   @db.NVarChar(Max)
-
-  remarks                  String?               @default("Pending Invoice", map: "DF_users_remarks") @db.NVarChar(Max)
-  assign_to                Int?                  @default(0, map: "DF_users_assign_to")
-  membership_category      String?               @db.NVarChar(50)
-  membership_category_id   String?               @db.NVarChar(1000)
-  upgradation_disc         Int?                  @default(0, map: "DF_users_upgradation_disc")
-  upgradation_disc_amount  Float?                @default(0, map: "DF_users_upgradation_disc_amount")
-  renewal_disc             Int?                  @default(0, map: "DF_users_renewal_disc")
-  renewal_disc_amount      Float?                @default(0, map: "DF_users_renewal_disc_amount")
-  membership_otherCategory String?               @db.NVarChar(50)
-  activityID               Int?                  @default(0, map: "DF_users_activityID")
-  registration_type        String?               @db.NChar(10)
-  city                     String?               @db.NVarChar(Max)
-  country                  String?               @db.NVarChar(Max)
-  state                    String?               @db.NVarChar(Max)
-  zip_code                 String?               @db.VarChar(50)
-  old_member_recheck       Int?                  @default(0, map: "DF_users_old_member_recheck")
-  carts                    carts[] // Define the one-to-many relationship with carts
-  isproductApproved        Int?                  @default(0, map: "DF_users_isproductApproved")
-  pending_invoices         String                @default("for_review", map: "DF_users_for_approval") @db.VarChar(50)
-  // create a one-to-many relationship with member_history_logs
-  member_history_logs      member_history_logs[]
+  id                                    String                                  @id @default(cuid())
+  user_type                             String?                                 @db.VarChar(20)
+  slug                                  String?                                 @db.NVarChar(Max)
+  location_uk                           String?                                 @db.NVarChar(Max)
+  have_cr                               String?                                 @db.NVarChar(Max)
+  cr_documentID                         String?                                 @db.NVarChar(100)
+  document_number                       String?                                 @db.NVarChar(Max)
+  fname                                 String?                                 @db.NVarChar(Max)
+  lname                                 String?                                 @db.NVarChar(Max)
+  email                                 String?                                 @db.NVarChar(Max)
+  mobile                                String?                                 @db.NVarChar(Max)
+  image                                 String?                                 @db.NVarChar(Max)
+  po_box                                String?                                 @db.NVarChar(Max)
+  mbl_extension                         String?                                 @db.NVarChar(Max)
+  website                               String?                                 @db.NVarChar(Max)
+  no_of_staff                           String?                                 @db.NVarChar(Max)
+  companyID                             String?                                 @db.NVarChar(Max)
+  district                              String?                                 @db.NVarChar(Max)
+  building_no                           String?                                 @db.NVarChar(Max)
+  additional_number                     String?                                 @db.NVarChar(Max)
+  other_landline                        String?                                 @db.NVarChar(Max)
+  unit_number                           String?                                 @db.NVarChar(Max)
+  qr_corde                              String?                                 @db.NVarChar(Max)
+  email_verified_at                     DateTime?                               @db.DateTime
+  password                              String?                                 @db.NVarChar(Max)
+  verification_code                     Int?
+  cr_number                             String?                                 @db.NVarChar(Max)
+  cr_activity                           String?                                 @db.NVarChar(Max)
+  company_name_eng                      String?                                 @db.NVarChar(Max)
+  company_name_arabic                   String?                                 @db.NVarChar(Max)
+  bussiness_activity                    String?                                 @db.NVarChar(Max)
+  member_category                       String?                                 @db.NVarChar(50)
+  other_products                        String?                                 @db.NVarChar(Max)
+  gpc                                   String?                                 @db.NVarChar(Max)
+  product_addons                        String?                                 @db.NVarChar(Max)
+  total                                 Float?
+  contactPerson                         String?                                 @db.NVarChar(Max)
+  companyLandLine                       String?                                 @db.NVarChar(Max)
+  documents                             String?                                 @db.NVarChar(Max)
+  address_image                         String?                                 @db.NVarChar(Max)
+  status                                String?                                 @default("inactive", map: "DF_users_status") @db.VarChar(10)
+  payment_type                          String?                                 @db.NVarChar(Max)
+  payment_status                        Int?                                    @default(0, map: "DF_users_payment_status")
+  online_payment                        String?                                 @db.NVarChar(Max)
+  remember_token                        String?                                 @db.NVarChar(Max)
+  parent_memberID                       String?                                 @default("0", map: "DF_parent_member_id")
+  invoice_file                          String?                                 @db.NVarChar(Max)
+  otp_status                            Int?
+  transaction_id                        String?
+  created_at                            DateTime                                @default(now())
+  updated_at                            DateTime                                @updatedAt
+  gcpGLNID                              String?                                 @db.VarChar(50)
+  gln                                   String?                                 @db.NVarChar(50)
+  gcp_type                              String?                                 @db.VarChar(50)
+  deleted_at                            DateTime?                               @db.DateTime
+  gcp_expiry                            DateTime?                               @db.DateTime
+  memberID                              String?                                 @db.NVarChar(Max)
+  user_id                               String?                                 @db.NVarChar(Max)
+  remarks                               String?                                 @default("Pending Invoice", map: "DF_users_remarks") @db.NVarChar(Max)
+  assign_to                             Int?                                    @default(0, map: "DF_users_assign_to")
+  membership_category                   String?                                 @db.NVarChar(50)
+  upgradation_disc                      Int?                                    @default(0, map: "DF_users_upgradation_disc")
+  upgradation_disc_amount               Float?                                  @default(0, map: "DF_users_upgradation_disc_amount")
+  renewal_disc                          Int?                                    @default(0, map: "DF_users_renewal_disc")
+  renewal_disc_amount                   Float?                                  @default(0, map: "DF_users_renewal_disc_amount")
+  membership_otherCategory              String?                                 @db.NVarChar(50)
+  activityID                            Int?                                    @default(0, map: "DF_users_activityID")
+  registration_type                     String?                                 @db.NChar(10)
+  city                                  String?                                 @db.NVarChar(Max)
+  country                               String?                                 @db.NVarChar(Max)
+  state                                 String?                                 @db.NVarChar(Max)
+  zip_code                              String?                                 @db.VarChar(50)
+  old_member_recheck                    Int?                                    @default(0, map: "DF_users_old_member_recheck")
+  is_login                              Int?                                    @default(0, map: "DF_users_is_login")
+  membership_category_id                String?
+  industryTypes                         String?                                 @db.NVarChar(Max)
+  isproductApproved                     Int?                                    @default(0, map: "DF_users_isproductApproved")
+  pending_invoices                      String                                  @default("for_review", map: "DF_users_for_approval") @db.VarChar(50)
+  member_type                           String?                                 @db.NVarChar(Max)
+  carts                                 carts[]
+  member_history_logs                   member_history_logs[]
+  gtin_subscription_histories           gtin_subscription_histories[]
+  other_products_subscription_histories other_products_subscription_histories[]
 }
 
 model rejected_users {
@@ -2093,14 +2088,13 @@ model rejected_users {
   gln                      String?          @db.NVarChar(50)
   gcp_type                 String?          @db.VarChar(50)
   deleted_at               DateTime?        @db.DateTime
-  reject_reason            String?          @db.NVarChar(Max)
   gcp_expiry               DateTime?        @db.DateTime
   memberID                 String?          @db.NVarChar(Max)
   user_id                  String?          @db.NVarChar(Max)
   remarks                  String?          @default("Pending Invoice", map: "DF_rejected_users_remarks") @db.NVarChar(Max)
   assign_to                Int?             @default(0, map: "DF_rejected_users_to")
   membership_category      String?          @db.NVarChar(50)
-  membership_category_id   String?          @db.NVarChar(1000)
+  membership_category_id   String?
   upgradation_disc         Int?             @default(0, map: "DF_rejected_rejected_users_disc")
   upgradation_disc_amount  Float?           @default(0, map: "DF_rejected_rejected_users_amount")
   renewal_disc             Int?             @default(0, map: "DF_rejected_users_disc")
@@ -2115,7 +2109,7 @@ model rejected_users {
   old_member_recheck       Int?             @default(0, map: "DF_rejected_users_old_member_recheck")
   isproductApproved        Int?             @default(0, map: "DF_rejected_users_isproductApproved")
   pending_invoices         String           @default("for_review", map: "DF_rejected_users_for_approval") @db.VarChar(50)
-  // create a one-to-many relationship with member_history_logs
+  reject_reason            String?          @db.NVarChar(Max)
   rejected_carts           rejected_carts[]
 }
 
@@ -2171,10 +2165,10 @@ model upgrade_member_ship_cart {
   user_id                           String
   gtin_product_id                   String?
   transaction_id                    String
-  registered_product_transaction_id String
   status                            Int?
   created_at                        DateTime @default(now())
   updated_at                        DateTime @updatedAt
+  registered_product_transaction_id String
   cart                              String?
 }
 
@@ -2188,18 +2182,16 @@ model gln_upgrade_pricing {
 }
 
 model add_gln_cart {
-  id                                String @id @default(cuid())
+  id                                String                      @id @default(cuid())
   user_id                           String
   new_gln_id                        String
   other_products_subscription_id    String
   transaction_id                    String
   registered_product_transaction_id String
   status                            Int?
-
-  created_at                  DateTime                    @default(now())
-  updated_at                  DateTime                    @updatedAt
-  // make relationship with other_products_subcriptions
-  other_products_subcriptions other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
-  cart                        String?
-  gln_upgrade_pricing         gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
+  created_at                        DateTime                    @default(now())
+  updated_at                        DateTime                    @updatedAt
+  cart                              String?
+  gln_upgrade_pricing               gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
+  other_products_subcriptions       other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }

@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import fsSync from 'fs';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
-import { createMemberLogs } from '../utils/functions/historyLogs.js';
+import { createGtinSubscriptionHistory, createMemberLogs, createOtherProductsSubscriptionHistory } from '../utils/functions/historyLogs.js';
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 import { oldGs1Prisma } from '../prismaMultiClinets.js';
@@ -312,7 +312,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
     if (error) {
         return next(createError(400, error.details[0].message));
     }
-
+    console.log("checkBankSlip", value.checkBankSlip)
     try {
 
         const documentId = req.params.id;
@@ -342,9 +342,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let userUpdateResult;
         let pdfFilename;
         let cart;
-
+        let bankSlipDocuments;
         if (value.checkBankSlip) {
-            const bankSlipDocuments = await prisma.member_documents.findMany({
+            bankSlipDocuments = await prisma.member_documents.findMany({
                 where: {
                     user_id: currentDocument.user_id,
                     transaction_id: currentDocument.transaction_id,
@@ -352,11 +352,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             });
             if (bankSlipDocuments.length === 0) {
-                return next(createError(400, `No bank slip documents found for the transaction ID: ${currentDocument.transaction_id}`));
+                throw createError(400, 'Bank slip document is required');
             }
         }
 
         if (value.status === 'approved') {
+            let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
@@ -407,6 +408,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             }
                         });
 
+                        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+                            where: { transaction_id: currentDocument.transaction_id },
+                        });
+
+
                         // Fetch the necessary data from other_products table
                         const products = await prisma.other_products.findMany({
                             select: {
@@ -416,7 +422,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 med_subscription_fee: true,
                             }
                         });
-
+                        let activatedOtherProducts = [];
                         // Update other_products_subcriptions table for each product
                         for (const product of products) {
                             console.log("product", product);
@@ -437,7 +443,46 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                     expiry_date: expiryDate // Update the expiry date
                                 }
                             });
+                            // now get the updated records and push them to the array
+
+                            let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+                                where: {
+                                    product_id: product.id,
+                                    isDeleted: false,
+                                    transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
+                                },
+
+                            });
+                            activatedOtherProducts.push(...activatedOtherProduct);
                         }
+
+                        console.log("activatedGtinProducts", activatedGtinProducts);
+                        console.log("activatedOtherProducts", activatedOtherProducts);
+
+                        gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
+                            ...(item.react_no && { react_no: item.react_no }),
+                            transaction_id: item.transaction_id,
+                            pkg_id: item.pkg_id,
+                            user_id: item.user_id,
+                            price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+                            request_type: 'registration',
+                            status: 'approved',
+                            expiry_date: item.expiry_date
+                        }));
+                        console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
+
+                        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
+                            ...(item.react_no && { react_no: item.react_no }),
+                            transaction_id: item.transaction_id,
+                            product_id: item.product_id,
+                            user_id: item.user_id,
+                            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+                            status: 'approved',
+                            request_type: 'registration',
+                            expiry_date: item.expiry_date,
+                        }));
+
+
 
 
                         // update isRegistered in crs to 1 by  cr_number and cr_activity
@@ -472,7 +517,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
                             });
                         }
+
+
+
                     }
+
                 }
                 const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
                 let gcpGLNID = userUpdateResult?.gcpGLNID;
@@ -527,6 +576,11 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
+
+
+            await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+
+            await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
             let cartData = JSON.parse(cart.cart_items);
@@ -637,16 +691,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             });
 
 
-            // Insert Member History log
-            // const logData = {
-            //     // TODO: check if it uploaded by admin or user. cehck if req.admin exist then use req.admin.email else use req.user.email
-            //     subject: `${value.type} Document Uploaded by ${value.uploaded_by}`,
-            //     // user user memberId
-            //     // member_id: value.memberID,
-            //     user_id: value.user_id,
-            //     // TODO: add middleware for current admin token 
-            // }
-
 
 
             // Insert Member History log
@@ -688,45 +732,40 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 const memberID = +existingUser.memberID
 
                 // Fetch products from oldGs1Prisma table Mem.products based on MemberID
-                const oldProducts = await oldGs1Prisma.product.findMany({
+                const oldProducts = await oldGs1Prisma.Product.findMany({
                     where: {
                         MemberID: memberID
                     }
                 });
+
                 console.log("oldProducts", oldProducts);
                 // Map and insert data into the new database table Product
-                for (const oldProduct of oldProducts) {
-                    const newProduct = {
-                        memberID: oldProduct.MemberID,
-                        productnameenglish: oldProduct.ProductNameE,
-                        productnamearabic: oldProduct.ProductNameA,
-                        BrandName: oldProduct.BrandName,
-                        // ProductTypeID: oldProduct.ProductType,
-                        Origin: oldProduct.Origin,
-                        // ColorID: null, 
-                        // PackagingTypeID: null, 
-                        // PackagingLevelID: null, 
-                        MnfCode: oldProduct.MnfCode,
-                        MnfGLN: oldProduct.MnfGLN,
-                        ProvGLN: oldProduct.ProvGLN,
-                        // ChildProductID: null, 
-                        // ChildQuantity: null, 
-                        // UOMID: null, 
-                        size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
-                        // BarCodeID: null, 
-                        barCode: oldProduct.BarCode,
-                        // BarCodeURL: null, 
-                        // IsActive: oldProduct.status === 1,
-                        // CreatedBy: null, 
-                        created_at: oldProduct.CreatedDate, // Use the old created_at value
-                        // UpdatedBy: null, 
-                        updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
-                    };
 
-                    // Insert the newProduct into the Product table in the new database
-                    const gtinProducts = await prisma.products.create(newProduct);
-                    console.log("gtinProducts", gtinProducts);
-                }
+                const newProduct = oldProducts.map((oldProduct) => ({
+                    user_id: existingUser.id,
+                    gcpGLNID: existingUser.gcpGLNID,
+                    prod_lang: existingUser.product_addons, // check this later
+                    memberID: oldProduct?.MemberID?.toString(),
+                    productnameenglish: oldProduct.ProductNameE,
+                    productnamearabic: oldProduct.ProductNameA,
+                    BrandName: oldProduct.BrandName,
+                    Origin: oldProduct.Origin,
+                    MnfCode: oldProduct.MnfCode,
+                    MnfGLN: oldProduct.MnfGLN,
+                    ProvGLN: oldProduct.ProvGLN,
+                    size: oldProduct.Size ? parseFloat(oldProduct.Size) : null,
+                    barcode: oldProduct.BarCode,
+                    created_at: oldProduct.CreatedDate, // Use the old created_at value
+                    updated_at: oldProduct.UpdatedDate, // Use the old updated_at value
+                }));
+                console.log("newProduct", newProduct);
+                // Insert the newProduct into the Product table in the new database
+                const gtinProducts = await prisma.products.createMany({
+                    data: newProduct,
+                });
+
+                console.log("gtinProducts", gtinProducts);
+
 
 
                 // Fetch other products subscriptions based on user_id and isDeleted=false
@@ -753,54 +792,40 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     });
 
                     // Iterate through the oldLocationData and insert into add_member_gln_products
-                    for (const oldLocation of oldLocationData) {
-                        const newLocation = {
-                            // product_id: oldLocation.product_id, 
-                            // reference_id: oldLocation.reference_id, 
+                    const newLocations = oldLocationData.map((oldLocation) => ({
+                        locationNameEn: oldLocation.LocationNameE,
+                        locationNameAr: oldLocation.LocationNameA,
+                        AddressEn: oldLocation.AddressE,
+                        AddressAr: oldLocation.AddressA,
+                        pobox: oldLocation.POBox.toString(),
+                        postal_code: oldLocation.PostalCode,
+                        city_id: oldLocation.CityID.toString(),
+                        locationCRNumber: oldLocation.LocationCRNo,
+                        office_tel: oldLocation.OfficeTelNo,
+                        office_fax: oldLocation.OfficeFaxNo,
+                        contact1Name: oldLocation.Contact1,
+                        contact1Email: oldLocation.Contact1Email,
+                        contact1Mobile: oldLocation.Contact1Mobile,
+                        contact2Name: oldLocation.Contact2,
+                        contact2Email: oldLocation.Contact2Email,
+                        contact2Mobile: oldLocation.Contact2Mobile,
+                        longitude: oldLocation.Longitude,
+                        latitude: oldLocation.Latitude,
+                        GLNBarcodeNumber: oldLocation.GLN,
+                        status: oldLocation.IsActive.toString(),
+                        user_id: existingUser.id,
+                        created_at: oldLocation.CreatedDate,
+                        updated_at: oldLocation.UpdatedDate,
+                        gcpGLNID: oldLocation.GLNId,
+                        deleted_at: null,
+                    }));
 
-                            locationNameEn: oldLocation.LocationNameE,
-                            locationNameAr: oldLocation.LocationNameA,
-                            AddressEn: oldLocation.AddressE,
-                            AddressAr: oldLocation.AddressA,
-                            pobox: oldLocation.POBox.toString(),
-                            postal_code: oldLocation.PostalCode,
-                            // country_id: null, 
-                            // state_id: null, 
-                            city_id: oldLocation.CityID.toString(),
-                            // licence_no: oldLocation.LocationCRNo,
-                            locationCRNumber: oldLocation.LocationCRNo,
-                            office_tel: oldLocation.OfficeTelNo,
-                            // tel_extension: null, 
-                            office_fax: oldLocation.OfficeFaxNo,
-                            // fax_extension: null, 
-                            contact1Name: oldLocation.Contact1,
-                            contact1Email: oldLocation.Contact1Email,
-                            contact1Mobile: oldLocation.Contact1Mobile,
-                            contact2Name: oldLocation.Contact2,
-                            contact2Email: oldLocation.Contact2Email,
-                            contact2Mobile: oldLocation.Contact2Mobile,
-                            longitude: oldLocation.Longitude,
-                            latitude: oldLocation.Latitude,
-                            // image: null, 
-                            GLNBarcodeNumber: oldLocation.GLN,
-                            // GLNBarcodeNumber_without_check: null, 
-                            status: oldLocation.IsActive.toString(), // Map the boolean to string
-                            user_id: existingUser.user_id,
-                            created_at: oldLocation.CreatedDate, // Use the old created_at value
-                            updated_at: oldLocation.UpdatedDate, // Use the old updated_at value
-                            gcpGLNID: oldLocation.GLNId,
-                            deleted_at: null, // No deletion date in old data
-                            // admin_id: "0", // Default value as "0"
-                        };
-
-                        // Insert the newLocation into the add_member_gln_products table
-                        await prisma.add_member_gln_products.create(newLocation);
-                    }
+                    // Insert the newLocations into the add_member_gln_products table
+                    await prisma.add_member_gln_products.createMany({
+                        data: newLocations,
+                    });
                 }
             }
-
-
-
 
 
 
@@ -837,26 +862,28 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
         // Delete all documents of type 'bank_slip'
-        for (const document of bankSlipDocuments) {
-            const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
-            console.log("deletingDocumentPath");
-            console.log(deletingDocumentPath);
-            try {
-                if (fsSync.existsSync(deletingDocumentPath)) {
-                    fsSync.unlinkSync(deletingDocumentPath);
+        if (value.checkBankSlip) {
+            for (const document of bankSlipDocuments) {
+                const deletingDocumentPath = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'memberDocuments', document.document.replace(/\\/g, '/'));
+                console.log("deletingDocumentPath");
+                console.log(deletingDocumentPath);
+                try {
+                    if (fsSync.existsSync(deletingDocumentPath)) {
+                        fsSync.unlinkSync(deletingDocumentPath);
+                    }
+                } catch (err) {
+                    console.error(`Error deleting file: ${deletingDocumentPath}`, err);
                 }
-            } catch (err) {
-                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
             }
-        }
 
-        const deletedResult = await prisma.member_documents.deleteMany({
-            where: {
-                user_id: currentDocument.user_id,
-                transaction_id: currentDocument.transaction_id,
-                type: 'bank_slip',
-            }
-        });
+            const deletedResult = await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+            });
+        }
 
         await updateUserPendingInvoiceStatus(currentDocument.user_id)
 

@@ -160,7 +160,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const migrationApprovedBody = {
       status: selectedStatus,
       migration: true,
-      checkBankSlip: false
+      ...(gs1MemberInvoiceData?.no_of_years === 0 && { checkBankSlip: false })
     };
 
     const rejectBody = {
