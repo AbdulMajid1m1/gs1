@@ -604,7 +604,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                 </p>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
+                {/* <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
                   Action
                 </p>
                 <p
@@ -612,7 +612,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                   onClick={togglePopup}
                 >
                   Add Digital Link
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
