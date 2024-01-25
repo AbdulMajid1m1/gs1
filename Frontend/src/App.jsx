@@ -111,6 +111,8 @@ import MemberActivityReport from "./Pages/AdminPages/AdminTab/Reports/MemberActi
 import AdminActivityReport from "./Pages/AdminPages/AdminTab/Reports/AdminActivityReport/AdminActivityReport";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
+import ProductInformation from "./Pages/UserPages/ProductInformation/ProductInformation";
+import MapProvider from "./Contexts/EventMapContext";
 
 const queryClient = new QueryClient()
 
@@ -179,7 +181,14 @@ const App = () =>
                   <Route path="/verify-code" element={<VerifyCode />} />
                   <Route path="/:id" element={<BlogPages />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
-                  
+                  <Route
+                            path="productinformation"
+                            element={
+                              <MapProvider>
+                                <ProductInformation />
+                              </MapProvider>
+                            }
+                          />
                   
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 

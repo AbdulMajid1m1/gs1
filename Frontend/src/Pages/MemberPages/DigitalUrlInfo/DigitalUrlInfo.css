@@ -11,7 +11,7 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 11;
+  z-index: 113;
 }
 
 .digital-popup-overlay {
@@ -96,6 +96,8 @@
   flex-grow: 1;
   padding: 5px;
   border: 1px solid #ccc;
+  color: black;
+  font-weight: 400;
   border-radius: 4px;
 }
 
@@ -125,11 +127,12 @@ select {
 }
 
 .digital-popup-close {
-  background-color: #e49515;
+  background-color: #FF693A;
   color: white;
   border: none;
   border-radius: 4px;
   padding: 8px 16px;
+  font-weight: 500;
   cursor: pointer;
 }
 
