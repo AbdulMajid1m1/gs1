@@ -4,15 +4,17 @@ import { useNavigate } from 'react-router-dom'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
-import { product_packaging } from '../../../../utils/datatablesource'
+import { additionalGtinColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { I18nextProvider, useTranslation } from "react-i18next";
-import AddAddtionalProducts from './AddAddtionalProdcuts';
-import UpdateAdditionalProducts from './UpdateAdditionalProducts';
-const AdditionalProducts = () =>
+import AddAddtionalGTIN from './AddAddtionalGTIN';
+import UpdateAdditionalGTIN from './UpdateAdditionalGTIN';
+
+
+const AdditionalGTIN = () =>
 {
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +31,7 @@ const AdditionalProducts = () =>
 
   const fetchData = async () => {
     try {
-      const response = await newRequest.get("/getAllproductPackag",);
+      const response = await newRequest.get("/additionalProducts/gtin");
 
       console.log(response.data);
       setData(response?.data || []);
@@ -55,13 +57,12 @@ const AdditionalProducts = () =>
     // save this row data in session storage 
     sessionStorage.setItem("updateBrandData", JSON.stringify(row));
   };
-  const handleView = (row) =>
-  {
+  
+  const handleView = (row) => {
     console.log(row);
   }
 
-  const handleDelete = async (row) =>
-  {
+  const handleDelete = async (row) => {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this product package!',
@@ -76,9 +77,9 @@ const AdditionalProducts = () =>
     {
       if (result.isConfirmed) {
         try {
-          const isDeleted = await newRequest.delete("/deleteproductPackag/" + row?.id);
+          const isDeleted = await newRequest.delete("/additionalProducts/gtin/" + row?.id);
           if (isDeleted) {
-            toast.success('Addtional Products deleted successfully');
+            toast.success('Addtional GTIN deleted successfully');
 
 
             // filter out the deleted user from the data
@@ -116,7 +117,7 @@ const AdditionalProducts = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={t('Addtion Products')}
+            title={t('Addtional GTIN')}
           />
         </div>
 
@@ -136,8 +137,8 @@ const AdditionalProducts = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title={t('Addtion Products')}
-                  columnsName={product_packaging(t)}
+                  title={t('Addtional GTIN')}
+                  columnsName={additionalGtinColumn}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
@@ -189,15 +190,15 @@ const AdditionalProducts = () =>
 
         {/* Addproduct component with handleShowCreatePopup prop */}
         {isCreatePopupVisible && (
-          <AddAddtionalProducts isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshAddtionalProducts={fetchData} />
+          <AddAddtionalGTIN isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshAddtionalProducts={fetchData} />
         )}
         {/* Updateproductpack component with handleShowUpdatePopup prop */}
         {isUpdatePopupVisible && (
-          <UpdateAdditionalProducts isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshAddtionalProducts={fetchData} />
+          <UpdateAdditionalGTIN isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshAddtionalProducts={fetchData} />
         )}
       </div>
     </div>
   )
 }
 
-export default AdditionalProducts
+export default AdditionalGTIN

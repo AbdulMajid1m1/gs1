@@ -381,6 +381,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="logo"
                       id="logo"
                       className="digital-form-input"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -397,6 +398,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="title"
                       className="digital-form-input"
                       placeholder="title"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -413,6 +415,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="description"
                       className="digital-form-input"
                       placeholder="Description"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -429,6 +432,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ingredients"
                       className="digital-form-input"
                       placeholder="Ingredients"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -445,6 +449,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="LinkType"
                       className="digital-form-input"
                       placeholder="LinkType"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -464,6 +469,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ProductRecall"
                       className="digital-form-input"
                       placeholder="ProductRecall"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -480,6 +486,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="LinkType"
                       className="digital-form-input"
                       placeholder="LinkType"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -496,6 +503,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="Lang"
                       className="digital-form-input"
                       placeholder="Lang"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -512,6 +520,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="TargetURL"
                       className="digital-form-input"
                       placeholder="TargetURL"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -528,6 +537,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ExpiryDate"
                       className="digital-form-input"
                       placeholder="Date"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -547,6 +557,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="PromotionalOffers"
                       className="digital-form-input"
                       placeholder="PromotionalOffers"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -563,6 +574,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="LinkType"
                       className="digital-form-input"
                       placeholder="LinkType"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -579,6 +591,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="Lang"
                       className="digital-form-input"
                       placeholder="Lang"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -595,6 +608,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="TargetURL"
                       className="digital-form-input"
                       placeholder="TargetURL"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -610,6 +624,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ExpiryDate"
                       className="digital-form-input"
                       name="ExpiryDate"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -627,6 +642,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="price"
                       className="digital-form-input"
                       placeholder="price"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -643,6 +659,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="banner"
                       className="digital-form-input"
                       placeholder="banner"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Promotional offers")
                       }
@@ -662,6 +679,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="ProductLocationOrigin"
                       className="digital-form-input"
                       placeholder="ProductLocationOrigin"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
                       }
@@ -678,6 +696,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="Lang"
                       className="digital-form-input"
                       placeholder="Lang"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
                       }
@@ -694,6 +713,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="LinkType"
                       className="digital-form-input"
                       placeholder="LinkType"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
                       }
@@ -710,6 +730,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="TargetURL"
                       className="digital-form-input"
                       placeholder="TargetURL"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
                       }
@@ -725,6 +746,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ExpiryDate"
                       className="digital-form-input"
                       name="ExpiryDate"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
                       }
@@ -745,6 +767,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="ProductAllergenInformation"
                       className="digital-form-input"
                       placeholder="Product Allergen Information"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -760,6 +783,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       id="ProductNutrientsInformation"
                       name="ProductNutrientsInformation"
+                      required
                       placeholder="Product Nutrients Information"
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -775,6 +799,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="LinkType"
                       placeholder="LinkType"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -790,6 +815,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="Batch"
                       className="digital-form-input"
                       placeholder="Batch"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -805,6 +831,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="Expiry"
                       placeholder="Expiry"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -820,6 +847,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="Serial"
                       placeholder="Serial"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -834,6 +862,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ManufacturingDate"
                       className="digital-form-input"
                       name="ManufacturingDate"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -848,6 +877,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="bestBeforeDate"
                       className="digital-form-input"
                       name="bestBeforeDate"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -862,6 +892,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="GLNIDFrom"
                       placeholder="GLN ID From"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -878,6 +909,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="unitPrice"
                       className="digital-form-input"
                       placeholder="Unit Price"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -892,6 +924,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="ingredients"
                       className="digital-form-input"
                       placeholder="Ingredients"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -906,6 +939,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="allergen_info"
                       className="digital-form-input"
                       placeholder="Allergen Info"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -921,6 +955,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="calories"
                       className="digital-form-input"
                       placeholder="Calories"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -936,6 +971,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="sugar"
                       className="digital-form-input"
                       placeholder="Sugar"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -951,6 +987,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="salt"
                       placeholder="Salt"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -966,6 +1003,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="fat"
                       placeholder="Fat"
+                      required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -982,6 +1020,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="logo"
                       className="digital-form-input"
                       name="logo"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -999,6 +1038,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="title"
                       className="digital-form-input"
                       placeholder="Title"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1017,6 +1057,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="consumerProductVariant"
                       className="digital-form-input"
                       placeholder="Consumer Product Variant"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1034,6 +1075,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="packaging"
                       className="digital-form-input"
                       placeholder="Packaging"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1051,6 +1093,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="material"
                       placeholder="Material"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1068,6 +1111,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="recyclability"
                       placeholder="Recyclability"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1085,6 +1129,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="productOwner"
                       className="digital-form-input"
                       placeholder="Product Owner"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1102,6 +1147,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="LinkType"
                       className="digital-form-input"
                       placeholder="Link Type"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1118,6 +1164,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="brand_owner"
                       className="digital-form-input"
                       placeholder="Brand Owner"
+                      required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
                       }
@@ -1137,6 +1184,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="ProductLeafletInformation"
                       placeholder="Product Leaflet Information"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1153,6 +1201,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="Lang"
                       className="digital-form-input"
                       placeholder="Language"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1169,6 +1218,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="LinkType"
                       className="digital-form-input"
                       placeholder="Link Type"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1185,6 +1235,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="TargetURL"
                       placeholder="Target URL"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1200,6 +1251,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="pdfDoc"
                       className="digital-form-input"
                       name="attachment"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1220,6 +1272,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="SafetyDetailedInformation"
                       placeholder="Safety Detailed Information"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1236,6 +1289,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="LinkType"
                       className="digital-form-input"
                       placeholder="Link Type"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1252,6 +1306,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       className="digital-form-input"
                       name="Lang"
                       placeholder="Language"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1268,6 +1323,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="TargetURL"
                       className="digital-form-input"
                       placeholder="Target URL"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1283,6 +1339,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="logo"
                       name="logo"
                       className="digital-form-input"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1299,6 +1356,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="companyName"
                       className="digital-form-input"
                       placeholder="Company Name"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1315,6 +1373,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       name="process"
                       className="digital-form-input"
                       placeholder="Process"
+                      required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
                       }
@@ -1327,7 +1386,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                 <div className="footer-line"></div>
 
                 <div className="popup-footer">
-                  <button className="popup-close bg-secondary hover:bg-primary" onClick={togglePopup}>
+                  <button className="bg-secondary hover:bg-primary py-2 px-4 rounded-md font-medium text-white" onClick={togglePopup}>
                     Close
                   </button>
                   <button type="submit" className="bg-secondary hover:bg-primary text-white rounded-md cursor-pointer py-2 px-6" >

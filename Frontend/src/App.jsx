@@ -84,7 +84,6 @@ import AddGTINProducts from "./Pages/AdminPages/AdminIndentify/GTIN/AddGTINProdu
 import AdminPaymentSlips from "./Pages/AdminPages/AdminCapture/PaymentSlips/AdminPaymentSlips";
 import ProductsCategory from "./Pages/AdminPages/Others/ProductsCategory/ProductsCategory";
 import OtherProductsCategory from "./Pages/AdminPages/Others/OtherProductsCategory/OtherProductsCategory";
-import AdditionalProducts from "./Pages/AdminPages/Others/AdditionalProducts/AdditionalProducts";
 import Megamenu from "./Pages/AdminPages/FrontEnd/CataLog/MegaMenu/Megamenu";
 import Categories from "./Pages/AdminPages/FrontEnd/CataLog/Categories/Categories";
 import Footermenu from "./Pages/AdminPages/FrontEnd/CataLog/Footermenu/Footermenu";
@@ -111,6 +110,10 @@ import MemberActivityReport from "./Pages/AdminPages/AdminTab/Reports/MemberActi
 import AdminActivityReport from "./Pages/AdminPages/AdminTab/Reports/AdminActivityReport/AdminActivityReport";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
+import ProductInformation from "./Pages/UserPages/ProductInformation/ProductInformation";
+import MapProvider from "./Contexts/EventMapContext";
+import AdditionalGTIN from "./Pages/AdminPages/Others/AdditionalGTIN/AdditionalGTIN";
+import AdditionalGLN from "./Pages/AdminPages/Others/AdditionalGLN/AdditionalGLN";
 
 const queryClient = new QueryClient()
 
@@ -179,7 +182,14 @@ const App = () =>
                   <Route path="/verify-code" element={<VerifyCode />} />
                   <Route path="/:id" element={<BlogPages />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
-                  
+                  <Route
+                            path="productinformation"
+                            element={
+                              <MapProvider>
+                                <ProductInformation />
+                              </MapProvider>
+                            }
+                          />
                   
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
@@ -301,7 +311,9 @@ const App = () =>
                             <Route path="member-expiry-page" element={<MembersExpiryPage />} />
                             <Route path="products-category" element={<ProductsCategory />} />
                             <Route path="others-products-category" element={<OtherProductsCategory />} />
-                            <Route path="addtional-products" element={<AdditionalProducts />} />
+                            <Route path="addtional-gtin" element={<AdditionalGTIN />} />
+
+                            <Route path="addtional-gln" element={<AdditionalGLN />} />
 
                             <Route path="gtin" element={<Gtin />} />
                             <Route path="admin-gtin" element={<AddGTINProducts />} />

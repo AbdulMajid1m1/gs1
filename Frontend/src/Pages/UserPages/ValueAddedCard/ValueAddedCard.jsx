@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest'
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl'
-import { Link } from 'react-router-dom';
+import second from '../../../Images/second.png'
+import { Link, useNavigate } from 'react-router-dom';
 
 const ValueAddedCard = () =>
 {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const fetechAllCardData = async () => {
     try {
@@ -51,8 +52,9 @@ const ValueAddedCard = () =>
             })}
             
 
-            {/* <div 
-              className='flex justify-end items-end h-40 w-full border border-gray-300 rounded-md shadow-lg transition-transform transform hover:scale-110'
+             <div 
+              className='flex justify-end items-end h-40 w-full border border-gray-300 rounded-md shadow-lg cursor-pointer transition-transform transform hover:scale-110'
+              onClick={() => navigate("/productinformation")}
             >
               <img 
                 src={second}
@@ -61,6 +63,7 @@ const ValueAddedCard = () =>
               />
             </div>
 
+            {/*
             <div 
               className='flex justify-end items-end h-40 w-full border border-gray-300 rounded-md shadow-lg transition-transform transform hover:scale-110'
             >

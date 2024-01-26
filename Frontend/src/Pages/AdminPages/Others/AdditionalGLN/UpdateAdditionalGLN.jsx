@@ -5,14 +5,13 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { I18nextProvider, useTranslation } from "react-i18next";
-const UpdateAdditionalProducts = ({ isVisible, setVisibility, refreshAddtionalProducts }) =>
-{
+const UpdateAdditionalGLN = ({ isVisible, setVisibility, refreshAddtionalProducts }) => {
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   console.log(updateBrandData)
-  const [name, setname] = useState(updateBrandData?.name || '');
-  const [status, setstatus] = useState(updateBrandData?.status || 0);
+  const [totalNumberOfGln, setTotalNumberOfGln] = useState(updateBrandData?.total_no_of_gln || '');
+  const [price, setPrice] = useState(updateBrandData?.price || 0);
   const [loading, setLoading] = useState(false);
 
 
@@ -24,26 +23,25 @@ const UpdateAdditionalProducts = ({ isVisible, setVisibility, refreshAddtionalPr
 
 
 
-  const handleUpdateBrand = async (e) =>
-  {
+  const handleUpdateBrand = async (e) => {
     e.preventDefault();
     // console.log(brandUserId);
     setLoading(true);
 
     try {
-      const response = await newRequest.put(`/updateproductPackag/${updateBrandData?.id}`, {
-        name: name,
-        status: Number(status),
+      const response = await newRequest.put(`/additionalProducts/gln/${updateBrandData?.id}`, {
+        "total_no_of_gln": Number(totalNumberOfGln),
+        "price": Number(price)
       });
 
-      toast.success(response?.data?.message || 'Additional Products Updated Successfully');
+      toast.success(response?.data?.message || 'Additional Gln Updated Successfully');
 
       console.log(response.data);
       refreshAddtionalProducts();
       handleCloseUpdatePopup();
 
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!');
+      toast.error(error?.response?.data?.error || 'Something went wrong!');
 
       console.log(error);
     }
@@ -64,34 +62,32 @@ const UpdateAdditionalProducts = ({ isVisible, setVisibility, refreshAddtionalPr
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateBrand} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional Products')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional GTIN')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Name')}</label>
+                    <label htmlFor="field1" className="text-secondary">Total Number Of Gln</label>
                     <input
                       type="text"
                       id="name"
-                      value={name}
-                      onChange={(e) => setname(e.target.value)}
+                      value={totalNumberOfGln}
+                      onChange={(e) => setTotalNumberOfGln(e.target.value)}
                       //   readOnly
-                      placeholder={t('Enter Name')}
+                      placeholder='Enter Total Number Of Gln'
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="status" className="text-secondary">
-                      {t('Status')} 
+                      Price
                     </label>
-                    <select
+                    <input
+                      type="number"
                       id="status"
-                      value={status}
-                      onChange={(e) => setstatus(e.target.value)}
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                    >
-                      <option value="1">{t('active')}</option>
-                      <option value="0">{t('inactive')}</option>
-                    </select>
+                    />
                   </div>
                 </div>
 
@@ -121,7 +117,7 @@ const UpdateAdditionalProducts = ({ isVisible, setVisibility, refreshAddtionalPr
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Update Additional Products')} 
+                    {t('Save Changes')} 
                   </Button>
                 </div>
               </form>
@@ -134,4 +130,4 @@ const UpdateAdditionalProducts = ({ isVisible, setVisibility, refreshAddtionalPr
   )
 }
 
-export default UpdateAdditionalProducts
+export default UpdateAdditionalGLN
