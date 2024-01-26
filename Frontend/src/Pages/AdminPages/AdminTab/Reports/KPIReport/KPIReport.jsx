@@ -53,7 +53,7 @@ const KPIReport = () => {
       console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
       
       
-      const res = await newRequest.get('/report/kpi', {
+      const res = await newRequest.post('/report/kpi', {
         startDate: formattedStartDate.toISOString(),
         endDate: formattedEndDate.toISOString(),
       });
