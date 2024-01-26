@@ -59,6 +59,7 @@ import inactiveMembers from "../../Images/inactiveMembers.png"
 import kpiReport from "../../Images/kpiReport.png"
 import memberActivity from "../../Images/memberActivity.png"
 import adminActivity from "../../Images/adminActivity.png"
+import additionalgln from "../../Images/additionalgln.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
@@ -696,7 +697,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Products Category')}</p>
+                <p className="sidebar-text">{t('Product categories')}</p>
               </div>
 
               <div
@@ -726,10 +727,10 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/old-inactive-members')
                 // }
-                className={`main-images-container ${selectedItem === '/admin/addtional-products' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/addtional-products', event)}
+                className={`main-images-container ${selectedItem === '/admin/addtional-gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/addtional-gtin', event)}
                 onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/addtional-products')
+                  handleContextMenu(event, '/admin/addtional-gtin')
                 }
               >
                 <img
@@ -737,7 +738,28 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Additional Products')}</p>
+                <p className="sidebar-text">{t('Additional GTIN')}</p>
+              </div>
+
+
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/old-inactive-members')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/old-inactive-members')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/addtional-gln' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/addtional-gln', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/addtional-gln')
+                }
+              >
+                <img
+                  src={additionalgln}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Additional GLN')}</p>
               </div>
 
 

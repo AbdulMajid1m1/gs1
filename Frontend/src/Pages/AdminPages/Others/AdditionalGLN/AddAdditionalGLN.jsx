@@ -5,11 +5,10 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 import { Button, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
-const AddAddtionalProducts = ({ isVisible, setVisibility, refreshAddtionalProducts }) =>
-{
+const AddAddtionalGLN = ({ isVisible, setVisibility, refreshAddtionalProducts }) => {
   const { t, i18n } = useTranslation();
-  const [name, setName] = useState("");
-  const [status, setStatus] = useState("");
+  const [totalNumberOfGln, setTotalNumberOfGln] = useState("");
+  const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleCloseCreatePopup = () =>
@@ -24,12 +23,12 @@ const AddAddtionalProducts = ({ isVisible, setVisibility, refreshAddtionalProduc
     setLoading(true);
     //  integrate the post api in try catch blcck
     try {
-      const response = await newRequest.post('/createproductpackag/', {
-        name: name,
-        status: status,
+      const response = await newRequest.post('/additionalProducts/gln', {
+        "total_no_of_gln": Number(totalNumberOfGln),
+        "price": Number(price)
       });
 
-      toast.success(`name ${name} has been added successfully.`);
+      toast.success(response?.data?.message || `Additional Gln Added Successfully`);
       console.log(response.data);
       refreshAddtionalProducts();
       handleCloseCreatePopup();
@@ -54,33 +53,30 @@ const AddAddtionalProducts = ({ isVisible, setVisibility, refreshAddtionalProduc
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add Additional Products')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Additional GLN</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Name')}</label>
+                    <label htmlFor="field1" className="text-secondary">Total Number Of Gln</label>
                     <input
                       type="text"
                       id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder={t('Enter Name')}
+                      value={totalNumberOfGln}
+                      onChange={(e) => setTotalNumberOfGln(e.target.value)}
+                      placeholder='Enter Total Number of Gln'
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">{t('-Select Status-')}</label>
-                    <select
-                      type="text"
+                    <label htmlFor="field2" className="text-secondary">Price</label>
+                    <input
+                      type="number"
                       id="field2"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      placeholder='Enter Price'
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                    >
-                      <option value="">{t('-Select Status-')}</option>
-                      <option value="1">{t('Active')}</option>
-                      <option value="0">{t('Inactive')}</option>
-                    </select>
+                    />
                   </div>
                 </div>
 
@@ -100,7 +96,7 @@ const AddAddtionalProducts = ({ isVisible, setVisibility, refreshAddtionalProduc
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Add Additional Products')} 
+                    {t('Add Additional Gln')} 
                   </Button>
                 </div>
               </form>
@@ -113,4 +109,4 @@ const AddAddtionalProducts = ({ isVisible, setVisibility, refreshAddtionalProduc
   )
 }
 
-export default AddAddtionalProducts
+export default AddAddtionalGLN

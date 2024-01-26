@@ -6604,9 +6604,34 @@ export const oldInActiveMemberColumn = [
 
 export const productsCategoryColumn = [
   {
-    field: 'name',
-    headerName: 'Name',
+    field: 'member_category_description',
+    headerName: 'Member Category Description',
+    width: 220,
+  },
+  {
+    field: 'member_category_description_ar',
+    headerName: 'Member Category Description Arabic',
+    width: 220,
+  },
+  {
+    field: 'total_no_of_barcodes',
+    headerName: 'Total No Of Barcodes',
     width: 180,
+  },
+  {
+    field: 'member_registration_fee',
+    headerName: 'Member Registration Fee',
+    width: 180,
+  },
+  {
+    field: 'gtin_yearly_subscription_fee',
+    headerName: 'GTIN Yearly Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'type',
+    headerName: 'Type',
+    width: 120,
   },
   {
     field: 'status',
@@ -6627,6 +6652,16 @@ export const productsCategoryColumn = [
         {params.row.status === 1 ? 'Active' : 'Inactive'}
       </div>
     ),
+  },
+  {
+    field: 'gcp_start_range',
+    headerName: 'GCP Start Range',
+    width: 180,
+  },
+  {
+    field: 'gcp_type',
+    headerName: 'GCP Type',
+    width: 180,
   },
   {
     field: 'created_at',
@@ -6756,4 +6791,74 @@ export const AdminActivityReportColumn = [
   
   
   
+];
+
+
+
+export const additionalGtinColumn = [
+  {
+    field: 'total_no_of_barcodes',
+    headerName: 'Total No Of Barcodes',
+    width: 180,
+  },
+  {
+    field: 'price',
+    headerName: 'Price',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+
+
+export const additionalGlnColumn = [
+  {
+    field: 'total_no_of_gln',
+    headerName: 'Total No Of GLN',
+    width: 180,
+  },
+  {
+    field: 'price',
+    headerName: 'Price',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
 ];

@@ -4,10 +4,14 @@ import AdminDashboardRightHeader from '../../../../../components/AdminDashboardR
 import DataTable from '../../../../../components/Datatable/Datatable';
 import { useNavigate } from 'react-router-dom';
 import { KpiReportColumn, productsCategoryColumn } from '../../../../../utils/datatablesource';
+import { Button, CircularProgress } from '@mui/material';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
+  const [todayLoader, setTodayLoader] = useState(false);
+  const [weeklyLoader, setWeeklyLoader] = useState(false);
+  const [monthlyLoader, setMonthlyLoader] = useState(false);
   const [data, setData] = useState([
     {
         id: 1,
@@ -31,6 +35,29 @@ const KPIReport = () => {
       },
   ]);
   const navigate = useNavigate();
+
+  const handleTodayLoader = () => {
+    setTodayLoader(true);
+    setTimeout(() => {
+      setTodayLoader(false);
+    }, 2000);
+  };
+
+  const handleWeeklyLoader = () => {
+    setWeeklyLoader(true);
+    setTimeout(() => {
+      setWeeklyLoader(false);
+    }, 2000);
+  }
+
+  const handleMonthlyLoader = () => {
+    setMonthlyLoader(true);
+    setTimeout(() => {
+      setMonthlyLoader(false);
+    }, 2000);
+  }
+
+
   
   return (
     <div>
@@ -45,29 +72,56 @@ const KPIReport = () => {
 
                 <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                   <div className='w-full flex gap-2 flex-wrap'> 
-                    <button
+                    {/* <button
                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                         {t('Today')}
-                    </button>
+                    </button> */}
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
+                      disabled={todayLoader}
+                      onClick={handleTodayLoader}
+                      endIcon={todayLoader ? <CircularProgress size={24} color="inherit" /> : null }
+                    >
+                     {t('Today')}
+                    </Button>
 
-                    <button
+                    {/* <button
                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                         {t('Weekly')}
-                    </button>
+                    </button> */}
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
+                      disabled={weeklyLoader}
+                      onClick={handleWeeklyLoader}
+                      endIcon={weeklyLoader ? <CircularProgress size={24} color="inherit" /> : null }
+                    >
+                     {t('Weekly')}
+                    </Button>
 
-                    <button
+                    {/* <button
                      className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                         {t('Monthly')}
-                    </button>
+                    </button> */}
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px',}}
+                      disabled={monthlyLoader}
+                      onClick={handleMonthlyLoader}
+                      endIcon={monthlyLoader ? <CircularProgress size={24} color="inherit" /> : null }
+                    >
+                      {t('Monthly')}
+                    </Button>
 
                     <button
                      className="rounded-full bg-green-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                         <i className="fas fa-file-excel mr-2"></i>{t('Excel')}
+                         <i className="fas fa-file-excel mr-2"></i>{t('EXCEL')}
                     </button>
 
                     <button
                      className="rounded-full bg-red-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                         <i className="fas fa-file-pdf mr-2"></i>{t('Pdf')}
+                         <i className="fas fa-file-pdf mr-2"></i>{t('PDF')}
                     </button>
                   </div>
 

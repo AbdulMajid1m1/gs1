@@ -4,34 +4,34 @@ import { useNavigate } from 'react-router-dom'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
-import { productsCategoryColumn } from '../../../../utils/datatablesource'
+import { additionalGlnColumn } from '../../../../utils/datatablesource'
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { I18nextProvider, useTranslation } from "react-i18next";
-import AddProductsCategory from './AddProductsCategory';
-import UpdateProductsCategory from './UpdateProductsCategory';
+import AddAddtionalGLN from './AddAdditionalGLN';
+import UpdateAdditionalGLN from './UpdateAdditionalGLN';
 
-const AdditionalProducts = () =>
+
+const AdditionalGLN = () =>
 {
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
-  const handleShowCreatePopup = () =>
-  {
+  const handleShowCreatePopup = () => {
     setCreatePopupVisibility(true);
   };
+
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
   const [filteredData, setFilteredData] = useState([]);
 
-
   const fetchData = async () => {
     try {
-      const response = await newRequest.get("/gtinProductCategories",);
+      const response = await newRequest.get("/additionalProducts/gln");
 
       console.log(response.data);
       setData(response?.data || []);
@@ -50,17 +50,18 @@ const AdditionalProducts = () =>
 
   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
 
-  const handleShowUpdatePopup = (row) =>
-  {
+  const handleShowUpdatePopup = (row) => {
     setUpdatePopupVisibility(true);
     // console.log(row)
     // save this row data in session storage 
     sessionStorage.setItem("updateBrandData", JSON.stringify(row));
   };
- 
+  
+  const handleView = (row) => {
+    console.log(row);
+  }
 
-  const handleDelete = async (row) =>
-  {
+  const handleDelete = async (row) => {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this product package!',
@@ -75,14 +76,15 @@ const AdditionalProducts = () =>
     {
       if (result.isConfirmed) {
         try {
-          const isDeleted = await newRequest.delete("/gtinProductCategories/" + row?.id);
+          const isDeleted = await newRequest.delete("/additionalProducts/gln/" + row?.id);
           if (isDeleted) {
-            toast.success('Products Categories deleted successfully');
+            toast.success('Addtional GLN deleted successfully');
 
 
             // filter out the deleted user from the data
             const filteredData = data.filter((item) => item?.id !== row?.id);
             setData(filteredData);
+
           } else {
             // Handle any additional logic if the user was not deleted successfully
             toast.error('Failed to delete user');
@@ -114,7 +116,7 @@ const AdditionalProducts = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={t('Product categories')}
+            title={t('Addtional GLN')}
           />
         </div>
 
@@ -131,11 +133,11 @@ const AdditionalProducts = () =>
               </div>
 
               {/* DataGrid */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title={t('Product categories')}
-                  columnsName={productsCategoryColumn}
+                  title={t('Addtional GLN')}
+                  columnsName={additionalGlnColumn}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
@@ -187,15 +189,15 @@ const AdditionalProducts = () =>
 
         {/* Addproduct component with handleShowCreatePopup prop */}
         {isCreatePopupVisible && (
-          <AddProductsCategory isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshProductsCategory={fetchData} />
+          <AddAddtionalGLN isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshAddtionalProducts={fetchData} />
         )}
         {/* Updateproductpack component with handleShowUpdatePopup prop */}
-        {/* {isUpdatePopupVisible && (
-          <UpdateProductsCategory isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshProductsCategory={fetchData} />
-        )} */}
+        {isUpdatePopupVisible && (
+          <UpdateAdditionalGLN isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshAddtionalProducts={fetchData} />
+        )}
       </div>
     </div>
   )
 }
 
-export default AdditionalProducts
+export default AdditionalGLN
