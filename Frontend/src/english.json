@@ -627,6 +627,13 @@
     "GLN Updated Successfully":"GLN Updated Successfully",
     "Update GLN":"Update GLN",
     "Update SSCC":"Update SSCC",
-    "Country Of Origin":"Country Of Origin"
+    "Country Of Origin":"Country Of Origin",
+    "Digital Link":"Digital Link",
+    "Digital Information types":"Digital Information types",
+    "Select Types":"Select Types",
+    "Language":"Language",
+    "GLN ID From":"GLN ID From",
+    "Product Leaflet Information":"Product Leaflet Information",
+    "PDF Document":"PDF Document"
     
 }

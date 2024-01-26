@@ -673,6 +673,13 @@
     "GLN Updated Successfully":"تم تحديث GLN بنجاح",
     "Update GLN":"تحديث GLN",
     "Update SSCC":"تحديث SSCC",
-    "Country Of Origin":"بلد المنشأ"
+    "Country Of Origin":"بلد المنشأ",
+    "Digital Link":"الرابط الرقمي",
+    "Digital Information types":"أنواع المعلومات الرقمية",
+    "Select Types":"حدد الأنواع",
+    "Language":"لغة",
+    "GLN ID From":"معرف GLN من",
+    "Product Leaflet Information":"معلومات نشرة المنتج",
+    "PDF Document":"مستند PDF"
 
 }
