@@ -5198,35 +5198,35 @@ export const productsColumn = [
 ];
 
 // Digital Link Data Column
-export const SafetyInformationColumn = [
+export const SafetyInformationColumn = (t, i18n) => [
   {
     field: "SafetyDetailedInformation",
-    headerName: "Safety Detailed Information",
+    headerName: t('Safety Detailed Information'),
     width: 180,
     editable: true,
   },
   {
     field: "LinkType",
-    headerName: "Link Type",
+    headerName:  t('Link Type'),
     width: 180,
     editable: true,
   },
   {
     field: "Lang",
-    headerName: "Lang",
+    headerName:  t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "TargetURL",
-    headerName: "Target URL",
+    headerName:  t('Target URL'),
     width: 150,
     editable: true,
   },
 
   {
     field: "GTIN",
-    headerName: "GTIN",
+    headerName: "GTIN" ,
     width: 180,
     renderCell: GTINCell,
     editable: false,
@@ -5234,7 +5234,7 @@ export const SafetyInformationColumn = [
 
   {
     field: "logo",
-    headerName: "Logo",
+    headerName:  t('Logo'),
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -5259,22 +5259,22 @@ export const SafetyInformationColumn = [
   },
   {
     field: "companyName",
-    headerName: "Company Name",
+    headerName: t('Company Name'),
     width: 150,
     editable: true,
   },
   {
     field: "process",
-    headerName: "Process",
+    headerName:  t('Process'),
     width: 150,
     editable: true,
   },
 ];
 
-export const RecipeColumn = [
+export const RecipeColumn = (t, i18n) => [
   {
     field: "logo",
-    headerName: "Logo",
+    headerName:t('Logo'),
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -5299,26 +5299,26 @@ export const RecipeColumn = [
   },
   {
     field: "title",
-    headerName: "Title",
+    headerName:t('Title'),
     width: 180,
     editable: true,
   },
   {
     field: "description",
-    headerName: "Description",
+    headerName:  t('Description'),
     width: 180,
     editable: true,
   },
   {
     field: "ingredients",
-    headerName: "Ingredients",
+    headerName: t('Ingredients'),
     width: 150,
     editable: true,
   },
 
   {
     field: "LinkType",
-    headerName: "Link Type",
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
@@ -5331,28 +5331,28 @@ export const RecipeColumn = [
   },
 ];
 
-export const PromotionalOffersColumns = [
+export const PromotionalOffersColumns = (t, i18n) => [
   {
     field: "PromotionalOffers",
-    headerName: "Promotional Offers",
+    headerName: t('Promotional Offers'),
     width: 180,
     editable: true,
   },
   {
     field: "LinkType",
-    headerName: "Link Type",
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
   {
     field: "Lang",
-    headerName: "Lang",
+    headerName:  t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "TargetURL",
-    headerName: "Target URL",
+    headerName:  t('Target URL'),
     width: 150,
     editable: true,
   },
@@ -5366,47 +5366,47 @@ export const PromotionalOffersColumns = [
   },
   {
     field: "ExpiryDate",
-    headerName: "ExpiryDate",
+    headerName: t('Expiry Date'),
     width: 180,
     editable: true,
   },
   {
     field: "price",
-    headerName: "Price",
+    headerName: t('Price'),
     width: 180,
     editable: true,
     type: "Float",
   },
   {
     field: "banner",
-    headerName: "Banner",
+    headerName:  t('Banner'),
     width: 180,
     editable: true,
   },
 ];
 
-export const ProductLocationofOriginColumn = [
+export const ProductLocationofOriginColumn  = (t, i18n) => [
   {
     field: "ProductLocationOrigin",
-    headerName: "Product Location Origin",
+    headerName:  t('Product Location Origin'),
     width: 180,
     editable: true,
   },
   {
     field: "LinkType",
-    headerName: "Link Type",
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
   {
     field: "Lang",
-    headerName: "Lang",
+    headerName: t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "TargetURL",
-    headerName: "Target URL",
+    headerName: t('Target URL'),
     width: 150,
     editable: true,
   },
@@ -5420,34 +5420,34 @@ export const ProductLocationofOriginColumn = [
   },
   {
     field: "ExpiryDate",
-    headerName: "ExpiryDate",
+    headerName: t('Expiry Date'),
     width: 180,
     editable: true,
   },
 ];
 
-export const ProductRecallColumn = [
+export const ProductRecallColumn =  (t, i18n) => [
   {
     field: "ProductRecall",
-    headerName: "Product Recall",
+    headerName: t('Product Recall'),
     width: 180,
     editable: true,
   },
   {
     field: "LinkType",
-    headerName: "Link Type",
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
   {
     field: "Lang",
-    headerName: "Lang",
+    headerName: t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "TargetURL",
-    headerName: "Target URL",
+    headerName: t('Target URL'),
     width: 150,
     editable: true,
   },
@@ -5461,16 +5461,16 @@ export const ProductRecallColumn = [
   },
   {
     field: "ExpiryDate",
-    headerName: "ExpiryDate",
+    headerName: t('Expiry Date'),
     width: 180,
     editable: true,
   },
 ];
 
-export const PackagingCompositionColumn = [
+export const PackagingCompositionColumn = (t, i18n) => [
   {
     field: "logo",
-    headerName: "Logo",
+    headerName: t('Logo'),
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -5495,44 +5495,44 @@ export const PackagingCompositionColumn = [
   },
   {
     field: "title",
-    headerName: "Title",
+    headerName: t('Title'),
     width: 180,
     editable: true,
   },
   {
     field: "consumerProductVariant",
-    headerName: "Consumer Product Variant",
+    headerName: t('Consumer Product Variant'),
     width: 180,
     editable: true,
   },
   {
     field: "packaging",
-    headerName: "Packaging",
+    headerName:  t('Packaging'),
     width: 150,
     editable: true,
   },
 
   {
     field: "material",
-    headerName: "Material",
+    headerName:  t('Material'),
     width: 180,
     editable: true,
   },
   {
     field: "recyclability",
-    headerName: "Recyclability",
+    headerName: t('Recyclability'),
     width: 180,
     editable: true,
   },
   {
     field: "productOwner",
-    headerName: "ProductOwner",
+    headerName: t('Product Owner'),
     width: 180,
     editable: true,
   },
   {
     field: "LinkType",
-    headerName: "LinkType",
+    headerName:  t('Link Type'),
     width: 180,
     editable: true,
   },
@@ -5545,35 +5545,35 @@ export const PackagingCompositionColumn = [
   },
   {
     field: "brand_owner",
-    headerName: "brand_owner",
+    headerName: t('Brand Owner'),
     width: 180,
     editable: true,
   },
 ];
 
-export const ElectronicLeafletsColumn = [
+export const ElectronicLeafletsColumn = (t, i18n) => [
   {
     field: "ProductLeafletInformation",
-    headerName: "Product Leaflets Information",
+    headerName: t('Product Leaflets Information'),
     width: 180,
     editable: true,
   },
   {
     field: "Lang",
-    headerName: "Lang",
+    headerName: t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "LinkType",
-    headerName: "Link Type",
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
 
   {
     field: "TargetURL",
-    headerName: "Target URL",
+    headerName: t('Target URL'),
     width: 150,
     editable: true,
   },
@@ -5588,7 +5588,7 @@ export const ElectronicLeafletsColumn = [
 
   {
     field: "PdfDoc",
-    headerName: "Pdf Doc",
+    headerName: t('Pdf Doc'),
     width: 180,
     renderCell: (params) => {
       console.log("params");
@@ -5645,17 +5645,16 @@ export const ElectronicLeafletsColumn = [
   },
 ];
 
-
-export const ProductContentColumn = [
+export const ProductContentColumn = (t, i18n) => [
   {
     field: "ProductAllergenInformation",
-    headerName: "ProductAllergenInformation",
+    headerName: t('Product Allergen Information'),
     width: 180,
     editable: true,
   },
   {
     field: "ProductNutrientsInformation",
-    headerName: "Product Nutrients Information",
+    headerName: t('Product Nutrients Information'),
     width: 180,
     editable: true,
   },
@@ -5668,34 +5667,34 @@ export const ProductContentColumn = [
   },
   {
     field: "LinkType",
-    headerName: "LinkType",
+    headerName: t('Link Type'),
     width: 150,
     editable: true,
   },
 
   {
     field: "Batch",
-    headerName: "Batch",
+    headerName:  t('Batch'),
     width: 180,
     editable: true,
   },
   {
     field: "Expiry",
-    headerName: "Expiry",
+    headerName: t('Expiry'),
     width: 180,
     editable: true,
   },
 
   {
     field: "Serial",
-    headerName: "Serial",
+    headerName: t('Serial'),
     width: 120,
     editable: true,
   },
 
   {
     field: "ManufacturingDate",
-    headerName: "Manufacturing Date",
+    headerName: t('Manufacturing Date'),
     width: 180,
     editable: true,
     type: "date",
@@ -5705,61 +5704,60 @@ export const ProductContentColumn = [
   },
   {
     field: "bestBeforeDate",
-    headerName: "best Before Date",
+    headerName:  t('best Before Date'),
     width: 180,
     editable: true,
   },
   {
     field: "GLNIDFrom",
-    headerName: "GLNID From",
+    headerName:  t('GLNID From'),
     width: 180,
     editable: true,
   },
   {
     field: "unitPrice",
-    headerName: "unit Price",
+    headerName: t('unit Price'),
     width: 180,
     editable: true,
     type: "float",
   },
   {
     field: "ingredients",
-    headerName: "ingredients",
+    headerName: t('Ingredients'),
     width: 180,
     editable: true,
   },
   {
     field: "allergen_info",
-    headerName: "Allergen info",
+    headerName:  t('Allergen info'),
     width: 180,
     editable: true,
   },
   {
     field: "calories",
-    headerName: "calories",
+    headerName:  t('calories'),
     width: 180,
     editable: true,
   },
   {
     field: "sugar",
-    headerName: "sugar",
+    headerName:  t('sugar'),
     width: 180,
     editable: true,
   },
   {
     field: "salt",
-    headerName: "salt",
+    headerName:  t('salt'),
     width: 180,
     editable: true,
   },
   {
     field: "fat",
-    headerName: "fat",
+    headerName:  t('fat'),
     width: 180,
     editable: true,
   },
 ];
-
 
 export const newlyRegisteredMembersColumn = (t, i18n) => [
   {
@@ -5853,7 +5851,6 @@ export const newlyRegisteredMembersColumn = (t, i18n) => [
 
 
 ]
-
 
 export const pendingApprovalColumn = (t, i18n) => [
   // {
@@ -5957,7 +5954,6 @@ export const pendingApprovalColumn = (t, i18n) => [
 
 
 ]
-
 
 export const registerdMemberColumn = (t, i18n) => [
   {
@@ -6072,7 +6068,6 @@ export const registerdMemberColumn = (t, i18n) => [
 
 
 ]
-
 
 export const memberForRenevalColumn = (t, i18n) => [
   // {
@@ -6204,7 +6199,6 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
 ]
 
-
 export const adminPaymentSlipsColumn = (t, i18n) => [
   {
     field: 'name',
@@ -6261,7 +6255,6 @@ export const adminPaymentSlipsColumn = (t, i18n) => [
 
 
 ]
-
 
 export const cardsRejectedColumn = (t, i18n) => [
   {
@@ -6382,7 +6375,6 @@ export const cardsRejectedColumn = (t, i18n) => [
 
 ]
 
-
 export const usersRejectedColumn = [
   {
     field: 'transaction_id',
@@ -6468,8 +6460,6 @@ export const usersRejectedColumn = [
 
 
 ]
-
-
 
 export const oldInActiveMemberColumn = (t, i18n) => [
   {
@@ -6599,9 +6589,6 @@ export const oldInActiveMemberColumn = (t, i18n) => [
 
 ];
 
-
-
-
 export const productsCategoryColumn = (t, i18n) => [
   {
     field: 'name',
@@ -6655,9 +6642,6 @@ export const productsCategoryColumn = (t, i18n) => [
   
   
 ];
-
-
-
 
 export const KpiReportColumn = (t, i18n) => [
   {
@@ -6721,8 +6705,6 @@ export const KpiReportColumn = (t, i18n) => [
   
   
 ];
-
-
 
 export const AdminActivityReportColumn = (t, i18n) => [
   {
