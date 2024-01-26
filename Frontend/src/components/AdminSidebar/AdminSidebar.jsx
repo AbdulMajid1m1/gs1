@@ -697,7 +697,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Product categories')}</p>
+                <p className="sidebar-text">{t('GTIN Barcode Pricing')}</p>
               </div>
 
               <div
@@ -717,7 +717,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Other Products Category')}</p>
+                <p className="sidebar-text">{t('Other Services Pricing')}</p>
               </div>
 
 
@@ -738,7 +738,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Additional GTIN')}</p>
+                <p className="sidebar-text">{t('Additional GTIN Pricing')}</p>
               </div>
 
 

@@ -6696,28 +6696,33 @@ export const productsCategoryColumn = [
 
 export const KpiReportColumn = [
   {
-    field: 'transactionType',
-    headerName: 'Transaction type',
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
     width: 120,
-    renderCell: params => (
-      <div
-        style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
-          border: '2px solid',
-          borderColor: params.row.status === 1 ? 'Downgrade' : 'Renew',
-          color: params.row.status === 1 ? 'Downgrade' : 'Renew',
-        }}
-      >
-        {params.row.status === 1 ? 'Downgrade' : 'Renew'}
-      </div>
-    ),
   },
   {
-    field: 'date',
-    headerName: 'Date',
+    field: 'price',
+    headerName: 'Price',
+    width: 120,
+  },
+  {
+    field: 'request_type',
+    headerName: 'Request Type',
+    width: 120,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+  },
+  {
+    field: 'payment_type',
+    headerName: 'Payment Type',
+    width: 120,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
     width: 180,
 
     type: 'dateTime',
@@ -6728,30 +6733,28 @@ export const KpiReportColumn = [
     }    
   },
   {
-    field: 'companyId',
-    headerName: 'Company ID',
+    field: 'updated_at',
+    headerName: 'Updated At',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
   {
-    field: 'company',
-    headerName: 'Company',
+    field: 'expiry_date',
+    headerName: 'Expiry Date',
     width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
-  {
-    field: 'amount',
-    headerName: 'Amount',
-    width: 180,
-  },
-  {
-    field: 'products',
-    headerName: 'Products',
-    width: 180,
-  },
-  {
-    field: 'actionby',
-    headerName: 'Action By',
-    width: 180,
-  },
+
   
   
   

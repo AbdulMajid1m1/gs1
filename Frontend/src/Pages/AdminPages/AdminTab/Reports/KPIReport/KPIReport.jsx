@@ -1,39 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../../components/Datatable/Datatable';
 import { useNavigate } from 'react-router-dom';
 import { KpiReportColumn, productsCategoryColumn } from '../../../../../utils/datatablesource';
 import { Button, CircularProgress } from '@mui/material';
+import newRequest from '../../../../../utils/userRequest';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [todayLoader, setTodayLoader] = useState(false);
   const [weeklyLoader, setWeeklyLoader] = useState(false);
   const [monthlyLoader, setMonthlyLoader] = useState(false);
-  const [data, setData] = useState([
-    {
-        id: 1,
-        transactionType: 1,
-        date: '2022-01-24T12:30:00', // Replace with an actual date string
-        companyId: 'ABC123',
-        company: 'Company A',
-        amount: 1000,
-        products: 'Product A, Product B',
-        actionby: 'John Doe',
-      },
-      {
-        id: 2,
-        transactionType: 0,
-        date: '2022-01-25T14:45:00', // Replace with an actual date string
-        companyId: 'DEF456',
-        company: 'Company B',
-        amount: 1500,
-        products: 'Product C, Product D',
-        actionby: 'Jane Smith',
-      },
-  ]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState('');
+  
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   const handleTodayLoader = () => {
@@ -57,7 +42,34 @@ const KPIReport = () => {
     }, 2000);
   }
 
+  const handleSearchTimeAndDate = async () => {
+    setIsLoading(true);
+    
+    try {
+      const formattedStartDate = new Date(startDate);
+      formattedStartDate.setHours(0, 0, 0, 0);
+      const formattedEndDate = new Date(endDate);
+      formattedEndDate.setHours(23, 59, 59, 999);
+      console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
+      
+      
+      const res = await newRequest.get('/report/kpi', {
+        startDate: formattedStartDate.toISOString(),
+        endDate: formattedEndDate.toISOString(),
+      });
 
+      console.log(res?.data?.combinedResults);
+      setData(res.data);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+      toast.error(err?.response?.data?.error || 'Error in fetching data');
+    }
+  }
+  
+
+  
   
   return (
     <div>
@@ -130,6 +142,7 @@ const KPIReport = () => {
                         <label className="font-body text-sm">{t('From')}</label>
                         <input
                             type="date"
+                            onChange={(e) => setStartDate(e.target.value)}
                             className="border border-gray-300 p-2 rounded-lg w-full"
                         />
                     </div>
@@ -137,11 +150,14 @@ const KPIReport = () => {
                         <label className="font-body text-sm">{t('To')}</label>
                         <input
                             type="date"
+                            onChange={(e) => setEndDate(e.target.value)}
                             className="border border-gray-300 p-2 rounded-lg w-full"
                         />
                     </div>
                     
                     <button
+                        type='button'
+                        onClick={handleSearchTimeAndDate}
                         className="rounded-full bg-primary font-body px-5 py-2 text-sm mb-1 text-white transition duration-200 hover:bg-secondary">
                             {t('Search')}
                     </button>

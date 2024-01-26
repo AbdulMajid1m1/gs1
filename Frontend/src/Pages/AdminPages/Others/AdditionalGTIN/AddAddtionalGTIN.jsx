@@ -54,7 +54,7 @@ const AddAddtionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProducts }
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Additional GTIN</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Additional GTIN Pricing</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">Total Number Of Barcodes</label>
@@ -97,7 +97,7 @@ const AddAddtionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProducts }
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Add Additional GTIN')} 
+                    {t('Add Additional GTIN Pricing')} 
                   </Button>
                 </div>
               </form>

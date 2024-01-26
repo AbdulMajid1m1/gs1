@@ -114,7 +114,7 @@ const AdditionalProducts = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={t('Product categories')}
+            title={t('GTIN Barcode Pricing')}
           />
         </div>
 
@@ -134,7 +134,7 @@ const AdditionalProducts = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
 
                 <DataTable data={data}
-                  title={t('Product categories')}
+                  title={t('GTIN Barcode Pricing')}
                   columnsName={productsCategoryColumn}
                   loading={isLoading}
                   secondaryColor="secondary"

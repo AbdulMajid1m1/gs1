@@ -81,7 +81,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Products Categories</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add GTIN Barcode Pricing</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
             
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
@@ -304,7 +304,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Add Categories')} 
+                    {t('Add GTIN Barcode Pricing')} 
                   </Button>
                 </div>
               </form>

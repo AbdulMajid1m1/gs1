@@ -64,7 +64,7 @@ const UpdateAdditionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProduc
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateBrand} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional GTIN')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional GTIN Pricing')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">Total Number Of Barcodes</label>

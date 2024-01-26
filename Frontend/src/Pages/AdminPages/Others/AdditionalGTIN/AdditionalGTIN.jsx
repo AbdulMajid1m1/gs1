@@ -117,7 +117,7 @@ const AdditionalGTIN = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={t('Addtional GTIN')}
+            title={t('Additional GTIN Pricing')}
           />
         </div>
 
@@ -137,7 +137,7 @@ const AdditionalGTIN = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title={t('Addtional GTIN')}
+                  title={t('Additional GTIN Pricing')}
                   columnsName={additionalGtinColumn}
                   loading={isLoading}
                   secondaryColor="secondary"
