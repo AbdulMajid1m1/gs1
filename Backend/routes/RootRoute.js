@@ -30,7 +30,10 @@ import additionalProductsRoutes from './subRoutes/additionalProductsRoutes.js';
 
 import gtinProductCategoriesRoutes from './subRoutes/gtinProductCategoriesRoutes.js';
 
+import reportsStatsRoutes from './subRoutes/reportsStatsRoutes.js';
+
 const router = express.Router();
+
 
 
 
@@ -83,5 +86,7 @@ router.use("/migration", migrationRoutes);
 router.use("/additionalProducts", additionalProductsRoutes);
 
 router.use("/gtinProductCategories", gtinProductCategoriesRoutes);
+
+router.use('/report', reportsStatsRoutes);
 
 export default router;
