@@ -1128,7 +1128,11 @@ export const getAdminStatsCounts = async (req, res, next) => {
     try {
         const counts = await prisma.$transaction(async (prisma) => {
             const [usersCount, productsCount, activeUsersCount, inactiveUsersCount] = await Promise.all([
-                prisma.users.count(),
+                prisma.users.count({
+                    where: {
+                        parent_memberID: '0'
+                    }
+                }),
                 prisma.products.count(),
                 prisma.users.count({
                     where: {
