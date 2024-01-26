@@ -669,6 +669,10 @@
     "sugar":"السكر",
     "salt":"الملح",
     "fat":"الدهون",
-    "Product Allergen Information":"معلومات حساسية المنتج"
+    "Product Allergen Information":"معلومات حساسية المنتج",
+    "GLN Updated Successfully":"تم تحديث GLN بنجاح",
+    "Update GLN":"تحديث GLN",
+    "Update SSCC":"تحديث SSCC",
+    "Country Of Origin":"بلد المنشأ"
 
 }

@@ -623,6 +623,10 @@
     "sugar":"Sugar",
     "salt":"Salt",
     "fat":"Fat",
-    "Product Allergen Information":"Product Allergen Information"
+    "Product Allergen Information":"Product Allergen Information",
+    "GLN Updated Successfully":"GLN Updated Successfully",
+    "Update GLN":"Update GLN",
+    "Update SSCC":"Update SSCC",
+    "Country Of Origin":"Country Of Origin"
     
 }

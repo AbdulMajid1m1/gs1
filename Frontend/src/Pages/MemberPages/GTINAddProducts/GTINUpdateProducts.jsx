@@ -667,6 +667,7 @@ const GTINUpdateProducts = () => {
                                     </div>
                                 </div>
                             </div> */}
+                            
                             </div>
                         </div>
 
