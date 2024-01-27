@@ -142,13 +142,13 @@ const SideBar = () => {
                 ></path>
               </svg>
             </button>
-            <p className="sm:text-2xl text-sm sm:py-0 py-2 sm:px-0 px-3 text-white font-medium">
+            <p className="sm:text-2xl text-sm -mt-2 sm:py-0 py-2 sm:px-0 px-3 text-white font-medium">
               GS1-V2
             </p>
           </div>
 
           <div
-            className={`flex justify-end items-center px-0   ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}
+            className={`flex justify-end items-center px-0 -mt-1  ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}
           >
             <span>
               <I18nextProvider i18n={i18n}>
