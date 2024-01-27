@@ -7,9 +7,9 @@ import { KpiReportColumn } from '../../../../../utils/datatablesource';
 import { Button, CircularProgress } from '@mui/material';
 import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
-// import XLSX from 'xlsx';
-// import jsPDF from 'jspdf';
 import * as XLSX from "xlsx";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
@@ -132,6 +132,47 @@ const KPIReport = () => {
   
   
   
+  const handlePdfExport = (returnBlob = false) => {
+    const doc = new jsPDF("landscape");
+  
+    // Specify the columns you want to export
+    const exportColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at', 'updated_at', 'expiry_date'];
+  
+    // Calculate the font size based on the number of columns
+    const maxColumns = 10;
+    const minFontSize = 5;
+    const maxFontSize = 10;
+    const fontSize = exportColumns.length <= maxColumns ? maxFontSize : Math.max(minFontSize, maxFontSize - (exportColumns.length - maxColumns));
+  
+    const tableData = data.map((item) => {
+      const row = {};
+      exportColumns.forEach((column) => {
+        row[column] = item[column];
+      });
+      return Object.values(row);
+    });
+  
+    // Use autoTable to generate the table in the PDF
+    doc.autoTable({
+      head: [exportColumns],
+      body: tableData,
+      theme: "grid",
+      styles: { fontSize: fontSize },
+      headStyles: { fillColor: [2, 31, 105], textColor: 255, fontStyle: "bold" },
+      startY: 20,
+      tableWidth: "auto",
+    });
+  
+    if (returnBlob) {
+      const blob = doc.output("blob");
+      return blob;
+    } else {
+      // doc.save(`${title}.pdf`);
+      doc.save(`KpiReport.pdf`);
+    }
+  };
+  
+  
 
 
   
@@ -185,7 +226,7 @@ const KPIReport = () => {
                     </button>
 
                     <button
-                      // onClick={downloadPDF}
+                      onClick={() => handlePdfExport()}
                      className="rounded-full bg-red-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                          <i className="fas fa-file-pdf mr-2"></i>{t('PDF')}
                     </button>
