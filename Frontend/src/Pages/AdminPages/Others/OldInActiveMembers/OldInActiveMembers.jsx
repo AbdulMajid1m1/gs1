@@ -17,6 +17,8 @@ const OldInActiveMembers = () => {
   const [migrateButtonLoader, setMigrateButtonLoader] = useState(false);
   const [data, setData] = useState([]);
   const [YearsToPay, setYearsToPay] = useState([]);
+  const [oldGtinProuductCount, setOldGtinProuductCount] = useState([]);
+  const [oldGlnProuductCount, setOldGlnProuductCount] = useState([]);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [selectedOldMember, setSelectedOldMember] = useState(null);
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
@@ -120,6 +122,8 @@ const OldInActiveMembers = () => {
       setData(response?.data?.MembershipHistory || []);
       setYearsToPay(response?.data?.YearsToPay || [])
       setAmount(response?.data?.yearlyAmount)
+      setOldGtinProuductCount(response?.data?.oldGtinProuductCount)
+      setOldGlnProuductCount(response?.data?.oldGlnProuductCount)
       console.log(response.data);
 
       setIsLoading(false);
@@ -259,6 +263,16 @@ const OldInActiveMembers = () => {
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                   {t('Amount')}: {amount}
+                </button>
+
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                  Old GTIN: {oldGtinProuductCount}
+                </button>
+
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                  Old GLN: {oldGlnProuductCount}
                 </button>
 
               </div>
