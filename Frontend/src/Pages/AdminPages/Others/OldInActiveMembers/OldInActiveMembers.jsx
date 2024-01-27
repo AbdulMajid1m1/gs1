@@ -158,7 +158,7 @@ const OldInActiveMembers = () => {
       setMigrateButtonLoader(false);
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || `${t('Failed to migrate member')}`);
+      toast.error(error?.response?.data?.error || `${t('Failed to migrate member')}`);
       setMigrateButtonLoader(false);
     }
   }
