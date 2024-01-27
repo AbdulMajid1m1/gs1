@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../../components/Datatable/Datatable';
 import { AdminActivityReportColumn } from '../../../../../utils/datatablesource';
+// import BarsDataset from './BarCharts';
 
 const AdminActivityReport = () => {
   const { t, i18n } = useTranslation();
@@ -75,6 +76,11 @@ const AdminActivityReport = () => {
                           </button>
                       </div>
                   
+
+
+                      {/* <div className='flex justify-center items-center mt-6'>
+                          <BarsDataset />
+                      </div> */}
                     </div>
                   </div>
                 </div>
