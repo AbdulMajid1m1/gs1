@@ -93,7 +93,7 @@ model admins {
   password                   String?                      @db.NVarChar(Max)
   image                      String?                      @db.NVarChar(Max)
   mobile                     String?                      @db.NVarChar(Max)
-  status                     String                       @default("active", map: "DF__admins__status__0F624AF8") @db.NVarChar(255)
+  status                     Int                          @default(1, map: "DF__admins__status__0F624AF8") @db.TinyInt 
   created_at                 DateTime                     @default(now())
   updated_at                 DateTime                     @updatedAt
   admin_users_roles_assigned admin_users_roles_assigned[]
