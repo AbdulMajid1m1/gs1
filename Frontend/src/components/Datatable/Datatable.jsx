@@ -357,6 +357,15 @@ const DataTable = ({
     },
   ];
 
+  const columns = [
+    ...idColumn.slice(0, 1),
+    ...(showToolbarSlot !== false ? [GridToolbar] : []), // Show toolbar slot conditionally
+    ...(actionColumnVisibility !== false ? [...actionColumn, ...idColumn.slice(1)] : [...idColumn]),
+    ...columnsName,
+  ];
+
+  const reversedColumns = i18n && i18n.language === 'ar' ? columns.reverse() : columns;
+
   // const actionColumn = [
   //     {
   //         field: "action",
@@ -625,10 +634,7 @@ const DataTable = ({
           // rows={filteredData}
           rows={muiFilteredData}
 
-          columns={(actionColumnVisibility !== false
-            ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
-            : [...idColumn, ...columnsName])
-          }
+          columns={reversedColumns}
 
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
