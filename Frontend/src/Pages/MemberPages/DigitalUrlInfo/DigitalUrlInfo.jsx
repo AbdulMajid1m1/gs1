@@ -31,6 +31,7 @@ import {
 } from "../../../utils/Funtions/rowUpdate";
 // import { CurrentUserContext } from "../../Contexts/CurrentUserContext";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 
 const DigitalUrlInfo = () => {
   // const { currentUser } = useContext(CurrentUserContext);
@@ -44,6 +45,7 @@ const DigitalUrlInfo = () => {
   const [productRecall, setProductRecall] = useState([]);
   const [packagingComposition, setPackagingComposition] = useState([]);
   const [electronicLeaflets, setElectronicLeaflets] = useState([]);
+  const { t, i18n } = useTranslation();
 
   const selectedGtinData = JSON.parse(
     sessionStorage.getItem("selectedGtinData")
@@ -229,13 +231,13 @@ const DigitalUrlInfo = () => {
       .then((response) => {
         console.log(response.data);
         // openSnackbar(response?.data?.message, "success");
-        toast.success(response?.data?.message ?? "Deleted Successfully!");
+        toast.success(response?.data?.message ?? `${t('deleted successfully')}`);
         handleOptionChange(selectedOption);
       })
       .catch((err) => {
         console.log(err);
         // openSnackbar(err?.response?.data?.message, "error");
-        toast.error(err?.response?.data?.message ?? "something went wrong!");
+        toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
       });
   };
 
@@ -374,15 +376,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={safetyInformation}
-            title={"Safety Information"}
-            columnsName={SafetyInformationColumn}
+            title={`${t('Safety Information')}`}
+            columnsName={SafetyInformationColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -396,15 +398,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={promotionalOffers}
-            title="Promotional Offers"
-            columnsName={PromotionalOffersColumns}
+            title={`${t('Promotional Offers')}`}
+            columnsName={PromotionalOffersColumns(t)}
             checkboxSelection="disabled"
             secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -418,15 +420,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={productContent}
-            title="Product Contents"
-            columnsName={ProductContentColumn}
+            title={`${t('Product Contents')}`}
+            columnsName={ProductContentColumn(t)}
             checkboxSelection="disabled"
             secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -440,15 +442,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={productLocationofOrigin}
-            title="Product Location of Origin"
-            columnsName={ProductLocationofOriginColumn}
+            title={`${t('Product Location of Origin')}`}
+            columnsName={ProductLocationofOriginColumn(t)}
             checkboxSelection="disabled"
             secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -462,15 +464,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={productRecall}
-            title="Product Recall"
-            columnsName={ProductRecallColumn}
+            title={`${t('Product Recall')}`}
+            columnsName={ProductRecallColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -484,15 +486,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={recipe}
-            title="Recipe"
-            columnsName={RecipeColumn}
+            title={`${t('Recipe')}`}
+            columnsName={RecipeColumn(t)}
             checkboxSelection="disabled"
             secondaryColor="secondary"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -506,15 +508,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={packagingComposition}
-            title="Packaging Composition"
-            columnsName={PackagingCompositionColumn}
+            title={`${t('Packaging Composition')}`}
+            columnsName={PackagingCompositionColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -528,15 +530,15 @@ const DigitalUrlInfo = () => {
         return (
           <DataTable
             data={electronicLeaflets}
-            title="Electronic Leaflets"
-            columnsName={ElectronicLeafletsColumn}
+            title={`${t('Electronic Leaflets')}`}
+            columnsName={ElectronicLeafletsColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             secondaryColor="secondary"
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -554,7 +556,7 @@ const DigitalUrlInfo = () => {
   return (
     <div>
 
-      <div className="p-0 sm:p-1 h-full sm:ml-72">
+      <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div className="2xl:h-28 xl:h-28 lg:h-28 h-auto w-full shadow-xl font-sans rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
           {/* <div className="">
               <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
@@ -572,7 +574,7 @@ const DigitalUrlInfo = () => {
             <div className="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-6 gap-2 sm:gap-5 px-2 sm:px-10 py-2">
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Product Name
+                  {t('Product Name')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans font-semibold text-gray-600">
                   {selectedGtinData?.productnameenglish}
@@ -580,7 +582,7 @@ const DigitalUrlInfo = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  QR Code
+                  {t('QR Code')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-secondary">
                   {memberData?.qr_code}
@@ -588,7 +590,7 @@ const DigitalUrlInfo = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Brand Name
+                  {t('Brand Name')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-gray-600">
                   {selectedGtinData?.BrandName}
@@ -596,7 +598,7 @@ const DigitalUrlInfo = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Barcode
+                  {t('Barcode')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans font-semibold text-white bg-green-700 rounded-full px-3">
                   {selectedGtinData?.barcode}
@@ -604,7 +606,7 @@ const DigitalUrlInfo = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Company
+                  {t('Company')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-gray-600">
                   {memberData?.company_name_eng}
@@ -612,15 +614,15 @@ const DigitalUrlInfo = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Certificate
+                  {t('Certificate')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-gray-600">
-                  Certificate
+                  {t('Certificate')}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Status
+                  {t('Status')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans font-semibold text-white bg-green-500 rounded-full px-3">
                   {status}
@@ -628,13 +630,13 @@ const DigitalUrlInfo = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Action
+                  {t('Action')}
                 </p>
                 <p
                   className="sm:text-xs text-center cursor-pointer text-sm font-sans text-white bg-secondary rounded-md px-3 py-[2px]"
                   onClick={togglePopup}
                 >
-                  Add Digital Link
+                  {t('Add Digital Link')}
                 </p>
               </div>
             </div>
@@ -651,7 +653,7 @@ const DigitalUrlInfo = () => {
         <div className="2xl:mt-0 xl:mt-0 lg:mt-0">
           <div className="h-10 w-full bg-primary shadow-xl mt-6 flex justify-start items-center px-5">
             <p className="sm:w-auto w-full sm:text-lg text-sm font-sans text-white">
-              Digital Link Information
+              {t('Digital Link Information')}
             </p>
           </div>
 
@@ -669,7 +671,7 @@ const DigitalUrlInfo = () => {
                   className="w-5 h-5 ml-1"
                   alt=""
                 />
-                Safety Information
+                {t('Safety Information')}
               </span>
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "Promotional Offers" ? "bg-red-500" : ""
@@ -681,7 +683,7 @@ const DigitalUrlInfo = () => {
                   className="w-5 h-5 ml-1"
                   alt=""
                 />
-                Promotional Offers
+                {t('Promotional Offers')}
               </span>
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "Product Contents" ? "bg-red-500" : ""
@@ -689,7 +691,7 @@ const DigitalUrlInfo = () => {
                 onClick={() => handleOptionChange("Product Contents")}
               >
                 <img src={productContentIcon} className="w-5 h-5 ml-1" alt="" />
-                Product Contents
+                {t('Product Contents')}
               </span>
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "ProductLocationofOrigin"
@@ -703,7 +705,7 @@ const DigitalUrlInfo = () => {
                   className="w-5 h-5 ml-1"
                   alt=""
                 />
-                Product Location of Origin
+                {t('Product Location of Origin')}
               </span>
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "ProductRecall" ? "bg-red-500" : ""
@@ -711,7 +713,7 @@ const DigitalUrlInfo = () => {
                 onClick={() => handleOptionChange("ProductRecall")}
               >
                 <img src={productRecallIcon} className="h-5 w-5 ml-1" alt="" />
-                Product Recall
+                {t('Product Recall')}
               </span>
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "recipe" ? "bg-red-500" : ""
@@ -719,7 +721,7 @@ const DigitalUrlInfo = () => {
                 onClick={() => handleOptionChange("recipe")}
               >
                 <img src={recipeIcon} className="h-5 w-5 ml-1" alt="" />
-                Recipe
+                {t('Recipe')}
               </span>
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "PackagingComposition"
@@ -733,8 +735,8 @@ const DigitalUrlInfo = () => {
                   className="h-5 w-5 ml-1"
                   alt=""
                 />
-                Packaging Composition
-              </span>
+                {t('Packaging Composition')}
+              </span> 
               <span
                 className={`flex justify-start items-center gap-2 bg-digital-color text-white font-sans cursor-pointer ${selectedOption === "ElectronicLeaflets" ? "bg-red-500" : ""
                   }`}
@@ -745,7 +747,7 @@ const DigitalUrlInfo = () => {
                   className="h-5 w-5 ml-1"
                   alt=""
                 />
-                Electronic Leaflets
+                {t('Electronic Leaflets')}
               </span>
             </div>
 

@@ -28,7 +28,7 @@ export const adminLogin = async (req, res, next) => {
         }
 
         // Compare the provided password with the hashed password in the database
-        const passwordMatch = await bcrypt.compare(password, adminUser.password);
+        const passwordMatch = bcrypt.compare(password, adminUser.password);
 
         if (!passwordMatch) {
             return res.status(404).json({ message: 'Invalid Credentials' });

@@ -180,7 +180,7 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Add other product')} 
+                    {t('Add Other Services Pricing')} 
                   </Button>
                 </div>
               </form>

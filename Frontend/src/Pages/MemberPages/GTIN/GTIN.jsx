@@ -77,7 +77,6 @@ const  Gtin = () => {
   }
 
 
-
   useEffect(() => {
     fetchData(); // Calling the function within useEffect, not inside itself
     fetchGtinProducts();

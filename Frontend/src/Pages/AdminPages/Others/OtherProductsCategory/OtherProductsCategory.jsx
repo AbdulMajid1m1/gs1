@@ -117,7 +117,7 @@ const OtherProductsCategory = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={t('Other Products Category')}
+            title={t('Other Services Pricing')}
           />
         </div>
 
@@ -137,7 +137,7 @@ const OtherProductsCategory = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
 
                 <DataTable data={data}
-                  title={t('Other Products Category')}
+                  title={t('Other Services Pricing')}
                   columnsName={Other_Products(t)}
                   loading={isLoading}
                   secondaryColor="secondary"

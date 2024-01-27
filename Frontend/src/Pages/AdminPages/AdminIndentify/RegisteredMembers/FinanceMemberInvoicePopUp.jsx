@@ -240,9 +240,9 @@ const handleSubmit = async (e) => {
     // console.log(res.data);
     if (res.status === 200) {
       if (selectedStatus === "rejected") {
-        toast.info("Member Account Rejected Successfully");
+        toast.info(`${t('Member Account Rejected Successfully')}`);
       } else {
-        toast.success(res?.data?.message || "User Activated Successfully!");
+        toast.success(res?.data?.message || `${t('User Activated Successfully!')}`);
       }
 
       setLoading(false);
@@ -260,7 +260,7 @@ const handleSubmit = async (e) => {
   } catch (err) {
     console.log(err);
 
-    toast.error(err.response?.data?.error || "Something went wrong!");
+    toast.error(err.response?.data?.error || `${t('Something went wrong')}`);
     setLoading(false);
   }
 };

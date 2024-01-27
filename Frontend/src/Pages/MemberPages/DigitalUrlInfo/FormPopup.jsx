@@ -2,11 +2,13 @@ import React, { useContext, useState } from "react";
 import { SnackbarContext } from "../../../Contexts/SnackbarContext";
 import newRequest from "../../../utils/userRequest";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 
 const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+  const { t, i18n } = useTranslation();
   const resetSnakeBarMessages = () => {
     setError(null);
     setMessage(null);
@@ -337,7 +339,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
         <div className="digital-popup-overlay" onClick={togglePopup}></div>
         <div className="digital-popup-large">
           <div className="digital-popup-header">
-            <h1 className="digital-popup-title font-sans text-secondary font-semibold">Digital Link</h1>
+            <h1 className="digital-popup-title font-sans text-secondary font-semibold">{t('Digital Link')}</h1>
             <button className="digital-popup-close" onClick={togglePopup}>
               X
             </button>
@@ -350,17 +352,17 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
           <div className="digital-header-line"></div>
 
 
-       
+
 
           <div className="digital-popup-form">
             <form onSubmit={handleSubmit} id="gtin-form" name="gtin-form">
               <div className="digital-form-selected">
                 <label htmlFor="select">
-                  Digital Information types{" "}
+                  {t('Digital Information types')}{" "}
                   <span className="text-red-600">*</span>
                 </label>
-                <select type="text" id="select"   className="digital-form-input" onChange={handleSelectChange}>
-                  <option value="">Select Types</option>
+                <select type="text" id="select" className="digital-form-input" onChange={handleSelectChange}>
+                  <option value=""> {t('Select Types')}</option>
                   {data.map((item) => (
                     <option key={item.ID} value={item.TypeDescription}>
                       {item.TypeDescription}
@@ -374,7 +376,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Recipe inputs */}
                   <div className="digital-digital-form-row">
                     <label htmlFor="logo" className="digital-form-label">
-                      logo <span className="text-red-600">*</span>
+                      {t('Logo')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"
@@ -390,7 +392,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="title" className="digital-form-label">
-                      title <span className="text-red-600">*</span>
+                      {t('Title')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -407,7 +409,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="description" className="digital-form-label">
-                      Description <span className="text-red-600">*</span>
+                      {t('Description')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -424,7 +426,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="ingredients" className="digital-form-label">
-                      Ingredients <span className="text-red-600">*</span>
+                      {t('Ingredients')}<span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -441,7 +443,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="LinkType" className="digital-form-label">
-                      LinkType <span className="text-red-600">*</span>
+                      {t('LinkType')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -461,7 +463,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Product Content inputs */}
                   <div className="digital-form-row">
                     <label htmlFor="ProductRecall" className="digital-form-label">
-                      ProductRecall <span className="text-red-600">*</span>
+                      {t('Product Recall')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -478,7 +480,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="LinkType" className="digital-form-label">
-                      LinkType <span className="text-red-600">*</span>
+                      {t('Link Type')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -495,7 +497,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="Lang" className="digital-form-label">
-                      Lang <span className="text-red-600">*</span>
+                      {t('Lang')}<span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -512,7 +514,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="TargetURL" className="digital-form-label">
-                      TargetURL <span className="text-red-600">*</span>
+                      {t('Target URL')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -529,7 +531,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="ExpiryDate" className="digital-form-label">
-                      ExpiryDate <span className="text-red-600">*</span>
+                      {t('Expiry Date')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="date"
@@ -549,7 +551,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Promotional offers inputs */}
                   <div className="digital-form-row">
                     <label htmlFor="PromotionalOffers" className="digital-form-label">
-                      PromotionalOffers <span className="text-red-600">*</span>
+                      {t('Promotional Offers')}<span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -566,7 +568,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="LinkType" className="digital-form-label">
-                      LinkType <span className="text-red-600">*</span>
+                      {t('Link Type')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -583,7 +585,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="Lang" className="digital-form-label">
-                      Lang <span className="text-red-600">*</span>
+                      {t('Lang')}<span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -600,7 +602,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="TargetURL" className="digital-form-label">
-                      TargetURL <span className="text-red-600">*</span>
+                      {t('Target URL')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -617,7 +619,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="ExpiryDate" className="digital-form-label">
-                      ExpiryDate <span className="text-red-600">*</span>
+                      {t('Expiry Date')}<span className="text-red-600">*</span>
                     </label>
                     <input
                       type="date"
@@ -633,7 +635,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="price" className="digital-form-label">
-                      Price <span className="text-red-600">*</span>
+                      {t('Price')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="number"
@@ -651,7 +653,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="banner" className="digital-form-label">
-                      Banner <span className="text-red-600">*</span>
+                      {t('Banner')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -670,7 +672,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                 <div>
                   <div className="digital-form-row">
                     <label htmlFor="ProductLocationOrigin" className="digital-form-label">
-                      ProductLocationOrigin{" "}
+                      {t('Product Location Origin')}
                       <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -688,7 +690,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="Lang" className="digital-form-label">
-                      Lang <span className="text-red-600">*</span>
+                      {t('Lang')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -705,7 +707,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="LinkType" className="digital-form-label">
-                      LinkType <span className="text-red-600">*</span>
+                      {t('Link Type')}<span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -722,7 +724,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="TargetURL" className="digital-form-label">
-                      TargetURL <span className="text-red-600">*</span>
+                      {t('Target URL')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -739,7 +741,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="ExpiryDate" className="digital-form-label">
-                      ExpiryDate <span className="text-red-600">*</span>
+                      {t('Expiry Date')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="date"
@@ -758,7 +760,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Product Allergen Information */}
                   <div className="digital-form-row">
                     <label htmlFor="ProductAllergenInformation" className="digital-form-label">
-                      Product Allergen Information{" "}
+                      {t('Product Allergen Information')}{" "}
                       <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -775,7 +777,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Product Nutrients Information */}
                   <div className="digital-form-row">
                     <label htmlFor="ProductNutrientsInformation" className="digital-form-label">
-                      Product Nutrients Information{" "}
+                      {t('Product Nutrients Information')}{" "}
                       <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -791,7 +793,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="LinkType" className="digital-form-label">
-                      LinkType <span className="text-red-600">*</span>
+                      {t('Link Type')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -807,7 +809,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Batch */}
                   <div className="digital-form-row">
                     <label htmlFor="Batch" className="digital-form-label">
-                      Batch <span className="text-red-600">*</span>
+                      {t('Batch')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -823,7 +825,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Expiry */}
                   <div className="digital-form-row">
                     <label htmlFor="Expiry" className="digital-form-label">
-                      Expiry <span className="text-red-600">*</span>
+                      {t('Expiry')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -839,7 +841,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Serial */}
                   <div className="digital-form-row">
                     <label htmlFor="Serial" className="digital-form-label">
-                      Serial <span className="text-red-600">*</span>
+                      {t('Serial')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -855,7 +857,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* ManufacturingDate */}
                   <div className="digital-form-row">
                     <label htmlFor="ManufacturingDate" className="digital-form-label">
-                      Manufacturing Date <span className="text-red-600">*</span>
+                      {t('Manufacturing Date')}  <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="date"
@@ -870,7 +872,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Best Before Date */}
                   <div className="digital-form-row">
                     <label htmlFor="bestBeforeDate" className="digital-form-label">
-                      Best Before Date <span className="text-red-600">*</span>
+                      {t('best Before Date')}  <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="date"
@@ -884,7 +886,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* GLNIDFrom */}
                   <div className="digital-form-row">
                     <label htmlFor="GLNIDFrom" className="digital-form-label">
-                      GLN ID From <span className="text-red-600">*</span>
+                      {t('GLN ID From')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -900,7 +902,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Unit Price */}
                   <div className="digital-form-row">
                     <label htmlFor="unitPrice" className="digital-form-label">
-                      Unit Price <span className="text-red-600">*</span>
+                      {t('unit Price')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="number"
@@ -917,7 +919,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Ingredients */}
                   <div className="digital-form-row">
                     <label htmlFor="ingredients" className="digital-form-label">
-                      Ingredients <span className="text-red-600">*</span>
+                      {t('Ingredients')} <span className="text-red-600">*</span>
                     </label>
                     <textarea
                       id="ingredients"
@@ -932,7 +934,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Allergen Info */}
                   <div className="digital-form-row">
                     <label htmlFor="allergen_info" className="digital-form-label">
-                      Allergen Info <span className="text-red-600">*</span>
+                      {t('Allergen Info')} <span className="text-red-600">*</span>
                     </label>
                     <textarea
                       id="allergen_info"
@@ -947,7 +949,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Calories */}
                   <div className="digital-form-row">
                     <label htmlFor="calories" className="digital-form-label">
-                      Calories <span className="text-red-600">*</span>
+                      {t('calories')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="number"
@@ -963,7 +965,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Sugar */}
                   <div className="digital-form-row">
                     <label htmlFor="sugar" className="digital-form-label">
-                      Sugar <span className="text-red-600">*</span>
+                      {t('sugar')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="number"
@@ -979,7 +981,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Salt */}
                   <div className="digital-form-row">
                     <label htmlFor="salt" className="digital-form-label">
-                      Salt <span className="text-red-600">*</span>
+                      {t('salt')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="number"
@@ -995,7 +997,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Fat */}
                   <div className="digital-form-row">
                     <label htmlFor="fat" className="digital-form-label">
-                      Fat <span className="text-red-600">*</span>
+                      {t('fat')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="number"
@@ -1013,7 +1015,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Logo */}
                   <div className="digital-form-row">
                     <label htmlFor="logo" className="digital-form-label">
-                      Logo <span className="text-red-600">*</span>
+                      {t('Logo')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"
@@ -1030,7 +1032,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Title */}
                   <div className="digital-form-row">
                     <label htmlFor="title" className="digital-form-label">
-                      Title <span className="text-red-600">*</span>
+                      {t('Title')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1048,7 +1050,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Consumer Product Variant */}
                   <div className="digital-form-row">
                     <label htmlFor="consumerProductVariant" className="digital-form-label">
-                      Consumer Product Variant{" "}
+                      {" "}{t('Consumer Product Variant')}
                       <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -1067,7 +1069,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Packaging */}
                   <div className="digital-form-row">
                     <label htmlFor="packaging" className="digital-form-label">
-                      Packaging <span className="text-red-600">*</span>
+                      {t('Packaging')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1085,7 +1087,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Material */}
                   <div className="digital-form-row">
                     <label htmlFor="material" className="digital-form-label">
-                      Material <span className="text-red-600">*</span>
+                      {t('Material')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1103,7 +1105,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Recyclability */}
                   <div className="digital-form-row">
                     <label htmlFor="recyclability" className="digital-form-label">
-                      Recyclability <span className="text-red-600">*</span>
+                      {t('Recyclability')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1121,7 +1123,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Product Owner */}
                   <div className="digital-form-row">
                     <label htmlFor="productOwner" className="digital-form-label">
-                      Product Owner <span className="text-red-600">*</span>
+                      {t('Product Owner')}  <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1139,7 +1141,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Link Type */}
                   <div className="digital-form-row">
                     <label htmlFor="LinkType" className="digital-form-label">
-                      Link Type <span className="text-red-600">*</span>
+                      {t('Link Type')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1156,7 +1158,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="brand_owner" className="digital-form-label">
-                      Brand Owner <span className="text-red-600">*</span>
+                      {t('Brand Owner')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1176,7 +1178,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Electronic Leaflets inputs */}
                   <div className="digital-form-row">
                     <label htmlFor="productLeaflet" className="digital-form-label">
-                      Product Leaflet Information
+                      {t('Product Leaflet Information')}
                     </label>
                     <input
                       type="text"
@@ -1193,7 +1195,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="lang" className="digital-form-label">
-                      Language <span className="text-red-600">*</span>
+                      {t('Language')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1210,7 +1212,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="linkType" className="digital-form-label">
-                      Link Type <span className="text-red-600">*</span>
+                      {t('Link Type')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1227,7 +1229,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="targetURL" className="digital-form-label">
-                      Target URL <span className="text-red-600">*</span>
+                      {t('Target URL')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1244,7 +1246,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="pdfDoc" className="digital-form-label">
-                      PDF Document <span className="text-red-600">*</span>
+                      {t('PDF Document')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"
@@ -1263,7 +1265,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
                   {/* Safety Detailed Information inputs */}
                   <div className="digital-form-row">
                     <label htmlFor="safetyInformation" className="digital-form-label">
-                      Safety Detailed Information{" "}
+                      {t('Safety Detailed Information')}
                       <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -1281,7 +1283,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="linkType" className="digital-form-label">
-                      Link Type <span className="text-red-600">*</span>
+                      {t('Link Type')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1298,7 +1300,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="lang" className="digital-form-label">
-                      Language <span className="text-red-600">*</span>
+                      {t('Language')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1315,7 +1317,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="targetURL" className="digital-form-label">
-                      Target URL <span className="text-red-600">*</span>
+                      {t('Target URL')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1332,7 +1334,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="logo" className="digital-form-label">
-                      Logo <span className="text-red-600">*</span>
+                      {t('Logo')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"
@@ -1348,7 +1350,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="companyName" className="digital-form-label">
-                      Company Name <span className="text-red-600">*</span>
+                      {t('Company Name')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1365,7 +1367,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
                   <div className="digital-form-row">
                     <label htmlFor="process" className="digital-form-label">
-                      Process <span className="text-red-600">*</span>
+                      {t('Process')} <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -1383,20 +1385,20 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
               ) : null}
 
 
-                <div className="footer-line"></div>
+              <div className="footer-line"></div>
 
-                <div className="popup-footer">
-                  <button className="bg-secondary hover:bg-primary py-2 px-4 rounded-md font-medium text-white" onClick={togglePopup}>
-                    Close
-                  </button>
-                  <button type="submit" className="bg-secondary hover:bg-primary text-white rounded-md cursor-pointer py-2 px-6" >
-                    Save
-                  </button>
-                </div>
+              <div className="popup-footer">
+                <button className="popup-close bg-secondary hover:bg-primary" onClick={togglePopup}>
+                  {t('Close')}
+                </button>
+                <button type="submit" className="bg-secondary hover:bg-primary text-white rounded-md cursor-pointer py-2 px-6" >
+                  {t('Save')}
+                </button>
+              </div>
             </form>
           </div>
 
-         
+
         </div>
       </>
     )

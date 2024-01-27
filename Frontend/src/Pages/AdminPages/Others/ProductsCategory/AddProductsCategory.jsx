@@ -54,7 +54,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
         "med_yearly_subscription_fee": Number(memberYearlySubscriptionFee)
     });
 
-      toast.success(`product_name has been added successfully.`);
+      toast.success(`product name has been added successfully.`);
 
 
       console.log(response.data);
@@ -72,7 +72,6 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
   };
 
-
   return (
     <div>
       {/* create the post api popup */}
@@ -81,7 +80,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Products Categories</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add GTIN Barcode Pricing</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
             
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
@@ -199,9 +198,9 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="">-Select Status-</option>
-                      <option value="1">Active</option>
-                      <option value="0">Inactive</option>
+                        <option value="">-{t('Status')}-</option>
+                        <option value="1">{t('Active')}</option>
+                        <option value="2">{t('Inactive')}</option>
                     </select>
                   </div>
                 </div>
@@ -304,7 +303,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Add Categories')} 
+                    {t('Add GTIN Barcode Pricing')} 
                   </Button>
                 </div>
               </form>
