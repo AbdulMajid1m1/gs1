@@ -9,6 +9,7 @@ import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 // import XLSX from 'xlsx';
 // import jsPDF from 'jspdf';
+import * as XLSX from "xlsx";
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
@@ -80,6 +81,9 @@ const KPIReport = () => {
       console.log(res?.data?.combinedResults);
       setData(res.data?.combinedResults);
       setIsLoading(false);
+      setTodayLoader(false);
+      setWeeklyLoader(false);
+      setMonthlyLoader(false);
     } catch (err) {
       setIsLoading(false);
       console.log(err);
@@ -92,6 +96,84 @@ const KPIReport = () => {
     }
   }
     
+
+  // const handleExportProductsTemplate = () => {
+  //   // Mapping of original headers to desired headers
+  //   const headerMapping = {
+  //     productnameenglish: 'ProductNameEnglish',
+  //     productnamearabic: 'ProductNameArabic',
+  //     BrandName: 'BrandName',
+  //     BrandNameAr: 'BrandNameAr',
+  //     ProductType: 'ProductType',
+  //     Origin: 'Country Of Origin',
+  //     countrySale: 'Country of Sale',
+  //     PackagingType: 'PackagingType',
+  //     MnfCode: 'MnfCode',
+  //     MnfGLN: 'MnfGLN',
+  //     ProvGLN: 'ProvGLN',
+  //     gpc_code: 'GPC Code',
+  //     prod_lang: 'Product Language Code',
+  //     details_page: 'DetailsPage',
+  //     unit: 'UOM',
+  //     size: 'Size',
+  //     barcode: 'GTIN'
+  //   };
+  
+  //   // Create a new array with the desired headers in the specified order
+  //   const desiredHeaders = Object.values(headerMapping);
+  
+  //   // Create a worksheet with only headers
+  //   const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
+  
+  //   // Create a workbook and append the header worksheet
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
+  
+  //   // Generate Excel file
+  //   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  //   const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+  //   // Save Excel file
+  //   saveAs(dataBlob, 'gtin_products_template.xlsx');
+  // };
+
+
+  const handleExportProductsTemplate = () => {
+    if (data.length === 0) {
+      toast.error('No data to export');
+      return;
+    }
+    // Assuming these are the specific columns you want to export
+    const selectedColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at', 'updated_at', 'expiry_date'];
+  
+    // Create a worksheet with headers and selected data
+    const filteredData = data.map(row => {
+      const filteredRow = {};
+      selectedColumns.forEach(column => {
+        filteredRow[column] = row[column];
+      });
+      return filteredRow;
+    });
+  
+    // Create a worksheet with headers and data
+    const worksheet = XLSX.utils.json_to_sheet([{}].concat(filteredData), { header: selectedColumns });
+  
+    // Create a workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Kpi Report');
+  
+    // Generate Excel file
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+    // Save Excel file
+    saveAs(dataBlob, 'kpi_report_template.xlsx');
+  };
+  
+  
+  
+
+
   
   return (
     <div>
@@ -137,7 +219,7 @@ const KPIReport = () => {
                     </Button>
 
                     <button
-                      // onClick={downloadExcel}
+                      onClick={handleExportProductsTemplate}
                      className="rounded-full bg-green-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                          <i className="fas fa-file-excel mr-2"></i>{t('EXCEL')}
                     </button>

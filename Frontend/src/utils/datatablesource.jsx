@@ -6710,10 +6710,40 @@ export const KpiReportColumn = [
     headerName: 'Request Type',
     width: 120,
   },
+  // {
+  //   field: 'status',
+  //   headerName: 'Status',
+  //   width: 120,
+  // },
   {
     field: 'status',
     headerName: 'Status',
     width: 120,
+    renderCell: (params) => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor:
+            params.row.status === 'active'
+              ? 'green'
+              : params.row.status === 'approved'
+              ? 'skyblue'
+              : 'red',
+          color:
+            params.row.status === 'active'
+              ? 'green'
+              : params.row.status === 'approved'
+              ? 'black'
+              : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
   },
   {
     field: 'payment_type',
