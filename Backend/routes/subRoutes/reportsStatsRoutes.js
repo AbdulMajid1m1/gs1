@@ -3,6 +3,6 @@ import { getProductKpiReports } from '../../controllers/reportsStatsControllers.
 const router = express.Router();
 
 
-router.get('/kpi', getProductKpiReports);
+router.post('/kpi', getProductKpiReports);
 
 export default router;

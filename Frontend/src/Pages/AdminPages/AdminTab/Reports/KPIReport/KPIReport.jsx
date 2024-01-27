@@ -57,7 +57,6 @@ const KPIReport = () => {
     const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
     setStartDate(lastMonth.toISOString().split('T')[0]);
     setEndDate(today.toISOString().split('T')[0]);
-    // handleSearchTimeAndDate();
     setShouldCallApi(true);
   };
   

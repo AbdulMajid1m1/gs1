@@ -500,22 +500,23 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             where: { id: product.id },
                             data: { gcp_start_range: (parseInt(product.gcp_start_range) + 1).toString() }
                         });
+                        if (currentDocument.type !== 'migration_invoice') {
+                            // Fetch and update TblSysCtrNo
+                            const tblSysNo = await prisma.tblSysNo.findFirst();
+                            if (tblSysNo) {
+                                userUpdateResult = await prisma.users.update({
+                                    where: { id: userId },
+                                    data: {
+                                        companyID: tblSysNo.TblSysCtrNo,
+                                        memberID: tblSysNo.TblSysCtrNo,
+                                    }
+                                });
 
-                        // Fetch and update TblSysCtrNo
-                        const tblSysNo = await prisma.tblSysNo.findFirst();
-                        if (tblSysNo) {
-                            userUpdateResult = await prisma.users.update({
-                                where: { id: userId },
-                                data: {
-                                    companyID: tblSysNo.TblSysCtrNo,
-                                    memberID: tblSysNo.TblSysCtrNo,
-                                }
-                            });
-
-                            await prisma.tblSysNo.update({
-                                where: { SysNoID: tblSysNo.SysNoID },
-                                data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
-                            });
+                                await prisma.tblSysNo.update({
+                                    where: { SysNoID: tblSysNo.SysNoID },
+                                    data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
+                                });
+                            }
                         }
 
 
