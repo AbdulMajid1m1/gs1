@@ -193,9 +193,9 @@ export const getMembershipHistory = async (req, res, next) => {
             MemberID: MemberID,
             YearsToPay: yearsToPay,
             yearlyAmount: yearly_fee,
-            MembershipHistory: membershipHistory,
             oldGtinProuductCount: oldGtinProuductCount,
             oldGlnProuductCount: oldGlnProuductCount,
+            MembershipHistory: membershipHistory,
         };
 
 
