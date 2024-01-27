@@ -2,6 +2,7 @@
 import express from 'express';
 import { createMemberDocument, deleteMemberDocument, getMemberDocuments, getMemberFinanceDocuments, getMemberInvoices, getMemberPendingInvoices, regenerateGcpCertificate, updateMemberDocument, updateMemberDocumentStatus } from '../../controllers/memberDocumentsController.js';
 import { upload } from '../../configs/multerConfig.js';
+import { generalAuth } from '../../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -11,10 +12,10 @@ router.post('/', upload([
         name: 'document',
         path: 'public/uploads/documents/memberDocuments',
     },
-]), createMemberDocument);
+]), generalAuth, createMemberDocument);
 
 
-router.post('/regenerateGcpCertificate', regenerateGcpCertificate);
+router.post('/regenerateGcpCertificate', generalAuth, regenerateGcpCertificate);
 
 router.get("/", getMemberDocuments)
 
@@ -33,11 +34,11 @@ router.put('/:id',
             name: 'document',
             path: 'public/uploads/documents/memberDocuments',
         },
-    ]), updateMemberDocument);
+    ]), updateMemberDocument, updateMemberDocument);
 
-router.put("/status/:id", updateMemberDocumentStatus)
+router.put("/status/:id", generalAuth, updateMemberDocumentStatus)
 
-router.delete('/:id', deleteMemberDocument);
+router.delete('/:id', generalAuth, deleteMemberDocument);
 
 
 

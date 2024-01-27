@@ -1,7 +1,10 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { ADMIN_JWT_SECRET, JWT_EXPIRATION } from '../configs/envConfig.js';
+import { cookieOptions } from '../utils/authUtilities.js';
 
 export const adminLogin = async (req, res, next) => {
     try {
@@ -24,20 +27,22 @@ export const adminLogin = async (req, res, next) => {
         });
 
         if (!adminUser) {
-            return res.status(404).json({ message: 'Invalid Credentials' });
+            throw createError(404, 'Invalid Credentials');
         }
 
         // Compare the provided password with the hashed password in the database
         const passwordMatch = bcrypt.compare(password, adminUser.password);
 
         if (!passwordMatch) {
-            return res.status(404).json({ message: 'Invalid Credentials' });
+            throw createError(404, 'Invalid Credentials');
         }
 
         // You can generate and return an authentication token (JWT) here if needed
         delete adminUser.password;
-        return res.status(200).json({ message: 'Login successful', adminUserData: adminUser});
+        const token = jwt.sign({ adminId: adminUser.id, email: adminUser.email }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+        return res.cookie("adminToken", token, cookieOptions()).status(200).json({ success: true, adminData: adminUser, token });
     } catch (error) {
+        console.log(error);
         next(error);
     } finally {
         await prisma.$disconnect();
