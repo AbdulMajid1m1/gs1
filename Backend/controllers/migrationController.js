@@ -107,8 +107,6 @@ export const getMembershipHistory = async (req, res, next) => {
             return res.status(404).json({ message: 'No active membership history found for this member.' });
         }
 
-<<<<<<< HEAD
-=======
 
         // Fetch products from oldGs1Prisma table Mem.products based on MemberID
         const oldGtinProuductCount = await oldGs1Prisma.Product.count({
@@ -126,7 +124,6 @@ export const getMembershipHistory = async (req, res, next) => {
 
 
 
->>>>>>> 6b0ca9fc3679e5ec0655a3cf16034de07e079eb7
         // Calculate the number of years the user has to pay
         const currentYear = new Date().getFullYear();
         const yearsToPay = currentYear - latestMembership.MembershipYear;
