@@ -56,19 +56,6 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
       toast.success(`product_name has been added successfully.`);
 
-<<<<<<< HEAD
-      toast.success(`${t('Products Category')} ${name} ${t('has been added successfully')}.`, {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-=======
->>>>>>> 2137e3915e33ae956fca3c21d32e9b1a0d916cb7
 
       console.log(response.data);
       refreshProductsCategory();
@@ -84,6 +71,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
 
   };
+
 
   return (
     <div>
@@ -102,15 +90,9 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                     <input
                       type="text"
                       id="field1"
-<<<<<<< HEAD
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                       placeholder={`${t('Enter')} ${t('Name')}`}
-=======
                       value={memberCategoryDescriptionE}
                       onChange={(e) => setMemberCategoryDescriptionE(e.target.value)}
                       placeholder='Category Description English'
->>>>>>> 2137e3915e33ae956fca3c21d32e9b1a0d916cb7
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -128,10 +110,6 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                   </div>
                  </div>
 
-<<<<<<< HEAD
-                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">{t('Status')}</label>
-=======
                  
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
@@ -214,7 +192,6 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                     <label htmlFor="field7" className="text-secondary">{t('Status')}</label>
->>>>>>> 2137e3915e33ae956fca3c21d32e9b1a0d916cb7
                     <select
                       type="text"
                       id="field7"
@@ -222,15 +199,9 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-<<<<<<< HEAD
-                        <option value="">-{t('Status')}-</option>
-                        <option value="1">{t('Active')}</option>
-                        <option value="2">{t('Inactive')}</option>
-=======
                       <option value="">-Select Status-</option>
                       <option value="1">Active</option>
                       <option value="0">Inactive</option>
->>>>>>> 2137e3915e33ae956fca3c21d32e9b1a0d916cb7
                     </select>
                   </div>
                 </div>

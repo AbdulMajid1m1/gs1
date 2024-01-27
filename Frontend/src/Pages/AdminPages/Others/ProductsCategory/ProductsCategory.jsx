@@ -77,11 +77,7 @@ const AdditionalProducts = () =>
         try {
           const isDeleted = await newRequest.delete("/gtinProductCategories/" + row?.id);
           if (isDeleted) {
-<<<<<<< HEAD
             toast.success(`${t('Products Category')} ${t('Delete')} ${t('successfully')}!`);
-=======
-            toast.success('Products Categories deleted successfully');
->>>>>>> 2137e3915e33ae956fca3c21d32e9b1a0d916cb7
 
 
             // filter out the deleted user from the data
@@ -138,13 +134,8 @@ const AdditionalProducts = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
 
                 <DataTable data={data}
-<<<<<<< HEAD
                   title={t('Products Category')}
                   columnsName={productsCategoryColumn(t)}
-=======
-                  title={t('Product categories')}
-                  columnsName={productsCategoryColumn}
->>>>>>> 2137e3915e33ae956fca3c21d32e9b1a0d916cb7
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
