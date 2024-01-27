@@ -192,6 +192,8 @@ export const getMembershipHistory = async (req, res, next) => {
             MemberID: MemberID,
             YearsToPay: yearsToPay,
             yearlyAmount: yearly_fee,
+            oldGtinProuductCount: oldGtinProuductCount,
+            oldGlnProuductCount: oldGlnProuductCount,
             MembershipHistory: membershipHistory,
         };
 
@@ -227,7 +229,7 @@ export const migrateUser = async (req, res, next) => {
             },
         });
         if (!latestMembership) {
-            return res.status(404).json({ message: 'No active membership history found for this member.' });
+            throw createError(400, "No active membership history found for this member.");
         }
 
 
@@ -244,7 +246,7 @@ export const migrateUser = async (req, res, next) => {
             include: { MembershipType: true },
         });
         if (!member) {
-            return res.status(404).json({ message: 'Member not found.' });
+            throw createError(400, "Member not found.");
         }
 
         // check if the IntID is already migrated in users table based on companyID
