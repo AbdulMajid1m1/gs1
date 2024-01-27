@@ -35,8 +35,8 @@ export const adminLogin = async (req, res, next) => {
         }
 
         // You can generate and return an authentication token (JWT) here if needed
-
-        return res.status(200).json({ message: 'Login successful' });
+        delete adminUser.password;
+        return res.status(200).json({ message: 'Login successful', adminUserData: adminUser});
     } catch (error) {
         next(error);
     } finally {

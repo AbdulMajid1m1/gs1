@@ -107,6 +107,24 @@ export const getMembershipHistory = async (req, res, next) => {
             return res.status(404).json({ message: 'No active membership history found for this member.' });
         }
 
+        // fetct user Gtin and GLN products count from old database based on member id
+
+        // Fetch products from oldGs1Prisma table Mem.products based on MemberID
+        const oldGtinProuductCount = await oldGs1Prisma.Product.count({
+            where: {
+                MemberID: MemberID,
+            },
+        });
+
+        const oldGlnProuductCount = await oldGs1Prisma.location.count({
+            where: {
+                MemberID: MemberID,
+            },
+        });
+
+
+
+
         // Calculate the number of years the user has to pay
         const currentYear = new Date().getFullYear();
         const yearsToPay = currentYear - latestMembership.MembershipYear;
@@ -175,6 +193,8 @@ export const getMembershipHistory = async (req, res, next) => {
             MemberID: MemberID,
             YearsToPay: yearsToPay,
             yearlyAmount: yearly_fee,
+            oldGtinProuductCount: oldGtinProuductCount,
+            oldGlnProuductCount: oldGlnProuductCount,
             MembershipHistory: membershipHistory,
         };
 
@@ -210,8 +230,20 @@ export const migrateUser = async (req, res, next) => {
             },
         });
         if (!latestMembership) {
-            return res.status(404).json({ message: 'No active membership history found for this member.' });
+            throw createError(400, "No active membership history found for this member.");
         }
+
+        // check if the IntID is already migrated in users table based on companyID
+        const user = await prisma.users.findFirst({
+            where: {
+                companyID: latestMembership.IntID.toString(),
+            },
+        });
+
+        if (user) {
+            throw createError(400, "This member is already migrated.");
+        }
+
 
         // Calculate the number of years the user has to pay
         const currentYear = new Date().getFullYear();
@@ -225,7 +257,7 @@ export const migrateUser = async (req, res, next) => {
             include: { MembershipType: true },
         });
         if (!member) {
-            return res.status(404).json({ message: 'Member not found.' });
+            throw createError(400, "Member not found.");
         }
         const products = JSON.parse(member.Products || '[]');
 
