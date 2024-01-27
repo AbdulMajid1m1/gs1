@@ -107,7 +107,6 @@ export const getMembershipHistory = async (req, res, next) => {
             return res.status(404).json({ message: 'No active membership history found for this member.' });
         }
 
-        // fetct user Gtin and GLN products count from old database based on member id
 
         // Fetch products from oldGs1Prisma table Mem.products based on MemberID
         const oldGtinProuductCount = await oldGs1Prisma.Product.count({
