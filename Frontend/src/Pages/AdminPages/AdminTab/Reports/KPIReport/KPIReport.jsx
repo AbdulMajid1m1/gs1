@@ -3,44 +3,64 @@ import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../../components/Datatable/Datatable';
 import { useNavigate } from 'react-router-dom';
-import { KpiReportColumn, productsCategoryColumn } from '../../../../../utils/datatablesource';
+import { KpiReportColumn } from '../../../../../utils/datatablesource';
 import { Button, CircularProgress } from '@mui/material';
 import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
-import moment from 'moment';
+import XLSX from 'xlsx';
+import jsPDF from 'jspdf';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [todayLoader, setTodayLoader] = useState(false);
   const [weeklyLoader, setWeeklyLoader] = useState(false);
   const [monthlyLoader, setMonthlyLoader] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState('');
+  const [shouldCallApi, setShouldCallApi] = useState(false);
   
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+   
 
+  useEffect(() => {
+    if (shouldCallApi) {
+      handleSearchTimeAndDate();
+      setShouldCallApi(false); // Reset the flag after making the API call
+    }
+  }, [startDate, endDate, shouldCallApi]);
+
+ 
   const handleTodayLoader = () => {
     setTodayLoader(true);
-    setTimeout(() => {
-      setTodayLoader(false);
-    }, 2000);
+    const today = new Date();
+    setStartDate(today.toISOString().split('T')[0]);
+    setEndDate(today.toISOString().split('T')[0]);
+    // handleSearchTimeAndDate();
+    setShouldCallApi(true);
   };
-
+  
   const handleWeeklyLoader = () => {
     setWeeklyLoader(true);
-    setTimeout(() => {
-      setWeeklyLoader(false);
-    }, 2000);
-  }
-
+    const today = new Date();
+    const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+    setStartDate(lastWeek.toISOString().split('T')[0]);
+    setEndDate(today.toISOString().split('T')[0]);
+    // handleSearchTimeAndDate();
+    setShouldCallApi(true);
+  };
+  
   const handleMonthlyLoader = () => {
     setMonthlyLoader(true);
-    setTimeout(() => {
-      setMonthlyLoader(false);
-    }, 2000);
-  }
+    const today = new Date();
+    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    setStartDate(lastMonth.toISOString().split('T')[0]);
+    setEndDate(today.toISOString().split('T')[0]);
+    // handleSearchTimeAndDate();
+    setShouldCallApi(true);
+  };
+  
 
   const handleSearchTimeAndDate = async () => {
     setIsLoading(true);
@@ -59,17 +79,20 @@ const KPIReport = () => {
       });
 
       console.log(res?.data?.combinedResults);
-      setData(res.data);
+      setData(res.data?.combinedResults);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
       console.log(err);
-      toast.error(err?.response?.data?.error || 'Error in fetching data');
+      toast.error(err?.response?.data || 'Error in fetching data');
+
+      // Reset loaders after API call is complete
+      setTodayLoader(false);
+      setWeeklyLoader(false);
+      setMonthlyLoader(false);
     }
   }
-  
-
-  
+    
   
   return (
     <div>
@@ -83,11 +106,7 @@ const KPIReport = () => {
                 <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
                 <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-                  <div className='w-full flex gap-2 flex-wrap'> 
-                    {/* <button
-                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                        {t('Today')}
-                    </button> */}
+                  <div className='w-full flex gap-2 flex-wrap'>
                     <Button
                       variant="contained"
                       style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
@@ -98,10 +117,6 @@ const KPIReport = () => {
                      {t('Today')}
                     </Button>
 
-                    {/* <button
-                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                        {t('Weekly')}
-                    </button> */}
                     <Button
                       variant="contained"
                       style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
@@ -112,10 +127,6 @@ const KPIReport = () => {
                      {t('Weekly')}
                     </Button>
 
-                    {/* <button
-                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                        {t('Monthly')}
-                    </button> */}
                     <Button
                       variant="contained"
                       style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px',}}
@@ -127,11 +138,13 @@ const KPIReport = () => {
                     </Button>
 
                     <button
+                      onClick={downloadExcel}
                      className="rounded-full bg-green-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                          <i className="fas fa-file-excel mr-2"></i>{t('EXCEL')}
                     </button>
 
                     <button
+                      onClick={downloadPDF}
                      className="rounded-full bg-red-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                          <i className="fas fa-file-pdf mr-2"></i>{t('PDF')}
                     </button>
