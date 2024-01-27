@@ -7,8 +7,8 @@ import { KpiReportColumn } from '../../../../../utils/datatablesource';
 import { Button, CircularProgress } from '@mui/material';
 import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
-import XLSX from 'xlsx';
-import jsPDF from 'jspdf';
+// import XLSX from 'xlsx';
+// import jsPDF from 'jspdf';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
@@ -138,13 +138,13 @@ const KPIReport = () => {
                     </Button>
 
                     <button
-                      onClick={downloadExcel}
+                      // onClick={downloadExcel}
                      className="rounded-full bg-green-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                          <i className="fas fa-file-excel mr-2"></i>{t('EXCEL')}
                     </button>
 
                     <button
-                      onClick={downloadPDF}
+                      // onClick={downloadPDF}
                      className="rounded-full bg-red-500 font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                          <i className="fas fa-file-pdf mr-2"></i>{t('PDF')}
                     </button>
