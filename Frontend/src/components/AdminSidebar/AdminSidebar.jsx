@@ -66,7 +66,7 @@ import LanguageSwitcher from "../../switer";
 
 const AdminSideBar = () =>
 {
-  const { t, i18n } = useTranslation();
+  const {t , i18n } = useTranslation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -196,14 +196,14 @@ const AdminSideBar = () =>
           <div
             className={`flex justify-center items-center cursor-pointer -mt-1 px-4 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}
           >
-            <div className={`flex justify-end items-center px-0   ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}>
+            <div className={`flex justify-end items-center px-0 ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}>
               <span>
                 <I18nextProvider i18n={i18n}>
                   <LanguageSwitcher />
                 </I18nextProvider>
               </span>
-              <span>
-                <p className="text-white font-sans mr-5 hover:text-primary"
+              <span className="w-100">
+                <p className={`text-white font-sans hover:text-primary ${i18n.language === 'ar' ? ' sm-mr-10 ml-5' : 'mr-5 sm-ml-5'}`}
                   onClick={() => handleItemClickGs1website('/')}
                   onContextMenu={(event) =>
                     handleContextMenu(event, '/')
@@ -780,7 +780,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Old Inactive Members')}</p>
+                <p className="sidebar-text">{t('Old InActive Members')}</p>
               </div>
               
               <div

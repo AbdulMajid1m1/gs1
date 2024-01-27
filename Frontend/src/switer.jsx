@@ -17,7 +17,7 @@ const LanguageSwitcher = () =>
         i18n.changeLanguage(language);
     }; 
     const [isActive, setIsActive] = useState(false);
-    const [currentOption, setCurrentOption] = useState('en');
+    const [currentOption, setCurrentOption] = useState('ar');
 
     const handleToggle = () => {
         setIsActive(!isActive);
@@ -42,7 +42,7 @@ const LanguageSwitcher = () =>
                     >
                         <li className="p-2">
                             <div className="option pizza flex items-center">
-                                <div className="icon w-8 h-8 bg-cover bg-center mr-4" />
+                                <div className="icon w-8 h-8 bg-cover bg-center" />
                                 {currentOption === 'en' && <img src={engflage} alt="" width='33px' />}
                                 {currentOption === 'ar' && <img src={arabicflage} alt="" width='33px' />}
                                 <ArrowDropDownIcon/>

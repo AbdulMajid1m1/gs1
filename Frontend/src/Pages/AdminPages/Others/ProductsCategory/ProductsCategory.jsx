@@ -62,12 +62,12 @@ const AdditionalProducts = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this product package!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('Products Category')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -77,7 +77,7 @@ const AdditionalProducts = () =>
         try {
           const isDeleted = await newRequest.delete("/gtinProductCategories/" + row?.id);
           if (isDeleted) {
-            toast.success('Products Categories deleted successfully');
+            toast.success(`${t('Products Category')} ${t('Delete')} ${t('successfully')}!`);
 
 
             // filter out the deleted user from the data
@@ -134,8 +134,8 @@ const AdditionalProducts = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
 
                 <DataTable data={data}
-                  title={t('GTIN Barcode Pricing')}
-                  columnsName={productsCategoryColumn}
+                  title={t('Products Category')}
+                  columnsName={productsCategoryColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

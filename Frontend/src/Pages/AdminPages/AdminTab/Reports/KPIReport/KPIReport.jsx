@@ -264,7 +264,7 @@ const KPIReport = () => {
 
                     <DataTable data={data}
                     title={t('KPI Report')}
-                    columnsName={KpiReportColumn}
+                    columnsName={KpiReportColumn(t)}
                     loading={isLoading}
                     secondaryColor="secondary"
                     actionColumnVisibility={false}

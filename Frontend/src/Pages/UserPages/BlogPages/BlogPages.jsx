@@ -5,12 +5,14 @@ import Footer from '../../../components/Footer/Footer';
 import DropDownSelection from '../DropDownSelection/DropDownSelection';
 import newRequest from '../../../utils/userRequest';
 import { DotLoader } from 'react-spinners';
+import { useTranslation } from 'react-i18next';
 
 const BlogPages = () => {
   const { id } = useParams();
   // console.log(id);
   const [pageData, setPageData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const { t, i18n } = useTranslation();
     
 
   useEffect(() => {
@@ -22,6 +24,7 @@ const BlogPages = () => {
         // console.log(res.data);
         setPageData(res.data);
         setIsLoading(false);
+        console.log(res.data);
       } 
       catch (error) {
         console.log(error);
@@ -66,10 +69,22 @@ const BlogPages = () => {
           Blog Pages
        </div> */}
         <div className='mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
-           {pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>}
+           {/* {pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>}
               {pageData.custom_section_data && (
             <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
-          )}
+          )} */}
+        {/* {i18n.language === 'ar' ? pageData?.name_ar : section?.name_en} */}
+        {i18n.language === 'ar' && pageData.name_ar && <h1 className='text-secondary font-semibold'>{pageData.name_ar} </h1>}
+        {i18n.language === 'ar' && pageData.custom_section_data_ar && (
+          <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data_ar }} />
+          
+        )}
+
+        {i18n.language !== 'ar' && pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>}
+        {i18n.language !== 'ar' && pageData.custom_section_data && (
+          <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
+        )}
+
       </div>
 
   

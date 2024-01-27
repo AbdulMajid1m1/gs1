@@ -9,6 +9,7 @@ import { SnackbarContext } from '../../../Contexts/SnackbarContext';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { RiseLoader } from 'react-spinners';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -21,6 +22,7 @@ const ListOfCustomer = () => {
     const [isShipmentDataLoading, setIsShipmentDataLoading] = useState(false);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { openSnackbar } = useContext(SnackbarContext);
 
@@ -50,7 +52,7 @@ const ListOfCustomer = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error?.response?.data?.message || 'Something went wrong'
+                    text: error?.response?.data?.message || `${t('Something went wrong!')}`
                 })
 
             }
@@ -74,7 +76,7 @@ const ListOfCustomer = () => {
             }
             catch (error) {
                 console.log(error);
-                // setError(error?.response?.data?.message ?? "Something went wrong")
+                // setError(error?.response?.data?.message ?? `${t('Something went wrong!')}`)
 
             }
             finally {
@@ -128,7 +130,7 @@ const ListOfCustomer = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: error?.response?.data?.message || 'Something went wrong',
+                text: error?.response?.data?.message || `${t('Something went wrong!')}`,
                 timer: 2000,
                 timerProgressBar: true,
 
@@ -170,7 +172,7 @@ const ListOfCustomer = () => {
         }
         catch (error) {
             console.log(error);
-            openSnackbar(error?.response?.data?.message ?? "Something went wrong", "error");
+            openSnackbar(error?.response?.data?.message ?? `${t('Something went wrong!')}`, "error");
 
         }
         finally {
@@ -185,7 +187,7 @@ const ListOfCustomer = () => {
         if (selectedShipment?.status === 'approved') {
             Swal.fire({
                 icon: 'info',
-                title: 'Shipment Request already approved',
+                title: `${t('Shipment Request already approved')}`,
                 showConfirmButton: false,
                 timer: 2000,
             });
@@ -195,7 +197,7 @@ const ListOfCustomer = () => {
         if (selectedShipment?.status === 'submitted') {
             Swal.fire({
                 icon: 'info',
-                title: 'Shipment Request already submitted',
+                title: `${t('Shipment Request already submitted')}`,
                 showConfirmButton: false,
                 timer: 2000,
             });
@@ -222,7 +224,7 @@ const ListOfCustomer = () => {
 
             Swal.fire({
                 icon: 'success',
-                title: "Shipment Request submitted successfully",
+                title: `${t('Shipment Request already submitted')}`,
                 showConfirmButton: false,
                 timer: 2000,
             });
@@ -245,12 +247,12 @@ const ListOfCustomer = () => {
 
     const handleShipmentDelete = async (row) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this Record!',
+            title: `${t('Are you sure to delete this record?')}!`,
+            text: `${t('You will not be able to recover')}!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+            cancelButtonText: `${t('No, keep it')}!`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#1E3B8B',
             cancelButtonColor: '#FF0032',
@@ -269,7 +271,7 @@ const ListOfCustomer = () => {
                     Swal.fire({
                         icon: 'success',
                         title: 'Deleted!',
-                        text: 'Record has been deleted.',
+                        text: `${t('Record has been deleted')}`,
                         showConfirmButton: false,
                         timer: 2000,
                     });
@@ -279,7 +281,7 @@ const ListOfCustomer = () => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: err?.response?.data?.message || 'Something went wrong'
+                        text: err?.response?.data?.message || `${t('Something went wrong!')}`
                     })
                     return
                 }
@@ -321,13 +323,13 @@ const ListOfCustomer = () => {
             {message && <CustomSnakebar message={message} severity="success" onClose={resetSnakeBarMessages} />}
             {error && <CustomSnakebar message={error} severity="error" onClose={resetSnakeBarMessages} />}
 
-            <div className="p-3 h-full sm:ml-72">
+            <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-25px' }}>
                     <DataTable
                         data={alldata}
-                        title="LIST OF CUSTOMERS"
+                        title={`${t('LIST OF CUSTOMERS')}`}
                         secondaryColor="secondary"
-                        columnsName={ListOfCustomersColumn}
+                        columnsName={ListOfCustomersColumn(t)}
                         backButton={true}
                         uniqueId="customerListId"
                         handleRowClickInParent={handleRowClickInParent}
@@ -336,7 +338,7 @@ const ListOfCustomer = () => {
 
                         dropDownOptions={[
                             {
-                                label: "New Shipment Request",
+                                label: `${t('New Shipment Request')}`,
                                 icon: <LocalShippingIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                                 ,
                                 action: handleShipmentRequest,
@@ -354,14 +356,15 @@ const ListOfCustomer = () => {
                 </div>
 
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-                    <DataTable data={filteredData} title="LIST OF CUSTOMERS SHIPMENT REQUEST"
+                    <DataTable data={filteredData} 
+                        title={`${t('LIST OF CUSTOMERS SHIPMENT REQUEST')}`}
                         secondaryColor="secondary"
-                        columnsName={ShipmentRequestColumns}
+                        columnsName={ShipmentRequestColumns(t)}
                         backButton={true}
                         checkboxSelection="disabled"
                         dropDownOptions={[
                             {
-                                label: "View",
+                                label: `${t('View')}`,
                                 icon: (
                                     <VisibilityIcon
                                         fontSize="small"
@@ -376,14 +379,14 @@ const ListOfCustomer = () => {
                                 },
                             },
                             {
-                                label: "Submit Request",
+                                label: `${t('Submit Request')}`,
                                 icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                                 ,
                                 action: handleStatusChange,
 
                             },
                             {
-                                label: "Delete",
+                                label: `${t('Delete')}`,
                                 icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                                 ,
                                 action: handleShipmentDelete,

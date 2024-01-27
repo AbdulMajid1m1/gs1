@@ -54,7 +54,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
         "med_yearly_subscription_fee": Number(memberYearlySubscriptionFee)
     });
 
-      toast.success(`product_name has been added successfully.`);
+      toast.success(`product name has been added successfully.`);
 
 
       console.log(response.data);
@@ -71,7 +71,6 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
 
   };
-
 
   return (
     <div>
@@ -199,9 +198,9 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="">-Select Status-</option>
-                      <option value="1">Active</option>
-                      <option value="0">Inactive</option>
+                        <option value="">-{t('Status')}-</option>
+                        <option value="1">{t('Active')}</option>
+                        <option value="2">{t('Inactive')}</option>
                     </select>
                   </div>
                 </div>

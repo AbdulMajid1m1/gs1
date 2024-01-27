@@ -12,11 +12,13 @@ import { DotLoader } from 'react-spinners'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import barcodeImage from "../../../Images/barcodeImage.png"
+import { useTranslation } from 'react-i18next';
 
 
 const MemmberRegisteration = () => {
     // const sessionData = sessionStorage.getItem('saveCrNumberData');
     const selectedCr = JSON.parse(sessionStorage.getItem('selectedCr'));
+    const { t, i18n } = useTranslation();
 
     const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
     const location = sessionStorage.getItem('location');
@@ -368,7 +370,7 @@ const MemmberRegisteration = () => {
                     // navigate('/');
                 }, 1500);
 
-                toast.success('Member Registered Successfully', {
+                toast.success(`${t('Member Registered Successfully')}`, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -384,7 +386,7 @@ const MemmberRegisteration = () => {
                 console.log(err);
                 setIsLoading(false);
 
-                toast.error(err?.response?.data?.error || "Something went wrong!", {
+                toast.error(err?.response?.data?.error || `${t('Something went wrong!')}`, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -432,7 +434,7 @@ const MemmberRegisteration = () => {
 
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
-                setCompanyLandlineError('Number must be a maximum of 12 digits');
+                setCompanyLandlineError(`${t('Number must be a maximum of 12 digits') }`);
             }
         }
 
@@ -523,7 +525,7 @@ const MemmberRegisteration = () => {
                 <div className='h-auto w-full sm:w-2/3 border-l border-r border-primary'>
                     <div className='h-5 w-full bg-primary rounded-t-md'></div>
                     <div className='h-auto w-full flex justify-between items-center px-5 py-2'>
-                        <p className='sm:text-2xl w-full font-semibold text-sm text-secondary'>Member Registration</p>
+                        <p className={`sm:text-2xl w-full font-semibold text-sm text-secondary ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}> {t('Member Registration')} </p>
                         {/* <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p> */}
                     </div>
                 </div>
@@ -576,27 +578,27 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary font-semibold">Cr Number<span className='text-red-600'> *</span></label>
+                                <label htmlFor="field1" className="text-secondary font-semibold"> {t('Cr Number')}<span className='text-red-600'> *</span></label>
                                 <input
                                     type="number"
                                     id="field1"
                                     value={addCrNumber}
                                     onChange={handleInputChange}
                                     //    onChange={(e) => setAddCrNumber(e.target.value)}
-                                    placeholder="Cr Number"
+                                    placeholder={`${t('Enter')} ${t('Cr Number')} }`}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                                 {error && <p className="text-red-500 text-xs">{error}</p>}
                             </div>
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary font-semibold">Cr Activity<span className='text-red-600'> *</span></label>
+                                <label htmlFor="field2" className="text-secondary font-semibold"> {t('Cr Activity')}<span className='text-red-600'> *</span></label>
                                 <input
                                     type="text"
                                     id="field2"
                                     //  value={addCrNumber}
-                                    onChange={(e) => setCrActivity(e.target.value)}
-                                    placeholder="Cr Activity"
+                                    onChange={(e) => setCrActivity(e.target.value)} 
+                                    placeholder={`${t('Enter')} ${t('Cr Activity')} }`}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                             </div>
@@ -604,22 +606,22 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='email'>Email<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='email'> {t('Email')}<span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setEmail(e.target.value)}
                                     id='email'
-                                    placeholder='Email'
+                                    placeholder={`${t('Enter')} ${t('Email')} }`}
                                     required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='contactperson'>Contact Person<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='contactperson'> {t('Contact Person')}<span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setContactPerson(e.target.value)}
                                     id='contactperson'
-                                    placeholder='Contact Person'
+                                    placeholder={`${t('Enter')} ${t('Contact Person')} }`}
                                     required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
@@ -628,22 +630,22 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='companyEnglish'>Company Name [English]<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='companyEnglish'>{t('Company Name [English]')}<span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setCompanyEnglish(e.target.value)}
                                     id='companyEnglish'
-                                    placeholder='Company Name English'
+                                    placeholder={`${t('Enter')} ${t('Company Name [English]')} }`}
                                     required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='companyArabic'>Company Name [Arabic]<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='companyArabic'> {t('Company Name [Arabic]')} <span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setCompanyArabic(e.target.value)}
                                     id='companyArabic'
-                                    placeholder='Company Name Arabic'
+                                    placeholder={`${t('Enter')} ${t('Company Name [Arabic]')} }`}
                                     required
                                     type='text' className='border-1 border-[#8E9CAB] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
@@ -653,7 +655,7 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='mobile'>Company Landline</label>
+                                <label className='text-secondary font-semibold' htmlFor='mobile'> {t('Company Landline')}</label>
                                 <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm '>
                                     {/* <PhoneInput
                                         international
@@ -700,7 +702,7 @@ const MemmberRegisteration = () => {
                             </div>
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='mobile'>Mobile Number <span>(Omit Zero)</span><span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='mobile'> {t('Mobile Number')}  <span> {t('(Omit Zero)')}</span><span className='text-red-600'>*</span></label>
                                 <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm'>
 
                                     <PhoneInput
@@ -744,7 +746,7 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='country'>Country<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='country'> {t('Country')}<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="country"
                                     options={country}
@@ -771,7 +773,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="Country"
+                                            placeholder={`${t('Enter')} ${t('Country')} }`}
                                         // required
                                         />
                                     )}
@@ -788,7 +790,7 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='state'>State<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='state'> {t('State')}<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="state"
                                     options={filteredStates}
@@ -815,7 +817,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="State"
+                                            placeholder={`${t('Enter')} ${t('State')} }`}
                                         // required
                                         />
                                     )}
@@ -836,7 +838,7 @@ const MemmberRegisteration = () => {
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='city'>City<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='city'> {t('City')}<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="city"
                                     options={filteredCities}
@@ -863,7 +865,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="City"
+                                            placeholder={`${t('Enter')} ${t('City')} }`}
                                         // required
                                         />
                                     )}
@@ -880,11 +882,11 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='zipcode'>Zip Code <span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='zipcode'> {t('Zip Code')}<span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setZipCode(e.target.value)}
                                     id='zipcode'
-                                    placeholder='Zip Code'
+                                    placeholder={`${t('Enter')} ${t('Zip Code')} }`}
                                     // required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
@@ -908,7 +910,7 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='industriesTypes'>Select Industries Releated to your Business<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='industriesTypes'> {t('Select Industries Releated to your Business')}<span className='text-red-600'>*</span></label>
                                 <Autocomplete
 
                                     multiple
@@ -935,7 +937,7 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col mt-0'>
-                                <label className='text-secondary font-semibold' htmlFor='category'>Membership category<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='category'> {t('Membership category')}<span className='text-red-600'>*</span></label>
                                 <Autocomplete
                                     id="category"
                                     options={categories}
@@ -984,9 +986,9 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3'>
                                 <label
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
-                                >GTIN
+                                >GTIN 
                                     <span className='text-red-600'>*</span>
-                                    (Barcode)
+                                    {t('Barcode')}
                                     <img src={barcodeImage} className='h-10 w-auto' alt='' />
                                 </label>
 
@@ -1035,7 +1037,7 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1'>
-                                <label className='text-secondary font-semibold' htmlFor='other'>Other Products<span className='font-normal'> (GLN,SSCC,UDI)</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='other'> {t('Other Products')}<span className='font-normal'> (GLN,SSCC,UDI)</span></label>
                                 <Autocomplete
                                     multiple
                                     id='other'
@@ -1050,8 +1052,8 @@ const MemmberRegisteration = () => {
                                         <TextField
                                             autoComplete="off"
                                             {...params}
-                                            label='Search Other Products'
-                                            placeholder='Search Other Products'
+                                            label={`${t('Other Products')}`}
+                                            placeholder={`${t('Enter')} ${t('Other Products')} }`}
                                             variant='outlined'
                                         />
                                     )}
@@ -1065,16 +1067,16 @@ const MemmberRegisteration = () => {
 
                         <div>
                             <div className='mt-6'>
-                                <label className='text-secondary text-3xl font-sans font-bold'>Your Subscription</label>
+                                <label className='text-secondary text-3xl font-sans font-bold'> {t('Your Subscription')}</label>
                                 <div className="table-Bintobin-Axapta px-4">
-                                    <p className='text-secondary text-2xl font-sans font-bold text-center mb-4 mt-4'>Subscription Summary</p>
+                                    <p className='text-secondary text-2xl font-sans font-bold text-center mb-4 mt-4'> {t('Subscription Summary')}</p>
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>PRODUCT</th>
-                                                <th>REGISTRATION FEE</th>
-                                                <th>YEARLY FEE</th>
-                                                <th>PRICE</th>
+                                                <th>{t('PRODUCT')}</th>
+                                                <th> {t('REGISTRATION FEE')}</th>
+                                                <th> {t('YEARLY FEE')}</th>
+                                                <th> {t('PRICE')}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1098,7 +1100,7 @@ const MemmberRegisteration = () => {
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colSpan="3" className="text-right font-bold">Total:</td>
+                                                <td colSpan="3" className="text-right font-bold"> {t('Total')}:</td>
 
                                                 <td>
                                                     {totalPrice}
@@ -1120,14 +1122,14 @@ const MemmberRegisteration = () => {
                                         placeholder='radio'
                                         defaultChecked
                                         type='radio' className='border-1 border-[#8E9CAB] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold'>Bank Transfer</p>
+                                    <p className='text-secondary font-semibold'>{t('Bank Transfer')}</p>
                                 </div>
 
                             </div>
                         </div>
 
                         <button type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
-                            <i className="fas fa-check-circle mr-1"></i> Submit
+                            <i className="fas fa-check-circle mr-1"></i>  {t('Submit')}
                         </button>
 
                     </form>

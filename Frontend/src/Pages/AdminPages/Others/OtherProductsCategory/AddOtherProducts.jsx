@@ -39,7 +39,7 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
         status: status,
       });
 
-      toast.success(`product_name ${product_name} has been added successfully.`);
+      toast.success(`${t('Other Products Category')} ${product_name} ${t('has been added successfully') }`);
 
 
       console.log(response.data);
@@ -66,7 +66,7 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add Other Services Pricing')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')}{t('Other Products Category')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                  
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
@@ -156,9 +156,9 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setstatus(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="">-Select Status-</option>
-                      <option value="1">Active</option>
-                      <option value="0">Inactive</option>
+                       <option value="">-{t('Status')}-</option>
+                      <option value="1">{t('active')}</option>
+                      <option value="0">{t('inactive')}</option>
                     </select>
                   </div>
 

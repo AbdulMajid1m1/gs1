@@ -140,7 +140,7 @@ const OldInActiveMembers = () => {
     setMigrateButtonLoader(true);
     // console.log(selectedOldMember);
     if (!selectedOldMember) {
-      toast.info('Please select a member first');
+      toast.info(`${t('Please select a member first')}`);
       setMigrateButtonLoader(false);
       return;
     }
@@ -150,11 +150,11 @@ const OldInActiveMembers = () => {
         "MemberID": selectedOldMember?.MemberID,
       });
       console.log(res);
-      toast.success(res?.data?.message || 'Member migrated successfully');
+      toast.success(res?.data?.message || `${t('Member migrated successfully')}`);
       setMigrateButtonLoader(false);
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || 'Failed to migrate member');
+      toast.error(error?.response?.data?.message || `${t('Failed to migrate member')}`);
       setMigrateButtonLoader(false);
     }
   }
@@ -248,24 +248,24 @@ const OldInActiveMembers = () => {
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
                 >
-                  Renewal upto The Year {new Date().getFullYear()}
+                  {t('Renewal upto The Year')} {new Date().getFullYear()}
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  Number Of Year: {YearsToPay}
+                  {t('Number Of Year')}: {YearsToPay}
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  Amount: {amount}
+                  {t('Amount')}: {amount}
                 </button>
 
               </div>
 
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-                <DataTable data={data} title={t('Old InActive Members')} columnsName={oldInActiveMemberColumn}
+                <DataTable data={data} title={t('Old InActive Members')} columnsName={oldInActiveMemberColumn(t)}
                   loading={isLoading}
                   secondaryColor="gray"
                   // handleRowClickInParent={handleRowClickInParent}

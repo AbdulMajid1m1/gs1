@@ -10,11 +10,14 @@ import newRequest from '../../../utils/userRequest';
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 import { BarcodeGenerator, DataMatrixGenerator } from '../../../utils/Barcodes/Barcodes';
 import DownloadButton from '../../../utils/Buttons/DownloadBtn';
+import { useTranslation } from 'react-i18next';
+
 
 const GTINUpdateProducts = () => {
     const abortControllerRef = useRef(null);
     const memberDataString = sessionStorage.getItem('memberData');
     const memberData = JSON.parse(memberDataString);
+    const { t, i18n } = useTranslation();
     // console.log(memberData);
     const [isLoading, setIsLoading] = useState(false);
     const [barcode, setBarcode] = useState('');
@@ -375,7 +378,7 @@ const GTINUpdateProducts = () => {
 
             console.log(response);
             setIsLoading(false);
-            toast.success(response?.data?.message || 'Product Updated Successfully', {
+            toast.success(response?.data?.message || `${t('Product Updated Successfully')}` , {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -624,9 +627,9 @@ const GTINUpdateProducts = () => {
 
             {/* <SideBar /> */}
 
-            <div className="p-0 h-full sm:ml-72  bg-slate-100">
+            <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
                 <div>
-                    <DashboardRightHeader title="Update GTIN Products"
+                    <DashboardRightHeader  title={`${t('Update GTIN Products')}`}
                     />
                 </div>
 
@@ -636,9 +639,9 @@ const GTINUpdateProducts = () => {
                         <div className="">
                             <div className="flex justify-between sm:flex-row flex-wrap w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
                                 <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                                    <p className="font-semibold">Complete Data</p>
+                                    <p className="font-semibold">{t('Complete Data')}</p>
                                     <p>
-                                        This number is registered to company: :{" "}
+                                        {t('This number is registered to company')}: :{" "}
                                         <span className="font-semibold">{memberData?.company_name_eng}</span>
                                         {/* <span className="font-semibold">Hasnain, Majid</span> */}
                                     </p>
@@ -664,32 +667,33 @@ const GTINUpdateProducts = () => {
                                     </div>
                                 </div>
                             </div> */}
+                            
                             </div>
                         </div>
 
                         <form onSubmit={handleFormSubmit}>
                             <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                    <label htmlFor="fields1" className="text-secondary">Product Name [English]</label>
+                                    <label htmlFor="fields1" className="text-secondary">{t('Product')} {t('Name[English]')}</label>
                                     <input
                                         type="text"
                                         id="fields1"
                                         onChange={(e) => setProductNameEnglish(e.target.value)}
                                         value={productNameEnglish}
                                         className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                                        placeholder="Product Name English"
+                                        placeholder={`${t('Enter')} ${t('Product')} ${t('Name[English]')}`}
                                     />
                                 </div>
 
                                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                    <label htmlFor="fields2" className="text-secondary">Product Name [Arabic]</label>
+                                    <label htmlFor="fields2" className="text-secondary">{t('Product')} {t('Name[Arabic]')}</label>
                                     <input
                                         type="text"
                                         id="fields2"
                                         className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                         value={productNameArabic}
                                         onChange={(e) => setProductNameArabic(e.target.value)}
-                                        placeholder="Product Name Arabic"
+                                        placeholder={`${t('Enter')} ${t('Product')} ${t('Name[Arabic]')}`}
                                     />
                                 </div>
                             </div>
@@ -699,7 +703,7 @@ const GTINUpdateProducts = () => {
                             <div className="">
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mb-3">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field1" className="text-secondary">Brand Name [English] </label>
+                                        <label htmlFor="field1" className="text-secondary">{t('Brands')} {t('Name[English]')}  </label>
                                         <Autocomplete
                                             id="field1"
                                             options={brandNameEnglish}
@@ -724,7 +728,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Brand Name English"
+                                                    placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[English]')}`}
                                                     required
                                                 />
                                             )}
@@ -740,7 +744,7 @@ const GTINUpdateProducts = () => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field2" className="text-secondary">Brand Name [Arabic] </label>
+                                        <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')} </label>
                                         <Autocomplete
                                             id="field2"
                                             options={brandNameArabic}
@@ -765,7 +769,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Brand Name Arabic"
+                                                    placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[Arabic]')}`}
                                                     required
                                                 />
                                             )}
@@ -784,7 +788,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field3" className="text-secondary">Unit Code</label>
+                                        <label htmlFor="field3" className="text-secondary">{t('Unit Code')}</label>
                                         <Autocomplete
                                             id="field3"
                                             options={unitCode}
@@ -809,7 +813,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Enter/Unit"
+                                                    placeholder={`${t('Enter')}/${t('Unit Code')}`}
                                                     required
                                                 />
                                             )}
@@ -827,14 +831,14 @@ const GTINUpdateProducts = () => {
 
                                     {/* <div className="form-row"> */}
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field4" className="text-secondary">Size</label>
+                                        <label htmlFor="field4" className="text-secondary">{t('Size')}</label>
                                         <input
                                             type="text"
                                             id="field4"
                                             onChange={(e) => setSize(e.target.value)}
                                             value={size}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                                            placeholder="Size"
+                                            placeholder={`${t('Enter')} ${t('Size')}`}
                                         />
                                     </div>
                                 </div>
@@ -843,7 +847,7 @@ const GTINUpdateProducts = () => {
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
 
-                                        <label htmlFor="field5" className="text-secondary">Region</label>
+                                        <label htmlFor="field5" className="text-secondary"> {t('Region')}</label>
                                         <Autocomplete
                                             id="field5"
                                             options={region}
@@ -869,7 +873,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Enter/Region"
+                                                    placeholder={`${t('Enter')} ${t('Region')} }`}
                                                     required
                                                 />
                                             )}
@@ -886,7 +890,7 @@ const GTINUpdateProducts = () => {
 
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field6" className="text-secondary">Country of Sale</label>
+                                        <label htmlFor="field6" className="text-secondary">{t('Country of Sale')}</label>
                                         <Autocomplete
                                             id="field6"
                                             options={allCountryName}
@@ -911,7 +915,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Enter/Country Name"
+                                                    placeholder={`${t('Enter')}/${t('Country of Sale')}`}
                                                     required
                                                 />
                                             )}
@@ -931,7 +935,7 @@ const GTINUpdateProducts = () => {
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                                         <label htmlFor="field7" className="text-secondary">
-                                            Product Description Language{" "}
+                                            {t('Product Description Language')}
                                         </label>
                                         <Autocomplete
                                             id="field7"
@@ -957,7 +961,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Enter/ Product Description Language"
+                                                    placeholder={`${t('Enter')}/${t('Product Description Language')}`}
                                                     required
                                                 />
                                             )}
@@ -974,7 +978,7 @@ const GTINUpdateProducts = () => {
 
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field8" className="text-secondary">Product Type</label>
+                                        <label htmlFor="field8" className="text-secondary">{t('Product Type')}</label>
                                         <Autocomplete
                                             id="field8"
                                             options={productType}
@@ -999,7 +1003,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Enter/ Product Type"
+                                                    placeholder={`${t('Enter')}/${t('Product Type')}`}
                                                     required
                                                 />
                                             )}
@@ -1019,7 +1023,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field9" className="text-secondary">Package Type</label>
+                                        <label htmlFor="field9" className="text-secondary">{t('Package Type')}</label>
                                         <Autocomplete
                                             id="field9"
                                             options={packageType}
@@ -1044,7 +1048,7 @@ const GTINUpdateProducts = () => {
                                                         style: { color: "white" },
                                                     }}
                                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                    placeholder="Enter/ Package Type"
+                                                    placeholder={`${t('Enter')}/${t('Package Type')}`}
                                                     required
                                                 />
                                             )}
@@ -1129,7 +1133,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field11" className="text-secondary">HS-Code</label>
+                                        <label htmlFor="field11" className="text-secondary">{t('HS-Code')}</label>
                                         {/* <input
                                 type="text"
                                 id="field11"
@@ -1165,7 +1169,7 @@ const GTINUpdateProducts = () => {
                                                 <TextField
                                                     // required
                                                     {...params}
-                                                    label="Search HS-Code here"
+                                                    label={`${('Search HS-Code here')}`}
                                                     InputProps={{
                                                         ...params.InputProps,
                                                         endAdornment: (
@@ -1210,7 +1214,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field12" className="text-secondary">Description [English] </label>
+                                        <label htmlFor="field12" className="text-secondary">{t('Description')} {t('[English]')}  </label>
                                         <textarea
                                             type="text"
                                             onChange={(e) => setDescriptionEnglish(e.target.value)}
@@ -1221,7 +1225,7 @@ const GTINUpdateProducts = () => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field13" className="text-secondary">Description [Arabic] </label>
+                                        <label htmlFor="field13" className="text-secondary">{t('Description')} {t('[Arabic]')} </label>
                                         <textarea
                                             type="text"
                                             onChange={(e) => setDescriptionArabic(e.target.value)}
@@ -1234,14 +1238,14 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full sm:w-[49%] font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field14" className="text-secondary">Product URL</label>
+                                        <label htmlFor="field14" className="text-secondary">{t('Product URL')}</label>
                                         <input
                                             type="text"
                                             id="field14"
                                             onChange={(e) => setProductUrl(e.target.value)}
                                             value={productUrl}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                                            placeholder="Product URL"
+                                            placeholder={`${t('Product URL')}`}
                                         />
                                     </div>
                                 </div>
@@ -1250,11 +1254,11 @@ const GTINUpdateProducts = () => {
                                     {/* Image container */}
                                     <div className='flex justify-between items-center gap-7 flex-wrap mt-10'>
                                         <div>
-                                            <span className='text-secondary font-body sm:text-base text-sm'>Front Photo</span>
+                                            <span className='text-secondary font-body sm:text-base text-sm'>{t('Front Photo')}</span>
                                             <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                                 <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                                     <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
-                                                        Select Image
+                                                        {t('Select Image')}
                                                         <input
                                                             type="file"
                                                             id="imageInput"
@@ -1274,11 +1278,11 @@ const GTINUpdateProducts = () => {
 
 
                                         <div>
-                                            <span className='text-secondary font-body sm:text-base text-sm'>Back Photo</span>
+                                            <span className='text-secondary font-body sm:text-base text-sm'>{t('Back Photo')}</span>
                                             <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                                 <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                                     <label htmlFor="backImageInput" className="cursor-pointer whitespace-nowrap">
-                                                        Select Image
+                                                        {t('Select Image')}
                                                         <input
                                                             type="file"
                                                             id="backImageInput"
@@ -1305,11 +1309,11 @@ const GTINUpdateProducts = () => {
                                     <div className="flex justify-center">
                                         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-28 lg:gap-y-16 sm:mt-20 mt-24">
                                             <div>
-                                                <span className='text-secondary font-body sm:text-base text-sm'>Optional Photo 1</span>
+                                                <span className='text-secondary font-body sm:text-base text-sm'>{t('Optional Photo')} 1</span>
                                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                                         <label htmlFor="imageOptional1Input" className="cursor-pointer whitespace-nowrap">
-                                                            Select Image
+                                                            {t('Select Image')}
                                                             <input
                                                                 type="file"
                                                                 id="imageOptional1Input"
@@ -1327,11 +1331,11 @@ const GTINUpdateProducts = () => {
                                             </div>
 
                                             <div>
-                                                <span className='text-secondary font-body sm:text-base text-sm'>Optional Photo 2</span>
+                                                <span className='text-secondary font-body sm:text-base text-sm'>{t('Optional Photo')} 2</span>
                                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                                         <label htmlFor="imageOptional2Input" className="cursor-pointer whitespace-nowrap">
-                                                            Select Image
+                                                            {t('Select Image')}
                                                             <input
                                                                 type="file"
                                                                 id="imageOptional2Input"
@@ -1349,11 +1353,11 @@ const GTINUpdateProducts = () => {
                                             </div>
 
                                             <div>
-                                                <span className='text-secondary font-body sm:text-base text-sm'>Optional Photo 3</span>
+                                                <span className='text-secondary font-body sm:text-base text-sm'>{t('Optional Photo')} 3</span>
                                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                                         <label htmlFor="imageOptional3Input" className="cursor-pointer whitespace-nowrap">
-                                                            Select Image
+                                                            {t('Select Image')}
                                                             <input
                                                                 type="file"
                                                                 id="imageOptional3Input"
@@ -1382,7 +1386,7 @@ const GTINUpdateProducts = () => {
                                         style={{ width: "50%" }}
                                         className=" flex items-center justify-start gap-7 flex-wrap"
                                     >
-                                        <label htmlFor="field12">1D Barcode</label>
+                                        <label htmlFor="field12"> {t('1D Barcod')}</label>
                                         <BarcodeGenerator text={barcode} />
                                     </div>
                                     <div>
@@ -1395,7 +1399,7 @@ const GTINUpdateProducts = () => {
                                         style={{ width: "50%" }}
                                         className=" flex items-center justify-start gap-7 flex-wrap"
                                     >
-                                        <label htmlFor="field12">2D Barcode</label>
+                                        <label htmlFor="field12"> {t('2D Barcod')}</label>
                                         <DataMatrixGenerator
                                             text={barcode}
                                         />
@@ -1409,8 +1413,8 @@ const GTINUpdateProducts = () => {
                                 <div className='footer-line'></div>
 
                                 <div className="popup-footer">
-                                    <button type='button' onClick={() => navigate(-1)} className="bg-secondary text-white py-2 px-3 rounded-sm">Back</button>
-                                    <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form">Update Changes</button>
+                                    <button type='button' onClick={() => navigate(-1)} className="bg-secondary text-white py-2 px-3 rounded-sm">{t('Back')}</button>
+                                    <button type='submit' className="bg-green-500 hover:bg-primary text-white py-2 px-3 rounded-sm" id="gtin-form"> {t('Update Changes')}</button>
                                 </div>
                             </div>
                         </form>

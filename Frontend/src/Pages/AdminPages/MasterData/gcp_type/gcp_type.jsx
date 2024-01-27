@@ -92,12 +92,12 @@ const Gcp_type = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this GCP type!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('GPC Type')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -107,7 +107,7 @@ const Gcp_type = () =>
         try {
           const isDeleted = await newRequest.delete("/deletegpctype/" + row?.id);
           if (isDeleted) {
-            toast.success('gpc type deleted successfully', {
+            toast.success(`${t('GPC Type')} ${t('Delete')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -140,7 +140,7 @@ const Gcp_type = () =>
         } catch (error) {
           // Handle any error that occurred during the deletion
           console.error("Error deleting user:", error);
-          toast.error('Something went wrong while deleting user', {
+          toast.error(`${t('GPC Type')} ${t('has been not deleted')}!`, {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -220,7 +220,7 @@ const Gcp_type = () =>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader
-            title={t('Gcp_type')}
+            title={t('GPC Type')}
           />
         </div>
 
@@ -282,7 +282,7 @@ const Gcp_type = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title={t('Gcp_type')}
+                  title={t('GPC Type')}
                   columnsName={Gcp_types(t)}
                   loading={isLoading}
                   secondaryColor="secondary"

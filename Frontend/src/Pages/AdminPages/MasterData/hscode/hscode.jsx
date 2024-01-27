@@ -91,12 +91,12 @@ const Hscode = () =>
   const handleDelete = async (row) =>
   {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this hs code!',
+      title: `${t('Are you sure to delete this record?')}!`,
+      text: `${t('You will not be able to recover this')} ${t('HsCode')}!`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
+      cancelButtonText: `${t('No, keep it')}!`,
       // changes the color of the confirm button to red
       confirmButtonColor: '#1E3B8B',
       cancelButtonColor: '#FF0032',
@@ -106,7 +106,7 @@ const Hscode = () =>
         try {
           const isDeleted = await newRequest.delete("/deleteHsCode/" + row?.id);
           if (isDeleted) {
-            toast.success('HsCode deleted successfully', {
+            toast.success(`${t('HsCode')} ${t('Delete')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -139,7 +139,7 @@ const Hscode = () =>
         } catch (error) {
           // Handle any error that occurred during the deletion
           console.error("Error deleting user:", error);
-          toast.error('Something went wrong while deleting user', {
+          toast.error(`${t('HsCode')} ${t('has been not deleted')}!`, {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,

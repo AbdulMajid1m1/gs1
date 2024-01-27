@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
+import { useTranslation } from 'react-i18next';
+
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const RenewPopUp = ({ isVisible, setVisibility,
@@ -17,6 +19,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
   newExpiryDate.setFullYear(newExpiryDate.getFullYear() + 1);
   const formattedExpiryDate = expiryDate.toLocaleDateString();
   const formattedNewExpiryDate = newExpiryDate.toLocaleDateString();
+  const { t } = useTranslation();
 
   //   const [status, setStatus] = useState("");
 //   const [rejected, setRejected] = useState("");
@@ -64,7 +67,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
        });
         console.log(res.data);
     {
-        toast.success(res?.data?.message || "Renew request sent successfully!");
+        toast.success(res?.data?.message || `${t('Renew request sent successfully!')}`);
         setLoading(false);
         // Close the popup
         handleCloseRenewPopup();
@@ -72,7 +75,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
     } catch (err) {
       console.log(err);
       setLoading(false);
-      toast.error(err.response?.data?.error || "Renew request failed!");
+      toast.error(err.response?.data?.error || `${t('Renew request failed!')}`);
     }
   };
 
@@ -85,7 +88,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
             <div className="member-popup-form w-full">
             {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Renew Invoice</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Renew Invoice')}</h2>
                 {/* <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
@@ -136,19 +139,19 @@ const RenewPopUp = ({ isVisible, setVisibility,
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
-                    <h2 className="text-secondary font-sans text-sm">Transaction ID: {gs1RegesteredMembersData?.transaction_id}</h2>
+                    <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1RegesteredMembersData?.transaction_id}</h2>
                     <div>
-                      <h2 className="text-secondary font-sans text-sm">GCP Expiry: {formattedExpiryDate}</h2>
-                      <h2 className="text-secondary font-sans text-sm">New GCP: {formattedNewExpiryDate}</h2>
+                      <h2 className="text-secondary font-sans text-sm"> {t('GCP Expiry')}: {formattedExpiryDate}</h2>
+                      <h2 className="text-secondary font-sans text-sm"> {t('New GCP')}: {formattedNewExpiryDate}</h2>
                     </div>
                   </div>
                   <table>
                     <thead>
                       <tr>
-                        <th>PRODUCT</th>
-                        <th>REGISTRATION FEE</th>
-                        <th>YEARLY FEE</th>
-                        <th>PRICE</th>
+                        <th> {t('PRODUCT')}</th>
+                        <th> {t('REGISTRATION FEE')}</th>
+                        <th> {t('YEARLY FEE')}</th>
+                        <th> {t('PRICE')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -166,7 +169,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan="3" className="text-right font-bold">Total:</td>
+                        <td colSpan="3" className="text-right font-bold"> {t('Total')}:</td>
                         <td>{totalPrice}</td>
                       </tr>
                     </tfoot>
@@ -179,7 +182,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseRenewPopup}
                   >
-                    Close
+                    {t('Close')}
                   </button>
                   <Button
                     variant="contained"
@@ -189,7 +192,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Send Request
+                     {t('Send Request')}
                   </Button>
                 </div>
               </form>

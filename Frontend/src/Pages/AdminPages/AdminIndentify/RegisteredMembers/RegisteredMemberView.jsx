@@ -669,7 +669,7 @@ const RegisteredMembersView = () => {
                   {/* <button
                       className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                     >
-                      Approved
+                      Approved 
                     </button> */}
                 </div>
 
