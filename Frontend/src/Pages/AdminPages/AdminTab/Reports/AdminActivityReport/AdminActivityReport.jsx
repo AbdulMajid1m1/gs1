@@ -134,7 +134,21 @@ const AdminActivityReport = () => {
       });
 
       console.log(res?.data);
-      setData(res.data);
+
+      const responseAdminMainData = res?.data?.map(item => {
+        return {
+          subject: item?.subject,
+          admin_id: item?.admin_id,
+          created_at: item?.created_at,
+          updated_at: item?.updated_at,
+          username: item?.admin?.username,
+          email: item?.admin?.email,
+        };
+      });
+
+      console.log(responseAdminMainData);
+
+      setData(responseAdminMainData);
 
       if (res?.data?.length === 0) {
         toast.error('No data found');
@@ -157,7 +171,7 @@ const AdminActivityReport = () => {
       return;
     }
     // Assuming these are the specific columns you want to export
-    const selectedColumns = ['subject', 'admin_id', 'created_at', 'updated_at'];
+    const selectedColumns = ['subject', 'username', 'email', 'admin_id', 'created_at', 'updated_at'];
   
     // Create a worksheet with headers and selected data
     const filteredData = data.map(row => {

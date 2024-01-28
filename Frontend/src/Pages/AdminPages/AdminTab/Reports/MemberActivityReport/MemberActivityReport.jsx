@@ -134,7 +134,32 @@ const MemberActivityReport = () => {
       });
 
       console.log(res?.data);
-      setData(res.data);
+
+      const responseAdminMainData = res?.data?.map(item => {
+        return {
+          subject: item?.subject,
+          company_name_eng: item?.user?.company_name_eng,
+          company_name_arabic: item?.user?.company_name_arabic,
+          other_products: item?.user?.other_products,
+          memberID: item?.user?.memberID,
+          email: item?.user?.email,
+          mobile: item?.user?.mobile,
+          companyID: item?.user?.companyID,
+          contactPerson: item?.user?.contactPerson,
+          status: item?.user?.status,
+          transaction_id: item?.user?.transaction_id,
+          membership_category: item?.user?.membership_category,
+          city: item?.user?.city,
+          state: item?.user?.state,
+          country: item?.user?.country,
+          created_at: item?.created_at,
+          updated_at: item?.updated_at,
+        };
+      });
+
+      console.log(responseAdminMainData);
+
+      setData(responseAdminMainData);
 
       if (res?.data?.length === 0) {
         toast.error('No data found');
@@ -158,7 +183,8 @@ const MemberActivityReport = () => {
       return;
     }
     // Assuming these are the specific columns you want to export
-    const selectedColumns = ['subject', 'created_at', 'updated_at'];
+    const selectedColumns = ['subject', 'company_name_eng', 'company_name_arabic', 'other_products', 'memberID', 'email', 'mobile', 'companyID',
+    'contactPerson', 'status', 'transaction_id', 'membership_category', 'city', 'state', 'country', 'created_at', 'updated_at'];
   
     // Create a worksheet with headers and selected data
     const filteredData = data.map(row => {
