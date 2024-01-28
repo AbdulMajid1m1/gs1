@@ -97,6 +97,39 @@ export const getProductKpiReports = async (req, res, next) => {
     }
 };
 
+export const getAllAdminsActivityReport = async (req, res, next) => {
+    try {
+        // Validate start and end dates using Joi
+        const { error, value } = Joi.object({
+            startDate: Joi.date().iso().required(),
+            endDate: Joi.date().iso().required(),
+        }).validate(req.body);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { startDate, endDate } = value;
+
+        // Fetch activities of all admins within the date range
+        const activities = await prisma.admin_history_logs.findMany({
+            where: {
+                created_at: {
+                    gte: new Date(startDate),
+                    lte: new Date(endDate),
+                },
+            },
+            include: {
+                admin: true, // Assuming 'admin' is a relation to the admin data
+            }
+        });
+
+        return res.json(activities);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 
 export const getAdminActivityReport = async (req, res, next) => {
