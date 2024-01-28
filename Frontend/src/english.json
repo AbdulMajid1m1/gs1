@@ -660,6 +660,7 @@
     "Shipment Request already approved":"Shipment Request already approved",
     "Shipment Request already submitted":"Shipment Request already submitted",
     "Shipment Request submitted successfully":"Shipment Request submitted successfully",
-    "Record has been deleted":"Record has been deleted"
+    "Record has been deleted":"Record has been deleted",
+    "Assign To":"Assign To"
     
 }
