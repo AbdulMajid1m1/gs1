@@ -606,7 +606,9 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                             price: activatedGtinProducts.gtin_subscription_total_price + activatedGtinProducts.price, // add yearly subscription fee and price (registration fee)
                             request_type: 'renewal',
                             status: 'approved',
-                            expiry_date: activatedGtinProducts.expiry_date
+                            expiry_date: activatedGtinProducts.expiry_date,
+                            admin_id: req.admin.adminId,
+
                         }
                         ]
                         console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
@@ -620,40 +622,10 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                             status: 'approved',
                             request_type: 'renewal',
                             expiry_date: item.expiry_date,
+                            admin_id: req?.admin?.adminId,
                         }));
 
-                        // update isRegistered in crs to 1 by  cr_number and cr_activity
-                        // await prisma.crs.updateMany({
-                        //     where: {
-                        //         cr: existingUser.cr_number,
-                        //         activity: existingUser.cr_activity
-                        //     },
-                        //     data: {
-                        //         isRegistered: 1
-                        //     }
-                        // });
 
-                        // await prisma.gtin_products.update({
-                        //     where: { id: product.id },
-                        //     data: { gcp_start_range: (parseInt(product.gcp_start_range) + 1).toString() }
-                        // });
-
-                        // Fetch and update TblSysCtrNo
-                        // const tblSysNo = await prisma.tblSysNo.findFirst();
-                        // if (tblSysNo) {
-                        //     userUpdateResult = await prisma.users.update({
-                        //         where: { id: userId },
-                        //         data: {
-                        //             companyID: tblSysNo.TblSysCtrNo,
-                        //             memberID: tblSysNo.TblSysCtrNo,
-                        //         }
-                        //     });
-
-                        //     await prisma.tblSysNo.update({
-                        //         where: { SysNoID: tblSysNo.SysNoID },
-                        //         data: { TblSysCtrNo: (parseInt(tblSysNo.TblSysCtrNo) + 1).toString() }
-                        //     });
-                        // }
                     }
                 }
                 const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
@@ -1727,6 +1699,8 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
                 request_type: 'additional_gtin',
                 status: 'approved',
                 expiry_date: updatedGtinSubscriptions.expiry_date,
+                admin_id: req.admin.adminId,
+
 
             },
         ]
@@ -1965,6 +1939,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
                 status: 'approved',
                 request_type: 'additional_gln',
                 expiry_date: updateResponse.expiry_date,
+                admin_id: req?.admin?.adminId,
 
             }
         ]
@@ -2240,6 +2215,7 @@ export const approveMembershipRequest = async (req, res, next) => {
                 request_type: 'upgrade_gtin',
                 status: 'approved',
                 expiry_date: newGtinSubscription.expiry_date,
+                admin_id: req.admin.adminId,
 
             },]
 
@@ -3013,6 +2989,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
                 request_type: 'downgrade_gtin',
                 status: 'approved',
                 expiry_date: getUpdatedGtinSubscription.expiry_date,
+                admin_id: req.admin.adminId,
 
             },]
 

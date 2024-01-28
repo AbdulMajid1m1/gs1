@@ -488,7 +488,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
                             request_type: 'registration',
                             status: 'approved',
-                            expiry_date: item.expiry_date
+                            expiry_date: item.expiry_date,
+                            admin_id: req.admin.adminId,
                         }));
                         console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
@@ -501,6 +502,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             status: 'approved',
                             request_type: 'registration',
                             expiry_date: item.expiry_date,
+                            admin_id: req?.admin?.adminId,
                         }));
 
 

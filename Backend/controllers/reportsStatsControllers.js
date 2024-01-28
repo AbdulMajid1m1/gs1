@@ -39,6 +39,7 @@ export const getProductKpiReports = async (req, res, next) => {
             include: {
                 user: true,
                 gtin_product: true,
+                admin: true,
             },
         });
 
@@ -47,6 +48,8 @@ export const getProductKpiReports = async (req, res, next) => {
             include: {
                 user: true,
                 product: true,
+                admin: true,
+
             },
         });
 
