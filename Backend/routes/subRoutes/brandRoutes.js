@@ -1,6 +1,7 @@
 import express from 'express';
 import { createBrand, getBrands, updateBrand, deleteBrand, searchBrands, searchMemberBrands } from '../../controllers/brandController.js';
 import { upload } from '../../configs/multerConfig.js';
+import { generalAuth } from '../../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.post('/', upload([
         name: 'brandCertificate',
         path: 'public/uploads/documents/membersBrandCertificates',
     },
-]), createBrand);
+]), generalAuth, createBrand);
 
 router.get('/', getBrands);
 
@@ -25,7 +26,7 @@ router.put('/:id', upload([
         name: 'brandCertificate',
         path: 'public/uploads/documents/membersBrandCertificates',
     },
-]), updateBrand);
+]), generalAuth, updateBrand);
 router.delete('/:id', deleteBrand);
 
 export default router;

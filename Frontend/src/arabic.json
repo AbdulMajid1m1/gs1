@@ -707,6 +707,7 @@
     "Shipment Request already submitted":"تم تقديم طلب الشحن بالفعل",
     "Shipment Request submitted successfully":"تم إرسال طلب الشحن بنجاح",
     "Record has been deleted":"تم حذف السجل",
+    "Assign To":"يسند إلى",
     "You have pending unsettled Invoice...":"لديك فاتورة معلقة لم تتم تسويتها...",
     "If You Already Paid, Click on 'OK' to Upload the Bank Slip":"إذا كنت قد دفعت بالفعل، فانقر فوق 'موافق' لتحميل قسيمة البنك",
     "OK":"نعم"

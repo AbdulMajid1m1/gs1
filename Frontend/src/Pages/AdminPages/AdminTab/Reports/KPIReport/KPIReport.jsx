@@ -32,6 +32,10 @@ const KPIReport = () => {
     }
   }, [startDate, endDate, shouldCallApi]);
 
+
+  useEffect(() => {
+    handleTodayLoader();
+  }, []);
  
   const handleTodayLoader = () => {
     setTodayLoader(true);

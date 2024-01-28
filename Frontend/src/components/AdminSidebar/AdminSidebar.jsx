@@ -920,7 +920,7 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Reports')}</p>
-                {showFourthData ? (
+                {reportSubMenu ? (
                   <i className='fas fa-solid fa-chevron-up text-white'></i>
                 ) : (
                   <i className='fas fa-solid fa-chevron-down text-white'></i>

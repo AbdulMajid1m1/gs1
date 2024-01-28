@@ -87,18 +87,48 @@ model admin_test {
 }
 
 model admins {
-  id                Int       @id(map: "PK_admins") @default(autoincrement())
-  username          String?   @db.NVarChar(Max)
-  group_id          Int?
-  email             String?   @db.NVarChar(Max)
-  password          String?   @db.NVarChar(Max)
-  image             String?   @db.NVarChar(Max)
-  mobile            String?   @db.NVarChar(Max)
-  status            Int?
-  verification_code String?   @db.NVarChar(Max)
-  remember_token    String?   @db.NVarChar(Max)
-  created_at        DateTime? @db.DateTime
-  updated_at        DateTime? @db.DateTime
+  id                         String                       @id @default(cuid())
+  username                   String?                      @db.NVarChar(Max)
+  email                      String?                      @db.NVarChar(Max)
+  password                   String?                      @db.NVarChar(Max)
+  image                      String?                      @db.NVarChar(Max)
+  mobile                     String?                      @db.NVarChar(Max)
+  status                     Int                          @default(1, map: "DF__admins__status__0F624AF8") @db.TinyInt
+  created_at                 DateTime                     @default(now())
+  updated_at                 DateTime                     @updatedAt
+  admin_users_roles_assigned admin_users_roles_assigned[]
+  admin_history_logs         admin_history_logs[]
+}
+
+model admin_users_roles {
+  id                         String                       @id @default(cuid())
+  name                       String                       @unique
+  description                String?
+  admin_users_roles_assigned admin_users_roles_assigned[]
+  created_at                 DateTime                     @default(now())
+  updated_at                 DateTime                     @updatedAt
+}
+
+model admin_users_roles_assigned {
+  id          String            @id @default(cuid())
+  roleId      String
+  adminId     String
+  created_at  DateTime          @default(now())
+  updated_at  DateTime          @updatedAt
+  admin       admins            @relation(fields: [adminId], references: [id])
+  role        admin_users_roles @relation(fields: [roleId], references: [id])
+  permissions Permission[]
+}
+
+model Permission {
+  id                      String                     @id @default(cuid())
+  type                    String // 'CREATE', 'READ', 'UPDATE', 'DELETE'
+  adminUserRoleAssignedId String
+  adminUserRoleAssigned   admin_users_roles_assigned @relation(fields: [adminUserRoleAssignedId], references: [id])
+  created_at              DateTime                   @default(now())
+  updated_at              DateTime                   @updatedAt
+
+  @@unique([type, adminUserRoleAssignedId])
 }
 
 model attribute_values {
@@ -1092,6 +1122,17 @@ model member_history_logs {
   user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
+model admin_history_logs {
+  id         String    @id @default(cuid())
+  subject    String    @db.NVarChar(255)
+  admin_id   String
+  created_at DateTime? @default(now()) @db.DateTime
+  updated_at DateTime? @updatedAt @db.DateTime
+  user_id    String
+  user       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  admin      admins    @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
 model member_important_notifications {
   id          BigInt    @id(map: "PK_member_important_notifications") @default(autoincrement())
   subject     String?   @db.NVarChar(Max)
@@ -2028,6 +2069,7 @@ model users {
   member_history_logs                   member_history_logs[]
   gtin_subscription_histories           gtin_subscription_histories[]
   other_products_subscription_histories other_products_subscription_histories[]
+  admin_history_logs                    admin_history_logs[]
 }
 
 model rejected_users {
