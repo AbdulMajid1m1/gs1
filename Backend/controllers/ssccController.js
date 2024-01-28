@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 import { generateSSCCBarcode } from '../utils/functions/barcodesGenerator.js';
+import { createAdminLogs } from '../utils/functions/historyLogs.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function checkExpiryDate(expiryDate) {
@@ -52,10 +53,10 @@ export const createSSCC = async (req, res, next) => {
     }
 
     const userId = value.user_id;
-
+    let user;
     try {
         const result = await prisma.$transaction(async (prisma) => {
-            let user = await prisma.users.findUnique({ where: { id: userId } });
+            user = await prisma.users.findUnique({ where: { id: userId } });
             if (!user) throw createError(404, 'User not found');
 
 
@@ -148,6 +149,28 @@ export const createSSCC = async (req, res, next) => {
 
             return { newSSCC, otherProductSubscriptions };
         });
+
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `SSCC created by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: user.id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `SSCC created by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
+
 
         res.status(201).json({
             message: 'SSCC created successfully.',
@@ -309,6 +332,26 @@ export const createBulkSSCC = async (req, res, next) => {
             return { newSSCC, otherProductSubscriptions };
         });
 
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `Bulk SSCC created by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: value.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `Bulk SSCC created by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
+
         res.status(201).json({
             message: 'SSCC created successfully.',
             product: result.newSSCC,
@@ -427,6 +470,28 @@ export const updateSSCC = async (req, res, next) => {
             data: value // Assuming 'value' contains the updated fields
         });
 
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `SSCC updated by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: existingSSCC.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `SSCC updated by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
+
+
         res.status(200).json({
             message: 'SSCC updated successfully',
             product: updatedSSCC
@@ -473,6 +538,26 @@ export const deleteSSCC = async (req, res, next) => {
 
         // Delete the SSCC product from the database
         await prisma.add_member_sscc_products.delete({ where: { id: ssccId } });
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `SSCC deleted by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: currentSSCC.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `SSCC deleted by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
 
         res.status(200).json({ message: 'SSCC product deleted successfully' });
     } catch (err) {

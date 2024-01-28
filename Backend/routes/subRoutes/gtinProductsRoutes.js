@@ -1,5 +1,6 @@
 import express from 'express';
 import { deleteGtinSubscription, deleteOtherProductsSubscription, getAllgtinProducts, getGtinSubscriptions, getUserSubscribedProductsNames } from '../../controllers/gtinProductsController.js';
+import { adminAuth } from '../../middlewares/auth.js';
 
 
 
@@ -15,6 +16,6 @@ router.get('/getUserSubscribedProductsNames', getUserSubscribedProductsNames);
 
 router.delete('/gtinSubscriptions/:id', deleteGtinSubscription);
 
-router.delete('/deleteotherProductsSubscriptionsFromAdmin', deleteOtherProductsSubscription);
+router.delete('/deleteotherProductsSubscriptionsFromAdmin', adminAuth, deleteOtherProductsSubscription);
 
 export default router;

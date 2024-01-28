@@ -107,7 +107,6 @@ export const getMembershipHistory = async (req, res, next) => {
             return res.status(404).json({ message: 'No active membership history found for this member.' });
         }
 
-        // fetct user Gtin and GLN products count from old database based on member id
 
         // Fetch products from oldGs1Prisma table Mem.products based on MemberID
         const oldGtinProuductCount = await oldGs1Prisma.Product.count({
@@ -233,16 +232,6 @@ export const migrateUser = async (req, res, next) => {
             throw createError(400, "No active membership history found for this member.");
         }
 
-        // check if the IntID is already migrated in users table based on companyID
-        const user = await prisma.users.findFirst({
-            where: {
-                companyID: latestMembership.IntID.toString(),
-            },
-        });
-
-        if (user) {
-            throw createError(400, "This member is already migrated.");
-        }
 
 
         // Calculate the number of years the user has to pay
@@ -259,6 +248,21 @@ export const migrateUser = async (req, res, next) => {
         if (!member) {
             throw createError(400, "Member not found.");
         }
+
+        // check if the IntID is already migrated in users table based on companyID
+        const user = await prisma.users.findFirst({
+            where: {
+                companyID: member.IntID.toString(),
+            },
+        });
+
+        if (user) {
+            throw createError(400, "This member is already migrated.");
+        }
+
+
+
+
         const products = JSON.parse(member.Products || '[]');
 
         // Fetch pricing information

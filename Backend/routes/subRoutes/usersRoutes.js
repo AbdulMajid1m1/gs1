@@ -2,6 +2,7 @@ import express from 'express';
 import { createSubUser, createUser, deleteUser, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getNewlyRegisteredUsers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithExpiringGcpThisYear, memberLogin, searchUsers, sendInvoiceToUser, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
+import { generalAuth } from '../../middlewares/auth.js';
 
 const userRouter = express.Router();
 
@@ -25,11 +26,11 @@ userRouter.get('/getByGcpExpiry', getUsersWithExpiringGcpThisYear);
 
 userRouter.get('/search', searchUsers);
 
-userRouter.post('/subuser', createSubUser);
+userRouter.post('/subuser', generalAuth, createSubUser);
 
 userRouter.post('/updateUserStatus', updateUserStatus);
 
-userRouter.put('/:userId', upload([
+userRouter.put('/:userId', generalAuth, upload([
     {
         name: 'document',
         path: 'public/uploads/documents/MemberRegDocs',

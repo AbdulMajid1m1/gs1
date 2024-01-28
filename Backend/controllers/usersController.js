@@ -18,7 +18,7 @@ import { ADMIN_EMAIL, BACKEND_URL, JWT_EXPIRATION, MEMBER_JWT_SECRET } from '../
 import { generateRandomTransactionId } from '../utils/utils.js';
 import { cookieOptions } from '../utils/authUtilities.js';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
-import { createMemberLogs } from '../utils/functions/historyLogs.js';
+import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 
 // Define the directory name of the current module
@@ -863,6 +863,26 @@ export const createSubUser = async (req, res, next) => {
         <p>Please use this  email and Password to login.</p>
       `;
 
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `Sub Admin Created by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: newUser.id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `Sub Admin Created by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
+
         await sendEmail({
             toEmail: userData.email,
             subject: emailSubject,
@@ -898,7 +918,7 @@ export const memberLogin = async (req, res, next) => {
         }
 
         // If email, activity, and password are correct, generate a JWT token
-        const token = jwt.sign({ userId: user.id }, MEMBER_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+        const token = jwt.sign({ userId: user.id, email: user.email }, MEMBER_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
         // Send the token in the response
         // res.status(200).json({ token });
@@ -1489,6 +1509,25 @@ export const updateUser = async (req, res, next) => {
             where: { id: userId },
             data: value,
         });
+        if (req?.admin?.adminId) {
+            const adminLog = {
+                subject: 'Update User Details',
+                admin_id: req.admin.adminId,
+                user_id: userId,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+            const userLog = {
+                subject: 'Update User Details',
+                user_id: req.user.userId,
+                created_by_admin: false,
+            }
+            await createMemberLogs(userLog);
+        }
+
 
         res.json(updatedUser);
     } catch (error) {

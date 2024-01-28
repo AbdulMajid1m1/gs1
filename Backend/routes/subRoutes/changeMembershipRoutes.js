@@ -1,5 +1,6 @@
 import express from 'express';
 import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, getInvoiceDetailsForUpgradeSubscription, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest, addAdditionalProductsRequest, approveAdditionalProductsRequest, addAdditionalGlnRequest, approveAdditionalGlnRequest, getAddGlnCarts, getUpgradeMembershipCarts } from '../../controllers/changeMembershipController.js';
+import { adminAuth, generalAuth } from '../../middlewares/auth.js';
 
 
 const router = express.Router();
@@ -11,27 +12,27 @@ router.get('/upgradeMembershipCarts', getUpgradeMembershipCarts);
 // Route for getting add GLN carts
 router.get('/addGlnCarts', getAddGlnCarts);
 
-router.post('/renewRequest', membershipRenewRequest);
+router.post('/renewRequest', generalAuth, membershipRenewRequest);
 
 router.post('/getInvoiceDetailsForUpgradeSubscription', getInvoiceDetailsForUpgradeSubscription);
 
-router.put('/changeRenewStatus/:id', updateMemberRenewalDocumentStatus);
+router.put('/changeRenewStatus/:id', adminAuth, updateMemberRenewalDocumentStatus);
 
-router.put('/upgradeMembershipRequest', upgradeMemberSubscriptionRequest);
+router.put('/upgradeMembershipRequest', generalAuth, upgradeMemberSubscriptionRequest);
 
-router.post('/addAdditionalProductsRequest', addAdditionalProductsRequest);
+router.post('/addAdditionalProductsRequest', generalAuth, addAdditionalProductsRequest);
 
-router.post('/addAdditionalGlnRequest', addAdditionalGlnRequest);
+router.post('/addAdditionalGlnRequest', generalAuth, addAdditionalGlnRequest);
 
-router.put('/approveAdditionalGlnRequest', approveAdditionalGlnRequest);
+router.put('/approveAdditionalGlnRequest', adminAuth, approveAdditionalGlnRequest);
 
-router.put('/approveAdditionalProductsRequest', approveAdditionalProductsRequest);
+router.put('/approveAdditionalProductsRequest', adminAuth, approveAdditionalProductsRequest);
 
-router.put('/approveMembershipRequest', approveMembershipRequest);
+router.put('/approveMembershipRequest', adminAuth, approveMembershipRequest);
 
-router.put('/downgradeMemberSubscriptionRequest', downgradeMemberSubscriptionRequest);
+router.put('/downgradeMemberSubscriptionRequest', generalAuth, downgradeMemberSubscriptionRequest);
 
-router.put('/approveDowngradeMembershipRequest', approveDowngradeMembershipRequest);
+router.put('/approveDowngradeMembershipRequest', adminAuth, approveDowngradeMembershipRequest);
 
 
 

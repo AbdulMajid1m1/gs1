@@ -6,6 +6,7 @@ import path from 'path';
 import fs from 'fs';
 
 import { calculateGLN } from '../utils/functions/barcodesGenerator.js';
+import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -57,12 +58,12 @@ export const createGLN = async (req, res, next) => {
     // Construct data object for database entry
 
     const userId = value.user_id;
-
+    let user;
     try {
 
         // Start a transaction
         const result = await prisma.$transaction(async (prisma) => {
-            let user = await prisma.users.findUnique({ where: { id: userId } });
+            user = await prisma.users.findUnique({ where: { id: userId } });
             if (!user) {
                 throw createError(404, 'User not found');
             }
@@ -155,6 +156,26 @@ export const createGLN = async (req, res, next) => {
         });
 
         console.log(result);
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `GLN created by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: user.id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `GLN created by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
 
         res.status(201).json({
             message: 'GLN created successfully.',
@@ -287,6 +308,26 @@ export const updateGLN = async (req, res, next) => {
             data: value
         });
 
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `GLN updated by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: updatedGLN.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `GLN updated by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
         res.json(updatedGLN);
     } catch (err) {
         console.error(err);
@@ -331,6 +372,28 @@ export const deleteGLN = async (req, res, next) => {
 
         // Delete the GLN from the database
         await prisma.add_member_gln_products.delete({ where: { id: glnId } });
+
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `GLN deleted by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: currentGLN.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `GLN deleted by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
+
 
         res.status(200).json({ message: 'GLN deleted successfully' });
     } catch (err) {
