@@ -8,6 +8,7 @@ import newRequest from '../../../../utils/userRequest';
 import { DataTableContext } from '../../../../Contexts/DataTableContext';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import SwipeDownIcon from '@mui/icons-material/SwipeDown';
 import Swal from 'sweetalert2';
@@ -328,6 +329,13 @@ const RegisteredMembers = () => {
                 icon: <PublishedWithChangesIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 action: handleShowRenewPopup,
+
+              },
+              {
+                label: `${t('Assign To')}`,
+                icon: <AssignmentTurnedInIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                ,
+                // action: handleShowRenewPopup,
 
               },
               // {

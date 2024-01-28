@@ -6736,6 +6736,67 @@ export const KpiReportColumn = (t, i18n) => [
   },
   {
     field: 'created_at',
+    headerName: 'Date Created',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  // {
+  //   field: 'updated_at',
+  //   headerName: 'Updated At',
+  //   width: 180,
+  //   type: 'dateTime',
+  //   valueGetter: (params) =>
+  //   {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+  // {
+  //   field: 'expiry_date',
+  //   headerName: 'Expiry Date',
+  //   width: 180,
+  //   type: 'dateTime',
+  //   valueGetter: (params) =>
+  //   {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+
+  
+  
+  
+];
+
+export const AdminActivityReportColumn = [
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    width: 380,
+  },
+  {
+    field: 'username',
+    headerName: 'Admin Name',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'admin_id',
+    headerName: 'Admin ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
     headerName: 'Created At',
     width: 180,
 
@@ -6757,53 +6818,7 @@ export const KpiReportColumn = (t, i18n) => [
       return params.value ? new Date(params.value) : null;
     }
   },
-  {
-    field: 'expiry_date',
-    headerName: 'Expiry Date',
-    width: 180,
-    type: 'dateTime',
-    valueGetter: (params) =>
-    {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }
-  },
 
-  
-  
-  
-];
-
-export const AdminActivityReportColumn = (t, i18n) => [
-  {
-    field: 'details',
-    headerName: t('Details'),
-    width: 380,
-  },
-  {
-    field: 'ipaddress',
-    headerName: t('IP Address'),
-    width: 220,
-  },
-  {
-    field: 'admin',
-    headerName: t('Admins'),
-    width: 180,
-  },
-  {
-    field: 'date',
-    headerName: t('Date'),
-    width: 180,
-
-    type: 'dateTime',
-    valueGetter: (params) =>
-    {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }    
-  },
-
-  
   
   
 ];
@@ -6876,4 +6891,125 @@ export const additionalGlnColumn = [
       return params.value ? new Date(params.value) : null;
     }
   },
+];
+
+
+
+export const memberActivityReportColumn = [
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    width: 380,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'other_products',
+    headerName: 'Other Products',
+    width: 180,
+  },
+  {
+    field: 'memberID',
+    headerName: 'Member ID',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Mobile',
+    width: 180,
+  },
+  {
+    field: 'companyID',
+    headerName: 'Company ID',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'city',
+    headerName: 'City',
+    width: 180,
+  },
+  {
+    field: 'state',
+    headerName: 'State',
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: 'Country',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+
+  
+  
 ];

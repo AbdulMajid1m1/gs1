@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import barcodeImage from "../../../Images/barcodeImage.png"
 import { useTranslation } from 'react-i18next';
+import CompanyNamePopUp from './CompanyNamePopUp';
 
 
 const MemmberRegisteration = () => {
@@ -496,6 +497,25 @@ const MemmberRegisteration = () => {
 
     // console.log("company", companyLandLine)
 
+    const [isCompanyNamePopUpVisible, setIsCompanyNamePopUpVisible] = useState(false);
+    const [popupOpened, setPopupOpened] = useState(false); // New state variable
+
+    const handleCompanyNamePopUp = () => {
+        setIsCompanyNamePopUpVisible(true);
+    };
+
+
+    const handleInputFocus = () => {
+        if (!popupOpened) {
+            setIsCompanyNamePopUpVisible(true);
+            setPopupOpened(true); // Set popupOpened to true when the popup is opened
+        }
+    };
+
+    const handleInputBlur = () => {
+        setIsCompanyNamePopUpVisible(false);
+    };
+
     return (
         <div>
             {isLoading &&
@@ -633,9 +653,11 @@ const MemmberRegisteration = () => {
                                 <label className='text-secondary font-semibold' htmlFor='companyEnglish'>{t('Company Name [English]')}<span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setCompanyEnglish(e.target.value)}
-                                    id='companyEnglish'
+                                    // id='companyEnglish'
                                     placeholder={`${t('Enter')} ${t('Company Name [English]')} }`}
                                     required
+                                    onFocus={handleInputFocus}
+                                    onBlur={handleInputBlur}
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
 
@@ -1135,6 +1157,10 @@ const MemmberRegisteration = () => {
                     </form>
 
                 </div>
+
+                {isCompanyNamePopUpVisible && (
+                    <CompanyNamePopUp isVisible={isCompanyNamePopUpVisible} setVisibility={setIsCompanyNamePopUpVisible}/>
+                )}
                 {/* </div> */}
             </div >
 

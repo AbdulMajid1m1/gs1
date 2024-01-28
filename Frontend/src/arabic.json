@@ -705,6 +705,7 @@
     "Shipment Request already approved":"تمت الموافقة على طلب الشحن بالفعل",
     "Shipment Request already submitted":"تم تقديم طلب الشحن بالفعل",
     "Shipment Request submitted successfully":"تم إرسال طلب الشحن بنجاح",
-    "Record has been deleted":"تم حذف السجل"
+    "Record has been deleted":"تم حذف السجل",
+    "Assign To":"يسند إلى"
 
 }
