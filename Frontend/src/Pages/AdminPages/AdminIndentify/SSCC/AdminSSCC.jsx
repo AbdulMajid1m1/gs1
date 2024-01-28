@@ -486,7 +486,7 @@ const handleRowClickInParent = (item) => {
 
 
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-                <DataTable data={data}  title={`${t('SSCC LIST')}`} columnsName={ViewSsccColumn(t)} backButton={false}
+                <DataTable data={data}  title={`${t('SSCC LIST')}`} columnsName={ViewSsccColumn(t,i18n)} backButton={false}
                     loading={isLoading}
                     secondaryColor="secondary"
                     handleRowClickInParent={handleRowClickInParent}

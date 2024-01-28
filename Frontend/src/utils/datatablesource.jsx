@@ -1439,7 +1439,8 @@ export const GtinColumn = (t, i18n) => [
   // },
 ];
 
-export const GlnColumn = (t, i18n) => [
+export const GlnColumn = (t, i18n) => {
+   const columns =  [
   {
     field: 'product_id',
     headerName: t('Product ID'),
@@ -1473,23 +1474,37 @@ export const GlnColumn = (t, i18n) => [
   },
 ];
 
-export const ViewSsccColumn = (t, i18n) => [
-  {
-    field: 'sscc_id',
-    headerName: t('SSCC ID'),
-    width: 180,
-  },
-  {
-    field: 'sscc_type',
-    headerName: t('Type'),
-    width: 180,
-  },
-  {
-    field: 'SSCCBarcodeNumber',
-    headerName: t('SSCC Barcode Number'),
-    width: 280,
-  },
-];
+if (i18n && i18n.language === 'ar') {
+  columns.reverse();
+}
+return columns;
+};
+
+export const ViewSsccColumn = (t, i18n) => {
+  const columns = [
+    {
+      field: 'sscc_id',
+      headerName: t('SSCC ID'),
+      width: 180,
+    },
+    {
+      field: 'sscc_type',
+      headerName: t('Type'),
+      width: 180,
+    },
+    {
+      field: 'SSCCBarcodeNumber',
+      headerName: t('SSCC Barcode Number'),
+      width: 280,
+    },
+  ];
+
+  if (i18n && i18n.language === 'ar') {
+    columns.reverse();
+  }
+  return columns;
+};
+
 
 export const Gs1AllMembers = (t, i18n) => [
   {

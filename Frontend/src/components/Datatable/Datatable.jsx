@@ -357,6 +357,15 @@ const DataTable = ({
     },
   ];
 
+  const columns = [
+    ...idColumn.slice(0, 1), // Take the first element of idColumn array
+    ...(showToolbarSlot !== false ? [GridToolbar] : []), // Show toolbar slot conditionally
+    ...(actionColumnVisibility !== false ? [...actionColumn, ...idColumn.slice(1)] : [...idColumn]),
+    ...columnsName,
+  ];
+
+  const reversedColumns = i18n && i18n.language === 'ar' ? columns.reverse() : columns;
+
   // const actionColumn = [
   //     {
   //         field: "action",
@@ -531,7 +540,7 @@ const DataTable = ({
               <span>
                 <input
                   type="text"
-                  placeholder="SEARCH MEMBERS"
+                  placeholder={`${t('SEARCH MEMBERS')}`}
                   name="SHIPMENTID"
                   className="searchInput w-[75%]"
                   onChange={handleGlobalSearch}
@@ -544,7 +553,7 @@ const DataTable = ({
               <span>
                 <input
                   type="text"
-                  placeholder="SEARCH BY SHIPMENT ID"
+                  placeholder={`${t('SEARCH BY SHIPMENT ID')}`}
                   name="SHIPMENTID"
                   className="searchInput"
                   onChange={handleSearch}
@@ -557,7 +566,7 @@ const DataTable = ({
                 <input
                   type="text"
                   name="CONTAINERID"
-                  placeholder="SEARCH BY CONTAINER ID"
+                  placeholder={`${t('SEARCH BY CONTAINER ID')}`}
                   className="searchInput"
                   onChange={handleSearch}
                 />
@@ -625,10 +634,7 @@ const DataTable = ({
           // rows={filteredData}
           rows={muiFilteredData}
 
-          columns={(actionColumnVisibility !== false
-            ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
-            : [...idColumn, ...columnsName])
-          }
+          columns={reversedColumns}
 
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
