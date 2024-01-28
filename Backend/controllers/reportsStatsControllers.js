@@ -126,6 +126,11 @@ export const getAdminActivityReport = async (req, res, next) => {
         // Fetch data from both tables
         const adminHistories = await prisma.admin_history_logs.findMany({
             where: data,
+            include: {
+                admin: true,
+                user: true,
+
+            }
         });
 
 
@@ -166,6 +171,10 @@ export const getMemberActivityReport = async (req, res, next) => {
         // Fetch data from both tables
         const memberHistories = await prisma.member_history_logs.findMany({
             where: data,
+            include: {
+                user: true,
+
+            }
         });
 
 

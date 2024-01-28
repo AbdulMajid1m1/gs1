@@ -6796,6 +6796,16 @@ export const AdminActivityReportColumn = [
     width: 380,
   },
   {
+    field: 'username',
+    headerName: 'Admin Name',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
     field: 'admin_id',
     headerName: 'Admin ID',
     width: 180,
@@ -6905,6 +6915,91 @@ export const memberActivityReportColumn = [
     field: 'subject',
     headerName: 'Subject',
     width: 380,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: 'Company Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'other_products',
+    headerName: 'Other Products',
+    width: 180,
+  },
+  {
+    field: 'memberID',
+    headerName: 'Member ID',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Mobile',
+    width: 180,
+  },
+  {
+    field: 'companyID',
+    headerName: 'Company ID',
+    width: 180,
+  },
+  {
+    field: 'contactPerson',
+    headerName: 'Contact Person',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  {
+    field: 'transaction_id',
+    headerName: 'Transaction ID',
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: 'Membership Category',
+    width: 180,
+  },
+  {
+    field: 'city',
+    headerName: 'City',
+    width: 180,
+  },
+  {
+    field: 'state',
+    headerName: 'State',
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: 'Country',
+    width: 180,
   },
   {
     field: 'created_at',
