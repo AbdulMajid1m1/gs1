@@ -4,6 +4,7 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import path from 'path';
 import fs from 'fs';
+import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
 const brandSchema = Joi.object({
     name: Joi.string().max(255).required(),
     name_ar: Joi.string().max(255).required(),
@@ -86,11 +87,11 @@ export const createBrand = async (req, res, next) => {
         if (error) {
             throw createError(400, error.details[0].message);
         }
-
+        let user;
         // Transaction begins
         const result = await prisma.$transaction(async (prisma) => {
             // Check if user exists and is active
-            const user = await prisma.users.findUnique({
+            user = await prisma.users.findUnique({
                 where: { id: value.user_id },
             });
             if (!user) {
@@ -132,6 +133,26 @@ export const createBrand = async (req, res, next) => {
             // Create brand in database
             return await prisma.brands.create({ data: brandData });
         }, { timeout: 20000 });
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `Brand ${value.name} created by gs1 staff ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: user.id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `Brand ${value.name} created by gs1 member ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
 
         res.status(201).json(result);
     } catch (error) {
@@ -339,6 +360,29 @@ export const updateBrand = async (req, res, next) => {
             where: { id: id },
             data: value,
         });
+
+
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `Brand ${value.name} updated by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: updatedBrand.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        if (req?.user?.userId) {
+
+            const userLog = {
+                subject: `Brand ${value.name} updated by ${req?.user?.email}`,
+                user_id: req.user.userId,
+            }
+            await createMemberLogs(userLog);
+        }
+
 
         res.json(updatedBrand);
     } catch (error) {

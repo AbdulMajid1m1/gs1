@@ -6,7 +6,7 @@ import { createError } from '../utils/createError.js';
 
 
 
-// Define a Joi schema for date validation
+
 // Define a Joi schema for date validation as strings
 const dateSchema = Joi.string().isoDate();
 
@@ -93,3 +93,88 @@ export const getProductKpiReports = async (req, res, next) => {
         next(createError(500, 'Server error occurred'));
     }
 };
+
+
+
+export const getAdminActivityReport = async (req, res, next) => {
+    try {
+        // Validate start and end dates using Joi
+        const { error, value } = Joi.object({
+            startDate: dateSchema.required(),
+            endDate: dateSchema.required(),
+            admin_id: Joi.number().required(),
+
+        }).validate(req.body); // Use req.body instead of req.query
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+
+
+        // Extract and validate start and end dates
+        const { startDate, endDate } = value;
+
+        // Construct date range conditions for Prisma query
+        const data = {
+            created_at: {
+                gte: new Date(startDate),
+                lte: new Date(endDate),
+            },
+        };
+
+        // Fetch data from both tables
+        const adminHistories = await prisma.admin_history_logs.findMany({
+            where: data,
+        });
+
+
+        return res.json(adminHistories);
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+
+}
+export const getMemberActivityReport = async (req, res, next) => {
+    try {
+        // Validate start and end dates using Joi
+        const { error, value } = Joi.object({
+            startDate: dateSchema.required(),
+            endDate: dateSchema.required(),
+            userId: Joi.string().required(),
+        }).validate(req.body); // Use req.body instead of req.query
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+
+
+        // Extract and validate start and end dates
+        const { startDate, endDate } = value;
+        console.log(startDate, endDate);
+        // Construct date range conditions for Prisma query
+        const data = {
+            created_at: {
+                gte: new Date(startDate),
+                lte: new Date(endDate),
+            },
+        };
+
+        // Fetch data from both tables
+        const memberHistories = await prisma.member_history_logs.findMany({
+            where: data,
+        });
+
+
+        return res.json(memberHistories);
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+
+}
+

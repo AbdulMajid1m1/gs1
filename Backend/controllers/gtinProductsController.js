@@ -1,6 +1,7 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
+import { createAdminLogs } from '../utils/functions/historyLogs.js';
 
 
 
@@ -152,9 +153,10 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
             throw createError(400, `Invalid request parameters: ${error.details[0].message}`);
         }
         const { id, transaction_id, product_id } = value;
-
+        let productName = '';
+        let cart;
         const result = await prisma.$transaction(async (prisma) => {
-            const cart = await prisma.carts.findFirst({
+            cart = await prisma.carts.findFirst({
                 where: {
                     transaction_id: transaction_id,
                 },
@@ -165,6 +167,8 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
             }
 
             const cartItems = JSON.parse(cart.cart_items);
+            // get the deleting prduct name productName from cartItems
+            productName = cartItems.find(item => item.productID === product_id)?.productName;
             const newCartItems = cartItems.filter(item => item.productID !== product_id);
             const newCartItemsStr = JSON.stringify(newCartItems);
 
@@ -186,6 +190,17 @@ export const deleteOtherProductsSubscription = async (req, res, next) => {
 
             return { updatedCart, count };
         });
+
+        if (req?.admin?.adminId) {
+            const adminLog = {
+                subject: `Admin deleted ${productName} subscription`,
+                admin_id: req.admin.adminId,
+                user_id: cart.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
 
         // Return the result after the transaction
         return res.status(200).json({ ...result });

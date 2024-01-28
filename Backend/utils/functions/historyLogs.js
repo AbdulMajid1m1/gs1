@@ -15,6 +15,20 @@ export const createMemberLogs = async (data) => {
 
 
 
+
+export const createAdminLogs = async (data) => {
+    try {
+        return await prisma.admin_history_logs.create({
+            data
+        });
+    } catch (error) {
+        // handle the error gracefully
+        console.log(error);
+    }
+}
+
+
+
 export const createGtinSubscriptionHistory = async (data) => {
     try {
         return await prisma.gtin_subscription_histories.createMany({
