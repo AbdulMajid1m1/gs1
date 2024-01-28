@@ -139,7 +139,7 @@ const KPIReport = () => {
     // Save Excel file
     saveAs(dataBlob, 'kpi_report_template.xlsx');
   };
-  
+    
   
   
   const handlePdfExport = (returnBlob = false) => {
