@@ -1250,6 +1250,29 @@ export const getUsersWithExpiringGcpThisYear = async (req, res, next) => {
 };
 
 
+export const getExpiredMembers = async (req, res, next) => {
+    try {
+        const currentDate = new Date();
+
+        const expiredMembers = await prisma.users.findMany({
+            where: {
+                gcp_expiry: {
+                    lt: currentDate, // Less than the current date
+                },
+            },
+            orderBy: {
+                gcp_expiry: 'desc' // Order by gcp_expiry in decending order
+            },
+        });
+
+        return res.json(expiredMembers);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
 export const searchUsers = async (req, res, next) => {
     try {
         const { keyword } = req.query; // Get the search keyword from the query parameters
