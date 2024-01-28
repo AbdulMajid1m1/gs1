@@ -9,7 +9,7 @@ import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import * as XLSX from "xlsx";
 import jsPDF from 'jspdf';
-// import 'jspdf-autotable';
+import 'jspdf-autotable';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
@@ -108,7 +108,7 @@ const KPIReport = () => {
       return;
     }
     // Assuming these are the specific columns you want to export
-    const selectedColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at', 'updated_at', 'expiry_date'];
+    const selectedColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at'];
   
     // Create a worksheet with headers and selected data
     const filteredData = data.map(row => {
@@ -121,7 +121,13 @@ const KPIReport = () => {
   
     // Create a worksheet with headers and data
     const worksheet = XLSX.utils.json_to_sheet([{}].concat(filteredData), { header: selectedColumns });
-  
+    
+     // Set column widths in the !cols property
+     const columnWidths = selectedColumns.map((column, index) => ({
+      width: index === 0 ? 20 : 25, // Set the width to 25 for the first column, and 15 for the rest
+    }));
+    worksheet['!cols'] = columnWidths;
+
     // Create a workbook and append the worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Kpi Report');
@@ -137,10 +143,14 @@ const KPIReport = () => {
   
   
   const handlePdfExport = (returnBlob = false) => {
+    if (data.length === 0) {
+      toast.error('No data to export');
+      return;
+    }
     const doc = new jsPDF("landscape");
   
     // Specify the columns you want to export
-    const exportColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at', 'updated_at', 'expiry_date'];
+    const exportColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at'];
   
     // Calculate the font size based on the number of columns
     const maxColumns = 10;
