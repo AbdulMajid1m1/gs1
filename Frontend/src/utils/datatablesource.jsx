@@ -6736,6 +6736,57 @@ export const KpiReportColumn = (t, i18n) => [
   },
   {
     field: 'created_at',
+    headerName: 'Date Created',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  // {
+  //   field: 'updated_at',
+  //   headerName: 'Updated At',
+  //   width: 180,
+  //   type: 'dateTime',
+  //   valueGetter: (params) =>
+  //   {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+  // {
+  //   field: 'expiry_date',
+  //   headerName: 'Expiry Date',
+  //   width: 180,
+  //   type: 'dateTime',
+  //   valueGetter: (params) =>
+  //   {
+  //     // Convert the string date to a Date object
+  //     return params.value ? new Date(params.value) : null;
+  //   }
+  // },
+
+  
+  
+  
+];
+
+export const AdminActivityReportColumn = [
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    width: 380,
+  },
+  {
+    field: 'admin_id',
+    headerName: 'Admin ID',
+    width: 180,
+  },
+  {
+    field: 'created_at',
     headerName: 'Created At',
     width: 180,
 
@@ -6757,53 +6808,7 @@ export const KpiReportColumn = (t, i18n) => [
       return params.value ? new Date(params.value) : null;
     }
   },
-  {
-    field: 'expiry_date',
-    headerName: 'Expiry Date',
-    width: 180,
-    type: 'dateTime',
-    valueGetter: (params) =>
-    {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }
-  },
 
-  
-  
-  
-];
-
-export const AdminActivityReportColumn = (t, i18n) => [
-  {
-    field: 'details',
-    headerName: t('Details'),
-    width: 380,
-  },
-  {
-    field: 'ipaddress',
-    headerName: t('IP Address'),
-    width: 220,
-  },
-  {
-    field: 'admin',
-    headerName: t('Admins'),
-    width: 180,
-  },
-  {
-    field: 'date',
-    headerName: t('Date'),
-    width: 180,
-
-    type: 'dateTime',
-    valueGetter: (params) =>
-    {
-      // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
-    }    
-  },
-
-  
   
   
 ];
@@ -6876,4 +6881,40 @@ export const additionalGlnColumn = [
       return params.value ? new Date(params.value) : null;
     }
   },
+];
+
+
+
+export const memberActivityReportColumn = [
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    width: 380,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+
+  
+  
 ];

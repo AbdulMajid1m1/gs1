@@ -6,6 +6,7 @@ import { AdminActivityReportColumn } from '../../../../../utils/datatablesource'
 import { Autocomplete, CircularProgress, TextField, debounce } from '@mui/material';
 import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
+import * as XLSX from "xlsx";
 // import BarsDataset from './BarCharts';
 
 const AdminActivityReport = () => {
@@ -105,15 +106,15 @@ const AdminActivityReport = () => {
 
   const handleSearchTimeAndDate = async () => {
     if (!selectedAdmin) {
-      toast.error('Please select an admin');
+      toast.info('Please select an admin');
       return;
     }
     if (!startDate) {
-      toast.error('Please select a start date');
+      toast.info('Please select a start date');
       return;
     }
     if (!endDate) {
-      toast.error('Please select an end date');
+      toast.info('Please select an end date');
       return;
     }
     setIsLoading(true);
@@ -138,7 +139,7 @@ const AdminActivityReport = () => {
       if (res?.data?.length === 0) {
         toast.error('No data found');
       }
-      
+
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -149,6 +150,45 @@ const AdminActivityReport = () => {
   }
     
 
+
+  const handleExportProductsTemplate = () => {
+    if (data.length === 0) {
+      toast.error('No data to export');
+      return;
+    }
+    // Assuming these are the specific columns you want to export
+    const selectedColumns = ['subject', 'admin_id', 'created_at', 'updated_at'];
+  
+    // Create a worksheet with headers and selected data
+    const filteredData = data.map(row => {
+      const filteredRow = {};
+      selectedColumns.forEach(column => {
+        filteredRow[column] = row[column];
+      });
+      return filteredRow;
+    });
+  
+    // Create a worksheet with headers and data
+    const worksheet = XLSX.utils.json_to_sheet([{}].concat(filteredData), { header: selectedColumns });
+  
+    // Set column widths in the !cols property
+    const columnWidths = selectedColumns.map((column, index) => ({
+      width: index === 0 ? 45 : 20, // Set the width to 25 for the first column, and 15 for the rest
+    }));
+    worksheet['!cols'] = columnWidths;
+
+
+    // Create a workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Admins Log');
+  
+    // Generate Excel file
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+    // Save Excel file
+    saveAs(dataBlob, 'AdminsLog.xlsx');
+  };
 
 
   
@@ -261,26 +301,18 @@ const AdminActivityReport = () => {
                     </div>
 
                       <div className='flex justify-between flex-wrap px-5'>
-                        <div>
-                            <button
-                              className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
-                              >
-                              {t('View Admin Activity')}
-                            </button>
-                        </div>
-                        <div className='flex gap-2'>
-                            <button
-                              className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
-                              >
-                              {t('Download Excel')}
-                            </button>
-                            <button
-                              onClick={handleSearchTimeAndDate}
-                              className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
-                              >
-                              <i className="fas fa-search ml-1"></i> Search
-                            </button>
-                          </div>
+                        <button
+                          onClick={handleSearchTimeAndDate}
+                          className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
+                        >
+                          <i className="fas fa-eye ml-1"></i> {t('View Admin Activity')}
+                        </button>
+                        <button
+                          onClick={handleExportProductsTemplate}
+                          className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
+                        >
+                          {t('Download Excel')}
+                        </button>
                       </div>
                   
 
@@ -302,7 +334,7 @@ const AdminActivityReport = () => {
 
                   <DataTable data={data}
                   title={t('Admin Activity Chart')}
-                  columnsName={AdminActivityReportColumn(t)}
+                  columnsName={AdminActivityReportColumn}
                   loading={isLoading}
                   secondaryColor="secondary"
                   actionColumnVisibility={false}

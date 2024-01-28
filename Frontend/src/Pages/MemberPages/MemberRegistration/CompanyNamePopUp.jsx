@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import popupimage from '../../../Images/popupimage.png'
+import blinkcompany from '../../../Images/blinkcompany.gif';
 
 const CompanyNamePopUp = ({ isVisible, setVisibility }) => {
     const closePopUp = () => {
@@ -35,8 +36,8 @@ const CompanyNamePopUp = ({ isVisible, setVisibility }) => {
                                 </button>
                             </div>
                             <form className='w-full'>
-                                <div className="mt-3 h-56">
-                                    <img src={popupimage} className='h-56 w-full object-cover' alt="popupimage" />
+                                <div className="mt-3 h-full">
+                                    <img src={blinkcompany} className='h-full w-full' alt="popupimage" />
                                 </div>
                             </form>
                         </div>
