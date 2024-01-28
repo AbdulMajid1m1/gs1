@@ -713,6 +713,9 @@
     "OK":"نعم",
     "SEARCH MEMBERS":"البحث عن الأعضاء حسب",
     "SEARCH BY SHIPMENT ID":"البحث عن طريق معرف الشحنة",
-    "SEARCH BY CONTAINER ID":"البحث حسب معرف الحاوية"
+    "SEARCH BY CONTAINER ID":"البحث حسب معرف الحاوية",
+    "Create Brands":"إنشاء العلامات التجارية",
+    "Brand Name EN":"اسم العلامة التجارية EN",
+    "Brand Name AR":"اسم العلامة التجارية AR"
 
 }
