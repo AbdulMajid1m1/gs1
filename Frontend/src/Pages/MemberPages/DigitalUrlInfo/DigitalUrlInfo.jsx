@@ -657,7 +657,7 @@ const DigitalUrlInfo = () => {
             </p>
           </div>
 
-          <div className="h-auto w-full flex justify-between flex-wrap">
+          <div className={`h-auto w-full flex justify-between flex-wrap ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className="h-auto w-full sm:w-[25%] flex flex-col gap-4">
               {/* <span className='bg-yellow-100'>Safety Information</span>
             <span className='bg-yellow-100'>Promotional Offers</span> */}

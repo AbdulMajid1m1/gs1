@@ -338,7 +338,7 @@ const Gln = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
                 <DataTable data={data}
                   title={`${t('GLN LIST')}`} 
-                  columnsName={GlnColumn(t)}
+                  columnsName={GlnColumn(t, i18n)}
                    backButton={false}
                   loading={isLoading}
                   secondaryColor="secondary"
