@@ -21,6 +21,7 @@ import AdminDashboardRightHeader from '../../../../components/AdminDashboardRigh
 import UpgradePopUp from './UpgradePopUp';
 import DowngradePopUp from './DowngradePopUp';
 import { useTranslation } from 'react-i18next';
+import AssignToPopUp from './AssignToPopUp';
 
 const RegisteredMembers = () => {
   const { t, i18n } = useTranslation();
@@ -50,7 +51,9 @@ const RegisteredMembers = () => {
 
   const fetchData = async () => {
     try {
-      const response = await newRequest.get("/users?parent_memberID=0");
+      // /users/allUser
+      // const response = await newRequest.get("/users?parent_memberID=0");
+      const response = await newRequest.get("/users/allUser?parent_memberID=0");
 
       console.log(response.data);
       setData(response?.data || []);
@@ -230,6 +233,19 @@ const RegisteredMembers = () => {
 
   };
 
+
+  const [isAssignToPopUpVisible, setIsAssignToPopUpVisible] = useState(false);
+  const [assignUser, setAssignUser] = useState([]);
+
+  const handleAssignToPopUp = (row) => {
+    setIsAssignToPopUpVisible(true);
+    console.log(row);
+    setAssignUser(row);
+    // set this data in session storage
+    // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
   const fetchMemberInvoiceData = async (row) => {
     try {
 
@@ -267,19 +283,27 @@ const RegisteredMembers = () => {
       });
     }
   };
+ // Now you can retrieve the data and parse it when needed
+ const storedData = sessionStorage.getItem('adminData');
+ const adminData = JSON.parse(storedData);
+ console.log(adminData);
 
+ 
   const filterDropdownOptions = (row, dropDownOptions) => {
-    // console.log(row);
-    if (row?.status === 'active') {
-      // If user is active, show all options
-      return dropDownOptions;
-    }
-    else if (row.product_identity !== 'active') {
-      // If user is not active, disable the Renew option
-      return dropDownOptions.filter(option => option.label !== 'Renew');
+    if (adminData?.is_super_admin === 1) {
+      return dropDownOptions; // Enable all options for super admin
+    } else if (adminData?.is_super_admin === 0) {
+      const assignToAdminId = row?.assign_to_admin?.id;
+      if (assignToAdminId === adminData?.id) {
+        if (row?.status === 'active') {
+          return dropDownOptions;
+        } else if (row.product_identity !== 'active') {
+          return dropDownOptions.filter(option => option.label !== 'Renew');
+        }
+      }
     }
 
-    return []; // No options available
+    return []; // Disable all options
   };
 
 
@@ -332,10 +356,10 @@ const RegisteredMembers = () => {
 
               },
               {
-                label: `${t('Assign To')}`,
+                label: 'Assign To',
                 icon: <AssignmentTurnedInIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
-                // action: handleShowRenewPopup,
+                action: handleAssignToPopUp,
 
               },
               // {
@@ -388,6 +412,12 @@ const RegisteredMembers = () => {
         {/* Downgrade component with handleShowDowngradePopup prop */}
         {isDowngradePopupVisible && (
           <DowngradePopUp isVisible={isDowngradePopupVisible} setVisibility={setIsDowngradePopupVisible} />
+        )}
+
+
+         {/* AssignTo component with handleShowDowngradePopup prop */}
+         {isAssignToPopUpVisible && (
+          <AssignToPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}/>
         )}
 
 

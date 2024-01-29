@@ -3,7 +3,6 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import { generateStrongPassword } from '../utils/functions/commonFunction.js';
 import { sendEmail, sendMultipleEmails, sendOTPEmail } from '../services/emailTemplates.js';
-import bcrypt from 'bcryptjs';
 import QRCode from 'qrcode';
 import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
@@ -1107,7 +1106,9 @@ export const getRegisteredMembers = async (req, res, next) => {
             orderBy: { updated_at: 'desc' },
             include: {
                 assign_to_admin: true
-            }
+            },
+            take: 20
+
         });
 
 

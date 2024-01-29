@@ -87,6 +87,10 @@ const AdminLogin = () => {
     
         setIsLoading(false);
         navigate('/admin/dashboard');
+        // Assuming res.data is an object
+        const adminData = res?.data?.adminData;
+        const adminDataString = JSON.stringify(adminData);
+        sessionStorage.setItem('adminData', adminDataString);
         
       })
       .catch((err) => {

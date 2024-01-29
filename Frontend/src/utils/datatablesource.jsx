@@ -6607,32 +6607,32 @@ export const oldInActiveMemberColumn = (t, i18n) => [
 export const productsCategoryColumn = (t, i18n) => [
   {
     field: 'member_category_description',
-    headerName: 'Member Category Description',
+    headerName:  t('Member Category Description'), 
     width: 220,
   },
   {
     field: 'member_category_description_ar',
-    headerName: 'Member Category Description Arabic',
+    headerName:  t('Member Category Description Arabic'),
     width: 220,
   },
   {
     field: 'total_no_of_barcodes',
-    headerName: 'Total No Of Barcodes',
+    headerName:  t('Total No Of Barcodes'),
     width: 180,
   },
   {
     field: 'member_registration_fee',
-    headerName: 'Member Registration Fee',
+    headerName:  t('Member Registration Fee'),
     width: 180,
   },
   {
     field: 'gtin_yearly_subscription_fee',
-    headerName: 'GTIN Yearly Subscription Fee',
+    headerName:  t('GTIN Yearly Subscription Fee'),
     width: 180,
   },
   {
     field: 'type',
-    headerName: 'Type',
+    headerName: t('Type'), 
     width: 120,
   },
   {
@@ -6657,12 +6657,12 @@ export const productsCategoryColumn = (t, i18n) => [
   },
   {
     field: 'gcp_start_range',
-    headerName: 'GCP Start Range',
+    headerName: t('GCP Start Range'),
     width: 180,
   },
   {
     field: 'gcp_type',
-    headerName: 'GCP Type',
+    headerName:  t('GCP Type'),
     width: 180,
   },
   {
@@ -6696,17 +6696,17 @@ export const productsCategoryColumn = (t, i18n) => [
 export const KpiReportColumn = (t, i18n) => [
   {
     field: 'transaction_id',
-    headerName: 'Transaction ID',
+    headerName: t('Transaction ID'),
     width: 120,
   },
   {
     field: 'price',
-    headerName: 'Price',
+    headerName:  t('Price'),
     width: 120,
   },
   {
     field: 'request_type',
-    headerName: 'Request Type',
+    headerName:  t('Request Type'),
     width: 120,
   },
   // {
@@ -6716,7 +6716,7 @@ export const KpiReportColumn = (t, i18n) => [
   // },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName:  t('Status'),
     width: 120,
     renderCell: (params) => (
       <div
@@ -6745,13 +6745,38 @@ export const KpiReportColumn = (t, i18n) => [
     ),
   },
   {
+    field: 'username',
+    headerName: 'Created By',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Admin Email',
+    width: 180,
+  },
+  {
+    field: 'companyID',
+    headerName: 'Company ID',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'productName',
+    headerName: 'Product Name',
+    width: 220,
+  },
+  {
     field: 'payment_type',
     headerName: 'Payment Type',
     width: 120,
   },
   {
     field: 'created_at',
-    headerName: 'Date Created',
+    headerName: t('Date Created'),
     width: 180,
 
     type: 'dateTime',
@@ -6789,30 +6814,30 @@ export const KpiReportColumn = (t, i18n) => [
   
 ];
 
-export const AdminActivityReportColumn = [
+export const AdminActivityReportColumn = (t, i18n) => [
   {
     field: 'subject',
-    headerName: 'Subject',
+    headerName: t('Subject'),
     width: 380,
   },
   {
     field: 'username',
-    headerName: 'Admin Name',
+    headerName:  t('Admin Name'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'Email',
+    headerName:  t('Email'),
     width: 180,
   },
   {
     field: 'admin_id',
-    headerName: 'Admin ID',
+    headerName: t('Admin ID'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -6824,7 +6849,7 @@ export const AdminActivityReportColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) =>
@@ -6910,55 +6935,55 @@ export const additionalGlnColumn = [
 
 
 
-export const memberActivityReportColumn = [
+export const memberActivityReportColumn = (t, i18n) => [
   {
     field: 'subject',
-    headerName: 'Subject',
+    headerName: t('Subject'),
     width: 380,
   },
   {
     field: 'company_name_eng',
-    headerName: 'Company Name English',
+    headerName: t('Company Name English'),
     width: 180,
   },
   {
     field: 'company_name_arabic',
-    headerName: 'Company Name Arabic',
+    headerName: t('Company Name Arabic'),
     width: 180,
   },
   {
     field: 'other_products',
-    headerName: 'Other Products',
+    headerName: t('Other Products'), 
     width: 180,
   },
   {
     field: 'memberID',
-    headerName: 'Member ID',
+    headerName: t('Member ID'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'Email',
+    headerName: t('Email'),
     width: 180,
   },
   {
     field: 'mobile',
-    headerName: 'Mobile',
+    headerName: t('Mobile'),
     width: 180,
   },
   {
     field: 'companyID',
-    headerName: 'Company ID',
+    headerName:  t('Company ID'),
     width: 180,
   },
   {
     field: 'contactPerson',
-    headerName: 'Contact Person',
+    headerName: t('Contact Person'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 180,
     renderCell: params => (
       <div
@@ -6978,32 +7003,32 @@ export const memberActivityReportColumn = [
   },
   {
     field: 'transaction_id',
-    headerName: 'Transaction ID',
+    headerName:  t('Transaction ID'),
     width: 180,
   },
   {
     field: 'membership_category',
-    headerName: 'Membership Category',
+    headerName: t('Membership Category'),
     width: 180,
   },
   {
     field: 'city',
-    headerName: 'City',
+    headerName: t('City'),
     width: 180,
   },
   {
     field: 'state',
-    headerName: 'State',
+    headerName: t('State'),
     width: 180,
   },
   {
     field: 'country',
-    headerName: 'Country',
+    headerName: t('Country'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -7015,7 +7040,7 @@ export const memberActivityReportColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName:  t('Updated At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) =>
@@ -7028,3 +7053,130 @@ export const memberActivityReportColumn = [
   
   
 ];
+
+
+
+
+export const expiredMemberColumn = (t, i18n) => [
+  // {
+  //   field: 'activityID',
+  //   headerName: t('Activity ID'),
+  //   width: 180,
+  // },
+  {
+    field: 'companyID',
+    headerName: t('Company ID'),
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: t('Company Name English'),
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: t('Company Name Arabic'),
+    width: 180,
+  },
+  // {
+  //   field: 'cr_documentID',
+  //   headerName: t('CR Document ID'),
+  //   width: 180,
+  // },
+  // {
+  //   field: 'document_number',
+  //   headerName: t('Document Number'),
+  //   width: 180,
+  // },
+  {
+    field: 'contactPerson',
+    headerName: t('Contact Person'),
+    width: 180,
+  },
+  {
+    field: 'cr_activity',
+    headerName: t('Cr Activity'),
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: t('Email'),
+    width: 220,
+  },
+  {
+    field: 'location_uk',
+    headerName:  t('Location UK'),
+    width: 180,
+  },
+  {
+    field: 'member_category',
+    headerName: t('Membership Category'),
+    width: 180,
+  },
+  {
+    field: 'membership_otherCategory',
+    headerName:  t('Membership Other Category'),
+    width: 180,
+  },
+  {
+    field: 'gcpGLNID',
+    headerName: t('GCP GLN ID'),
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'GLN',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: t('Transaction ID'),
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: t('Membership Category'),
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: t('Country'),
+    width: 180,
+  },
+  {
+    field: 'qr_corde',
+    headerName: t('QR Code'),
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: t('Mobile'),
+    width: 180,
+  },
+  {
+    field: 'slug',
+    headerName: t('Slug'),
+    width: 180,
+  },
+  {
+    field: 'gcp_expiry',
+    headerName: t('GCP Expiry'),
+    width: 180,
+    // type: 'dateTime',
+
+    // valueGetter: (params) => {
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+  {
+    field: 'updated_at',
+    headerName: t('Updated At'),
+    width: 180,
+
+    // type: 'dateTime',
+    // valueGetter: (params) => {
+    //   // Convert the string date to a Date object
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+]

@@ -692,6 +692,19 @@
     "Assign To":"Assign To",
     "SEARCH MEMBERS":"SEARCH MEMBERS",
     "SEARCH BY SHIPMENT ID":"SEARCH BY SHIPMENT ID",
-    "SEARCH BY CONTAINER ID":"SEARCH BY CONTAINER ID"
+    "SEARCH BY CONTAINER ID":"SEARCH BY CONTAINER ID",
+    "Create Brands":"Create Brands",
+    "Brand Name EN":"Brand Name EN",
+    "Brand Name AR":"Brand Name AR",
+    "Members Log":"Members Log",
+    "Members Activity Chart":"Members Activity Chart",
+    "Member Category Description Arabic":"Member Category Description Arabic",
+    "Member Category Description":"Member Category Description",
+    "Total No Of Barcodes":"Total No Of Barcodes",
+    "Member Registration Fee":"Member Registration Fee",
+    "GTIN Yearly Subscription Fee":"GTIN Yearly Subscription Fee",
+    "GCP Start Range":"GCP Start Range",
+    "Admin Name":"Admin Name",
+    "Admin ID":"Admin ID"
     
 }

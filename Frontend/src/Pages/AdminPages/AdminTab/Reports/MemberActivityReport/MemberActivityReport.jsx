@@ -234,7 +234,7 @@ const MemberActivityReport = () => {
 
                     <div className='flex p-4 gap-2 w-full'>
                       <div className="flex flex-col w-full">
-                        <label className="font-body text-sm">Members</label>
+                  <label className="font-body text-sm"> {t('Members')}</label>
                         {/* <select
                           type="text"
                           className="border border-gray-300 p-2 rounded-lg"
@@ -363,7 +363,7 @@ const MemberActivityReport = () => {
 
                   <DataTable data={data}
                   title={t('Members Activity Chart')}
-                  columnsName={memberActivityReportColumn}
+                  columnsName={memberActivityReportColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   actionColumnVisibility={false}
