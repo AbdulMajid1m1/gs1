@@ -31,6 +31,9 @@ const AdminActivityReport = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState('');
 
+  const [startDateChart, setStartDateChart] = useState(new Date());
+  const [endDateChart, setEndDateChart] = useState('');
+
  
   const handleGPCAutoCompleteChange = (event, value) => {
     setSelectedAdmin(value);
@@ -352,7 +355,9 @@ const AdminActivityReport = () => {
            <div className='flex justify-center items-center'>
               <div className="h-auto w-[97%] px-0 pt-4">
                 <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
-                   <div className="flex flex-col w-full px-5 py-5">
+
+                  <div className='sm:flex p-4 gap-2 w-full'>
+                   <div className="flex flex-col w-full">
                       <label className="font-body text-sm">{t('Admins')}</label>
                         {/* <select
                           type="text"
@@ -428,6 +433,25 @@ const AdminActivityReport = () => {
                           />
 
                       </div>
+                      <div className="flex flex-col w-full mt-2 sm:mt-0">
+                          <label className="font-body text-sm">{t('Start Date')}</label>
+                          <input
+                              onChange={(e) => setStartDateChart(e.target.value)}
+                              value={startDateChart}
+                              type="date"
+                              className="border border-gray-300 p-2 rounded-lg"
+                          />
+                      </div>
+                      <div className="flex flex-col w-full mt-2 sm:mt-0">
+                          <label className="font-body text-sm">{t('End Date')}</label>
+                          <input
+                              onChange={(e) => setEndDateChart(e.target.value)}
+                              value={endDateChart}
+                              type="date"
+                              className="border border-gray-300 p-2 rounded-lg"
+                          />
+                      </div>
+                    </div>
 
                     <BarLineChartJs />
                 </div>
