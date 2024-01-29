@@ -12,3 +12,5 @@ router.post('/allgs1Admin', getAllAdminsActivityReport);
 router.post('/gs1member', getMemberActivityReport);
 
 export default router;
+
+
