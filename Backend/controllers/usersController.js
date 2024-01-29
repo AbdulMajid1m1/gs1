@@ -1030,6 +1030,65 @@ export const getUserDetails = async (req, res, next) => {
 };
 
 
+export const getRegisteredMembers = async (req, res, next) => {
+    try {
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            user_type: Joi.string(),
+            slug: Joi.string(),
+            email: Joi.string().email(),
+            parent_memberID: Joi.string(),
+            status: Joi.string().valid('active', 'inactive'),
+            // ... define validation for other allowed columns
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false); // Disallows any keys that are not defined in the schema
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+        }
+
+        // Check if any filter conditions are provided
+        const hasFilterConditions = Object.keys(value).length > 0;
+
+        // Construct filter conditions for Prisma query
+        const filterConditions = hasFilterConditions
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        // Start a transaction to fetch users and their carts
+
+        const users = await prisma.users.findMany({
+            where: filterConditions,
+            orderBy: { updated_at: 'desc' },
+            include: {
+                assign_to_admin: true
+            }
+        });
+
+
+
+
+        return res.json(users);
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
 export const getRejectedUserDetails = async (req, res, next) => {
     try {
         // Define allowable columns for filtering
