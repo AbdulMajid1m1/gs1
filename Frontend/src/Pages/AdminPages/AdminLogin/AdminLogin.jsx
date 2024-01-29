@@ -87,16 +87,20 @@ const AdminLogin = () => {
     
         setIsLoading(false);
         navigate('/admin/dashboard');
+        // Assuming res.data is an object
+        const adminData = res?.data?.adminData;
+        const adminDataString = JSON.stringify(adminData);
+        sessionStorage.setItem('adminData', adminDataString);
         
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err?.response?.data?.message || 'Invalid Credentials', {
+        toast.error(err?.response?.data?.error || 'Invalid Credentials', {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
-          pauseOnHover: true,
+          pauseOnHover: true,  
           draggable: true,
           progress: undefined,
           theme: "light",

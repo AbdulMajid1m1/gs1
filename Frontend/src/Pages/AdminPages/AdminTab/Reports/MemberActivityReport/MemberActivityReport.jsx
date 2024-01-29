@@ -203,7 +203,7 @@ const MemberActivityReport = () => {
       width: index === 0 ? 55 : 27, // Set the width to 25 for the first column, and 15 for the rest
     }));
     worksheet['!cols'] = columnWidths;
-
+  
 
     // Create a workbook and append the worksheet
     const workbook = XLSX.utils.book_new();

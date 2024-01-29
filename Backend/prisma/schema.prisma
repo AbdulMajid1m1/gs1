@@ -87,17 +87,21 @@ model admin_test {
 }
 
 model admins {
-  id                         String                       @id @default(cuid())
-  username                   String?                      @db.NVarChar(Max)
-  email                      String?                      @db.NVarChar(Max)
-  password                   String?                      @db.NVarChar(Max)
-  image                      String?                      @db.NVarChar(Max)
-  mobile                     String?                      @db.NVarChar(Max)
-  status                     Int                          @default(1, map: "DF__admins__status__0F624AF8") @db.TinyInt
-  created_at                 DateTime                     @default(now())
-  updated_at                 DateTime                     @updatedAt
-  admin_users_roles_assigned admin_users_roles_assigned[]
-  admin_history_logs         admin_history_logs[]
+  id                                    String                                  @id @default(cuid())
+  username                              String?                                 @db.NVarChar(Max)
+  email                                 String?                                 @db.NVarChar(Max)
+  password                              String?                                 @db.NVarChar(Max)
+  image                                 String?                                 @db.NVarChar(Max)
+  mobile                                String?                                 @db.NVarChar(Max)
+  status                                Int                                     @default(1, map: "DF__admins__status__0F624AF8") @db.TinyInt
+  is_super_admin                        Int                                     @default(0, map: "DF__super_admins__status__0F624AF8") @db.TinyInt
+  created_at                            DateTime                                @default(now())
+  updated_at                            DateTime                                @updatedAt
+  admin_users_roles_assigned            admin_users_roles_assigned[]
+  admin_history_logs                    admin_history_logs[]
+  other_products_subscription_histories other_products_subscription_histories[]
+  gtin_subscription_histories           gtin_subscription_histories[]
+  users                                 users[]
 }
 
 model admin_users_roles {
@@ -115,7 +119,7 @@ model admin_users_roles_assigned {
   adminId     String
   created_at  DateTime          @default(now())
   updated_at  DateTime          @updatedAt
-  admin       admins            @relation(fields: [adminId], references: [id])
+  admin       admins            @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   role        admin_users_roles @relation(fields: [roleId], references: [id])
   permissions Permission[]
 }
@@ -824,6 +828,8 @@ model gtin_subscription_histories {
   updated_at     DateTime?     @updatedAt
   deleted_at     DateTime?     @db.DateTime
   expiry_date    DateTime?     @db.DateTime
+  admin_id       String?
+  admin          admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   user           users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   gtin_product   gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
 }
@@ -1512,6 +1518,8 @@ model other_products_subscription_histories {
   deleted_at     DateTime?      @db.DateTime
   expiry_date    DateTime?      @db.DateTime
   admin_id       String?
+  // point admin 
+  admin          admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   product        other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
   user           users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
@@ -2045,7 +2053,7 @@ model users {
   memberID                              String?                                 @db.NVarChar(Max)
   user_id                               String?                                 @db.NVarChar(Max)
   remarks                               String?                                 @default("Pending Invoice", map: "DF_users_remarks") @db.NVarChar(Max)
-  assign_to                             Int?                                    @default(0, map: "DF_users_assign_to")
+  assign_to                             String?
   membership_category                   String?                                 @db.NVarChar(50)
   upgradation_disc                      Int?                                    @default(0, map: "DF_users_upgradation_disc")
   upgradation_disc_amount               Float?                                  @default(0, map: "DF_users_upgradation_disc_amount")
@@ -2070,6 +2078,8 @@ model users {
   gtin_subscription_histories           gtin_subscription_histories[]
   other_products_subscription_histories other_products_subscription_histories[]
   admin_history_logs                    admin_history_logs[]
+  assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
 }
 
 model rejected_users {
