@@ -2079,6 +2079,7 @@ model users {
   other_products_subscription_histories other_products_subscription_histories[]
   admin_history_logs                    admin_history_logs[]
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
 }
 
 model rejected_users {
