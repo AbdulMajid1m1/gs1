@@ -3,7 +3,6 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import { generateStrongPassword } from '../utils/functions/commonFunction.js';
 import { sendEmail, sendMultipleEmails, sendOTPEmail } from '../services/emailTemplates.js';
-import bcrypt from 'bcryptjs';
 import QRCode from 'qrcode';
 import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';

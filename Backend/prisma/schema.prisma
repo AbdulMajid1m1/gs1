@@ -1102,18 +1102,21 @@ model mema_visas {
 }
 
 model member_documents {
-  id             String   @id @default(cuid())
-  type           String   @db.NVarChar(255)
-  document       String   @db.NVarChar(Max)
-  transaction_id String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
-  user_id        String   @db.NVarChar(255)
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  doc_type       String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
-  status         String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
-  reject_reason  String?  @db.VarChar(1000)
-  uploaded_by    String?
-  no_of_years    Int      @default(1, map: "DF_member_documents_no_of_years")
+  id                  String   @id @default(cuid())
+  type                String   @db.NVarChar(255)
+  document            String   @db.NVarChar(Max)
+  transaction_id      String   @default("0", map: "DF__member_do__trans__01BE3717") @db.NVarChar(255)
+  user_id             String
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+  doc_type            String?  @default("member_document", map: "DF_member_documents_doc_type") @db.VarChar(20)
+  status              String?  @default("pending", map: "DF_member_documents_status") @db.VarChar(20)
+  reject_reason       String?  @db.VarChar(1000)
+  uploaded_by         String?
+  no_of_years         Int      @default(1, map: "DF_member_documents_no_of_years")
+  // point userId to users table
+  user                users    @relation(fields: [user_id], references: [id])
+  cron_job_check_time DateTime @default(now())
 }
 
 model member_history_logs {
@@ -2079,7 +2082,8 @@ model users {
   other_products_subscription_histories other_products_subscription_histories[]
   admin_history_logs                    admin_history_logs[]
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  
+
+  member_documents member_documents[]
 }
 
 model rejected_users {

@@ -6,7 +6,7 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import rootRoute from "./routes/RootRoute.js";
-
+import { handleInvoiceReminders } from './utils/functions/reminderEmailFun.js'; 
 import QRCode from 'qrcode';
 // import { PrismaClient } from '@prisma/client';
 import ejs from 'ejs';
@@ -171,6 +171,15 @@ app.use((err, req, res, next) => {
 
     // return res.status(errorStatus).send(errorMessage);
     return res.status(errorStatus).json({ error: errorMessage });
+});
+
+
+import cron from 'node-cron';
+
+// Setting up a cron job that runs every 5 minutes
+cron.schedule('*/15 * * * * *', () => {
+    console.log('Running a task every 5 minutes');
+    handleInvoiceReminders(); // Call your function here
 });
 
 
