@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../../components/Datatable/Datatable';
@@ -7,7 +7,7 @@ import { Autocomplete, CircularProgress, TextField, debounce } from '@mui/materi
 import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import * as XLSX from "xlsx";
-// import BarsDataset from './BarCharts';
+// import BarLineChartJs from './BarLineChartJs';
 
 const AdminActivityReport = () => {
   const { t, i18n } = useTranslation();
@@ -24,6 +24,7 @@ const AdminActivityReport = () => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState('');
+
  
   const handleGPCAutoCompleteChange = (event, value) => {
     setSelectedAdmin(value);
@@ -163,6 +164,57 @@ const AdminActivityReport = () => {
     }
   }
     
+
+
+
+  // const [chartData, setChartData] = useState([]);
+  
+  // const handleChartSearchDateAndTime = async () => { 
+  //   try {
+  //     const currentDate = new Date();
+  //     const formattedStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+  //     formattedStartDate.setHours(0, 0, 0, 0);
+  //     const formattedEndDate = new Date(currentDate);
+  //     formattedEndDate.setHours(23, 59, 59, 999);
+  //     console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
+      
+  //     const res = await newRequest.post('/report/gs1Admin', {
+  //       startDate: formattedStartDate.toISOString(),
+  //       endDate: formattedEndDate.toISOString(),
+  //       // admin_id: selectedAdmin?.id,
+  //       admin_id: 1,
+  //     });
+
+  //     console.log(res?.data);
+
+  //     const responseAdminMainData = res?.data?.map(item => {
+  //       return {
+  //         subject: item?.subject,
+  //         admin_id: item?.admin_id,
+  //         created_at: item?.created_at,
+  //         updated_at: item?.updated_at,
+  //         username: item?.admin?.username,
+  //         email: item?.admin?.email,
+  //       };
+  //     });
+
+  //     console.log(responseAdminMainData);
+
+  //     // Set the transformedChartData in the state
+  //     setChartData(responseAdminMainData);
+
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+
+  // useEffect(() => {
+  //   handleChartSearchDateAndTime();
+  // }, []);
+    
+
 
 
   const handleExportProductsTemplate = () => {
@@ -331,13 +383,20 @@ const AdminActivityReport = () => {
                   
 
 
-                      {/* <div className='flex justify-center items-center mt-6'>
-                          <BarsDataset />
-                      </div> */}
                     </div>
                   </div>
                 </div>
 
+
+              {/* <div className='flex justify-center items-center'>
+               <div className="h-auto w-[97%] px-0 pt-4">
+                  <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+                    <div className='flex justify-center items-center mt-6'>
+                      <BarLineChartJs />
+                   </div>
+                  </div>
+                </div>
+              </div> */}
 
               <div className='flex justify-center items-center'>
                <div className="h-auto w-[97%] px-0 pt-4">

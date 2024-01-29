@@ -6745,8 +6745,33 @@ export const KpiReportColumn = (t, i18n) => [
     ),
   },
   {
+    field: 'username',
+    headerName: 'Created By',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Admin Email',
+    width: 180,
+  },
+  {
+    field: 'companyID',
+    headerName: 'Company ID',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name English',
+    width: 180,
+  },
+  {
+    field: 'productName',
+    headerName: 'Product Name',
+    width: 220,
+  },
+  {
     field: 'payment_type',
-    headerName: t('Payment Type'),
+    headerName: 'Payment Type',
     width: 120,
   },
   {
@@ -7028,3 +7053,130 @@ export const memberActivityReportColumn = (t, i18n) => [
   
   
 ];
+
+
+
+
+export const expiredMemberColumn = (t, i18n) => [
+  // {
+  //   field: 'activityID',
+  //   headerName: t('Activity ID'),
+  //   width: 180,
+  // },
+  {
+    field: 'companyID',
+    headerName: t('Company ID'),
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: t('Company Name English'),
+    width: 180,
+  },
+  {
+    field: 'company_name_arabic',
+    headerName: t('Company Name Arabic'),
+    width: 180,
+  },
+  // {
+  //   field: 'cr_documentID',
+  //   headerName: t('CR Document ID'),
+  //   width: 180,
+  // },
+  // {
+  //   field: 'document_number',
+  //   headerName: t('Document Number'),
+  //   width: 180,
+  // },
+  {
+    field: 'contactPerson',
+    headerName: t('Contact Person'),
+    width: 180,
+  },
+  {
+    field: 'cr_activity',
+    headerName: t('Cr Activity'),
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: t('Email'),
+    width: 220,
+  },
+  {
+    field: 'location_uk',
+    headerName:  t('Location UK'),
+    width: 180,
+  },
+  {
+    field: 'member_category',
+    headerName: t('Membership Category'),
+    width: 180,
+  },
+  {
+    field: 'membership_otherCategory',
+    headerName:  t('Membership Other Category'),
+    width: 180,
+  },
+  {
+    field: 'gcpGLNID',
+    headerName: t('GCP GLN ID'),
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'GLN',
+    width: 180,
+  },
+  {
+    field: 'transaction_id',
+    headerName: t('Transaction ID'),
+    width: 180,
+  },
+  {
+    field: 'membership_category',
+    headerName: t('Membership Category'),
+    width: 180,
+  },
+  {
+    field: 'country',
+    headerName: t('Country'),
+    width: 180,
+  },
+  {
+    field: 'qr_corde',
+    headerName: t('QR Code'),
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: t('Mobile'),
+    width: 180,
+  },
+  {
+    field: 'slug',
+    headerName: t('Slug'),
+    width: 180,
+  },
+  {
+    field: 'gcp_expiry',
+    headerName: t('GCP Expiry'),
+    width: 180,
+    // type: 'dateTime',
+
+    // valueGetter: (params) => {
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+  {
+    field: 'updated_at',
+    headerName: t('Updated At'),
+    width: 180,
+
+    // type: 'dateTime',
+    // valueGetter: (params) => {
+    //   // Convert the string date to a Date object
+    //   return params.value ? new Date(params.value) : null;
+    // }
+  },
+]

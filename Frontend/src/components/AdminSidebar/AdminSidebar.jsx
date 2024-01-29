@@ -60,6 +60,7 @@ import kpiReport from "../../Images/kpiReport.png"
 import memberActivity from "../../Images/memberActivity.png"
 import adminActivity from "../../Images/adminActivity.png"
 import additionalgln from "../../Images/additionalgln.png"
+import expiredmember from "../../Images/expiredmember.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
@@ -462,6 +463,27 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Members Expiry')}</p>
+              </div>
+
+
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/migration')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/migration')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/expired-member' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/expired-member', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/expired-member')
+                }
+              >
+                <img
+                  src={expiredmember}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Expired Member')}</p>
               </div>
 
 

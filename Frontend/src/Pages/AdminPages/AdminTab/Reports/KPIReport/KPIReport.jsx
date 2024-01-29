@@ -82,8 +82,28 @@ const KPIReport = () => {
         endDate: formattedEndDate.toISOString(),
       });
 
+      // admin - username - email, user - companyID, companyNameE, productName
       console.log(res?.data?.combinedResults);
-      setData(res.data?.combinedResults);
+
+      const formattedData = res?.data?.combinedResults?.map((item) => {
+        return {
+          transaction_id: item?.transaction_id,
+          price: item?.price,
+          request_type: item?.request_type,
+          status: item?.status,
+          payment_type: item?.payment_type,
+          username: item?.admin?.username,
+          email: item?.admin?.email,
+          companyID: item?.user?.companyID,
+          company_name_eng: item?.user?.company_name_eng,
+          productName: item?.productName,
+          created_at: item?.created_at,
+        };
+      });
+
+      // console.log(formattedData);
+
+      setData(formattedData);
       setIsLoading(false);
       setTodayLoader(false);
       setWeeklyLoader(false);
@@ -108,7 +128,7 @@ const KPIReport = () => {
       return;
     }
     // Assuming these are the specific columns you want to export
-    const selectedColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at'];
+    const selectedColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'username', 'email', 'companyID', 'company_name_eng', 'productName', 'created_at'];
 
     // Create a worksheet with headers and selected data
     const filteredData = data.map(row => {
@@ -150,7 +170,7 @@ const KPIReport = () => {
     const doc = new jsPDF("landscape");
 
     // Specify the columns you want to export
-    const exportColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'created_at'];
+    const exportColumns = ['transaction_id', 'price', 'request_type', 'status', 'payment_type', 'username', 'email', 'companyID', 'company_name_eng', 'productName', 'created_at'];
 
     // Calculate the font size based on the number of columns
     const maxColumns = 10;
