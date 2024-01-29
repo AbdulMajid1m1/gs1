@@ -41,7 +41,7 @@ export const adminLogin = async (req, res, next) => {
 
         // You can generate and return an authentication token (JWT) here if needed
         delete adminUser.password;
-        const token = jwt.sign({ adminId: adminUser.id, email: adminUser.email }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+        const token = jwt.sign({ adminId: adminUser.id, email: adminUser.email, is_super_admin: adminUser.is_super_admin, username: adminUser.username }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
         return res.cookie("adminToken", token, cookieOptions()).status(200).json({ success: true, adminData: adminUser, token });
     } catch (error) {
         console.log(error);
