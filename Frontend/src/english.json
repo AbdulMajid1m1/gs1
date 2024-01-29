@@ -677,6 +677,9 @@
     "GTIN Yearly Subscription Fee":"GTIN Yearly Subscription Fee",
     "GCP Start Range":"GCP Start Range",
     "Admin Name":"Admin Name",
-    "Admin ID":"Admin ID"
+    "Admin ID":"Admin ID",
+    "Click 'GENERATE' to create new certificate for the member and send it to the member via email.":"Click 'GENERATE' to create new certificate for the member and send it to the member via email.",
+    "GENERATE":"GENERATE",
+    "Certificate generated successfully":"Certificate generated successfully"
     
 }

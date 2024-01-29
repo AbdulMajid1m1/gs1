@@ -726,6 +726,9 @@
     "GTIN Yearly Subscription Fee":"رسوم الاشتراك السنوية في GTIN",
     "GCP Start Range":"نطاق البداية GCP",
     "Admin Name":"اسم المشرف",
-    "Admin ID":"معرف المشرف"
+    "Admin ID":"معرف المشرف",
+     "Click 'GENERATE' to create new certificate for the member and send it to the member via email.":"انقر فوق 'إنشاء' لإنشاء شهادة جديدة للعضو وإرسالها إلى العضو عبر البريد الإلكتروني.",
+    "GENERATE":"يولد",
+    "Certificate generated successfully":"تم إنشاء الشهادة بنجاح"
 
 }
