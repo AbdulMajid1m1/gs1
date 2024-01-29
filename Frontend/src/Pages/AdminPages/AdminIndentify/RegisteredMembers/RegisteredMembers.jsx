@@ -283,19 +283,27 @@ const RegisteredMembers = () => {
       });
     }
   };
+ // Now you can retrieve the data and parse it when needed
+ const storedData = sessionStorage.getItem('adminData');
+ const adminData = JSON.parse(storedData);
+ console.log(adminData);
 
+ 
   const filterDropdownOptions = (row, dropDownOptions) => {
-    // console.log(row);
-    if (row?.status === 'active') {
-      // If user is active, show all options
-      return dropDownOptions;
-    }
-    else if (row.product_identity !== 'active') {
-      // If user is not active, disable the Renew option
-      return dropDownOptions.filter(option => option.label !== 'Renew');
+    if (adminData?.is_super_admin === 1) {
+      return dropDownOptions; // Enable all options for super admin
+    } else if (adminData?.is_super_admin === 0) {
+      const assignToAdminId = row?.assign_to_admin?.id;
+      if (assignToAdminId === adminData?.id) {
+        if (row?.status === 'active') {
+          return dropDownOptions;
+        } else if (row.product_identity !== 'active') {
+          return dropDownOptions.filter(option => option.label !== 'Renew');
+        }
+      }
     }
 
-    return []; // No options available
+    return []; // Disable all options
   };
 
 
