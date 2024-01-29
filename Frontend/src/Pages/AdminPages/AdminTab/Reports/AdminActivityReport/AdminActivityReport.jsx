@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../../components/Datatable/Datatable';
@@ -7,7 +7,8 @@ import { Autocomplete, CircularProgress, TextField, debounce } from '@mui/materi
 import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import * as XLSX from "xlsx";
-// import BarsDataset from './BarCharts';
+import BarLineChartJs from './BarLineChartJs';
+// import BarLineChartJs from './BarLineChartJs';
 
 const AdminActivityReport = () => {
   const { t, i18n } = useTranslation();
@@ -16,14 +17,23 @@ const AdminActivityReport = () => {
 
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [selectedChartAdmin, setSelectedChartAdmin] = useState(null);
   const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
   const [autocompleteLoading, setAutocompleteLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
   const [adminList, setAdminList] = useState([]);
+  const [adminChartList, setAdminChartList] = useState([]);
+  const [autocompleteChartLoading, setAutocompleteChartLoading] = useState(false);
+  const [openChart, setOpenChart] = useState(false);
   const abortControllerRef = React.useRef(null);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState('');
+
+  const [startDateChart, setStartDateChart] = useState(new Date());
+  const [endDateChart, setEndDateChart] = useState('');
+
  
   const handleGPCAutoCompleteChange = (event, value) => {
     setSelectedAdmin(value);
@@ -165,6 +175,134 @@ const AdminActivityReport = () => {
     
 
 
+
+  // chart Filter
+  const handleChartAutoCompleteChange = (event, value) => {
+    setSelectedChartAdmin(value);
+
+
+    // Update the state variable when Autocomplete field is filled
+    setIsAutocompleteFilled(value !== null && value !== '');
+
+    // if (value) {
+    //   fetchData(value);
+    // }
+  }
+
+ 
+  // Use debounce to wrap the handleAutoCompleteInputChange function
+  const debouncedHandleAutoCompleteChartInputChange = debounce(async (event, newInputValue, reason) => {
+    console.log(reason);
+    console.log(newInputValue);
+    setIsSubmitClicked(false);
+    if (reason === 'reset' || reason === 'clear') {
+      console.log('clear');
+      // console.log(newInputValue);
+      setAdminChartList([]); // Clear the data list if there is no input
+      // setSelectedCr(null);
+      return; // Do not perform search if the input is cleared or an option is selected
+    }
+    if (reason === 'option') {
+      return; // Do not perform search if the option is selected
+    }
+
+    if (!newInputValue || newInputValue.trim() === '') {
+      // perform operation when input is cleared
+      setAdminChartList([]);
+      // setSelectedCr(null);
+      return;
+    }
+
+    console.log(newInputValue);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort(); // Abort previous request
+    }
+    abortControllerRef.current = new AbortController(); // Create a new controller for the new request
+
+    try {
+      setAutocompleteChartLoading(true);
+      setOpenChart(true);
+
+      const res = await newRequest.get(`/admin/searchAdmins?keyword=${newInputValue}`, {
+        signal: abortControllerRef.current.signal
+      });
+      console.log(res);
+
+      const crs = res?.data?.map(item => {
+        return {
+          id: item.id,
+          username: item.username,
+          email: item.email,
+          // UserID: item.UserID,
+        };
+      });
+
+      setAdminChartList(crs);
+      
+      setOpenChart(true);
+      setAutocompleteChartLoading(false);
+
+      // fetchData();
+
+    } catch (error) {
+      console.log(error);
+      setAdminChartList([]); // Clear the data list if an error occurs
+      setOpenChart(false);
+      setAutocompleteChartLoading(false);
+    }
+  }, 400);
+
+
+  // const [chartData, setChartData] = useState([]);
+  
+  // const handleChartSearchDateAndTime = async () => { 
+  //   try {
+  //     const currentDate = new Date();
+  //     const formattedStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+  //     formattedStartDate.setHours(0, 0, 0, 0);
+  //     const formattedEndDate = new Date(currentDate);
+  //     formattedEndDate.setHours(23, 59, 59, 999);
+  //     console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
+      
+  //     const res = await newRequest.post('/report/gs1Admin', {
+  //       startDate: formattedStartDate.toISOString(),
+  //       endDate: formattedEndDate.toISOString(),
+  //       // admin_id: selectedAdmin?.id,
+  //       admin_id: 1,
+  //     });
+
+  //     console.log(res?.data);
+
+  //     const responseAdminMainData = res?.data?.map(item => {
+  //       return {
+  //         subject: item?.subject,
+  //         admin_id: item?.admin_id,
+  //         created_at: item?.created_at,
+  //         updated_at: item?.updated_at,
+  //         username: item?.admin?.username,
+  //         email: item?.admin?.email,
+  //       };
+  //     });
+
+  //     console.log(responseAdminMainData);
+
+  //     // Set the transformedChartData in the state
+  //     setChartData(responseAdminMainData);
+
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+
+  // useEffect(() => {
+  //   handleChartSearchDateAndTime();
+  // }, []);
+    
+
+
+
   const handleExportProductsTemplate = () => {
     if (data.length === 0) {
       toast.error('No data to export');
@@ -213,11 +351,119 @@ const AdminActivityReport = () => {
               <AdminDashboardRightHeader title={t('Admins Log')} />
            </div>
 
+           {/* Chart UI */}
+           <div className='flex justify-center items-center'>
+              <div className="h-auto w-[97%] px-0 pt-4">
+                <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+
+                  <div className='sm:flex p-4 gap-2 w-full'>
+                   <div className="flex flex-col w-full">
+                      <label className="font-body text-sm">{t('Admins')}</label>
+                        {/* <select
+                          type="text"
+                          className="border border-gray-300 p-2 rounded-lg"
+                        >
+                          <option value="">{t('Admin 1')}</option>
+                          <option value="">{t('Admin 2')}</option>
+                        </select> */}
+
+                        <Autocomplete
+                            id="companyName"
+                            required
+                            options={adminChartList}
+                            // id: item.id,
+                            // username: item.username,
+                            // email: item.email,
+                            // getOptionLabel={(option) => (option && option.IntID) ? `${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : 'no'}
+                            getOptionLabel={(option) => (option && option.id) ? `${option?.id} - ${option?.username} - ${option?.email} ` : ''}
+                            onChange={handleChartAutoCompleteChange}
+                            value={selectedChartAdmin}
+                            onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteChartInputChange(event, newInputValue, params)}
+                            loading={autocompleteChartLoading}
+                            sx={{ marginTop: '10px' }}
+                            open={openChart}
+                            onOpen={() => {
+                              // setOpen(true);
+                            }}
+                            onClose={() => {
+                              setOpenChart(false);
+                            }}
+                            renderOption={(props, option) => (
+                              <li key={option.id} {...props}>
+                                {option ? `${option.id} - ${option.username} - ${option.email} ` : 'No options'}
+                              </li>
+                            )}
+
+
+                            renderInput={(params) => (
+                              <TextField
+                                // required
+                                error={isSubmitClicked && !selectedChartAdmin}
+                                helperText={isSubmitClicked && !selectedChartAdmin ? "Products is required" : ""}
+                                {...params}
+                                label={`${t('Search Admins')}`}
+                                InputProps={{
+                                  ...params.InputProps,
+                                  endAdornment: (
+                                    <React.Fragment>
+                                      {autocompleteChartLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                      {params.InputProps.endAdornment}
+                                    </React.Fragment>
+                                  ),
+                                }}
+                                sx={{
+                                  '& label.Mui-focused': {
+                                    color: '#00006A',
+                                  },
+                                  '& .MuiInput-underline:after': {
+                                    borderBottomColor: '#00006A',
+                                  },
+                                  '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': {
+                                      borderColor: '#000000',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                      borderColor: '#000000',
+                                    },
+                                  },
+                                }}
+                              />
+                            )}
+
+                          />
+
+                      </div>
+                      <div className="flex flex-col w-full mt-2 sm:mt-0">
+                          <label className="font-body text-sm">{t('Start Date')}</label>
+                          <input
+                              onChange={(e) => setStartDateChart(e.target.value)}
+                              value={startDateChart}
+                              type="date"
+                              className="border border-gray-300 p-2 rounded-lg"
+                          />
+                      </div>
+                      <div className="flex flex-col w-full mt-2 sm:mt-0">
+                          <label className="font-body text-sm">{t('End Date')}</label>
+                          <input
+                              onChange={(e) => setEndDateChart(e.target.value)}
+                              value={endDateChart}
+                              type="date"
+                              className="border border-gray-300 p-2 rounded-lg"
+                          />
+                      </div>
+                    </div>
+
+                    <BarLineChartJs />
+                </div>
+              </div>
+          </div>
+
+          {/* Datagrid Filter */}
            <div className='flex justify-center items-center'>
              <div className="h-auto w-[97%] px-0 pt-4">
                 <div className="h-auto w-full p-0 py-5 bg-white shadow-xl rounded-md">
 
-                    <div className='flex p-4 gap-2 w-full'>
+                    <div className='sm:flex p-4 gap-2 w-full'>
                       <div className="flex flex-col w-full">
                         <label className="font-body text-sm">{t('Admins')}</label>
                         {/* <select
@@ -294,7 +540,7 @@ const AdminActivityReport = () => {
                           />
 
                       </div>
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full mt-2 sm:mt-0">
                           <label className="font-body text-sm">{t('Start Date')}</label>
                           <input
                               onChange={(e) => setStartDate(e.target.value)}
@@ -303,7 +549,7 @@ const AdminActivityReport = () => {
                               className="border border-gray-300 p-2 rounded-lg"
                           />
                       </div>
-                      <div className="flex flex-col w-full">
+                      <div className="flex flex-col w-full mt-2 sm:mt-0">
                           <label className="font-body text-sm">{t('End Date')}</label>
                           <input
                               onChange={(e) => setEndDate(e.target.value)}
@@ -331,9 +577,6 @@ const AdminActivityReport = () => {
                   
 
 
-                      {/* <div className='flex justify-center items-center mt-6'>
-                          <BarsDataset />
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -348,7 +591,7 @@ const AdminActivityReport = () => {
 
                   <DataTable data={data}
                   title={t('Admin Activity Chart')}
-                  columnsName={AdminActivityReportColumn}
+                  columnsName={AdminActivityReportColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   actionColumnVisibility={false}

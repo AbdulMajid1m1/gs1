@@ -114,6 +114,7 @@ import ProductInformation from "./Pages/UserPages/ProductInformation/ProductInfo
 import MapProvider from "./Contexts/EventMapContext";
 import AdditionalGTIN from "./Pages/AdminPages/Others/AdditionalGTIN/AdditionalGTIN";
 import AdditionalGLN from "./Pages/AdminPages/Others/AdditionalGLN/AdditionalGLN";
+import ExpiredMember from "./Pages/AdminPages/AdminCapture/ExpiredMember/ExpiredMember";
 
 const queryClient = new QueryClient()
 
@@ -295,6 +296,8 @@ const App = () =>
                             <Route path="products/add-products" element={<AddProducts />} />
                             <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
+
+                            <Route path="expired-member" element={<ExpiredMember />} />
                             <Route path="member-products" element={<MemberProducts />} />
                             <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
                             <Route path="notfications" element={<Notifications />} />
