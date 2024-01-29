@@ -724,7 +724,12 @@
     "Med Subscription Fee":"Med Subscription Fee",
     "Member Yearly Subscription Fee":"Member Yearly Subscription Fee",
     "Additional GLN":"Additional GLN",
-    "Upload Document":"Upload Document"
+    "Upload Document":"Upload Document",
+    "All GS1 Members":"All GS1 Members",
+    "Priority":"Priority",
+    "Expired Member":"Expired Member",
+    "GS1 Staff":"GS1 Staff",
+    "Assign":"Assign"
     
     
 }

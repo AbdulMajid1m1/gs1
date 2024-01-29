@@ -777,6 +777,11 @@
     "Upload Bank Slip":"تحميل قسيمة البنك",
     "Upload Document":"تحميل الوثيقة",
     "Description [Optional]":"وصف (اختياري]",
-    "Upload":"رفع"
+    "Upload":"رفع",
+    "All GS1 Members":"جميع أعضاء GS1",
+    "Priority":"أولوية",
+    "Expired Member":"عضو منتهي الصلاحية",
+    "GS1 Staff":"طاقم GS1",
+    "Assign":"تعيين"
 
 }
