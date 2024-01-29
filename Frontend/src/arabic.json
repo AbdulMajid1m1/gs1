@@ -773,6 +773,10 @@
     "Gcp Order":"ترتيب جي سي بي",
     "Med Subscription Fee":"رسوم الاشتراك في الطب",
     "Member Yearly Subscription Fee":"رسوم الاشتراك السنوي للعضو",
-    "Additional GLN":"GLN إضافية"
+    "Additional GLN":"GLN إضافية",
+    "Upload Bank Slip":"تحميل قسيمة البنك",
+    "Upload Document":"تحميل الوثيقة",
+    "Description [Optional]":"وصف (اختياري]",
+    "Upload":"رفع"
 
 }
