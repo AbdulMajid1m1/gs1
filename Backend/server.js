@@ -6,11 +6,12 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import rootRoute from "./routes/RootRoute.js";
-import { handleInvoiceReminders } from './utils/functions/reminderEmailFun.js'; 
+import { handleInvoiceReminders } from './utils/functions/reminderEmailFun.js';
 import QRCode from 'qrcode';
 // import { PrismaClient } from '@prisma/client';
 import ejs from 'ejs';
 import { BACKEND_URL } from "./configs/envConfig.js";
+import cron from 'node-cron';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -174,15 +175,17 @@ app.use((err, req, res, next) => {
 });
 
 
-import cron from 'node-cron';
 
-// Setting up a cron job that runs every 5 minutes
-cron.schedule('*/15 * * * * *', () => {
-    console.log('Running a task every 5 minutes');
-    handleInvoiceReminders(); // Call your function here
+// Setting up a cron job to run every hour
+cron.schedule('0 * * * *', () => {
+    console.log('Running a task every hour');
+    handleInvoiceReminders();
 });
 
-
+app.get('/test', async (req, res) => {
+    handleInvoiceReminders();
+    res.send('test');
+});
 
 const PORT = process.env.PORT || 3091;
 app.listen(PORT, () => {
@@ -191,18 +194,3 @@ app.listen(PORT, () => {
 
 
 
-
-
-// app.get("/users", async (req, res) => {
-//     const users = await prisma.users.findMany();
-//     function customJSONStringify(obj) {
-//         return JSON.stringify(obj, (key, value) =>
-//             typeof value === 'bigint' ? value.toString() : value
-//         );
-//     }
-//     // const test = await pri
-
-//     // Usage
-//     res.send(customJSONStringify(users));
-// }
-// );

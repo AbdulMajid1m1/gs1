@@ -101,9 +101,10 @@ export const sendEmail = async ({
 
 
 export const sendMultipleEmails = async ({
-    fromEmail = process.env.ADMIN_EMAIL,
     emailData,
+    fromEmail = process.env.ADMIN_EMAIL,
 }) => {
+
     return new Promise(async (resolve, reject) => {
         try {
             const transporter = nodemailer.createTransport({
