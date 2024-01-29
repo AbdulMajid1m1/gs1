@@ -1545,6 +1545,24 @@ export const Gs1AllMembers = (t, i18n) => [
     ),
   },
   {
+    field: 'assign_to_admin_username', // or any unique name you prefer
+    headerName: t('Assigned To'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: '2px solid',
+          // background: '#D1FFBD', // customize as needed
+          color: 'green',
+        }}
+      >
+        {params.row.assign_to_admin ? params.row.assign_to_admin.username : ''}
+      </div>
+    ),
+  },
+  {
     field: 'company_name_eng',
     headerName: t('Company Name English'),
     width: 180,
