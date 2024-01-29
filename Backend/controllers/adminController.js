@@ -33,8 +33,8 @@ export const adminLogin = async (req, res, next) => {
         }
 
         // Compare the provided password with the hashed password in the database
-        const passwordMatch = bcrypt.compare(password, adminUser.password);
-
+        const passwordMatch = await bcrypt.compare(password, adminUser.password);
+        console.log(passwordMatch);
         if (!passwordMatch) {
             throw createError(404, 'Invalid Credentials');
         }
@@ -251,3 +251,46 @@ export const addAdmin = async (req, res, next) => {
         next(error);
     }
 };
+
+
+// create delete admin controller
+export const deleteAdmin = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            adminId: Joi.string().required(),
+        });
+
+        const { error, value } = schema.validate(req.query);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { adminId } = value;
+
+        // Check if the admin user exists
+        const adminUser = await prisma.admins.findFirst({
+            where: { id: adminId },
+        });
+
+        if (!adminUser) {
+            throw createError(404, 'Admin user not found.');
+        }
+
+        // Update or remove user references before deleting the admin
+        await prisma.users.updateMany({
+            where: { assign_to: adminId },
+            data: { assign_to: null }, // or assign to another admin
+        });
+
+        // Now safe to delete the admin user
+        await prisma.admins.delete({
+            where: { id: adminId },
+        });
+
+        res.status(200).json({ message: 'Admin user deleted successfully.' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}

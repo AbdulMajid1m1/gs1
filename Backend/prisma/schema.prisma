@@ -119,7 +119,7 @@ model admin_users_roles_assigned {
   adminId     String
   created_at  DateTime          @default(now())
   updated_at  DateTime          @updatedAt
-  admin       admins            @relation(fields: [adminId], references: [id])
+  admin       admins            @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   role        admin_users_roles @relation(fields: [roleId], references: [id])
   permissions Permission[]
 }
