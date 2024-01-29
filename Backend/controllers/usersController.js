@@ -1107,7 +1107,9 @@ export const getRegisteredMembers = async (req, res, next) => {
             orderBy: { updated_at: 'desc' },
             include: {
                 assign_to_admin: true
-            }
+            },
+            take: 20
+
         });
 
 

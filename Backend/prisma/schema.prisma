@@ -119,7 +119,7 @@ model admin_users_roles_assigned {
   adminId     String
   created_at  DateTime          @default(now())
   updated_at  DateTime          @updatedAt
-  admin       admins            @relation(fields: [adminId], references: [id])
+  admin       admins            @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   role        admin_users_roles @relation(fields: [roleId], references: [id])
   permissions Permission[]
 }
@@ -2079,6 +2079,7 @@ model users {
   other_products_subscription_histories other_products_subscription_histories[]
   admin_history_logs                    admin_history_logs[]
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
 }
 
 model rejected_users {
