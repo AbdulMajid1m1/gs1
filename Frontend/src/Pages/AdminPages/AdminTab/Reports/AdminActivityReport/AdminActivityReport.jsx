@@ -348,7 +348,7 @@ const AdminActivityReport = () => {
 
                   <DataTable data={data}
                   title={t('Admin Activity Chart')}
-                  columnsName={AdminActivityReportColumn}
+                  columnsName={AdminActivityReportColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   actionColumnVisibility={false}

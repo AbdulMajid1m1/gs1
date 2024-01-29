@@ -14,6 +14,7 @@ import { DataTableContext2 } from "../../Contexts/DataTableContext2";
 import CustomSnakebar from "../../utils/CustomSnackbar";
 import { SnackbarContext } from "../../Contexts/SnackbarContext";
 import Swal from "sweetalert2";
+import { useTranslation } from 'react-i18next';
 // import * as XLSX from 'xlsx';
 
 const DataTable2 = ({
@@ -64,6 +65,7 @@ const DataTable2 = ({
     setError(null);
     setMessage(null);
   };
+  const { t, i18n } = useTranslation();
 
   // if checkboxSelection is giving in props then use it other wise by default it is false
   const checkboxSelectionValue = checkboxSelection == "disabled" ? false : true;
@@ -304,7 +306,7 @@ const DataTable2 = ({
   const actionColumn = [
     {
       field: "action",
-      headerName: "Action",
+      headerName: t('Actions'),
       width: uniqueId === "usersAccountsId" ? 200 : 150,
 
       renderCell: (params) => (
