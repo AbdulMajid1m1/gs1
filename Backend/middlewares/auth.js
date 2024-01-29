@@ -26,6 +26,17 @@ export const adminAuth = (req, res, next) => {
     });
 };
 
+export const superAdminAuth = (req, res, next) => {
+    const token = req.cookies.adminToken || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    if (!token) return next(createError(401, "Admin authentication required!"));
+
+    jwt.verify(token, ADMIN_JWT_SECRET, (err, adminPayload) => {
+        if (err) return next(createError(403, "Admin token is not valid!"));
+        req.admin = adminPayload;
+        next();
+    });
+};
+
 
 export const generalAuth = (req, res, next) => {
     const adminToken = req.cookies.adminToken || (req.headers.authorization && req.headers.authorization.split(' ')[1]);

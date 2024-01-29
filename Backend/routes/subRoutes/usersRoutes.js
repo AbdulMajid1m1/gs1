@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSubUser, createUser, deleteUser, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getNewlyRegisteredUsers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithExpiringGcpThisYear, memberLogin, searchUsers, sendInvoiceToUser, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
+import { createSubUser, createUser, deleteUser, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getExpiredMembers, getNewlyRegisteredUsers, getRegisteredMembers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithExpiringGcpThisYear, memberLogin, searchUsers, sendInvoiceToUser, updateCartReceipt, updateUser, updateUserStatus } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 import { generalAuth } from '../../middlewares/auth.js';
@@ -10,6 +10,7 @@ const userRouter = express.Router();
 userRouter.post('/', createUser);
 
 userRouter.get('/', getUserDetails);
+userRouter.get('/allUser', getRegisteredMembers);
 
 userRouter.get('/rejected', getRejectedUserDetails);
 
@@ -23,6 +24,8 @@ userRouter.get('/adminStatsCounts', getAdminStatsCounts);
 userRouter.get('/new', getNewlyRegisteredUsers);
 
 userRouter.get('/getByGcpExpiry', getUsersWithExpiringGcpThisYear);
+
+userRouter.get('/getExpirtedMembers', getExpiredMembers);
 
 userRouter.get('/search', searchUsers);
 
