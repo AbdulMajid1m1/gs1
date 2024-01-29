@@ -34,14 +34,14 @@ const UpdateAdditionalGLN = ({ isVisible, setVisibility, refreshAddtionalProduct
         "price": Number(price)
       });
 
-      toast.success(response?.data?.message || 'Additional Gln Updated Successfully');
+      toast.success(response?.data?.message || `${t('Additional Gln Updated Successfully')}`);
 
       console.log(response.data);
       refreshAddtionalProducts();
       handleCloseUpdatePopup();
 
     } catch (error) {
-      toast.error(error?.response?.data?.error || 'Something went wrong!');
+      toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
 
       console.log(error);
     }
@@ -62,24 +62,24 @@ const UpdateAdditionalGLN = ({ isVisible, setVisibility, refreshAddtionalProduct
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateBrand} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional GTIN')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional GLN')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Total Number Of Gln</label>
+                    <label htmlFor="field1" className="text-secondary"> {t('Total No Of GLN')}</label>
                     <input
                       type="text"
                       id="name"
                       value={totalNumberOfGln}
                       onChange={(e) => setTotalNumberOfGln(e.target.value)}
                       //   readOnly
-                      placeholder='Enter Total Number Of Gln'
+                      placeholder={`${t('Enter')} ${t('Total No Of GLN')}}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="status" className="text-secondary">
-                      Price
+                      {t('Price')}
                     </label>
                     <input
                       type="number"
@@ -117,7 +117,7 @@ const UpdateAdditionalGLN = ({ isVisible, setVisibility, refreshAddtionalProduct
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Save Changes')} 
+                    {t('SAVE CHANGES')} 
                   </Button>
                 </div>
               </form>

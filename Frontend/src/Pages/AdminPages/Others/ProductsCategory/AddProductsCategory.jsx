@@ -6,6 +6,7 @@ import { Button, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import './AddCategories.css'
 
+
 const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory }) =>
 {
   const { t, i18n } = useTranslation();
@@ -54,7 +55,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
         "med_yearly_subscription_fee": Number(memberYearlySubscriptionFee)
     });
 
-      toast.success(`product name has been added successfully.`);
+      toast.success(`${t('product name has been added successfully.')}`);
 
 
       console.log(response.data);
@@ -80,30 +81,30 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add GTIN Barcode Pricing</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>  {t('Add GTIN Barcode Pricing')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
             
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field1" className="text-secondary">Category Description English</label>
+                    <label htmlFor="field1" className="text-secondary">  {t('Category Description English')}</label>
                     <input
                       type="text"
                       id="field1"
                       value={memberCategoryDescriptionE}
-                      onChange={(e) => setMemberCategoryDescriptionE(e.target.value)}
-                      placeholder='Category Description English'
+                        onChange={(e) => setMemberCategoryDescriptionE(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Category Description English')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field1" className="text-secondary">Category Description Arabic</label>
+                    <label htmlFor="field1" className="text-secondary">  {t('Category Description Arabic')}</label>
                     <input
                       type="text"
                       id="field1"
                       value={memberCategoryDescriptionAr}
-                      onChange={(e) => setMemberCategoryDescriptionAr(e.target.value)}
-                      placeholder='Category Description Arabic'
+                        onChange={(e) => setMemberCategoryDescriptionAr(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Category Description Arabic')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -112,25 +113,25 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
                  
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field2" className="text-secondary">total no of barcodes</label>
+                    <label htmlFor="field2" className="text-secondary">  {t('Total No Of Barcodes')}</label>
                     <input
                       type="number"
                       id="field2"
                       value={total_no_of_barcodes}
-                      onChange={(e) => settotal_no_of_barcodes(e.target.value)}
-                      placeholder='Enter total no of barcodes'
+                        onChange={(e) => settotal_no_of_barcodes(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Total No Of Barcodes')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field3" className="text-secondary">Member Registration Fee</label>
+                    <label htmlFor="field3" className="text-secondary">  {t('Member Registration Fee')}</label>
                     <input
                       type="number"
                       id="field3"
                       value={memberRegistrationFee}
-                      onChange={(e) => setMemberRegistrationFee(e.target.value)}
-                      placeholder='Member Registration fee'
+                        onChange={(e) => setMemberRegistrationFee(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Member Registration Fee')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -138,25 +139,25 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field4" className="text-secondary">Gtin Yearly Subscription Fee</label>
+                    <label htmlFor="field4" className="text-secondary">  {t('GTIN Yearly Subscription Fee')}</label>
                     <input
                       type="number"
                       id="field4"
                       value={gtinYearlySubscriptionFee}
-                      onChange={(e) => setGtinYearlySubscription(e.target.value)}
-                      placeholder='Gtin Yearly Subscription Fee'
+                        onChange={(e) => setGtinYearlySubscription(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('GTIN Yearly Subscription Fee')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field9" className="text-secondary">Allow Other Products</label>
+                    <label htmlFor="field9" className="text-secondary">  {t('Allow Other Products')}</label>
                     <input
                       type="text"
                       id="field9"
                       value={allowOtherProducts}
-                      onChange={(e) => setAllowOtherProducts(e.target.value)}
-                      placeholder='Allow Other Products'
+                        onChange={(e) => setAllowOtherProducts(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Allow Other Products')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -166,25 +167,25 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
                 <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field5" className="text-secondary">type</label>
+                    <label htmlFor="field5" className="text-secondary">  {t('Type')}</label>
                     <input
                       type="text"
                       id="field5"
                       value={type}
-                      onChange={(e) => setType(e.target.value)}
-                      placeholder='Enter Type'
+                        onChange={(e) => setType(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Type')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                   <label htmlFor="field6" className="text-secondary">Gcp Start Range</label>
+                   <label htmlFor="field6" className="text-secondary">  {t('Gcp Start Range')}</label>
                     <input
                       type="text"
                       id="field6"
                       value={gcpStartRange}
-                      onChange={(e) => setGcpStartRange(e.target.value)}
-                      placeholder='Gcp Start Range'
+                        onChange={(e) => setGcpStartRange(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Gcp Start Range')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                  </div>
@@ -215,37 +216,37 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
                 <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field8" className="text-secondary">Quotation</label>
+                      <label htmlFor="field8" className="text-secondary">  {t('Quotation')}</label>
                     <input
                       type="text"
                       id="field8"
                       value={quotation}
-                      onChange={(e) => setQuotation(e.target.value)}
-                      placeholder='Quotation'
+                        onChange={(e) => setQuotation(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Quotation')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field10" className="text-secondary">Gcp Type</label>
+                    <label htmlFor="field10" className="text-secondary">  {t('Gcp Type')}</label>
                     <input
                       type="text"
                       id="field10"
                       value={gcpType}
-                      onChange={(e) => setGcpType(e.target.value)}
-                      placeholder='Gcp Type'
+                        onChange={(e) => setGcpType(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Gcp Type')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field11" className="text-secondary">Gcp Order</label>
+                    <label htmlFor="field11" className="text-secondary">  {t('Gcp Order')}</label>
                     <input
                       type="text"
                       id="field11"
                       value={gcpOrder}
-                      onChange={(e) => setGcpOrder(e.target.value)}
-                      placeholder='Gcp Order'
+                        onChange={(e) => setGcpOrder(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Gcp Order')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -254,25 +255,25 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
                 <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field12" className="text-secondary">Med Subscription Fee</label>
+                    <label htmlFor="field12" className="text-secondary">  {t('Med Subscription Fee')}</label>
                     <input
                       type="text"
                       id="field12"
                       value={med_subscription_fee}
-                      onChange={(e) => setmed_subscription_fee(e.target.value)}
-                      placeholder='Med Subscription Fee'
+                        onChange={(e) => setmed_subscription_fee(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Med Subscription Fee')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field13" className="text-secondary">Member Yearly Subscription Fee</label>
+                      <label htmlFor="field13" className="text-secondary">  {t('Member Yearly Subscription Fee')}</label>
                     <input
                       type="text"
                       id="field13"
                       value={memberYearlySubscriptionFee}
-                      onChange={(e) => setMemberYearlySubscriptionFee(e.target.value)}
-                      placeholder='Member Yearly Subscription Fee'
+                        onChange={(e) => setMemberYearlySubscriptionFee(e.target.value)}
+                        placeholder={`${t('Enter')} ${t('Member Yearly Subscription Fee')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
