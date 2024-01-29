@@ -88,3 +88,59 @@ export const searchAdmins = async (req, res, next) => {
         next(error);
     }
 };
+
+
+// Controller function to assign admin to user
+export const assignAdminToUser = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            adminId: Joi.string().required(),
+            userId: Joi.string().required(),
+        });
+
+        const { error, value } = schema.validate(req.body);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { adminId, userId } = value;
+
+
+
+        // Check if both admin and user exist
+        const adminExists = await prisma.admins.findUnique({
+            where: { id: adminId },
+        });
+        const userExists = await prisma.users.findUnique({
+            where: { id: userId },
+        });
+
+        if (!adminExists || !userExists) {
+            return next(createError(404, 'Admin or User not found.'));
+        }
+
+        // Check if the user is already assigned an admin
+        const user = await prisma.users.findUnique({
+            where: { id: adminId },
+            include: { assign_to_admin: true }, // Include the assigned admin
+        });
+
+        if (user.assign_to_admin) {
+            return next(createError(400, `User is already assigned to ${user.assign_to_admin.username}.`));
+        }
+
+        // Assign the admin to the user
+        await prisma.users.update({
+            where: { id: userId },
+            data: {
+                assign_to: adminId,
+            },
+        });
+
+        res.status(200).json({ message: 'Admin assigned to user successfully.' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
