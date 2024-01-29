@@ -57,10 +57,10 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
 };
 
 
-// helo
+
 
 export const sendEmail = async ({
-    fromEmail = process.env.EMAIL,
+    fromEmail = process.env.ADMIN_EMAIL,
     toEmail,
     subject,
     htmlContent,
@@ -93,6 +93,51 @@ export const sendEmail = async ({
             resolve({ success: true, message: 'Email sent successfully!' });
         } catch (error) {
             reject({ success: false, message: 'Error in sending email', error: error });
+        }
+    });
+}
+
+
+
+
+export const sendMultipleEmails = async ({
+    fromEmail = process.env.ADMIN_EMAIL,
+    emailData,
+}) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.GMAIL_USERNAME,
+                    pass: process.env.GMAIL_PASSWORD
+                }
+            });
+
+            if (!Array.isArray(emailData)) {
+                emailData = [emailData]; // Ensure emailData is an array
+            }
+
+            // Send emails to multiple recipients
+            await Promise.all(emailData.map(async ({ toEmail, subject, htmlContent, attachments = [] }) => {
+                const mailOptions = {
+                    from: `Gs1Ksa <${fromEmail}>`,
+                    to: toEmail,
+                    subject: subject || '', // Use the specified subject or empty string
+                    html: htmlContent || '', // Use the specified content or empty string
+                    attachments: attachments.map(attachment => ({
+                        filename: attachment.filename,
+                        content: attachment.content,
+                        contentType: attachment.contentType
+                    }))
+                };
+
+                await transporter.sendMail(mailOptions);
+            }));
+
+            resolve({ success: true, message: 'Emails sent successfully!' });
+        } catch (error) {
+            reject({ success: false, message: 'Error in sending emails', error: error });
         }
     });
 }
