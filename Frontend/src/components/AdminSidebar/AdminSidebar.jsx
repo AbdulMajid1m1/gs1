@@ -462,7 +462,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Members Expiry')}</p>
+                <p className="sidebar-text">90 days Expiry</p>
               </div>
 
 
@@ -487,7 +487,7 @@ const AdminSideBar = () =>
               </div>
 
 
-              <div
+              {/* <div
                 // className={`main-images-container ${selectedItem === '/admin/migration' ? 'selected-item' : ''}`}
                 //   onClick={() => handleItemClick('/admin/migration')}
                 //     onContextMenu={(event) =>
@@ -505,7 +505,7 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Migration')}</p>
-              </div>
+              </div> */}
 
                 {/* <div 
                   // className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''}`}
@@ -548,7 +548,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Payment Slips')}</p>
               </div>
 
-              <div
+              {/* <div
                 // className={`main-images-container ${selectedItem === '/admin/notfications' ? 'selected-item' : ''}`}
                 //   onClick={() => handleItemClick('/admin/notfications')}
                 //     onContextMenu={(event) =>
@@ -566,7 +566,7 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Notifications')}</p>
-              </div>
+              </div> */}
 
 
               <div
@@ -689,7 +689,7 @@ const AdminSideBar = () =>
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">{t('OTHERS')}</p>
+            <p className="sidebar-text">TRANSACTION</p>
             {showFourthData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (
@@ -804,6 +804,94 @@ const AdminSideBar = () =>
                 />
                 <p className="sidebar-text">{t('Old InActive Members')}</p>
               </div>
+
+
+              <div
+              // <div
+                className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={() => setReportSubMenu(!reportSubMenu)}
+              >
+                <img
+                  src={report}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Reports')}</p>
+                {reportSubMenu ? (
+                  <i className='fas fa-solid fa-chevron-up text-white'></i>
+                ) : (
+                  <i className='fas fa-solid fa-chevron-down text-white'></i>
+                )}
+              </div>
+              
+              {reportSubMenu && (
+                <div
+                  className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                  onClick={toggleSidebar}
+                >
+                  <div
+                    // className={`main-images-container ${selectedItem === '/admin/front-end' ? 'selected-item' : ''}`}
+                    //   onClick={() => handleItemClick('/admin/front-end')}
+                    //     onContextMenu={(event) =>
+                    //        handleContextMenu(event, '/admin/front-end')
+                    // }
+                    className={`main-images-container ${selectedItem === '/admin/kpi-report' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
+                    onClick={(event) => handleItemClick('/admin/kpi-report', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/kpi-report')
+                    }
+                  >
+                    <img
+                      src={kpiReport}
+                      className="main-inside-image bg-white rounded-full"
+                      alt=""
+                    />
+                    <p className="sidebar-text">{t('KPI Report')}</p>
+                  </div>
+
+                  <div
+                    // className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''}`}
+                    //   onClick={() => handleItemClick('/admin/settings')}
+                    //     onContextMenu={(event) =>
+                    //        handleContextMenu(event, '/admin/settings')
+                    // }
+                    className={`main-images-container ${selectedItem === '/admin/member-activity-report' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
+                    onClick={(event) => handleItemClick('/admin/member-activity-report', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/member-activity-report')
+                    }
+                  >
+                    <img
+                      src={memberActivity}
+                      className="main-inside-image bg-white rounded-full"
+                      alt=""
+                    />
+                    <p className="sidebar-text">{t('Member Activity')}</p>
+                  </div>
+
+                  <div
+                    // className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''}`}
+                    //   onClick={() => handleItemClick('/admin/settings')}
+                    //     onContextMenu={(event) =>
+                    //        handleContextMenu(event, '/admin/settings')
+                    // }
+                    className={`main-images-container ${selectedItem === '/admin/admin-activity-report' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
+                    onClick={(event) => handleItemClick('/admin/admin-activity-report', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/admin-activity-report')
+                    }
+                  >
+                    <img
+                      src={adminActivity}
+                      className="main-inside-image bg-white rounded-full"
+                      alt=""
+                    />
+                    <p className="sidebar-text">{t('Admin Activity')}</p>
+                  </div>
+
+                </div>
+              )}
+
               
               <div
                 // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
@@ -930,92 +1018,6 @@ const AdminSideBar = () =>
                   />
                   <p className="sidebar-text">Master Data</p>
                 </div> */}
-
-              <div
-              // <div
-                className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={() => setReportSubMenu(!reportSubMenu)}
-              >
-                <img
-                  src={report}
-                  className="main-inside-image bg-white rounded-full"
-                  alt=""
-                />
-                <p className="sidebar-text">{t('Reports')}</p>
-                {reportSubMenu ? (
-                  <i className='fas fa-solid fa-chevron-up text-white'></i>
-                ) : (
-                  <i className='fas fa-solid fa-chevron-down text-white'></i>
-                )}
-              </div>
-              
-              {reportSubMenu && (
-                <div
-                  className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
-                  onClick={toggleSidebar}
-                >
-                  <div
-                    // className={`main-images-container ${selectedItem === '/admin/front-end' ? 'selected-item' : ''}`}
-                    //   onClick={() => handleItemClick('/admin/front-end')}
-                    //     onContextMenu={(event) =>
-                    //        handleContextMenu(event, '/admin/front-end')
-                    // }
-                    className={`main-images-container ${selectedItem === '/admin/kpi-report' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
-                    onClick={(event) => handleItemClick('/admin/kpi-report', event)}
-                    onContextMenu={(event) =>
-                      handleContextMenu(event, '/admin/kpi-report')
-                    }
-                  >
-                    <img
-                      src={kpiReport}
-                      className="main-inside-image bg-white rounded-full"
-                      alt=""
-                    />
-                    <p className="sidebar-text">{t('KPI Report')}</p>
-                  </div>
-
-                  <div
-                    // className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''}`}
-                    //   onClick={() => handleItemClick('/admin/settings')}
-                    //     onContextMenu={(event) =>
-                    //        handleContextMenu(event, '/admin/settings')
-                    // }
-                    className={`main-images-container ${selectedItem === '/admin/member-activity-report' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
-                    onClick={(event) => handleItemClick('/admin/member-activity-report', event)}
-                    onContextMenu={(event) =>
-                      handleContextMenu(event, '/admin/member-activity-report')
-                    }
-                  >
-                    <img
-                      src={memberActivity}
-                      className="main-inside-image bg-white rounded-full"
-                      alt=""
-                    />
-                    <p className="sidebar-text">{t('Member Activity')}</p>
-                  </div>
-
-                  <div
-                    // className={`main-images-container ${selectedItem === '/admin/settings' ? 'selected-item' : ''}`}
-                    //   onClick={() => handleItemClick('/admin/settings')}
-                    //     onContextMenu={(event) =>
-                    //        handleContextMenu(event, '/admin/settings')
-                    // }
-                    className={`main-images-container ${selectedItem === '/admin/admin-activity-report' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
-                    onClick={(event) => handleItemClick('/admin/admin-activity-report', event)}
-                    onContextMenu={(event) =>
-                      handleContextMenu(event, '/admin/admin-activity-report')
-                    }
-                  >
-                    <img
-                      src={adminActivity}
-                      className="main-inside-image bg-white rounded-full"
-                      alt=""
-                    />
-                    <p className="sidebar-text">{t('Admin Activity')}</p>
-                  </div>
-
-                </div>
-              )}
 
 
             </div>

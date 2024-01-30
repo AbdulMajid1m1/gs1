@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import barcodeImage from "../../../Images/barcodeImage.png"
 import { useTranslation } from 'react-i18next';
 import CompanyNamePopUp from './CompanyNamePopUp';
+import CompanyArabicPopUp from './CompanyArabicPopUp';
 
 
 const MemmberRegisteration = () => {
@@ -335,7 +336,11 @@ const MemmberRegisteration = () => {
             "company_name_arabic": companyArabic,
             "companyLandLine": companyLandLine,
             "mobile": mobileNumber,
-            "zip_code": zipCode,
+            // "zip_code": zipCode,
+              
+            // Conditionally include zip_code based on user input
+            ...(zipCode && { "zip_code": zipCode }),
+
             "industryTypes": selectedIndustries.map(item => ({ id: item.id, name: item.name })),
             "country": selectedCountry?.name,
             "state": selectedState?.name,
@@ -498,22 +503,26 @@ const MemmberRegisteration = () => {
     // console.log("company", companyLandLine)
 
     const [isCompanyNamePopUpVisible, setIsCompanyNamePopUpVisible] = useState(false);
-    const [popupOpened, setPopupOpened] = useState(false); // New state variable
-
+    const [isCompanyArabicPopUpVisible, setIsCompanyArabicPopUpVisible] = useState(false);
+ 
     const handleCompanyNamePopUp = () => {
         setIsCompanyNamePopUpVisible(true);
     };
 
-
     const handleInputFocus = () => {
-        if (!popupOpened) {
-            setIsCompanyNamePopUpVisible(true);
-            setPopupOpened(true); // Set popupOpened to true when the popup is opened
-        }
+        setIsCompanyNamePopUpVisible(true);
     };
 
     const handleInputBlur = () => {
         setIsCompanyNamePopUpVisible(false);
+    };
+
+    const handleInputFocusArabic = () => {
+        setIsCompanyArabicPopUpVisible(true);
+    };
+
+    const handleInputBlurArabic = () => {
+        setIsCompanyArabicPopUpVisible(false);
     };
 
     return (
@@ -605,7 +614,7 @@ const MemmberRegisteration = () => {
                                     value={addCrNumber}
                                     onChange={handleInputChange}
                                     //    onChange={(e) => setAddCrNumber(e.target.value)}
-                                    placeholder={`${t('Enter')} ${t('Cr Number')} }`}
+                                    placeholder={`${t('Enter')} ${t('Cr Number')}`}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                                 {error && <p className="text-red-500 text-xs">{error}</p>}
@@ -618,7 +627,7 @@ const MemmberRegisteration = () => {
                                     id="field2"
                                     //  value={addCrNumber}
                                     onChange={(e) => setCrActivity(e.target.value)} 
-                                    placeholder={`${t('Enter')} ${t('Cr Activity')} }`}
+                                    placeholder={`${t('Enter')} ${t('Cr Activity')}`}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                             </div>
@@ -630,7 +639,7 @@ const MemmberRegisteration = () => {
                                 <input
                                     onChange={(e) => setEmail(e.target.value)}
                                     id='email'
-                                    placeholder={`${t('Enter')} ${t('Email')} }`}
+                                    placeholder={`${t('Enter')} ${t('Email')}`}
                                     required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
@@ -641,7 +650,7 @@ const MemmberRegisteration = () => {
                                 <input
                                     onChange={(e) => setContactPerson(e.target.value)}
                                     id='contactperson'
-                                    placeholder={`${t('Enter')} ${t('Contact Person')} }`}
+                                    placeholder={`${t('Enter')} ${t('Contact Person')}`}
                                     required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
@@ -654,7 +663,7 @@ const MemmberRegisteration = () => {
                                 <input
                                     onChange={(e) => setCompanyEnglish(e.target.value)}
                                     // id='companyEnglish'
-                                    placeholder={`${t('Enter')} ${t('Company Name [English]')} }`}
+                                    placeholder={`${t('Enter')} ${t('Company Name [English]')}`}
                                     required
                                     onFocus={handleInputFocus}
                                     onBlur={handleInputBlur}
@@ -666,9 +675,11 @@ const MemmberRegisteration = () => {
                                 <label className='text-secondary font-semibold' htmlFor='companyArabic'> {t('Company Name [Arabic]')} <span className='text-red-600'>*</span></label>
                                 <input
                                     onChange={(e) => setCompanyArabic(e.target.value)}
-                                    id='companyArabic'
-                                    placeholder={`${t('Enter')} ${t('Company Name [Arabic]')} }`}
+                                    // id='companyArabic'
+                                    placeholder={`${t('Enter')} ${t('Company Name [Arabic]')}`}
                                     required
+                                    onFocus={handleInputFocusArabic}
+                                    onBlur={handleInputBlurArabic}
                                     type='text' className='border-1 border-[#8E9CAB] w-full text-right rounded-sm p-2 mb-3' />
                             </div>
 
@@ -795,7 +806,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder={`${t('Enter')} ${t('Country')} }`}
+                                            placeholder={`${t('Enter')} ${t('Country')}`}
                                         // required
                                         />
                                     )}
@@ -839,7 +850,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder={`${t('Enter')} ${t('State')} }`}
+                                            placeholder={`${t('Enter')} ${t('State')}`}
                                         // required
                                         />
                                     )}
@@ -887,7 +898,7 @@ const MemmberRegisteration = () => {
                                                 style: { color: "white" },
                                             }}
                                             className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder={`${t('Enter')} ${t('City')} }`}
+                                            placeholder={`${t('Enter')} ${t('City')}`}
                                         // required
                                         />
                                     )}
@@ -904,11 +915,11 @@ const MemmberRegisteration = () => {
 
 
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='zipcode'> {t('Zip Code')}<span className='text-red-600'>*</span></label>
+                                <label className='text-secondary font-semibold' htmlFor='zipcode'> {t('Zip Code')}</label>
                                 <input
                                     onChange={(e) => setZipCode(e.target.value)}
                                     id='zipcode'
-                                    placeholder={`${t('Enter')} ${t('Zip Code')} }`}
+                                    placeholder={`${t('Enter')} ${t('Zip Code')}`}
                                     // required
                                     type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
                             </div>
@@ -1075,7 +1086,7 @@ const MemmberRegisteration = () => {
                                             autoComplete="off"
                                             {...params}
                                             label={`${t('Other Products')}`}
-                                            placeholder={`${t('Enter')} ${t('Other Products')} }`}
+                                            placeholder={`${t('Enter')} ${t('Other Products')}`}
                                             variant='outlined'
                                         />
                                     )}
@@ -1160,6 +1171,10 @@ const MemmberRegisteration = () => {
 
                 {isCompanyNamePopUpVisible && (
                     <CompanyNamePopUp isVisible={isCompanyNamePopUpVisible} setVisibility={setIsCompanyNamePopUpVisible}/>
+                )}
+
+                {isCompanyArabicPopUpVisible && (
+                    <CompanyArabicPopUp isVisible={isCompanyArabicPopUpVisible} setVisibility={setIsCompanyArabicPopUpVisible}/>
                 )}
                 {/* </div> */}
             </div >

@@ -1553,7 +1553,7 @@ export const Gs1AllMembers = (t, i18n) => [
         style={{
           padding: '4px 8px',
           borderRadius: '10px',
-          border: '2px solid',
+          border: params.row.assign_to_admin ? '2px solid' : 'none',
           // background: '#D1FFBD', // customize as needed
           color: 'green',
         }}
