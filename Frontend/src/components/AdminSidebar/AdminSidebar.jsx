@@ -1066,7 +1066,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Users</p>
+                <p className="sidebar-text"> {t('Users')}</p>
               </div>
 
               
@@ -1087,7 +1087,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Roles</p>
+                <p className="sidebar-text"> {t('Roles')}</p>
               </div>
 
 

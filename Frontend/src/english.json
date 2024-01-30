@@ -757,6 +757,13 @@
     "PENDING AMOUNT":"PENDING AMOUNT",
     "APPROVED AMOUNT":"APPROVED AMOUNT",
     "Request Type":"Request Type",
-    "Payment Type":"Payment Type"
+    "Payment Type":"Payment Type",
+    "Roles":"Roles",
+    "Add Role":"Add Role",
+    "Role Name":"Role Name",
+    "Select Roles":"Select Roles",
+    "Select All":"Select All",
+    "Create":"Create",
+    "Users":"Users"
     
 }

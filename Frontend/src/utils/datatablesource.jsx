@@ -7209,10 +7209,10 @@ export const expiredMemberColumn = (t, i18n) => [
 
 
 
-export const AdminRolesColumn = [
+export const AdminRolesColumn = (t, i18n) => [
   {
     field: 'roles',
-    headerName: 'Roles',
+    headerName:  t('Roles'),
     width: 180,
   },
 

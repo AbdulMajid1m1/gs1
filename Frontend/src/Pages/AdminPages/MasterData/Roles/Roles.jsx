@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { I18nextProvider, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import { AdminRolesColumn } from '../../../../utils/datatablesource';
 import DataTable from '../../../../components/Datatable/Datatable';
@@ -31,18 +31,18 @@ const Roles = () => {
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <AdminDashboardRightHeader title={'Roles'}/>
+          <AdminDashboardRightHeader title={`${t('Roles')}`} />
         </div>
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-4 bg-white shadow-xl rounded-md">
 
-              <div className="flex justify-start py-3">
-                <button
+              <div className={`flex px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                  <button
                   onClick={() => navigate('/admin/add-roles')}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>Add Role
+                  <i className="fas fa-plus mr-2"></i>  {t('Add Role')}
                 </button>
               </div>
               
@@ -50,8 +50,8 @@ const Roles = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title='Roles'
-                  columnsName={AdminRolesColumn}
+                  title={`${t('Roles')}`}
+                  columnsName={AdminRolesColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}
@@ -60,7 +60,7 @@ const Roles = () => {
 
                   dropDownOptions={[
                   {
-                    label: t("View"),
+                      label: `${t('View')}`,
                     icon: (
                       <VisibilityIcon
                         fontSize="small"

@@ -810,6 +810,13 @@
     "PENDING AMOUNT":"المبلغ المعلق",
     "APPROVED AMOUNT":"المبلغ المعتمد",
     "Request Type":"نوع الطلب",
-    "Payment Type":"نوع الدفع"
+    "Payment Type":"نوع الدفع",
+    "Roles":"الأدوار",
+    "Add Role":"إضافة دور",
+    "Role Name":"اسم الدور",
+    "Select Roles":"اختيار الأدوار",
+    "Select All":"اختيار الكل",
+    "Create":"إنشاء",
+    "Users":"المستخدمين"
 
 }
