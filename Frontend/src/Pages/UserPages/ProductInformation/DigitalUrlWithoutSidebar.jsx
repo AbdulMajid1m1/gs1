@@ -29,6 +29,7 @@ import {
 import FormPopup from "../../MemberPages/DigitalUrlInfo/FormPopup";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const DigitalUrlWithoutSidebar = ({ gtinData }) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -41,6 +42,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
   const [productRecall, setProductRecall] = useState([]);
   const [packagingComposition, setPackagingComposition] = useState([]);
   const [electronicLeaflets, setElectronicLeaflets] = useState([]);
+  const { t, i18n } = useTranslation();
 
 
   const togglePopup = () => {
@@ -362,15 +364,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         return (
           <DataTable
             data={safetyInformation}
-            title={"Safety Information"}
+            title={`${t('Safety Information')}`}
             secondaryColor="secondary"
-            columnsName={SafetyInformationColumn}
+            columnsName={SafetyInformationColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -384,15 +386,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         return (
           <DataTable
             data={promotionalOffers}
-            title="Promotional Offers"
-            columnsName={PromotionalOffersColumns}
+            title={`${t('Promotional Offers')}`}
+            columnsName={PromotionalOffersColumns(t)}
             secondaryColor="secondary"
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -406,15 +408,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         return (
           <DataTable
             data={productContent}
-            title="Product Contents"
-            columnsName={ProductContentColumn}
+            title={`${t('Product Contents')}`}
+            columnsName={ProductContentColumn(t)}
             secondaryColor="secondary"
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -429,14 +431,14 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
           <DataTable
             data={productLocationofOrigin}
             secondaryColor="secondary"
-            title="Product Location of Origin"
-            columnsName={ProductLocationofOriginColumn}
+            title={`${t('Product Location of Origin')}`}
+            columnsName={ProductLocationofOriginColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -450,15 +452,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         return (
           <DataTable
             data={productRecall}
-            title="Product Recall"
-            columnsName={ProductRecallColumn}
+            title={`${t('Product Recall')}`}
+            columnsName={ProductRecallColumn(t)}
             secondaryColor="secondary"
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -472,15 +474,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         return (
           <DataTable
             data={recipe}
-            title="Recipe"
-            columnsName={RecipeColumn}
+            title={`${t('Recipe')}`}
+            columnsName={RecipeColumn(t)}
             secondaryColor="secondary"
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -495,14 +497,14 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
           <DataTable
             data={packagingComposition}
             secondaryColor="secondary"
-            title="Packaging Composition"
-            columnsName={PackagingCompositionColumn}
+            title={`${t('Packaging Composition')}`}
+            columnsName={PackagingCompositionColumn(t)}
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -516,15 +518,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         return (
           <DataTable
             data={electronicLeaflets}
-            title="Electronic Leaflets"
-            columnsName={ElectronicLeafletsColumn}
+             title={`${t('Electronic Leaflets')}`}
+            columnsName={ElectronicLeafletsColumn(t)}
             secondaryColor="secondary"
             checkboxSelection="disabled"
             processRowUpdate={processRowUpdate}
             backButton={false}
             dropDownOptions={[
               {
-                label: "Delete",
+                label: `${t('Delete')}`,
                 icon: (
                   <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
                 ),
@@ -549,7 +551,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
             <div className="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-6 gap-2 sm:gap-5 px-2 sm:px-10 py-2">
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-semibold font-body text-secondary">
-                  Product Name[Eng]
+                  {t('Product Name')}
                 </p>
                 <p className="sm:text-xs text-sm font-body text-gray-600">
                   {gtinData?.productName}
@@ -557,7 +559,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  QR Code
+                  {t('QR Code')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans text-secondary">
                   {/* {memberData?.qr_code} */}
@@ -565,7 +567,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
               </div>
               <div className="flex flex-col items-center gap-6">
               <p className="sm:text-xs text-sm font-body font-semibold text-secondary">
-                  Brand Name
+                  {t('Brand Name')}
                 </p>
                 <p className="sm:text-xs text-sm font-body text-gray-600">
                   {gtinData?.brandName}
@@ -573,7 +575,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-body font-semibold text-secondary">
-                  Barcode
+                  {t('Barcode')}
                 </p>
                 <p className="sm:text-xs text-sm font-body text-white bg-green-700 rounded-full px-3">
                   {gtinData?.gtin}
@@ -581,7 +583,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-body font-semibold text-secondary">
-                  Company
+                  {t('Company')}
                 </p>
                 <p className="sm:text-xs text-sm font-body text-gray-600">
                   {gtinData?.companyName}
@@ -589,15 +591,15 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-body font-semibold text-secondary">
-                  Certificate
+                  {t('Certificate')}
                 </p>
                 <p className="sm:text-xs text-sm font-body text-gray-600">
-                  Certificate
+                  {t('Certificate')}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-6">
                 <p className="sm:text-xs text-sm font-sans font-semibold text-secondary">
-                  Status
+                  {t('Status')}
                 </p>
                 <p className="sm:text-xs text-sm font-sans font-semibold text-white bg-green-500 rounded-full px-3">
                   {gtinData?.status}
@@ -628,11 +630,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         <div className="2xl:mt-0 xl:mt-0 lg:mt-0">
           <div className="h-10 w-full bg-primary rounded-md shadow-xl mt-6 flex justify-start items-center px-5">
             <p className="sm:w-auto w-full sm:text-lg text-sm font-body text-white">
-              Digital Link Information
+              {t('Digital Link Information')}
             </p>
           </div>
 
-          <div className="h-auto w-full flex justify-between flex-wrap">
+          <div className={`h-auto w-full flex justify-between flex-wrap ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className="h-auto w-full sm:w-[25%] flex flex-col gap-4">
               {/* <span className='bg-yellow-100'>Safety Information</span>
             <span className='bg-yellow-100'>Promotional Offers</span> */}
@@ -646,7 +648,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                   className="w-5 h-5 ml-1"
                   alt=""
                 />
-                Safety Information
+                {t('Safety Information')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "Promotional Offers" ? "bg-yellow-500" : ""
@@ -658,7 +660,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                   className="w-5 h-5 ml-1"
                   alt=""
                 />
-                Promotional Offers
+                {t('Promotional Offers')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "Product Contents" ? "bg-yellow-500" : ""
@@ -666,7 +668,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                 onClick={() => handleOptionChange("Product Contents")}
               >
                 <img src={productContentIcon} className="w-5 h-5 ml-1" alt="" />
-                Product Contents
+                {t('Product Contents')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "ProductLocationofOrigin"
@@ -680,7 +682,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                   className="w-5 h-5 ml-1"
                   alt=""
                 />
-                Product Location of Origin
+                {t('Product Location of Origin')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "ProductRecall" ? "bg-yellow-500" : ""
@@ -688,7 +690,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                 onClick={() => handleOptionChange("ProductRecall")}
               >
                 <img src={productRecallIcon} className="h-5 w-5 ml-1" alt="" />
-                Product Recall
+                {t('Product Recall')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "recipe" ? "bg-yellow-500" : ""
@@ -696,7 +698,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                 onClick={() => handleOptionChange("recipe")}
               >
                 <img src={recipeIcon} className="h-5 w-5 ml-1" alt="" />
-                Recipe
+                {t('Recipe')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "PackagingComposition"
@@ -710,7 +712,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                   className="h-5 w-5 ml-1"
                   alt=""
                 />
-                Packaging Composition
+                {t('Packaging Composition')}
               </span>
               <span
                 className={`bg-yellow-100 flex justify-start items-center gap-2 cursor-pointer ${selectedOption === "ElectronicLeaflets" ? "bg-yellow-500" : ""
@@ -722,7 +724,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
                   className="h-5 w-5 ml-1"
                   alt=""
                 />
-                Electronic Leaflets
+                {t('Electronic Leaflets')}
               </span>
             </div>
 

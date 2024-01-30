@@ -729,7 +729,25 @@
     "Priority":"Priority",
     "Expired Member":"Expired Member",
     "GS1 Staff":"GS1 Staff",
-    "Assign":"Assign"
+    "Assign":"Assign",
+    "GTIN INFORMATION":"GTIN INFORMATION",
+    "DIGITAL LINK":"DIGITAL LINK",
+    "EVENTS":"EVENTS",
+    "Allergen Info":"Allergen Info",
+    "Nutrients Info":"Nutrients Info",
+    "Best Before":"Best Before",
+    "Product image URL":"Product image URL",
+    "Global product category":"Global product category",
+    "Net content":"Net content",
+    "Filter By":"Filter By",
+    "Batches":"Batches",
+    "View Grid":"View Grid",
+    "EventID":"EventID",
+    "Ref Description":"Ref Description",
+    "Date Created":"Date Created",
+    "Date LastUpdate":"Date LastUpdate",
+    "Serials":"Serials",
+    "No any pending invoice":"No any pending invoice"
     
     
 }
