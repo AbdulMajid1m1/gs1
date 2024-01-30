@@ -260,7 +260,7 @@ const BankSlip = () => {
                                         <textarea
                                             id="desc"
                                             type="text"
-                                            placeholder="Description"
+                                            placeholder={`${t('Enter')} ${t('Description')}`}
                                             onChange={(e) => setDescription(e.target.value)}
                                             className="border-1 w-full rounded-sm p-2 mb-3"
                                         />

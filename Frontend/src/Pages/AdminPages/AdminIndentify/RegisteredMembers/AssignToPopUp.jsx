@@ -163,7 +163,7 @@ const handleAssignToData = async (e) => {
                             </div>
                             <form className='w-full'>
                                <div>
-                                <label className="font-body text-sm text-secondary">GS1 Staff <span className='text-red-500'>*</span></label>
+                                    <label className="font-body text-sm text-secondary"> {t('GS1 Staff')} <span className='text-red-500'>*</span></label>
                                 <Autocomplete
                                     id="companyName"
                                     required
@@ -231,7 +231,7 @@ const handleAssignToData = async (e) => {
                                 </div>
 
                             <div className='mt-6'>
-                                <label className="font-body text-sm text-secondary">Note</label>
+                                <label className="font-body text-sm text-secondary"> {t('Note')}</label>
                                 <textarea
                                     onChange={(e) => setOptionalMessage(e.target.value)}
                                     className="w-full h-20 mt-1 border border-gray-300 rounded outline-none px-3 py-2"
@@ -256,7 +256,7 @@ const handleAssignToData = async (e) => {
                                     className="px-6 py-3"
                                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : null}
                                 >
-                                    Assign
+                                        {t('Assign')}
                                 </Button>
                             </div>
 

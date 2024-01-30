@@ -9,7 +9,7 @@ import newRequest from '../../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import * as XLSX from "xlsx";
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+// import 'jspdf-autotable';
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();

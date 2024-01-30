@@ -4,10 +4,12 @@ import newRequest from '../../../../utils/userRequest';
 import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useTranslation } from 'react-i18next';
 
 const MemberGenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMemberDocumentsData }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { t, i18n } = useTranslation();
     // get the sesstion data
 
     const handleGenerateCertificate = async (e) => {
@@ -20,7 +22,7 @@ const MemberGenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetc
                 userId: userId
             });
             console.log(response.data);
-            toast.success('Certificate generated successfully', {
+            toast.success( `${t('Certificate generated successfully')}`, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -37,7 +39,7 @@ const MemberGenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetc
         } catch (err) {
             console.log(err);
             setLoading(false);
-            toast.error(err?.response?.data?.error || 'Something went wrong', {
+            toast.error(err?.response?.data?.error || `${t('Something went wrong!')}` , {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -62,7 +64,7 @@ const MemberGenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetc
 
                                 <div className="text-center mt-4 mb-2">
                                     <p className="text-lg sm:text-xl text-gray-600">
-                                        Click 'GENERATE' to create new certificate for the member and send it to the member via email.
+                                        {t(`Click 'GENERATE' to create new certificate for the member and send it to the member via email.`)}
                                     </p>
                                 </div>
 
@@ -72,7 +74,7 @@ const MemberGenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetc
                                         className="px-5 py-2 w-[40%] sm:w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                                         onClick={() => setVisibility(false)}
                                     >
-                                        Close
+                                        {t('Close')}
                                     </button>
                                     <Button
                                         variant="contained"
@@ -82,7 +84,7 @@ const MemberGenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetc
                                         className="w-[40%] sm:w-[30%] ml-2"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                                     >
-                                        GENERATE
+                                        {t('GENERATE')}
                                     </Button>
                                 </div>
                             </form>

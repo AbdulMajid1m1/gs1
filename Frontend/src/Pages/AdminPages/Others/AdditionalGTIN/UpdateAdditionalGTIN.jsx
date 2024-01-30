@@ -67,21 +67,21 @@ const UpdateAdditionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProduc
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Additional GTIN Pricing')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Total Number Of Barcodes</label>
+                    <label htmlFor="field1" className="text-secondary"> {t('Total No Of Barcodes')}</label>
                     <input
                       type="text"
                       id="name"
                       value={totalNumberOfBarcodes}
                       onChange={(e) => setTotalNumberOfBarcodes(e.target.value)}
                       //   readOnly
-                      placeholder='Enter Total Number Of Barcodes'
+                      placeholder={`${t('Enter')} ${t('Total No Of Barcodes')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="status" className="text-secondary">
-                      Price
+                      {t('Price')}
                     </label>
                     <input
                       type="number"
@@ -119,7 +119,7 @@ const UpdateAdditionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProduc
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Save Changes')} 
+                    {t('SAVE CHANGES')} 
                   </Button>
                 </div>
               </form>

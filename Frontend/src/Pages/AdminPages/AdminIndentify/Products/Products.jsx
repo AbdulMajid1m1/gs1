@@ -9,11 +9,13 @@ import { DataTableContext } from "../../../../Contexts/DataTableContext";
 import DashboardRightHeader from "../../../../components/DashboardRightHeader/DashboardRightHeader";
 import { debounce } from '@mui/material/utils';
 import newRequest from "../../../../utils/userRequest";
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
   const [data, setData] = useState([]);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+  const { t, i18n } = useTranslation();
     
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
@@ -130,9 +132,9 @@ const Products = () => {
  
   return (
     <div>
-      <div className="p-0 h-full sm:ml-72">
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <DashboardRightHeader title={"Products"}/>
+          <DashboardRightHeader  title={`${t('Products')}`} />
         </div>
 
         <div className='flex justify-center items-center'>
@@ -171,7 +173,7 @@ const Products = () => {
                           error={isSubmitClicked && !selectedCr?.cr}
                           helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
                           {...params}
-                          label="Search Products"
+                          label={`${t('Search Products')}`}
                           InputProps={{
                             ...params.InputProps,
                             endAdornment: (
@@ -202,11 +204,11 @@ const Products = () => {
 
                     />
           
-              <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-6'>
+ <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-6 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                 <button 
                   onClick={() => navigate("add-products")}
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                    Add Products
+                  {t('Add Products')}
                 </button>
 
                 <button
@@ -217,12 +219,12 @@ const Products = () => {
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
                   {/* {data?.CompanyDetails?.Membership} */}
-                  {details?.membership_category ? details?.membership_category : 'Category C'}
+                  {details?.membership_category ? details?.membership_category : `${t('Category C')}` }
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary active:bg-blue-700">
-                  Member ID {details?.memberID}
+                  {t('Member ID')}{details?.memberID}
                   {/* Member ID */}
                 </button>
 
@@ -231,21 +233,21 @@ const Products = () => {
 
               <div style={{ marginLeft: '-25px', marginRight: '-25px' }}>
 
-                <DataTable data={data} title="Member Products" columnsName={productsColumn}
+                <DataTable data={data}  title={`${t('Member Products')}`} columnsName={productsColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   // handleRowClickInParent={handleRowClickInParent}
 
                   dropDownOptions={[
                     {
-                      label: "Edit",
+                      label: `${t('Edit')}`,
                       icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                       ,
                       action: handleEdit
 
                     },
                     {
-                      label: "Delete",
+                      label: `${t('Delete')}`,
                       icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                       ,
                     //   action: handleDelete,
