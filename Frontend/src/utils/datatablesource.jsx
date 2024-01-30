@@ -4267,7 +4267,7 @@ export const financeColumn = (t, i18n) => [
 
 ];
 
-export const financePopUpMemberBankSlipColumn = [
+export const financePopUpMemberBankSlipColumn = (t, i18n) => [
   // {
   //   field: 'id',
   //   headerName: 'ID',
@@ -4275,12 +4275,12 @@ export const financePopUpMemberBankSlipColumn = [
   // },
   {
     field: 'type',
-    headerName: 'Type',
+    headerName: t('Type'),
     width: 180,
   },
   {
     field: 'document',
-    headerName: 'Document',
+    headerName: t('Document'),
     width: 180,
 
     renderCell: (params) => {
@@ -4333,7 +4333,7 @@ export const financePopUpMemberBankSlipColumn = [
   },
   {
     field: 'transaction_id',
-    headerName: 'Transaction ID',
+    headerName: t('Transaction ID'),
     width: 180,
   },
   // {
@@ -4343,7 +4343,7 @@ export const financePopUpMemberBankSlipColumn = [
   // },
   {
     field: 'created_at',
-    headerName: 'Created At',
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
 
@@ -4354,7 +4354,7 @@ export const financePopUpMemberBankSlipColumn = [
   },
   {
     field: 'updated_at',
-    headerName: 'Updated At',
+    headerName: t('Updated At'),
     width: 180,
 
     type: 'dateTime',
@@ -4364,8 +4364,8 @@ export const financePopUpMemberBankSlipColumn = [
     }
   },
   {
-    field: 'doc_type',
-    headerName: 'Doc Type',
+    field: 'doc_type', 
+    headerName: t('Doc Type'),
     width: 180,
   },
 
