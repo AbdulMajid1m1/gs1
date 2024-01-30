@@ -115,6 +115,9 @@ import MapProvider from "./Contexts/EventMapContext";
 import AdditionalGTIN from "./Pages/AdminPages/Others/AdditionalGTIN/AdditionalGTIN";
 import AdditionalGLN from "./Pages/AdminPages/Others/AdditionalGLN/AdditionalGLN";
 import ExpiredMember from "./Pages/AdminPages/AdminCapture/ExpiredMember/ExpiredMember";
+import Users from "./Pages/AdminPages/MasterData/Users/Users";
+import Roles from "./Pages/AdminPages/MasterData/Roles/Roles";
+import AddRoles from "./Pages/AdminPages/MasterData/Roles/AddRoles";
 
 const queryClient = new QueryClient()
 
@@ -344,7 +347,11 @@ const App = () =>
                             <Route path="member-activity-report" element={<MemberActivityReport />} />
                             <Route path="admin-activity-report" element={<AdminActivityReport />} />
                             
-
+                            
+                            <Route path="users-permissions" element={<Users />} />
+                            <Route path="roles-permissions" element={<Roles />} />
+                            <Route path="add-roles" element={<AddRoles />} />
+                            
                             <Route path="units" element={<Units />} />
                             <Route path="Documents" element={<Documents />} />;
                             <Route path="ProductPackaging" element={<ProductPackaging />} />
