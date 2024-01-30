@@ -256,7 +256,8 @@ export const membershipRenewRequest = async (req, res, next) => {
 
         let cart = existingUser.carts[0];
         let cartData = JSON.parse(cart.cart_items);
-        cart.cart_items = cartData
+        cartData[0].registration_fee = 0;
+        cart.cart_items = cartData // set gtin product registration fee to 0
         cart.transaction_id = transactionId;
 
 
@@ -408,6 +409,48 @@ export const membershipRenewRequest = async (req, res, next) => {
             await createMemberLogs(userLog);
         }
 
+        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+            where: { user_id: existingUser.id, isDeleted: false },
+        });
+
+
+        let gtinSubscriptionHistoryData = [{
+            transaction_id: transactionId,
+            pkg_id: activatedGtinProducts.pkg_id,
+            user_id: activatedGtinProducts.user_id,
+            price: activatedGtinProducts.gtin_subscription_total_price, // add yearly subscription fee
+            request_type: 'renewal',
+            expiry_date: activatedGtinProducts.expiry_date,
+            admin_id: req.admin.adminId,
+
+        }
+        ]
+
+        console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
+
+        let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+            where: {
+                user_id: existingUser.id,
+                isDeleted: false
+            },
+
+        });
+
+        let otherProductsSubscriptionHistoryData = activatedOtherProduct.map(item => ({
+            ...(item.react_no && { react_no: item.react_no }),
+            transaction_id: transactionId,
+            product_id: item.product_id,
+            user_id: item.user_id,
+            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+            request_type: 'renewal',
+            expiry_date: item.expiry_date,
+            admin_id: req?.admin?.adminId,
+        }));
+
+
+        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+
+        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
 
 
         await updateUserPendingInvoiceStatus(existingUser.id);
@@ -489,7 +532,6 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
         if (value.status === 'approved') {
-            let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
@@ -552,9 +594,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                             }
                         });
 
-                        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
-                            where: { user_id: userId, isDeleted: false },
-                        });
+
 
 
                         // Fetch the necessary data from other_products table
@@ -566,7 +606,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                                 med_subscription_fee: true,
                             }
                         });
-                        let activatedOtherProducts = [];
+
                         // Update other_products_subcriptions table for each product
                         for (const product of products) {
                             console.log("product", product);
@@ -588,42 +628,10 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                                 }
                             });
 
-                            let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
-                                where: {
-                                    product_id: product.id,
-                                    user_id: userId,
-                                    isDeleted: false
-                                },
-
-                            });
-                            activatedOtherProducts.push(...activatedOtherProduct);
-                        }
-
-                        gtinSubscriptionHistoryData = [{
-                            transaction_id: activatedGtinProducts.transaction_id,
-                            pkg_id: activatedGtinProducts.pkg_id,
-                            user_id: activatedGtinProducts.user_id,
-                            price: activatedGtinProducts.gtin_subscription_total_price + activatedGtinProducts.price, // add yearly subscription fee and price (registration fee)
-                            request_type: 'renewal',
-                            status: 'approved',
-                            expiry_date: activatedGtinProducts.expiry_date,
-                            admin_id: req.admin.adminId,
 
                         }
-                        ]
-                        console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
-                        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
-                            ...(item.react_no && { react_no: item.react_no }),
-                            transaction_id: item.transaction_id,
-                            product_id: item.product_id,
-                            user_id: item.user_id,
-                            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                            status: 'approved',
-                            request_type: 'renewal',
-                            expiry_date: item.expiry_date,
-                            admin_id: req?.admin?.adminId,
-                        }));
+
 
 
                     }
@@ -683,13 +691,37 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 // Send an email based on the updated status
             }, { timeout: 40000 });
 
-
-            await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
-
-            await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+            // based on transaction id update gtin_subscription_histories table and other_products_subscription_histories table
 
 
-            console.log("existingUser", currentDocument);
+            await prisma.gtin_subscription_histories.updateMany({
+                where: {
+                    transaction_id: currentDocument.transaction_id,
+                    user_id: currentDocument.user_id,
+                    request_type: 'renewal',
+
+                },
+                data: {
+                    status: 'approved',
+                    expiry_date: expiryDate,
+                }
+            });
+
+            await prisma.other_products_subscription_histories.updateMany({
+                where: {
+                    transaction_id: currentDocument.transaction_id,
+                    user_id: currentDocument.user_id,
+                    request_type: 'renewal',
+                },
+                data: {
+                    status: 'approved',
+                    expiry_date: expiryDate,
+                }
+
+            });
+
+
+
 
             const renewalYear = expiryDate.getFullYear(); //
 
@@ -952,65 +984,72 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                 return next(createError(400, 'Invalid subscription upgrade request'));
             }
         }
+        const transactionId = generateRandomTransactionId(10);
+
+        const user = await prisma.users.findUnique({
+            where: { id: value.user_id },
+            include: { carts: true },
+        });
+
+        if (!user) {
+            throw createError(404, 'User not found');
+        }
+
+        const subscribedProductDetails = await prisma.gtin_products.findUnique({
+            where: { id: value.new_subscription_product_Id },
+        });
+
+        if (!subscribedProductDetails) {
+            throw createError(404, 'New GTIN subscription not found');
+        }
+
+
+
+
+        let registeration_fee;
+        let yearly_fee;
+        if (value.subType === "UPGRADE") {
+            registeration_fee = fetchPrice.newRegistrationFee;
+            yearly_fee = fetchPrice.finalPrice - fetchPrice.newRegistrationFee;
+        }
+        else {
+            registeration_fee = user.membership_category === "non_med_category" ?
+                subscribedProductDetails.member_registration_fee :
+                subscribedProductDetails.med_registration_fee;
+
+            yearly_fee = user.membership_category === "non_med_category" ?
+                subscribedProductDetails.gtin_yearly_subscription_fee :
+                subscribedProductDetails.med_yearly_subscription_fee;
+        }
+
+
+
+        const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
+            where: {
+                user_id: value.user_id, isDeleted: false
+
+            },
+            include: { gtin_product: true }
+        });
+
+        if (!gtinSubscriptions) {
+            throw createError(404, 'Old GTIN subscription not found');
+        }
 
         // Start a transaction
         const result = await prisma.$transaction(async (prisma) => {
-            const user = await prisma.users.findUnique({
-                where: { id: value.user_id },
-                include: { carts: true },
-            });
-
-            if (!user) {
-                throw createError(404, 'User not found');
-            }
-
-            const subscribedProductDetails = await prisma.gtin_products.findUnique({
-                where: { id: value.new_subscription_product_Id },
-            });
-
-            if (!subscribedProductDetails) {
-                throw createError(404, 'New GTIN subscription not found');
-            }
-
-            const gtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
-                where: {
-                    user_id: value.user_id, isDeleted: false
-
-                },
-                include: { gtin_product: true }
-            });
-
-            if (!gtinSubscriptions) {
-                throw createError(404, 'Old GTIN subscription not found');
-            }
 
             const totalBarcodes = gtinSubscriptions.gtin_subscription_limit +
                 gtinSubscriptions.gtin_subscription_counter +
                 subscribedProductDetails.total_no_of_barcodes;
-
-            const transactionId = generateRandomTransactionId(10);
-
             let cart = { cart_items: [] };
             // if subType is UPGRADE then in registration fee add final price and in yearly fee add final - registration fee
-            if (value.subType === "UPGRADE") {
-                cart.cart_items.push({
-                    registration_fee: fetchPrice.newRegistrationFee,
-                    yearly_fee: fetchPrice.finalPrice - fetchPrice.newRegistrationFee,
-                    productName: subscribedProductDetails.member_category_description,
-                });
-            }
-            else {
 
-                cart.cart_items.push({
-                    registration_fee: user.membership_category === "non_med_category" ?
-                        subscribedProductDetails.member_registration_fee :
-                        subscribedProductDetails.med_registration_fee,
-                    yearly_fee: user.membership_category === "non_med_category" ?
-                        subscribedProductDetails.gtin_yearly_subscription_fee :
-                        subscribedProductDetails.med_yearly_subscription_fee,
-                    productName: subscribedProductDetails.member_category_description,
-                });
-            }
+            cart.cart_items.push({
+                registration_fee: registeration_fee,
+                yearly_fee: yearly_fee,
+                productName: subscribedProductDetails.member_category_description,
+            });
 
             cart.transaction_id = transactionId;
             let typeOfPayment = `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`;
@@ -1140,6 +1179,17 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             await createMemberLogs(userLog);
         }
 
+        let gtinSubscriptionHistoryData = [{
+            transaction_id: transactionId,
+            pkg_id: value.new_subscription_product_Id,
+            user_id: value.user_id,
+            price: registeration_fee + yearly_fee,
+            request_type: 'upgrade',
+        }
+        ]
+
+
+        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
         await updateUserPendingInvoiceStatus(result.user.id);
         res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
@@ -1231,6 +1281,24 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
                 registration_fee: 0,
                 yearly_fee: gtinUpgradePricing.price,
             });
+
+            let gtinSubscriptionHistoryData = [{
+                transaction_id: transactionId,
+                pkg_id: gtinSubscriptions.id, // no needed in case of additional gtin
+                additional_products_id: value.gtinUpgradeProductId,
+                user_id: value.user_id,
+                price: gtinUpgradePricing.price,
+                request_type: 'additional_gtin',
+            }
+            ]
+
+            console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
+
+
+
+            await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+
+
             cart.total = gtinUpgradePricing.price;
             cart.transaction_id = transactionId;
             let typeOfPayment = `ADDITIONAL GTIN invoice for ${gtinUpgradePricing.total_no_of_barcodes} barcodes`;
@@ -1458,6 +1526,22 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
                 registration_fee: 0,
                 yearly_fee: additionalGlnDetails.price,
             });
+
+
+            let otherProductsSubscriptionHistoryData = [
+                {
+                    transaction_id: transactionId,
+                    product_id: value.otherProductSubscriptionId,
+                    user_id: value.userId,
+                    price: additionalGlnDetails.price,
+                    request_type: 'additional_gln',
+                    additional_gln_id: additionalGlnDetails.id,
+                }
+            ]
+
+            await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+
+
             cart.total = additionalGlnDetails.price;
             cart.transaction_id = transactionId;
             let typeOfPayment = `ADDITIONAL GLN invoice for ${additionalGlnDetails.total_no_of_gln} GLN`;
@@ -1681,31 +1765,24 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
             return res.status(404).send('GTIN subscription not found for the user');
         }
 
-        const updatedGtinSubscriptions = await prisma.gtin_subcriptions.findFirst({
+
+        //  update gitn_subscription_history table
+
+        await prisma.gtin_subscription_histories.updateMany({
             where: {
+                transaction_id: transactionId,
                 user_id: userId,
-                isDeleted: false
+                request_type: 'additional_gtin',
 
             },
-
+            data: {
+                status: 'approved',
+                admin_id: req.admin.adminId,
+            }
         });
 
-        const gtinSubscriptionHistoryData = [
-            {
-                transaction_id: updatedGtinSubscriptions.transaction_id,
-                pkg_id: updatedGtinSubscriptions.pkg_id,
-                user_id: updatedGtinSubscriptions.user_id,
-                price: updatedGtinSubscriptions.gtin_subscription_total_price + gtinUpgradePricing.price,
-                request_type: 'additional_gtin',
-                status: 'approved',
-                expiry_date: updatedGtinSubscriptions.expiry_date,
-                admin_id: req.admin.adminId,
 
 
-            },
-        ]
-
-        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
         let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
         let gcpGLNIDUpdated = false;
@@ -1882,9 +1959,6 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         let otherProductSubscription = upgradeCart.other_products_subcriptions;
         let gln_upgrade_pricing = upgradeCart.gln_upgrade_pricing; // this is the new gln product
         let otherProductSubscriptionProduct = otherProductSubscription.product;
-        console.log("upgradeCart", upgradeCart);
-        console.log("otherProductSubscription", otherProductSubscription);
-        console.log("otherProductSubscriptionProduct", otherProductSubscriptionProduct);
 
 
         if (!upgradeCart) {
@@ -1909,7 +1983,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         // user yealy fee
         let yearly_fee = gln_upgrade_pricing.price;
 
-        console.log("yearly_fee", yearly_fee);
+
         // Update gtin_subscription_limit in gtin_subscriptions
         const updateResponse = await prisma.other_products_subcriptions.update({
             where: {
@@ -1930,28 +2004,24 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             throw createError(404, 'GLN subscription not found for the user');
         }
 
-        let otherProductsSubscriptionHistoryData = [
-            {
+        //  update other_products_subscription_history table
+
+        await prisma.other_products_subscription_histories.updateMany({
+            where: {
                 transaction_id: transactionId,
-                product_id: updateResponse.product_id,
-                user_id: updateResponse.user_id,
-                price: updateResponse.other_products_subscription_total_price + updateResponse.price,
-                status: 'approved',
+                user_id: userId,
                 request_type: 'additional_gln',
-                expiry_date: updateResponse.expiry_date,
-                admin_id: req?.admin?.adminId,
 
+            },
+            data: {
+                status: 'approved',
+                admin_id: req.admin.adminId,
             }
-        ]
 
-        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+        });
 
 
         let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
-
-
-
-
 
         let cart = user.carts[0];
 
@@ -2075,8 +2145,6 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
 };
 
 export const approveMembershipRequest = async (req, res, next) => {
-
-
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
@@ -2148,22 +2216,19 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         let gcpGLNID = user.gcpGLNID;
         let gln = user.gln;
-        let expiryDate = new Date();
-        if (value.invoiceType === 'downgrade_invoice') {
-            expiryDate = user.gcp_expiry;
-        } else {
-            gcpGLNID = `628${gtinProduct.gcp_start_range}`;
-            gln = generateGTIN13(gcpGLNID); // Replace with your actual GTIN generation logic
-            // don't change for now
-            // expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
-        }
+
+        gcpGLNID = `628${gtinProduct.gcp_start_range}`;
+        gln = generateGTIN13(gcpGLNID); // Replace with your actual GTIN generation logic
+        // don't change for now
+        // expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
+
         // Update user with new gcpGLNID and GLN
         await prisma.users.update({
             where: { id: userId },
             data: {
                 gcpGLNID: gcpGLNID,
                 gln: gln,
-                gcp_expiry: expiryDate,
+                // gcp_expiry: expiryDate, TODO: check this do we need to chane expiry on subscripiton update
                 // other fields as necessary
             },
         });
@@ -2185,9 +2250,11 @@ export const approveMembershipRequest = async (req, res, next) => {
         if (!updateResponse) {
             throw createError(404, 'GTIN subscription not found for the user');
         }
-
+        //  use calculateSubscriptionPrice function to calculate the price
+        const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
         //    insert new record in gtin_subcriptions table with new subscription
-        let newGtinSubscription = await prisma.gtin_subcriptions.create({
+
+        await prisma.gtin_subcriptions.create({
             data: {
                 user_id: userId,
                 pkg_id: gtinProduct.id,
@@ -2196,30 +2263,32 @@ export const approveMembershipRequest = async (req, res, next) => {
                 gtin_subscription_counter: 0,
                 //     registration_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.member_registration_fee : subscribedProductDetails.med_registration_fee,
                 // yearly_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.gtin_yearly_subscription_fee : subscribedProductDetails.med_yearly_subscription_fee,
-                gtin_subscription_total_price: user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee,
-                price: user.membership_category === "non_med_category" ? gtinProduct.member_registration_fee : gtinProduct.med_registration_fee,
+                gtin_subscription_total_price: fetchPrice.finalPrice - fetchPrice.newRegistrationFee,
+                price: fetchPrice.newRegistrationFee,
                 status: 'active',
-                expiry_date: expiryDate,
+                expiry_date: user.gcp_expiry,
                 request_type: 'upgrade',
-                createdBy: 'adminksa@gmail.com', //TODO: change this to current admin email
+                createdBy: req?.admin?.adminId,
 
             }
         });
 
-        let gtinSubscriptionHistoryData = [
-            {
-                transaction_id: newGtinSubscription.transaction_id,
-                pkg_id: newGtinSubscription.pkg_id,
-                user_id: newGtinSubscription.user_id,
-                price: newGtinSubscription.gtin_subscription_total_price + newGtinSubscription.price,
-                request_type: 'upgrade_gtin',
+        await prisma.gtin_subscription_histories.updateMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                request_type: 'upgrade',
+
+
+            },
+            data: {
                 status: 'approved',
-                expiry_date: newGtinSubscription.expiry_date,
-                admin_id: req.admin.adminId,
+                admin_id: req?.admin?.adminId,
 
-            },]
+            }
+        });
 
-        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData); // insert in gtin_subscription_history table
+
 
         // Update product's gcp_start_range
         await prisma.gtin_products.update({
@@ -2337,10 +2406,10 @@ export const approveMembershipRequest = async (req, res, next) => {
                 memberID: user?.memberID,
                 // gcp_expiry:
                 // use updated expiry date used above
-                expiryDate: expiryDate,
+                expiryDate: user?.gcp_expiry?.toISOString()?.split('T')[0],
             },
             // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-            expiryDate: expiryDate?.toISOString()?.split('T')[0],
+            expiryDate: user?.gcp_expiry?.toISOString()?.split('T')[0],
             explodeGPCCode: []
         };
 
@@ -2494,6 +2563,19 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             let newDowngradeRegistrationFee = user.membership_category === "non_med_category" ?
                 subscribedProductDetails.gtin_yearly_subscription_fee :
                 subscribedProductDetails.med_yearly_subscription_fee;
+
+            let gtinSubscriptionHistoryData = [{
+                transaction_id: transactionId,
+                pkg_id: value.new_subscription_product_Id,
+                user_id: user.id,
+                price: 0,
+                status: 'pending',
+                request_type: 'downgrade',
+            }
+            ]
+
+
+            await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
 
             cart.cart_items.push({
@@ -2980,21 +3062,6 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
         });
 
-        const gtinSubscriptionHistoryData = [
-            {
-                transaction_id: getUpdatedGtinSubscription.transaction_id,
-                pkg_id: getUpdatedGtinSubscription.pkg_id,
-                user_id: getUpdatedGtinSubscription.user_id,
-                price: getUpdatedGtinSubscription.gtin_subscription_total_price + getUpdatedGtinSubscription.price,
-                request_type: 'downgrade_gtin',
-                status: 'approved',
-                expiry_date: getUpdatedGtinSubscription.expiry_date,
-                admin_id: req.admin.adminId,
-
-            },]
-
-        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData); // insert in gtin_subscription_history table
-
         //    insert new record in gtin_subcriptions table with new subscription
         await prisma.gtin_subcriptions.create({
             data: {
@@ -3014,6 +3081,23 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
             }
         });
+
+
+        await prisma.gtin_subscription_histories.updateMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                request_type: 'downgrade',
+
+
+            },
+            data: {
+                status: 'approved',
+                admin_id: req?.admin?.adminId,
+
+            }
+        });
+
 
         // Update product's gcp_start_range
         // await prisma.gtin_products.update({

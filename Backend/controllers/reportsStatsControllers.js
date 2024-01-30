@@ -12,20 +12,18 @@ const dateSchema = Joi.string().isoDate();
 
 export const getProductKpiReports = async (req, res, next) => {
     try {
-        // Validate start and end dates using Joi
+        // Validate start and end dates
         const { error: dateValidationError } = Joi.object({
             startDate: dateSchema.required(),
             endDate: dateSchema.required(),
-        }).validate(req.body); // Use req.body instead of req.query
+        }).validate(req.body);
 
         if (dateValidationError) {
             return next(createError(400, 'Invalid date format for start date or end date'));
         }
 
-        // Extract and validate start and end dates
         const { startDate, endDate } = req.body;
 
-        // Construct date range conditions for Prisma query
         const dateRangeCondition = {
             created_at: {
                 gte: new Date(startDate),
@@ -33,7 +31,7 @@ export const getProductKpiReports = async (req, res, next) => {
             },
         };
 
-        // Fetch data from both tables
+        // Fetch data from gtin_subscription_histories table
         const gtinHistories = await prisma.gtin_subscription_histories.findMany({
             where: dateRangeCondition,
             include: {
@@ -43,41 +41,56 @@ export const getProductKpiReports = async (req, res, next) => {
             },
         });
 
+        // Fetch data from other_products_subscription_histories table
         const otherProductHistories = await prisma.other_products_subscription_histories.findMany({
             where: dateRangeCondition,
             include: {
                 user: true,
                 product: true,
                 admin: true,
-
             },
         });
 
         // Merge and process the results
-        const combinedResults = gtinHistories.map((history) => ({
+        const combinedResults = gtinHistories.map(history => ({
             ...history,
             productName: history.gtin_product.member_category_description,
         })).concat(
-            otherProductHistories.map((history) => ({
+            otherProductHistories.map(history => ({
                 ...history,
                 productName: history.product.product_name,
             }))
         );
 
-        // Calculate additional fields
-        const totalAmount = combinedResults.reduce((total, history) => total + history.price, 0);
+        // Calculate total amount for approved status
+        const approvedTotalAmount = combinedResults
+            .filter(history => history.status === 'approved')
+            .reduce((total, history) => total + history.price, 0);
 
-        const newRegistrations = combinedResults.filter((history) => history.request_type !== 'renewal');
+        // Calculate pending amount and count
+        const pendingInvoices = combinedResults
+            .filter(history => history.status === 'pending');
+        const pendingCount = pendingInvoices.length;
+        const pendingTotalAmount = pendingInvoices
+            .reduce((total, history) => total + history.price, 0);
+
+        // Calculate new registrations
+        const newRegistrations = combinedResults.filter(history => history.request_type !== 'renewal');
         const newRegistrationCount = newRegistrations.length;
         const newRegistrationAmount = newRegistrations.reduce((total, history) => total + history.price, 0);
 
-        const renewals = combinedResults.filter((history) => history.request_type === 'renewal');
+        // Calculate renewals
+        const renewals = combinedResults.filter(history => history.request_type === 'renewal');
         const renewalCount = renewals.length;
         const renewalAmount = renewals.reduce((total, history) => total + history.price, 0);
 
         // Prepare the response object
         const response = {
-            totalAmount,
+            totalApprovedAmount: approvedTotalAmount,
+            pendingAmount: {
+                count: pendingCount,
+                amount: pendingTotalAmount,
+            },
             newRegistrations: {
                 count: newRegistrationCount,
                 amount: newRegistrationAmount,
@@ -86,7 +99,7 @@ export const getProductKpiReports = async (req, res, next) => {
                 count: renewalCount,
                 amount: renewalAmount,
             },
-            combinedResults,
+            combinedResults, // You might want to exclude this if not needed
         };
 
         // Return the response
