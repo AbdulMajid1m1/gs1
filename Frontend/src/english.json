@@ -747,7 +747,16 @@
     "Date Created":"Date Created",
     "Date LastUpdate":"Date LastUpdate",
     "Serials":"Serials",
-    "No any pending invoice":"No any pending invoice"
-    
+    "No any pending invoice":"No any pending invoice",
+    "You are currently logged on as":"You are currently logged on as",
+    "TRANSACTION":"TRANSACTION",
+    "90 days Expiry":"90 days Expiry",
+    "TOTAL AMOUNT":"TOTAL AMOUNT",
+    "NEW REGISTRATION":"NEW REGISTRATION",
+    "RENEWALS":"RENEWALS",
+    "PENDING AMOUNT":"PENDING AMOUNT",
+    "APPROVED AMOUNT":"APPROVED AMOUNT",
+    "Request Type":"Request Type",
+    "Payment Type":"Payment Type"
     
 }

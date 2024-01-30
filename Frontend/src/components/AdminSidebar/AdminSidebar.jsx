@@ -462,7 +462,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">90 days Expiry</p>
+                <p className="sidebar-text"> {t('90 days Expiry')}</p>
               </div>
 
 
@@ -689,7 +689,7 @@ const AdminSideBar = () =>
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">TRANSACTION</p>
+            <p className="sidebar-text"> {t('TRANSACTION')}</p>
             {showFourthData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (

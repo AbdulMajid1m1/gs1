@@ -227,8 +227,8 @@ const KPIReport = () => {
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-                <div className='w-full flex gap-2 flex-wrap'>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3`}> 
+                <div className={`w-full flex gap-2 flex-wrap ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
@@ -272,28 +272,79 @@ const KPIReport = () => {
                   </button>
                 </div>
 
-                <div className='flex justify-between items-center flex-wrap gap-2 w-full'>                 
+                <div className={`flex justify-between items-center flex-wrap gap-2 w-full ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>                 
                   <div className='mt-2 flex flex-col justify-start items-start'>
                       <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
                         <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                          <span>TOTAL AMOUNT:</span>
-                            <span className='font-bold pl-20'>{totalAmount}</span>
+                      
+                        {i18n.language === 'ar' ? (
+                          <>
+                            <span className='font-bold '>{totalAmount}</span>
+                            <span className='pl-20'> :{t('TOTAL AMOUNT')}</span>
+                          </>
+                        ) : (
+                          <>
+                              <span> {t('TOTAL AMOUNT')}:</span>
+                              <span className='font-bold pl-20'>{totalAmount}</span>
+                              </>
+                        )}
+
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                          <span>NEW REGISTRATION:</span>
+                        
+                        {i18n.language === 'ar' ? (
+                          <>
                             <span className='font-bold'>{newRegistraions}</span>
+                            <span> :{t('NEW REGISTRATION')}</span>
+                          </>
+                        ) : (
+                          <>
+                           <span> {t('NEW REGISTRATION')}:</span>
+                            <span className='font-bold'>{newRegistraions}</span>
+                          </>
+                        )}
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                          <span>RENEWALS:</span>
+                       
+                        {i18n.language === 'ar' ? (
+                          <>
                             <span className='font-bold'>{renewals}</span>
+                            <span>:{t('RENEWALS')}</span>
+                          </>
+                        ) : (
+                          <>
+                              <span> {t('RENEWALS')}:</span>
+                              <span className='font-bold'>{renewals}</span>
+                          </>
+                        )}
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                          <span>PENDING AMOUNT:</span>
+                        
+                        {i18n.language === 'ar' ? (
+                          <>
                             <span className='font-bold'>30000</span>
+                            <span> :{t('PENDING AMOUNT')}</span>
+                          </>
+                        ) : (
+                          <>
+                              <span> {t('PENDING AMOUNT')}:</span>
+                              <span className='font-bold'>30000</span>
+                          </>
+                        )}
                         </p>
                         <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                          <span>APPROVED AMOUNT:</span>
+                       
+                        {i18n.language === 'ar' ? (
+                          <>
                             <span className='font-bold'>30000</span>
+                            <span> :{t('APPROVED AMOUNT')}</span>
+                          </>
+                        ) : (
+                          <>
+                              <span> {t('APPROVED AMOUNT')}:</span>
+                              <span className='font-bold'>30000</span>
+                          </>
+                        )}
                         </p>
                     </div>
                   </div>
