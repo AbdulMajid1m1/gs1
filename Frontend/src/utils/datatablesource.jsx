@@ -7205,3 +7205,17 @@ export const expiredMemberColumn = (t, i18n) => [
     // }
   },
 ]
+
+
+
+
+export const AdminRolesColumn = [
+  {
+    field: 'roles',
+    headerName: 'Roles',
+    width: 180,
+  },
+
+
+
+]

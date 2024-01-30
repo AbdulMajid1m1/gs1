@@ -61,6 +61,8 @@ import memberActivity from "../../Images/memberActivity.png"
 import adminActivity from "../../Images/adminActivity.png"
 import additionalgln from "../../Images/additionalgln.png"
 import expiredmember from "../../Images/expiredmember.png"
+import roleicon from "../../Images/roleicon.png"
+import usersicon from "../../Images/usersicon.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
@@ -1047,6 +1049,48 @@ const AdminSideBar = () =>
               className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
               onClick={toggleSidebar}
             >
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/units')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/units')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/users-permissions' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/users-permissions', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/users-permissions')
+                }
+              >
+                <img
+                  src={usersicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">Users</p>
+              </div>
+
+              
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/units')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/units')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/roles-permissions' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/roles-permissions', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/roles-permissions')
+                }
+              >
+                <img
+                  src={roleicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">Roles</p>
+              </div>
+
+
               <div
                 // className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
                 //   onClick={() => handleItemClick('/admin/units')}
