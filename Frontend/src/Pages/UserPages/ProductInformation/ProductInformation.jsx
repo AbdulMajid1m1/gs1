@@ -10,10 +10,12 @@ import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import { toast } from 'react-toastify';
 import DropDownSelection from '../DropDownSelection/DropDownSelection';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductInformation = () => {
   const [activeTab, setActiveTab] = useState('home');
+  const { t, i18n } = useTranslation();
   const [gtin, setGTIN] = useState("");
   const [data, setData] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(false);
@@ -109,13 +111,13 @@ const ProductInformation = () => {
 
   const products = [
     { name: "GTIN", value: data?.gtinArr?.gtin },
-    { name: "Brand name", value: data?.gtinArr?.brandName },
-    { name: "Product description", value: data?.gtinArr?.productDescription },
-    { name: "Product image URL", value: data?.gtinArr?.productImageUrl },
-    { name: "Global product category", value: data?.gtinArr?.gpcCategoryCode },
+    { name: i18n.language === "ar" ? `${t('Brand Name')}`: "Brand name", value: data?.gtinArr?.brandName },
+    { name: i18n.language === "ar" ? `${t('Product Description')}` : "Product description", value: data?.gtinArr?.productDescription },
+    { name: i18n.language === "ar" ? `${t('Product image URL')}` : "Product image URL", value: data?.gtinArr?.productImageUrl },
+    { name: i18n.language === "ar" ? `${t('Global product category')}` : "Global product category", value: data?.gtinArr?.gpcCategoryCode },
     // check if data has unitcode then show value
-    { name: "Net content", value: data?.gtinArr?.unitCode && data?.gtinArr?.unitValue && `${data?.gtinArr?.unitCode} ${data?.gtinArr?.unitValue}` },
-    { name: "Country of sale", value: data?.gtinArr?.countryOfSaleCode },
+    { name: i18n.language === "ar" ? `${t('Net content')}` : "Net content", value: data?.gtinArr?.unitCode && data?.gtinArr?.unitValue && `${data?.gtinArr?.unitCode} ${data?.gtinArr?.unitValue}` },
+    { name: i18n.language === "ar" ? `${t('Country of Sale')}` : "Country of sale", value: data?.gtinArr?.countryOfSaleCode },
   ];
 
   const [selectedBatch, setSelectedBatch] = useState(null);
@@ -158,7 +160,7 @@ const ProductInformation = () => {
         <div className='h-auto w-full px-1 mb-4'>
           <div className='h-16 w-full bg-white shadow-xl flex justify-start items-center gap-3 px-5 border-l-2 border-[#e49515]'>
             <i onClick={() => navigate(-1)} className="fas fa-arrow-left text-2xl text-[#e49515] cursor-pointer"></i>
-            <p className='sm:text-2xl text-sm font-body font-semibold'> GTIN INFORMATION</p>
+            <p className='sm:text-2xl text-sm font-body font-semibold'> {t('GTIN INFORMATION')}</p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5">
@@ -181,7 +183,7 @@ const ProductInformation = () => {
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
               />
             </svg>
-            GTIN INFORMATION
+          {t('GTIN INFORMATION')}
           </button>
 
           <button
@@ -209,7 +211,7 @@ const ProductInformation = () => {
                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
               />
             </svg>
-            DIGITAL LINK
+            {t('DIGITAL LINK')}
           </button>
 
           <button
@@ -230,7 +232,7 @@ const ProductInformation = () => {
               <path d="M9 14H7A3 3 0 0 1 4 11v-1a3 3 0 0 1 3-3h2M15 14h2a3 3 0 0 0 3-3v-1a3 3 0 0 0-3-3h-2" />
               <path d="M12 19v1m0 0v-1m0 1a6 6 0 0 0 6-6v-4a6 6 0 0 0-12 0v4a6 6 0 0 0 6 6z" />
             </svg>
-            EVENTS
+            {t('EVENTS')}
           </button>
 
         </div>
@@ -244,7 +246,7 @@ const ProductInformation = () => {
               <input
                 type="text"
                 className="w-full border h-10 rounded-md px-5 font-semibold text-black border-gray-200"
-                placeholder="GTIN INFORMATION"
+                placeholder={`${t('GTIN INFORMATION')}`}
                 value={gtin}
                 onChange={(event) => setGTIN(event.target.value)}
                 onBlur={handleSearch}
@@ -283,13 +285,13 @@ const ProductInformation = () => {
                   <table>
                     <thead>
                       <tr>
-                        <th>Allergen Info</th>
-                        <th>Nutrients Info</th>
-                        <th>Batch</th>
-                        <th>Expiry</th>
-                        <th>Serial</th>
-                        <th>Manufacturing Date</th>
-                        <th>Best Before</th>
+                        <th> {t('Allergen Info')}</th>
+                        <th> {t('Nutrients Info')}</th>
+                        <th> {t('Batch')}</th>
+                        <th> {t('Expiry')}</th>
+                        <th> {t('Serial')}</th>
+                        <th> {t('Manufacturing Date')}</th>
+                        <th> {t('Best Before')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -329,19 +331,19 @@ const ProductInformation = () => {
               <div className='h-auto'>
                 <div className='h-auto 2xl:h-44 xl:h-44 lg:h-44 w-full border-2 border-gray-200 rounded-md'>
                   <div className='p-4 font-semibold flex flex-col gap-2'>
-                    <label className='text-black text-2xl'>Filter By</label>
+                    <label className='text-black text-2xl'> {t('Filter By')}</label>
                     <hr />
                   </div>
 
                   <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 mb-4'>
                     <div className='px-4 flex flex-col gap-2'>
-                      <label>Batches <span className='text-red-500'>*</span></label>
+                      <label> {t('Batches')}<span className='text-red-500'>*</span></label>
                       <select
                         type='text'
                         className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200'
                         onChange={handleBatchChange}
                       >
-                        <option value="none">-select-</option>
+                        <option value="none">-{t('Select')}-</option>
                         {searchedData?.batch && (
                           <option value={searchedData?.batch}>{searchedData?.batch}</option>
                         )}
@@ -351,12 +353,12 @@ const ProductInformation = () => {
 
 
                     <div className='px-4 flex flex-col gap-2'>
-                      <label>Serials </label>
+                      <label> {t('Serials')} </label>
                       <select type='text'
                         className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200'
                         onChange={handleSerialChange}
                       >
-                        <option value="none">-select-</option>
+                        <option value="none">- {t('Select')} -</option>
                         {searchedData?.serial && (
                           <option value={searchedData?.serial}>{searchedData?.serial}</option>
                         )}
@@ -364,7 +366,7 @@ const ProductInformation = () => {
                     </div>
 
                     <div className='px-4 flex flex-col gap-2'>
-                      <label>Expiry Date</label>
+                      <label> {t('Expiry Date')}</label>
                       <input type='date' className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200' placeholder='Batch' />
                     </div>
 
@@ -376,7 +378,7 @@ const ProductInformation = () => {
                     className='bg-primary text-white rounded-sm px-4 py-2 mt-4'
                     onClick={() => setIsTableVisible(!isTableVisible)}
                   >
-                    View Grid
+                    {t('View Grid')}
                   </button>
                 </div>
 
@@ -387,13 +389,13 @@ const ProductInformation = () => {
                       <table>
                         <thead>
                           <tr>
-                            <th>EventID</th>
-                            <th>MemberID</th>
-                            <th>Ref Description</th>
-                            <th>Date Created</th>
-                            <th>Date LastUpdate</th>
-                            <th>GLNIDFrom</th>
-                            <th>GLNIDTo</th>
+                            <th> {t('EventID')}</th>
+                            <th> {t('Member ID')}</th>
+                            <th> {t('Ref Description')}</th>
+                            <th> {t('Date Created')}</th>
+                            <th> {t('Date LastUpdate')}</th>
+                            <th> {t('GLNID From')}</th>
+                            <th> {t('GLNID To')}</th>
                           </tr>
                         </thead>
                         <tbody>
