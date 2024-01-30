@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import popupimage from '../../../Images/popupimage.png'
 import blinkcompany from '../../../Images/blinkcompany.gif';
-import './CompanyNamePopUp.css'
-const CompanyNamePopUp = ({ isVisible, setVisibility, language }) => {
+import './CompanyArabicPopUp.css'
+
+const CompanyArabicPopUp = ({ isVisible, setVisibility, language }) => {
     const closePopUp = () => {
         setVisibility(false)
     }
@@ -11,9 +12,9 @@ const CompanyNamePopUp = ({ isVisible, setVisibility, language }) => {
         <div>
             {/* create the post api popup */}
             {isVisible && (
-                <div className="popup-overlay-company">
-                    <div className="popup-container-company h-auto sm:w-[30%] w-[60%]">
-                        <div className="popup-form-company w-full ">
+                <div className="popup-overlay-arabic">
+                    <div className="popup-container-arabic h-auto sm:w-[30%] w-[60%]">
+                        <div className="popup-form-arabic w-full ">
                             <div className="flex justify-end w-full">
                                 <button
                                     className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -48,4 +49,4 @@ const CompanyNamePopUp = ({ isVisible, setVisibility, language }) => {
     )
 }
 
-export default CompanyNamePopUp
+export default CompanyArabicPopUp

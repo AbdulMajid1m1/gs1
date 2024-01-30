@@ -20,7 +20,10 @@ const KPIReport = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState('');
   const [shouldCallApi, setShouldCallApi] = useState(false);
-
+  const [totalAmount, setTotalAmount] = useState('');
+  const [newRegistraions, setNewRegistraions] = useState('');
+  const [renewals, setRenewals] = useState('');
+  const [stats, setStats] = useState({});
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -83,7 +86,11 @@ const KPIReport = () => {
       });
 
       // admin - username - email, user - companyID, companyNameE, productName
-      console.log(res?.data?.combinedResults);
+      console.log(res?.data);
+      setStats(res?.data);
+      setTotalAmount(res?.data?.totalApprovedAmount);
+      setNewRegistraions(res?.data?.newRegistrations?.amount);
+      setRenewals(res?.data?.renewals?.amount);
 
       const formattedData = res?.data?.combinedResults?.map((item) => {
         return {
@@ -266,32 +273,58 @@ const KPIReport = () => {
                   </button>
                 </div>
 
-                <div className='flex justify-end items-end flex-wrap gap-2 w-full'>
-                  <div className="flex flex-col">
-                    <label className="font-body text-sm">{t('From')}</label>
-                    <input
-                      type="date"
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-lg w-full"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="font-body text-sm">{t('To')}</label>
-                    <input
-                      type="date"
-                      onChange={(e) => setEndDate(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-lg w-full"
-                    />
+                <div className='flex justify-between items-center flex-wrap gap-2 w-full'>
+                  <div className='mt-2 flex flex-col justify-start items-start'>
+                    <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>TOTAL APPROVED AMOUNT:</span>
+                        <span className='font-bold pl-20'>{stats.totalApprovedAmount ? stats.totalApprovedAmount : ''}</span>
+                      </p>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>NEW REGISTRATION:{stats?.newRegistrations?.count ? `(${stats?.newRegistrations?.count})` : ''}</span>
+                        <span className='font-bold'>{stats?.newRegistrations?.amount ? stats?.newRegistrations?.amount : ''}</span>
+                      </p>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>RENEWALS:{stats?.renewals?.count ? `(${stats?.renewals?.count})` : '(0)'}</span>
+                        <span className='font-bold'>{stats?.renewals?.amount ? stats?.renewals?.amount : '0'}</span>
+                      </p>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>PENDING AMOUNT: {stats?.pendingAmount?.count ? `(${stats?.pendingAmount?.count})` : '(0)'}</span>
+                        <span className='font-bold'>{stats?.pendingAmount?.amount ? stats?.pendingAmount?.amount : '0'}</span>
+                      </p>
+
+                    </div>
                   </div>
 
-                  <button
-                    type='button'
-                    onClick={handleSearchTimeAndDate}
-                    className="rounded-full bg-primary font-body px-5 py-2 text-sm mb-1 text-white transition duration-200 hover:bg-secondary">
-                    {t('Search')}
-                  </button>
+                  <div className='flex justify-end items-end flex-wrap gap-2'>
+                    <div className="flex flex-col">
+                      <label className="font-body text-sm">{t('From')}</label>
+                      <input
+                        type="date"
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="border border-gray-300 p-2 rounded-lg w-full"
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="font-body text-sm">{t('To')}</label>
+                      <input
+                        type="date"
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="border border-gray-300 p-2 rounded-lg w-full"
+                      />
+                    </div>
+
+                    <button
+                      type='button'
+                      onClick={handleSearchTimeAndDate}
+                      className="rounded-full bg-primary font-body px-5 py-2 text-sm mb-1 text-white transition duration-200 hover:bg-secondary">
+                      {t('Search')}
+                    </button>
+                  </div>
                 </div>
+
               </div>
+
 
               {/* DataGrid */}
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>

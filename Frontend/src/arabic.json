@@ -781,6 +781,24 @@
     "Priority":"أولوية",
     "Expired Member":"عضو منتهي الصلاحية",
     "GS1 Staff":"طاقم GS1",
-    "Assign":"تعيين"
+    "Assign":"تعيين",
+    "GTIN INFORMATION":"معلومات رقم GTIN",
+    "DIGITAL LINK":"الرابط الرقمي",
+    "EVENTS":"الأحداث",
+    "Allergen Info":"معلومات الحساسية",
+    "Nutrients Info":"معلومات العناصر الغذائية",
+    "Best Before":"الصلاحية",
+    "Product image URL":"عنوان URL لصورة المنتج",
+    "Global product category":"فئة المنتج العالمية",
+    "Net content":"الصافي المحتوى",
+    "Filter By":"مصنف بواسطة",
+    "Batches":"دفعات",
+    "View Grid":"عرض الشبكة",
+    "EventID":"معرف الحدث",
+    "Ref Description":"وصف المرجع",
+    "Date Created":"تاريخ الإنشاء",
+    "Date LastUpdate":"تاريخ آخر تحديث",
+    "Serials":"مسلسلات",
+    "No any pending invoice":"لا يوجد أي فاتورة معلقة"
 
 }

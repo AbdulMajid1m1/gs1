@@ -50,6 +50,7 @@ const RegisteredMembers = () => {
 
 
   const fetchData = async () => {
+    setIsLoading(true)
     try {
       // /users/allUser
       // const response = await newRequest.get("/users?parent_memberID=0");
@@ -286,7 +287,7 @@ const RegisteredMembers = () => {
  // Now you can retrieve the data and parse it when needed
  const storedData = sessionStorage.getItem('adminData');
  const adminData = JSON.parse(storedData);
- console.log(adminData);
+//  console.log(adminData);
 
  
   const filterDropdownOptions = (row, dropDownOptions) => {
@@ -297,7 +298,7 @@ const RegisteredMembers = () => {
       if (assignToAdminId === adminData?.id) {
         if (row?.status === 'active') {
           return dropDownOptions;
-        } else if (row.product_identity !== 'active') {
+        } else if (row.status !== 'active') {
           return dropDownOptions.filter(option => option.label !== 'Renew');
         }
       }
@@ -313,6 +314,8 @@ const RegisteredMembers = () => {
         <div>
           <AdminDashboardRightHeader
             title={`${t('Registered Members')}`}
+            fetchData={fetchData}
+            showIcon={true}
           />
         </div>
 
