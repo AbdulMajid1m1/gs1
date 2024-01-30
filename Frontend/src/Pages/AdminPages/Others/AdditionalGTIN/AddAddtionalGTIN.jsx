@@ -29,7 +29,7 @@ const AddAddtionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProducts }
         "price": Number(price)
       });
 
-      toast.success(response?.data?.message || `Additional Products Added Successfully`);
+      toast.success(response?.data?.message || `${t('Additional Products Added Successfully')} `);
       console.log(response.data);
       refreshAddtionalProducts();
       handleCloseCreatePopup();
@@ -54,28 +54,28 @@ const AddAddtionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProducts }
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Add Additional GTIN Pricing</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add Additional GTIN Pricing')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Total Number Of Barcodes</label>
+                    <label htmlFor="field1" className="text-secondary"> {t('Total No Of Barcodes')} </label>
                     <input
                       type="text"
                       id="name"
                       value={totalNumberOfBarcodes}
                       onChange={(e) => setTotalNumberOfBarcodes(e.target.value)}
-                      placeholder='Enter Total Number of Barcodes'
+                      placeholder={`${t('Enter')} ${t('Total No Of Barcodes')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">Price</label>
+                    <label htmlFor="field2" className="text-secondary">{t('Price')}</label>
                     <input
                       type="number"
                       id="field2"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
-                      placeholder='Enter Price'
+                      placeholder={`${t('Enter')} ${t('Price')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>

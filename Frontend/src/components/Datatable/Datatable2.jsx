@@ -545,7 +545,7 @@ const DataTable2 = ({
             showPopup={showPopup}
             togglePopup={togglePopup}
           />
-        )} */}
+        )} */} 
 
         <MuiCustomTable
           secondaryColor={secondaryColor ? secondaryColor : null}
@@ -560,14 +560,26 @@ const DataTable2 = ({
           }}
           slots={{ toolbar: GridToolbar }}
           rows={filteredData}
+          // columns={
+          //   uniqueId === "customerListId"
+          //     ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
+          //     : (actionColumnVisibility !== false
+          //       ? idColumn.concat(columnsName.concat(actionColumn))
+          //       : idColumn.concat(columnsName))
+          // }
           columns={
             uniqueId === "customerListId"
-              ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
-              : (actionColumnVisibility !== false
-                ? idColumn.concat(columnsName.concat(actionColumn))
-                : idColumn.concat(columnsName))
+              ? i18n && i18n.language === 'ar'
+                ? [...columnsName.reverse(), ...actionColumn, ...idColumn.slice(0, 1), ...idColumn.slice(1)]
+                : [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
+              : i18n && i18n.language === 'ar'
+                ? actionColumnVisibility !== false
+                  ? [...actionColumn.reverse(), ...columnsName, ...idColumn]
+                  : [...columnsName.reverse(), ...idColumn]
+                : actionColumnVisibility !== false
+                  ? [...idColumn, ...columnsName, ...actionColumn]
+                  : [...idColumn, ...columnsName]
           }
-
 
           pageSize={30}
           rowsPerPageOptions={[30, 50, 100]}

@@ -15,11 +15,13 @@ import DashboardRightHeader from '../../../../components/DashboardRightHeader/Da
 import Identify from '../../../../Images/Identify.png';
 import capture from '../../../../Images/capture.png';
 import share from '../../../../Images/share.png';
+import { useTranslation } from 'react-i18next';
 
 
 
 const UpdateProducts = () => {
     const abortControllerRef = useRef(null);
+    const { t, i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedBackImage, setSelectedBackImage] = useState(null);
@@ -496,7 +498,7 @@ const UpdateProducts = () => {
 
             <div className="p-0 h-full sm:ml-72  bg-slate-100">
               <div>
-                <DashboardRightHeader title="Update Product" member={'Member: Binmar Property'}
+                <DashboardRightHeader  title={`${t('Update Products')}`} member={'Member: Binmar Property'}
                     gcp={'GCP: 62810000032'}
                 />
               </div>
@@ -507,9 +509,9 @@ const UpdateProducts = () => {
                     <div className="">
                     <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
                         <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                        <p className="font-semibold">Complete Data</p>
+                                    <p className="font-semibold">{t('Complete Data')}</p>
                         <p>
-                            This number is registered to company: :{" "}
+                           {t('This number is registered to company')}: :{" "}  
                             {/* <span className="font-semibold">{currentUser?.user?.company_name_eng}</span> */}
                             <span className="font-semibold">Hasnain, Majid</span>
                         </p>
@@ -519,26 +521,26 @@ const UpdateProducts = () => {
 
                     <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                       <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                         <label htmlFor="fields1" className="text-secondary">Product Name [English]</label>
+                         <label htmlFor="fields1" className="text-secondary">{t('Product')} {t('Name[English]')}</label>
                         <input
                           type="text"
                           id="fields1"
                           onChange={(e) => setProductNameEnglish(e.target.value)}
                           value={productNameEnglish}
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                          placeholder="Product Name English"
+                                        placeholder={`${t('Enter')} ${t('Product')} ${t('Name[English]')}`}
                         />
                     </div>
 
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                        <label htmlFor="fields2" className="text-secondary">Product Name [Arabic]</label>
+                        <label htmlFor="fields2" className="text-secondary">{t('Product')} {t('Name[Arabic]')}</label>
                         <input
                           type="text"
                           id="fields2"
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                           value={productNameArabic}
                           onChange={(e) => setProductNameArabic(e.target.value)}
-                          placeholder="Product Name Arabic"
+                                        placeholder={`${t('Enter')} ${t('Product')} ${t('Name[Arabic]')}`}
                         />
                     </div>
                   </div>
@@ -549,26 +551,26 @@ const UpdateProducts = () => {
                     <form onSubmit={handleFormSubmit}>
                       <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field1" className="text-secondary">Brand Name [English] </label>
+                            <label htmlFor="field1" className="text-secondary">{t('Brands')} {t('Name[English]')}</label>
                             <input
                             type="text"
                             id="field1"
                             onChange={(e) => setBrandNameEnglish(e.target.value)}
                             value={brandNameEnglish}
-                            placeholder="Brand Name [English]"
+                            placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[English]')}`}
                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
 
                             />
                         </div>
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field2" className="text-secondary">Brand Name [Arabic] </label>
+                            <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')}</label>
                             <input
                             type="text"
                             id="field2"
                             onChange={(e) => setBrandNameArabic(e.target.value)}
                             value={brandNameArabic}
-                            placeholder="Brand Name [Arabic]"
+                           placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[Arabic]')}`}
                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
 
                             />
@@ -578,7 +580,7 @@ const UpdateProducts = () => {
                         
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field3" className="text-secondary">Unit Code</label>
+                            <label htmlFor="field3" className="text-secondary">{t('Unit Code')}</label>
                             <Autocomplete
                                 id="field3"
                                 options={unitCode}
@@ -603,7 +605,7 @@ const UpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/Unit"
+                                    placeholder={`${t('Enter')}/${t('Unit Code')}`}
                                     required
                                 />
                                 )}
@@ -621,14 +623,14 @@ const UpdateProducts = () => {
 
                         {/* <div className="form-row"> */}
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field4" className="text-secondary">Size</label>
+                            <label htmlFor="field4" className="text-secondary">{t('Size')}</label>
                             <input
                             type="text"
                             id="field4"
                             onChange={(e) => setSize(e.target.value)}
                             value={size}
                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                            placeholder="Size"
+                            placeholder={`${t('Enter')} ${t('Size')}`}
                             />
                         </div>
                         </div>
@@ -637,7 +639,7 @@ const UpdateProducts = () => {
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                     
-                            <label htmlFor="field5" className="text-secondary">Region</label>
+                            <label htmlFor="field5" className="text-secondary">{t('Region')}</label>
                             <Autocomplete
                                 id="field5"
                                 options={region}
@@ -663,7 +665,7 @@ const UpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/Region"
+                                      placeholder={`${t('Enter')}/${t('Region')}`}
                                     required
                                 />
                                 )}
@@ -680,7 +682,7 @@ const UpdateProducts = () => {
 
                 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field6" className="text-secondary">Country of Sale</label>
+                            <label htmlFor="field6" className="text-secondary">{t('Country of Sale')}</label>
                             <Autocomplete
                                 id="field6"
                                 options={allCountryName}
@@ -705,7 +707,7 @@ const UpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/Country Name"
+                                   placeholder={`${t('Enter')}/${t('Country of Sale')}`}
                                     required
                                 />
                                 )}
@@ -725,7 +727,7 @@ const UpdateProducts = () => {
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field7" className="text-secondary">
-                            Product Description Language{" "}
+                            {t('Product Description Language')}
                             </label>
                             <Autocomplete
                                 id="field7"
@@ -751,7 +753,7 @@ const UpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/ Product Description Language"
+                                  placeholder={`${t('Enter')}/${t('Product Description Language')}`}
                                     required
                                 />
                                 )}
@@ -768,7 +770,7 @@ const UpdateProducts = () => {
 
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field8" className="text-secondary">Product Type</label>
+                            <label htmlFor="field8" className="text-secondary">{t('Product Type')}</label>
                             <Autocomplete
                                 id="field8"
                                 options={productType}
@@ -793,7 +795,7 @@ const UpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/ Product Type"
+                                  placeholder={`${t('Enter')}/${t('Product Type')}`}
                                     required
                                 />
                                 )}
@@ -813,7 +815,7 @@ const UpdateProducts = () => {
                     
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field9" className="text-secondary">Package Type</label>
+                            <label htmlFor="field9" className="text-secondary">{t('Package Type')}</label>
                             <Autocomplete
                                 id="field9"
                                 options={packageType}
@@ -838,7 +840,7 @@ const UpdateProducts = () => {
                                     style: { color: "white" },
                                     }}
                                     className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                    placeholder="Enter/ Package Type"
+                                   placeholder={`${t('Enter')}/${t('Package Type')}`}
                                     required
                                 />
                                 )}
@@ -869,7 +871,7 @@ const UpdateProducts = () => {
 
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field11" className="text-secondary">HS-Code</label>
+                                        <label htmlFor="field11" className="text-secondary">{t('HS-Code')}</label>
                             <input
                             type="text"
                             id="field11"
@@ -888,7 +890,7 @@ const UpdateProducts = () => {
 
                         <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field12" className="text-secondary">Description [English] </label>
+                            <label htmlFor="field12" className="text-secondary">{t('Description')} {t('[English]')} </label>
                             <textarea
                             type="text"
                             onChange={(e) => setDescriptionEnglish(e.target.value)}
@@ -899,7 +901,7 @@ const UpdateProducts = () => {
                         </div>
 
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                            <label htmlFor="field13" className="text-secondary">Description [Arabic] </label>
+                            <label htmlFor="field13" className="text-secondary">{t('Description')} {t('[Arabic]')}</label>
                             <textarea
                             type="text"
                             onChange={(e) => setDescriptionArabic(e.target.value)}
@@ -912,14 +914,14 @@ const UpdateProducts = () => {
 
                     <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full sm:w-[49%] font-body sm:text-base text-sm flex flex-col gap-0">
-                        <label htmlFor="field12" className="text-secondary">Product URL</label>
+                        <label htmlFor="field12" className="text-secondary">{t('Product URL')}</label>
                             <input
                             type="text"
                             id="field12"
                             onChange={(e) => setProductUrl(e.target.value)}
                             value={productUrl}
                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                            placeholder="Product URL"
+                            placeholder={`${t('Product URL')}`}
                             />
                         </div>
                     </div>
@@ -991,7 +993,7 @@ const UpdateProducts = () => {
                                 <div class="p-6 z-10 w-full">
                                     <p
                                         class="mb-2 inline-block text-tg text-center w-full text-xl font-sans font-semibold leading-snug tracking-normal antialiased">
-                                        Identify
+                                         {t('Identify')}
                                     </p>
                                 </div>
                             </a>
@@ -1010,7 +1012,7 @@ const UpdateProducts = () => {
                                 <div class="p-6   z-10 w-full   ">
                                     <p
                                         class="mb-2 inline-block text-tg text-center w-full  text-xl  font-sans  font-semibold leading-snug tracking-normal   antialiased">
-                                        Capture
+                                         {t('Capture')}
                                     </p>
                                 </div>
                             </a>
@@ -1029,7 +1031,7 @@ const UpdateProducts = () => {
                                 <div class="p-6 z-10 w-full   ">
                                     <p
                                         class="mb-2 inline-block text-tg text-center w-full text-xl font-sans font-semibold leading-snug tracking-normal antialiased">
-                                        Share
+                                         {t('Share')}
                                     </p>
                                 </div>
                             </a>
@@ -1043,8 +1045,8 @@ const UpdateProducts = () => {
                     <div className="popup-footer">
                     {/* <button type='button' onClick={() => navigate(-1)} className="popup-close">Back</button>
                         <button type='submit' className="popup-save" id="gtin-form">Add</button> */}
-                        <button onClick={() => navigate(-1)} className="popup-close">Back</button>
-                        <button className="popup-save" id="gtin-form">Add</button>
+                        <button onClick={() => navigate(-1)} className="popup-close">{t('Back')}</button>
+                        <button className="popup-save" id="gtin-form"> {t('Add')}</button>
                     </div>
                     </form>
                 </div>

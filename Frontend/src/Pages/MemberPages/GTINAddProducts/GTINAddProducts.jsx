@@ -664,6 +664,7 @@ const GTINAddProducts = () => {
                             />
                         </div>
 
+
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')}  </label>
                             <Autocomplete
@@ -1234,7 +1235,7 @@ const GTINAddProducts = () => {
                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                         <label htmlFor="imageOptional1Input" className="cursor-pointer whitespace-nowrap">
-                                            Select Image
+                                                            {t('Select Image')}
                                         <input
                                                 type="file"
                                                 id="imageOptional1Input"
@@ -1256,7 +1257,7 @@ const GTINAddProducts = () => {
                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                         <label htmlFor="imageOptional2Input" className="cursor-pointer whitespace-nowrap">
-                                            Select Image
+                                                            {t('Select Image')}
                                         <input
                                                 type="file"
                                                 id="imageOptional2Input"
@@ -1278,7 +1279,7 @@ const GTINAddProducts = () => {
                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                                         <label htmlFor="imageOptional3Input" className="cursor-pointer whitespace-nowrap">
-                                            Select Image
+                                                            {t('Select Image')}
                                         <input
                                                 type="file"
                                                 id="imageOptional3Input"
