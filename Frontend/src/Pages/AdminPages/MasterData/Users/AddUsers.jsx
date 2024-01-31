@@ -31,7 +31,7 @@ const AddUsers = () => {
     
       const fetchAllRolesTypes = async () => {
           try {
-              const response = await newRequest.get('/permissions');
+              const response = await newRequest.get('/roles');
               // only get name and id from the response
               const data = response.data;
               const rolesTypes = data.map((roles) => ({
@@ -57,6 +57,8 @@ const AddUsers = () => {
     const handleFormSubmit = async (e) => {
       e.preventDefault();
       setIsLoading(true);
+      const selectRolesData = selectedRoles.map((role) => role.id);
+      console.log(selectRolesData);
       try {
         const formData = new FormData();
         formData.append('email', email);
@@ -64,7 +66,7 @@ const AddUsers = () => {
         formData.append('username', name);
         formData.append('mobile', mobile);
         formData.append('isSuperAdmin', isSuper);
-        formData.append('roleIds[]', selectedRoles.map((role) => role.id));
+        formData.append('roleIds', selectRolesData);
         // formData.append('profilePicture', selectedImage);
 
         // Append front image file

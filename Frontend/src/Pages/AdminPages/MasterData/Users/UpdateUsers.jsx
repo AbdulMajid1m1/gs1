@@ -56,7 +56,7 @@ const UpdateUsers = () => {
     
       const fetchAllRolesTypes = async () => {
           try {
-              const response = await newRequest.get('/permissions');
+              const response = await newRequest.get('/roles');
               // only get name and id from the response
               const data = response.data;
               const rolesTypes = data.map((roles) => ({
