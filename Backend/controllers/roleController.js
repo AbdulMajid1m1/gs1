@@ -50,17 +50,64 @@ export const createRole = async (req, res, next) => {
 
 export const getRoles = async (req, res, next) => {
     try {
+        const roles = await prisma.role.findMany({
+            // include: {
+            //     permissions: {
+            //         include: {
+            //             permission: true // This includes the Permission details in each RolePermission entry
+            //         }
+            //     },
+            //     // admins: true // Includes related admins if needed
+            // }
+        });
+
+        if (!roles || roles.length === 0) {
+            throw createError(404, 'Roles not found');
+        }
+      
+
+        res.json(roles);
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-        const role = await prisma.role.findMany({
-            include: { permissions: true },
+// Joi schema for role ID validation
+const roleIdSchema = Joi.string().required();
+export const getRole = async (req, res, next) => {
+    try {
+        // Validate the role ID
+        const { error } = roleIdSchema.validate(req.params.id);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const { id } = req.params;
+
+        // Fetch the role with associated permissions
+        const role = await prisma.role.findUnique({
+            where: { id },
+            include: {
+                permissions: {
+                    include: {
+                        permission: true
+                    }
+                }
+            }
         });
 
         if (!role) {
-            throw createError(404, 'Roles not found');
+            return res.status(404).json({ message: 'Role not found' });
         }
 
-        res.json(role);
+        // Optionally transform the role data structure
+        const transformedRole = {
+            ...role,
+            permissions: role.permissions.map(rp => rp.permission) // Flatten permissions array
+        };
+
+        res.json(transformedRole);
     } catch (error) {
         next(error);
     }

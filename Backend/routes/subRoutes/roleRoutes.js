@@ -4,6 +4,7 @@ import {
     updateRole,
     deleteRole,
     getRoles,
+    getRole,
 } from '../../controllers/roleController.js';
 
 const router = express.Router();
@@ -13,6 +14,10 @@ router.post('/', createRole);
 
 // Get all roles
 router.get('/', getRoles);
+
+
+// Get a single role by ID
+router.get('/:id', getRole);
 
 
 
