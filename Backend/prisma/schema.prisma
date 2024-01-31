@@ -102,6 +102,7 @@ model admins {
   gtin_subscription_histories           gtin_subscription_histories[]
   users                                 users[]
   roles                                 AdminRole[]
+  
 }
 
 model Role {

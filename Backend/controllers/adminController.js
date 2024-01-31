@@ -204,57 +204,70 @@ export const assignAdminToUser = async (req, res, next) => {
 
 
 
-// Controller function to add admin user
-// Define the validation schema for admin data
+
+
+// Updated Schema with role IDs and image
 const adminSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     username: Joi.string().required(),
     mobile: Joi.string().required(),
-
     isSuperAdmin: Joi.boolean().optional().default(false),
+    roleIds: Joi.array().items(Joi.string()).optional() // New field for role IDs
+    // Image field is not included in the schema as it will be handled separately
 });
 
 export const addAdmin = async (req, res, next) => {
     try {
-
-
+        // Validate request body
         const { error, value } = adminSchema.validate(req.body);
-
         if (error) {
             throw createError(400, error.details[0].message);
         }
 
-        const { email, password, username, mobile, isSuperAdmin } = value;
+        const { email, password, username, mobile, isSuperAdmin, roleIds } = value;
 
-
-
-
-        // Check if the admin user already exists with the same email
+        // Check if the admin user already exists
         const existingAdmin = await prisma.admins.findFirst({
             where: { email },
         });
-
         if (existingAdmin) {
             return next(createError(400, 'Admin with this email already exists.'));
         }
 
-        // Hash the password before saving it
-        const saltRounds = 10; // Number of salt rounds for bcrypt
+        // Hash the password
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        // save 0 or 1 in the database based on the isSuperAdmin value
-        const status = value.isSuperAdmin ? 1 : 0;
-        // Create the admin user in the database
+
+        // Process image if uploaded
+        let imagePath = null;
+        if (req.files.profilePicture) {
+            imagePath = req.files.profilePicture[0].path.replace('public', '');
+        }
+
+
+
+
+        // Create the admin user
         const newAdmin = await prisma.admins.create({
             data: {
                 email,
                 password: hashedPassword,
                 username,
                 mobile,
-                is_super_admin: status,
+                is_super_admin: isSuperAdmin ? 1 : 0,
+                ...(imagePath && { image: imagePath }),
             },
         });
 
+        // Assign roles to the new admin
+        if (roleIds && roleIds.length > 0) {
+            const adminRoles = roleIds.map(roleId => ({
+                adminId: newAdmin.id,
+                roleId: roleId
+            }));
+            await prisma.adminRole.createMany({ data: adminRoles });
+        }
 
         res.status(201).json({ message: 'Admin user created successfully.' });
     } catch (error) {

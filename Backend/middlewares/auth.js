@@ -34,8 +34,9 @@ export const superAdminAuth = (req, res, next) => {
   jwt.verify(token, ADMIN_JWT_SECRET, (err, adminPayload) => {
     if (err) return next(createError(403, "Admin token is not valid!"));
     req.admin = adminPayload;
+ 
     // check if the admin is super admin
-    if (req.admin.role !== 1) return next(createError(403, "You don't have permission to access this resource!"));
+    if (req.admin.is_super_admin !== 1) return next(createError(403, "You don't have permission to access this resource!"));
     next();
   });
 };

@@ -64,7 +64,7 @@ export const getRoles = async (req, res, next) => {
         if (!roles || roles.length === 0) {
             throw createError(404, 'Roles not found');
         }
-      
+
 
         res.json(roles);
     } catch (error) {
@@ -198,6 +198,169 @@ export const deleteRole = async (req, res, next) => {
 
         res.json({ message: 'Role deleted successfully' });
     } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+// assign roles to admin
+
+// Joi schema for adminId and roleId validation
+const adminRoleIdSchema = Joi.object({
+    adminId: Joi.string().required(),
+    roleId: Joi.string().required(),
+});
+
+export const assignRoleToAdmin = async (req, res, next) => {
+    try {
+        // Validate adminId and roleId
+        const { error, value } = adminRoleIdSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const { adminId, roleId } = value;
+
+        // Check if the admin and role exist
+        const admin = await prisma.admins.findUnique({
+            where: { id: adminId },
+        });
+
+        const role = await prisma.role.findUnique({
+            where: { id: roleId },
+        });
+
+        if (!admin || !role) {
+            return res.status(404).json({ message: 'Admin or Role not found' });
+        }
+
+        // Check if the admin already has the role
+        const existingAdminRole = await prisma.adminRole.findFirst({
+            where: {
+                adminId,
+                roleId,
+            },
+        });
+
+        if (existingAdminRole) {
+            return res.status(400).json({ message: 'Admin already has this role' });
+        }
+
+        // Assign the role to the admin
+        await prisma.adminRole.create({
+            data: {
+                adminId,
+                roleId,
+            },
+        });
+
+        res.json({ message: 'Role assigned to admin successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+
+export const getRolesAssignedToAdmin = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            adminId: Joi.string().required(),
+        });
+
+        const { error, value } = schema.validate(req.query);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { adminId } = value;
+
+        // Find the admin with assigned roles, including the role data
+        const adminWithRoles = await prisma.admins.findUnique({
+            where: { id: adminId },
+            include: {
+                roles: {
+                    include: {
+                        role: true,  // Include the actual role data
+                    }
+                }
+            }
+        });
+
+        if (!adminWithRoles) {
+            return res.status(404).json({ message: 'Admin not found' });
+        }
+
+        // Extract the roles assigned to the admin along with the role data
+        const rolesAssignedToAdmin = adminWithRoles.roles.map(adminRole => adminRole.role);
+
+        res.json(rolesAssignedToAdmin);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+// Controller for deleting a role assigned to an admin
+export const deleteRoleAssignedToAdmin = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            adminId: Joi.string().required(),
+            roleId: Joi.string().required(),
+        });
+
+        const { error, value } = schema.validate(req.body);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { adminId, roleId } = value;
+
+        // Check if the admin and role exist
+        const admin = await prisma.admins.findUnique({
+            where: { id: adminId },
+        });
+
+        const role = await prisma.role.findUnique({
+            where: { id: roleId },
+        });
+
+        if (!admin || !role) {
+            return res.status(404).json({ message: 'Admin or Role not found' });
+        }
+
+        // Check if the admin has the role
+        const existingAdminRole = await prisma.adminRole.findFirst({
+            where: {
+                adminId,
+                roleId,
+            },
+        });
+
+        if (!existingAdminRole) {
+            return res.status(400).json({ message: 'Admin does not have this role' });
+        }
+
+        // Delete the role assigned to the admin
+        await prisma.adminRole.delete({
+            where: {
+                adminId_roleId: {
+                    adminId,
+                    roleId,
+                }
+            }
+        });
+
+        res.json({ message: 'Role assigned to admin deleted successfully' });
+    } catch (error) {
+        console.log(error);
         next(error);
     }
 };
