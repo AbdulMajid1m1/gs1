@@ -7219,3 +7219,47 @@ export const AdminRolesColumn = (t, i18n) => [
 
 
 ]
+
+
+
+
+export const AdminUsersColumn = [
+  {
+    field: 'username',
+    headerName: 'Name',
+    width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Phone',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+
+
+
+]
