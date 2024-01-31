@@ -33,6 +33,8 @@ import gtinProductCategoriesRoutes from './subRoutes/gtinProductCategoriesRoutes
 
 import reportsStatsRoutes from './subRoutes/reportsStatsRoutes.js';
 
+import roleRoutes from './subRoutes/roleRoutes.js';
+
 const router = express.Router();
 
 
@@ -91,5 +93,7 @@ router.use("/gtinProductCategories", gtinProductCategoriesRoutes);
 router.use('/report', reportsStatsRoutes);
 
 router.use('/permissions', permissionRoutes);
+
+router.use('/roles', roleRoutes);
 
 export default router;
