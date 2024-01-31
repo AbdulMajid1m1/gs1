@@ -13,6 +13,7 @@ const UpdateRoles = () => {
   const [roleName, setRoleName] = useState('');
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [rolesTypes, setRolesTypes] = useState([]);
+  const [allRoles, setAllRoles] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
   let { id } = useParams();
@@ -22,46 +23,56 @@ const UpdateRoles = () => {
     setSelectedRoles(value);
     console.log(value);
     setSelectAll(false); // Uncheck "Select All" when individual options are selected/deselected
-
+    filterRoles(value, allRoles);
   };
   
 
-  useEffect(() => {
-    const fetchRoleById = async () => {
-      setIsLoading(true);
-      try 
-      {
-        const response = await newRequest.get(`/roles/${id}`);
-        console.log(response.data);
-        setRoleName(response.data.name);
-        setSelectedRoles(response.data.permissions);
-        setIsLoading(false);
-      } 
-      catch (error) {
-        console.error('Error fetching on Search GPC Api:', error);
-        setIsLoading(false);
-      }
+  const fetchRoleById = async () => {
+    setIsLoading(true);
+    try 
+    {
+      const response = await newRequest.get(`/roles/${id}`);
+      const responseAllPermissions = await newRequest.get('/permissions');
+      console.log(response.data);
+      const data = responseAllPermissions.data;
+      
+      const roles = response.data.permissions.map((role) => ({
+          id: role.id,
+          name: role.name,
+        }));
+
+        const rolesTypes = data.map((roles) => ({
+          id: roles.id,
+          name: roles.name,
+        }));
+        
+        filterRoles(roles, rolesTypes);
+        
+        setAllRoles(rolesTypes);
+        setSelectedRoles(roles);
+        // setRolesTypes(rolesTypes);
+        
+      setRoleName(response.data.name);
+      setIsLoading(false);
+    } 
+    catch (error) {
+      console.error('Error fetching on Search GPC Api:', error);
+      setIsLoading(false);
     }
+  }
 
-    const fetchAllRolesTypes = async () => {
-        try {
-            const response = await newRequest.get('/permissions');
-            // only get name and id from the response
-            const data = response.data;
-            const rolesTypes = data.map((roles) => ({
-                id: roles.id,
-                name: roles.name,
-            }));
-            setRolesTypes(rolesTypes);
-        }
-        catch (error) {
-            console.error('Error fetching on Search GPC Api:', error);
-        }
-    };
+  const filterRoles = async (selectedAdminRoles, allRoles) => {
+    // filter roles which are already selected
+    const filteredRoles = allRoles.filter((role) => !selectedAdminRoles.some((selectedRole) => selectedRole.id === role.id));
+    setRolesTypes(filteredRoles);
+    
+  };
 
+
+  useEffect(() => {
     fetchRoleById();
-    fetchAllRolesTypes();
-}, []);
+  
+  }, []);
 
   // Function to handle the change of the "Select All" checkbox
   const handleSelectAllChange = (event) => {
