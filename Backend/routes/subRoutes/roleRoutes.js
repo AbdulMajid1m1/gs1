@@ -5,6 +5,9 @@ import {
     deleteRole,
     getRoles,
     getRole,
+    assignRoleToAdmin,
+    getRolesAssignedToAdmin,
+    deleteRoleAssignedToAdmin,
 } from '../../controllers/roleController.js';
 
 const router = express.Router();
@@ -27,5 +30,13 @@ router.put('/:id', updateRole);
 // Delete a role by ID
 router.delete('/:id', deleteRole);
 
+
+// Assign a role to an admin user
+router.post('/adminRoles/assignRole', assignRoleToAdmin);
+
+
+router.get('/adminRoles/getAssignRolesToAdmin', getRolesAssignedToAdmin);
+
+router.delete('/adminRoles/assignRole', deleteRoleAssignedToAdmin);
 
 export default router;
