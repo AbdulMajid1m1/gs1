@@ -96,7 +96,7 @@ const Users = () => {
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-            <AdminDashboardRightHeader title={'Users'}/>
+            <AdminDashboardRightHeader title={'GS1 Staff'}/>
         </div>
 
 
