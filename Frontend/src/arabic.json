@@ -799,6 +799,23 @@
     "Date Created":"تاريخ الإنشاء",
     "Date LastUpdate":"تاريخ آخر تحديث",
     "Serials":"مسلسلات",
-    "No any pending invoice":"لا يوجد أي فاتورة معلقة"
+    "No any pending invoice":"لا يوجد أي فاتورة معلقة",
+    "You are currently logged on as":"لقد قمت بتسجيل الدخول حاليا باسم",
+    "TRANSACTION":"عملية",
+    "90 days Expiry":"90 يوما انتهاء الصلاحية",
+    "TOTAL AMOUNT":"المبلغ الإجمالي",
+    "NEW REGISTRATION":"تسجيل جديد",
+    "RENEWALS":"التجديدات",
+    "PENDING AMOUNT":"المبلغ المعلق",
+    "APPROVED AMOUNT":"المبلغ المعتمد",
+    "Request Type":"نوع الطلب",
+    "Payment Type":"نوع الدفع",
+    "Roles":"الأدوار",
+    "Add Role":"إضافة دور",
+    "Role Name":"اسم الدور",
+    "Select Roles":"اختيار الأدوار",
+    "Select All":"اختيار الكل",
+    "Create":"إنشاء",
+    "Users":"المستخدمين"
 
 }

@@ -7,7 +7,7 @@ import { getAllOtherProducts } from '../../controllers/otherProuductController.j
 const router = express.Router();
 
 // Cr Routes
-router.get('/', getAllOtherProducts); // Get all CRs 
+router.get('/', getAllOtherProducts); 
 
 
 export default router;

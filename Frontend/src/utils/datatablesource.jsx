@@ -6777,32 +6777,32 @@ export const KpiReportColumn = (t, i18n) => [
   },
   {
     field: 'username',
-    headerName: 'Created By',
+    headerName: t('Created By'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'Admin Email',
+    headerName: t('Admin Email'),
     width: 180,
   },
   {
     field: 'companyID',
-    headerName: 'Company ID',
+    headerName:  t('Company ID'),
     width: 180,
   },
   {
     field: 'company_name_eng',
-    headerName: 'Company Name English',
+    headerName: t('Company Name English'),
     width: 180,
   },
   {
     field: 'productName',
-    headerName: 'Product Name',
+    headerName: t('Product Name'),
     width: 220,
   },
   {
     field: 'payment_type',
-    headerName: 'Payment Type',
+    headerName: t('Payment Type'),
     width: 120,
   },
   {
@@ -7209,11 +7209,55 @@ export const expiredMemberColumn = (t, i18n) => [
 
 
 
-export const AdminRolesColumn = [
+export const AdminRolesColumn = (t, i18n) => [
   {
-    field: 'roles',
-    headerName: 'Roles',
+    field: 'name',
+    headerName:  t('Roles'),
+    width: 280,
+  },
+
+
+
+]
+
+
+
+
+export const AdminUsersColumn = [
+  {
+    field: 'username',
+    headerName: 'Name',
     width: 180,
+  },
+  {
+    field: 'mobile',
+    headerName: 'Phone',
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
   },
 
 

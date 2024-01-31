@@ -464,7 +464,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">90 days Expiry</p>
+                <p className="sidebar-text"> {t('90 days Expiry')}</p>
               </div>
 
 
@@ -691,7 +691,7 @@ const AdminSideBar = () =>
               className="main-inside-image bg-white rounded-full"
               alt=""
             />
-            <p className="sidebar-text">TRANSACTION</p>
+            <p className="sidebar-text"> {t('TRANSACTION')}</p>
             {showFourthData ? (
               <i className='fas fa-solid fa-chevron-up text-white'></i>
             ) : (
@@ -818,7 +818,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Reports')}</p>
+                <p className="sidebar-text">{t('KPI Reports')}</p>
                 {reportSubMenu ? (
                   <i className='fas fa-solid fa-chevron-up text-white'></i>
                 ) : (
@@ -848,7 +848,7 @@ const AdminSideBar = () =>
                       className="main-inside-image bg-white rounded-full"
                       alt=""
                     />
-                    <p className="sidebar-text">{t('KPI Report')}</p>
+                    <p className="sidebar-text">{t('Finance KPI')}</p>
                   </div>
 
                   <div
@@ -932,7 +932,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Staff HelpDesk')}</p>
+                <p className="sidebar-text">Staff Assigned Tasks</p>
               </div>
 
             </div>
@@ -1066,7 +1066,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Users</p>
+                <p className="sidebar-text"> {t('Users')}</p>
               </div>
 
               
@@ -1087,7 +1087,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">Roles</p>
+                <p className="sidebar-text"> {t('Roles')}</p>
               </div>
 
 

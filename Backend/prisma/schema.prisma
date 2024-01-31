@@ -97,42 +97,43 @@ model admins {
   is_super_admin                        Int                                     @default(0, map: "DF__super_admins__status__0F624AF8") @db.TinyInt
   created_at                            DateTime                                @default(now())
   updated_at                            DateTime                                @updatedAt
-  admin_users_roles_assigned            admin_users_roles_assigned[]
   admin_history_logs                    admin_history_logs[]
   other_products_subscription_histories other_products_subscription_histories[]
   gtin_subscription_histories           gtin_subscription_histories[]
   users                                 users[]
+  roles                                 AdminRole[]
+  
 }
 
-model admin_users_roles {
-  id                         String                       @id @default(cuid())
-  name                       String                       @unique
-  description                String?
-  admin_users_roles_assigned admin_users_roles_assigned[]
-  created_at                 DateTime                     @default(now())
-  updated_at                 DateTime                     @updatedAt
-}
-
-model admin_users_roles_assigned {
-  id          String            @id @default(cuid())
-  roleId      String
-  adminId     String
-  created_at  DateTime          @default(now())
-  updated_at  DateTime          @updatedAt
-  admin       admins            @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  role        admin_users_roles @relation(fields: [roleId], references: [id])
-  permissions Permission[]
+model Role {
+  id          String           @id @default(cuid())
+  name        String
+  permissions RolePermission[]
+  admins      AdminRole[]
 }
 
 model Permission {
-  id                      String                     @id @default(cuid())
-  type                    String // 'CREATE', 'READ', 'UPDATE', 'DELETE'
-  adminUserRoleAssignedId String
-  adminUserRoleAssigned   admin_users_roles_assigned @relation(fields: [adminUserRoleAssignedId], references: [id])
-  created_at              DateTime                   @default(now())
-  updated_at              DateTime                   @updatedAt
+  id    String           @id @default(cuid())
+  name  String
+  roles RolePermission[]
+}
 
-  @@unique([type, adminUserRoleAssignedId])
+model AdminRole {
+  adminId String
+  roleId  String
+  admin   admins @relation(fields: [adminId], references: [id])
+  role    Role   @relation(fields: [roleId], references: [id])
+
+  @@id([adminId, roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
 }
 
 model attribute_values {
