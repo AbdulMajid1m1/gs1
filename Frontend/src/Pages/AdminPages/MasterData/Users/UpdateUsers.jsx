@@ -36,17 +36,19 @@ const UpdateUsers = () => {
         setIsLoading(true);
         try {
           const response = await newRequest.get(`/admin/getAdminById?adminId=${id}`);
-          // console.log(response.data);
-          setSelectedRoles(response.data?.roles);
+          console.log(response.data);
+          const roles = response.data?.roles.map((role) => ({
+            // id: role.roleId,
+            name: role.role.name,
+          }));
+          setSelectedRoles(roles);
           setEmail(response.data.email);
           setName(response.data.username);
           setMobile(response.data.mobile);
           setIsSuper(response.data.is_super_admin === 1 ? 'true' : 'false');
           setSelectedImage(imageLiveUrl(response?.data?.image));
           setIsLoading(false);
-
-        } 
-        catch (error) {
+        } catch (error) {
           console.error('Error fetching on Search GPC Api:', error);
           setIsLoading(false);
         }
@@ -140,7 +142,7 @@ const UpdateUsers = () => {
 
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <AdminDashboardRightHeader title={`${t('Update User')}`} />
+          <AdminDashboardRightHeader title={'Edit Staff Member'} />
         </div>
 
         <div className='flex justify-center items-center'>
