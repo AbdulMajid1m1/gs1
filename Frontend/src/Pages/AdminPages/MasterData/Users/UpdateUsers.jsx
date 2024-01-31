@@ -19,6 +19,7 @@ const UpdateUsers = () => {
     const navigate = useNavigate();
     const [selectedRoles, setSelectedRoles] = useState([]);
     const [rolesTypes, setRolesTypes] = useState([]);
+    const [allRoles, setAllRoles] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     let { id } = useParams();
     // console.log(id);
@@ -26,52 +27,59 @@ const UpdateUsers = () => {
     const handleRolesTypesChange = (event, value) => {
       setSelectedRoles(value);
       console.log(value);
+      // fetchRoleById();
+      filterRoles(value, allRoles);
+    };
+   
+
+    const fetchRoleById = async () => {
+      setIsLoading(true);
+      try {
+        const response = await newRequest.get(`/admin/getAdminById?adminId=${id}`);
+        const responseAllRoles = await newRequest.get('/roles');
+        console.log(response.data);
+        const data = responseAllRoles.data;
+        
+        const roles = response.data?.roles.map((role) => ({
+          id: role.roleId,
+          name: role.role.name,
+        }));
+
+        const rolesTypes = data.map((roles) => ({
+            id: roles.id,
+            name: roles.name,
+        }));
+        
+        filterRoles(roles, rolesTypes);
+
+        setAllRoles(rolesTypes);
+        setSelectedRoles(roles);
+        // setRolesTypes(rolesTypes);
+
+
+        setEmail(response.data.email);
+        setName(response.data.username);
+        setMobile(response.data.mobile);
+        setIsSuper(response.data.is_super_admin === 1 ? 'true' : 'false');
+        setSelectedImage(imageLiveUrl(response?.data?.image));
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching on Search GPC Api:', error);
+        setIsLoading(false);
+      }
+    }
   
+    const filterRoles = async (selectedAdminRoles, allRoles) => {
+        // filter roles which are already selected
+        const filteredRoles = allRoles.filter((role) => !selectedAdminRoles.some((selectedRole) => selectedRole.id === role.id));
+        setRolesTypes(filteredRoles);
+        
     };
 
-        
   
     useEffect(() => {
-      const fetchRoleById = async () => {
-        setIsLoading(true);
-        try {
-          const response = await newRequest.get(`/admin/getAdminById?adminId=${id}`);
-          console.log(response.data);
-          const roles = response.data?.roles.map((role) => ({
-            // id: role.roleId,
-            name: role.role.name,
-          }));
-          setSelectedRoles(roles);
-          setEmail(response.data.email);
-          setName(response.data.username);
-          setMobile(response.data.mobile);
-          setIsSuper(response.data.is_super_admin === 1 ? 'true' : 'false');
-          setSelectedImage(imageLiveUrl(response?.data?.image));
-          setIsLoading(false);
-        } catch (error) {
-          console.error('Error fetching on Search GPC Api:', error);
-          setIsLoading(false);
-        }
-      }
-    
-      const fetchAllRolesTypes = async () => {
-          try {
-              const response = await newRequest.get('/roles');
-              // only get name and id from the response
-              const data = response.data;
-              const rolesTypes = data.map((roles) => ({
-                  id: roles.id,
-                  name: roles.name,
-              }));
-              setRolesTypes(rolesTypes);
-          }
-          catch (error) {
-              console.error('Error fetching on Search GPC Api:', error);
-          }
-      };
-
       fetchRoleById();
-      fetchAllRolesTypes();
+      // fetchAllRolesTypes();
   }, []);
 
 
@@ -84,13 +92,17 @@ const UpdateUsers = () => {
     const handleFormSubmit = async (e) => {
       e.preventDefault();
       setIsLoading(true);
+      const selectRolesData = selectedRoles.map((role) => role.id);
+      console.log(selectRolesData);
       try {
         const formData = new FormData();
         formData.append('email', email);
         formData.append('username', name);
         formData.append('mobile', mobile);
         formData.append('isSuperAdmin', isSuper === 'true');
-        formData.append('roleIds[]', selectedRoles.map((role) => role.id));
+        selectRolesData.forEach((item, index) => {
+          formData.append(`roleIds[${index}]`, item);
+        });
 
         // Append front image file
         const imageInput = document.querySelector('#imageInput');

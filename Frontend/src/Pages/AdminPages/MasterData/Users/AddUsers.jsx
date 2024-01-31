@@ -66,8 +66,10 @@ const AddUsers = () => {
         formData.append('username', name);
         formData.append('mobile', mobile);
         formData.append('isSuperAdmin', isSuper);
-        formData.append('roleIds', selectRolesData);
-        // formData.append('profilePicture', selectedImage);
+        selectRolesData.forEach((item, index) => {
+          // Append the item with a unique key, for example, "items[0]", "items[1]", etc.
+          formData.append(`roleIds[${index}]`, item);
+        });
 
         // Append front image file
          const imageInput = document.querySelector('#imageInput');
