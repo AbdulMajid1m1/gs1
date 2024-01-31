@@ -1,5 +1,5 @@
 import express from 'express';
-import { addAdmin, adminLogin, assignAdminToUser, deleteAdmin, getAllAdmins, searchAdmins, updateAdmin } from '../../controllers/adminController.js';
+import { addAdmin, adminLogin, assignAdminToUser, deleteAdmin, getAdmin, getAllAdmins, searchAdmins, updateAdmin } from '../../controllers/adminController.js';
 import { superAdminAuth } from '../../middlewares/auth.js';
 import { upload } from '../../configs/multerConfig.js';
 
@@ -10,6 +10,8 @@ const router = express.Router();
 router.post('/login', adminLogin);
 
 router.get('/getAdmins', superAdminAuth, getAllAdmins);
+
+router.get('/getAdminById', superAdminAuth, getAdmin);
 
 router.get('/searchAdmins', searchAdmins);
 
@@ -29,6 +31,14 @@ router.post('/addAdmin', superAdminAuth,
 
 router.delete("/deleteAdmin", superAdminAuth, deleteAdmin);
 
-router.put('/updateAdmin/:adminId', superAdminAuth, updateAdmin);
+// Update admin user route with validation
+router.put('/updateAdmin/:adminId', superAdminAuth,
+    upload([
+        {
+            name: 'profilePicture',
+            path: 'public/uploads/documents/adminProfilePictures',
+        },
+    ]),
+    updateAdmin);
 
 export default router;

@@ -122,39 +122,58 @@ const updateRoleSchema = Joi.object({
 export const updateRole = async (req, res, next) => {
     try {
         const { id } = req.params;
+        const { name, permissions } = req.body;
+
+        // Validate the incoming data using Joi schema
         const { error } = updateRoleSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { name, permissions } = req.body;
-
         const result = await prisma.$transaction(async (prisma) => {
-            // Update role name
-            const updatedRole = await prisma.role.update({
+            // Use the upsert operation to efficiently update the role
+            const updatedRole = await prisma.role.upsert({
                 where: { id },
-                data: { name },
+                update: { name },
+                create: { id, name },
             });
 
-            if (permissions) {
-                // Remove all existing permissions
-                await prisma.rolePermission.deleteMany({
-                    where: { roleId: id },
-                });
+            // Fetch the current permissions of the role
+            const currentPermissions = await prisma.rolePermission.findMany({
+                where: { roleId: id },
+            });
 
-                // Add new permissions
-                for (const permissionId of permissions) {
-                    await prisma.rolePermission.create({
-                        data: {
-                            roleId: id,
-                            permissionId,
-                        },
-                    });
-                }
+            // Extract the IDs of the current permissions
+            const currentPermissionIds = currentPermissions.map((permission) => permission.permissionId);
+
+            // Calculate the permissions to be added and removed
+            const permissionsToAdd = permissions.filter((permissionId) => !currentPermissionIds.includes(permissionId));
+            const permissionsToRemove = currentPermissionIds.filter((permissionId) => !permissions.includes(permissionId));
+
+            // Remove permissions that need to be removed
+            await prisma.rolePermission.deleteMany({
+                where: {
+                    roleId: id,
+                    permissionId: {
+                        in: permissionsToRemove,
+                    },
+                },
+            });
+
+            // Add permissions that need to be added
+            const permissionsToAddData = permissionsToAdd.map((permissionId) => ({
+                roleId: id,
+                permissionId,
+            }));
+
+            if (permissionsToAddData.length > 0) {
+                await prisma.rolePermission.createMany({
+                    data: permissionsToAddData,
+                });
             }
 
             return updatedRole;
-        });
+        }, { timeout: 20000 });
 
         res.json(result);
     } catch (error) {
