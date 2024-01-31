@@ -353,7 +353,7 @@ const App = () =>
                             
                             <Route path="users-permissions" element={<Users />} />
                             <Route path="add-users" element={<AddUsers />} />
-                            <Route path="update-users" element={<UpdateUsers />} />
+                            <Route path="update-users/:id" element={<UpdateUsers />} />
                             <Route path="roles-permissions" element={<Roles />} />
                             <Route path="add-roles" element={<AddRoles />} />
                             <Route path="update-roles/:id" element={<UpdateRoles />} />

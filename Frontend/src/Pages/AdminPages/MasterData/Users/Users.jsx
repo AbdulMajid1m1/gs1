@@ -39,8 +39,8 @@ const Users = () => {
 
 
   const handleEdit = (row) => {
-    sessionStorage.setItem("selectedUserData", JSON.stringify(row));
-    navigate("/admin/update-users")
+    // sessionStorage.setItem("selectedUserData", JSON.stringify(row));
+    navigate("/admin/update-users/" + row?.id)
   }
 
   const handleDelete = async (row) =>

@@ -1,41 +1,107 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { I18nextProvider, useTranslation } from "react-i18next";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import { DotLoader } from 'react-spinners';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Autocomplete, TextField } from '@mui/material';
+import imageLiveUrl from '../../../../utils/urlConverter/imageLiveUrl';
 
 const UpdateUsers = () => {
   const { t, i18n } = useTranslation();
-    const getGs1UserData = sessionStorage.getItem('selectedUserData');
-    const gs1UserData = JSON.parse(getGs1UserData);
-    // console.log(gs1UserData);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState(gs1UserData?.email || '');
-    const [name, setName] = useState(gs1UserData?.username || '');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-    const [mobile, setMobile] = useState(gs1UserData?.mobile || '');
-    const [isSuper, setIsSuper] = useState(gs1UserData?.is_super_admin === 1 ? 'true' : 'false');
-
+    const [mobile, setMobile] = useState('');
+    const [isSuper, setIsSuper] = useState('');
     const navigate = useNavigate();
+    const [selectedRoles, setSelectedRoles] = useState([]);
+    const [rolesTypes, setRolesTypes] = useState([]);
+    const [selectedImage, setSelectedImage] = useState(null);
+    let { id } = useParams();
+    // console.log(id);
+
+    const handleRolesTypesChange = (event, value) => {
+      setSelectedRoles(value);
+      console.log(value);
+  
+    };
+    
+
+        
+  
+    useEffect(() => {
+      const fetchRoleById = async () => {
+        setIsLoading(true);
+        try {
+          const response = await newRequest.get(`/admin/getAdminById?adminId=${id}`);
+          // console.log(response.data);
+          setSelectedRoles(response.data?.roles);
+          setEmail(response.data.email);
+          setName(response.data.username);
+          setMobile(response.data.mobile);
+          setIsSuper(response.data.is_super_admin === 1 ? 'true' : 'false');
+          setSelectedImage(imageLiveUrl(response?.data?.image));
+          setIsLoading(false);
+
+        } 
+        catch (error) {
+          console.error('Error fetching on Search GPC Api:', error);
+          setIsLoading(false);
+        }
+      }
+    
+      const fetchAllRolesTypes = async () => {
+          try {
+              const response = await newRequest.get('/permissions');
+              // only get name and id from the response
+              const data = response.data;
+              const rolesTypes = data.map((roles) => ({
+                  id: roles.id,
+                  name: roles.name,
+              }));
+              setRolesTypes(rolesTypes);
+          }
+          catch (error) {
+              console.error('Error fetching on Search GPC Api:', error);
+          }
+      };
+
+      fetchRoleById();
+      fetchAllRolesTypes();
+  }, []);
+
+
+  const handleImageChange = (event) => {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setSelectedImage(imageUrl);
+  };
 
     const handleFormSubmit = async (e) => {
       e.preventDefault();
       setIsLoading(true);
       try {
-        const userData = {
-          email: email,
-          username: name,
-          mobile: mobile,
-          isSuperAdmin: isSuper === 'true', // Convert to boolean
-        };
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('username', name);
+        formData.append('mobile', mobile);
+        formData.append('isSuperAdmin', isSuper === 'true');
+        formData.append('roleIds[]', selectedRoles.map((role) => role.id));
 
-        if (password) {
-          userData.password = password;
+        // Append front image file
+        const imageInput = document.querySelector('#imageInput');
+        if (imageInput.files && imageInput.files[0]) {
+            formData.append('profilePicture', imageInput.files[0]);
         }
 
-        const response = await newRequest.put(`/admin/updateAdmin/${gs1UserData?.id}`, userData);
+        if (password) {
+          formData.append('password', password);
+        }
+
+        const response = await newRequest.put(`/admin/updateAdmin/${id}`, formData);
         console.log(response.data);
         setIsLoading(false);
         toast.success(response.data.message || 'User Updated Successfully');
@@ -98,10 +164,7 @@ const UpdateUsers = () => {
                     placeholder={'Email'}
                   />
                 </div>
-              </div>
 
-
-              <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                   <label htmlFor="fields1" className="text-secondary font-semibold">User Name</label>
                   <input
@@ -115,7 +178,10 @@ const UpdateUsers = () => {
                     placeholder={'User Name'}
                   />
                 </div>
+              </div>
 
+
+              <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                   <label htmlFor="fields1" className="text-secondary font-semibold">Password</label>
                   <input
@@ -129,10 +195,7 @@ const UpdateUsers = () => {
                     placeholder={'Password'}
                   />
                 </div>
-              </div>
 
-
-              <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                   <label htmlFor="fields1" className="text-secondary font-semibold">Mobile</label>
                   <input
@@ -146,7 +209,10 @@ const UpdateUsers = () => {
                     placeholder={'Mobile'}
                   />
                 </div>
+              </div>
 
+
+              <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                   <label htmlFor="fields1" className="text-secondary font-semibold">Is Super</label>
                   <select
@@ -162,7 +228,61 @@ const UpdateUsers = () => {
                     <option value="false">GS1 User</option>
                     </select>
                 </div>
+
+
+                <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                  <label className='text-secondary font-semibold' htmlFor='SelectRoles'>   {t('Select Roles')}</label>
+                  <Autocomplete
+
+                    multiple
+                    id='SelectRoles'
+                    options={rolesTypes}
+                    getOptionLabel={(option) => option.name || ''}
+                    value={selectedRoles}
+                    onChange={handleRolesTypesChange}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                      <TextField
+
+
+                        autoComplete="off"
+                        {...params}
+                        label='Select Roles'
+                        placeholder='Select Roles'
+                        variant='outlined'
+                      />
+                    )}
+                    required
+                  />
+                </div>
               </div>
+
+
+               {/* Image container */}
+               <div className='flex justify-between items-center gap-7 flex-wrap mt-10'>
+                  <div>
+                    <span className='text-secondary font-body sm:text-base text-sm'>Profile Image</span>
+                      <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
+                        <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
+                          <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
+                            {t('Select Image')}
+                              <input
+                                type="file"
+                                id="imageInput"
+                                // accept="image/*"
+                                onChange={handleImageChange}
+                                style={{ display: 'none' }}
+                              />
+                          </label>
+                          </div>
+                            {selectedImage && (
+                              <div className='h-56 flex justify-center items-center object-contain w-auto'>
+                                <img src={selectedImage} className='h-56 w-56' alt="Selected Image" />
+                              </div>
+                            )}
+                          </div>
+                    </div>
+                </div>
 
 
               {/*Add Button  */}
