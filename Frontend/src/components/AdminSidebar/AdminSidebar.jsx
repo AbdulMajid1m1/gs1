@@ -818,7 +818,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Reports')}</p>
+                <p className="sidebar-text">{t('KPI Reports')}</p>
                 {reportSubMenu ? (
                   <i className='fas fa-solid fa-chevron-up text-white'></i>
                 ) : (
@@ -848,7 +848,7 @@ const AdminSideBar = () =>
                       className="main-inside-image bg-white rounded-full"
                       alt=""
                     />
-                    <p className="sidebar-text">{t('KPI Report')}</p>
+                    <p className="sidebar-text">{t('Finance KPI')}</p>
                   </div>
 
                   <div

@@ -1,32 +1,49 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { I18nextProvider, useTranslation } from "react-i18next";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { Autocomplete, TextField } from '@mui/material';
+import newRequest from '../../../../utils/userRequest';
 
 const AddRoles = () => {
   const { t, i18n } = useTranslation();
-  const [selectedIndustries, setSelectedIndustries] = useState([]);
-  const [industryTypes, setIndustryTypes] = useState([
-    'Admin',
-    'member',
-    'User',
-    'Migrations',
-  ]);
-
-  const handleIndustryTypeChange = (event, value) => {
-    setSelectedIndustries(value);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [rolesTypes, setRolesTypes] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+  
+  const handleRolesTypesChange = (event, value) => {
+    setSelectedRoles(value);
     console.log(value);
     setSelectAll(false); // Uncheck "Select All" when individual options are selected/deselected
   };
 
-  // State variables
-  const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    
+    // Search GPC Api
+    const fetchAllRolesTypes = async () => {
+        try {
+            const response = await newRequest.get('/permissions');
+            // only get name and id from the response
+            const data = response.data;
+            const rolesTypes = data.map((roles) => ({
+                id: roles.id,
+                name: roles.name,
+            }));
+            setRolesTypes(rolesTypes);
+        }
+        catch (error) {
+            console.error('Error fetching on Search GPC Api:', error);
+        }
+    };
+    fetchAllRolesTypes();
+}, []);
+
   // Function to handle the change of the "Select All" checkbox
   const handleSelectAllChange = (event) => {
     const isChecked = event.target.checked;
 
     // If "Select All" is checked, set all options as selected; otherwise, clear selections
-    setSelectedIndustries(isChecked ? industryTypes : []);
+    setSelectedRoles(isChecked ? rolesTypes : []);
     setSelectAll(isChecked);
   };
 
@@ -38,20 +55,9 @@ const AddRoles = () => {
           <AdminDashboardRightHeader title={`${t('Add Role')}`} />
         </div>
 
-        <div className="flex flex-col justify-center items-center p-4">
-          <div className="h-auto w-full p-5 bg-white">
-            <div className="">
-              <div className={`w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5 ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}>
-                <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                  <p className="font-semibold"> {t('Complete Data')}</p>
-                  <p>
-                    {t('This number is registered to company')}: :{" "}
-                    {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
-                    <span className="font-semibold">Hasnain, Majid</span>
-                  </p>
-                </div>
-              </div>
-            </div>
+        <div className='flex justify-center items-center'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md mb-6">
 
             {/* <form onSubmit={handleFormSubmit}> */}
             <form>
@@ -72,10 +78,10 @@ const AddRoles = () => {
 
                     multiple
                     id='SelectRoles'
-                    options={industryTypes}
-                    getOptionLabel={(option) => option}
-                    value={selectedIndustries}
-                    onChange={handleIndustryTypeChange}
+                    options={rolesTypes}
+                    getOptionLabel={(option) => option.name}
+                    value={selectedRoles}
+                    onChange={handleRolesTypesChange}
                     filterSelectedOptions
                     renderInput={(params) => (
                       <TextField
@@ -115,8 +121,11 @@ const AddRoles = () => {
             </form>
           </div>
         </div>
+        </div>
+        </div>
+        {/* </div> */}
       </div>
-    </div>
+    // </div>
   )
 }
 
