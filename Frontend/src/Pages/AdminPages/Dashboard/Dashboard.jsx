@@ -287,7 +287,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-4 bg-gradient-to-r from-[#C3E2DC]">
               {/* <!-- Social Traffic --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn(t)} title={('Newly Registered Members')} UniqueId="assetPrintingId" />
+                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn(t)} title={t('Newly Registered Members')} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
