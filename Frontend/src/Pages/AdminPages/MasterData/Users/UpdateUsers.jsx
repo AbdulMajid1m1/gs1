@@ -16,7 +16,7 @@ const UpdateUsers = () => {
     const [name, setName] = useState(gs1UserData?.username || '');
     const [password, setPassword] = useState('');
     const [mobile, setMobile] = useState(gs1UserData?.mobile || '');
-    const [isSuper, setIsSuper] = useState(gs1UserData?.is_super_admin === 0 ? 'true' : 'false');
+    const [isSuper, setIsSuper] = useState(gs1UserData?.is_super_admin === 1 ? 'true' : 'false');
 
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const UpdateUsers = () => {
           email: email,
           username: name,
           mobile: mobile,
-          isSuperAdmin: isSuper,
+          isSuperAdmin: isSuper === 'true', // Convert to boolean
         };
 
         if (password) {
@@ -80,7 +80,7 @@ const UpdateUsers = () => {
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
-            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md mb-6">
 
             <form onSubmit={handleFormSubmit}>
             {/* <form> */}

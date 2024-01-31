@@ -73,7 +73,7 @@ const AddUsers = () => {
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
-            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md">
+            <div className="h-auto w-full p-6 bg-white shadow-xl rounded-md mb-6">
 
             <form onSubmit={handleFormSubmit}>
             {/* <form> */}
