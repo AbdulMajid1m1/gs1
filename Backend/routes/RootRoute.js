@@ -19,6 +19,7 @@ import gpcRoutes from './subRoutes/gpcRoutes.js';
 import hsCodesRouter from './subRoutes/hsCodesRouter.js';
 import glnRoutes from './subRoutes/glnRoutes.js';
 import gtinUpgrageRoutes from './subRoutes/gtinUpgradeRoutes.js';
+import permissionRoutes from './subRoutes/permissionRoutes.js';
 
 import changeMembershipRoutes from './subRoutes/changeMembershipRoutes.js';
 
@@ -88,5 +89,7 @@ router.use("/additionalProducts", additionalProductsRoutes);
 router.use("/gtinProductCategories", gtinProductCategoriesRoutes);
 
 router.use('/report', reportsStatsRoutes);
+
+router.use('/permissions', permissionRoutes);
 
 export default router;
