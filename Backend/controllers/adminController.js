@@ -242,7 +242,7 @@ export const addAdmin = async (req, res, next) => {
         // Process image if uploaded
         let imagePath = null;
         if (req.files.profilePicture) {
-            imagePath = req.files.profilePicture[0].path.replace('public/', '');
+            imagePath = req.files.profilePicture[0].path.replace('public', '');
         }
 
 
