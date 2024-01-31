@@ -61,3 +61,36 @@ export const generalAuth = (req, res, next) => {
     }
     next();
 };
+
+// ROles and Permissions based authorization
+
+const permissionCache = {}; // Simple in-memory cache
+
+const fetchPermissionsForRole = async (roleId) => {
+  if (!permissionCache[roleId]) {
+    const permissions = await prisma.rolePermission.findMany({
+      where: { roleId },
+      include: { permission: true },
+    });
+    permissionCache[roleId] = permissions.map(p => p.permission.name);
+  }
+  return permissionCache[roleId];
+};
+
+const checkPermission = (requiredPermission) => async (req, res, next) => {
+  try {
+    const adminId = req.user.id; // Assuming admin ID is in req.user
+    const adminRoles = await prisma.adminRole.findMany({ where: { adminId } });
+
+    for (const adminRole of adminRoles) {
+      const permissions = await fetchPermissionsForRole(adminRole.roleId);
+      if (permissions.includes(requiredPermission)) {
+        return next();
+      }
+    }
+
+    throw new Error(`Unauthorized: Missing required permission '${requiredPermission}'`);
+  } catch (error) {
+    return res.status(403).json({ message: error.message });
+  }
+};

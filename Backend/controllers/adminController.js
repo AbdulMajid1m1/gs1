@@ -51,6 +51,17 @@ export const adminLogin = async (req, res, next) => {
     }
 };
 
+export const getAllAdmins = async (req, res, next) => {
+    try {
+        const admins = await prisma.admins.findMany({});
+        res.status(200).json(admins);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
 
 // Define the controller function for searching admins
 export const searchAdmins = async (req, res, next) => {
@@ -246,6 +257,60 @@ export const addAdmin = async (req, res, next) => {
 
 
         res.status(201).json({ message: 'Admin user created successfully.' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+export const updateAdmin = async (req, res, next) => {
+    try {
+        const { adminId } = req.params;
+        const { email, username, mobile, isSuperAdmin, password } = req.body;
+
+        // Validate incoming data
+        const updateSchema = Joi.object({
+            email: Joi.string().email().optional(),
+            username: Joi.string().optional(),
+            mobile: Joi.string().optional(),
+            isSuperAdmin: Joi.boolean().optional(),
+            password: Joi.string().min(6).optional(),
+        });
+
+        const { error } = updateSchema.validate(req.body);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        // Check if the admin user exists
+        const existingAdmin = await prisma.admins.findUnique({
+            where: { id: adminId },
+        });
+
+        if (!existingAdmin) {
+            throw createError(404, 'Admin user not found.');
+        }
+
+        // Prepare the data to be updated
+        let updateData = {};
+        if (email) updateData.email = email;
+        if (username) updateData.username = username;
+        if (mobile) updateData.mobile = mobile;
+        if (isSuperAdmin !== undefined) updateData.is_super_admin = isSuperAdmin ? 1 : 0;
+
+        // Hash the new password if provided
+        if (password) {
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            updateData.password = hashedPassword;
+        }
+
+        // Update the admin user in the database
+        await prisma.admins.update({
+            where: { id: adminId },
+            data: updateData,
+        });
+
+        res.json({ message: 'Admin user updated successfully.' });
     } catch (error) {
         console.error(error);
         next(error);
