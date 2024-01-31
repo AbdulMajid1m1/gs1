@@ -28,7 +28,6 @@ const UpdateUsers = () => {
       console.log(value);
   
     };
-    
 
         
   
