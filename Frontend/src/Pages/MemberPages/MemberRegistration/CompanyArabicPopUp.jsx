@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import popupimage from '../../../Images/popupimage.png'
-import blinkcompany from '../../../Images/blinkcompany.gif';
+import GS1saudiblinking from '../../../Images/GS1saudiblinking.gif'
 import './CompanyArabicPopUp.css'
 
 const CompanyArabicPopUp = ({ isVisible, setVisibility, language }) => {
@@ -38,7 +38,7 @@ const CompanyArabicPopUp = ({ isVisible, setVisibility, language }) => {
                             </div>
                             <form className='w-full'>
                                 <div className="mt-3 h-full">
-                                    <img src={blinkcompany} className='h-full w-full' alt="popupimage" />
+                                    <img src={GS1saudiblinking} className='h-full w-full' alt="popupimage" />
                                 </div>
                             </form>
                         </div>

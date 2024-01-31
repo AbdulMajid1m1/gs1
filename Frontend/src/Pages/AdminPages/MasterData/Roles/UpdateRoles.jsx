@@ -5,9 +5,9 @@ import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import { DotLoader } from 'react-spinners';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddRoles = () => {
+const UpdateRoles = () => {
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [roleName, setRoleName] = useState('');
@@ -15,7 +15,9 @@ const AddRoles = () => {
   const [rolesTypes, setRolesTypes] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
-  
+  let { id } = useParams();
+//   console.log(id)
+
   const handleRolesTypesChange = (event, value) => {
     setSelectedRoles(value);
     console.log(value);
@@ -25,8 +27,22 @@ const AddRoles = () => {
   
 
   useEffect(() => {
-    
-    // Search GPC Api
+    const fetchRoleById = async () => {
+      setIsLoading(true);
+      try 
+      {
+        const response = await newRequest.get(`/roles/${id}`);
+        console.log(response.data);
+        setRoleName(response.data.name);
+        setSelectedRoles(response.data.permissions);
+        setIsLoading(false);
+      } 
+      catch (error) {
+        console.error('Error fetching on Search GPC Api:', error);
+        setIsLoading(false);
+      }
+    }
+
     const fetchAllRolesTypes = async () => {
         try {
             const response = await newRequest.get('/permissions');
@@ -42,6 +58,8 @@ const AddRoles = () => {
             console.error('Error fetching on Search GPC Api:', error);
         }
     };
+
+    fetchRoleById();
     fetchAllRolesTypes();
 }, []);
 
@@ -60,13 +78,13 @@ const AddRoles = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await newRequest.post('/roles', {
+      const response = await newRequest.put(`/roles/${id}`, {
         name: roleName,
         permissions: selectedRoles.map((role) => role.id),
       });
       console.log(response?.data);
       setIsLoading(false);
-      toast.success(response?.data?.message || 'Role Created Successfully');
+      toast.success(response?.data?.message || 'Role Updated Successfully');
       navigate(-1);
     } 
     catch (error) {
@@ -101,7 +119,7 @@ const AddRoles = () => {
         
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <AdminDashboardRightHeader title={`${t('Add Role')}`} />
+          <AdminDashboardRightHeader title={`${t('Update Role')}`} />
         </div>
 
         <div className='flex justify-center items-center'>
@@ -181,4 +199,4 @@ const AddRoles = () => {
   )
 }
 
-export default AddRoles
+export default UpdateRoles

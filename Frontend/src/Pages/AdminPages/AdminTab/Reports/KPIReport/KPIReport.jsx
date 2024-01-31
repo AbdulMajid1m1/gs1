@@ -71,6 +71,11 @@ const KPIReport = () => {
 
   const handleSearchTimeAndDate = async () => {
     setIsLoading(true);
+    if (!startDate || !endDate) {
+      toast.error('Please select start and end date');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const formattedStartDate = new Date(startDate);
@@ -78,7 +83,6 @@ const KPIReport = () => {
       const formattedEndDate = new Date(endDate);
       formattedEndDate.setHours(23, 59, 59, 999);
       console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
-
 
       const res = await newRequest.post('/report/kpi', {
         startDate: formattedStartDate.toISOString(),
@@ -301,6 +305,7 @@ const KPIReport = () => {
                       <label className="font-body text-sm">{t('From')}</label>
                       <input
                         type="date"
+                        value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                         className="border border-gray-300 p-2 rounded-lg w-full"
                       />
@@ -309,6 +314,7 @@ const KPIReport = () => {
                       <label className="font-body text-sm">{t('To')}</label>
                       <input
                         type="date"
+                        value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                         className="border border-gray-300 p-2 rounded-lg w-full"
                       />

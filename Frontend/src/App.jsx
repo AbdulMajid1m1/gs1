@@ -118,6 +118,9 @@ import ExpiredMember from "./Pages/AdminPages/AdminCapture/ExpiredMember/Expired
 import Users from "./Pages/AdminPages/MasterData/Users/Users";
 import Roles from "./Pages/AdminPages/MasterData/Roles/Roles";
 import AddRoles from "./Pages/AdminPages/MasterData/Roles/AddRoles";
+import AddUsers from "./Pages/AdminPages/MasterData/Users/AddUsers";
+import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
+import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
 
 const queryClient = new QueryClient()
 
@@ -349,8 +352,11 @@ const App = () =>
                             
                             
                             <Route path="users-permissions" element={<Users />} />
+                            <Route path="add-users" element={<AddUsers />} />
+                            <Route path="update-users" element={<UpdateUsers />} />
                             <Route path="roles-permissions" element={<Roles />} />
                             <Route path="add-roles" element={<AddRoles />} />
+                            <Route path="update-roles/:id" element={<UpdateRoles />} />
                             
                             <Route path="units" element={<Units />} />
                             <Route path="Documents" element={<Documents />} />;
