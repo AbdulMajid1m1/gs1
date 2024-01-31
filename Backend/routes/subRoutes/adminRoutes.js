@@ -1,5 +1,5 @@
 import express from 'express';
-import { addAdmin, adminLogin, assignAdminToUser, deleteAdmin, searchAdmins } from '../../controllers/adminController.js';
+import { addAdmin, adminLogin, assignAdminToUser, deleteAdmin, searchAdmins, updateAdmin } from '../../controllers/adminController.js';
 import { superAdminAuth } from '../../middlewares/auth.js';
 
 
@@ -17,5 +17,7 @@ router.post('/assignAdmin', superAdminAuth, assignAdminToUser);
 router.post('/addAdmin', superAdminAuth, addAdmin);
 
 router.delete("/deleteAdmin", superAdminAuth, deleteAdmin);
+
+router.put('/updateAdmin/:adminId', superAdminAuth, updateAdmin);
 
 export default router;
