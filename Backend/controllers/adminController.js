@@ -51,6 +51,17 @@ export const adminLogin = async (req, res, next) => {
     }
 };
 
+export const getAllAdmins = async (req, res, next) => {
+    try {
+        const admins = await prisma.admins.findMany({});
+        res.status(200).json(admins);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
 
 // Define the controller function for searching admins
 export const searchAdmins = async (req, res, next) => {
