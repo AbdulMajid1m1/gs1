@@ -932,7 +932,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('Staff HelpDesk')}</p>
+                <p className="sidebar-text">Staff Assigned Tasks</p>
               </div>
 
             </div>
