@@ -68,7 +68,6 @@ const AdminPaymentSlips = () => {
       setAutocompleteLoading(true);
       setOpen(true);
 
-      // const res = await newRequest.get(`/brands/search?keyword=${newInputValue}`, {
         const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });

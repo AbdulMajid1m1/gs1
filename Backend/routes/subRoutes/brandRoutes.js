@@ -18,8 +18,8 @@ router.post('/', upload([
 
 router.get('/', getBrands);
 
-router.get('/search', searchBrands);
-router.get('/searchMemberBrands', searchMemberBrands);
+// router.get('/search', searchBrands);
+router.get('/searchMemberBrands', generalAuth, searchMemberBrands);
 
 router.put('/:id', upload([
     {
@@ -27,6 +27,6 @@ router.put('/:id', upload([
         path: 'public/uploads/documents/membersBrandCertificates',
     },
 ]), generalAuth, updateBrand);
-router.delete('/:id', deleteBrand);
+router.delete('/:id', generalAuth, deleteBrand);
 
 export default router;

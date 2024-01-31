@@ -34,7 +34,7 @@ export const superAdminAuth = (req, res, next) => {
   jwt.verify(token, ADMIN_JWT_SECRET, (err, adminPayload) => {
     if (err) return next(createError(403, "Admin token is not valid!"));
     req.admin = adminPayload;
- 
+
     // check if the admin is super admin
     if (req.admin.is_super_admin !== 1) return next(createError(403, "You don't have permission to access this resource!"));
     next();
@@ -84,10 +84,10 @@ const fetchPermissionsForRole = async (roleId) => {
 export const checkPermission = (requiredPermission) => async (req, res, next) => {
   try {
     const adminId = req.admin.adminId; // Assuming admin ID is in req.user
-    if (!adminId) throw new Error('Unauthorized: Missing admin ID');
-
+    if (!adminId) throw createError(403, "Unauthorized: Missing admin ID");
+    console.log(adminId);
     // check if the admin is super admin
-    if (req.admin.role === 1) return next();
+    if (req.admin.is_super_admin === 1) return next();
 
     const adminRoles = await prisma.adminRole.findMany({ where: { adminId } });
 
@@ -98,8 +98,9 @@ export const checkPermission = (requiredPermission) => async (req, res, next) =>
       }
     }
 
-    throw new Error(`Unauthorized: Missing required permission '${requiredPermission}'`);
+    // throw new Error(`Unauthorized: Missing required permission '${requiredPermission}'`);
+    throw createError(403, `Unauthorized: Missing required permission '${requiredPermission}'`);
   } catch (error) {
-    return res.status(403).json({ message: error.message });
+    next(error);
   }
 };
