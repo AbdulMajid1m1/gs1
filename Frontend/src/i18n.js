@@ -5,6 +5,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslation from './english.json';
 import arTranslation from './arabic.json';
 
+const storedLanguage = sessionStorage.getItem('selectedLanguaged');
+const initialLanguage = storedLanguage || 'ar';
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .use(LanguageDetector) // detects user's language
@@ -24,7 +26,7 @@ i18n
     interpolation: {
       escapeValue: false, // not needed for React
     }, 
-    lng: 'ar',
+    lng: initialLanguage,
   });
 
 export default i18n;

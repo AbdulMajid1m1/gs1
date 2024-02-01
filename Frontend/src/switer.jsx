@@ -15,9 +15,12 @@ const LanguageSwitcher = () =>
 
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
-    }; 
+    };
+    const storedLanguage = sessionStorage.getItem('selectedLanguaged');
+    const initialLanguage = storedLanguage || 'ar'; // Default to Arabic if no language is stored
+
     const [isActive, setIsActive] = useState(false);
-    const [currentOption, setCurrentOption] = useState('ar');
+    const [currentOption, setCurrentOption] = useState(initialLanguage);
 
     const handleToggle = () => {
         setIsActive(!isActive);
@@ -30,6 +33,8 @@ const LanguageSwitcher = () =>
         console.log(`Selected language: ${option}, Image: ${image}`);
         // Update i18n language if needed
         changeLanguage(option);
+        sessionStorage.setItem('selectedLanguaged', option);
+
     };
 
     return (
