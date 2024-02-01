@@ -6,7 +6,7 @@ import path from 'path';
 import fs1 from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
-import { sendEmail } from '../services/emailTemplates.js';
+import { sendEmail, sendMultipleEmails } from '../services/emailTemplates.js';
 import QRCode from 'qrcode';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -39,6 +39,7 @@ export const createMemberDocument = async (req, res, next) => {
     }
 
     const documentFile = uploadedDocument[0];
+    let saveDocPath = path.join(documentFile.destination, documentFile.filename);
     const documentName = documentFile.filename;
     documentFile.destination = documentFile.destination.replace('public', '');
     const documentPath = path.join(documentFile.destination, documentName);
@@ -78,6 +79,57 @@ export const createMemberDocument = async (req, res, next) => {
             }
             await createMemberLogs(userLog);
         }
+
+        // fetch user data
+        const user = await prisma.users.findUnique({
+            where: { id: value.user_id },
+            include: {
+                assign_to_admin: true,
+            }
+        });
+        // read the file into a buffer
+
+        const pdfBuffer = await fs1.readFile(saveDocPath);
+
+        // Send email to the user and supervisor
+
+        // Prepare email data for the user
+        const emailData = [
+            {
+                toEmail: user.email,
+                subject: `GS1 Saudi Arabia -  ${value.type} Document Uploaded`,
+                htmlContent: `<h1>Document Uploaded</h1>
+                              <p>Your ${value.type} document has been uploaded successfully.</p>
+                              <p>Document: <strong>${documentName}</strong></p>`,
+                attachments: [
+                    {
+                        filename: documentName,
+                        content: pdfBuffer,
+                        contentType: 'application/pdf'
+                    },
+                ]
+            }
+        ];
+
+        // If supervisor's email exists, add it to emailData
+        if (user.assign_to_admin?.email) {
+            emailData.push({
+                toEmail: user.assign_to_admin.email,
+                subject: `GS1 Saudi Arabia -  ${value.type} Document Uploaded by ${user.company_name_eng}`,
+                htmlContent: `${value.type} document has been uploaded by ${user.company_name_eng}`,
+                attachments: [
+                    {
+                        filename: `${user.company_name_eng}-Invoice.pdf`,
+                        content: pdfBuffer,
+                        contentType: 'application/pdf'
+                    }
+                ]
+            });
+        }
+
+        await sendMultipleEmails({
+            emailData,
+        });
 
         res.status(201).json({
             message: 'Document uploaded successfully.',
