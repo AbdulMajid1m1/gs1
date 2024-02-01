@@ -5,45 +5,74 @@ import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import { DotLoader } from 'react-spinners';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddRoles = () => {
+const UpdateRoles = () => {
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [roleName, setRoleName] = useState('');
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [rolesTypes, setRolesTypes] = useState([]);
+  const [allRoles, setAllRoles] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
-  
+  let { id } = useParams();
+//   console.log(id)
+
   const handleRolesTypesChange = (event, value) => {
     setSelectedRoles(value);
     console.log(value);
     setSelectAll(false); // Uncheck "Select All" when individual options are selected/deselected
-
+    filterRoles(value, allRoles);
   };
   
 
-  useEffect(() => {
+  const fetchRoleById = async () => {
+    setIsLoading(true);
+    try 
+    {
+      const response = await newRequest.get(`/roles/${id}`);
+      const responseAllPermissions = await newRequest.get('/permissions');
+      console.log(response.data);
+      const data = responseAllPermissions.data;
+      
+      const roles = response.data.permissions.map((role) => ({
+          id: role.id,
+          name: role.name,
+        }));
+
+        const rolesTypes = data.map((roles) => ({
+          id: roles.id,
+          name: roles.name,
+        }));
+        
+        filterRoles(roles, rolesTypes);
+        
+        setAllRoles(rolesTypes);
+        setSelectedRoles(roles);
+        // setRolesTypes(rolesTypes);
+        
+      setRoleName(response.data.name);
+      setIsLoading(false);
+    } 
+    catch (error) {
+      console.error('Error fetching on Search GPC Api:', error);
+      setIsLoading(false);
+    }
+  }
+
+  const filterRoles = async (selectedAdminRoles, allRoles) => {
+    // filter roles which are already selected
+    const filteredRoles = allRoles.filter((role) => !selectedAdminRoles.some((selectedRole) => selectedRole.id === role.id));
+    setRolesTypes(filteredRoles);
     
-    // Search GPC Api
-    const fetchAllRolesTypes = async () => {
-        try {
-            const response = await newRequest.get('/permissions');
-            // only get name and id from the response
-            const data = response.data;
-            const rolesTypes = data.map((roles) => ({
-                id: roles.id,
-                name: roles.name,
-            }));
-            setRolesTypes(rolesTypes);
-        }
-        catch (error) {
-            console.error('Error fetching on Search GPC Api:', error);
-        }
-    };
-    fetchAllRolesTypes();
-}, []);
+  };
+
+
+  useEffect(() => {
+    fetchRoleById();
+  
+  }, []);
 
   // Function to handle the change of the "Select All" checkbox
   const handleSelectAllChange = (event) => {
@@ -60,13 +89,13 @@ const AddRoles = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await newRequest.post('/roles', {
+      const response = await newRequest.put(`/roles/${id}`, {
         name: roleName,
         permissions: selectedRoles.map((role) => role.id),
       });
       console.log(response?.data);
       setIsLoading(false);
-      toast.success(response?.data?.message || 'Role Created Successfully');
+      toast.success(response?.data?.message || 'Role Updated Successfully');
       navigate(-1);
     } 
     catch (error) {
@@ -101,7 +130,7 @@ const AddRoles = () => {
         
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <AdminDashboardRightHeader title={`${t('Add Role')}`} />
+          <AdminDashboardRightHeader title={`${t('Update Role')}`} />
         </div>
 
         <div className='flex justify-center items-center'>
@@ -181,4 +210,4 @@ const AddRoles = () => {
   )
 }
 
-export default AddRoles
+export default UpdateRoles

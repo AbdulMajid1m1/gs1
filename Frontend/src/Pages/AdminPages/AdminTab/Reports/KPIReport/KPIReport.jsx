@@ -23,7 +23,7 @@ const KPIReport = () => {
   const [totalAmount, setTotalAmount] = useState('');
   const [newRegistraions, setNewRegistraions] = useState('');
   const [renewals, setRenewals] = useState('');
-
+  const [stats, setStats] = useState({});
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -71,6 +71,11 @@ const KPIReport = () => {
 
   const handleSearchTimeAndDate = async () => {
     setIsLoading(true);
+    if (!startDate || !endDate) {
+      toast.error('Please select start and end date');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const formattedStartDate = new Date(startDate);
@@ -79,7 +84,6 @@ const KPIReport = () => {
       formattedEndDate.setHours(23, 59, 59, 999);
       console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
 
-
       const res = await newRequest.post('/report/kpi', {
         startDate: formattedStartDate.toISOString(),
         endDate: formattedEndDate.toISOString(),
@@ -87,7 +91,8 @@ const KPIReport = () => {
 
       // admin - username - email, user - companyID, companyNameE, productName
       console.log(res?.data);
-      setTotalAmount(res?.data?.totalAmount);
+      setStats(res?.data);
+      setTotalAmount(res?.data?.totalApprovedAmount);
       setNewRegistraions(res?.data?.newRegistrations?.amount);
       setRenewals(res?.data?.renewals?.amount);
 
@@ -227,8 +232,8 @@ const KPIReport = () => {
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3`}> 
-                <div className={`w-full flex gap-2 flex-wrap ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
+              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                <div className='w-full flex gap-2 flex-wrap'>
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
@@ -272,88 +277,35 @@ const KPIReport = () => {
                   </button>
                 </div>
 
-                <div className={`flex justify-between items-center flex-wrap gap-2 w-full ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>                 
+                <div className='flex justify-between items-center flex-wrap gap-2 w-full'>
                   <div className='mt-2 flex flex-col justify-start items-start'>
-                      <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
-                        <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                      
-                        {i18n.language === 'ar' ? (
-                          <>
-                            <span className='font-bold '>{totalAmount}</span>
-                            <span className='pl-20'> :{t('TOTAL AMOUNT')}</span>
-                          </>
-                        ) : (
-                          <>
-                              <span> {t('TOTAL AMOUNT')}:</span>
-                              <span className='font-bold pl-20'>{totalAmount}</span>
-                              </>
-                        )}
+                    <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>TOTAL APPROVED AMOUNT:</span>
+                        <span className='font-bold pl-20'>{stats.totalApprovedAmount ? stats.totalApprovedAmount : ''}</span>
+                      </p>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>NEW REGISTRATION:{stats?.newRegistrations?.count ? `(${stats?.newRegistrations?.count})` : ''}</span>
+                        <span className='font-bold'>{stats?.newRegistrations?.amount ? stats?.newRegistrations?.amount : ''}</span>
+                      </p>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>RENEWALS:{stats?.renewals?.count ? `(${stats?.renewals?.count})` : '(0)'}</span>
+                        <span className='font-bold'>{stats?.renewals?.amount ? stats?.renewals?.amount : '0'}</span>
+                      </p>
+                      <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
+                        <span>PENDING AMOUNT: {stats?.pendingAmount?.count ? `(${stats?.pendingAmount?.count})` : '(0)'}</span>
+                        <span className='font-bold'>{stats?.pendingAmount?.amount ? stats?.pendingAmount?.amount : '0'}</span>
+                      </p>
 
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                        
-                        {i18n.language === 'ar' ? (
-                          <>
-                            <span className='font-bold'>{newRegistraions}</span>
-                            <span> :{t('NEW REGISTRATION')}</span>
-                          </>
-                        ) : (
-                          <>
-                           <span> {t('NEW REGISTRATION')}:</span>
-                            <span className='font-bold'>{newRegistraions}</span>
-                          </>
-                        )}
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                       
-                        {i18n.language === 'ar' ? (
-                          <>
-                            <span className='font-bold'>{renewals}</span>
-                            <span>:{t('RENEWALS')}</span>
-                          </>
-                        ) : (
-                          <>
-                              <span> {t('RENEWALS')}:</span>
-                              <span className='font-bold'>{renewals}</span>
-                          </>
-                        )}
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                        
-                        {i18n.language === 'ar' ? (
-                          <>
-                            <span className='font-bold'>30000</span>
-                            <span> :{t('PENDING AMOUNT')}</span>
-                          </>
-                        ) : (
-                          <>
-                              <span> {t('PENDING AMOUNT')}:</span>
-                              <span className='font-bold'>30000</span>
-                          </>
-                        )}
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                       
-                        {i18n.language === 'ar' ? (
-                          <>
-                            <span className='font-bold'>30000</span>
-                            <span> :{t('APPROVED AMOUNT')}</span>
-                          </>
-                        ) : (
-                          <>
-                              <span> {t('APPROVED AMOUNT')}:</span>
-                              <span className='font-bold'>30000</span>
-                          </>
-                        )}
-                        </p>
                     </div>
                   </div>
 
-                 <div className='flex justify-end items-end flex-wrap gap-2'>
+                  <div className='flex justify-end items-end flex-wrap gap-2'>
                     <div className="flex flex-col">
                       <label className="font-body text-sm">{t('From')}</label>
                       <input
                         type="date"
+                        value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                         className="border border-gray-300 p-2 rounded-lg w-full"
                       />
@@ -362,6 +314,7 @@ const KPIReport = () => {
                       <label className="font-body text-sm">{t('To')}</label>
                       <input
                         type="date"
+                        value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                         className="border border-gray-300 p-2 rounded-lg w-full"
                       />
@@ -373,7 +326,7 @@ const KPIReport = () => {
                       className="rounded-full bg-primary font-body px-5 py-2 text-sm mb-1 text-white transition duration-200 hover:bg-secondary">
                       {t('Search')}
                     </button>
-                 </div>
+                  </div>
                 </div>
 
               </div>

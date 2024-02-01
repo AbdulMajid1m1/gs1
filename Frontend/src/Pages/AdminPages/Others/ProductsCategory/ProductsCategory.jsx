@@ -190,9 +190,9 @@ const AdditionalProducts = () =>
           <AddProductsCategory isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshProductsCategory={fetchData} />
         )}
         {/* Updateproductpack component with handleShowUpdatePopup prop */}
-        {/* {isUpdatePopupVisible && (
+        {isUpdatePopupVisible && (
           <UpdateProductsCategory isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshProductsCategory={fetchData} />
-        )} */}
+        )}
       </div>
     </div>
   )

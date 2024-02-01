@@ -19,6 +19,7 @@ import gpcRoutes from './subRoutes/gpcRoutes.js';
 import hsCodesRouter from './subRoutes/hsCodesRouter.js';
 import glnRoutes from './subRoutes/glnRoutes.js';
 import gtinUpgrageRoutes from './subRoutes/gtinUpgradeRoutes.js';
+import permissionRoutes from './subRoutes/permissionRoutes.js';
 
 import changeMembershipRoutes from './subRoutes/changeMembershipRoutes.js';
 
@@ -31,6 +32,8 @@ import additionalProductsRoutes from './subRoutes/additionalProductsRoutes.js';
 import gtinProductCategoriesRoutes from './subRoutes/gtinProductCategoriesRoutes.js';
 
 import reportsStatsRoutes from './subRoutes/reportsStatsRoutes.js';
+
+import roleRoutes from './subRoutes/roleRoutes.js';
 
 const router = express.Router();
 
@@ -88,5 +91,9 @@ router.use("/additionalProducts", additionalProductsRoutes);
 router.use("/gtinProductCategories", gtinProductCategoriesRoutes);
 
 router.use('/report', reportsStatsRoutes);
+
+router.use('/permissions', permissionRoutes);
+
+router.use('/roles', roleRoutes);
 
 export default router;

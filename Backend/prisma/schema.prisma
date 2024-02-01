@@ -97,42 +97,43 @@ model admins {
   is_super_admin                        Int                                     @default(0, map: "DF__super_admins__status__0F624AF8") @db.TinyInt
   created_at                            DateTime                                @default(now())
   updated_at                            DateTime                                @updatedAt
-  admin_users_roles_assigned            admin_users_roles_assigned[]
   admin_history_logs                    admin_history_logs[]
   other_products_subscription_histories other_products_subscription_histories[]
   gtin_subscription_histories           gtin_subscription_histories[]
   users                                 users[]
+  roles                                 AdminRole[]
+  
 }
 
-model admin_users_roles {
-  id                         String                       @id @default(cuid())
-  name                       String                       @unique
-  description                String?
-  admin_users_roles_assigned admin_users_roles_assigned[]
-  created_at                 DateTime                     @default(now())
-  updated_at                 DateTime                     @updatedAt
-}
-
-model admin_users_roles_assigned {
-  id          String            @id @default(cuid())
-  roleId      String
-  adminId     String
-  created_at  DateTime          @default(now())
-  updated_at  DateTime          @updatedAt
-  admin       admins            @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  role        admin_users_roles @relation(fields: [roleId], references: [id])
-  permissions Permission[]
+model Role {
+  id          String           @id @default(cuid())
+  name        String
+  permissions RolePermission[]
+  admins      AdminRole[]
 }
 
 model Permission {
-  id                      String                     @id @default(cuid())
-  type                    String // 'CREATE', 'READ', 'UPDATE', 'DELETE'
-  adminUserRoleAssignedId String
-  adminUserRoleAssigned   admin_users_roles_assigned @relation(fields: [adminUserRoleAssignedId], references: [id])
-  created_at              DateTime                   @default(now())
-  updated_at              DateTime                   @updatedAt
+  id    String           @id @default(cuid())
+  name  String
+  roles RolePermission[]
+}
 
-  @@unique([type, adminUserRoleAssignedId])
+model AdminRole {
+  adminId String
+  roleId  String
+  admin   admins @relation(fields: [adminId], references: [id])
+  role    Role   @relation(fields: [roleId], references: [id])
+
+  @@id([adminId, roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
 }
 
 model attribute_values {
@@ -812,26 +813,30 @@ model gtin_subcriptions {
 }
 
 model gtin_subscription_histories {
-  id             String        @id @default(cuid())
-  react_no       Int?
-  transaction_id String?
-  pkg_id         String
-  pkg_date       DateTime?     @default(now()) @db.DateTime
-  user_id        String
-  price          Float?
-  request_type   String?       @db.NVarChar(Max)
-  document       String?       @db.NVarChar(Max)
-  payment_type   String?       @db.NVarChar(Max)
-  status         String?       @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
-  createdBy      Int?          @default(0, map: "DF_gtin_subscription_histories_createdBy")
-  created_at     DateTime?     @default(now()) @db.DateTime
-  updated_at     DateTime?     @updatedAt
-  deleted_at     DateTime?     @db.DateTime
-  expiry_date    DateTime?     @db.DateTime
-  admin_id       String?
-  admin          admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  user           users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  gtin_product   gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
+  id                     String                @id @default(cuid())
+  react_no               Int?
+  transaction_id         String?
+  pkg_id                 String
+  pkg_date               DateTime?             @default(now()) @db.DateTime
+  user_id                String
+  price                  Float?
+  request_type           String?               @db.NVarChar(Max)
+  document               String?               @db.NVarChar(Max)
+  payment_type           String?               @db.NVarChar(Max)
+  status                 String?               @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
+  createdBy              Int?                  @default(0, map: "DF_gtin_subscription_histories_createdBy")
+  created_at             DateTime?             @default(now()) @db.DateTime
+  updated_at             DateTime?             @updatedAt
+  deleted_at             DateTime?             @db.DateTime
+  expiry_date            DateTime?             @db.DateTime
+  admin_id               String?
+  additional_products_id String?
+  // point  additional_products_id  to  gtin_upgrade_pricing optionally
+  gtin_upgrade_pricing   gtin_upgrade_pricing? @relation(fields: [additional_products_id], references: [id], onDelete: Cascade)
+
+  admin        admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  user         users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
 }
 
 model help_desk_comments {
@@ -1504,27 +1509,30 @@ model other_products_subcriptions {
 }
 
 model other_products_subscription_histories {
-  id             String         @id @default(cuid())
-  react_no       Int?
-  transaction_id String
-  product_id     String
-  other_date     DateTime?      @db.DateTime
-  user_id        String
-  price          Float?
-  request_type   String?        @db.NVarChar(Max)
-  document       String?        @db.NVarChar(Max)
-  payment_type   String?        @db.NVarChar(Max)
-  status         String?        @default("pending", map: "DF_other_products_subscription_histories_status") @db.VarChar(255)
-  createdBy      String?        @db.NVarChar(255)
-  created_at     DateTime?      @default(now())
-  updated_at     DateTime?      @updatedAt
-  deleted_at     DateTime?      @db.DateTime
-  expiry_date    DateTime?      @db.DateTime
-  admin_id       String?
-  // point admin 
-  admin          admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  product        other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  user           users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id                String               @id @default(cuid())
+  react_no          Int?
+  transaction_id    String
+  product_id        String
+  other_date        DateTime?            @db.DateTime
+  user_id           String
+  price             Float?
+  request_type      String?              @db.NVarChar(Max)
+  document          String?              @db.NVarChar(Max)
+  payment_type      String?              @db.NVarChar(Max)
+  status            String?              @default("pending", map: "DF_other_products_subscription_histories_status") @db.VarChar(255)
+  createdBy         String?              @db.NVarChar(255)
+  created_at        DateTime?            @default(now())
+  updated_at        DateTime?            @updatedAt
+  deleted_at        DateTime?            @db.DateTime
+  expiry_date       DateTime?            @db.DateTime
+  admin_id          String?
+  additional_gln_id String?
+  // point additional_gln_id to gln_upgrade_pricing optionaly
+  additional_gln    gln_upgrade_pricing? @relation(fields: [additional_gln_id], references: [id], onDelete: Cascade)
+
+  admin   admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user    users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model our_teams {
@@ -2209,11 +2217,12 @@ model document_type {
 }
 
 model gtin_upgrade_pricing {
-  id                   String   @id @default(cuid())
-  total_no_of_barcodes Float?
-  price                Float?
-  created_at           DateTime @default(now())
-  updated_at           DateTime @updatedAt
+  id                          String                        @id @default(cuid())
+  total_no_of_barcodes        Float?
+  price                       Float?
+  created_at                  DateTime                      @default(now())
+  updated_at                  DateTime                      @updatedAt
+  gtin_subscription_histories gtin_subscription_histories[]
 }
 
 model upgrade_member_ship_cart {
@@ -2229,12 +2238,13 @@ model upgrade_member_ship_cart {
 }
 
 model gln_upgrade_pricing {
-  id              String         @id @default(cuid())
-  total_no_of_gln Float?
-  price           Float?
-  created_at      DateTime       @default(now())
-  updated_at      DateTime       @updatedAt
-  add_gln_cart    add_gln_cart[]
+  id                                    String                                  @id @default(cuid())
+  total_no_of_gln                       Float?
+  price                                 Float?
+  created_at                            DateTime                                @default(now())
+  updated_at                            DateTime                                @updatedAt
+  add_gln_cart                          add_gln_cart[]
+  other_products_subscription_histories other_products_subscription_histories[]
 }
 
 model add_gln_cart {

@@ -6,7 +6,8 @@ import bcrypt from 'bcryptjs';
 import { ADMIN_EMAIL, ADMIN_JWT_SECRET, JWT_EXPIRATION } from '../configs/envConfig.js';
 import { cookieOptions } from '../utils/authUtilities.js';
 import { sendEmail } from '../services/emailTemplates.js';
-
+import path from 'path';
+import fs from 'fs';
 
 export const adminLogin = async (req, res, next) => {
     try {
@@ -50,6 +51,58 @@ export const adminLogin = async (req, res, next) => {
         await prisma.$disconnect();
     }
 };
+
+export const getAllAdmins = async (req, res, next) => {
+    try {
+        const admins = await prisma.admins.findMany({
+            orderBy: {
+                updated_at: 'desc' // Order by updated_at in descending order
+            },
+        });
+        res.status(200).json(admins);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+export const getAdmin = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            adminId: Joi.string().required(),
+        });
+
+        const { error, value } = schema.validate(req.query);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { adminId } = value;
+
+        const admin = await prisma.admins.findUnique({
+            where: { id: adminId },
+            include: {
+                roles: {
+                    include: {
+                        role: true
+                    }
+                }
+            }
+        });
+
+        if (!admin) {
+            throw createError(404, 'Admin not found.');
+        }
+
+        res.status(200).json(admin);
+    } catch (error) {
+
+        next(error);
+
+    }
+};
+
 
 
 // Define the controller function for searching admins
@@ -193,57 +246,70 @@ export const assignAdminToUser = async (req, res, next) => {
 
 
 
-// Controller function to add admin user
-// Define the validation schema for admin data
+
+
+// Updated Schema with role IDs and image
 const adminSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     username: Joi.string().required(),
     mobile: Joi.string().required(),
-
     isSuperAdmin: Joi.boolean().optional().default(false),
+    roleIds: Joi.array().items(Joi.string()).optional() // New field for role IDs
+    // Image field is not included in the schema as it will be handled separately
 });
 
 export const addAdmin = async (req, res, next) => {
     try {
-
-
+        // Validate request body
         const { error, value } = adminSchema.validate(req.body);
-
         if (error) {
             throw createError(400, error.details[0].message);
         }
 
-        const { email, password, username, mobile, isSuperAdmin } = value;
+        const { email, password, username, mobile, isSuperAdmin, roleIds } = value;
 
-
-
-
-        // Check if the admin user already exists with the same email
+        // Check if the admin user already exists
         const existingAdmin = await prisma.admins.findFirst({
             where: { email },
         });
-
         if (existingAdmin) {
             return next(createError(400, 'Admin with this email already exists.'));
         }
 
-        // Hash the password before saving it
-        const saltRounds = 10; // Number of salt rounds for bcrypt
+        // Hash the password
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        // save 0 or 1 in the database based on the isSuperAdmin value
-        const status = value.isSuperAdmin ? 1 : 0;
-        // Create the admin user in the database
+
+        // Process image if uploaded
+        let imagePath = null;
+        if (req.files.profilePicture) {
+            imagePath = req.files.profilePicture[0].path.replace('public', '');
+        }
+
+
+
+
+        // Create the admin user
         const newAdmin = await prisma.admins.create({
             data: {
                 email,
                 password: hashedPassword,
                 username,
                 mobile,
-                is_super_admin: status,
+                is_super_admin: isSuperAdmin ? 1 : 0,
+                ...(imagePath && { image: imagePath }),
             },
         });
 
+        // Assign roles to the new admin
+        if (roleIds && roleIds.length > 0) {
+            const adminRoles = roleIds.map(roleId => ({
+                adminId: newAdmin.id,
+                roleId: roleId
+            }));
+            await prisma.adminRole.createMany({ data: adminRoles });
+        }
 
         res.status(201).json({ message: 'Admin user created successfully.' });
     } catch (error) {
@@ -252,6 +318,114 @@ export const addAdmin = async (req, res, next) => {
     }
 };
 
+// Validation schema for updating admin
+const updateAdminSchema = Joi.object({
+    email: Joi.string().email().optional(),
+    username: Joi.string().optional(),
+    mobile: Joi.string().optional(),
+    isSuperAdmin: Joi.boolean().optional(),
+    password: Joi.string().min(6).optional(),
+    roleIds: Joi.array().items(Joi.string()).optional(), // New field for role IDs
+});
+export const updateAdmin = async (req, res, next) => {
+    try {
+        const { adminId } = req.params;
+        // const { email, username, mobile, isSuperAdmin, password, roleIds } = req.body;
+
+        // Validate incoming data using the schema
+        const { error, value } = updateAdminSchema.validate(req.body);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { email, username, mobile, isSuperAdmin, password, roleIds } = value;
+        // Check if the admin user exists
+        const existingAdmin = await prisma.admins.findUnique({
+            where: { id: adminId },
+        });
+
+        if (!existingAdmin) {
+            throw createError(404, 'Admin user not found.');
+        }
+
+        // Prepare the data to be updated
+        let updateData = {};
+        if (email) updateData.email = email;
+        if (username) updateData.username = username;
+        if (mobile) updateData.mobile = mobile;
+        if (isSuperAdmin !== undefined) updateData.is_super_admin = isSuperAdmin ? 1 : 0;
+
+        // Hash the new password if provided
+        if (password) {
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            updateData.password = hashedPassword;
+        }
+        let imagePath = null;
+        if (req.files.profilePicture) {
+            const profile = req.files.profilePicture[0];
+            const profileName = profile.filename;
+            profile.destination = profile.destination.replace('public', '');
+            imagePath = path.join(profile.destination, profileName);
+            if (existingAdmin.image) {
+                fs.unlinkSync(path.join('public', existingAdmin.image));
+                const existingFilePath = path.join('public', existingAdmin.image);
+                if (fs.existsSync(existingFilePath)) {
+                    fs.unlinkSync(existingFilePath);
+                }
+            }
+        }
+
+        // if imagePath is not null, add it to the updateData object
+        if (imagePath) {
+            updateData.image = imagePath;
+        }
+        // Update the admin user in the database
+        await prisma.admins.update({
+            where: { id: adminId },
+            data: updateData,
+        });
+
+        // Fetch the current roles of the admin
+        const currentRoles = await prisma.adminRole.findMany({
+            where: { adminId },
+        });
+
+        // Extract the IDs of the current roles
+        const currentRoleIds = currentRoles.map((role) => role.roleId);
+
+        // Calculate the roles to be added and removed
+        const rolesToAdd = roleIds.filter((roleId) => !currentRoleIds.includes(roleId));
+        const rolesToRemove = currentRoleIds.filter((roleId) => !roleIds.includes(roleId));
+
+        // Remove roles that need to be removed
+        await prisma.adminRole.deleteMany({
+            where: {
+                adminId,
+                roleId: {
+                    in: rolesToRemove,
+                },
+            },
+        });
+
+        // Add roles that need to be added
+        const rolesToAddData = rolesToAdd.map((roleId) => ({
+            adminId,
+            roleId,
+        }));
+
+        if (rolesToAddData.length > 0) {
+            await prisma.adminRole.createMany({
+                data: rolesToAddData,
+            });
+        }
+
+        res.json({ message: 'Admin user updated successfully.' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 // create delete admin controller
 export const deleteAdmin = async (req, res, next) => {

@@ -292,15 +292,19 @@ const RegisteredMembers = () => {
  
   const filterDropdownOptions = (row, dropDownOptions) => {
     if (adminData?.is_super_admin === 1) {
+      if (row.status !== 'active') {
+        return dropDownOptions.filter(option => option.label !== 'Renew');
+      }
       return dropDownOptions; // Enable all options for super admin
-    } else if (adminData?.is_super_admin === 0) {
+    } 
+    
+    else if (adminData?.is_super_admin === 0) {
       const assignToAdminId = row?.assign_to_admin?.id;
       if (assignToAdminId === adminData?.id) {
-        if (row?.status === 'active') {
-          return dropDownOptions;
-        } else if (row.status !== 'active') {
+        if (row.status !== 'active') {
           return dropDownOptions.filter(option => option.label !== 'Renew');
         }
+          return dropDownOptions; // Enable all options for the admin who is assigned to the user
       }
     }
 
