@@ -250,11 +250,18 @@ const SideBar = () => {
               >
                 {/* {apiResponse.length === 0 && ( */}
                 <div
-                className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                  onClick={() => handleItemClick('/member/gtin')}
-                  onContextMenu={(event) =>
-                    handleContextMenu(event, '/member/gtin')
-                  }
+                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} ${memberData.status === 'inactive' ? 'bg-gray-500' : ''}`}
+                  onClick={() => {
+                    if (memberData.status !== 'inactive') {
+                      handleItemClick('/member/gtin');
+                    }
+                  }}
+                  onContextMenu={(event) => {
+                    if (memberData.status !== 'inactive') {
+                      handleContextMenu(event, '/member/gtin');
+                    }
+                  }}
+                  style={{ cursor: memberData.status === 'inactive' ? 'not-allowed' : 'pointer' }}
                 >
                   <img
                     src={barcodescanner}
