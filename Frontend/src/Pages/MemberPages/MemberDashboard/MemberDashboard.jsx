@@ -41,7 +41,7 @@ const MemberDashboard = () => {
     if (isMemberPortalRoute && isNotHomepage) {
       var s1 = document.createElement("script");
       s1.async = true;
-      s1.src = 'https://embed.tawk.to/65bb63910ff6374032c78f82/1hlhvpst2';
+      s1.src = 'https://embed.tawk.to/6130da0bd6e7610a49b34edd/1fejd7gdl';
       s1.charset = 'UTF-8';
       s1.setAttribute('crossorigin', '*');
       document.head.appendChild(s1);
