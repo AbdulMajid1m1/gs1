@@ -121,6 +121,7 @@ import AddRoles from "./Pages/AdminPages/MasterData/Roles/AddRoles";
 import AddUsers from "./Pages/AdminPages/MasterData/Users/AddUsers";
 import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
 import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
+import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 
 const queryClient = new QueryClient()
 
@@ -358,6 +359,9 @@ const App = () =>
                             <Route path="add-roles" element={<AddRoles />} />
                             <Route path="update-roles/:id" element={<UpdateRoles />} />
                             
+
+                            <Route path="Language/Dynamic" element={<LaanguageChange />} />
+
                             <Route path="units" element={<Units />} />
                             <Route path="Documents" element={<Documents />} />;
                             <Route path="ProductPackaging" element={<ProductPackaging />} />

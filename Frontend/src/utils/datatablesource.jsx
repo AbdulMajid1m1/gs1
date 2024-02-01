@@ -2604,6 +2604,21 @@ export const masterDataColumn = (t, i18n) => [
   },
 ];
 
+export const LanguageDataColumn = (t, i18n) => [
+
+  {
+    field: 'unit_code',
+    headerName: t('Name[English]'),
+    width: 180,
+  },
+  {
+    field: 'unit_name',
+    headerName: t('Name[Arabic]'),
+    width: 260,
+  },
+ 
+];
+
 export const megamenuDataColumn = (t, i18n) => [
 
   {
