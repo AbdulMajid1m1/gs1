@@ -232,7 +232,7 @@ const MemberActivityReport = () => {
              <div className="h-auto w-[97%] px-0 pt-4">
                 <div className="h-auto w-full p-0 py-5 bg-white shadow-xl rounded-md">
 
-                    <div className='flex p-4 gap-2 w-full'>
+                    <div className='sm:flex p-4 gap-2 w-full'>
                       <div className="flex flex-col w-full">
                   <label className="font-body text-sm"> {t('Members')}</label>
                         {/* <select

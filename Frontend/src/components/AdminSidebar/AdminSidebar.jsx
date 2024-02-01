@@ -342,6 +342,26 @@ const AdminSideBar = () =>
               </div>
 
               <div
+                // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/old-inactive-members')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/old-inactive-members')
+                // }
+                className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/old-inactive-members', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/old-inactive-members')
+                }
+              >
+                <img
+                  src={inactiveMembers}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Old InActive Members')}</p>
+              </div>
+
+              <div
                 // className={`main-images-container ${selectedItem === '/admin/gtin' ? 'selected-item' : ''}`}
                 //   onClick={() => handleItemClick('/admin/gtin')}
                 //     onContextMenu={(event) =>
@@ -788,27 +808,6 @@ const AdminSideBar = () =>
 
 
               <div
-                // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
-                //   onClick={() => handleItemClick('/admin/old-inactive-members')}
-                //     onContextMenu={(event) =>
-                //        handleContextMenu(event, '/admin/old-inactive-members')
-                // }
-                className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/old-inactive-members', event)}
-                onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/old-inactive-members')
-                }
-              >
-                <img
-                  src={inactiveMembers}
-                  className="main-inside-image bg-white rounded-full"
-                  alt=""
-                />
-                <p className="sidebar-text">{t('Old InActive Members')}</p>
-              </div>
-
-
-              <div
               // <div
                 className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={() => setReportSubMenu(!reportSubMenu)}
@@ -939,7 +938,7 @@ const AdminSideBar = () =>
           )}
 
 
-          <div
+          {/* <div
             className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
             onClick={() => setShowFifthData(!showFifthData)}
           >
@@ -1001,29 +1000,9 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Settings')}</p>
               </div>
 
-                {/* <div 
-                  // className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
-                  //   onClick={() => handleItemClick('/admin/master-data')}
-                  //     onContextMenu={(event) =>
-                  //        handleContextMenu(event, '/admin/master-data')
-                  // }
-                  className={`main-images-container ${selectedItem === '/admin/master-data' ? 'selected-item' : ''}`}
-                    onClick={(event) => handleItemClick('/admin/master-data', event)}
-                      onContextMenu={(event) =>
-                         handleContextMenu(event, '/admin/master-data')
-                  }
-                  >
-                  <img
-                    src={verifiedbygs1}
-                    className="main-inside-image bg-white rounded-full"
-                    alt=""
-                  />
-                  <p className="sidebar-text">Master Data</p>
-                </div> */}
-
 
             </div>
-          )}
+          )} */}
 
 
           {/* Master Data */}
