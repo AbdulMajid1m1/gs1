@@ -290,6 +290,20 @@ const MemmberRegisteration = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(subscriptionData)
+        if (subscriptionData.length === 0) {
+            toast.error(`${t('Please select a GTIN Product')}`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+
+            return;
+        }
+
         setIsLoading(true);
 
         console.log(subscriptionData)
@@ -297,14 +311,14 @@ const MemmberRegisteration = () => {
 
         let cart_items = []
         // add subscription data to cart_items and then add other products to cart_items
-        console.log(subscriptionData)
+
         subscriptionData.forEach((item) => {
             cart_items.push({
                 "productID": item.productId,
                 "productName": item.product,
                 "registration_fee": item.registrationFee.toString(), // Convert to string
                 "yearly_fee": item.yearlyFee.toString(), // Convert to string
-                "price": item.price.toString(), 
+                "price": item.price.toString(),
                 "product_type": item.product_type,
             })
 
@@ -337,7 +351,7 @@ const MemmberRegisteration = () => {
             "companyLandLine": companyLandLine,
             "mobile": mobileNumber,
             // "zip_code": zipCode,
-              
+
             // Conditionally include zip_code based on user input
             ...(zipCode && { "zip_code": zipCode }),
 
@@ -346,7 +360,7 @@ const MemmberRegisteration = () => {
             "state": selectedState?.name,
             "city": selectedCity?.name,
             "membership_category": selectedCategories.name === 'non-medical' ? 'non_med_category' : 'med_category',
-            "other_products": selectedOtherProducts.map(product => product.product_name).join(', '),
+            // "other_products": selectedOtherProducts.map(product => product.product_name).join(', '),
 
 
             "cart": {
@@ -440,7 +454,7 @@ const MemmberRegisteration = () => {
 
             // Check for maximum length (12 digits including country code)
             if (value.length > 12) {
-                setCompanyLandlineError(`${t('Number must be a maximum of 12 digits') }`);
+                setCompanyLandlineError(`${t('Number must be a maximum of 12 digits')}`);
             }
         }
 
@@ -504,7 +518,7 @@ const MemmberRegisteration = () => {
 
     const [isCompanyNamePopUpVisible, setIsCompanyNamePopUpVisible] = useState(false);
     const [isCompanyArabicPopUpVisible, setIsCompanyArabicPopUpVisible] = useState(false);
- 
+
     const handleCompanyNamePopUp = () => {
         setIsCompanyNamePopUpVisible(true);
     };
@@ -626,7 +640,7 @@ const MemmberRegisteration = () => {
                                     type="text"
                                     id="field2"
                                     //  value={addCrNumber}
-                                    onChange={(e) => setCrActivity(e.target.value)} 
+                                    onChange={(e) => setCrActivity(e.target.value)}
                                     placeholder={`${t('Enter')} ${t('Cr Activity')}`}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
@@ -1019,7 +1033,7 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3'>
                                 <label
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
-                                >GTIN 
+                                >GTIN
                                     <span className='text-red-600'>*</span>
                                     {t('Barcode')}
                                     <img src={barcodeImage} className='h-10 w-auto' alt='' />
@@ -1170,11 +1184,11 @@ const MemmberRegisteration = () => {
                 </div>
 
                 {isCompanyNamePopUpVisible && (
-                    <CompanyNamePopUp isVisible={isCompanyNamePopUpVisible} setVisibility={setIsCompanyNamePopUpVisible}/>
+                    <CompanyNamePopUp isVisible={isCompanyNamePopUpVisible} setVisibility={setIsCompanyNamePopUpVisible} />
                 )}
 
                 {isCompanyArabicPopUpVisible && (
-                    <CompanyArabicPopUp isVisible={isCompanyArabicPopUpVisible} setVisibility={setIsCompanyArabicPopUpVisible}/>
+                    <CompanyArabicPopUp isVisible={isCompanyArabicPopUpVisible} setVisibility={setIsCompanyArabicPopUpVisible} />
                 )}
                 {/* </div> */}
             </div >
