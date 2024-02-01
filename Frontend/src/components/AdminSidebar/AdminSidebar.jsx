@@ -730,6 +730,27 @@ const AdminSideBar = () =>
                 //     onContextMenu={(event) =>
                 //        handleContextMenu(event, '/admin/old-inactive-members')
                 // }
+                className={`main-images-container ${selectedItem === '/admin/products-categories' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/products-categories', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/products-categories')
+                }
+              >
+                <img
+                  src={productscategory}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">Product Categories</p>
+              </div>
+
+
+              <div
+                // className={`main-images-container ${selectedItem === '/admin/old-inactive-members' ? 'selected-item' : ''}`}
+                //   onClick={() => handleItemClick('/admin/old-inactive-members')}
+                //     onContextMenu={(event) =>
+                //        handleContextMenu(event, '/admin/old-inactive-members')
+                // }
                 className={`main-images-container ${selectedItem === '/admin/products-category' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/products-category', event)}
                 onContextMenu={(event) =>

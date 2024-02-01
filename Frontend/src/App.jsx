@@ -121,6 +121,7 @@ import AddRoles from "./Pages/AdminPages/MasterData/Roles/AddRoles";
 import AddUsers from "./Pages/AdminPages/MasterData/Users/AddUsers";
 import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
 import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
+import ProductCategories from "./Pages/AdminPages/Others/ProductCategories/ProductCategories";
 
 const queryClient = new QueryClient()
 
@@ -315,6 +316,7 @@ const App = () => {
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
                             <Route path="member-expiry-page" element={<MembersExpiryPage />} />
                             <Route path="products-category" element={<ProductsCategory />} />
+                            <Route path="products-categories" element={<ProductCategories />} />
                             <Route path="others-products-category" element={<OtherProductsCategory />} />
                             <Route path="addtional-gtin" element={<AdditionalGTIN />} />
 
