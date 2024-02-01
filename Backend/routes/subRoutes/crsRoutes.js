@@ -7,7 +7,7 @@ import { adminAuth, checkPermission } from '../../middlewares/auth.js';
 
 const router = express.Router();
 // Routes
-router.post('/', adminAuth, checkPermission(["cr_number"]), createCrs); // Create a new CR
+router.post('/', adminAuth, checkPermission(["cr_number"]), createCrs); 
 router.get('/', getAllCrs); // Get all CRs
 router.get('/getCrsById/:id', getCrsById); // Get a CR by ID
 router.get('/getCrsByCrNo/:cr', getCrsByCrNo); // Get a CR by ID
