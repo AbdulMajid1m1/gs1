@@ -95,7 +95,7 @@ const MemberDashboard = () => {
                     <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: {memberData?.gcpGLNID}</p>
                     <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>{t('Member ID')}: <span>{memberData?.memberID}</span></p>
                 </div>
-
+ 
                 <CountdownTimer expiryDate={expiryDate} />
 
                 {/* <div className='w-full flex flex-col gap-1 justify-end items-end'>
