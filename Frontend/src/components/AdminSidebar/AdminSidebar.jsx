@@ -742,7 +742,7 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">Product Categories</p>
-              </div>
+              </div>  
 
 
               <div
