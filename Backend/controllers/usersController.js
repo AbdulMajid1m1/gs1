@@ -290,9 +290,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
             const invoiceBuffer = await fs.readFile(pdfFilePath);
 
             cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-            // await sendOTPEmail(user.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'."
-
-            //     , { invoiceBuffer, pdfFilename }, pdfBuffer2);
+        
 
 
 
