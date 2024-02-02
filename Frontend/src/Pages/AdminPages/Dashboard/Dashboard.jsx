@@ -27,29 +27,47 @@ const Dashboard = () => {
 
 
   const getAllNewlyRegisteredMembers = async () => {
+
+    const adminData = JSON.parse(sessionStorage.getItem('adminData'));
     setNewRegisteredMembersLoader(true);
     try {
 
       const response = await newRequest.get("/users/new")
 
       console.log(response.data)
-      let data = response.data.map((item) => ({
-        ...item, profile: (
-          <Link
-            className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
-            to={`/admin/registered-members/view-registered-member/${item.id}`}
-          >
-            <PersonIcon
-              style={{
-                width: '30px',
-                height: '30px',
-              }}
-            />
-          </Link>
-        ),
-      }));
 
-      setNewRegisteredMembers(data)
+      let data = response.data.map((item) => {
+        const isSuperAdmin = adminData?.is_super_admin === 1;
+        const isAdminAssigned = item.assign_to === adminData?.id;
+        const isStatusActive = item.status === 'active';
+
+        const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
+        const buttonClass = isButtonDisabled
+          ? 'text-gray-400 cursor-not-allowed'
+          : 'text-secondary hover:text-red-500 cursor-pointer';
+        return {
+          ...item,
+          profile: (
+            isButtonDisabled ? (
+              <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
+                <PersonIcon />
+              </span>
+            ) : (
+              <Link
+                className={buttonClass}
+                to={`/admin/registered-members/view-registered-member/${item.id}`}
+                style={{ width: '30px', height: '30px' }}
+              >
+                <PersonIcon />
+              </Link>
+            )
+          ),
+        };
+      });
+
+      setNewRegisteredMembers(data);
+
+
       setNewRegisteredMembersLoader(false);
 
     }
@@ -59,129 +77,134 @@ const Dashboard = () => {
 
     }
   };
-
   const getAllPendingApprovals = async () => {
     setPendingApprovalsLoader(true);
+
     try {
+      const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+      const response = await newRequest.get("/users?status=inactive");
 
-      newRequest.get("/users?status=inactive")
-        .then(response => {
-          console.log(response.data)
-          let data = response.data.map((item) => ({
-            ...item, profile: (
+      const data = response.data.map((item) => {
+        const isSuperAdmin = adminData?.is_super_admin === 1;
+        const isAdminAssigned = item.assign_to === adminData?.id;
+
+        const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
+        const buttonClass = isButtonDisabled
+          ? 'text-gray-400 cursor-not-allowed'
+          : 'text-secondary hover:text-red-500 cursor-pointer';
+
+        return {
+          ...item,
+          profile: (
+            isButtonDisabled ? (
+              <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
+                <PersonIcon />
+              </span>
+            ) : (
               <Link
-                className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+                className={buttonClass}
                 to={`/admin/registered-members/view-registered-member/${item.id}`}
+                style={{ width: '30px', height: '30px' }}
               >
-                <PersonIcon
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                  }}
-                />
+                <PersonIcon />
               </Link>
-            ),
-          }));
-          setPendingApprovals(data)
-          setPendingApprovalsLoader(false);
-        })
-          
-          //   setPendingApprovals(response.data)
-        //   setPendingApprovalsLoader(false);
-        // })
-        .catch(error => {
+            )
+          ),
+        };
+      });
 
-
-          console.error(error);
-          setPendingApprovalsLoader(false);
-        });
-
-    }
-    catch (error) {
-      console.log(error);
-
+      setPendingApprovals(data);
+      setPendingApprovalsLoader(false);
+    } catch (error) {
+      console.error(error);
+      setPendingApprovalsLoader(false);
     }
   };
 
   const getAllRegisteredMembers = async () => {
     setAllRegisteredMembersLoader(true);
+
     try {
+      const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+      const response = await newRequest.get("/users?status=active");
 
-      newRequest.get("/users?status=active")
-        .then(response => {
-          console.log(" Registed", response.data)
-          console.log(response.data)
-          let data = response.data.map((item) => ({
-            ...item, profile: (
+      const data = response.data.map((item) => {
+        const isSuperAdmin = adminData?.is_super_admin === 1;
+        const isAdminAssigned = item.assign_to === adminData?.id;
+
+        const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
+        const buttonClass = isButtonDisabled
+          ? 'text-gray-400 cursor-not-allowed'
+          : 'text-secondary hover:text-red-500 cursor-pointer';
+
+        return {
+          ...item,
+          profile: (
+            isButtonDisabled ? (
+              <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
+                <PersonIcon />
+              </span>
+            ) : (
               <Link
-                className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+                className={buttonClass}
                 to={`/admin/registered-members/view-registered-member/${item.id}`}
+                style={{ width: '30px', height: '30px' }}
               >
-                <PersonIcon
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                  }}
-                />
+                <PersonIcon />
               </Link>
-            ),
-          }));
-          setAllRegisteredMembers(data)
-          setAllRegisteredMembersLoader(false);
-        })
-        .catch(error => {
+            )
+          ),
+        };
+      });
 
-
-          console.error(error);
-          setAllRegisteredMembersLoader(false);
-        });
-
-    }
-    catch (error) {
-      console.log(error);
-
+      setAllRegisteredMembers(data);
+      setAllRegisteredMembersLoader(false);
+    } catch (error) {
+      console.error(error);
+      setAllRegisteredMembersLoader(false);
     }
   };
 
   const getNewTransferOrder = async () => {
     setMemberRenevalLoader(true);
+
     try {
+      const response = await newRequest.get("/users/getByGcpExpiry");
 
-      newRequest.get("/users/getByGcpExpiry")
-        .then(response => {
-          console.log("MemberReneval", response.data)
-          let data = response.data.map((item) => ({
-            ...item, profile: (
+      const data = response.data.map((item) => {
+        const isSuperAdmin = adminData?.is_super_admin === 1;
+        const isAdminAssigned = item.assign_to === adminData?.id;
+
+        const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
+        const buttonClass = isButtonDisabled
+          ? 'text-gray-400 cursor-not-allowed'
+          : 'text-secondary hover:text-red-500 cursor-pointer';
+
+        return {
+          ...item,
+          profile: (
+            isButtonDisabled ? (
+              <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
+                <PersonIcon />
+              </span>
+            ) : (
               <Link
-                className='text-secondary hover:text-red-500 cursor-pointer' // Use Tailwind CSS classes
+                className={buttonClass}
                 to={`/admin/registered-members/view-registered-member/${item.id}`}
+                style={{ width: '30px', height: '30px' }}
               >
-                <PersonIcon
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                  }}
-                />
+                <PersonIcon />
               </Link>
-            ),
-          }));
-          setMemberReneval(data)
-          setMemberRenevalLoader(false);
-        })
-          //   setMemberReneval(response.data)
-        //   setMemberRenevalLoader(false);
-        // })
-        .catch(error => {
+            )
+          ),
+        };
+      });
 
-
-          console.error(error);
-          setMemberRenevalLoader(false);
-        });
-
-    }
-    catch (error) {
-      console.log(error);
-
+      setMemberReneval(data);
+      setMemberRenevalLoader(false);
+    } catch (error) {
+      console.error(error);
+      setMemberRenevalLoader(false);
     }
   };
 
@@ -240,7 +263,7 @@ const Dashboard = () => {
                       <p className='font-sans font-normal text-sm text-gray-200'>{t('Active Members')}</p>
                     </div>
                   </div>
-                </div>       
+                </div>
                 <div className='h-auto w-full bg-[#F73F3F] rounded-lg'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
