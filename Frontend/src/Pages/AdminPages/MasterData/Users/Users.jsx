@@ -58,7 +58,7 @@ const Users = () => {
     }).then(async (result) =>
     {
       if (result.isConfirmed) {
-        try {
+        try { 
           const isDeleted = await newRequest.delete("/admin/deleteAdmin?adminId=" + row?.id);
           if (isDeleted) {
             toast.success(`User ${t('has been deleted')} ${t('successfully')}!`);
