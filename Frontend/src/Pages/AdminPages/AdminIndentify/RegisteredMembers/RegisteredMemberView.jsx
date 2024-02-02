@@ -987,7 +987,7 @@ const RegisteredMembersView = () => {
 
         {/* AddBrands component with handleShowCreatePopup prop */}
         {isCreatePopupVisible && (
-          <AddBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData} />
+          <AddBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData} userData={allUserData}/>
         )}
 
         {/* UpdateBrands component with handleShowUpdatePopup prop */}
@@ -998,7 +998,7 @@ const RegisteredMembersView = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberPopupVisible && (
           <AddMemberDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData} />
+            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData} userData={allUserData} />
 
         )}
 

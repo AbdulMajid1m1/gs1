@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, refreshHistoryData }) => {
+const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, refreshHistoryData, userData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
@@ -17,9 +17,11 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   const [isBankSlip, setIsBankSlip] = useState(true);
   const [error, setError] = useState('');
   // get the sesstion data
-  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  // console.log(gs1MemberData)
+  const gs1MemberData = userData;
+  
   const { t } = useTranslation();
-  console.log(gs1MemberData)
   const [loading, setLoading] = useState(false);
 
 
