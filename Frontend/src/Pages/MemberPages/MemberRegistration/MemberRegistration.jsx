@@ -30,7 +30,7 @@ const MemmberRegisteration = () => {
     const [country, setCountry] = React.useState([])
     const [state, setState] = React.useState([])
     const [city, setCity] = useState([]);
-    const [gtinNumber, setGtinNumber] = useState('')
+    const [gtinNumber, setGtinNumber] = useState([])
     const [companyLandLine, setCompanyLandLine] = React.useState('')
     const [mobileNumber, setMobileNumber] = React.useState('')
     const [selectedCity, setSelectedCity] = useState("");
@@ -304,6 +304,21 @@ const MemmberRegisteration = () => {
             return;
         }
 
+        /// if gtin proudct slected is having id 1 then user should select at least one other product
+
+        if (subscriptionData[0].productId === '1' && otherSubscriptionData.length === 0) {
+            toast.error(`${t('Please select at least one other product')}`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+
+            return;
+        }
+
         setIsLoading(true);
 
         console.log(subscriptionData)
@@ -422,6 +437,7 @@ const MemmberRegisteration = () => {
 
     const handleCategoryChange = (event, value) => {
         console.log(value)
+        console.log(value)
         setSelectedCategories(value);
         // Reset selectedGtinNumber when category changes
         // check if user cancelled the selection then reset the selectedGtinNumber as well as other products
@@ -490,6 +506,7 @@ const MemmberRegisteration = () => {
             try {
                 // const response = await newRequest.get(`/gtinProducts?category=${selectedCategories}`);
                 const response = await newRequest.get(`/gtinProducts`);
+                console.log(response.data)
                 setGtinNumber(response.data);
             } catch (error) {
                 console.error('Error fetching GTIN products:', error);
@@ -1033,9 +1050,8 @@ const MemmberRegisteration = () => {
                             <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3'>
                                 <label
                                     className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
-                                >GTIN
+                                >GTIN  {t('Barcode')}
                                     <span className='text-red-600'>*</span>
-                                    {t('Barcode')}
                                     <img src={barcodeImage} className='h-10 w-auto' alt='' />
                                 </label>
 
