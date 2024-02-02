@@ -65,7 +65,7 @@ import roleicon from "../../Images/roleicon.png"
 import usersicon from "../../Images/usersicon.png"
 import productcategories from "../../Images/productcategories.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
-import i18n from "../../i18n";
+import i18ns from "../../i18n";
 import LanguageSwitcher from "../../switer";
 
 const AdminSideBar = () =>
@@ -202,7 +202,7 @@ const AdminSideBar = () =>
           >
             <div className={`flex justify-end items-center px-0 ${i18n.language === 'ar' ? 'flex-row-reverse ml-4' : 'flex-row mr-4'}`}>
               <span>
-                <I18nextProvider i18n={i18n}>
+                <I18nextProvider i18n={i18ns}>
                   <LanguageSwitcher />
                 </I18nextProvider>
               </span>

@@ -27,7 +27,8 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
+    origin: function (origin, callback)
+    {
         // Allow requests with no origin (like mobile apps, curl requests)
         if (!origin) return callback(null, true);
 
@@ -57,7 +58,8 @@ app.set('views', path.join(__dirname, 'views'));
 // calling the routes
 app.use("/api", rootRoute);
 
-app.get('/renderInvoice', async (req, res) => {
+app.get('/renderInvoice', async (req, res) =>
+{
     // Define your dummy data here
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
@@ -135,7 +137,8 @@ app.get('/renderInvoice', async (req, res) => {
 });
 
 // Define your API route to render the certificate
-app.get('/renderCertificate', async (req, res) => {
+app.get('/renderCertificate', async (req, res) =>
+{
     const BACKEND_URL = 'http://localhost:3000'; // Adjust this URL as needed
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     // Define your data object with missing or dynamic data
@@ -166,7 +169,8 @@ app.get('/renderCertificate', async (req, res) => {
 });
 
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) =>
+{
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong!";
 
@@ -177,18 +181,101 @@ app.use((err, req, res, next) => {
 
 
 // Setting up a cron job to run every hour
-cron.schedule('0 * * * *', () => {
+cron.schedule('0 * * * *', () =>
+{
     console.log('Running a task every hour');
     handleInvoiceReminders();
 });
 
-app.get('/test', async (req, res) => {
+app.get('/test', async (req, res) =>
+{
     handleInvoiceReminders();
     res.send('test');
 });
+//-------------------arabic---------------------------------------
+import { promisify } from 'util';
+import fs from 'fs';
+const readFileAsync = promisify(fs.readFile);
+const writeFileAsync = promisify(fs.writeFile);
 
+const jsonFilePath = './arabic.json';
+
+app.get('/translations', (req, res) =>
+{
+    fs.readFile(jsonFilePath, 'utf-8', (err, data) =>
+    {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            res.json(JSON.parse(data));
+        }
+    });
+});
+app.put('/translations/:key', (req, res) =>
+{
+    const { key } = req.params;
+    const { value } = req.body;
+
+    fs.readFile(jsonFilePath, 'utf-8', (readErr, data) =>
+    {
+        if (readErr) {
+            console.log(readErr);
+            res.status(500).json({ error: 'Internal Server Error' });
+            return;
+        }
+
+        try {
+            const jsonData = JSON.parse(data);
+            console.log(jsonData);
+            if (jsonData.hasOwnProperty(key)) {
+                jsonData[key] = value;
+
+                fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) =>
+                {
+                    if (writeErr) {
+                        console.log(writeErr);
+                        res.status(500).json({ error: 'Internal Server Error' });
+                    } else {
+                        res.json({ message: 'Translation updated successfully' });
+                    }
+                });
+            } else {
+                res.status(404).json({ error: 'Key not found' });
+            }
+        } catch (parseErr) {
+            console.log(parseErr);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+});
+app.post('/translations', async (req, res) =>
+{
+    try {
+        const { key, value } = req.body;
+
+        const data = await readFileAsync(jsonFilePath, { encoding: 'utf-8' });
+        console.log(data);
+        const jsonData = JSON.parse(data);
+        console.log(jsonData);
+
+        if (jsonData.hasOwnProperty(key)) {
+            res.status(400).json({ error: 'Key already exists, use PUT to update' });
+        } else {
+            jsonData[key] = value;
+
+            await writeFileAsync(jsonFilePath, JSON.stringify(jsonData, null, 2));
+
+            res.json({ message: 'Translation added successfully' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 const PORT = process.env.PORT || 3091;
-app.listen(PORT, () => {
+app.listen(PORT, () =>
+{
     console.log(`Server is running on port ${PORT}`);
 });
 
