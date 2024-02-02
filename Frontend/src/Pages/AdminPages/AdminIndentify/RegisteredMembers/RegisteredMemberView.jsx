@@ -1028,7 +1028,11 @@ const RegisteredMembersView = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberBankSlipPopupVisible && (
           <AddMemberBankSlipPopUp isVisible={isAddMemberBankSlipPopupVisible} setVisibility={setIsAddMemberBankSlipPopupVisible} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} />
+            fetchMemberbankSlipData={fetchMemberbankSlipData}
+            userData={allUserData}
+
+          />
+
 
         )}
 

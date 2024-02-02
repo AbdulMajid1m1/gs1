@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData }) => {
+const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, userData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
   //   const [docuements, setDocuments] = React.useState([
   //     'bank_slip'
@@ -19,10 +19,8 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   const [error, setError] = useState('');
   const { t } = useTranslation();
   // get the sesstion data
-  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  console.log(gs1MemberData)
+  const gs1MemberData = userData;
   const [loading, setLoading] = useState(false);
-
 
   const handleCloseMemberPopup = () => {
     setVisibility(false);
@@ -160,7 +158,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
               <form onSubmit={handleAddMemberDocuments} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Member Bank Slip')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-               
+
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field2" className="text-secondary">  {t('Transaction Id')} </label>
@@ -190,7 +188,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                           placeholder="Select Transaction Id"
-                        required
+                          required
                         />
                       )}
                       classes={{
