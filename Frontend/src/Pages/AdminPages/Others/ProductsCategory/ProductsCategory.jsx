@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../components/Datatable/Datatable'
 import { useNavigate } from 'react-router-dom'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../../Contexts/DataTableContext'
 import { productsCategoryColumn } from '../../../../utils/datatablesource'
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader'
 import newRequest from '../../../../utils/userRequest'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
@@ -113,7 +113,7 @@ const AdditionalProducts = () =>
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <DashboardRightHeader
+          <AdminDashboardRightHeader
             title={t('GTIN Barcode Pricing')}
           />
         </div>

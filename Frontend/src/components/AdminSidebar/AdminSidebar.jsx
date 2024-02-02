@@ -63,6 +63,7 @@ import additionalgln from "../../Images/additionalgln.png"
 import expiredmember from "../../Images/expiredmember.png"
 import roleicon from "../../Images/roleicon.png"
 import usersicon from "../../Images/usersicon.png"
+import productcategories from "../../Images/productcategories.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
@@ -737,7 +738,7 @@ const AdminSideBar = () =>
                 }
               >
                 <img
-                  src={productscategory}
+                  src={productcategories}
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
