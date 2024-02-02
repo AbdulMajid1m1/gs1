@@ -74,8 +74,7 @@ const Brands = () => {
       setAutocompleteLoading(true);
       setOpen(true);
 
-      // const res = await newRequest.get(`/brands/search?keyword=${newInputValue}`, {
-        const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+      const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
       console.log(res);
@@ -97,7 +96,7 @@ const Brands = () => {
         //     name: item?.name,
         //     name_ar: item?.name_ar,
         //     companyID: item?.companyID,
-  
+
         //   };
       });
 
@@ -109,17 +108,26 @@ const Brands = () => {
       // fetchData();
 
     } catch (error) {
-      console.error(error);
-      setBrandList([]); // Clear the data list if an error occurs
-      setOpen(false);
+
       setAutocompleteLoading(false);
+      // show toast error
+
+      if (error.name === 'AbortError') {
+        console.log('Request Aborted');
+      } else {
+        console.error(error);
+        setBrandList([]); // Clear the data list if an error occurs
+        setOpen(false);
+        toast.error(error?.response?.data?.error || 'Something went wrong');
+      }
+
     }
   }, 400);
 
-  
+
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value); 
+    console.log(value);
     console.log(value?.companyID);
     try {
       const response = await newRequest.get(`/brands?user_id=${value?.id}`);
@@ -135,7 +143,7 @@ const Brands = () => {
 
 
 
-  
+
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
   const handleShowCreatePopup = (value) => {
     if (selectedCr == null) {
@@ -156,7 +164,7 @@ const Brands = () => {
   };
 
 
-  
+
   const handleView = (row) => {
     console.log(row);
   }
@@ -183,11 +191,11 @@ const Brands = () => {
             const filteredData = data.filter((item) => item?.id !== row?.id);
             setData(filteredData);
 
-          }   
+          }
           else {
             toast.error('Failed to delete Brands');
           }
-        } 
+        }
         catch (error) {
           console.error("Error deleting user:", error);
           toast.error('Something went wrong while deleting user');
@@ -207,7 +215,7 @@ const Brands = () => {
           <AdminDashboardRightHeader
             title={`${t('Brands')}`}
           />
-        </div>   
+        </div>
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">

@@ -6,14 +6,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
 
-const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
+const AddBrands = ({ isVisible, setVisibility, refreshBrandData, userData }) => {
   const { t } = useTranslation();
     const [companyName, setCompanyName] = useState("");
     const [companyNameArabic, setCompanyNameArabic] = useState("");
     const [brandCertificate, setBrandCertificate] = useState("");
     // get the sesstion data
-    const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-    console.log(gs1MemberData)
+    // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+    // console.log(gs1MemberData)
+    // console.log(userData)
+    const gs1MemberData = userData;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 

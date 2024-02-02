@@ -9,12 +9,12 @@ import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
-const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData,
+const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData, userData,
   fetchRegisteredProductsData
 }) => {
   //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   //   console.log(gs1MemberInvoiceData);
-  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  const gs1MemberData = userData;
   console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"

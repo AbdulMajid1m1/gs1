@@ -13,8 +13,6 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 }) => {
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log("gs1MemberInvoiceData", gs1MemberInvoiceData);
-  const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  // console.log(gs1MemberData)
   const gtinId = sessionStorage.getItem("gtinId");
   console.log(gtinId);
   //   const [status, setStatus] = useState("");

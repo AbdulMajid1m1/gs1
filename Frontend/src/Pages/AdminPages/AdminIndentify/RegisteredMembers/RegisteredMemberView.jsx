@@ -409,8 +409,8 @@ const RegisteredMembersView = () => {
     } else {
       console.log("rorr", row);
       // If status is not 'approved', proceed with showing the popup
-      setIsMemberInvoicePopupVisible(true);
       sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
+      setIsMemberInvoicePopupVisible(true);
     }
     // sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
   };
@@ -987,7 +987,7 @@ const RegisteredMembersView = () => {
 
         {/* AddBrands component with handleShowCreatePopup prop */}
         {isCreatePopupVisible && (
-          <AddBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData} />
+          <AddBrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData} userData={allUserData}/>
         )}
 
         {/* UpdateBrands component with handleShowUpdatePopup prop */}
@@ -998,7 +998,7 @@ const RegisteredMembersView = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberPopupVisible && (
           <AddMemberDocuments isVisible={isAddMemberPopupVisible} setVisibility={setIsAddMemberPopupVisibility} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData} />
+            fetchMemberbankSlipData={fetchMemberbankSlipData} refreshHistoryData={fetchMemberHistoryData} userData={allUserData} />
 
         )}
 
@@ -1028,7 +1028,11 @@ const RegisteredMembersView = () => {
         {/* AddMember component with Handle prop */}
         {isAddMemberBankSlipPopupVisible && (
           <AddMemberBankSlipPopUp isVisible={isAddMemberBankSlipPopupVisible} setVisibility={setIsAddMemberBankSlipPopupVisible} refreshBrandData={fetchMemberDocumentsData}
-            fetchMemberbankSlipData={fetchMemberbankSlipData} />
+            fetchMemberbankSlipData={fetchMemberbankSlipData}
+            userData={allUserData}
+
+          />
+
 
         )}
 
@@ -1051,6 +1055,7 @@ const RegisteredMembersView = () => {
             fetchMemberHistoryData={fetchMemberHistoryData}
             refreshMemberInoviceData={fetchMemberInvoiceData}
             fetchRegisteredProductsData={fetchRegisteredProductsData}
+            userData={allUserData}
           />
         )}
 

@@ -121,14 +121,13 @@ import AddRoles from "./Pages/AdminPages/MasterData/Roles/AddRoles";
 import AddUsers from "./Pages/AdminPages/MasterData/Users/AddUsers";
 import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
 import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
+import ProductCategories from "./Pages/AdminPages/Others/ProductCategories/ProductCategories";
 import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 
 const queryClient = new QueryClient()
 
-const App = () =>
-{
-  const MainLayout = ({ children }) =>
-  {
+const App = () => {
+  const MainLayout = ({ children }) => {
     return (
       <div className="main-layout-container">
         <Sidebar />
@@ -137,8 +136,7 @@ const App = () =>
     );
   };
 
-  const AdminMainLayout = ({ children }) =>
-  {
+  const AdminMainLayout = ({ children }) => {
     return (
       <div className="main-layout-container">
         <AdminSideBar />
@@ -147,12 +145,11 @@ const App = () =>
     );
   };
 
-  const UserLayout = ({ children }) =>
-  {
+  const UserLayout = ({ children }) => {
     return (
       <div>
         <div className='sticky top-0 z-50 bg-white'>
-        <Header />
+          <Header />
         </div>
         <main className="mx-auto flex max-w-[1760px] flex-col justify-center">
           {children}
@@ -174,12 +171,12 @@ const App = () =>
                   <Route
                     path="/"
                     element={
-                    <UserLayout>
-                       <Routes>
-                        {/* <Route path="/" element={<HomePage />} /> */}
-                        <Route index element={<HomePage />} />
-                       </Routes>
-                    </UserLayout>
+                      <UserLayout>
+                        <Routes>
+                          {/* <Route path="/" element={<HomePage />} /> */}
+                          <Route index element={<HomePage />} />
+                        </Routes>
+                      </UserLayout>
                     }
                   />
 
@@ -191,14 +188,14 @@ const App = () =>
                   <Route path="/:id" element={<BlogPages />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
                   <Route
-                            path="productinformation"
-                            element={
-                              <MapProvider>
-                                <ProductInformation />
-                              </MapProvider>
-                            }
-                          />
-                  
+                    path="productinformation"
+                    element={
+                      <MapProvider>
+                        <ProductInformation />
+                      </MapProvider>
+                    }
+                  />
+
                   {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
 
@@ -320,6 +317,7 @@ const App = () =>
                             <Route path="staff-help-desk" element={<StaffHelpDesk />} />
                             <Route path="member-expiry-page" element={<MembersExpiryPage />} />
                             <Route path="products-category" element={<ProductsCategory />} />
+                            <Route path="products-categories" element={<ProductCategories />} />
                             <Route path="others-products-category" element={<OtherProductsCategory />} />
                             <Route path="addtional-gtin" element={<AdditionalGTIN />} />
 
@@ -350,8 +348,8 @@ const App = () =>
                             <Route path="kpi-report" element={<KPIReport />} />
                             <Route path="member-activity-report" element={<MemberActivityReport />} />
                             <Route path="admin-activity-report" element={<AdminActivityReport />} />
-                            
-                            
+
+
                             <Route path="users-permissions" element={<Users />} />
                             <Route path="add-users" element={<AddUsers />} />
                             <Route path="update-users/:id" element={<UpdateUsers />} />
@@ -359,9 +357,6 @@ const App = () =>
                             <Route path="add-roles" element={<AddRoles />} />
                             <Route path="update-roles/:id" element={<UpdateRoles />} />
                             
-
-                            <Route path="Language/Dynamic" element={<LaanguageChange />} />
-
                             <Route path="units" element={<Units />} />
                             <Route path="Documents" element={<Documents />} />;
                             <Route path="ProductPackaging" element={<ProductPackaging />} />

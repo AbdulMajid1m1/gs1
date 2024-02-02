@@ -284,31 +284,45 @@ const RegisteredMembers = () => {
       });
     }
   };
- // Now you can retrieve the data and parse it when needed
- const storedData = sessionStorage.getItem('adminData');
- const adminData = JSON.parse(storedData);
-//  console.log(adminData);
+  // Now you can retrieve the data and parse it when needed
+  const storedData = sessionStorage.getItem('adminData');
+  const adminData = JSON.parse(storedData);
+  //  console.log(adminData);
 
- 
+
   const filterDropdownOptions = (row, dropDownOptions) => {
+    // Check if the user is a super admin
     if (adminData?.is_super_admin === 1) {
-      if (row.status !== 'active') {
-        return dropDownOptions.filter(option => option.label !== 'Renew');
+      let filteredOptions = dropDownOptions;
+
+      // Filter out 'Assign To' option if assign_to_admin is not null
+      if (row.assign_to_admin && row.assign_to_admin.id) {
+        filteredOptions = filteredOptions.filter(option => option.label !== 'Assign To');
       }
-      return dropDownOptions; // Enable all options for super admin
-    } 
-    
+
+      // Filter out 'Renew' option if the status is not 'active'
+      if (row.status !== 'active') {
+        filteredOptions = filteredOptions.filter(option => option.label !== 'Renew');
+      }
+
+      return filteredOptions; // Return the filtered options for super admin
+    }
+    // Check if the user is a regular admin (not super admin)
     else if (adminData?.is_super_admin === 0) {
       const assignToAdminId = row?.assign_to_admin?.id;
+
+      // Check if the current admin is assigned to the user
       if (assignToAdminId === adminData?.id) {
+        // Filter out 'Renew' option if the status is not 'active'
         if (row.status !== 'active') {
           return dropDownOptions.filter(option => option.label !== 'Renew');
         }
-          return dropDownOptions; // Enable all options for the admin who is assigned to the user
+
+        return dropDownOptions; // Enable all options for the admin who is assigned to the user
       }
     }
 
-    return []; // Disable all options
+    return []; // Disable all options for other cases
   };
 
 
@@ -422,9 +436,11 @@ const RegisteredMembers = () => {
         )}
 
 
-         {/* AssignTo component with handleShowDowngradePopup prop */}
-         {isAssignToPopUpVisible && (
-          <AssignToPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}/>
+        {/* AssignTo component with handleShowDowngradePopup prop */}
+        {isAssignToPopUpVisible && (
+          <AssignToPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}
+            fetchData={fetchData}
+          />
         )}
 
 

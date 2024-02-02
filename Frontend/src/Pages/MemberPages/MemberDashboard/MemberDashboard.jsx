@@ -9,6 +9,7 @@ import newRequest from '../../../utils/userRequest'
 import CountdownTimer from './CountdownTimer'
 import Dashboardchart from './DashboardChart'
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom'
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
@@ -27,6 +28,30 @@ const MemberDashboard = () => {
   // const [totalRangeOther, setTotalRangeOther] = useState('');
   // const [gtinBarcodeIssuedOther, setGtinBarcodeIssuedOther] = useState('');
   // const [gtinBarcodeRemainingOther, setGtinBarcodeRemainingOther] = useState('');
+
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check if the current route is a member portal route
+    const isMemberPortalRoute = location.pathname.startsWith('/member');
+    // Check if the current route is not the homepage
+    const isNotHomepage = location.pathname !== '/'; // Replace with your actual homepage route
+  
+    // Load Tawk.to script only on member portal routes and not on the homepage
+    if (isMemberPortalRoute && isNotHomepage) {
+      var s1 = document.createElement("script");
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6130da0bd6e7610a49b34edd/1fejd7gdl';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      document.head.appendChild(s1);
+
+      // Clean up the script when the component is unmounted
+      return () => {
+        document.head.removeChild(s1);
+      };
+    }
+  }, [location.pathname]); // Update the effect when the route changes
 
   
   useEffect(() => {
@@ -70,7 +95,7 @@ const MemberDashboard = () => {
                     <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: {memberData?.gcpGLNID}</p>
                     <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>{t('Member ID')}: <span>{memberData?.memberID}</span></p>
                 </div>
-
+ 
                 <CountdownTimer expiryDate={expiryDate} />
 
                 {/* <div className='w-full flex flex-col gap-1 justify-end items-end'>

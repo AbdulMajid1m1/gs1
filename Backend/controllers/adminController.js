@@ -8,6 +8,7 @@ import { cookieOptions } from '../utils/authUtilities.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import path from 'path';
 import fs from 'fs';
+// Assuming required imports like bcrypt, jwt, prisma, Joi, etc.
 
 export const adminLogin = async (req, res, next) => {
     try {
@@ -17,33 +18,76 @@ export const adminLogin = async (req, res, next) => {
         });
 
         const { error, value } = schema.validate(req.body);
-
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
 
         const { email, password } = value;
 
-        // Check if the admin user exists
+        // Check if the admin user exists and fetch roles and permissions
         const adminUser = await prisma.admins.findFirst({
             where: { email, status: 1 },
+            include: {
+                roles: {
+                    include: {
+                        role: {
+                            include: {
+                                permissions: {
+                                    include: {
+                                        permission: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
         });
 
         if (!adminUser) {
             throw createError(404, 'Invalid Credentials');
         }
 
-        // Compare the provided password with the hashed password in the database
+        // Compare the provided password
         const passwordMatch = await bcrypt.compare(password, adminUser.password);
-        console.log(passwordMatch);
         if (!passwordMatch) {
             throw createError(404, 'Invalid Credentials');
         }
 
-        // You can generate and return an authentication token (JWT) here if needed
-        delete adminUser.password;
-        const token = jwt.sign({ adminId: adminUser.id, email: adminUser.email, is_super_admin: adminUser.is_super_admin, username: adminUser.username }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-        return res.cookie("adminToken", token, cookieOptions()).status(200).json({ success: true, adminData: adminUser, token });
+        // Extract and format permissions with null checks
+        let permissions = [];
+        adminUser.roles?.forEach(adminRole => {
+            adminRole.role?.permissions?.forEach(rolePermission => {
+                if (rolePermission.permission) {
+                    permissions.push(rolePermission.permission.name); // Extract the name of each permission
+                }
+            });
+        });
+
+        // Remove duplicates from permissions
+        permissions = [...new Set(permissions)];
+
+        // Generate authentication token
+        delete adminUser.password; // Ensure password is not returned
+        const token = jwt.sign(
+            { adminId: adminUser.id, email: adminUser.email, is_super_admin: adminUser.is_super_admin, username: adminUser.username, permissions },
+            ADMIN_JWT_SECRET,
+            { expiresIn: JWT_EXPIRATION }
+        );
+
+        // Format response
+        const response = {
+            success: true,
+            adminData: {
+                ...adminUser,
+                roles: undefined, // Exclude roles from the response
+            },
+            token,
+            permissions,
+        };
+
+        return res.cookie("adminToken", token, cookieOptions()).status(200).json(response);
+
     } catch (error) {
         console.log(error);
         next(error);
@@ -51,6 +95,7 @@ export const adminLogin = async (req, res, next) => {
         await prisma.$disconnect();
     }
 };
+
 
 export const getAllAdmins = async (req, res, next) => {
     try {
