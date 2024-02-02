@@ -438,7 +438,9 @@ const RegisteredMembers = () => {
 
         {/* AssignTo component with handleShowDowngradePopup prop */}
         {isAssignToPopUpVisible && (
-          <AssignToPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser} />
+          <AssignToPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}
+            fetchData={fetchData}
+          />
         )}
 
 
