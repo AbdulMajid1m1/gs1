@@ -1051,6 +1051,7 @@ const RegisteredMembersView = () => {
             fetchMemberHistoryData={fetchMemberHistoryData}
             refreshMemberInoviceData={fetchMemberInvoiceData}
             fetchRegisteredProductsData={fetchRegisteredProductsData}
+            userData={allUserData}
           />
         )}
 
