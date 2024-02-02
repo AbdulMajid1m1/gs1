@@ -14,6 +14,8 @@ import { toast } from 'react-toastify';
 // import Updateunit from './updateunit';
 import { I18nextProvider, useTranslation } from "react-i18next";
 import DataTable from '../../../components/Datatable/Datatable';
+import AddLanguageChange from './AddLanguageChange';
+import UpdataLanguageChange from './UpdataLanguageChange';
 // import i18n from "../../../../i18n";
 const LaanguageChange = () => {
     const { t, i18n } = useTranslation();
@@ -30,7 +32,7 @@ const LaanguageChange = () => {
 
     const handleShowUpdatePopup = (row) => {
         setUpdatePopupVisibility(true);
-        sessionStorage.setItem("updateBrandData", JSON.stringify(row));
+        sessionStorage.setItem("updatelanguageData", JSON.stringify(row));
     };
     const { rowSelectionModel, setRowSelectionModel,
         tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
@@ -38,10 +40,9 @@ const LaanguageChange = () => {
 
     const refreshcitiesData = async () => {
         try {
-            const response = await newRequest.get("/getAllunit",);
-
-            console.log(response.data);
-            setData(response?.data || []);
+            const response = await newRequest.get("http://localhost:3091/translations");
+            const dataArray = Object.entries(response.data);
+            setData(dataArray);
             setIsLoading(false)
 
         } catch (err) {
@@ -49,78 +50,17 @@ const LaanguageChange = () => {
             setIsLoading(false)
         }
     };
+
     useEffect(() => {
 
         refreshcitiesData() // Calling the function within useEffect, not inside itself
     }, []);
-    const handleDelete = async (row) => {
-        Swal.fire({
-            title: `${t('Are you sure to delete this record?')}!`,
-            text: `${t('You will not be able to recover this')} ${t('Unit code')}!`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
-            cancelButtonText: `${t('No, keep it')}!`,
-            // changes the color of the confirm button to red
-            confirmButtonColor: '#1E3B8B',
-            cancelButtonColor: '#FF0032',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const isDeleted = await newRequest.delete("/deleteunit/" + row?.id);
-                    if (isDeleted) {
-                        toast.success(`${t('Unit code')} ${t('Delete')} ${t('successfully')}!`, {
-                            position: "top-right",
-                            autoClose: 2000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        });
+    const formattedData = data.map((item, index) => ({
+        id: index,
+        nameEnglish: item[0], // English translation
+        namearabic: item[1], // Arabic translation
+    }));
 
-
-                        // filter out the deleted user from the data
-                        const filteredData = brandsData.filter((item) => item?.id !== row?.id);
-                        setBrandsData(filteredData);
-                        refreshcitiesData()
-                    } else {
-                        // Handle any additional logic if the user was not deleted successfully
-                        toast.error('Failed to delete user', {
-                            position: "top-right",
-                            autoClose: 2000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        });
-
-                    }
-                } catch (error) {
-                    // Handle any error that occurred during the deletion
-                    console.error("Error deleting user:", error);
-                    toast.error(`${t('Unit code')} ${t('has been not deleted')}!`, {
-                        position: "top-right",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                return;
-            }
-        });
-    };
-    const handleView = (row) => {
-        console.log(row);
-    }
     const handleRowClickInParent = (item) => {
         if (!item || item?.length === 0) {
             setTableSelectedRows(data)
@@ -155,7 +95,7 @@ const LaanguageChange = () => {
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-                                <DataTable data={data}
+                                <DataTable data={formattedData}
                                     title={t('Language')}
                                     columnsName={LanguageDataColumn(t)}
                                     loading={isLoading}
@@ -163,17 +103,6 @@ const LaanguageChange = () => {
                                     handleRowClickInParent={handleRowClickInParent}
 
                                     dropDownOptions={[
-                                        // {
-                                        //     label: t("View"),
-                                        //     icon: (
-                                        //         <VisibilityIcon
-                                        //             fontSize="small"
-                                        //             color="action"
-                                        //             style={{ color: "rgb(37 99 235)" }}
-                                        //         />
-                                        //     ),
-                                        //     action: handleView,
-                                        // },
                                         {
                                             label: t("Edit"),
                                             icon: (
@@ -185,21 +114,8 @@ const LaanguageChange = () => {
                                             ),
                                             action: handleShowUpdatePopup,
                                         },
-                                        // {
-                                        //     label: t("Delete"),
-                                        //     icon: (
-                                        //         <DeleteIcon
-                                        //             fontSize="small"
-                                        //             color="action"
-                                        //             style={{ color: "rgb(37 99 235)" }}
-                                        //         />
-                                        //     ),
-                                        //     action: handleDelete,
-                                        // },
-
                                     ]}
                                     uniqueId="gtinMainTableId"
-
                                 />
                             </div>
 
@@ -208,12 +124,12 @@ const LaanguageChange = () => {
                 </div>
 
                 {/* Addunit component with handleShowCreatePopup prop */}
-                {/* {isCreatePopupVisible && (
-                    <Addunit isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
+                {isCreatePopupVisible && (
+                    <AddLanguageChange isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
                 )}
                 {isUpdatePopupVisible && (
-                    <Updateunit isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
-                )} */}
+                    <UpdataLanguageChange isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
+                )}
 
             </div>
         </div>

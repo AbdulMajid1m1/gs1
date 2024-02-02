@@ -29,8 +29,6 @@ const LanguageSwitcher = () =>
     const handleOptionClick = (option, image) => {
         setCurrentOption(option);
         setIsActive(false);
-        // You can do something with the image if needed
-        console.log(`Selected language: ${option}, Image: ${image}`);
         // Update i18n language if needed
         changeLanguage(option);
         sessionStorage.setItem('selectedLanguaged', option);

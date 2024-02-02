@@ -2607,14 +2607,14 @@ export const masterDataColumn = (t, i18n) => [
 export const LanguageDataColumn = (t, i18n) => [
 
   {
-    field: 'unit_code',
+    field: 'nameEnglish',
     headerName: t('Name[English]'),
-    width: 180,
+    width: 300,
   },
   {
-    field: 'unit_name',
+    field: 'namearabic',
     headerName: t('Name[Arabic]'),
-    width: 260,
+    width: 300,
   },
  
 ];
