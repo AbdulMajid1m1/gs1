@@ -1,37 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
-import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
-import DataTable from '../../../../components/Datatable/Datatable'
+import React, { useEffect, useState } from 'react'
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
+import { I18nextProvider, useTranslation } from "react-i18next";
+import DataTable from '../../../../components/Datatable/Datatable';
+import { productsCategoriesColumn } from '../../../../utils/datatablesource';
 import { useNavigate } from 'react-router-dom'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { DataTableContext } from '../../../../Contexts/DataTableContext'
-import { productsCategoryColumn } from '../../../../utils/datatablesource'
-import newRequest from '../../../../utils/userRequest'
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
-import { I18nextProvider, useTranslation } from "react-i18next";
-import AddProductsCategory from './AddProductsCategory';
-import UpdateProductsCategory from './UpdateProductsCategory';
+import newRequest from '../../../../utils/userRequest'
+import AddCategories from './AddCategories';
+import UpdateCategories from './UpdateCategories';
 
-const AdditionalProducts = () =>
-{
+const ProductCategories = () => {
   const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
   const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
   const handleShowCreatePopup = () =>
   {
     setCreatePopupVisibility(true);
   };
-  const { rowSelectionModel, setRowSelectionModel,
-    tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
-  const [filteredData, setFilteredData] = useState([]);
-
-
+ 
   const fetchData = async () => {
     try {
-      const response = await newRequest.get("/gtinProductCategories",);
+      const response = await newRequest.get("/productCategories",);
 
       console.log(response.data);
       setData(response?.data || []);
@@ -63,7 +58,7 @@ const AdditionalProducts = () =>
   {
     Swal.fire({
       title: `${t('Are you sure to delete this record?')}!`,
-      text: `${t('You will not be able to recover this')} ${t('Products Category')}!`,
+      text: `${t('You will not be able to recover this')} ${t('Products Categories')}!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: `${t('Yes')} , ${t('Delete')}!`,
@@ -75,9 +70,9 @@ const AdditionalProducts = () =>
     {
       if (result.isConfirmed) {
         try {
-          const isDeleted = await newRequest.delete("/gtinProductCategories/" + row?.id);
+          const isDeleted = await newRequest.delete("/productCategories/" + row?.id);
           if (isDeleted) {
-            toast.success(`${t('Products Category')} ${t('Delete')} ${t('successfully')}!`);
+            toast.success(`${t('Products Categories')} ${t('Delete')} ${t('successfully')}!`);
 
 
             // filter out the deleted user from the data
@@ -98,23 +93,24 @@ const AdditionalProducts = () =>
       }
     });
   };
+
+
   const handleRowClickInParent = (item) =>
   {
     if (!item || item?.length === 0) {
-      setTableSelectedRows(data)
-      setFilteredData(data)
+      // setTableSelectedRows(data)
       return
     }
 
   }
  
-
+  
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <AdminDashboardRightHeader
-            title={t('GTIN Barcode Pricing')}
+            title={t('Product Categories')}
           />
         </div>
 
@@ -134,10 +130,11 @@ const AdditionalProducts = () =>
               <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
 
                 <DataTable data={data}
-                  title={t('Products Category')}
-                  columnsName={productsCategoryColumn(t)}
+                  title={t('Product Categories')}
+                  columnsName={productsCategoriesColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
+                  checkboxSelection={'disabled'}
                   handleRowClickInParent={handleRowClickInParent}
 
                   dropDownOptions={[
@@ -185,17 +182,17 @@ const AdditionalProducts = () =>
           </div>
         </div>
 
-        {/* Addproduct component with handleShowCreatePopup prop */}
-        {isCreatePopupVisible && (
-          <AddProductsCategory isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshProductsCategory={fetchData} />
+         {/* Addproduct component with handleShowCreatePopup prop */}
+         {isCreatePopupVisible && (
+          <AddCategories isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshCategories={fetchData} />
         )}
         {/* Updateproductpack component with handleShowUpdatePopup prop */}
         {isUpdatePopupVisible && (
-          <UpdateProductsCategory isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshProductsCategory={fetchData} />
+          <UpdateCategories isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshCategories={fetchData} />
         )}
       </div>
     </div>
   )
 }
 
-export default AdditionalProducts
+export default ProductCategories

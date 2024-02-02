@@ -25,6 +25,7 @@ import newRequest from "../../utils/userRequest";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import LanguageSwitcher from "../../switer";
+import { toast } from "react-toastify";
 
 const SideBar = () => {
   const { t, i18n } = useTranslation();
@@ -249,19 +250,29 @@ const SideBar = () => {
                 onClick={toggleSidebar}
               >
                 {/* {apiResponse.length === 0 && ( */}
-                <div
-                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} ${memberData.status === 'inactive' ? 'bg-gray-500' : ''}`}
+               <div
+                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} ${memberData?.status === 'inactive' ? 'bg-gray-500' : ''}`}
                   onClick={() => {
-                    if (memberData.status !== 'inactive') {
+                    if (memberData?.status === 'inactive') {
+                      toast.info('Your status is inactive. Cannot open GTIN.');
+                    } else if (memberData?.status === null || memberData?.status === undefined) {
+                      // Show an error message if status is not available
+                      toast.info('Member status is not available. Cannot open GTIN.');
+                    } else {
                       handleItemClick('/member/gtin');
                     }
                   }}
                   onContextMenu={(event) => {
-                    if (memberData.status !== 'inactive') {
+                    if (memberData?.status === 'inactive') {
+                      toast.info('Your status is inactive. Cannot open GTIN.');
+                    } else if (memberData?.status === null || memberData?.status === undefined) {
+                      // Show an error message if status is not available
+                      console.error('Member status is not available. Cannot open GTIN.');
+                    } else {
                       handleContextMenu(event, '/member/gtin');
                     }
                   }}
-                  style={{ cursor: memberData.status === 'inactive' ? 'not-allowed' : 'pointer' }}
+                  style={{ cursor: memberData?.status === 'inactive' || memberData?.status === null || memberData?.status === undefined ? 'not-allowed' : 'pointer' }}
                 >
                   <img
                     src={barcodescanner}
