@@ -51,7 +51,7 @@ const LicenceRegistry = () => {
       return;
     }
     // Assuming these are the specific columns you want to export
-    const selectedColumns = ['gcpGLNID', 'gcp_type', 'company_name_eng', 'gln', 'status', 'gcpGLNID'];
+    const selectedColumns = ['gcpGLNID', 'gcp_type', 'company_name_eng', 'gln', 'status', 'additional_number'];
 
     // Create a worksheet with headers and selected data
     const filteredData = data.map(row => {
@@ -124,6 +124,7 @@ const LicenceRegistry = () => {
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}
                   globalSearch={true}
+                  actionColumnVisibility={false}
                   handleRowClickInParent={handleRowClickInParent}
 
                   dropDownOptions={[
