@@ -287,7 +287,7 @@ const Dashboard = () => {
                       <p className='font-sans font-normal text-md text-gray-200'>{t('Total Members')}</p>
                     </div>
                   </div>
-                </div>
+                </div>   
                 <div className='h-auto w-full bg-[#01A6BC] rounded-md'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
