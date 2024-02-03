@@ -13,6 +13,6 @@ export const cookieOptions = () => ({
     httpOnly: true,
     // secure: isProduction,
     secure: false,// False to Allow both HTTP and HTTPS
-    sameSite: 'Lax', // None to Allow both HTTP and HTTPS
+    sameSite: 'Lax', // Lax to allow CSRF protection by default and strict to disallow CSRF protection and None to disable CSRF protection
 });
 

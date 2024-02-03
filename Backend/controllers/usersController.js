@@ -853,6 +853,24 @@ export const memberLogin = async (req, res, next) => {
 };
 
 
+export const getLicenseRegisteryUser = async (req, res) => {
+    try {
+        const activeUsers = await prisma.users.findMany({
+            where: {
+                status: 'active',
+                gpc: { not: null }, 
+                parent_memberID: '0',
+                gcp_expiry: { gt: new Date() }
+            }
+        });
+
+        res.status(200).json({ success: true, data: activeUsers });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
 export const getUserDetails = async (req, res, next) => {
     try {
         // Define allowable columns for filtering
