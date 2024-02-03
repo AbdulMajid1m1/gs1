@@ -290,7 +290,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
             const invoiceBuffer = await fs.readFile(pdfFilePath);
 
             cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-        
+
 
 
 
@@ -945,6 +945,31 @@ export const getUserDetails = async (req, res, next) => {
 
 
         return res.json(usersWithCarts);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+export const getUsersWithAssignTo = async (req, res, next) => {
+    try {
+        const users = await prisma.users.findMany({
+            where: {
+                NOT: [
+                    { assign_to: null },
+                    { assign_to: "" },
+                    { assign_to: undefined }
+                ]
+            },
+            orderBy: { updated_at: 'desc' },
+            include: {
+                assign_to_admin: true
+            }
+        });
+
+
+        return res.json(users);
     } catch (error) {
         console.log(error);
         next(error);
