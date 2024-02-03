@@ -170,8 +170,8 @@ const UpdateRoles = () => {
 
                         autoComplete="off"
                         {...params}
-                        label='Select Roles'
-                        placeholder='Select Roles'
+                        label={`${t('Select Roles')}`}
+                        placeholder={`${t('Select Roles')}`}
                         variant='outlined'
                       />
                     )}
