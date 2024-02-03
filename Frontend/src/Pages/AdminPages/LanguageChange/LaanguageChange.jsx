@@ -16,6 +16,7 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 import DataTable from '../../../components/Datatable/Datatable';
 import AddLanguageChange from './AddLanguageChange';
 import UpdataLanguageChange from './UpdataLanguageChange';
+import axios from 'axios';
 // import i18n from "../../../../i18n";
 const LaanguageChange = () => {
     const { t, i18n } = useTranslation();
@@ -40,7 +41,7 @@ const LaanguageChange = () => {
 
     const refreshcitiesData = async () => {
         try {
-            const response = await newRequest.get("http://localhost:3091/translations");
+            const response = await axios.get("http://localhost:3091/translations");
             const dataArray = Object.entries(response.data);
             setData(dataArray);
             setIsLoading(false)
