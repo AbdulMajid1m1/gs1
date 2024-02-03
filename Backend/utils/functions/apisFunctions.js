@@ -1,5 +1,4 @@
 import prisma from "../../prismaClient.js";
-import { createError } from "../createError.js";
 
 export async function updateUserPendingInvoiceStatus(userId) {
     try {
