@@ -98,7 +98,7 @@ const LicenceRegistry = () => {
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <AdminDashboardRightHeader
-            title={'Licence Registry'}
+            title={t('Licence Registry')} 
           />
         </div>
 
@@ -118,8 +118,8 @@ const LicenceRegistry = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px'}}>
 
                 <DataTable data={data}
-                  title={'Licence Registry'}
-                  columnsName={licenceRegistryColumn}
+                  title={t('Licence Registry')}
+                  columnsName={licenceRegistryColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}
@@ -129,7 +129,7 @@ const LicenceRegistry = () => {
 
                   dropDownOptions={[
                     {
-                      label: "Update Data",
+                      label: t("Update Data"),
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -140,7 +140,7 @@ const LicenceRegistry = () => {
                       action: handleEdit,
                     },
                     {
-                      label: "Regenerate GCP",
+                      label: t("Regenerate GCP"),
                       icon: (
                         <RestorePageIcon
                           fontSize="small"

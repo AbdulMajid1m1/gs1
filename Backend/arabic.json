@@ -847,5 +847,15 @@
   "select": "يختار",
   "Edit Staff Member": "تحرير عضو هيئة التدريس",
   "Word[English]": "كلمة [إنجليزي]",
-  "Word[Arabic]": "كلمة[عربي]"
+  "Word[Arabic]": "كلمة[عربي]",
+  "Staff Assigned Desk": "اسٹاف تفویض کردہ ڈیسک",
+  "Licence Registry": "سجل الترخيص",
+  "EXCEL": "اكسل",
+  "Company Prefix": "بادئة الشركة",
+  "GCP Type": "نوع Gcp",
+  "Licensee GLN": "المرخص له GLN",
+  "Key (PK)": "المفتاح (PK)",
+  "Assigned To": "مخصص ل",
+  "Update Data": "تحديث البيانات",
+  "Regenerate GCP": "إعادة إنشاء GCP"
 }
