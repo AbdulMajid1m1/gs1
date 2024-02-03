@@ -516,7 +516,7 @@ model foreign_gtins {
 }
 
 model g_c_p_information {
-  id             BigInt    @id(map: "PK_g_c_p_information") @default(autoincrement())
+  id             String    @id @default(cuid())
   gtin_order     String?   @db.VarChar(50)
   company_gcp    String?   @db.VarChar(50)
   gcp_type       String?   @db.NVarChar(Max)
@@ -527,12 +527,12 @@ model g_c_p_information {
   type_pk        String?   @db.NVarChar(Max)
   key_pk         String?   @db.NVarChar(Max)
   cgs1_prefix    String?   @db.NVarChar(Max)
-  user_id        Int?
+  user_id        String?
   certificate    String?   @db.NVarChar(Max)
   certificate_ar String?   @db.NVarChar(Max)
   receipt        String?   @db.NVarChar(Max)
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
   deleted_at     DateTime? @db.DateTime
   gepirPosted    String?   @default("0", map: "DF_g_c_p_information_gepirPosted") @db.NChar(10)
   updateable     String?   @default("0", map: "DF_g_c_p_information_updateable") @db.NChar(1)
