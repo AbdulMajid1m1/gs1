@@ -81,7 +81,7 @@ const fetchPermissionsForRole = async (roleId) => {
   return permissionCache[roleId];
 };
 
-export const checkPermission = (requiredPermission) => async (req, res, next) => {
+export const checkPermission = (requiredPermissions) => async (req, res, next) => {
   try {
     const adminId = req.admin.adminId; // Assuming admin ID is in req.user
     if (!adminId) throw createError(403, "Unauthorized: Missing admin ID");
@@ -91,15 +91,28 @@ export const checkPermission = (requiredPermission) => async (req, res, next) =>
 
     const adminRoles = await prisma.adminRole.findMany({ where: { adminId } });
 
+    let hasPermission = false;
     for (const adminRole of adminRoles) {
       const permissions = await fetchPermissionsForRole(adminRole.roleId);
-      if (permissions.includes(requiredPermission)) {
+      console.log("all permissions", permissions);
+
+      // Support for checking multiple required permissions
+      if (Array.isArray(requiredPermissions)) {
+        console.log("required Permissions", requiredPermissions);
+        // Check if all required permissions are included in the permissions array
+        hasPermission = requiredPermissions.every(rp => permissions.includes(rp));
+      } else {
+        console.log("required Permission", requiredPermissions);
+        // Single permission check for backward compatibility
+        hasPermission = permissions.includes(requiredPermissions);
+      }
+
+      if (hasPermission) {
         return next();
       }
     }
 
-    // throw new Error(`Unauthorized: Missing required permission '${requiredPermission}'`);
-    throw createError(403, `Unauthorized: Missing required permission '${requiredPermission}'`);
+    throw createError(403, `Unauthorized: Missing required permission(s)`);
   } catch (error) {
     next(error);
   }
