@@ -255,11 +255,21 @@ const AddSSCC = () => {
           <div className="h-auto w-full p-5 bg-white">
             <div className="">
               <div className="w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5">
-                <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                  <p className="font-semibold">Complete Data</p>
+                <div className={`flex justify-start flex-col gap-2 text-xs sm:text-sm ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}>
+                  <p className="font-semibold"> {t('Complete Data')}</p>
                   <p>
-                    This number is registered to company: :{" "}
-                    <span className="font-semibold">{memberData?.company_name_eng}</span>
+
+                    {i18n.language === 'ar' ? (
+                      <>
+                        <span className="font-semibold">{memberData?.company_name_arabic}</span>
+                        :: {t('This number is registered to company')}
+                      </>
+                    ) : (
+                      <>
+                        {t('This number is registered to company')}: :{" "}
+                        <span className="font-semibold">{memberData?.company_name_eng}</span>
+                      </>
+                    )}
                     {/* <span className="font-semibold">Hasnain, Majid</span> */}
                   </p>
                 </div>

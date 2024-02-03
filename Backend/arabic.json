@@ -845,5 +845,7 @@
   "User Name": "اسم المستخدم",
   "Add Admin": "إضافة المشرف",
   "select": "يختار",
-  "Edit Staff Member": "تحرير عضو هيئة التدريس"
+  "Edit Staff Member": "تحرير عضو هيئة التدريس",
+  "Word[English]": "كلمة [إنجليزي]",
+  "Word[Arabic]": "كلمة[عربي]"
 }
