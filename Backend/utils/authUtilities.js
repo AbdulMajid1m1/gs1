@@ -12,17 +12,7 @@ export const userDataProperties = user => ({
 export const cookieOptions = () => ({
     httpOnly: true,
     // secure: isProduction,
-    secure: false,
-    sameSite: 'None',
+    secure: false,// False to Allow both HTTP and HTTPS
+    sameSite: 'Lax', // None to Allow both HTTP and HTTPS
 });
 
-// export const generateJWT = (user) => {
-//     const userData = {
-//         _id: user._id,
-//         email: user.email,
-//         username: user.username,
-//         createdAt: user.createdAt,
-//         updatedAt: user.updatedAt
-//     };
-//     return jwt.sign(userData, jwtKey, { expiresIn: '30d' });
-// };

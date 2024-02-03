@@ -36,7 +36,7 @@ export const superAdminAuth = (req, res, next) => {
     req.admin = adminPayload;
 
     // check if the admin is super admin
-    if (req.admin.is_super_admin !== 1) return next(createError(403, "You don't have permission to access this resource!"));
+    if (req.admin.is_super_admin !== 1) return next(createError(403, "Super admin authentication required to access this resource!"));
     next();
   });
 };
