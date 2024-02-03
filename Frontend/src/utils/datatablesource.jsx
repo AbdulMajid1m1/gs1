@@ -2604,6 +2604,21 @@ export const masterDataColumn = (t, i18n) => [
   },
 ];
 
+export const LanguageDataColumn = (t, i18n) => [
+
+  {
+    field: 'nameEnglish',
+    headerName: t('Name[English]'),
+    width: 300,
+  },
+  {
+    field: 'namearabic',
+    headerName: t('Name[Arabic]'),
+    width: 300,
+  },
+ 
+];
+
 export const megamenuDataColumn = (t, i18n) => [
 
   {
@@ -7223,25 +7238,25 @@ export const AdminRolesColumn = (t, i18n) => [
 
 
 
-export const AdminUsersColumn = [
+export const AdminUsersColumn = (t, i18n) => [
   {
     field: 'username',
-    headerName: 'Name',
+    headerName: t('Name'),
     width: 180,
   },
   {
     field: 'mobile',
-    headerName: 'Phone',
+    headerName: t('Phone'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'Email',
+    headerName:  t('Email'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName:  t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -7316,6 +7331,219 @@ export const productsCategoriesColumn = (t, i18n) => [
     }
   },
   
+  
+  
+];
+
+
+
+export const staffAssignedTaskColumn = (t, i18n) => [
+  {
+    field: 'member_type',
+    headerName: t('Member Type'),
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: '2px solid',
+          background: params.row.member_type === 'old' ? 'green' : 'crimson',
+          color: "white",
+        }}
+      >
+        {params.row.member_type === 'old' ? 'Old' : 'New'}
+      </div >
+    ),
+  },
+  {
+    field: 'pending_invoices',
+    headerName: t('PENDING TO DO'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'none' ? 'green' : 'crimson',
+          color: params.row.status === 'none' ? 'green' : 'crimson',
+          display: params.row.pending_invoices === 'none' ? 'none' : 'block',
+        }}
+      >
+        {params.row.pending_invoices === 'none' ? '' : params.row.pending_invoices === 'for_review' ? 'For Review' : 'Pending for Approval'}
+      </div >
+    ),
+  },
+  {
+    field: 'assign_to_admin_username', // or any unique name you prefer
+    headerName: t('Assigned To'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: params.row.assign_to_admin ? '2px solid' : 'none',
+          // background: '#D1FFBD', // customize as needed
+          color: 'green',
+        }}
+      >
+        {params.row.assign_to_admin ? params.row.assign_to_admin.username : ''}
+      </div>
+    ),
+  },
+  {
+    field: 'company_name_eng',
+    headerName: t('Company Name English'),
+    width: 180,
+  },
+  {
+    field: 'companyID',
+    headerName:  t('Company ID'),
+    width: 140,
+  },
+  // {
+  //   field: 'memberID',
+  //   headerName: t('Member ID'),
+  //   width: 180,
+  // },
+  {
+    field: 'mobile',
+    headerName: t('Mobile'),
+    width: 180,
+  },
+  {
+    field: 'remarks',
+    headerName: t('REMARKS'),
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: t('Status'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  {
+    field: 'password',
+    headerName: t('CODE'),
+    width: 180,
+  },
+  // {
+  //   field: 'password',
+  //   headerName: 'PASSWORD',
+  //   width: 180,
+  // },
+  {
+    field: 'membership_category',
+    headerName: t('MEMBER CATEGORY'),
+    width: 180,
+  },
+  {
+    field: 'email',
+    headerName: t('Email'),
+    width: 220,
+  },
+
+
+]
+
+
+
+export const licenceRegistryColumn = [
+  {
+    field: 'gcpGLNID',
+    headerName: 'Company Prefix',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          backgroundColor: 'red',
+          borderColor: 'white',
+          color: 'white',
+        }}
+      >
+        {params.row.gcpGLNID}
+      </div>
+    ),
+  },
+  {
+    field: 'gcp_type',
+    headerName: 'GCP Type',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name',
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'Licensee GLN',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          backgroundColor: 'red',
+          borderColor: 'white',
+          color: 'white',
+        }}
+      >
+        {params.row.gln}
+      </div>
+    ),
+  },
+  {
+    field: 'additional_number',
+    headerName: 'Key (PK)',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  
+
   
   
 ];

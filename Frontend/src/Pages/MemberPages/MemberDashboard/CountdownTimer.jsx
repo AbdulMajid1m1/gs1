@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import {  useTranslation } from "react-i18next";
 
 const CountdownTimer = ({ expiryDate }) => {
+  const { t, i18n } = useTranslation();
   const calculateTimeLeft = () => {
     const now = new Date();
     const expirationDate = new Date(expiryDate);
@@ -34,7 +36,7 @@ const CountdownTimer = ({ expiryDate }) => {
       <p className='sm:text-3xl text-lg text-white font-body font-normal'>
         {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
       </p>
-      <p className='sm:text-xl text-lg text-gray-200 font-body font-normal'>Your Subscription Will Expire On</p>
+      <p className='sm:text-xl text-lg text-gray-200 font-body font-normal'> {t('Your Subscription Will Expire On')} </p>
     </div>
   );
 };

@@ -235,7 +235,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
                                     <textarea
                                         onChange={(e) => setOptionalMessage(e.target.value)}
                                         className="w-full h-20 mt-1 border border-gray-300 rounded outline-none px-3 py-2"
-                                        placeholder="Enter your message here..."
+                                        placeholder={`${t('Enter your message here...')}`}
                                     // required
                                     ></textarea>
                                 </div>

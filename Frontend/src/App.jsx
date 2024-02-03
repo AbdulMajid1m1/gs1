@@ -124,6 +124,7 @@ import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
 import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
 import ProductCategories from "./Pages/AdminPages/Others/ProductCategories/ProductCategories";
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/LicenceRegistry";
 
 const queryClient = new QueryClient()
 
@@ -301,6 +302,7 @@ const App = () => {
                               />
 
                               <Route path="brands" element={<Brands />} />
+                              <Route path="licence-registry" element={<LicenceRegistry />} />
                               <Route path="products" element={<Products />} />
                               <Route path="products/add-products" element={<AddProducts />} />
                               <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
