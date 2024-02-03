@@ -56,17 +56,17 @@ const AddCategories = ({ isVisible, setVisibility, refreshCategories }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Products Categories</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Products Category')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                      
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field2" className="text-secondary">Name</label>
+                    <label htmlFor="field2" className="text-secondary">{t('Name')}</label>
                     <input
                       type="text"
                       id="field2"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder='Enter Name'
+                      placeholder={`${t('Enter Name')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
@@ -103,7 +103,7 @@ const AddCategories = ({ isVisible, setVisibility, refreshCategories }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Add Categories
+                    {t('Add')} {t('Categories')}
                   </Button>
                 </div>
               </form>

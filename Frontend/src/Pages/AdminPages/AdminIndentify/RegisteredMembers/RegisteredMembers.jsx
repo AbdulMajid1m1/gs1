@@ -377,7 +377,7 @@ const RegisteredMembers = () => {
 
               },
               {
-                label: 'Assign To',
+                label: `${t('Assign To')}`,
                 icon: <AssignmentTurnedInIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 action: handleAssignToPopUp,

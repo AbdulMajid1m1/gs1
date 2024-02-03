@@ -7238,25 +7238,25 @@ export const AdminRolesColumn = (t, i18n) => [
 
 
 
-export const AdminUsersColumn = [
+export const AdminUsersColumn = (t, i18n) => [
   {
     field: 'username',
-    headerName: 'Name',
+    headerName: t('Name'),
     width: 180,
   },
   {
     field: 'mobile',
-    headerName: 'Phone',
+    headerName: t('Phone'),
     width: 180,
   },
   {
     field: 'email',
-    headerName: 'Email',
+    headerName:  t('Email'),
     width: 180,
   },
   {
     field: 'status',
-    headerName: 'Status',
+    headerName:  t('Status'),
     width: 120,
     renderCell: params => (
       <div

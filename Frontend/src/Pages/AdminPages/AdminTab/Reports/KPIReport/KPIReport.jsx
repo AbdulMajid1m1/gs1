@@ -233,7 +233,7 @@ const KPIReport = () => {
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
               <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-                <div className='w-full flex gap-2 flex-wrap'>
+                <div className={`w-full flex gap-2 flex-wrap  ${i18n.language === 'ar' ? 'flex-row-reverse ' : 'flex-row'}`}>
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#021F69', color: '#ffffff', borderRadius: '20px', height: '28px' }}
@@ -277,24 +277,62 @@ const KPIReport = () => {
                   </button>
                 </div>
 
-                <div className='flex justify-between items-center flex-wrap gap-2 w-full'>
+                <div className={`flex justify-between items-center flex-wrap gap-2 w-full  ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
                   <div className='mt-2 flex flex-col justify-start items-start'>
                     <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
                       <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                        <span>TOTAL APPROVED AMOUNT:</span>
-                        <span className='font-bold pl-20'>{stats.totalApprovedAmount ? stats.totalApprovedAmount : ''}</span>
+                        {i18n.language === 'ar' ? (
+                          <>
+                            <span className='font-bold pl-20'>{stats.totalApprovedAmount ? stats.totalApprovedAmount : ''}</span>
+                            <span> :{t('TOTAL APPROVED AMOUNT')}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span> {t('TOTAL APPROVED AMOUNT')}:</span>
+                            <span className='font-bold pl-20'>{stats.totalApprovedAmount ? stats.totalApprovedAmount : ''}</span>
+                          </>
+                        )}
                       </p>
                       <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                        <span>NEW REGISTRATION:{stats?.newRegistrations?.count ? `(${stats?.newRegistrations?.count})` : ''}</span>
+                        {i18n.language === 'ar' ? (
+                          <>
+                            <span className='font-bold'>{stats?.newRegistrations?.amount ? stats?.newRegistrations?.amount : ''}</span>
+                            <span> :{t('NEW REGISTRATION')}{stats?.newRegistrations?.count ? `(${stats?.newRegistrations?.count})` : ''}</span>
+                          </>
+                        ) : (
+                          <>
+                           <span> {t('NEW REGISTRATION')}:{stats?.newRegistrations?.count ? `(${stats?.newRegistrations?.count})` : ''}</span>
                         <span className='font-bold'>{stats?.newRegistrations?.amount ? stats?.newRegistrations?.amount : ''}</span>
+                          </>
+                        )}
+                      
                       </p>
                       <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                        <span>RENEWALS:{stats?.renewals?.count ? `(${stats?.renewals?.count})` : '(0)'}</span>
-                        <span className='font-bold'>{stats?.renewals?.amount ? stats?.renewals?.amount : '0'}</span>
+                       {i18n.language === 'ar' ? (
+                          <>
+                            <span className='font-bold'>{stats?.renewals?.amount ? stats?.renewals?.amount : '0'}</span>
+                            <span>: {t('RENEWALS')}{stats?.renewals?.count ? `(${stats?.renewals?.count})` : '(0)'}</span>
+                          </>
+                        ) : (
+                          <>
+                              <span> {t('RENEWALS')}:{stats?.renewals?.count ? `(${stats?.renewals?.count})` : '(0)'}</span>
+                              <span className='font-bold'>{stats?.renewals?.amount ? stats?.renewals?.amount : '0'}</span>
+                          </>
+                        )}
                       </p>
                       <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
-                        <span>PENDING AMOUNT: {stats?.pendingAmount?.count ? `(${stats?.pendingAmount?.count})` : '(0)'}</span>
-                        <span className='font-bold'>{stats?.pendingAmount?.amount ? stats?.pendingAmount?.amount : '0'}</span>
+                        {i18n.language === 'ar' ? (
+                          <>
+                            <span className='font-bold'>{stats?.pendingAmount?.amount ? stats?.pendingAmount?.amount : '0'}</span>
+                            <span> :{t('PENDING AMOUNT')} {stats?.pendingAmount?.count ? `(${stats?.pendingAmount?.count})` : '(0)'}</span>
+                          </>
+                        ) : (
+                          <>
+                              <span> {t('PENDING AMOUNT')}: {stats?.pendingAmount?.count ? `(${stats?.pendingAmount?.count})` : '(0)'}</span>
+                              <span className='font-bold'>{stats?.pendingAmount?.amount ? stats?.pendingAmount?.amount : '0'}</span>
+                          </>
+                        )}
+                   
                       </p>
 
                     </div>

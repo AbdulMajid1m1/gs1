@@ -328,7 +328,7 @@ const OldInActiveMembers = () => {
                     className="ml-2"
                     endIcon={migrateButtonLoader ? <CircularProgress size={24} color="inherit" /> : null}
                   >
-                    {t(' Migrate & Generate Invoice')}
+                    {t('Migrate & Generate Invoice')}
                   </Button>
                 </div>
               </div>

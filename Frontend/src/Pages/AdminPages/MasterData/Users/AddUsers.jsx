@@ -131,7 +131,7 @@ const AddUsers = () => {
             {/* <form> */} 
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">Email</label>
+                  <label htmlFor="fields1" className="text-secondary font-semibold"> {t('Email')}</label>
                   <input
                     type="email"
                     id="fields1"
@@ -140,12 +140,12 @@ const AddUsers = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                    placeholder={'Email'}
+                      placeholder={`${t('Email')}`}
                   />
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">User Name</label>
+                  <label htmlFor="fields1" className="text-secondary font-semibold"> {t('User Name')}</label>
                   <input
                     type="text"
                     id="fields1"
@@ -154,7 +154,7 @@ const AddUsers = () => {
                     onChange={(e) => setName(e.target.value)}
                     required
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                    placeholder={'User Name'}
+                      placeholder={`${t('User Name')}`}
                   />
                 </div>
               </div>
@@ -162,7 +162,7 @@ const AddUsers = () => {
 
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">Password</label>
+                    <label htmlFor="fields1" className="text-secondary font-semibold"> {t('Password')}</label>
                   <input
                     type="password"
                     id="fields1"
@@ -171,12 +171,12 @@ const AddUsers = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                    placeholder={'Password'}
+                      placeholder={`${t('Password')}`}
                   />
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">Mobile</label>
+                    <label htmlFor="fields1" className="text-secondary font-semibold"> {t('Mobile')}</label>
                   <input
                     type="text"
                     id="fields1"
@@ -185,7 +185,7 @@ const AddUsers = () => {
                     onChange={(e) => setMobile(e.target.value)}
                     required
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                    placeholder={'Mobile'}
+                      placeholder={`${t('Mobile')}`}
                   />
                 </div>
               </div>
@@ -193,7 +193,7 @@ const AddUsers = () => {
 
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">Is Super</label>
+                  <label htmlFor="fields1" className="text-secondary font-semibold"> {t('Is Super')}</label>
                   <select
                     id="fields1"
                     name='is_super_admin'
@@ -202,7 +202,7 @@ const AddUsers = () => {
                     required
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                   >
-                    <option value="">-select-</option>
+                    <option value="">-{t('select')}-</option>
                     <option value="true">Super Admin</option>
                     <option value="false">GS1 User</option>
                     </select>
@@ -225,8 +225,8 @@ const AddUsers = () => {
 
                         autoComplete="off"
                         {...params}
-                        label='Select Roles'
-                        placeholder='Select Roles'
+                        label={`${t('Select Roles')}`}
+                        placeholder={`${t('Select Roles')}`}
                         variant='outlined'
                       />
                     )}
@@ -239,7 +239,7 @@ const AddUsers = () => {
                {/* Image container */}
                <div className='flex justify-between items-center gap-7 flex-wrap mt-10'>
                   <div>
-                    <span className='text-secondary font-body sm:text-base text-sm'>Profile Image</span>
+                    <span className='text-secondary font-body sm:text-base text-sm'> {t('Profile Image')}</span>
                       <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                         <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                           <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
@@ -269,7 +269,7 @@ const AddUsers = () => {
                   type="submit"
                   className="bg-secondary px-8 py-2 text-white font-semibold text-sm rounded-sm p-2 mt-2 hover:bg-primary transition duration-200"
                 >
-                  Add Admin
+                    {t('Add Admin')}
                 </button>
               </div>
             </form>

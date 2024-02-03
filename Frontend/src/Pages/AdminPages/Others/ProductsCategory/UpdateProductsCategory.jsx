@@ -86,7 +86,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateCategory} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>Update GTIN Barcode Pricing</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>  {t('Update')} {t('GTIN Barcode Pricing')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
             
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
@@ -309,7 +309,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    Save Changes
+                    {t('SAVE CHANGES')}
                   </Button>
                 </div>
               </form>
