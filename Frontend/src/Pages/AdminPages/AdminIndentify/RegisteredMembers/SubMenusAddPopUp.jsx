@@ -156,7 +156,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus, userData 
                         // onChange={(e) => setCompanyLandLine(e)}
                         inputProps={{
                           id: 'mobile',
-                          placeholder: 'Mobile Number',
+                          placeholder: `${t('Mobile Number')}`
                         }}
 
                         inputStyle={{

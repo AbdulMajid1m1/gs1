@@ -223,7 +223,7 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                    {t('Save Changes')} 
+                    {t('SAVE CHANGES')} 
                   </Button>
                 </div>
               </form>

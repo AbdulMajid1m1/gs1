@@ -5,7 +5,7 @@
     "Get a Barcode": "احصل على الباركود",
     "GS1 Member Login": "تسجيل دخول عضو GS1",
     "Staff Login": "تسجيل دخول الموظفين",
-    "GS1 Saudia Arabia": "GS1 المملكة العربية السعودية",
+    "GS1 Saudia Arabia": "GS1 مركز الترقيم السعودي",
     "Upcoming Events": "الفعاليات القادمة",
     "More Events": "المزيد من الفعاليات",
     "Featured Articles": "مقالات مميزة",
@@ -816,6 +816,7 @@
     "Select Roles":"اختيار الأدوار",
     "Select All":"اختيار الكل",
     "Create":"إنشاء",
-    "Users":"المستخدمين"
+    "Users":"المستخدمين",
+    "Add Other Services Pricing":"أضف أسعار الخدمات الأخرى"
 
 }

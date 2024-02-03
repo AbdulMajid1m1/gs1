@@ -300,7 +300,7 @@ const DataTable = ({
   const idColumn = [
     {
       field: "no",
-      headerName: "ID",
+      headerName:t('ID'),
       width: 30,
     },
   ];

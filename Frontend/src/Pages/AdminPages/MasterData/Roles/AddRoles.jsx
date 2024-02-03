@@ -120,7 +120,7 @@ const AddRoles = () => {
                     onChange={(e) => setRoleName(e.target.value)}
                     required
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                    placeholder={'Role Name'}
+                    placeholder={`${t('Role Name')}`}
                   />
                 </div>
 
@@ -141,8 +141,8 @@ const AddRoles = () => {
 
                         autoComplete="off"
                         {...params}
-                        label='Select Roles'
-                        placeholder='Select Roles'
+                        label={`${t('Select Roles')}`}
+                        placeholder={`${t('Select Roles')}`}
                         variant='outlined'
                       />
                     )}

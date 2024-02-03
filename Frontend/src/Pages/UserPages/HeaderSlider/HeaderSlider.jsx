@@ -8,6 +8,8 @@ import newRequest from '../../../utils/userRequest';
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { IoIosArrowDroprightCircle } from "react-icons/io";
+import { IoIosArrowDropleftCircle } from "react-icons/io";
 
 
 const HeaderSlider = () => {
@@ -37,7 +39,7 @@ const HeaderSlider = () => {
   return (
     <div>
          <div className='h-auto w-full bg-white border-b mt-4'>
-          <div className='h-auto w-full bg-secondary flex justify-center items-center'>
+          <div className='relative h-auto w-full bg-secondary flex justify-center items-center'>
                 <Swiper
                   spaceBetween={30}
                   centeredSlides={true}
@@ -45,10 +47,14 @@ const HeaderSlider = () => {
                     delay: 4500,
                     disableOnInteraction: false,
                   }}
+                  navigation={{
+                    nextEl: "#swiper-button-next",
+                    prevEl: "#swiper-button-prev",
+                  }}
                   pagination={{
                     clickable: true,
                   }}
-                  navigation={true}
+                  // navigation={true}
                   modules={[Autoplay, Pagination, Navigation]}
                   className="mySwiper"
                 >
@@ -84,37 +90,19 @@ const HeaderSlider = () => {
                     </SwiperSlide>
                   ))}
 
-                  {/* <SwiperSlide>
-                    <div className='w-full flex flex-col lg:flex-row justify-between items-center sm:px-5 px-2'>
-                        <div className='w-full flex flex-col gap-2 sm:px-10 px-4 sm:pt-0 pt-5'>
-                          <h2 className='sm:text-3xl text-xl text-white font-semibold'>50 years of transforming tomorrow</h2>
-                          <p className='text-sm text-white font-medium'>The barcode has been transforming the way we work and live with the power of GS1 standards. Let's celebrate this amazing anniversary together!</p>
-                          <button className=' bg-primary sm:w-[50%] w-full text-white font-medium sm:text-xl text-xs px-4 py-1'>Read the Sucess Stories</button>
-                        </div>
-
-                        <div className='w-full sm:px-10 px-4'>
-                            <img src={thirdslider} className='sm:h-60 h-auto w-full py-5 object-contain' alt='' />
-                        </div>
-                      </div>
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <div className='w-full flex flex-col lg:flex-row justify-between items-center px-5'>
-                        <div className='w-full flex flex-col gap-2 sm:px-10 px-4 sm:pt-0 pt-5'>
-                          <h2 className='sm:text-3xl text-xl text-white font-semibold'>GS1 Saudi Arabia Mobile App</h2>
-                          <p className='text-lg text-white font-medium'>GS1 Saudi Arabia standards on the Go</p>
-                          <button className=' bg-primary sm:w-[50%] w-full text-white font-medium sm:text-xl text-xs px-4 py-1'>Read the Sucess Stories</button>
-                        </div>
-
-                        <div className='w-full sm:px-10 px-4'>
-                            <img src={fourthslider} className='sm:h-60 h-auto w-full py-5 object-contain' alt='' />
-                        </div>
-                      </div>
-                  </SwiperSlide> */}
-
-                  {/* <SwiperSlide>Slide 3</SwiperSlide>
-                  <SwiperSlide>Slide 4</SwiperSlide> */}
                   </Swiper>
+                  <div
+                    id="swiper-button-prev"
+                    className="absolute left-0 top-1/2 z-20 -translate-y-1/2 transform md:left-1 "
+                  >
+                    <IoIosArrowDropleftCircle className="cursor-pointer rounded-full border-white text-4xl text-white opacity-40 hover:border hover:opacity-80" />
+                  </div>
+                  <div
+                    id="swiper-button-next"
+                    className="absolute right-0 top-1/2 z-20 -translate-y-1/2 transform md:right-1 "
+                  >
+                    <IoIosArrowDroprightCircle className="cursor-pointer rounded-full border-white text-4xl text-white opacity-40 hover:border hover:opacity-80" />
+                  </div>
 
           </div>
         </div>

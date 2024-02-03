@@ -54,7 +54,7 @@ const Footer = () => {
          </div>
 
         <div className={`flex ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'} flex-col justify-center items-center sm:mt-16 mt-6 sm:flex-row sm:justify-between sm:items-center `}>
-          <h2 className='text-white mb-2 sm:mb-0'>{t('Copyright')} {t('@GS1 Saudi Arabia')} - 2023 {t('All rights reserved')}.</h2>
+          <h2 className='text-white mb-2 sm:mb-0'> {t('Copyright @GS1 Saudi Arabia - 2023 All rights reserved.')}</h2>
              <div className='flex flex-wrap gap-4'>
                <img
                  src={whatsApp}

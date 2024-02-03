@@ -96,7 +96,7 @@ const Users = () => {
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-            <AdminDashboardRightHeader title={'GS1 Staff'}/>
+          <AdminDashboardRightHeader title={t('GS1 Staff')} />
         </div>
 
 
@@ -108,7 +108,7 @@ const Users = () => {
                   <button
                   onClick={() => navigate('/admin/add-users')}
                   className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-plus mr-2"></i>  Add User
+                  <i className="fas fa-plus mr-2"></i>    {t('Add User')}
                 </button>
               </div>
               
@@ -116,8 +116,8 @@ const Users = () => {
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
-                  title={'Users'}
-                  columnsName={AdminUsersColumn}
+                  title={t('Users')}
+                  columnsName={AdminUsersColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}

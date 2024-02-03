@@ -61,7 +61,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
         },
       });
 
-      toast.success(`${t('Brands')} ${companyName} ${('with Arabic name')}"${companyNameArabic}" ${t('has been added successfully')}.`);
+      toast.success(`${t('Brands')} ${companyName} ${('with Arabic name')} ${companyNameArabic} ${t('has been added successfully')}.`);
 
       console.log(response.data);
       refreshBrandData(createBrandData);
@@ -88,7 +88,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} ${t('Brands')}</h2>
+                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Brands')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
