@@ -290,7 +290,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
             const invoiceBuffer = await fs.readFile(pdfFilePath);
 
             cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-        
+
 
 
 
@@ -853,6 +853,24 @@ export const memberLogin = async (req, res, next) => {
 };
 
 
+export const getLicenseRegisteryUser = async (req, res) => {
+    try {
+        const activeUsers = await prisma.users.findMany({
+            where: {
+                status: 'active',
+                gpc: { not: null }, 
+                parent_memberID: '0',
+                gcp_expiry: { gt: new Date() }
+            }
+        });
+
+        res.status(200).json({ success: true, data: activeUsers });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
 export const getUserDetails = async (req, res, next) => {
     try {
         // Define allowable columns for filtering
@@ -945,6 +963,31 @@ export const getUserDetails = async (req, res, next) => {
 
 
         return res.json(usersWithCarts);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+
+export const getUsersWithAssignTo = async (req, res, next) => {
+    try {
+        const users = await prisma.users.findMany({
+            where: {
+                NOT: [
+                    { assign_to: null },
+                    { assign_to: "" },
+                    { assign_to: undefined }
+                ]
+            },
+            orderBy: { updated_at: 'desc' },
+            include: {
+                assign_to_admin: true
+            }
+        });
+
+
+        return res.json(users);
     } catch (error) {
         console.log(error);
         next(error);

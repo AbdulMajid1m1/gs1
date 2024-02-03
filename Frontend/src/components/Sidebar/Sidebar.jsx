@@ -192,8 +192,10 @@ const SideBar = () => {
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
+        // className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        //   } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
+           className={`fixed top-0 z-40 w-64 sm:w-72 h-screen transition-transform ${isSidebarOpen ? "translate-x-0" : i18n.language === 'ar' ? "translate-x-full" : "-translate-x-full"
+             } sm:translate-x-0 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}
         aria-label="Sidebar"
         ref={sidebarRef}
       >
@@ -244,12 +246,12 @@ const SideBar = () => {
             )}
           </div>
 
-            {showFirstData && (
-              <div
-                className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
-                onClick={toggleSidebar}
-              >
-                {/* {apiResponse.length === 0 && ( */}
+          {showFirstData && (
+            <div
+              className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+              onClick={toggleSidebar}
+            >
+              {/* {apiResponse.length === 0 && ( */}
                <div
                   className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} ${memberData?.status === 'inactive' ? 'bg-gray-500' : ''}`}
                   onClick={() => {
@@ -281,7 +283,7 @@ const SideBar = () => {
                   />
                   <p className="sidebar-text">{t('GTIN (Barcode)')}</p>
                 </div>
-                 {/* )} */}
+              {/* )} */}
               {apiResponse.length > 0 && (
                 <>
                   {/* {apiResponse.includes('GLN (10 Location)') || apiResponse.includes('GLN (20 Locations)') || apiResponse.includes('GLN (30 Locations)') && ( */}

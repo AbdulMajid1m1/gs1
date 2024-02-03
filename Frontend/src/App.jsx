@@ -122,7 +122,7 @@ import AddUsers from "./Pages/AdminPages/MasterData/Users/AddUsers";
 import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
 import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
 import ProductCategories from "./Pages/AdminPages/Others/ProductCategories/ProductCategories";
-import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
+import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/LicenceRegistry";
 
 const queryClient = new QueryClient()
 
@@ -296,6 +296,7 @@ const App = () => {
                             />
 
                             <Route path="brands" element={<Brands />} />
+                            <Route path="licence-registry" element={<LicenceRegistry />} />
                             <Route path="products" element={<Products />} />
                             <Route path="products/add-products" element={<AddProducts />} />
                             <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
@@ -356,10 +357,6 @@ const App = () => {
                             <Route path="roles-permissions" element={<Roles />} />
                             <Route path="add-roles" element={<AddRoles />} />
                             <Route path="update-roles/:id" element={<UpdateRoles />} />
-                            
-
-                            <Route path="Language/Dynamic" element={<LaanguageChange />} />
-
 
                             <Route path="units" element={<Units />} />
                             <Route path="Documents" element={<Documents />} />;
