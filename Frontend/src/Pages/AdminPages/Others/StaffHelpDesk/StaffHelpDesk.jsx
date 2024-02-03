@@ -5,13 +5,15 @@ import DataTable from '../../../../components/Datatable/Datatable';
 import { staffAssignedTaskColumn } from '../../../../utils/datatablesource';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import newRequest from '../../../../utils/userRequest';
+import { toast } from 'react-toastify';
 
 const StaffHelpDesk = () => {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true)
     try {
       const response = await newRequest.get("/users/getUsersWithAssignTo");
 
@@ -21,6 +23,7 @@ const StaffHelpDesk = () => {
 
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.error || err?.response?.data || "Something went wrong!");
       setIsLoading(false)
     }
   };

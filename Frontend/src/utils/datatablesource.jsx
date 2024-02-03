@@ -7461,3 +7461,89 @@ export const staffAssignedTaskColumn = (t, i18n) => [
 
 
 ]
+
+
+
+export const licenceRegistryColumn = [
+  {
+    field: 'gcpGLNID',
+    headerName: 'Company Prefix',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          backgroundColor: 'red',
+          borderColor: 'white',
+          color: 'white',
+        }}
+      >
+        {params.row.gcpGLNID}
+      </div>
+    ),
+  },
+  {
+    field: 'gcp_type',
+    headerName: 'GCP Type',
+    width: 180,
+  },
+  {
+    field: 'company_name_eng',
+    headerName: 'Company Name',
+    width: 180,
+  },
+  {
+    field: 'gln',
+    headerName: 'Licensee GLN',
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          backgroundColor: 'red',
+          borderColor: 'white',
+          color: 'white',
+        }}
+      >
+        {params.row.gln}
+      </div>
+    ),
+  },
+  {
+    field: 'additional_number',
+    headerName: 'Key (PK)',
+    width: 180,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 'active' ? 'green' : 'red',
+          color: params.row.status === 'active' ? 'green' : 'red',
+        }}
+      >
+        {params.row.status}
+      </div>
+    ),
+  },
+  
+
+  
+  
+];

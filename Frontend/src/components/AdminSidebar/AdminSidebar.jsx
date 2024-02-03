@@ -63,6 +63,7 @@ import additionalgln from "../../Images/additionalgln.png"
 import expiredmember from "../../Images/expiredmember.png"
 import roleicon from "../../Images/roleicon.png"
 import usersicon from "../../Images/usersicon.png"
+import licenseregistry from "../../Images/licenseregistry.png"
 import productcategories from "../../Images/productcategories.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18ns from "../../i18n";
@@ -295,6 +296,21 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Members')}</p>
+              </div>
+
+              <div
+                className={`main-images-container ${selectedItem === '/admin/licence-registry' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/licence-registry', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/licence-registry')
+                }
+              >
+                <img
+                  src={licenseregistry}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">Licence Registry</p>
               </div>
 
               <div
