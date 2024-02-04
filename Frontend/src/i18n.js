@@ -3,6 +3,9 @@ import {
   initReactI18next
 } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import enTranslation from './english.json';
+import arTranslation from './arabic.json';
+
 
 const storedLanguage = sessionStorage.getItem('selectedLanguaged');
 const initialLanguage = storedLanguage || 'ar';
@@ -53,6 +56,27 @@ const fetchTranslations = async () => {
 };
 
 // Call the fetchTranslations function
-fetchTranslations();
+// fetchTranslations();
+i18n
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .init({
+    resources: {
+      en: {
+        translation: enTranslation,
+      },
+      ar: {
+        translation: arTranslation,
+      },
+    },
+    fallbackLng: 'en',
+    detection: {
+      order: ['navigator'],
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+    lng: initialLanguage,
+  });
 
 export default i18n;

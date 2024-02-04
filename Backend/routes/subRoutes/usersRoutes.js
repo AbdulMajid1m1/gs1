@@ -21,7 +21,6 @@ userRouter.get('/rejected', adminAuth, checkPermission(["members"]), getRejected
 
 userRouter.get('/rejectedCarts', getCartsDetails);
 
-
 userRouter.post('/sendInvoice', adminAuth, sendInvoiceToUser);
 
 userRouter.get('/adminStatsCounts', getAdminStatsCounts);

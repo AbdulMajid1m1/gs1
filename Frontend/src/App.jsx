@@ -7,6 +7,7 @@ import ListOfCustomer from "./Pages/AdminPages/ListOfCustomer/ListOfCustomer";
 import { SnackbarProvider } from "./Contexts/SnackbarContext";
 import DataTableProvider from "./Contexts/DataTableContext";
 import DataTableProvider2 from "./Contexts/DataTableContext2";
+import AuthProvider from "./Contexts/AuthContext.jsx";
 import HomePage from "./Pages/UserPages/HomePage/HomePage";
 import MemmberRegisteration from "./Pages/MemberPages/MemberRegistration/MemberRegistration";
 import GetBarcode from "./Pages/MemberPages/MemberRegistration/GetBarcode"
@@ -122,6 +123,7 @@ import AddUsers from "./Pages/AdminPages/MasterData/Users/AddUsers";
 import UpdateUsers from "./Pages/AdminPages/MasterData/Users/UpdateUsers";
 import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
 import ProductCategories from "./Pages/AdminPages/Others/ProductCategories/ProductCategories";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/LicenceRegistry";
 
 const queryClient = new QueryClient()
@@ -160,253 +162,258 @@ const App = () => {
   };
   return (
     <>
+      <AuthProvider>
+        <DataTableProvider2>
+          <DataTableProvider>
+            <SnackbarProvider>
 
-      <DataTableProvider2>
-        <DataTableProvider>
-          <SnackbarProvider>
-
-            <div>
-              <BrowserRouter>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <UserLayout>
-                        <Routes>
-                          {/* <Route path="/" element={<HomePage />} /> */}
-                          <Route index element={<HomePage />} />
-                        </Routes>
-                      </UserLayout>
-                    }
-                  />
-
-                  <Route path="/get-barcode" element={<GetBarcode />} />
-                  <Route path="/member-registration" element={<MemmberRegisteration />} />
-                  <Route path="/email-address" element={<EmailAddress />} />
-                  <Route path="/select-activity" element={<SelectActivity />} />
-                  <Route path="/verify-code" element={<VerifyCode />} />
-                  <Route path="/:id" element={<BlogPages />} />
-                  <Route path="/admin-login" element={<AdminLogin />} />
-                  <Route
-                    path="productinformation"
-                    element={
-                      <MapProvider>
-                        <ProductInformation />
-                      </MapProvider>
-                    }
-                  />
-
-                  {/* <Route path="main-popup" element={<MainPopUp />} /> */}
-
-
-                  {/* Member Routes */}
-                  <Route
-                    path="/member/*"
-                    element={
-                      <MainLayout>
-                        <QueryClientProvider client={queryClient}>
+              <div>
+                <BrowserRouter>
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={
+                        <UserLayout>
                           <Routes>
-                            <Route path="dashboard" element={<MemberDashboard />} />
-                            <Route path="update-vendor" element={<UpdateVendor />} />
-                            <Route path="customer-list" element={<ListOfCustomer />} />
-                            <Route path="member-brands" element={<MemberBrands />} />
-                            <Route path="gtin" element={<GTIN />} />
-                            <Route path="addproducts" element={<GTINAddProducts />} />
-                            <Route
-                              path="upate-gtin-product/:productId"
-                              element={<GTINUpdateProducts />}
-                            />
+                            {/* <Route path="/" element={<HomePage />} /> */}
+                            <Route index element={<HomePage />} />
+                          </Routes>
+                        </UserLayout>
+                      }
+                    />
 
-                            <Route path="front-end" element={<Frontend />} />
-                            <Route path="settings" element={<Settings />} />
-                            <Route path="master-data" element={<MasterData />} />
-                            <Route path="reports" element={<Reports />} />
-                            <Route
-                              path="view-gtin-product/:productId"
-                              element={<GTINViewProduct />}
-                            />
-                            <Route path="digitalurl" element={<DigitalUrlInfo />} />
+                    <Route path="/get-barcode" element={<GetBarcode />} />
+                    <Route path="/member-registration" element={<MemmberRegisteration />} />
+                    <Route path="/email-address" element={<EmailAddress />} />
+                    <Route path="/select-activity" element={<SelectActivity />} />
+                    <Route path="/verify-code" element={<VerifyCode />} />
+                    <Route path="/:id" element={<BlogPages />} />
+                    <Route path="/admin-login" element={<AdminLogin />} />
+                    <Route
+                      path="productinformation"
+                      element={
+                        <MapProvider>
+                          <ProductInformation />
+                        </MapProvider>
+                      }
+                    />
 
-                            <Route path="gln" element={<GLN />} />
-                            <Route path="add-gln" element={<AddGLN />} />
-                            <Route path="update-gln/:Id" element={<UpdateGLN />} />
+                    {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
-                            <Route path="sscc" element={<SSCC />} />
-                            <Route path="addsscc" element={<AddSSCC />} />
-                            <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
 
-                            <Route path="gs1-members" element={<Gs1Members />} />
-                            <Route path="member-profile" element={<MemberProfile />} />
+                    {/* Member Routes */}
+                    <Route
+                      path="/member/*"
+                      element={
+                        <MainLayout>
+                          <QueryClientProvider client={queryClient}>
+                            <Routes>
+                              <Route path="dashboard" element={<MemberDashboard />} />
+                              <Route path="update-vendor" element={<UpdateVendor />} />
+                              <Route path="customer-list" element={<ListOfCustomer />} />
+                              <Route path="member-brands" element={<MemberBrands />} />
+                              <Route path="gtin" element={<GTIN />} />
+                              <Route path="addproducts" element={<GTINAddProducts />} />
+                              <Route
+                                path="upate-gtin-product/:productId"
+                                element={<GTINUpdateProducts />}
+                              />
 
-                            {/* <Route
+                              <Route path="front-end" element={<Frontend />} />
+                              <Route path="settings" element={<Settings />} />
+                              <Route path="master-data" element={<MasterData />} />
+                              <Route path="reports" element={<Reports />} />
+                              <Route
+                                path="view-gtin-product/:productId"
+                                element={<GTINViewProduct />}
+                              />
+                              <Route path="digitalurl" element={<DigitalUrlInfo />} />
+
+                              <Route path="gln" element={<GLN />} />
+                              <Route path="add-gln" element={<AddGLN />} />
+                              <Route path="update-gln/:Id" element={<UpdateGLN />} />
+
+                              <Route path="sscc" element={<SSCC />} />
+                              <Route path="addsscc" element={<AddSSCC />} />
+                              <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
+
+                              <Route path="gs1-members" element={<Gs1Members />} />
+                              <Route path="member-profile" element={<MemberProfile />} />
+
+                              {/* <Route
                             path="view-gs1-member/:Id"
                             element={<Gs1MembersView />}
                           /> */}
 
-                            <Route path="payment-slips" element={<PaymentSlips />} />
-                            <Route path="bank-slip" element={<BankSlip />} />
-                            <Route path="transaction-history" element={<TransactionHistory />} />
-                            <Route path="member-helpdesk" element={<MemberHelpDesk />} />
-                            <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
+                              <Route path="payment-slips" element={<PaymentSlips />} />
+                              <Route path="bank-slip" element={<BankSlip />} />
+                              <Route path="transaction-history" element={<TransactionHistory />} />
+                              <Route path="member-helpdesk" element={<MemberHelpDesk />} />
+                              <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
 
-                            <Route path="udi" element={<UDI />} />
-                            {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
+                              <Route path="udi" element={<UDI />} />
+                              {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
-                            {/* <Route path="member-data" element={<MemberData />} /> */}
-                            <Route path="member-crnumber" element={<MemberCrNumber />} />
-                            <Route path="member-data" element={<MemberData />} />
-                            <Route path="member-crnumber" element={<MemberCrNumber />} />
-
-
-                          </Routes>
-                        </QueryClientProvider>
-                      </MainLayout>
-                    }
-                  />
-                </Routes>
+                              {/* <Route path="member-data" element={<MemberData />} /> */}
+                              <Route path="member-crnumber" element={<MemberCrNumber />} />
+                              <Route path="member-data" element={<MemberData />} />
+                              <Route path="member-crnumber" element={<MemberCrNumber />} />
 
 
+                            </Routes>
+                          </QueryClientProvider>
+                        </MainLayout>
+                      }
+                    />
+                  </Routes>
 
-                <Routes>
-                  {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
 
-                  {/* Admin Routes */}
-                  <Route
-                    path="/admin/*"
-                    element={
-                      <AdminMainLayout>
-                        <QueryClientProvider client={queryClient}>
-                          <Routes>
-                            <Route path="dashboard" element={<Dashboard />} />
 
-                            <Route path="registered-members" element={<RegisteredMembers />} />
+                  <Routes>
+                    {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
 
-                            {/* <Route
+                    {/* Admin Routes */}
+                    <Route
+                      path="/admin/*"
+                      element={
+                        <AdminMainLayout>
+                          <QueryClientProvider client={queryClient}>
+                            <Routes>
+                              <Route path="dashboard" element={<Dashboard />} />
+
+                              <Route path="registered-members" element={
+                                <ProtectedRoute requiredPermission="members">
+                                  <RegisteredMembers />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="registered-members" element={<RegisteredMembers />} /> */}
+                              {/* <Route
                               path="registered-members/view-registered-member/:Id"
                               element={<MemberProfileData><RegisteredMembersView /></MemberProfileData>}
                             /> */}
-                            <Route
-                              path="registered-members/view-registered-member/:Id"
-                              element={<RegisteredMembersView />}
-                            />
+                              <Route
+                                path="registered-members/view-registered-member/:Id"
+                                element={<RegisteredMembersView />}
+                              />
 
-                            <Route
-                              path="view-gs1-member/:Id"
-                              element={<Gs1MembersView />}
-                            />
+                              <Route
+                                path="view-gs1-member/:Id"
+                                element={<Gs1MembersView />}
+                              />
 
-                            <Route path="brands" element={<Brands />} />
-                            <Route path="licence-registry" element={<LicenceRegistry />} />
-                            <Route path="products" element={<Products />} />
-                            <Route path="products/add-products" element={<AddProducts />} />
-                            <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
-
-
-                            <Route path="expired-member" element={<ExpiredMember />} />
-                            <Route path="member-products" element={<MemberProducts />} />
-                            <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
-                            <Route path="notfications" element={<Notifications />} />
-                            <Route path="rejected" element={<Rejected />} />
-                            <Route path="payment-slips" element={<AdminPaymentSlips />} />
-
-                            <Route path="gcp-license" element={<GcpLicense />} />
-                            <Route path="gs1-registries" element={<GS1Registries />} />
-
-                            <Route path="migration" element={<Migration />} />
-                            <Route path="help-desk" element={<HelpDesk />} />
-                            <Route path="old-inactive-members" element={<OldInActiveMembers />} />
-                            <Route path="staff-help-desk" element={<StaffHelpDesk />} />
-                            <Route path="member-expiry-page" element={<MembersExpiryPage />} />
-                            <Route path="products-category" element={<ProductsCategory />} />
-                            <Route path="products-categories" element={<ProductCategories />} />
-                            <Route path="others-products-category" element={<OtherProductsCategory />} />
-                            <Route path="addtional-gtin" element={<AdditionalGTIN />} />
-
-                            <Route path="addtional-gln" element={<AdditionalGLN />} />
-
-                            <Route path="gtin" element={<Gtin />} />
-                            <Route path="admin-gtin" element={<AddGTINProducts />} />
-                            <Route path="admin-update-gtin/:productId" element={<AdminUpdateGTIN />} />
-                            <Route
-                              path="admin-view-gtin/:productId"
-                              element={<AdminGTINView />}
-                            />
-
-                            <Route path="gln" element={<Gln />} />
-                            <Route path="admin-addgln" element={<AdminAddGLN />} />
-
-                            <Route path="sscc" element={<Sscc />} />
-                            <Route path="admin-addsscc" element={<AdminAddSSCC />} />
-                            <Route path="admin-update-sscc/:sscc_id" element={<AdminUpdateSSCC />} />
-
-                            <Route path="foreign-gtin" element={<ForeignGTIN />} />
-
-                            <Route path="front-end" element={<Frontend />} />
-                            <Route path="settings" element={<Settings />} />
-                            <Route path="master-data" element={<MasterData />} />
-
-                            <Route path="reports" element={<Reports />} />
-                            <Route path="kpi-report" element={<KPIReport />} />
-                            <Route path="member-activity-report" element={<MemberActivityReport />} />
-                            <Route path="admin-activity-report" element={<AdminActivityReport />} />
+                              <Route path="brands" element={<Brands />} />
+                              <Route path="licence-registry" element={<LicenceRegistry />} />
+                              <Route path="products" element={<Products />} />
+                              <Route path="products/add-products" element={<AddProducts />} />
+                              <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
 
-                            <Route path="users-permissions" element={<Users />} />
-                            <Route path="add-users" element={<AddUsers />} />
-                            <Route path="update-users/:id" element={<UpdateUsers />} />
-                            <Route path="roles-permissions" element={<Roles />} />
-                            <Route path="add-roles" element={<AddRoles />} />
-                            <Route path="update-roles/:id" element={<UpdateRoles />} />
+                              <Route path="expired-member" element={<ExpiredMember />} />
+                              <Route path="member-products" element={<MemberProducts />} />
+                              <Route path="verified-by-gs1" element={<VerifiedByGS1 />} />
+                              <Route path="notfications" element={<Notifications />} />
+                              <Route path="rejected" element={<Rejected />} />
+                              <Route path="payment-slips" element={<AdminPaymentSlips />} />
 
-                            <Route path="units" element={<Units />} />
-                            <Route path="Documents" element={<Documents />} />;
-                            <Route path="ProductPackaging" element={<ProductPackaging />} />
-                            <Route path="Other_products" element={<Other_products />} />
-                            <Route path="Gcp_type" element={<Gcp_type />} />
-                            <Route path="CountryofSales" element={<CountryofSales />} />
-                            <Route path="Hscode" element={<Hscode />} />
-                            <Route path="UNSPCS" element={<UNSPCS />} />
-                            <Route path="Cities" element={<Cities />} />
-                            <Route path="State" element={<State />} />
-                            <Route path="Country" element={<Country />} />
-                            <Route path="crnumber" element={<Crnumber />} />
-                            <Route path="documenttype" element={<Document_type />} />
-                            {/* Megamenu */}
-                            <Route path="megamenu" element={<Megamenu />} />
-                            <Route path="categories" element={<Categories />} />
-                            <Route path="footer_menu" element={<Footermenu />} />
-                            <Route path="Sliders" element={<Sliders />} />
-                            <Route path="Featured_services" element={<Featuredservices />} />
-                            <Route path="events" element={<Events />} />
-                            <Route path="articles" element={<Articles />} />
-                            {/* Pages */}
-                            <Route path="Pages" element={<Pages />} />
-                            <Route path="Add_Pages" element={<Addpages />} />
-                            <Route path="updata_Pages/:userId" element={<Updatapage />} />
-                            {/* Gs1partners */}
-                            <Route path="partners" element={<Gs1partners />} />
-                            {/* Blogcategories */}
-                            <Route path="Blog_categories" element={<Blogcategories />} />
-                            {/* Faqcategories */}
-                            <Route path="Faq_categories" element={<Faqcategories />} />
-                            {/* Manageteam */}
-                            <Route path="Manage_team" element={<Manageteam />} />
-                            {/* Boardmembers */}
-                            <Route path="Board_members" element={<Boardmembers />} />
-                            {/* Userguide */}
-                            <Route path="User_guide" element={<Userguide />} />
+                              <Route path="gcp-license" element={<GcpLicense />} />
+                              <Route path="gs1-registries" element={<GS1Registries />} />
 
-                          </Routes>
-                        </QueryClientProvider>
-                      </AdminMainLayout>
-                    }
-                  />
-                </Routes>
-              </BrowserRouter>
-            </div>
-          </SnackbarProvider>
-        </DataTableProvider>
-      </DataTableProvider2>
+                              <Route path="migration" element={<Migration />} />
+                              <Route path="help-desk" element={<HelpDesk />} />
+                              <Route path="old-inactive-members" element={<OldInActiveMembers />} />
+                              <Route path="staff-help-desk" element={<StaffHelpDesk />} />
+                              <Route path="member-expiry-page" element={<MembersExpiryPage />} />
+                              <Route path="products-category" element={<ProductsCategory />} />
+                              <Route path="products-categories" element={<ProductCategories />} />
+                              <Route path="others-products-category" element={<OtherProductsCategory />} />
+                              <Route path="addtional-gtin" element={<AdditionalGTIN />} />
+
+                              <Route path="addtional-gln" element={<AdditionalGLN />} />
+
+                              <Route path="gtin" element={<Gtin />} />
+                              <Route path="admin-gtin" element={<AddGTINProducts />} />
+                              <Route path="admin-update-gtin/:productId" element={<AdminUpdateGTIN />} />
+                              <Route
+                                path="admin-view-gtin/:productId"
+                                element={<AdminGTINView />}
+                              />
+
+                              <Route path="gln" element={<Gln />} />
+                              <Route path="admin-addgln" element={<AdminAddGLN />} />
+
+                              <Route path="sscc" element={<Sscc />} />
+                              <Route path="admin-addsscc" element={<AdminAddSSCC />} />
+                              <Route path="admin-update-sscc/:sscc_id" element={<AdminUpdateSSCC />} />
+
+                              <Route path="foreign-gtin" element={<ForeignGTIN />} />
+
+                              <Route path="front-end" element={<Frontend />} />
+                              <Route path="settings" element={<Settings />} />
+                              <Route path="master-data" element={<MasterData />} />
+
+                              <Route path="reports" element={<Reports />} />
+                              <Route path="kpi-report" element={<KPIReport />} />
+                              <Route path="member-activity-report" element={<MemberActivityReport />} />
+                              <Route path="admin-activity-report" element={<AdminActivityReport />} />
+
+
+                              <Route path="users-permissions" element={<Users />} />
+                              <Route path="add-users" element={<AddUsers />} />
+                              <Route path="update-users/:id" element={<UpdateUsers />} />
+                              <Route path="roles-permissions" element={<Roles />} />
+                              <Route path="add-roles" element={<AddRoles />} />
+                              <Route path="update-roles/:id" element={<UpdateRoles />} />
+
+                              <Route path="units" element={<Units />} />
+                              <Route path="Documents" element={<Documents />} />;
+                              <Route path="ProductPackaging" element={<ProductPackaging />} />
+                              <Route path="Other_products" element={<Other_products />} />
+                              <Route path="Gcp_type" element={<Gcp_type />} />
+                              <Route path="CountryofSales" element={<CountryofSales />} />
+                              <Route path="Hscode" element={<Hscode />} />
+                              <Route path="UNSPCS" element={<UNSPCS />} />
+                              <Route path="Cities" element={<Cities />} />
+                              <Route path="State" element={<State />} />
+                              <Route path="Country" element={<Country />} />
+                              <Route path="crnumber" element={<Crnumber />} />
+                              <Route path="documenttype" element={<Document_type />} />
+                              {/* Megamenu */}
+                              <Route path="megamenu" element={<Megamenu />} />
+                              <Route path="categories" element={<Categories />} />
+                              <Route path="footer_menu" element={<Footermenu />} />
+                              <Route path="Sliders" element={<Sliders />} />
+                              <Route path="Featured_services" element={<Featuredservices />} />
+                              <Route path="events" element={<Events />} />
+                              <Route path="articles" element={<Articles />} />
+                              {/* Pages */}
+                              <Route path="Pages" element={<Pages />} />
+                              <Route path="Add_Pages" element={<Addpages />} />
+                              <Route path="updata_Pages/:userId" element={<Updatapage />} />
+                              {/* Gs1partners */}
+                              <Route path="partners" element={<Gs1partners />} />
+                              {/* Blogcategories */}
+                              <Route path="Blog_categories" element={<Blogcategories />} />
+                              {/* Faqcategories */}
+                              <Route path="Faq_categories" element={<Faqcategories />} />
+                              {/* Manageteam */}
+                              <Route path="Manage_team" element={<Manageteam />} />
+                              {/* Boardmembers */}
+                              <Route path="Board_members" element={<Boardmembers />} />
+                              {/* Userguide */}
+                              <Route path="User_guide" element={<Userguide />} />
+
+                            </Routes>
+                          </QueryClientProvider>
+                        </AdminMainLayout>
+                      }
+                    />
+                  </Routes>
+                </BrowserRouter>
+              </div>
+            </SnackbarProvider>
+          </DataTableProvider>
+        </DataTableProvider2>
+      </AuthProvider>
     </>
   );
 };

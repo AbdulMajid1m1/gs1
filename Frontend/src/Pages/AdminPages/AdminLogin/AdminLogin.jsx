@@ -1,80 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import gs1logoWhite from '../../../Images/gs1logoWhite.png'
 import { toast } from 'react-toastify';
 import newRequest from '../../../utils/userRequest';
 import { useNavigate } from 'react-router-dom';
 import { DotLoader } from 'react-spinners'
 import { useTranslation } from 'react-i18next';
+// import { DataTableContext2 } from "../../Contexts/DataTableContext2";
+import { AuthContext } from '../../../Contexts/AuthContext'
 
 const AdminLogin = () => {
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const [showImage, setShowImage] = useState(false);
   const navigate = useNavigate();
+  const { adminData, setAdminData, permissions, setPermissions,
+    login, fetchPermissions } = useContext(AuthContext);
+
 
   useEffect(() => {
     setShowImage(true);
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-     
-  //   newRequest.post('/admin/login', {
-  //       "email": email,
-  //       "password": password
-  //       });
-  //       try {
-  //           console.log(res)
-  //           toast.success(res?.data?.message || "Login Successfully", {
-  //               position: "top-right",
-  //               autoClose: 2000,
-  //               hideProgressBar: false,
-  //               closeOnClick: true,
-  //               pauseOnHover: true,
-  //               draggable: true,
-  //               progress: undefined,
-  //               theme: "light",
-  //             });
-
-  //           setIsLoading(false);
-  //           navigate('/admin/dashboard');
-
-            
-  //       } 
-  //       catch (err) {
-  //           console.log(err)
-  //           toast.error(err?.response?.data?.message || 'Invalid Credentials', {
-  //               position: "top-right",
-  //               autoClose: 2000,
-  //               hideProgressBar: false,
-  //               closeOnClick: true,
-  //               pauseOnHover: true,
-  //               draggable: true,
-  //               progress: undefined,
-  //               theme: "light",
-  //             });
-  //             setIsLoading(false);
-  //       }
-
-      
-  // }
-
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      setIsLoading(true);
-    
-      newRequest.post('/admin/login', {
-        "email": email,
-        "password": password
-      })
+    newRequest.post('/admin/login', {
+      "email": email,
+      "password": password
+    })
       .then((res) => {
         console.log(res);
-        toast.success(res?.data?.message || `${t('Login Successfully') }`, {
+        toast.success(res?.data?.message || `${t('Login Successfully')}`, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -84,14 +43,16 @@ const AdminLogin = () => {
           progress: undefined,
           theme: "light",
         });
-    
+
         setIsLoading(false);
+        login(res.data.adminData, res.data.permissions);
+
         navigate('/admin/dashboard');
         // Assuming res.data is an object
         const adminData = res?.data?.adminData;
         const adminDataString = JSON.stringify(adminData);
         sessionStorage.setItem('adminData', adminDataString);
-        
+
       })
       .catch((err) => {
         console.log(err);
@@ -100,15 +61,15 @@ const AdminLogin = () => {
           autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
-          pauseOnHover: true,  
+          pauseOnHover: true,
           draggable: true,
           progress: undefined,
           theme: "light",
         });
         setIsLoading(false);
       });
-    }
-  
+  }
+
 
 
 
@@ -116,25 +77,25 @@ const AdminLogin = () => {
     <>
       {isLoading &&
 
-            <div className='loading-spinner-background'
-                style={{
-                    zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
+        <div className='loading-spinner-background'
+          style={{
+            zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
 
 
-                }}
-            >
-                <DotLoader
-                    size={45}
-                    color={"#FF693A"}
-                    // height={4}
-                    loading={isLoading}
-                />
-            </div>
-            }
+          }}
+        >
+          <DotLoader
+            size={45}
+            color={"#FF693A"}
+            // height={4}
+            loading={isLoading}
+          />
+        </div>
+      }
       <div className="bg-white">
         <div className="flex justify-center h-screen">
-          
+
           <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
             <div className="flex-1">
               <div className="flex flex-col gap-6 items-start">
@@ -145,12 +106,12 @@ const AdminLogin = () => {
                 <form onSubmit={handleSubmit}>
                   <div>
                     <label htmlFor="email" className="block mb-2 text-sm text-secondary"> {t('User ID')}</label>
-                    <input 
+                    <input
                       required
-                       type="email"
-                          id="email"
-                           value={email}
-                             onChange={(e) => setEmail(e.target.value)}
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="block w-full px-4 py-2 mt-2 text-secondary placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
@@ -161,17 +122,17 @@ const AdminLogin = () => {
                     </div>
                     <input
                       required
-                        value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                            type="password" 
-                              id="password"
-                                className="block w-full px-4 py-2 mt-2 text-secondary placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      type="password"
+                      id="password"
+                      className="block w-full px-4 py-2 mt-2 text-secondary placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
                   <div className="mt-6">
                     <button
                       type='submit'
-                         className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-secondary rounded-md hover:bg-primary focus:outline-none focus:bg-primary focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                      className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-secondary rounded-md hover:bg-primary focus:outline-none focus:bg-primary focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                       {t('Login')}
                     </button>
                   </div>
@@ -183,7 +144,7 @@ const AdminLogin = () => {
             </div>
           </div>
           <div className={`hidden lg:block lg:w-2/3 transform transition-transform duration-1000 ease-in-out ${showImage ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[-100%]'}`}
-               style={{ backgroundImage: 'url(https://gs1ksa.org/backend/images/login/613f2a06120da1631529478.jpg)' }}>
+            style={{ backgroundImage: 'url(https://gs1ksa.org/backend/images/login/613f2a06120da1631529478.jpg)' }}>
             <div className="flex items-center h-full px-14 bg-gray-900 bg-opacity-10">
               <div>
                 <h2 className="text-6xl pt-40 font-semibold font-sans text-white">Good Morning</h2>
