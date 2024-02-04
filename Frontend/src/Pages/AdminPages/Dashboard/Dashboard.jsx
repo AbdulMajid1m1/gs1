@@ -10,6 +10,7 @@ import barcoderemain from '../../../Images/barcoderemain.png'
 import newRequest from '../../../utils/userRequest'
 import AdminDashboardRightHeader from '../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { I18nextProvider, useTranslation } from "react-i18next";
+import CircularProgress from '@mui/material/CircularProgress';
 import LanguageSwitcher from "../../../switer";
 import PersonIcon from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom'
@@ -24,6 +25,7 @@ const Dashboard = () => {
   const [pendingApprovalsLoader, setPendingApprovalsLoader] = useState(false);
   const [allRegisteredMembersLoader, setAllRegisteredMembersLoader] = useState(false);
   const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   const getAllNewlyRegisteredMembers = async () => {
@@ -216,17 +218,19 @@ const Dashboard = () => {
         .then(response => {
           console.log(response.data)
           setAllCardData(response.data)
+          setLoading(false);
         })
         .catch(error => {
 
 
           console.error(error);
+          setLoading(false);
         });
 
     }
     catch (error) {
       console.log(error);
-
+      setLoading(false);
     }
   };
 
@@ -257,7 +261,11 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={categorybarcode} alt="" className='h-16 w-16 object-contain' />
                       {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>{totalRange}</p> */}
+                      {loading ? (
+                          <CircularProgress style={{ color: '#ffffff' }} />
+                        ) : (
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.activeUsersCount}</p>
+                      )}
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-sm text-gray-200'>{t('Active Members')}</p>
@@ -269,7 +277,11 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={rangebarcode} alt="" className='h-16 w-16 object-contain' />
                       {/* <p className='font-sans font-semibold text-2xl text-white -mt-4'>1 to {totalRange -  1}</p> */}
-                      <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.inactiveUsersCount}</p>
+                      {loading ? (
+                          <CircularProgress style={{ color: '#ffffff' }} />
+                        ) : (
+                          <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.inactiveUsersCount}</p>
+                      )}
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>{t('In Active Members')}</p>
@@ -281,7 +293,11 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcoderemain} alt="" className='h-16 w-16 object-contain' />
                       {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeIssued}</p> */}
+                      {loading ? (
+                          <CircularProgress style={{ color: '#ffffff' }} />
+                        ) : (
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.usersCount}</p>
+                      )}
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>{t('Total Members')}</p>
@@ -293,7 +309,11 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center px-3 py-3'>
                       <img src={barcodeIssued} alt="" className='h-16 w-16 object-contain' />
                       {/* <p className='font-sans font-semibold text-3xl text-white -mt-4'>{gtinBarcodeRemaining}</p> */}
+                      {loading ? (
+                          <CircularProgress style={{ color: '#ffffff' }} />
+                        ) : (
                       <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.productsCount}</p>
+                      )}
                     </div>
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>{t('Products')}</p>
