@@ -69,7 +69,7 @@ import UpdateProducts from "./Pages/AdminPages/AdminIndentify/Products/UpdatePro
 import AddProducts from "./Pages/AdminPages/AdminIndentify/Products/AddProducts";
 import AddGLN from "./Pages/MemberPages/GLN/AddGLN";
 import UpdateGLN from "./Pages/MemberPages/GLN/UpdateGLN";
-import UDI from "./Pages/MemberPages/UDI/UDI";
+import UDI from "./Pages/MemberPages/MemberIdentify/UDI/UDI.jsx";
 import SSCC from "./Pages/MemberPages/SSCC/SSCC";
 import AddSSCC from "./Pages/MemberPages/SSCC/AddSSCC";
 import UpdateSSCC from "./Pages/MemberPages/SSCC/UpdateSSCC";
@@ -125,6 +125,8 @@ import UpdateRoles from "./Pages/AdminPages/MasterData/Roles/UpdateRoles";
 import ProductCategories from "./Pages/AdminPages/Others/ProductCategories/ProductCategories";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/LicenceRegistry";
+import ForeginGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/ForeginGtin.jsx";
+import AddForeignGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/AddForeignGtin.jsx";
 
 const queryClient = new QueryClient()
 
@@ -236,6 +238,9 @@ const App = () => {
                               <Route path="sscc" element={<SSCC />} />
                               <Route path="addsscc" element={<AddSSCC />} />
                               <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
+
+                              <Route path="member-foregin-gtin" element={<ForeginGtin />} />
+                              <Route path="member-add-foreign" element={<AddForeignGtin />} />
 
                               <Route path="gs1-members" element={<Gs1Members />} />
                               <Route path="member-profile" element={<MemberProfile />} />
