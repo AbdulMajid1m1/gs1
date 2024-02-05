@@ -29,7 +29,7 @@ import RegisteredMembers from "./Pages/AdminPages/AdminIndentify/RegisteredMembe
 import Brands from "./Pages/AdminPages/AdminIndentify/Brands/Brands";
 import Products from "./Pages/AdminPages/AdminIndentify/Products/Products";
 import MemberProducts from "./Pages/AdminPages/AdminCapture/MemberProducts/MemberProducts";
-import VerifiedByGS1 from "./Pages/AdminPages/AdminCapture/VerifiedByGS1/VerifiedByGS1";
+import VerifiedByGS1 from "./Pages/AdminPages/AdminShare/VerifiedByGS1/VerifiedByGS1";
 import Notifications from "./Pages/AdminPages/AdminCapture/Notifications/Notifications";
 import GS1Registries from "./Pages/AdminPages/AdminShare/GS1Registries/GS1Registries";
 import GcpLicense from "./Pages/AdminPages/AdminShare/GcpLicense/GcpLicense";
