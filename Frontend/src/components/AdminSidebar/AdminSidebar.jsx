@@ -298,7 +298,7 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Members')}</p>
               </div>
 
-              <div
+              {/* <div
                 className={`main-images-container ${selectedItem === '/admin/licence-registry' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/licence-registry', event)}
                 onContextMenu={(event) =>
@@ -311,7 +311,7 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">Licence Registry</p>
-              </div>
+              </div> */}
 
               <div
                 className={`main-images-container ${selectedItem === '/admin/brands' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
@@ -592,7 +592,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('GCP Licenses')}</p>
+                <p className="sidebar-text">{t('GCP Licence')}</p>
               </div>
 
               <div
@@ -729,8 +729,43 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Additional GLN')}</p>
               </div>
 
+              
+              <div
+                className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/help-desk', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/help-desk')
+                }
+              >
+                <img
+                  src={helpdesk}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('HelpDesk')}</p>
+              </div>
 
               <div
+                className={`main-images-container ${selectedItem === '/admin/staff-help-desk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/staff-help-desk', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/staff-help-desk')
+                }
+              >
+                <img
+                  src={staffHelpDesk}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text"> {t('Staff Assigned Tasks')}</p>
+              </div>
+
+            </div>
+          )}
+
+
+
+            <div
               // <div
                 className={`main-images-container ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={() => setReportSubMenu(!reportSubMenu)}
@@ -740,7 +775,7 @@ const AdminSideBar = () =>
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />
-                <p className="sidebar-text">{t('KPI Reports')}</p>
+                <p className="sidebar-text">{t('KPI REPORTS')}</p>
                 {reportSubMenu ? (
                   <i className='fas fa-solid fa-chevron-up text-white'></i>
                 ) : (
@@ -750,7 +785,7 @@ const AdminSideBar = () =>
               
               {reportSubMenu && (
                 <div
-                  className="ml-3 md:ml-3 lg:ml-3 xl:ml-3 2xl:ml-3 3xl:ml-3"
+                  className="ml-0 md:ml-0 lg:ml-0 xl:ml-0 2xl:ml-0 3xl:ml-0"
                   onClick={toggleSidebar}
                 >
                   <div
@@ -800,40 +835,6 @@ const AdminSideBar = () =>
 
                 </div>
               )}
-
-              
-              <div
-                className={`main-images-container ${selectedItem === '/admin/help-desk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/help-desk', event)}
-                onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/help-desk')
-                }
-              >
-                <img
-                  src={helpdesk}
-                  className="main-inside-image bg-white rounded-full"
-                  alt=""
-                />
-                <p className="sidebar-text">{t('HelpDesk')}</p>
-              </div>
-
-              <div
-                className={`main-images-container ${selectedItem === '/admin/staff-help-desk' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/staff-help-desk', event)}
-                onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/staff-help-desk')
-                }
-              >
-                <img
-                  src={staffHelpDesk}
-                  className="main-inside-image bg-white rounded-full"
-                  alt=""
-                />
-                <p className="sidebar-text"> {t('Staff Assigned Tasks')}</p>
-              </div>
-
-            </div>
-          )}
 
 
 

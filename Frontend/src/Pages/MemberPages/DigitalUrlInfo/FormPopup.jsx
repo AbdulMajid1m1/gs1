@@ -336,7 +336,7 @@ const FormPopup = ({ data, showPopup, togglePopup, barcode }) => {
   return (
     showPopup && (
       <>
-        <div className="digital-popup-overlay" onClick={togglePopup}></div>
+        <div className="digital-popup-overlay z-50" onClick={togglePopup}></div>
         <div className="digital-popup-large">
           <div className="digital-popup-header">
             <h1 className="digital-popup-title font-sans text-secondary font-semibold">{t('Digital Link')}</h1>

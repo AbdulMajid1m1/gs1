@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CircularProgress from '@mui/material/CircularProgress';
+import SwitchAccessShortcutIcon from '@mui/icons-material/SwitchAccessShortcut';
 import newRequest from '../../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
@@ -528,6 +529,15 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
               InputLabelProps={{
                 shrink: Boolean(gs1MemberData?.cr_number),
                 style: { fontSize: gs1MemberData?.cr_number ? '16px' : '16px', zIndex: '0' },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <div style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)' }}>
+                    <div className='flex gap-1 cursor-pointer' onClick={() => window.open('https://mc.gov.sa/ar/eservices/Pages/Commercial-data.aspx', '_blank')}>
+                        <SwitchAccessShortcutIcon className='cursor-pointer hover:text-primary text-secondary' />
+                      </div>
+                  </div>
+                ),
               }}
             />
           </div>
