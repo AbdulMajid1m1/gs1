@@ -322,12 +322,12 @@ const SideBar = () => {
                   )}
 
 
-                  {apiResponse.includes('Foreign GTIN (for Imported products)') && (
+                  {apiResponse.includes('Foreign GTIN') && (
                     <div
-                      className={`main-images-container ${selectedItem === '/member/udi' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                      onClick={() => handleItemClick('/member/udi')}
+                      className={`main-images-container ${selectedItem === '/member/member-foregin-gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                      onClick={() => handleItemClick('/member/member-foregin-gtin')}
                       onContextMenu={(event) =>
-                        handleContextMenu(event, '/member/udi')
+                        handleContextMenu(event, '/member/member-foregin-gtin')
                       }
                     >
                       <img
