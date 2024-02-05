@@ -314,6 +314,7 @@ const App = () => {
                               <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
 
+                              <Route path="Language/Dynamic" element={<LaanguageChange />} />
                               {/* <Route path="expired-member" element={<ExpiredMember />} /> */}
                               <Route path="expired-member" element={
                                 <ProtectedRoute requiredPermission="expired_member_gln_location">

@@ -857,5 +857,7 @@
   "Key (PK)": "المفتاح (PK)",
   "Assigned To": "مخصص ل",
   "Update Data": "تحديث البيانات",
-  "Regenerate GCP": "إعادة إنشاء GCP"
+  "Regenerate GCP": "إعادة إنشاء GCP",
+  "GCP Licence": "ترخيص GCP",
+  "KPI REPORTS": "التقارير KPI"
 }
