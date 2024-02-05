@@ -282,7 +282,7 @@ const Dashboard = () => {
                         ) : (
                           <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.inactiveUsersCount}</p>
                       )}
-                    </div>     
+                    </div>   
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>{t('In Active Members')}</p>
                     </div>
