@@ -30,8 +30,8 @@ const AddForeignGtin = () => {
           <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
             <div>
                 <DashboardRightHeader title={`${t('Add Foreign GTIN')}`} 
-                    member={`Member:${memberData?.company_name_eng}`} 
-                    gcp={`GCP:${memberData?.gcpGLNID}`}
+                    member={`Member: ${memberData?.company_name_eng}`} 
+                    gcp={`GCP: ${memberData?.gcpGLNID}`}
                     />
             </div>
 
