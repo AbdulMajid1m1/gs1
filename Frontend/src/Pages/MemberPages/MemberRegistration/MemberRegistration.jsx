@@ -15,6 +15,8 @@ import barcodeImage from "../../../Images/barcodeImage.png"
 import { useTranslation } from 'react-i18next';
 import CompanyNamePopUp from './CompanyNamePopUp';
 import CompanyArabicPopUp from './CompanyArabicPopUp';
+import CrActivityPopUp from './CrActivityPopUp';
+import CrNumberPopUp from './CrNumberPopUp';
 
 
 const MemmberRegisteration = () => {
@@ -535,6 +537,8 @@ const MemmberRegisteration = () => {
 
     const [isCompanyNamePopUpVisible, setIsCompanyNamePopUpVisible] = useState(false);
     const [isCompanyArabicPopUpVisible, setIsCompanyArabicPopUpVisible] = useState(false);
+    const [isCrActivityPopUpVisible, setIsCrActivityPopUpVisible] = useState(false);
+    const [isCrNumberPopUpVisible, setIsCrNumberPopUpVisible] = useState(false);
 
     const handleCompanyNamePopUp = () => {
         setIsCompanyNamePopUpVisible(true);
@@ -554,6 +558,22 @@ const MemmberRegisteration = () => {
 
     const handleInputBlurArabic = () => {
         setIsCompanyArabicPopUpVisible(false);
+    };
+
+    const handleInputFocusCrActivity = () => {
+        setIsCrActivityPopUpVisible(true);
+    };
+
+    const handleInputBlurCrActivity = () => {
+        setIsCrActivityPopUpVisible(false);
+    };
+
+    const handleInputFocusCrNumber = () => {
+        setIsCrNumberPopUpVisible(true);
+    };
+
+    const handleInputBlurCrNumber = () => {
+        setIsCrNumberPopUpVisible(false);
     };
 
     return (
@@ -646,6 +666,8 @@ const MemmberRegisteration = () => {
                                     onChange={handleInputChange}
                                     //    onChange={(e) => setAddCrNumber(e.target.value)}
                                     placeholder={`${t('Enter')} ${t('Cr Number')}`}
+                                    onFocus={handleInputFocusCrNumber}
+                                    onBlur={handleInputBlurCrNumber}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                                 {error && <p className="text-red-500 text-xs">{error}</p>}
@@ -659,6 +681,8 @@ const MemmberRegisteration = () => {
                                     //  value={addCrNumber}
                                     onChange={(e) => setCrActivity(e.target.value)}
                                     placeholder={`${t('Enter')} ${t('Cr Activity')}`}
+                                    onFocus={handleInputFocusCrActivity}
+                                    onBlur={handleInputBlurCrActivity}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                 />
                             </div>
@@ -1205,6 +1229,14 @@ const MemmberRegisteration = () => {
 
                 {isCompanyArabicPopUpVisible && (
                     <CompanyArabicPopUp isVisible={isCompanyArabicPopUpVisible} setVisibility={setIsCompanyArabicPopUpVisible} />
+                )}
+
+                {isCrActivityPopUpVisible && (
+                    <CrActivityPopUp isVisible={isCrActivityPopUpVisible} setVisibility={setIsCrActivityPopUpVisible} />
+                )}
+
+                {isCrNumberPopUpVisible && (
+                    <CrNumberPopUp isVisible={isCrNumberPopUpVisible} setVisibility={setIsCrNumberPopUpVisible} />
                 )}
                 {/* </div> */}
             </div >

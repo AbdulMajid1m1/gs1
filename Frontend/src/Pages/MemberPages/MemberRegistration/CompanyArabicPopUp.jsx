@@ -12,8 +12,8 @@ const CompanyArabicPopUp = ({ isVisible, setVisibility, language }) => {
         <div>
             {/* create the post api popup */}
             {isVisible && (
-                <div className="popup-overlay-arabic">
-                    <div className="popup-container-arabic h-auto sm:w-[30%] w-[60%]">
+                <div className="popup-overlay-arabic z-50">
+                    <div className="popup-container-arabic h-auto sm:w-[32%] w-[60%]">
                         <div className="popup-form-arabic w-full ">
                             <div className="flex justify-end w-full">
                                 <button
