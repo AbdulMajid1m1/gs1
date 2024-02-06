@@ -9,6 +9,7 @@ import "./ProductInformation.css"
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import newRequest from '../../../../utils/userRequest';
 
 const VerifiedByGS1 = () => {
   const { t, i18n } = useTranslation();
@@ -16,10 +17,6 @@ const VerifiedByGS1 = () => {
   const [gtin, setGTIN] = useState("");
   const [data, setData] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [apiData, setApiData] = useState([]); // State to store API data  
-  const [batchNo, setBatchNo] = useState([]);
-  const [bySerial, setBySerial] = useState([]);
   const [searchedData, setSearchedData] = useState({}); // State to store API data
   const navigate = useNavigate();
 
@@ -79,7 +76,8 @@ const VerifiedByGS1 = () => {
     };
 
     // axios.get("https://gs1ksa.org/api/search/member/gtin", { params: bodyData })
-    axios.post("https://gs1ksa.org/api/search/member/gtin", { gtin: result.gtin })
+    // axios.post("https://gs1ksa.org/api/search/member/gtin", { gtin: result.gtin })
+    newRequest.post("/products/sarchGtin", { gtin: result.gtin })
       .then((response) => {
         if (response.data?.gtinArr === undefined || Object.keys(response.data?.gtinArr).length === 0) {
           // Display error message when the array is empty

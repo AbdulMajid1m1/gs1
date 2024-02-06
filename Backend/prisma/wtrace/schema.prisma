@@ -1,0 +1,11 @@
+generator client {
+    provider        = "prisma-client-js"
+    output          = "../node_modules/@prisma/clientWtrace"
+ 
+}
+
+datasource db {
+    provider = "sqlserver"
+    url      = env("WTRACE_DB_URL")
+
+}

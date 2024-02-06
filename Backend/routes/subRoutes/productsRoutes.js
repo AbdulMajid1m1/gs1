@@ -1,10 +1,11 @@
 import express from 'express';
-import { bulkCreateProduct, createProduct, deleteProduct, getProducts, updateProduct } from '../../controllers/productsController.js';
+import { bulkCreateProduct, createProduct, deleteProduct, getProducts, searchMemberGtin, updateProduct } from '../../controllers/productsController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generalAuth } from '../../middlewares/auth.js';
 
 const router = express.Router();
 router.get('/', getProducts);
+router.post('/sarchGtin', searchMemberGtin);
 
 
 router.post('/', upload([

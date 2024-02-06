@@ -1,6 +1,7 @@
 import axios from "axios";
 import newRequest from "../userRequest";
 import { toast } from "react-toastify";
+import { gtrackUrl } from "../config";
 
 function computeMutation(newRow, oldRow) {
   for (let key in newRow) {
@@ -62,7 +63,7 @@ export const UpdateRowData = (newRow, oldRow, openSnackbar, endPoint, type) => {
         }
       }
       // requestPromise = newRequest.put(endPoint, formData, {
-      requestPromise = axios.put("http://gs1ksa.org:7000/api" + endPoint, formData, {
+      requestPromise = axios.put(gtrackUrl + endPoint, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     } else {

@@ -7543,7 +7543,84 @@ export const licenceRegistryColumn = [
     ),
   },
   
+  
+  
+  
+];
 
-  
-  
+
+
+
+export const foreignGtinColumn = [
+  {
+    field: "BrandName",
+    headerName: 'Brand Name',
+    width: 180,
+  },
+  {
+    field: "barcode",
+    headerName: 'Barcode',
+    renderCell: GTINCell,
+    width: 150,
+  },
+  {
+    field: "countrySale",
+    headerName: 'Country Sale',
+    width: 180,
+  },
+  {
+    field: "gpc",
+    headerName: 'GPC',
+    width: 180,
+  },
+  {
+    field: "gpc_code",
+    headerName: 'GPC Code',
+    width: 180,
+  },
+  {
+    field: "moName",
+    headerName: 'MO Name',
+    width: 180,
+  },
+  {
+    field: "productnameenglish",
+    headerName: 'Product Name English',
+    width: 180,
+  },
+  {
+    field: "size",
+    headerName: 'Size',
+    width: 180,
+  },
+  {
+    field: "unit",
+    headerName: 'Unit',
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: "updated_at",
+    headerName: 'Updated At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  }, 
+
+
+
 ];
