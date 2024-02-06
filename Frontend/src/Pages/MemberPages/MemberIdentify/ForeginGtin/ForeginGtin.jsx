@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import DataTable from "../../../../components/Datatable/Datatable";
-import { GtinColumn } from "../../../../utils/datatablesource";
+import { GtinColumn, foreignGtinColumn } from "../../../../utils/datatablesource";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
@@ -30,7 +30,7 @@ const  ForeginGtin = () => {
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
   const [isExportBarcode, setIsExportBarcode] = useState(false);
   const [totalCategory, setTotalCategory] = useState("");
@@ -47,7 +47,7 @@ const  ForeginGtin = () => {
 
   const fetchData = async () => {
     try {
-      const response = await newRequest.get(`/products?user_id=${memberData?.id}`);
+      const response = await newRequest.get(`/foreignGtin`);
       console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
@@ -79,7 +79,7 @@ const  ForeginGtin = () => {
 
 
   useEffect(() => {
-    // fetchData(); // Calling the function within useEffect, not inside itself
+    fetchData(); // Calling the function within useEffect, not inside itself
     fetchGtinProducts();
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
@@ -89,9 +89,14 @@ const  ForeginGtin = () => {
     navigate("/member/view-gtin-product/" + row?.id);
   };
 
+  const handleDigitalUrlInfo = (row) => {
+    sessionStorage.setItem("selectedProductData", JSON.stringify(row));
+    navigate("/member/foreign-digital-link")
+  }
+
   const handleDelete = async (row) => {
     try {
-      const deleteResponse = await newRequest.delete(`/products/gtin/${row?.id}`);
+      const deleteResponse = await newRequest.delete(`/foreignGtin/${row?.id}`);
       console.log(deleteResponse.data);
       toast.success(`${t('The product has been deleted successfully')}`, {
         position: 'top-right',
@@ -568,15 +573,26 @@ const  ForeginGtin = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title={t('Foreign GTIN')} columnsName={GtinColumn(t)}
+            <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn}
               loading={isLoading}
               secondaryColor="secondary"
               handleRowClickInParent={handleRowClickInParent}
               uniqueId="customerListId"
 
               dropDownOptions={[
+                // {
+                //   label: `${t('View')}`,
+                //   icon: (
+                //     <VisibilityIcon
+                //       fontSize="small"
+                //       color="action"
+                //       style={{ color: "rgb(37 99 235)" }}
+                //     />
+                //   ),
+                //   action: handleView,
+                // },
                 {
-                  label: `${t('View')}`,
+                  label: `${t('Digital Links')}`,
                   icon: (
                     <VisibilityIcon
                       fontSize="small"
@@ -584,13 +600,14 @@ const  ForeginGtin = () => {
                       style={{ color: "rgb(37 99 235)" }}
                     />
                   ),
-                //   action: handleView,
-                },
+                  action: handleDigitalUrlInfo,
+                }
+                ,
                 {
                   label: `${t('Delete')}`,
                   icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                   ,
-                //   action: handleDelete,
+                  action: handleDelete,
                 }
 
               ]}

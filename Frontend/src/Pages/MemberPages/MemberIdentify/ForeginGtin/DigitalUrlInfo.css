@@ -1,0 +1,155 @@
+.digital-popup-large {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; /* Adjust the width as per your requirement */
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 113;
+}
+
+.digital-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the opacity to control the darkness */
+  z-index: 10;
+}
+
+.digital-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* .digital-popup-title {
+  font-size: 18px;
+} */
+
+.digital-popup-close {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.digital-header-gtincenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.digital-header-gtin {
+  height: 25px;
+  width: fit-content; /* Set the width based on the text size */
+  background: darkblue;
+  color: white;
+  font-weight: 500;
+}
+
+.digital-header-belowgtin {
+  height: 25px;
+  width: fit-content; /* Set the width based on the text size */
+  background: #e49515;
+  color: white;
+  font-weight: 500;
+}
+
+.digital-popup-form {
+  margin-bottom: 20px;
+}
+
+.digital-form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.digital-form-selected {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.digital-form-label {
+  flex-basis: 30%;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.digital-form-input {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  color: black;
+  font-weight: 400;
+  border-radius: 4px;
+}
+
+/* label {
+  flex-basis: 30%;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+input {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+select {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+} */
+
+.digital-popup-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.digital-popup-close {
+  background-color: #FF693A;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.digital-popup-close:hover {
+  background-color: darkblue;
+}
+
+.digital-header-line {
+  width: 100%;
+  height: 3px;
+  background: #e49515;
+  margin: 20px 0;
+}
+
+.digital-footer-line {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #2724f3, #ff7f7f);
+  margin: 20px 0;
+}

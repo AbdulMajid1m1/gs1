@@ -127,6 +127,7 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/LicenceRegistry";
 import ForeginGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/ForeginGtin.jsx";
 import AddForeignGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/AddForeignGtin.jsx";
+import DigitalLinkInfo from "./Pages/MemberPages/MemberIdentify/ForeginGtin/DigitalLinkInfo.jsx";
 
 const queryClient = new QueryClient()
 
@@ -240,6 +241,7 @@ const App = () => {
                               <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
 
                               <Route path="member-foregin-gtin" element={<ForeginGtin />} />
+                              <Route path="foreign-digital-link" element={<DigitalLinkInfo />} />
                               <Route path="member-add-foreign" element={<AddForeignGtin />} />
 
                               <Route path="gs1-members" element={<Gs1Members />} />
