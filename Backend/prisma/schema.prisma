@@ -1685,6 +1685,7 @@ model products {
   image_2            String?   @db.VarChar(255)
   image_3            String?   @db.VarChar(255)
   // create user relation
+  user               users     @relation(fields: [user_id], references: [id])
 
   @@index([barcode], map: "products_barcode_index")
 }
@@ -2100,6 +2101,7 @@ model users {
 
   member_documents member_documents[]
   foreign_gtins    foreign_gtins[]
+  products         products[]
 }
 
 model rejected_users {
