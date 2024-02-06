@@ -142,7 +142,7 @@ const DigitalLinkInfo = () => {
 
       case "ProductLocationofOrigin":
         axios
-          .get(`http://gs1ksa.org:7000/api/getProductLocationOriginByGtin/${selectedGtinData?.barcode}`)
+          .get(`http://gs1ksa.org:7000/api/getProductLocationOriginByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setProductLocationofOrigin(response.data);
@@ -157,7 +157,7 @@ const DigitalLinkInfo = () => {
 
       case "ProductRecall":
         axios
-          .get(`http://gs1ksa.org:7000/api/getProductsRecallByGtin/${selectedGtinData?.barcode}`)
+          .get(`http://gs1ksa.org:7000/api/getProductsRecallByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setProductRecall(response.data);
@@ -172,7 +172,7 @@ const DigitalLinkInfo = () => {
 
       case "recipe":
         axios
-          .get(`http://gs1ksa.org:7000/api/getRecipeDataByGtin/${selectedGtinData?.barcode}`)
+          .get(`http://gs1ksa.org:7000/api/getRecipeDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setRecipe(response.data);
@@ -188,7 +188,7 @@ const DigitalLinkInfo = () => {
       case "PackagingComposition":
         axios
           .get(
-            `http://gs1ksa.org:7000/api/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}`
+            `http://gs1ksa.org:7000/api/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`
           )
           .then((response) => {
             console.log(response.data);
@@ -205,7 +205,7 @@ const DigitalLinkInfo = () => {
 
       case "ElectronicLeaflets":
         axios
-          .get(`http://gs1ksa.org:7000/api/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}`)
+          .get(`http://gs1ksa.org:7000/api/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setElectronicLeaflets(response.data);
