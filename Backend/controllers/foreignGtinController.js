@@ -172,41 +172,66 @@ export const createForeignGtins = async (req, res, next) => {
     }
 };
 
-export const getAllForeignGtins = async (req, res, next) => {
-    try {
-        const foreignGtins = await prisma.foreign_gtins.findMany({
-            orderBy: {
-                updated_at: 'desc',
-            },
-        });
 
-        res.json(foreignGtins);
-    } catch (error) {
-        next(error);
-    }
-};
 
-export const getForeignGtinsById = async (req, res, next) => {
+
+export const getForeignGtins = async (req, res, next) => {
     try {
-        const schema = Joi.object({
-            id: Joi.string().required(),
-        });
-        const { error } = schema.validate(req.params);
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            BrandName: Joi.string(),
+            productnameenglish: Joi.string(),
+            moName: Joi.string(),
+            barcode: Joi.string(),
+            details_page: Joi.string(),
+            unit: Joi.string(),
+            front_image: Joi.string(),
+            gpc: Joi.string(),
+            gpc_code: Joi.string(),
+            size: Joi.string(),
+            countrySale: Joi.string(),
+            user_id: Joi.string(),
+            admin_id: Joi.string(),
+            companyId: Joi.string(),
+            created_at: Joi.date(),
+            updated_at: Joi.date(),
+        };
+
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false); // Disallows any keys that are not defined in the schema
+
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
         if (error) {
-            return next(createError(400, error.details[0].message));
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
         }
 
-        const { id } = req.params;
+        // Check if any filter conditions are provided
+        const hasFilterConditions = Object.keys(value).length > 0;
 
-        const foreignGtins = await prisma.foreign_gtins.findUnique({
-            where: { id: id },
+        // Construct filter conditions for Prisma query
+        const filterConditions = hasFilterConditions
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        // Fetch foreign_gtins based on filter conditions
+        const foreignGtins = await prisma.foreign_gtins.findMany({
+            where: filterConditions,
+            orderBy: { created_at: 'desc' }, // Adjust the sorting as needed
         });
-        if (!foreignGtins) {
-            return next(createError(404, 'Foreign GTIN not found'));
-        }
 
-        res.json(foreignGtins);
+        return res.json(foreignGtins);
     } catch (error) {
+        console.error(error);
         next(error);
     }
 };
@@ -229,6 +254,7 @@ const foreignGtinsUpdateSchema = Joi.object({
     admin_id: Joi.string(),
     companyId: Joi.string(),
 });
+
 
 export const updateForeignGtins = async (req, res, next) => {
     try {

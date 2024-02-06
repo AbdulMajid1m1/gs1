@@ -514,6 +514,7 @@ model foreign_gtins {
   admin_id           String?
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
+  companyId          String?
   //create user and admin relation
 
   user  users?  @relation(fields: [user_id], references: [id])
