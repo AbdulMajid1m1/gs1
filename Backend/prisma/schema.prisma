@@ -1679,6 +1679,10 @@ model products {
   image_1            String?   @db.VarChar(255)
   image_2            String?   @db.VarChar(255)
   image_3            String?   @db.VarChar(255)
+  // create user relation
+  user               users     @relation(fields: [user_id], references: [id])
+
+  @@index([barcode], map: "products_barcode_index")
 }
 
 model products_udis {
@@ -2091,6 +2095,7 @@ model users {
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   member_documents member_documents[]
+  products         products[]
 }
 
 model rejected_users {
