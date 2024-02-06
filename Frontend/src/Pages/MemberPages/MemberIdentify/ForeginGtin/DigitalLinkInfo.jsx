@@ -65,14 +65,14 @@ const DigitalLinkInfo = () => {
   const { openSnackbar } = useContext(SnackbarContext);
   useEffect(() => {
     // Product Type Drop Down Api
-    // axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setData(response.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
+      .then((response) => {
+        console.log(response.data);
+        setData(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // // Safety Information Api
     gtrackRequest
