@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import Barcode from "react-barcode";
 import bwipjs from "bwip-js";
 import { useTranslation } from 'react-i18next';
+import DashboardRightHeader from "../../../components/DashboardRightHeader/DashboardRightHeader";
 
 const  Gtin = () => {
   const [data, setData] = useState([]);
@@ -426,8 +427,16 @@ const  Gtin = () => {
 
 
       <div  className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
-        <div className='h-auto w-full shadow-xl'>
-          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+        <div>
+          <DashboardRightHeader title={'GTIN'} />
+        </div>
+
+        <div className='flex justify-center items-center'>
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+
+        {/* <div className='h-auto w-full shadow-xl'> */}
+          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
               onClick={() => navigate('/member/addproducts')}
               className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
@@ -541,7 +550,7 @@ const  Gtin = () => {
 
 
 
-          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             {memberData?.gcpGLNID && (
               <button
                 className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
@@ -670,6 +679,8 @@ const  Gtin = () => {
           </div>
 
         </div>
+        </div>
+       </div>
       </div>
     </div>
   )

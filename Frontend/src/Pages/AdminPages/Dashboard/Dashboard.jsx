@@ -282,7 +282,7 @@ const Dashboard = () => {
                         ) : (
                           <p className='font-sans font-semibold text-3xl text-white -mt-4'>{allCardData?.inactiveUsersCount}</p>
                       )}
-                    </div>   
+                    </div>     
                     <div className='w-full text-end -mt-1 px-2'>
                       <p className='font-sans font-normal text-md text-gray-200'>{t('In Active Members')}</p>
                     </div>
@@ -303,7 +303,7 @@ const Dashboard = () => {
                       <p className='font-sans font-normal text-md text-gray-200'>{t('Total Members')}</p>
                     </div>
                   </div>
-                </div>    
+                </div>  
                 <div className='h-auto w-full bg-[#01A6BC] rounded-md'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>
