@@ -3,6 +3,8 @@ import { SnackbarContext } from "../../../../Contexts/SnackbarContext";
 import newRequest from "../../../../utils/userRequest";
 import { toast } from "react-toastify";
 import { useTranslation } from 'react-i18next';
+import gtrackRequest from "../../../../utils/gtrackRequest";
+import { gtrackUrl } from "../../../../utils/config";
 
 const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -292,7 +294,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
     event.preventDefault();
     let response;
     const datasets = {
-      Recipe: recipeData,
+      "Recipe": recipeData,
       "Product Recall": productRecallData,
       "Promotional offers": promotionalOffersData,
       "Product Location of Origin": productLocationOriginData,
@@ -303,14 +305,14 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
     };
 
     const endpoints = {
-      Recipe: "http://gs1ksa.org:7000/api/insertRecipeData",
-      "Product Recall": "http://gs1ksa.org:7000/api/insertProductRecallData",
-      "Promotional offers": "http://gs1ksa.org:7000/api/insertPromotionalOffersData",
-      "Product Location of Origin": "http://gs1ksa.org:7000/api/insertProductLocationOriginData",
-      "Product Contents": "http://gs1ksa.org:7000/api/insertProductContentsData",
-      "Packaging Composition": "http://gs1ksa.org:7000/api/insertPkgCompositionData",
-      "Electronic Leaflets": "http://gs1ksa.org:7000/api/insertProductLeafletData",
-      "Safety Information": "http://gs1ksa.org:7000/api/insertProductSafetyInformationData",
+      "Recipe": 'http://localhost:7000/api/insertRecipeData',
+      "Product Recall": gtrackUrl + "/insertProductRecallData",
+      "Promotional offers": gtrackUrl + "/insertPromotionalOffersData",
+      "Product Location of Origin": gtrackUrl + "/insertProductLocationOriginData",
+      "Product Contents": gtrackUrl + "/insertProductContentsData",
+      "Packaging Composition": gtrackUrl + "/insertPkgCompositionData",
+      "Electronic Leaflets": gtrackUrl + "/insertProductLeafletData",
+      "Safety Information": gtrackUrl + "/insertProductSafetyInformationData",
     };
 
     let dataToSend;
@@ -340,14 +342,12 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
     try {
       response = await newRequest.post(endpoints[selectedOption], dataToSend);
       console.log(response.data);
-      // openSnackbar(response.data.message, "success");
-      toast.success(response.data.message, "success");
+      toast.success(response.data.message || "Data inserted successfully", "success");
       resetState();
       event.target.reset();
     } catch (error) {
       console.log(error);
-      // openSnackbar(error?.response?.data?.message, "error");
-      toast.error(error?.response?.data?.message, "error");
+      toast.error(error?.response?.data?.message || "Error inserting data", "error");
     }
   };
 
@@ -715,7 +715,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="Lang"
                       name="Lang"
                       className="digital-form-input"
-                            placeholder={`${t('Lang')}`}
+                      placeholder={`${t('Lang')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
@@ -749,7 +749,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="TargetURL"
                       name="TargetURL"
                       className="digital-form-input"
-                       placeholder={`${t('Target URL')}`}
+                      placeholder={`${t('Target URL')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Product Location of Origin")
@@ -804,7 +804,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ProductNutrientsInformation"
                       name="ProductNutrientsInformation"
                       required
-                     placeholder={`${t('Product Nutrients Information')}`}
+                      placeholder={`${t('Product Nutrients Information')}`}
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
                   </div>
@@ -834,7 +834,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="Batch"
                       name="Batch"
                       className="digital-form-input"
-                     placeholder={`${t('Batch')}`}
+                      placeholder={`${t('Batch')}`}
                       required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -866,7 +866,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="Serial"
                       className="digital-form-input"
                       name="Serial"
-                     placeholder={`${t('Serial')}`}
+                      placeholder={`${t('Serial')}`}
                       required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -943,7 +943,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="ingredients"
                       name="ingredients"
                       className="digital-form-input"
-                       placeholder={`${t('Ingredients')}`}
+                      placeholder={`${t('Ingredients')}`}
                       required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -958,7 +958,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="allergen_info"
                       name="allergen_info"
                       className="digital-form-input"
-                       placeholder={`${t('Allergen Info')}`}
+                      placeholder={`${t('Allergen Info')}`}
                       required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -974,7 +974,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="calories"
                       name="calories"
                       className="digital-form-input"
-                       placeholder={`${t('calories')}`}
+                      placeholder={`${t('calories')}`}
                       required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -1006,7 +1006,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="salt"
                       className="digital-form-input"
                       name="salt"
-                       placeholder={`${t('salt')}`}
+                      placeholder={`${t('salt')}`}
                       required
                       onChange={(e) => handleInputChange(e, "Product Contents")}
                     />
@@ -1094,7 +1094,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="packaging"
                       name="packaging"
                       className="digital-form-input"
-                     placeholder={`${t('Packaging')}`}
+                      placeholder={`${t('Packaging')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
@@ -1112,7 +1112,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="material"
                       className="digital-form-input"
                       name="material"
-                       placeholder={`${t('Material')}`}
+                      placeholder={`${t('Material')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
@@ -1130,7 +1130,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="recyclability"
                       className="digital-form-input"
                       name="recyclability"
-                       placeholder={`${t('Recyclability')}`}
+                      placeholder={`${t('Recyclability')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
@@ -1148,7 +1148,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="productOwner"
                       name="productOwner"
                       className="digital-form-input"
-                     placeholder={`${t('Product Owner')}`}
+                      placeholder={`${t('Product Owner')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
@@ -1166,7 +1166,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="LinkType"
                       name="LinkType"
                       className="digital-form-input"
-                    placeholder={`${t('Link Type')}`}
+                      placeholder={`${t('Link Type')}`}
                       required
                       onChange={(e) =>
                         handleInputChange(e, "Packaging Composition")
@@ -1203,7 +1203,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="productLeaflet"
                       className="digital-form-input"
                       name="ProductLeafletInformation"
-                     placeholder={`${t('Product Leaflet Information')}`}
+                      placeholder={`${t('Product Leaflet Information')}`}
                       required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
@@ -1254,7 +1254,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="targetURL"
                       className="digital-form-input"
                       name="TargetURL"
-                     placeholder={`${t('Target URL')}`}
+                      placeholder={`${t('Target URL')}`}
                       required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
@@ -1291,7 +1291,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="safetyInformation"
                       className="digital-form-input"
                       name="SafetyDetailedInformation"
-                     placeholder={`${t('Safety Detailed Information')}`}
+                      placeholder={`${t('Safety Detailed Information')}`}
                       required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
@@ -1308,7 +1308,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="linkType"
                       name="LinkType"
                       className="digital-form-input"
-                    placeholder={`${t('Link Type')}`}
+                      placeholder={`${t('Link Type')}`}
                       required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
@@ -1375,7 +1375,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="companyName"
                       name="companyName"
                       className="digital-form-input"
-                     placeholder={`${t('Company Name')}`}
+                      placeholder={`${t('Company Name')}`}
                       required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
@@ -1392,7 +1392,7 @@ const FormDataPopup = ({ data, showPopup, togglePopup, barcode }) => {
                       id="process"
                       name="process"
                       className="digital-form-input"
-                     placeholder={`${t('Process')}`}
+                      placeholder={`${t('Process')}`}
                       required
                       onChange={(event) =>
                         handleInputChange(event, selectedOption)
