@@ -132,3 +132,150 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+
+
+
+const foreignGtinsSchema = Joi.object({
+    BrandName: Joi.string().max(255).required(),
+    productnameenglish: Joi.string().max(255).required(),
+    moName: Joi.string().max(255),
+    barcode: Joi.string().max(50).required(),
+    details_page: Joi.string().max(255),
+    unit: Joi.string().max(50),
+    front_image: Joi.string().max(255),
+    gpc: Joi.string().max(255),
+    gpc_code: Joi.string().max(255),
+    size: Joi.string().max(255),
+    countrySale: Joi.string().max(255),
+    user_id: Joi.string(),
+    admin_id: Joi.string(),
+    companyId: Joi.string(),
+});
+
+export const createForeignGtins = async (req, res, next) => {
+    try {
+        const { error } = foreignGtinsSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const createdForeignGtins = await prisma.foreign_gtins.create({
+            data: req.body,
+        });
+
+        res.status(201).json(createdForeignGtins);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getAllForeignGtins = async (req, res, next) => {
+    try {
+        const foreignGtins = await prisma.foreign_gtins.findMany({
+            orderBy: {
+                updated_at: 'desc',
+            },
+        });
+
+        res.json(foreignGtins);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getForeignGtinsById = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error } = schema.validate(req.params);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
+
+        const { id } = req.params;
+
+        const foreignGtins = await prisma.foreign_gtins.findUnique({
+            where: { id: id },
+        });
+        if (!foreignGtins) {
+            return next(createError(404, 'Foreign GTIN not found'));
+        }
+
+        res.json(foreignGtins);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+const foreignGtinsUpdateSchema = Joi.object({
+    BrandName: Joi.string().max(255),
+    productnameenglish: Joi.string().max(255),
+    moName: Joi.string().max(255),
+    barcode: Joi.string().max(50).required(),
+    details_page: Joi.string().max(255),
+    unit: Joi.string().max(50),
+    front_image: Joi.string().max(255),
+    gpc: Joi.string().max(255),
+    gpc_code: Joi.string().max(255),
+    size: Joi.string().max(255),
+    countrySale: Joi.string().max(255),
+    user_id: Joi.string(),
+    admin_id: Joi.string(),
+    companyId: Joi.string(),
+});
+
+export const updateForeignGtins = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error: idError } = schema.validate(req.params);
+        if (idError) {
+            return next(createError(400, idError.details[0].message));
+        }
+
+        const { id } = req.params;
+
+        const { error } = foreignGtinsUpdateSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const updatedForeignGtins = await prisma.foreign_gtins.update({
+            where: { id: id },
+            data: req.body,
+        });
+
+        res.json(updatedForeignGtins);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deleteForeignGtins = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const { error } = schema.validate(req.params);
+        if (error) {
+            return next(createError(400, error.details[0].message));
+        }
+
+        const { id } = req.params;
+
+        await prisma.foreign_gtins.delete({
+            where: { id: id },
+        });
+
+        res.json({ message: 'Foreign GTIN deleted successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
