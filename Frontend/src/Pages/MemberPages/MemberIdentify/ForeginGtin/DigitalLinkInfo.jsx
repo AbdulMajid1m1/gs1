@@ -32,6 +32,7 @@ import {
 import { toast } from "react-toastify";
 import { useTranslation } from 'react-i18next';
 import FormDataPopup from "./FormDataPopup";
+import gtrackRequest from "../../../../utils/gtrackRequest";
 
 const DigitalLinkInfo = () => {
   // const { currentUser } = useContext(CurrentUserContext);
@@ -64,18 +65,18 @@ const DigitalLinkInfo = () => {
   const { openSnackbar } = useContext(SnackbarContext);
   useEffect(() => {
     // Product Type Drop Down Api
-    axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
-      .then((response) => {
-        console.log(response.data);
-        setData(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setData(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
     // // Safety Information Api
-    axios
-      .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+    gtrackRequest
+      .get(`/getSafetyInformationByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
       .then((response) => {
         console.log(response.data);
         setSafetyInformation(response.data);
@@ -92,8 +93,8 @@ const DigitalLinkInfo = () => {
 
     switch (option) {
       case "Safety Information":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getSafetyInformationByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setSafetyInformation(response.data);
@@ -110,8 +111,8 @@ const DigitalLinkInfo = () => {
         break;
 
       case "Promotional Offers":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getPromotionalOffersByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getPromotionalOffersByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setPromotionalOffers(response.data);
@@ -125,8 +126,8 @@ const DigitalLinkInfo = () => {
         break;
 
       case "Product Contents":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getProductContentByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getProductContentByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             console.log("called");
@@ -141,8 +142,8 @@ const DigitalLinkInfo = () => {
         break;
 
       case "ProductLocationofOrigin":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getProductLocationOriginByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getProductLocationOriginByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setProductLocationofOrigin(response.data);
@@ -156,8 +157,8 @@ const DigitalLinkInfo = () => {
         break;
 
       case "ProductRecall":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getProductsRecallByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getProductsRecallByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setProductRecall(response.data);
@@ -171,8 +172,8 @@ const DigitalLinkInfo = () => {
         break;
 
       case "recipe":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getRecipeDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getRecipeDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setRecipe(response.data);
@@ -186,9 +187,9 @@ const DigitalLinkInfo = () => {
         break;
 
       case "PackagingComposition":
-        axios
+        gtrackRequest
           .get(
-            `http://gs1ksa.org:7000/api/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`
+            `/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`
           )
           .then((response) => {
             console.log(response.data);
@@ -204,8 +205,8 @@ const DigitalLinkInfo = () => {
         break;
 
       case "ElectronicLeaflets":
-        axios
-          .get(`http://gs1ksa.org:7000/api/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
+        gtrackRequest
+          .get(`/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}?companyId=${memberData?.companyID}`)
           .then((response) => {
             console.log(response.data);
             setElectronicLeaflets(response.data);
