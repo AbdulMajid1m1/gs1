@@ -2,6 +2,8 @@ import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import axios from 'axios';
+import { gs1dlPrisma, wtracePrisma } from '../prismaMultiClinets.js';
+import { brandOwnerMarkers, ifBatch, ifSerial, normalSearch } from '../utils/functions/foreignGtinFunctions.js';
 
 
 export const getGtinProductDetailsFromLocalDb = async (req, res, next) => {
@@ -305,3 +307,75 @@ export const deleteForeignGtins = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+export const searchGTINwithMap = async (req, res, next) => {
+    try {
+        let gtinInformation = '';
+        let serialBatches = [];
+        let serials = [];
+        let batches = []; // Define batches variable here
+
+        if (req.query.gtin) {
+            gtinInformation = await wtracePrisma.tblGLNTagIDEvents.findMany({
+                where: { ItemRefNo: req.query.gtin },
+            });
+
+            serialBatches = await gs1dlPrisma.tblProductContents.findMany({
+                where: { GTIN: req.query.gtin },
+                select: { Batch: true, Serial: true },
+            });
+
+            batches = [...new Set(serialBatches.map(item => item.Batch))]; // Assign batches here
+            serials = [...new Set(serialBatches.map(item => item.Serial))];
+        }
+
+        gtinInformation.sort((a, b) => new Date(a.TrxDateLastUpdate) - new Date(b.TrxDateLastUpdate));
+
+        if (gtinInformation.length > 0) {
+            let getLatLong = [];
+
+            if (req.query.batch) {
+                getLatLong = await ifBatch(req.query);
+            } else if (req.query.serial) {
+                getLatLong = await ifSerial(req.query);
+            } else {
+                getLatLong = await normalSearch(req.query);
+            }
+
+            getLatLong.sort((a, b) => new Date(a.TrxDateLastUpdate) - new Date(b.TrxDateLastUpdate));
+
+            const eventLocations = getLatLong.map(value => ({
+                latitude: value.ItemGPSOnGoLat,
+                longitude: value.ItemGPSOnGoLon,
+                name: value.TrxEventId,
+                description: value.TrxEventDescription,
+                locationName: '', // Add logic to fetch locationName from user table
+                serial: value.Serial,
+                type: 'event',
+            }));
+
+            const brandOwnerMarkerDetails = await brandOwnerMarkers(req.query);
+            const locations = [...eventLocations, ...brandOwnerMarkerDetails];
+
+            const googleMap = {
+                locations,
+                initialSerial: req.query.initalSerial,
+            };
+
+            return res.status(200).json({
+                gtinInformation,
+                googleMap,
+                orderBySerial: [...serials],
+                orderByBatch: [...batches],
+            });
+        } else {
+            return res.status(404).json({ message: 'GTIN not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+

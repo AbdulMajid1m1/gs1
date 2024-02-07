@@ -1,0 +1,121 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../../node_modules/@prisma/clientGs1Dl"
+}
+
+datasource db {
+    provider = "sqlserver"
+    url      = env("GS1DL_DB_URL")
+}
+
+model tblPkgComposition {
+    ID                     Int     @id(map: "PK_tblPkgComposition") @default(autoincrement())
+    logo                   String? @db.NVarChar(50)
+    title                  String? @db.NVarChar(255)
+    consumerProductVariant String? @db.NVarChar(50)
+    packaging              String? @db.NVarChar(255)
+    material               String? @db.NVarChar(255)
+    recyclability          String? @db.NVarChar(255)
+    productOwner           String? @db.NVarChar(255)
+    LinkType               String? @db.NVarChar(Max)
+    GTIN                   String? @db.NVarChar(13)
+    brand_owner            String? @db.NVarChar(50)
+    companyId              String? @db.VarChar(255)
+}
+
+model tblProductContents {
+    ID                          Decimal   @id(map: "PK_tblProductContents") @db.Decimal(18, 0)
+    ProductAllergenInformation  String?   @db.NVarChar(50)
+    ProductNutrientsInformation String?   @db.NVarChar(50)
+    GTIN                        String?   @db.NVarChar(50)
+    LinkType                    String?   @db.NVarChar(Max)
+    Batch                       String?   @db.NVarChar(50)
+    Expiry                      String?   @db.NVarChar(50)
+    Serial                      String?   @db.NVarChar(50)
+    ManufacturingDate           DateTime?
+    bestBeforeDate              String?   @db.NVarChar(50)
+    GLNIDFrom                   String?   @db.NVarChar(13)
+    unitPrice                   Float?
+    ingredients                 String?   @db.Text
+    allergen_info               String?   @db.Text
+    calories                    String?   @db.NVarChar(50)
+    sugar                       String?   @db.NVarChar(50)
+    salt                        String?   @db.NVarChar(50)
+    fat                         String?   @db.NVarChar(50)
+    companyId                   String?   @db.VarChar(255)
+}
+
+model tblProductLeafLets {
+    ID                        Decimal @id(map: "PK_tblProductLeafLets") @db.Decimal(18, 0)
+    ProductLeafletInformation String? @db.NVarChar(50)
+    Lang                      String? @db.NVarChar(50)
+    LinkType                  String? @db.NVarChar(Max)
+    TargetURL                 String? @db.NVarChar(50)
+    GTIN                      String? @db.NVarChar(50)
+    PdfDoc                    String? @db.NVarChar(Max)
+    companyId                 String? @db.VarChar(255)
+}
+
+model tblProductLocationOrigin {
+    ID                    Decimal @id(map: "PK_tblProductLocationOrigin") @db.Decimal(18, 0)
+    ProductLocationOrigin String? @db.NVarChar(50)
+    LinkType              String? @db.NVarChar(Max)
+    Lang                  String? @db.NVarChar(50)
+    TargetURL             String? @db.NVarChar(Max)
+    GTIN                  String? @db.NVarChar(50)
+    ExpiryDate            String? @db.NVarChar(50)
+    companyId             String? @db.VarChar(255)
+}
+
+model tblProductRecall {
+    ID            Decimal @id(map: "PK_tblProductRecall") @db.Decimal(18, 0)
+    ProductRecall String? @db.NVarChar(50)
+    LinkType      String? @db.NVarChar(Max)
+    Lang          String? @db.NVarChar(50)
+    TargetURL     String? @db.NVarChar(Max)
+    GTIN          String? @db.NVarChar(50)
+    ExpiryDate    String? @db.NVarChar(50)
+    companyId     String? @db.VarChar(255)
+}
+
+model tblProductSafetyInformation {
+    ID                        Decimal @id(map: "PK_tblProductSafetyInformatio") @db.Decimal(18, 0)
+    SafetyDetailedInformation String? @db.NVarChar(50)
+    LinkType                  String? @db.NVarChar(Max)
+    Lang                      String? @db.NVarChar(50)
+    TargetURL                 String? @db.NVarChar(Max)
+    GTIN                      String? @db.NVarChar(50)
+    logo                      String? @db.NVarChar(50)
+    companyName               String? @db.NVarChar(50)
+    process                   String? @db.Text
+    companyId                 String? @db.VarChar(255)
+}
+
+model tblProductType {
+    ID              Decimal @id(map: "PK_tblProductSafetyInformation") @db.Decimal(18, 0)
+    TypeDescription String? @db.NVarChar(50)
+}
+
+model tblPromotionalOffers {
+    ID                Decimal @id(map: "PK_tblPromotionalOffers") @db.Decimal(18, 0)
+    PromotionalOffers String? @db.NVarChar(50)
+    LinkType          String? @db.NVarChar(Max)
+    Lang              String? @db.NVarChar(50)
+    TargetURL         String? @db.NVarChar(Max)
+    GTIN              String? @db.NVarChar(50)
+    ExpiryDate        String? @db.NVarChar(50)
+    price             Float?
+    banner            String? @db.NVarChar(50)
+    companyId         String? @db.VarChar(255)
+}
+
+model tblRecipe {
+    ID          Int     @id(map: "PK_tblRecipe") @default(autoincrement())
+    logo        String? @db.NVarChar(50)
+    title       String? @db.NVarChar(Max)
+    description String? @db.NVarChar(Max)
+    ingredients String? @db.NVarChar(Max)
+    LinkType    String? @db.NVarChar(Max)
+    GTIN        String? @db.NVarChar(13)
+    companyId   String? @db.VarChar(255)
+}
