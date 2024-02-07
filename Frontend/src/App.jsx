@@ -73,7 +73,6 @@ import UDI from "./Pages/MemberPages/MemberIdentify/UDI/UDI.jsx";
 import SSCC from "./Pages/MemberPages/SSCC/SSCC";
 import AddSSCC from "./Pages/MemberPages/SSCC/AddSSCC";
 import UpdateSSCC from "./Pages/MemberPages/SSCC/UpdateSSCC";
-import ForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/ForeignGTIN";
 import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/AdminGTIN";
 import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/AdminSSCC";
 import Gln from "./Pages/AdminPages/AdminIndentify/GLN/AdminGLN";
@@ -128,6 +127,9 @@ import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/L
 import ForeginGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/ForeginGtin.jsx";
 import AddForeignGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/AddForeignGtin.jsx";
 import DigitalLinkInfo from "./Pages/MemberPages/MemberIdentify/ForeginGtin/DigitalLinkInfo.jsx";
+import AdminForeginGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminForeignGTIN.jsx";
+import AdminAddForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminAddForeignGTIN.jsx";
+import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminDigitalLinkInfo.jsx";
 
 const queryClient = new QueryClient()
 
@@ -445,9 +447,11 @@ const App = () => {
                               {/* <Route path="foreign-gtin" element={<ForeignGTIN />} /> */}
                               <Route path="foreign-gtin" element={
                                 <ProtectedRoute requiredPermission="foreign_gtin">
-                                  <ForeignGTIN />
+                                  <AdminForeginGTIN />
                                 </ProtectedRoute>
                               } />
+                              <Route path="admin-add-foreign" element={<AdminAddForeignGTIN />} />
+                              <Route path="admin-digital-link" element={<AdminDigitalLinkInfo />} />
 
                               <Route path="front-end" element={<Frontend />} />
                               <Route path="settings" element={<Settings />} />
