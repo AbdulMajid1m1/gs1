@@ -56,7 +56,7 @@ const  ForeginGtin = () => {
     }
   };
 
-
+  
 
   const fetchGtinProducts = async () => {
     try {
