@@ -44,7 +44,8 @@ const  ForeginGtin = () => {
 
   const fetchData = async () => {
     try {
-      const response = await newRequest.get(`/foreignGtin`);
+      // const response = await newRequest.get(`/foreignGtin`);
+      const response = await newRequest.get(`/foreignGtin?companyId=${memberData?.companyID}`);
       console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
