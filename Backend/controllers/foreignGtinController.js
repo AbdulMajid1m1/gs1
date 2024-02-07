@@ -75,8 +75,6 @@ export const getGtinProductDetailsFromLocalDb = async (req, res, next) => {
     }
 }
 
-
-
 export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
     try {
         // Validate barcode input
@@ -105,22 +103,21 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
 
         const globalGepir = response.data;
 
-        if (!globalGepir[0]['validationErrors']) {
-            // Construct response object if there are no validation errors
+        if (globalGepir.length > 0 && !globalGepir[0]['validationErrors']) {
+            // Ensure that globalGepir[0] and other required properties are defined before accessing them
+            const firstEntry = globalGepir[0];
             const globalGepirArr = {
-                gtin: globalGepir[0]['gtin'] ?? '',
-                companyName: globalGepir[0]['licenseeName'] ?? '',
-                gpcCategoryCode: globalGepir[0]['gpcCategoryCode'] ?? '',
-                brandName: globalGepir[0]['brandName'][0]['value'] ?? '',
-                productDescription: globalGepir[0]['productDescription'][0]['value'] ?? '',
-                productImageUrl: globalGepir[0]['productImageUrl'][0]['value'] ?? '', // Handle default image if needed
-                unitCode: globalGepir[0]['netContent'][0]['unitCode'] ?? '',
-                unitValue: globalGepir[0]['netContent'][0]['value'] ?? '',
-                countryOfSaleCode: globalGepir[0]['countryOfSaleCode'][0]['alpha3'] ?? '',
-                productName: globalGepir[0]['productDescription'][0]['value'] ?? '',
-                // licenceKey: globalGepir[0]['gs1Licence']['licenceKey'] ?? '',
-                // licenceType: globalGepir[0]['gs1Licence']['licenceType'] ?? '',
-                moName: globalGepir[0]['gs1Licence']['licensingMO']['moName'] ?? '',
+                gtin: firstEntry.gtin ?? '',
+                companyName: firstEntry.licenseeName ?? '',
+                gpcCategoryCode: firstEntry.gpcCategoryCode ?? '',
+                brandName: firstEntry.brandName && firstEntry.brandName[0] ? firstEntry.brandName[0].value : '',
+                productDescription: firstEntry.productDescription && firstEntry.productDescription[0] ? firstEntry.productDescription[0].value : '',
+                productImageUrl: firstEntry.productImageUrl && firstEntry.productImageUrl[0] ? firstEntry.productImageUrl[0].value : '',
+                unitCode: firstEntry.netContent && firstEntry.netContent[0] ? firstEntry.netContent[0].unitCode : '',
+                unitValue: firstEntry.netContent && firstEntry.netContent[0] ? firstEntry.netContent[0].value : '',
+                countryOfSaleCode: firstEntry.countryOfSaleCode && firstEntry.countryOfSaleCode[0] ? firstEntry.countryOfSaleCode[0].alpha3 : '',
+                productName: firstEntry.productDescription && firstEntry.productDescription[0] ? firstEntry.productDescription[0].value : '',
+                moName: firstEntry.gs1Licence && firstEntry.gs1Licence.licensingMO ? firstEntry.gs1Licence.licensingMO.moName : '',
                 type: 'gepir',
             };
 
@@ -134,7 +131,6 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
         next(error);
     }
 };
-
 
 
 
