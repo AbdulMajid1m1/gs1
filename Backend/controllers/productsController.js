@@ -66,6 +66,74 @@ export const getProducts = async (req, res, next) => {
         next(error);
     }
 };
+
+
+export const searchMemberGtin = async (req, res, next) => {
+    const { gtin } = req.body;
+
+    try {
+        const products = await prisma.products.findFirst({
+            where: {
+                barcode: {
+                    contains: gtin,
+                },
+                deleted_at: null,
+            },
+        });
+
+        if (products) {
+            const member = await prisma.users.findFirst({
+                where: {
+                    id: products.user_id,
+                },
+            });
+
+            // You can fetch productContents and other data here as needed
+            const productContents = await prisma.product_consents.findMany({
+                where: {
+                    barcode: gtin,
+                },
+            });
+
+            // Define your response object with properties
+            const responseObj = {
+                status: 200,
+                gtinArr: {
+                    gtin: products.barcode,
+                    companyName: member.company_name_eng,
+                    licenceKey: member.gcpGLNID,
+                    website: member.website,
+                    address: member.address,
+                    licenceType: 'GS1 Saudi Arabia', // Modify as needed
+                    gpcCategoryCode: products.gpc_code,
+                    brandName: products.BrandName,
+                    productDescription: products.details_page,
+                    productImageUrl: 'https://example.com/image.jpg', // Replace with actual image URL
+                    unitCode: products.unit,
+                    unitValue: products.size,
+                    countryOfSaleCode: products.countrySale,
+                    productName: products.productnameenglish,
+                    gcpGLNID: member.gcpGLNID,
+                    status: products.status === 1 ? 'Active' : 'InActive',
+                    // Add more properties here
+                },
+                productContents: productContents, // Add productContents data here
+            };
+
+            return res.status(200).json(responseObj);
+        } else {
+            return res.status(404).json({ status: 404, message: 'Data not found!' });
+        }
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+
+};
+
+
+
+
 // Joi schema for product validation
 const productSchema = Joi.object({
     user_id: Joi.string().required(),

@@ -73,7 +73,6 @@ import UDI from "./Pages/MemberPages/MemberIdentify/UDI/UDI.jsx";
 import SSCC from "./Pages/MemberPages/SSCC/SSCC";
 import AddSSCC from "./Pages/MemberPages/SSCC/AddSSCC";
 import UpdateSSCC from "./Pages/MemberPages/SSCC/UpdateSSCC";
-import ForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/ForeignGTIN";
 import Gtin from "./Pages/AdminPages/AdminIndentify/GTIN/AdminGTIN";
 import Sscc from "./Pages/AdminPages/AdminIndentify/SSCC/AdminSSCC";
 import Gln from "./Pages/AdminPages/AdminIndentify/GLN/AdminGLN";
@@ -127,6 +126,11 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import LicenceRegistry from "./Pages/AdminPages/AdminIndentify/LicenceRegistry/LicenceRegistry";
 import ForeginGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/ForeginGtin.jsx";
 import AddForeignGtin from "./Pages/MemberPages/MemberIdentify/ForeginGtin/AddForeignGtin.jsx";
+import DigitalLinkInfo from "./Pages/MemberPages/MemberIdentify/ForeginGtin/DigitalLinkInfo.jsx";
+import AdminForeginGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminForeignGTIN.jsx";
+import AdminAddForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminAddForeignGTIN.jsx";
+import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminDigitalLinkInfo.jsx";
+import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedByGS1/MemberVerifiedByGS1.jsx";
 import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 
 const queryClient = new QueryClient()
@@ -241,6 +245,7 @@ const App = () => {
                               <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
 
                               <Route path="member-foregin-gtin" element={<ForeginGtin />} />
+                              <Route path="foreign-digital-link" element={<DigitalLinkInfo />} />
                               <Route path="member-add-foreign" element={<AddForeignGtin />} />
 
                               <Route path="gs1-members" element={<Gs1Members />} />
@@ -253,6 +258,7 @@ const App = () => {
 
                               <Route path="payment-slips" element={<PaymentSlips />} />
                               <Route path="bank-slip" element={<BankSlip />} />
+                              <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} />
                               <Route path="transaction-history" element={<TransactionHistory />} />
                               <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                               <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
@@ -445,9 +451,11 @@ const App = () => {
                               {/* <Route path="foreign-gtin" element={<ForeignGTIN />} /> */}
                               <Route path="foreign-gtin" element={
                                 <ProtectedRoute requiredPermission="foreign_gtin">
-                                  <ForeignGTIN />
+                                  <AdminForeginGTIN />
                                 </ProtectedRoute>
                               } />
+                              <Route path="admin-add-foreign" element={<AdminAddForeignGTIN />} />
+                              <Route path="admin-digital-link" element={<AdminDigitalLinkInfo />} />
 
                               <Route path="front-end" element={<Frontend />} />
                               <Route path="settings" element={<Settings />} />

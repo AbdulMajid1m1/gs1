@@ -102,6 +102,7 @@ model admins {
   gtin_subscription_histories           gtin_subscription_histories[]
   users                                 users[]
   roles                                 AdminRole[]
+  foreign_gtins                         foreign_gtins[]
 }
 
 model Role {
@@ -497,22 +498,27 @@ model foreign_barcodes_downloads {
 }
 
 model foreign_gtins {
-  id                 BigInt    @id(map: "PK__foreign___3213E83F3120CA0A") @default(autoincrement())
-  BrandName          String    @db.VarChar(255)
-  productnameenglish String    @db.VarChar(255)
-  moName             String?   @db.VarChar(255)
-  barcode            String    @db.VarChar(50)
-  details_page       String?   @db.VarChar(255)
-  unit               String?   @db.VarChar(50)
-  front_image        String?   @db.NVarChar(255)
-  gpc                String?   @db.NVarChar(255)
-  gpc_code           String?   @db.NVarChar(255)
-  size               String?   @db.NVarChar(255)
-  countrySale        String?   @db.NVarChar(255)
-  user_id            Int       @default(0, map: "DF__foreign_g__user___75C27486")
-  admin_id           Int       @default(0, map: "DF__foreign_g__admin__76B698BF")
-  created_at         DateTime? @db.DateTime
-  updated_at         DateTime? @db.DateTime
+  id                 String   @id @default(cuid())
+  BrandName          String   @db.VarChar(255)
+  productnameenglish String   @db.VarChar(255)
+  moName             String?  @db.VarChar(255)
+  barcode            String   @db.VarChar(50)
+  details_page       String?  @db.VarChar(255)
+  unit               String?  @db.VarChar(50)
+  front_image        String?  @db.NVarChar(255)
+  gpc                String?  @db.NVarChar(255)
+  gpc_code           String?  @db.NVarChar(255)
+  size               String?  @db.NVarChar(255)
+  countrySale        String?  @db.NVarChar(255)
+  user_id            String?
+  admin_id           String?
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  companyId          String?
+  //create user and admin relation
+
+  user  users?  @relation(fields: [user_id], references: [id])
+  admin admins? @relation(fields: [admin_id], references: [id])
 }
 
 model g_c_p_information {
@@ -1679,6 +1685,10 @@ model products {
   image_1            String?   @db.VarChar(255)
   image_2            String?   @db.VarChar(255)
   image_3            String?   @db.VarChar(255)
+  // create user relation
+  user               users     @relation(fields: [user_id], references: [id])
+
+  @@index([barcode], map: "products_barcode_index")
 }
 
 model products_udis {
@@ -2091,6 +2101,8 @@ model users {
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   member_documents member_documents[]
+  foreign_gtins    foreign_gtins[]
+  products         products[]
 }
 
 model rejected_users {

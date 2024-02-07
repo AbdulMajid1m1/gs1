@@ -3,15 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import DigitalUrlWithoutSidebar from './DigitalUrlWithoutSidebar';
 import EventsMap from './EventsMap';
-import axios from 'axios';
-import { SnackbarContext } from '../../../../Contexts/SnackbarContext';
 import "./ProductInformation.css"
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
+import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
 import newRequest from '../../../../utils/userRequest';
 
-const VerifiedByGS1 = () => {
+const MemberVerifiedByGS1 = () => {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState('home');
   const [gtin, setGTIN] = useState("");
@@ -142,7 +140,7 @@ const VerifiedByGS1 = () => {
         <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         {/* <div className="p-3 h-full "> */}
         <div>
-          <AdminDashboardRightHeader title={'Verified By GS1'}/>
+          <DashboardRightHeader title={'Verified By GS1'}/>
         </div>
 
         {/* Head  */}
@@ -420,4 +418,4 @@ const VerifiedByGS1 = () => {
   )
 }
 
-export default VerifiedByGS1
+export default MemberVerifiedByGS1

@@ -457,10 +457,10 @@ const SideBar = () => {
               onClick={toggleSidebar}
             >
               <div
-                className={`main-images-container ${selectedItem === '/member' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={() => handleItemClick('/member')}
+                className={`main-images-container ${selectedItem === '/member/member-verified-by-gs1' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={() => handleItemClick('/member/member-verified-by-gs1')}
                 onContextMenu={(event) =>
-                  handleContextMenu(event, '/member')
+                  handleContextMenu(event, '/member/member-verified-by-gs1')
                 }
               >
                 <img

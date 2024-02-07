@@ -9,16 +9,17 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const AddForeignGtin = () => {
+const AdminAddForeignGTIN = () => {
     const { t, i18n } = useTranslation();
     const [activeTab, setActiveTab] = useState('product-Infomation');
     const [userSearch, setUserSearch] = useState('');
     const [data, setData] = useState([]);
-    const memberDataString = sessionStorage.getItem('memberData');
-    const memberData = JSON.parse(memberDataString);
-    // console.log(memberData);
     const [isLoading, setIsLoading] = useState(false);
     const [addProductsLoader, setAddProductsLoader] = useState(false);
+    const selectedAddGtinData = sessionStorage.getItem('selectedForeignGtinData');
+    const SelectedData = JSON.parse(selectedAddGtinData);
+    console.log(SelectedData);
+
     const navigate = useNavigate();
 
     const handleTabClick = (tab) => {
@@ -58,7 +59,7 @@ const AddForeignGtin = () => {
               } 
               catch (globalError) {
                 console.log(globalError);
-                toast.error(globalError?.response?.data?.error || 'Something went wrong');
+                toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || 'Something went wrong');
                 setData([]);
               }
             }
@@ -112,6 +113,7 @@ const AddForeignGtin = () => {
           gpc_code: data?.gpcCategoryCode,
           // size: data?.size,
           countrySale: data?.countryOfSaleCode,
+          companyId: SelectedData?.companyID,
         });
         console.log(response?.data);
         toast.success(response?.data?.message || 'Product Added Successfully');
@@ -135,8 +137,6 @@ const AddForeignGtin = () => {
           <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
             <div>
                 <DashboardRightHeader title={`${t('Add Foreign GTIN')}`} 
-                    member={`Member: ${memberData?.company_name_eng}`} 
-                    gcp={`GCP: ${memberData?.gcpGLNID}`}
                     />
             </div>
 
@@ -149,7 +149,7 @@ const AddForeignGtin = () => {
                         <p className="font-semibold"> {t('Complete Data')}</p>
                         <p>
                           {t('This number is registered to company')}: :{" "}
-                          <span className="font-semibold">{memberData?.company_name_eng}</span>
+                          <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                             {/* <span className="font-semibold">Hasnain, Majid</span> */}
                         </p>
                       </div>
@@ -292,4 +292,4 @@ const AddForeignGtin = () => {
         </>
     )
 }
-export default AddForeignGtin;
+export default AdminAddForeignGTIN;
