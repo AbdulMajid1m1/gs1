@@ -197,7 +197,7 @@ const AdminForeginGTIN = () => {
   const handleDigitalUrlInfo = (row) => {
     sessionStorage.setItem("selectedAdminProductData", JSON.stringify(row));
     navigate("/admin/admin-digital-link")
-  }
+  }   
 
   const handleDelete = async (row) => {
     try {
