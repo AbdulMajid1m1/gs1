@@ -12,6 +12,7 @@ import { generateProdcutGTIN, isValidGCPInBarcode } from '../utils/functions/bar
 import { ADMIN_EMAIL } from '../configs/envConfig.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
+import { gs1dlPrisma } from '../prismaMultiClinets.js';
 
 
 function checkExpiryDate(expiryDate) {
@@ -89,9 +90,9 @@ export const searchMemberGtin = async (req, res, next) => {
             });
 
             // You can fetch productContents and other data here as needed
-            const productContents = await prisma.product_consents.findMany({
+            const productContents = await gs1dlPrisma.tblProductContents.findMany({
                 where: {
-                    barcode: gtin,
+                    GTIN: gtin,
                 },
             });
 
