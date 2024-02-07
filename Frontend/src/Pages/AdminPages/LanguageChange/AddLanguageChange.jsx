@@ -16,7 +16,7 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleAddCompany = async () => {
         try {
-            const response = await axios.post('http://localhost:3091/translations', {
+            const response = await axios.post('http://gs1ksa.org:3091/translations', {
                 'key': category_name_en,
                 'value': category_name_ar,
             });

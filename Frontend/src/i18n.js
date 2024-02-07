@@ -15,7 +15,7 @@ const dynamicTranslations = {
 // Function to fetch translations
 const fetchTranslations = async () => {
   try {
-    const response = await fetch('http://localhost:3091/translations');
+    const response = await fetch('http://gs1ksa.org:3091/translations');
     const data = await response.json();
 
     if (data) {
