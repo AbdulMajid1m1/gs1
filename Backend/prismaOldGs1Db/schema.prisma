@@ -10,6 +10,7 @@ datasource db {
   schemas  = ["MEM", "dbo", "FW", "MST"]
 }
 
+
 model Advertisement {
   AdvertisementID       Int       @id(map: "PK_Advertisement") @default(autoincrement())
   AdvertisementContectE String    @db.NVarChar(Max)

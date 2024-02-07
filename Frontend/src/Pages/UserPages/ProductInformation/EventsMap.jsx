@@ -50,7 +50,8 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
 
         console.log(bodyData)
         try {
-            const res = await axios.get(`https://gs1ksa.org/api/search/event/gtin/with/maps`, {
+            // const res = await axios.get(`https://gs1ksa.org/api/search/event/gtin/with/maps`, {
+            const res = await newRequest.get("/foreignGtin/searchGTINwithMap", {
                 params: bodyData
             });
             const locations = res.data?.googleMap?.locations;

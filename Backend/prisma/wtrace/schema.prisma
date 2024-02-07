@@ -1,11 +1,316 @@
 generator client {
-    provider        = "prisma-client-js"
-    output          = "../node_modules/@prisma/clientWtrace"
- 
+  provider = "prisma-client-js"
+  output   = "../../node_modules/@prisma/clientWtrace"
 }
 
 datasource db {
-    provider = "sqlserver"
-    url      = env("WTRACE_DB_URL")
+  provider = "sqlserver"
+  url      = env("WTRACE_DB_URL")
+}
 
+model AssociationEvent {
+  ID                  Decimal @id(map: "PK_AssociationEvent") @db.Decimal(18, 0)
+  eventType           String? @db.NVarChar(Max)
+  eventTime           String? @db.NVarChar(Max)
+  eventTimeZoneOffSet String? @db.NVarChar(Max)
+  eventID             String? @db.NVarChar(Max)
+  parentID            String? @db.NVarChar(Max)
+  childEPCs           String? @db.NVarChar(Max)
+  action              String? @db.NVarChar(Max)
+  bizStep             String? @db.NVarChar(Max)
+  readPoint           String? @db.NVarChar(Max)
+}
+
+model EPCIS {
+  id                 Int     @id(map: "PK__EPCIS__3213E83FEAF0F648") @default(autoincrement())
+  type               String? @db.NVarChar(255)
+  parentID           String? @db.NVarChar(255)
+  childEPCs          String? @db.NVarChar(Max)
+  childQuantityList  String? @db.NVarChar(Max)
+  action             String? @db.NVarChar(255)
+  bizStep            String? @db.NVarChar(255)
+  disposition        String? @db.NVarChar(255)
+  readPoint          String? @db.NVarChar(255)
+  bizLocation        String? @db.NVarChar(255)
+  bizTransactionList String? @db.NVarChar(Max)
+  sourceList         String? @db.NVarChar(Max)
+  destinationList    String? @db.NVarChar(Max)
+  sensorElementList  String? @db.NVarChar(Max)
+}
+
+model EPCISEvents {
+  ID                    Decimal   @id(map: "PK_EPCISEvents") @db.Decimal(18, 0)
+  EventType             String?   @db.NVarChar(Max)
+  EventAction           String?   @db.NVarChar(Max)
+  EventTime             DateTime?
+  EventTimeZoneOffSet   DateTime? @db.DateTimeOffset
+  epcList               String?   @db.NVarChar(Max)
+  bizStep               String?   @db.NVarChar(Max)
+  disposition           String?   @db.NVarChar(Max)
+  bizTransactionList    String?   @db.NVarChar(Max)
+  readPoint             String?   @db.NVarChar(Max)
+  sourceList            String?   @db.NVarChar(Max)
+  destinationList       String?   @db.NVarChar(Max)
+  sensorElementList     String?   @db.NVarChar(Max)
+  childQuantityList     String?   @db.NVarChar(Max)
+  childEPCs             String?   @db.NVarChar(Max)
+  parentID              String?   @db.NVarChar(Max)
+  inputEPCList          String?   @db.NVarChar(Max)
+  inputQuantityList     String?   @db.NVarChar(Max)
+  outputEPCList         String?   @db.NVarChar(Max)
+  ilmd                  String?   @db.NVarChar(Max)
+  eventID               String?   @db.NVarChar(Max)
+  errorDeclaration      String?   @db.NVarChar(Max)
+  quantityList          String?   @db.NVarChar(Max)
+  persistentDisposition String?   @db.NVarChar(Max)
+  creationDate          DateTime?
+  sender                String?   @db.NVarChar(50)
+  receiver              String?   @db.NVarChar(50)
+  instanceIdentifer     String?   @db.NVarChar(Max)
+}
+
+model pos_gtrack_invoices {
+  id            BigInt    @id(map: "PK__pos_gtra__3213E83F0A52D020") @default(autoincrement())
+  transaction   String    @db.NVarChar(255)
+  vat_no        String    @db.NVarChar(255)
+  invoice_no    String    @db.NVarChar(255)
+  customerName  String    @db.NVarChar(255)
+  totalAmount   Float
+  cashAmount    Float?
+  tender_amount Float
+  change_amount Float?
+  pos_addons    String    @db.NVarChar(Max)
+  date          DateTime  @db.Date
+  created_at    DateTime? @db.DateTime
+  updated_at    DateTime? @db.DateTime
+  time          String?   @db.Text
+  user_id       Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tbl_ItemMasterW {
+  ItemCode       String   @default("", map: "DF__tbl_ItemM__ItemC__123EB7A3") @db.VarChar(100)
+  ItemDesc       String?  @db.NVarChar(255)
+  GTIN           String?  @default("", map: "DF__tbl_ItemMa__GTIN__14270015") @db.VarChar(150)
+  Remarks        String?  @default("", map: "DF__tbl_ItemM__Remar__151B244E") @db.VarChar(100)
+  User           String?  @default("", map: "DF__tbl_ItemMa__User__160F4887") @db.VarChar(50)
+  Classification String?  @default("", map: "DF__tbl_ItemM__Class__17036CC0") @db.VarChar(150)
+  MainLocation   String?  @default("", map: "DF__tbl_ItemM__MainL__17F790F9") @db.VarChar(200)
+  BinLocation    String?  @default("", map: "DF__tbl_ItemM__BinLo__18EBB532") @db.VarChar(200)
+  IntCode        String?  @default("", map: "DF__tbl_ItemM__IntCo__19DFD96B") @db.VarChar(150)
+  ItemSerialNo   String?  @default("", map: "DF__tbl_ItemM__ItemS__1AD3FDA4") @db.VarChar(200)
+  MapDate        DateTime @db.Date
+  PalletCode     String?  @default("", map: "DF__tbl_ItemM__Palle__1BC821DD") @db.VarChar(255)
+  Reference      String   @default("", map: "DF__tbl_ItemM__Refer__1CBC4616") @db.VarChar(100)
+  SID            String?  @default("", map: "DF__tbl_ItemMas__SID__1DB06A4F") @db.VarChar(50)
+  CID            String?  @default("", map: "DF__tbl_ItemMas__CID__1EA48E88") @db.VarChar(50)
+  PO             String?  @default("", map: "DF__tbl_ItemMast__PO__1F98B2C1") @db.VarChar(50)
+  Trans          Decimal? @default(0, map: "DF__tbl_ItemM__Trans__208CD6FA") @db.Decimal(10, 0)
+
+  @@index([SID, CID, ItemCode], map: "Ref")
+  @@index([ItemCode], map: "WDIDX16680736880")
+  @@index([ItemDesc], map: "WDIDX16680736881")
+  @@index([GTIN], map: "WDIDX16680736882")
+  @@index([Remarks], map: "WDIDX16680736883")
+  @@index([User], map: "WDIDX16680736894")
+  @@index([Classification], map: "WDIDX16680736895")
+  @@index([MainLocation], map: "WDIDX16680736896")
+  @@index([BinLocation], map: "WDIDX16680736897")
+  @@index([IntCode], map: "WDIDX16680736898")
+  @@index([ItemSerialNo], map: "WDIDX16680736899")
+  @@index([MapDate], map: "WDIDX166807369010")
+  @@index([PalletCode], map: "WDIDX166807369011")
+  @@index([Reference], map: "WDIDX166807369012")
+  @@index([SID], map: "WDIDX166807369013")
+  @@index([CID], map: "WDIDX166807369014")
+  @@index([PO], map: "WDIDX166807369015")
+  @@index([Trans], map: "WDIDX166807369116")
+  @@ignore
+}
+
+model tblConsumers {
+  tblTrxHeaderSessionID Decimal   @id(map: "PK__tblConsu__17CBB52B12F5E298") @unique(map: "WDIDX16681702440") @db.Decimal(19, 0)
+  TrxTypeId             String?   @default("", map: "DF__tblConsum__TrxTy__236943A5") @db.VarChar(50)
+  TrxEventId            String?   @default("", map: "DF__tblConsum__TrxEv__245D67DE") @db.VarChar(50)
+  TrxDateCreated        DateTime?
+  TrxDateLastUpdate     DateTime?
+  TrxGLNIDFrom          String?   @default("", map: "DF__tblConsum__TrxGL__25518C17") @db.VarChar(50)
+  MobileNo              String?   @default("", map: "DF__tblConsum__Mobil__2645B050") @db.VarChar(50)
+  FullName              String?   @default("", map: "DF__tblConsum__FullN__2739D489") @db.VarChar(150)
+}
+
+model tblGLNMaster {
+  tblGLNMasterID         Decimal  @id(map: "PK__tblGLNMa__9CDF3F4F479D8862") @unique(map: "WDIDX16659945530") @db.Decimal(19, 0)
+  MemberID               Decimal? @default(0, map: "DF__tblGLNMas__Membe__2B3F6F97") @db.Decimal(10, 0)
+  MemberGLNID            String?  @default("", map: "DF__tblGLNMas__Membe__2C3393D0") @db.VarChar(50)
+  GLNID_PhysicalLocation String?  @default("", map: "DF__tblGLNMas__GLNID__2D27B809") @db.VarChar(50)
+  GLNID_GPSLat           String?  @default("", map: "DF__tblGLNMas__GLNID__2E1BDC42") @db.VarChar(100)
+  GLNID_GPSLon           String?  @default("", map: "DF__tblGLNMas__GLNID__2F10007B") @db.VarChar(100)
+
+  @@index([MemberID], map: "WDIDX16659945531")
+  @@index([MemberGLNID], map: "WDIDX16659945532")
+  @@index([GLNID_PhysicalLocation], map: "WDIDX16659945533")
+}
+
+model TblGLNTagIDEvents {
+  tblTrxHeaderSessionID Decimal   @id(map: "PK__TblGLNTa__17CBB52B384E4933") @unique(map: "WDIDX16667817321") @db.Decimal(19, 0)
+  TrxTypeId             String?   @default("", map: "DF__TblGLNTag__TrxTy__5535A963") @db.VarChar(50)
+  MemberID              Decimal?  @default(0, map: "DF__TblGLNTag__Membe__5629CD9C") @db.Decimal(10, 0)
+  TrxRefNo              String?   @default("", map: "DF__TblGLNTag__TrxRe__571DF1D5") @db.VarChar(50)
+  TrxRefDescription     String?   @default("", map: "DF__TblGLNTag__TrxRe__5812160E") @db.VarChar(50)
+  TrxEventId            String?   @default("", map: "DF__TblGLNTag__TrxEv__59063A47") @db.VarChar(50)
+  TrxDateCreated        DateTime?
+  TrxDateLastUpdate     DateTime?
+  TrxGLNCodeDocId       String?   @default("", map: "DF__TblGLNTag__TrxGL__59FA5E80") @db.VarChar(50)
+  TrxGLNIDFrom          String?   @default("", map: "DF__TblGLNTag__TrxGL__5AEE82B9") @db.VarChar(50)
+  TrxGLNIDTo            String?   @default("", map: "DF__TblGLNTag__TrxGL__5BE2A6F2") @db.VarChar(50)
+  ItemRefNo             String?   @default("", map: "DF__TblGLNTag__ItemR__5CD6CB2B") @db.VarChar(50)
+  ItemRefLinkInfo       String?   @default("", map: "DF__TblGLNTag__ItemR__5DCAEF64") @db.VarChar(50)
+  ItemGPSOnGoLat        String?   @default("", map: "DF__TblGLNTag__ItemG__5EBF139D") @db.VarChar(50)
+  ItemGPSOnGoLon        String?   @default("", map: "DF__TblGLNTag__ItemG__5FB337D6") @db.VarChar(50)
+  Batch                 String?   @db.NVarChar(50)
+  Expiry                DateTime? @db.Date
+  ManufacturingDate     DateTime? @db.Date
+  Serial                String?   @db.NVarChar(50)
+  Quantity              Int?
+}
+
+model tblGS1DigitalLinks {
+  tblGS1DigitalLinksID Decimal @id(map: "PK__tblGS1Di__9ACE590DC66D94E6") @unique(map: "WDIDX16667817332") @db.Decimal(19, 0)
+  ItemRefNo            String? @default("", map: "DF__tblGS1Dig__ItemR__628FA481") @db.VarChar(50)
+  ItemRefNoRFIDTagId   String? @default("", map: "DF__tblGS1Dig__ItemR__6383C8BA") @db.VarChar(50)
+  ItemRef2D            String? @default("", map: "DF__tblGS1Dig__ItemR__6477ECF3") @db.VarChar(255)
+  ItemNetContents      String? @default("", map: "DF__tblGS1Dig__ItemN__656C112C") @db.VarChar(255)
+  ItemRefLinkURL       String? @default("", map: "DF__tblGS1Dig__ItemR__66603565") @db.VarChar(150)
+}
+
+model tblJobOrderDetails {
+  tblStakeHoldersID Decimal   @id(map: "PK__tblJobOr__5E1DC04F693709D2") @unique(map: "WDIDX16677515050") @db.Decimal(19, 0)
+  GLNID_Member      String?   @default("", map: "DF__tblJobOrd__GLNID__02FC7413") @db.VarChar(50)
+  MemberID          Decimal?  @default(0, map: "DF__tblJobOrd__Membe__03F0984C") @db.Decimal(10, 0)
+  CreatedDate       DateTime?
+  LastUpdateDate    DateTime?
+  JobOrderRefNo     String?   @default("", map: "DF__tblJobOrd__JobOr__04E4BC85") @db.VarChar(50)
+  ItemSKUCode       String?   @default("", map: "DF__tblJobOrd__ItemS__05D8E0BE") @db.VarChar(50)
+  ItemRef2D         String?   @default("", map: "DF__tblJobOrd__ItemR__06CD04F7") @db.VarChar(255)
+  ItemRefNo         String?   @default("", map: "DF__tblJobOrd__ItemR__07C12930") @db.VarChar(50)
+  ItemBatchNo       String?   @default("", map: "DF__tblJobOrd__ItemB__08B54D69") @db.VarChar(50)
+  ItemSerialNo      String?   @default("", map: "DF__tblJobOrd__ItemS__09A971A2") @db.VarChar(150)
+  ItemDescription   String?   @default("", map: "DF__tblJobOrd__ItemD__0A9D95DB") @db.VarChar(150)
+  JobOrderRefLink   String?   @default("", map: "DF__tblJobOrd__JobOr__0B91BA14") @db.VarChar(150)
+}
+
+model TblMAINSUBSeriesNo {
+  TblMAINSUBSeriesNoID Int      @id(map: "PK__TblMAINS__045AA336DCE789E7") @unique(map: "WDIDX16780975240") @default(autoincrement())
+  MainCategoryCode     String?  @default("", map: "DF__TblMAINSU__MainC__625A9A57") @db.VarChar(2)
+  SubCategoryCode      String?  @default("", map: "DF__TblMAINSU__SubCa__634EBE90") @db.VarChar(4)
+  MainSubSeriesNo      Decimal? @default(0, map: "DF__TblMAINSU__MainS__6442E2C9") @db.Decimal(5, 0)
+  MainDescription      String?  @default("", map: "DF__TblMAINSU__MainD__65370702") @db.VarChar(150)
+  SubDescription       String?  @default("", map: "DF__TblMAINSU__SubDe__662B2B3B") @db.VarChar(150)
+  SeriesNumber         Decimal? @default(0, map: "DF__TblMAINSU__Serie__671F4F74") @db.Decimal(10, 0)
+
+  @@index([MainCategoryCode, SubCategoryCode], map: "MainCategoryCodeSubCategoryCode")
+  @@index([MainCategoryCode], map: "WDIDX16780975241")
+  @@index([SubCategoryCode], map: "WDIDX16780975242")
+  @@index([MainSubSeriesNo], map: "WDIDX16780975243")
+  @@index([MainDescription], map: "WDIDX16780975244")
+  @@index([SubDescription], map: "WDIDX16780975245")
+  @@index([SeriesNumber], map: "WDIDX16780975246")
+}
+
+model TblMAINSUBSeriesNoAssigned {
+  TblMAINSUBSeriesNoID Int      @id(map: "PK__TblMAINS__045AA336E992D57D") @unique(map: "WDIDX16780975267") @default(autoincrement())
+  MainCategoryCode     String?  @default("", map: "DF__TblMAINSU__MainC__69FBBC1F") @db.VarChar(2)
+  SubCategoryCode      String?  @default("", map: "DF__TblMAINSU__SubCa__6AEFE058") @db.VarChar(4)
+  MainSubSeriesNo      Decimal? @default(0, map: "DF__TblMAINSU__MainS__6BE40491") @db.Decimal(5, 0)
+  MainDescription      String?  @default("", map: "DF__TblMAINSU__MainD__6CD828CA") @db.VarChar(150)
+  SubDescription       String?  @default("", map: "DF__TblMAINSU__SubDe__6DCC4D03") @db.VarChar(150)
+  SeriesNumber         Decimal? @default(0, map: "DF__TblMAINSU__Serie__6EC0713C") @db.Decimal(10, 0)
+  UserLoginID          String?  @default("", map: "DF__TblMAINSU__UserL__6FB49575") @db.VarChar(50)
+  DeptCode             String?  @default("", map: "DF__TblMAINSU__DeptC__70A8B9AE") @db.VarChar(10)
+
+  @@index([MainCategoryCode, SubCategoryCode], map: "MainCategoryCodeSubCategoryCode")
+  @@index([UserLoginID, MainCategoryCode, SubCategoryCode], map: "UserLoginIDMainCategoryCode")
+  @@index([MainSubSeriesNo], map: "WDIDX167809752610")
+  @@index([MainDescription], map: "WDIDX167809752611")
+  @@index([SubDescription], map: "WDIDX167809752612")
+  @@index([SeriesNumber], map: "WDIDX167809752613")
+  @@index([MainCategoryCode], map: "WDIDX16780975268")
+  @@index([SubCategoryCode], map: "WDIDX16780975269")
+  @@index([UserLoginID], map: "WDIDX167809752714")
+  @@index([DeptCode], map: "WDIDX167809752715")
+}
+
+model tblPOFPOMaster {
+  tblPOFPOMasterID Decimal @id(map: "PK__tblPOFPO__DEE1D6F78AE7CF92") @unique(map: "WDIDX16654686080") @db.Decimal(19, 0)
+  PONumber         String? @db.VarChar(50)
+  PODate           String? @db.VarChar(50)
+  SupplierName     String? @db.VarChar(50)
+  POStatus         String? @db.VarChar(50)
+  Head_SYS_ID      String? @db.VarChar(50)
+
+  @@index([PONumber], map: "WDIDX16654686081")
+  @@index([PODate], map: "WDIDX16654686082")
+  @@index([Head_SYS_ID], map: "WDIDX16654686083")
+}
+
+model tblStakeHolders {
+  tblStakeHoldersID  Decimal   @id(map: "PK__tblStake__5E1DC04F342F928B") @unique(map: "WDIDX16661802792") @db.Decimal(19, 0)
+  GLNID_Member       String?   @default("", map: "DF__tblStakeH__GLNID__46E78A0C") @db.VarChar(50)
+  MemberID           Decimal?  @default(0, map: "DF__tblStakeH__Membe__47DBAE45") @db.Decimal(10, 0)
+  CompanyNameE       String?   @default("", map: "DF__tblStakeH__Compa__48CFD27E") @db.VarChar(150)
+  CompanyNameAr      String?   @default("", map: "DF__tblStakeH__Compa__49C3F6B7") @db.VarChar(150)
+  MembershipTypeID   Decimal?  @default(0, map: "DF__tblStakeH__Membe__4AB81AF0") @db.Decimal(10, 0)
+  CreatedDate        DateTime?
+  LastUpdateDate     DateTime?
+  CompanyWebsite     String?   @default("", map: "DF__tblStakeH__Compa__4BAC3F29") @db.VarChar(100)
+  MemberDataLinkIdNo Decimal?  @default(0, map: "DF__tblStakeH__Membe__4CA06362") @db.Decimal(10, 0)
+  MemberStatusId     Int?      @default(0, map: "DF__tblStakeH__Membe__4D94879B") @db.TinyInt
+}
+
+model tblTagTypeIdentifiers {
+  tblTagTypeIdentifiersID Decimal  @id(map: "PK__tblTagTy__6FFD65EA0E48328B") @unique(map: "WDIDX16667817300") @db.Decimal(19, 0)
+  TagTypeId               Decimal? @default(0, map: "DF__tblTagTyp__TagTy__5070F446") @db.Decimal(10, 0)
+  TagTypeTech             String?  @default("", map: "DF__tblTagTyp__TagTy__5165187F") @db.VarChar(150)
+  TagTypeDescription      String?  @default("", map: "DF__tblTagTyp__TagTy__52593CB8") @db.VarChar(150)
+}
+
+model tblTrxDetails {
+  tblTrxHeaderSessionID Decimal   @id(map: "PK__tblTrxDe__17CBB52B4C106CBD") @unique(map: "WDIDX16668580330") @db.Decimal(19, 0)
+  TrxTypeId             String?   @default("", map: "DF__tblTrxDet__TrxTy__693CA210") @db.VarChar(50)
+  MemberID              Decimal?  @default(0, map: "DF__tblTrxDet__Membe__6A30C649") @db.Decimal(10, 0)
+  TrxRefNo              String?   @default("", map: "DF__tblTrxDet__TrxRe__6B24EA82") @db.VarChar(50)
+  TrxRefDescription     String?   @default("", map: "DF__tblTrxDet__TrxRe__6C190EBB") @db.VarChar(50)
+  TrxEventId            String?   @default("", map: "DF__tblTrxDet__TrxEv__6D0D32F4") @db.VarChar(50)
+  TrxDateCreated        DateTime?
+  TrxDateLastUpdate     DateTime?
+  TrxGLNCodeDocId       String?   @default("", map: "DF__tblTrxDet__TrxGL__6E01572D") @db.VarChar(50)
+  TrxGLNIDFrom          String?   @default("", map: "DF__tblTrxDet__TrxGL__6EF57B66") @db.VarChar(50)
+  TrxGLNIDTo            String?   @default("", map: "DF__tblTrxDet__TrxGL__6FE99F9F") @db.VarChar(50)
+  ItemRefNo             String?   @default("", map: "DF__tblTrxDet__ItemR__70DDC3D8") @db.VarChar(50)
+  ItemRefLinkInfo       String?   @default("", map: "DF__tblTrxDet__ItemR__71D1E811") @db.VarChar(50)
+  ItemSKUCode           String?   @default("", map: "DF__tblTrxDet__ItemS__72C60C4A") @db.VarChar(50)
+}
+
+model tbltrxEventMaster {
+  tblTrxHeaderSessionID Decimal   @id(map: "PK__tbltrxEv__17CBB52B93E24FD9") @unique(map: "WDIDX16678885250") @db.Decimal(19, 0)
+  TrxTypeId             String?   @default("", map: "DF__tbltrxEve__TrxTy__0E6E26BF") @db.VarChar(50)
+  TrxEventDescription   String?   @default("", map: "DF__tbltrxEve__TrxEv__0F624AF8") @db.VarChar(150)
+  TrxEventId            String?   @default("", map: "DF__tbltrxEve__TrxEv__10566F31") @db.VarChar(50)
+  TrxDateCreated        DateTime?
+  TrxDateLastUpdate     DateTime?
+}
+
+model tblTrxHeader {
+  tblTrxHeaderSessionID Decimal   @id(map: "PK__tblTrxHe__17CBB52B1BBDCD63") @unique(map: "WDIDX16661802781") @db.Decimal(19, 0)
+  TrxTypeId             String?   @default("", map: "DF__tblTrxHea__TrxTy__3D5E1FD2") @db.VarChar(50)
+  MemberID              Decimal?  @default(0, map: "DF__tblTrxHea__Membe__3E52440B") @db.Decimal(10, 0)
+  TrxRefNo              String?   @default("", map: "DF__tblTrxHea__TrxRe__3F466844") @db.VarChar(50)
+  TrxRefDescription     String?   @default("", map: "DF__tblTrxHea__TrxRe__403A8C7D") @db.VarChar(50)
+  TrxEventId            String?   @default("", map: "DF__tblTrxHea__TrxEv__412EB0B6") @db.VarChar(50)
+  TrxDateCreated        DateTime?
+  TrxDateLastUpdate     DateTime?
+  TrxGLNCodeDocId       String?   @default("", map: "DF__tblTrxHea__TrxGL__4222D4EF") @db.VarChar(50)
+  TrxGLNIDFrom          String?   @default("", map: "DF__tblTrxHea__TrxGL__4316F928") @db.VarChar(50)
+  TrxGLNIDTo            String?   @default("", map: "DF__tblTrxHea__TrxGL__440B1D61") @db.VarChar(50)
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { GoogleMap, StandaloneSearchBox, Marker, Polyline, DirectionsRenderer, OverlayView, InfoWindow } from '@react-google-maps/api';
+import newRequest from "../../../../utils/userRequest";
 
 const style = {
     width: '95%',
@@ -50,9 +51,11 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
 
         console.log(bodyData)
         try {
-            const res = await axios.get(`https://gs1ksa.org/api/search/event/gtin/with/maps`, {
+            // const res = await axios.get(`https://gs1ksa.org/api/search/event/gtin/with/maps`, {
+            const res = await newRequest.get("/foreignGtin/searchGTINwithMap", {
                 params: bodyData
             });
+            console.log(res.data)
             const locations = res.data?.googleMap?.locations;
             console.log(locations)
 
