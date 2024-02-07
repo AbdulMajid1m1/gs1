@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import DataTable from "../../../../components/Datatable/Datatable";
-import { foreignGtinColumn } from "../../../../utils/datatablesource";
+import { GtinColumn, foreignGtinColumn } from "../../../../utils/datatablesource";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CustomSnakebar from '../../../../utils/CustomSnackbar';
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { QRCodeSVG } from "qrcode.react";
@@ -12,98 +14,196 @@ import { DataTableContext } from "../../../../Contexts/DataTableContext";
 import newRequest from "../../../../utils/userRequest";
 import { toast } from "react-toastify";
 import Barcode from "react-barcode";
+import bwipjs from "bwip-js";
+import { debounce } from '@mui/material/utils';
+import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import AdminDashboardRightHeader from "../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader";
 import { useTranslation } from 'react-i18next';
-import DashboardRightHeader from "../../../../components/DashboardRightHeader/DashboardRightHeader";
 
-const  ForeginGtin = () => {
+const AdminForeginGTIN = () => {
   const [data, setData] = useState([]);
-  const { t, i18n } = useTranslation();
-
-  const memberDataString = sessionStorage.getItem('memberData');
-  const memberData = JSON.parse(memberDataString);
-  console.log(memberData);
-  const cartItemData = JSON.parse(memberData?.carts[0]?.cart_items);
-  console.log(cartItemData);
+  // const memberDataString = sessionStorage.getItem('memberData');
+  // const memberData = JSON.parse(memberDataString);
+  // console.log(memberData);
+  // const cartItemData = JSON.parse(memberData?.carts[0]?.cart_items);
+  // console.log(cartItemData);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
   const [isExportBarcode, setIsExportBarcode] = useState(false);
-  const [totalCategory, setTotalCategory] = useState("");
   const navigate = useNavigate()
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+  const { t, i18n } = useTranslation();
   const resetSnakeBarMessages = () => {
     setError(null);
     setMessage(null);
 
   };
 
+  const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+  const [selectedCr, setSelectedCr] = useState(null);
+  const [isAutocompleteFilled, setIsAutocompleteFilled] = useState(false);
+  const [autocompleteLoading, setAutocompleteLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [crList, setCrList] = useState([]);
+  const abortControllerRef = React.useRef(null);
 
-  const fetchData = async () => {
+  const handleGPCAutoCompleteChange = (event, value) => {
+    setSelectedCr(value);
+
+
+    // Update the state variable when Autocomplete field is filled
+    setIsAutocompleteFilled(value !== null && value !== '');
+
+    if (value) {
+      fetchData(value);
+    }
+  }
+
+  const [details, setDetails] = useState([])
+
+  // Use debounce to wrap the handleAutoCompleteInputChange function
+  const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
+    console.log(reason);
+    setIsSubmitClicked(false);
+    if (reason === 'reset' || reason === 'clear') {
+      setCrList([]); // Clear the data list if there is no input
+      // setSelectedCr(null);
+      return; // Do not perform search if the input is cleared or an option is selected
+    }
+    if (reason === 'option') {
+      return; // Do not perform search if the option is selected
+    }
+
+    if (!newInputValue || newInputValue.trim() === '') {
+      // perform operation when input is cleared
+      setCrList([]);
+      // setSelectedCr(null);
+      return;
+    }
+
+    console.log(newInputValue);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort(); // Abort previous request
+    }
+    abortControllerRef.current = new AbortController(); // Create a new controller for the new request
+
     try {
-      const response = await newRequest.get(`/foreignGtin`);
-      console.log(response.data);
-      setData(response?.data || []);
-      setIsLoading(false)
+      setAutocompleteLoading(true);
+      setOpen(true);
 
+      const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+        signal: abortControllerRef.current.signal
+      });
+      console.log(res);
+
+      const crs = res?.data?.map(item => {
+        return {
+          user_id: item.id,
+          gcpGLNID: item.gcpGLNID,
+          gln: item.gln,
+          memberID: item.memberID,
+          companyID: item.companyID,
+          company_name_eng: item.company_name_eng,
+          email: item.email,
+          mobile: item.mobile,
+          gcp_type: item.gcp_type,
+        };
+      });
+
+      setCrList(crs);
+      setDetails(res?.data[0]);
+   
+      setOpen(true);
+      setAutocompleteLoading(false);
+
+      // fetchData();
+
+    } catch (error) {
+      console.error(error);
+      setCrList([]); // Clear the data list if an error occurs
+      setOpen(false);
+      setAutocompleteLoading(false);
+    }
+  }, 400);
+  
+  const [totalCategory, setTotalCategory] = useState([])
+  const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
+
+  const fetchData = async (value) => {
+    setIsLoading(true);
+    console.log(value);
+    setAllSearchMemberDetails(value);
+    try {
+      const response = await newRequest.get(`/foreignGtin?companyId=${value?.companyID}`);
+      const gtinResponse = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${value?.user_id}&isDeleted=false`);
+      setData(response?.data || []);
+      setTotalCategory(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      console.log(response.data);
+      console.log(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      // console.log(totalCategory)
+
+      if (response?.data?.length === 0) {
+        setTotalCategory('Category C' ,[]);
+      }
+
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
 
+  
 
-  const fetchGtinProducts = async () => {
-    try {
-      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
-      console.log(response.data);
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await newRequest.get(`/products?user_id=${memberData?.id}`);
+  //     console.log(response.data);
+  //     setData(response?.data || []);
+  //     setIsLoading(false)
 
-      //  setGtinSubscriptions(response?.data?.gtinSubscriptions);
-      setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-      console.log(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-      console.log(totalCategory)
-
-
-
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  //   } catch (err) {
+  //     console.log(err);
+  //     setIsLoading(false)
+  //   }
+  // };
 
 
   useEffect(() => {
     fetchData(); // Calling the function within useEffect, not inside itself
-    fetchGtinProducts();
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
   const handleView = (row) => {
     console.log(row);
-    navigate("/member/view-gtin-product/" + row?.id);
+    navigate("/admin/admin-view-gtin/" + row?.id);
   };
 
-  const handleDigitalUrlInfo = (row) => {
-    sessionStorage.setItem("selectedProductData", JSON.stringify(row));
-    navigate("/member/foreign-digital-link")
+  const handleAddGtin = (row) => {
+    if (!allSearchMemberDetails) {
+      toast.error(`${t('Please select a member first')}!`);
+      return;
+    }
+    navigate("/admin/admin-add-foreign");
+    sessionStorage.setItem("selectedForeignGtinData", JSON.stringify(allSearchMemberDetails));
   }
+
+  const handleDigitalUrlInfo = (row) => {
+    sessionStorage.setItem("selectedAdminProductData", JSON.stringify(row));
+    navigate("/admin/admin-digital-link")
+  }   
 
   const handleDelete = async (row) => {
     try {
       const deleteResponse = await newRequest.delete(`/foreignGtin/${row?.id}`);
       console.log(deleteResponse.data);
-      toast.success(`${t('The product has been deleted successfully')}`, {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.success(`${t('The product has been deleted successfully')}`);
 
       // Update the datagrid Table after deletion
       setData(prevData => prevData.filter(item => item.id !== row?.id));
@@ -111,17 +211,10 @@ const  ForeginGtin = () => {
 
     } catch (err) {
       console.log(err);
-      toast.error(err?.response?.data?.error || 'Error', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.error(err?.response?.data?.error || 'Error');
     }
   };
+
 
 
 
@@ -141,7 +234,7 @@ const  ForeginGtin = () => {
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
     // Save Excel file
-    saveAs(dataBlob, 'foreign_gtin.xlsx');
+    saveAs(dataBlob, 'gtin_products.xlsx');
 
     // Print data of selected rows
     console.log('Selected Rows Data:', tableSelectedExportRows);
@@ -172,24 +265,26 @@ const  ForeginGtin = () => {
       size: 'Size',
       barcode: 'GTIN'
     };
-
+  
     // Create a new array with the desired headers in the specified order
     const desiredHeaders = Object.values(headerMapping);
-
+  
     // Create a worksheet with only headers
     const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
-
+  
     // Create a workbook and append the header worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
-
+  
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
+  
     // Save Excel file
-    saveAs(dataBlob, 'foreign_gtin_template.xlsx');
+    saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
+  
+
 
 
 
@@ -260,8 +355,8 @@ const  ForeginGtin = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
-      formData.append('user_id', memberData?.id);
-      formData.append('email', memberData?.email);
+      formData.append('user_id', allSearchMemberDetails?.user_id);
+      formData.append('email', allSearchMemberDetails?.email);
 
       newRequest.post('/products/bulkGtin', formData)
         .then((response) => {
@@ -271,23 +366,23 @@ const  ForeginGtin = () => {
           if (response.data && response.data.errors && response.data.errors.length > 0) {
             // Display a generic error message
             toast.error(response.data.errors[0].error);
-          }
+          } 
           else {
             // Display a generic success message
-            toast.success(response?.data?.message || `${t('The data has been imported successfully')}`);
+            toast.success(response?.data?.message ||  `${t('The data has been imported successfully')}`);
           }
 
           setIsLoading(false);
           // Clear the file input value
           event.target.value = '';
-
-          fetchData();
+          
+          // fetchData();
         })
         .catch((error) => {
           // Handle the error
           console.error(error);
 
-          toast.error(error?.response?.data?.error || `${t('Something is Wrong')}`, {
+          toast.error(error?.response?.data?.error ?? `${t('Something is Wrong')}`, {
             position: 'top-right',
             autoClose: 2000,
             hideProgressBar: false,
@@ -308,7 +403,7 @@ const  ForeginGtin = () => {
   // Gtin Page Print
   const handleGtinPage = () => {
     if (tableSelectedRows.length === 0) {
-      setError('Please select a row to print.');
+      setError( `${ t('Please select a row to print') }`);
       return;
     }
     const printWindow = window.open('', 'Print Window', 'height=400,width=800');
@@ -352,7 +447,7 @@ const  ForeginGtin = () => {
   // 2d Barcode Page Print
   const handle2dBarcodePage = () => {
     if (tableSelectedRows.length === 0) {
-      setError('Please select a row to print.');
+      setError(`${t('Please select a row to print')}`);
       return;
     }
     const printWindow = window.open('', 'Print Window', 'height=400,width=800');
@@ -409,10 +504,11 @@ const  ForeginGtin = () => {
 
   return (
     <div>
-      <div  className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
-        <div>
-          <DashboardRightHeader title={'Foreign GTIN'} />
-        </div>
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+        {/* <div className='h-auto w-full shadow-xl'> */}
+          <div>
+            <AdminDashboardRightHeader title={"Foreign GTIN"} />
+          </div>
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
@@ -420,15 +516,16 @@ const  ForeginGtin = () => {
 
           <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
             <button
-              onClick={() => navigate('/member/member-add-foreign')}
+              onClick={handleAddGtin}
               className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
+             
               {i18n.language === 'ar' ? (
                 <>
-                  Add Foreign GTIN <i className="fas fa-plus mr-1"></i>
+                  Add Foreign Gtin  <i className="fas fa-plus mr-1"></i>
                 </>
               ) : (
                 <>
-                  <i className="fas fa-plus mr-1"></i> Add Foreign GTIN
+                    <i className="fas fa-plus mr-1"></i> Add Foreign Gtin
                 </>
               )}
             </button>
@@ -437,13 +534,14 @@ const  ForeginGtin = () => {
               <button
                 onClick={() => setIsExportBarcode(!isExportBarcode)}
                 className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              
                 {i18n.language === 'ar' ? (
                   <>
-                    <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')}
+                    <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')} 
                   </>
                 ) : (
                   <>
-                    {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
+                      {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
                   </>
                 )}
               </button>
@@ -460,32 +558,16 @@ const  ForeginGtin = () => {
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
               onClick={handleExportProducts}
             >
-              {i18n.language === 'ar' ? (
+             {i18n.language === 'ar' ? (
                 <>
-                  <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')}
+                  <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')} 
                 </>
               ) : (
                 <>
-                  {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i>
+                    {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i> 
                 </>
               )}
             </button>
-
-
-            {/* <div>
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-              onChange={handleFileInputChange}
-              />
-              <button
-                className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
-                onClick={handleImportClick}
-              >
-                <i className="fas fa-file-import mr-1"></i> Import
-              </button>
-            </div> */}
 
             <div>
               <input
@@ -497,13 +579,14 @@ const  ForeginGtin = () => {
                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
                 onClick={() => document.querySelector('input[type="file"]').click()}
               >
+                
                 {i18n.language === 'ar' ? (
                   <>
                     {t('Import')}  <i className="fas fa-file-import mr-1"></i>
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-file-import mr-1"></i>  {t('Import')}
+                      <i className="fas fa-file-import mr-1"></i>  {t('Import')} 
                   </>
                 )}
               </button>
@@ -512,13 +595,14 @@ const  ForeginGtin = () => {
             <button
               onClick={handleExportProductsTemplate}
               className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+             
               {i18n.language === 'ar' ? (
                 <>
                   <i className="fas fa-caret-down ml-1"></i>  {t('Download Template')}
                 </>
               ) : (
                 <>
-                  {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
+                    {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
                 </>
               )}
             </button>
@@ -530,41 +614,109 @@ const  ForeginGtin = () => {
             </button> */}
           </div>
 
+          <div  className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+            <button
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              GCP {allSearchMemberDetails?.gcpGLNID}
+            </button>
 
+            <button
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+               {totalCategory ? `${totalCategory}` : 'Category C'}
+            </button>
 
-          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-            {memberData?.gcpGLNID && (
-              <button
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                GCP {memberData.gcpGLNID}
-              </button>
-            )}
-            {totalCategory && (
-              <button
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                {totalCategory}
-              </button>
-            )}
-            {memberData?.memberID && (
-              <button
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                {t('Member ID')} {memberData?.memberID}
-              </button>
-            )}
+            <button
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              {t('Member ID')} {allSearchMemberDetails?.memberID}
+              {/* Member ID */}
+            </button>
 
-            {/* <button
+            <button
               onClick={handleGtinPage}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              
               {i18n.language === 'ar' ? (
                 <>
                   GTIN {t('Print')}
                 </>
               ) : (
                 <>
-                  {t('Print')} GTIN
+                    {t('Print')} GTIN 
                 </>
               )}
-            </button> */}
+            </button>
+          </div>
+
+
+          <div className="px-3">
+            <Autocomplete
+              id="companyName"
+              required
+              options={crList}
+              // gcpGLNID: item.gcpGLNID,
+              // gln: item.gln,
+              // memberID: item.memberID,
+              // companyID: item.companyID,
+              // company_name_eng: item.company_name_eng,
+              // email: item.email,
+              // mobile: item.mobile,
+              getOptionLabel={(option) => (option && option.user_id) ? `${option?.gcpGLNID} - ${option?.company_name_eng} - ${option?.memberID} - ${option?.email} - ${option?.mobile} ` : ''}
+              onChange={handleGPCAutoCompleteChange}
+              value={selectedCr?.cr}
+              onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
+              loading={autocompleteLoading}
+              sx={{ marginTop: '10px' }}
+              open={open}
+              onOpen={() => {
+                // setOpen(true);
+              }}
+              onClose={() => {
+                setOpen(false);
+              }}
+              renderOption={(props, option) => (
+                <li key={option.user_id} {...props}>
+                  {option ? `${option.gcpGLNID} - ${option.company_name_eng} - ${option.memberID} - ${option.email} - ${option.mobile}` : 'No options'}
+                </li>
+              )}
+
+
+              renderInput={(params) => (
+                <TextField
+                  // required
+                  error={isSubmitClicked && !selectedCr?.cr}
+                  helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
+                  {...params}
+                  label={`${t('Search Members')}`}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                  sx={{
+                    '& label.Mui-focused': {
+                      color: '#00006A',
+                    },
+                    '& .MuiInput-underline:after': {
+                      borderBottomColor: '#00006A',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '&:hover fieldset': {
+                        borderColor: '#000000',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#000000',
+                      },
+                    },
+                  }}
+                />
+              )}
+
+            />
+
           </div>
 
 
@@ -655,10 +807,10 @@ const  ForeginGtin = () => {
 
         </div>
         </div>
-       </div>
+        </div>
       </div>
     </div>
   )
 }
 
-export default ForeginGtin
+export default AdminForeginGTIN
