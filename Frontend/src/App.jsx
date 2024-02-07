@@ -130,6 +130,7 @@ import DigitalLinkInfo from "./Pages/MemberPages/MemberIdentify/ForeginGtin/Digi
 import AdminForeginGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminForeignGTIN.jsx";
 import AdminAddForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminAddForeignGTIN.jsx";
 import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminDigitalLinkInfo.jsx";
+import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedByGS1/MemberVerifiedByGS1.jsx";
 
 const queryClient = new QueryClient()
 
@@ -256,6 +257,7 @@ const App = () => {
 
                               <Route path="payment-slips" element={<PaymentSlips />} />
                               <Route path="bank-slip" element={<BankSlip />} />
+                              <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} />
                               <Route path="transaction-history" element={<TransactionHistory />} />
                               <Route path="member-helpdesk" element={<MemberHelpDesk />} />
                               <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
