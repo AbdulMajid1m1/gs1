@@ -507,7 +507,7 @@ const AdminForeginGTIN = () => {
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         {/* <div className='h-auto w-full shadow-xl'> */}
           <div>
-            <AdminDashboardRightHeader title={"Foreign GTIN"} />
+            <AdminDashboardRightHeader title={`${t('Foreign GTIN')}`}  />
           </div>
 
         <div className='flex justify-center items-center'>
@@ -521,11 +521,11 @@ const AdminForeginGTIN = () => {
              
               {i18n.language === 'ar' ? (
                 <>
-                  Add Foreign Gtin  <i className="fas fa-plus mr-1"></i>
+                  {t('Add Foreign GTIN')}  <i className="fas fa-plus mr-1"></i>
                 </>
               ) : (
                 <>
-                    <i className="fas fa-plus mr-1"></i> Add Foreign Gtin
+                    <i className="fas fa-plus mr-1"></i>  {t('Add Foreign GTIN')}
                 </>
               )}
             </button>
@@ -722,7 +722,7 @@ const AdminForeginGTIN = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn}
+            <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn(t)}
               loading={isLoading}
               secondaryColor="secondary"
               handleRowClickInParent={handleRowClickInParent}

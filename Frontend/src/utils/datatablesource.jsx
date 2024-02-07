@@ -7551,21 +7551,21 @@ export const licenceRegistryColumn = (t, i18n) => [
 
 
 
-export const foreignGtinColumn = [
+export const foreignGtinColumn = (t, i18n) => [
   {
     field: "BrandName",
-    headerName: 'Brand Name',
+    headerName:  t('Brand Name'),
     width: 180,
   },
   {
     field: "barcode",
-    headerName: 'Barcode',
+    headerName:   t('Barcode'),
     renderCell: GTINCell,
     width: 150,
   },
   {
     field: "countrySale",
-    headerName: 'Country Sale',
+    headerName: t('Country Sale'),
     width: 180,
   },
   {
@@ -7575,32 +7575,32 @@ export const foreignGtinColumn = [
   },
   {
     field: "gpc_code",
-    headerName: 'GPC Code',
+    headerName:  t('GPC Code'),
     width: 180,
   },
   {
     field: "moName",
-    headerName: 'MO Name',
+    headerName: t('MO Name'),
     width: 180,
   },
   {
     field: "productnameenglish",
-    headerName: 'Product Name English',
+    headerName: t('Product Name English'),
     width: 180,
   },
   {
     field: "size",
-    headerName: 'Size',
+    headerName:   t('Size'),
     width: 180,
   },
   {
     field: "unit",
-    headerName: 'Unit',
+    headerName:  t('Unit'),
     width: 180,
   },
   {
     field: "created_at",
-    headerName: 'Created At',
+    headerName:   t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -7611,7 +7611,7 @@ export const foreignGtinColumn = [
   },
   {
     field: "updated_at",
-    headerName: 'Updated At',
+    headerName:  t('Updated At'),
     width: 180,
 
     type: 'dateTime',
