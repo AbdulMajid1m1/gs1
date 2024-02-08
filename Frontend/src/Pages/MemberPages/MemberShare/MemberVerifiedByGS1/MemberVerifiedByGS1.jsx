@@ -94,7 +94,7 @@ const MemberVerifiedByGS1 = () => {
         console.log(error);
         setData(null);
         // openSnackbar("Something went wrong", 'error');
-        toast.error("Something went wrong");
+        toast.error(error?.response?.data?.message ?? "Something went wrong");
 
       });
   };

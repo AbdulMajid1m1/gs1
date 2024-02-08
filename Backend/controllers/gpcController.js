@@ -88,3 +88,36 @@ export const searchGpc = async (req, res, next) => {
     res.json(combinedResults);
 }
 
+
+export const searchSchemaGpc = async (req, res) => {
+    try {
+        const { gpc } = req.query;
+        const data = await prisma.schema.findFirst({
+            where: {
+                OR: [
+                    { SegmentCode: { contains: gpc } },
+                    { FamilyCode: { contains: gpc } },
+                    { ClassCode: { contains: gpc } },
+                    { BrickCode: { contains: gpc } },
+                    { AttributeCode: { contains: gpc } },
+                    { AttributeValueCode: { contains: gpc } },
+                ],
+            },
+        });
+
+        const dataArr = data ? {
+            SegmentCode: data.SegmentCode,
+            SegmentTitle: data.SegmentTitle,
+            FamilyCode: data.FamilyCode,
+            FamilyTitle: data.FamilyTitle,
+            ClassCode: data.ClassCode,
+            ClassTitle: data.ClassTitle,
+            BrickCode: data.BrickCode,
+            BrickTitle: data.BrickTitle,
+        } : {};
+
+        res.json({ data: dataArr });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

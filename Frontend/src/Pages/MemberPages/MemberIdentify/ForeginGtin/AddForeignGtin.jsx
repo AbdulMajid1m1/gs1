@@ -8,6 +8,9 @@ import newRequest from '../../../../utils/userRequest'
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import DigitalLinkTab from './DigitalLinkTab';
+import CodificationTab from './CodificationTab';
+import Miscellaneous from './Miscellaneous';
 
 const AddForeignGtin = () => {
     const { t, i18n } = useTranslation();
@@ -188,7 +191,7 @@ const AddForeignGtin = () => {
 
 
             {/* Tabs Button */}
-              <div className="grid 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
+              <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
                 <button
                   className={`p-4 truncate rounded ${activeTab === 'product-Infomation' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
@@ -205,6 +208,30 @@ const AddForeignGtin = () => {
                   type='button'
                 >
                   Company Information
+                </button>
+
+                <button
+                  className={`p-4 rounded ${activeTab === 'digital-link' ? 'bg-primary text-white' : 'bg-white text-primary'
+                    } shadow-md flex items-center justify-center`}
+                  onClick={() => handleTabClick('digital-link')}
+                >
+                  Digital Link
+                </button>
+
+                <button
+                  className={`p-4 rounded ${activeTab === 'Codification' ? 'bg-primary text-white' : 'bg-white text-primary'
+                    } shadow-md flex items-center justify-center`}
+                  onClick={() => handleTabClick('Codification')}
+                >
+                  Codification
+                </button>
+
+                <button
+                  className={`p-4 rounded ${activeTab === 'Miscellaneous' ? 'bg-primary text-white' : 'bg-white text-primary'
+                    } shadow-md flex items-center justify-center`}
+                  onClick={() => handleTabClick('Miscellaneous')}
+                >
+                  Miscellaneous
                 </button>
               </div>
 
@@ -261,6 +288,34 @@ const AddForeignGtin = () => {
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                )}
+
+
+                {/* third Tab */}
+                {activeTab === 'digital-link' && (
+                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                    <DigitalLinkTab barcodeData={data?.gtin}/>
+                  </div>
+                )}
+
+
+                {/* Fourth Tab */}
+                {activeTab === 'Codification' && (
+                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                    <div className='mt-2 border border-gray-300'>
+                      <CodificationTab gs1ProductData={data?.gtin}/>
+                    </div>
+                  </div>
+                )}
+
+
+                {/* Fifth Tab */}
+                {activeTab === 'Miscellaneous' && (
+                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                    <div className='mt-2 border border-gray-300'>
+                      <Miscellaneous />
                     </div>
                   </div>
                 )}
