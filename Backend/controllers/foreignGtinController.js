@@ -45,7 +45,7 @@ export const getGtinProductDetailsFromLocalDb = async (req, res, next) => {
         //     type: 'local',
         //     // Additional fields can be added here as necessary
         // };
-
+        console.log(product);
         const response = {
 
             gtin: product.barcode,
@@ -60,10 +60,11 @@ export const getGtinProductDetailsFromLocalDb = async (req, res, next) => {
             productName: product.productnameenglish,
             gcpGLNID: product.user?.gcpGLNID,
             status: product.status === 1 ? 'Active' : 'InActive',
-            // licenceKey: product.user?.gcpInformation?.key_pk,
-            // licenceType: product.user?.gcpInformation?.type_pk,
+            licenceKey: product.user?.gcpInformation?.key_pk ?? '',
+            licenceType: product.user?.gcpInformation?.type_pk ?? '',
             moName: 'GS1 SAUDI ARABIA',
             type: 'local',
+            countryOfSaleName: product?.countrySale ?? '',
             // Additional fields can be added here as necessary
         };
 
@@ -102,6 +103,24 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
         const response = await axios.post(apiUrl, [updatedGTIN], { headers });
 
         const globalGepir = response.data;
+        console.log(globalGepir);
+        console.log(globalGepir);
+        console.log(globalGepir[0].countryOfSaleCode);
+        console.log(globalGepir[0].countryOfSaleCode?.numeric);
+        // if globalGepir[0].countryOfSaleCode?.numeric exist then user it to fecht name from country_of_sales
+        let countryOfSale = '';
+        console.log(globalGepir[0].countryOfSaleCode?.[0]?.numeric);
+        if (globalGepir[0].countryOfSaleCode?.[0]?.numeric) {
+            countryOfSale = await prisma.country_of_sales.findFirst({
+                where: {
+                    country_code_numeric3: globalGepir[0].countryOfSaleCode?.[0]?.numeric
+                }
+            });
+            console.log(countryOfSale);
+
+        }
+
+        let countryOfSaleName = countryOfSale?.country_name ?? '';
 
         if (globalGepir.length > 0 && !globalGepir[0]['validationErrors']) {
             // Ensure that globalGepir[0] and other required properties are defined before accessing them
@@ -118,16 +137,21 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
                 countryOfSaleCode: firstEntry.countryOfSaleCode && firstEntry.countryOfSaleCode[0] ? firstEntry.countryOfSaleCode[0].alpha3 : '',
                 productName: firstEntry.productDescription && firstEntry.productDescription[0] ? firstEntry.productDescription[0].value : '',
                 moName: firstEntry.gs1Licence && firstEntry.gs1Licence.licensingMO ? firstEntry.gs1Licence.licensingMO.moName : '',
+                licenceKey: firstEntry?.gs1Licence?.licenceKey ?? '',
+                licenceType: firstEntry.gs1Licence?.licenceType ?? '',
                 type: 'gepir',
+                countryOfSaleName: countryOfSaleName,
+                gcpGLNID: firstEntry.gs1Licence && firstEntry.gs1Licence.licenseeGLN ? firstEntry.gs1Licence.licenseeGLN : '',
             };
 
-            res.status(200).json(globalGepirArr);
+            return res.status(200).json(globalGepirArr);
         } else {
             // Handle the case when there are validation errors or the product is not found
-            res.status(404).json({ message: "Product not found in the global database." });
+            throw createError(404, globalGepir[0]?.validationErrors[0]?.errors[0]?.message ?? 'Product not found');
         }
     } catch (error) {
-        console.error(error);
+
+        console.log(error[0]?.validationErrors);
         next(error);
     }
 };

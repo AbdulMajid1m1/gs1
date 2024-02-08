@@ -82,7 +82,7 @@ const AddForeignGtin = () => {
         { name: "Brand Name", value: data?.brandName },
         { name: "Product Description", value: data?.productDescription },
         { name: "productImageUrl", value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
-        { name: "Country of sale", value: data?.countryOfSaleCode },
+        { name: "Country of sale", value: data?.countryOfSaleName },
         { name: "Gcp GLNID", value: data?.gcpGLNID },
         { name: "type", value: data?.type },
     
@@ -92,7 +92,7 @@ const AddForeignGtin = () => {
     const companyInformation = [
         { name: "GTIN", value: data?.gtin },
         { name: "Company Name", value: data?.companyName },
-        { name: "Country of sale", value: data?.countryOfSaleCode },
+        { name: "Country of sale", value: data?.countryOfSaleName },
         { name: "Gcp GLNID", value: data?.gcpGLNID },
         { name: "type", value: data?.type },
 
