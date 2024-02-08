@@ -214,6 +214,7 @@ const AddForeignGtin = () => {
                   className={`p-4 rounded ${activeTab === 'digital-link' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
                   onClick={() => handleTabClick('digital-link')}
+                  type='button'
                 >
                   Digital Link
                 </button>
@@ -222,6 +223,7 @@ const AddForeignGtin = () => {
                   className={`p-4 rounded ${activeTab === 'Codification' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
                   onClick={() => handleTabClick('Codification')}
+                  type='button'
                 >
                   Codification
                 </button>
@@ -230,6 +232,7 @@ const AddForeignGtin = () => {
                   className={`p-4 rounded ${activeTab === 'Miscellaneous' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
                   onClick={() => handleTabClick('Miscellaneous')}
+                  type='button'
                 >
                   Miscellaneous
                 </button>
@@ -305,7 +308,7 @@ const AddForeignGtin = () => {
                 {activeTab === 'Codification' && (
                   <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                     <div className='mt-2 border border-gray-300'>
-                      <CodificationTab gs1ProductData={data?.gtin}/>
+                      <CodificationTab gs1ProductData={data?.gcpGLNID}/>
                     </div>
                   </div>
                 )}

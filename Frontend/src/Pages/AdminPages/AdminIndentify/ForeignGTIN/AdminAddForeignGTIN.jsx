@@ -8,6 +8,9 @@ import newRequest from '../../../../utils/userRequest'
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import AdminCodificationTab from './AdminCodificationTab';
+import AdminDigitalLinkTab from './AdminDigitalLinkTab';
+import AdminMiscellaneous from './AdminMiscellaneous';
 
 const AdminAddForeignGTIN = () => {
     const { t, i18n } = useTranslation();
@@ -188,7 +191,7 @@ const AdminAddForeignGTIN = () => {
 
 
             {/* Tabs Button */}
-              <div className="grid 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
+              <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
                 <button
                   className={`p-4 truncate rounded ${activeTab === 'product-Infomation' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
@@ -205,6 +208,33 @@ const AdminAddForeignGTIN = () => {
                   type='button'
                 >
                   Company Information
+                </button>
+
+                <button
+                  className={`p-4 rounded ${activeTab === 'digital-link' ? 'bg-primary text-white' : 'bg-white text-primary'
+                    } shadow-md flex items-center justify-center`}
+                  onClick={() => handleTabClick('digital-link')}
+                  type='button'
+                >
+                  Digital Link
+                </button>
+
+                <button
+                  className={`p-4 rounded ${activeTab === 'Codification' ? 'bg-primary text-white' : 'bg-white text-primary'
+                    } shadow-md flex items-center justify-center`}
+                  onClick={() => handleTabClick('Codification')}
+                  type='button'
+                >
+                  Codification
+                </button>
+
+                <button
+                  className={`p-4 rounded ${activeTab === 'Miscellaneous' ? 'bg-primary text-white' : 'bg-white text-primary'
+                    } shadow-md flex items-center justify-center`}
+                  onClick={() => handleTabClick('Miscellaneous')}
+                  type='button'
+                >
+                  Miscellaneous
                 </button>
               </div>
 
@@ -261,6 +291,34 @@ const AdminAddForeignGTIN = () => {
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                )}
+
+
+                 {/* third Tab */}
+                 {activeTab === 'digital-link' && (
+                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                    <AdminDigitalLinkTab barcodeData={data?.gtin}/>
+                  </div>
+                )}
+
+
+                {/* Fourth Tab */}
+                {activeTab === 'Codification' && (
+                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                    <div className='mt-2 border border-gray-300'>
+                      <AdminCodificationTab gs1ProductData={data?.gcpGLNID}/>
+                    </div>
+                  </div>
+                )}
+
+
+                {/* Fifth Tab */}
+                {activeTab === 'Miscellaneous' && (
+                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                    <div className='mt-2 border border-gray-300'>
+                      <AdminMiscellaneous />
                     </div>
                   </div>
                 )}
