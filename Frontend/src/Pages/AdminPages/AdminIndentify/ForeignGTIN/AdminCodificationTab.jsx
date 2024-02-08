@@ -6,7 +6,7 @@ import { DotLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const CodificationTab = ({ gs1ProductData }) => {
+const AdminCodificationTab = ({ gs1ProductData }) => {
   const [open, setOpen] = useState(false);
   const [subOpen, setSubOpen] = useState(false);
   const [thirdOpen, setThirdOpen] = useState(false);
@@ -555,4 +555,4 @@ const CodificationTab = ({ gs1ProductData }) => {
   );
 };
 
-export default CodificationTab;
+export default AdminCodificationTab;
