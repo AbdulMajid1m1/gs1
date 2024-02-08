@@ -450,7 +450,7 @@ const MemmberRegisteration = () => {
     };
 
     const handleGtinNumberChange = (event, value) => {
-
+        console.log(value)
         setSelectedGtinNumber(value);
         if (!value) {
             setSelectedOtherProducts([]);
@@ -576,6 +576,33 @@ const MemmberRegisteration = () => {
         setIsCrNumberPopUpVisible(false);
     };
 
+    // Static options for the Autocomplete component
+    const options = [
+        { label: 'Organization', value: 'organization' },
+        { label: 'Individual/Family Business', value: 'individual/family business' },
+
+    ];
+
+    // State to hold the selected option, defaulting to 'Organization'
+    const [entityType, setEntityType] = useState(options[0]);
+    // Function to handle option selection
+    const handleOptionChange = (event, newValue) => {
+        setEntityType(newValue);
+        if (newValue.value === 'individual/family business') {
+            const nonMedicalCategory = categories.find(category => category.name === 'non-medical');
+            setSelectedCategories(nonMedicalCategory);
+            // Assuming 'Category 10' is a specific GTIN number or represents a condition to pre-fill the GTIN field
+            const category10Gtin = gtinNumber.find(gtin => gtin.total_no_of_barcodes === 10);
+            setSelectedGtinNumber(category10Gtin);
+            setSelectedOtherProducts([]); // Disabling the selection for OTHER PRODUCTS
+        } else {
+            setSelectedCategories(null);
+            setSelectedGtinNumber(null);
+
+        }
+    };
+
+    // handleOptionChange 
     return (
         <div>
             {isLoading &&
@@ -612,60 +639,46 @@ const MemmberRegisteration = () => {
 
                 <div className='h-auto w-full sm:w-2/3 p-6 shadow-xl border-l border-r border-b border-primary'>
                     <form onSubmit={handleSubmit}>
-                        {/* <div className='flex flex-col gap-3 sm:flex-row sm:justify-between'>
-                        <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                            <label className='text-secondary font-semibold' htmlFor='activty'>CR Activities<span className='text-red-600'>*</span></label>
+                        <div className='w-full font-body sm:text-base text-sm flex flex-col'>
+                            <label className='text-secondary font-semibold' htmlFor='entityType'>
+                                {t('Business Type')}<span className='text-red-600'>*</span>
+                            </label>
                             <Autocomplete
-                                id="activty"
-                                // options={getAllActivities}
-                                options={getAllActivities}
-                                value={selectedActivity}
-                                getOptionLabel={(option) => option?.activity || ""}
-                                onChange={handleSelectedActivityData}
-                                onInputChange={(event, value) => {
-                                    if (!value) {
-                                        // perform operation when input is cleared
-                                        console.log("Input cleared");
-                                    }
-                                }}
+                                id="entityType"
+                                options={options}
+                                value={entityType}
+                                getOptionLabel={(option) => option.label}
+                                onChange={handleOptionChange}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
+                                        className="bg-gray-50 border border-gray-300 text-black text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                        placeholder={t('Select Business Type')}
                                         InputProps={{
                                             ...params.InputProps,
-                                            className: "text-white",
+                                            className: "text-black",
                                         }}
                                         InputLabelProps={{
                                             ...params.InputLabelProps,
-                                            style: { color: "white" },
+                                            style: { color: "black" },
                                         }}
-                                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                        placeholder="CR Activities"
-                                    // required
                                     />
                                 )}
-                                classes={{
-                                    endAdornment: "text-white",
-                                }}
-                                sx={{
-                                    "& .MuiAutocomplete-endAdornment": {
-                                        color: "white",
-                                    },
-                                }}
                             />
                         </div>
-                    </div> */}
+
 
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary font-semibold"> {t('Cr Number')}<span className='text-red-600'> *</span></label>
+                                <label htmlFor="field1" className="text-secondary font-semibold">
+                                    {entityType === 'organization' ? t('Cr Number') : t('License Ref. No.')}<span className='text-red-600'> *</span>
+                                </label>
                                 <input
                                     type="number"
                                     id="field1"
                                     value={addCrNumber}
                                     onChange={handleInputChange}
-                                    //    onChange={(e) => setAddCrNumber(e.target.value)}
-                                    placeholder={`${t('Enter')} ${t('Cr Number')}`}
+                                    placeholder={entityType === 'organization' ? t('Enter Cr Number') : t('Enter License Ref. No.')}
                                     onFocus={handleInputFocusCrNumber}
                                     onBlur={handleInputBlurCrNumber}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
@@ -674,13 +687,15 @@ const MemmberRegisteration = () => {
                             </div>
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary font-semibold"> {t('Cr Activity')}<span className='text-red-600'> *</span></label>
+                                <label htmlFor="field2" className="text-secondary font-semibold">
+                                    {entityType === 'organization' ? t('Cr Activity') : t('License Name')}<span className='text-red-600'> *</span>
+                                </label>
                                 <input
                                     type="text"
                                     id="field2"
                                     //  value={addCrNumber}
                                     onChange={(e) => setCrActivity(e.target.value)}
-                                    placeholder={`${t('Enter')} ${t('Cr Activity')}`}
+                                    placeholder={entityType === 'organization' ? t('Enter Cr Activity') : t('Enter License Name')}
                                     onFocus={handleInputFocusCrActivity}
                                     onBlur={handleInputBlurCrActivity}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
@@ -1128,7 +1143,8 @@ const MemmberRegisteration = () => {
                                 <Autocomplete
                                     multiple
                                     id='other'
-                                    disabled={!selectedGtinNumber || selectedGtinNumber.length === 0}
+                                    // Disable this field if no GTIN number is selected or if the entity type is Individual/Family Business
+                                    disabled={!selectedGtinNumber || selectedGtinNumber.length === 0 || entityType.value === 'individual/family business'}
                                     options={otherProductsOptions}
                                     required
                                     getOptionLabel={(option) => option.product_name}
