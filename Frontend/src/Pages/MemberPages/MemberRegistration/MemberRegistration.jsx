@@ -671,14 +671,14 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field1" className="text-secondary font-semibold">
-                                    {entityType === 'organization' ? t('Cr Number') : t('License Ref. No.')}<span className='text-red-600'> *</span>
+                                    {entityType?.value === 'organization' ? t('Cr Number') : t('License Ref. No.')}<span className='text-red-600'> *</span>
                                 </label>
                                 <input
                                     type="number"
                                     id="field1"
                                     value={addCrNumber}
                                     onChange={handleInputChange}
-                                    placeholder={entityType === 'organization' ? t('Enter Cr Number') : t('Enter License Ref. No.')}
+                                    placeholder={entityType?.value === 'organization' ? t('Enter Cr Number') : t('Enter License Ref. No.')}
                                     onFocus={handleInputFocusCrNumber}
                                     onBlur={handleInputBlurCrNumber}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
@@ -688,14 +688,14 @@ const MemmberRegisteration = () => {
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field2" className="text-secondary font-semibold">
-                                    {entityType === 'organization' ? t('Cr Activity') : t('License Name')}<span className='text-red-600'> *</span>
+                                    {entityType?.value === 'organization' ? t('Cr Activity') : t('License Name')}<span className='text-red-600'> *</span>
                                 </label>
                                 <input
                                     type="text"
                                     id="field2"
                                     //  value={addCrNumber}
                                     onChange={(e) => setCrActivity(e.target.value)}
-                                    placeholder={entityType === 'organization' ? t('Enter Cr Activity') : t('Enter License Name')}
+                                    placeholder={entityType?.value === 'organization' ? t('Enter Cr Activity') : t('Enter License Name')}
                                     onFocus={handleInputFocusCrActivity}
                                     onBlur={handleInputBlurCrActivity}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
