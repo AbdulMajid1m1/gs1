@@ -412,7 +412,7 @@ const  ForeginGtin = () => {
     <div>
       <div  className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-          <DashboardRightHeader title={'Foreign GTIN'} />
+          <DashboardRightHeader title={`${t('Foreign GTIN')}`} />
         </div>
 
         <div className='flex justify-center items-center'>
@@ -425,11 +425,11 @@ const  ForeginGtin = () => {
               className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
               {i18n.language === 'ar' ? (
                 <>
-                  Add Foreign GTIN <i className="fas fa-plus mr-1"></i>
+                  {t('Add Foreign GTIN')} <i className="fas fa-plus mr-1"></i>
                 </>
               ) : (
                 <>
-                  <i className="fas fa-plus mr-1"></i> Add Foreign GTIN
+                  <i className="fas fa-plus mr-1"></i>  {t('Add Foreign GTIN')}
                 </>
               )}
             </button>
@@ -571,7 +571,7 @@ const  ForeginGtin = () => {
 
           <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-            <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn}
+            <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn(t)}
               loading={isLoading}
               secondaryColor="secondary"
               handleRowClickInParent={handleRowClickInParent}

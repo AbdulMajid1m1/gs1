@@ -153,7 +153,7 @@ const StaffHelpDesk = () => {
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           <div>
-            <AdminDashboardRightHeader title={t('Staff Assigned Desk')} />
+          <AdminDashboardRightHeader title={t('Staff Assigned Desk')} />
           </div>
 
           <div className='flex justify-center items-center'>
@@ -232,7 +232,7 @@ const StaffHelpDesk = () => {
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                   <DataTable data={data}
-                    title={t('Staff Assigned Desk')}
+                  title={t('Staff Assigned Desk')}
                     columnsName={staffAssignedTaskColumn(t)}
                     loading={isLoading}
                     secondaryColor="secondary"
