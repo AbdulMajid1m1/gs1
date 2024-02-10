@@ -40,7 +40,7 @@ const LaanguageChange = () => {
 
     const refreshcitiesData = async () => {
         try {
-            const response = await newRequest.get("http://localhost:3091/translations");
+            const response = await newRequest.get("http://gs1ksa.org:3091/translations");
             const dataArray = Object.entries(response.data);
             setData(dataArray);
             setIsLoading(false)

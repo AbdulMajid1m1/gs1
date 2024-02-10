@@ -18,7 +18,7 @@ const dynamicTranslations = {
 // Function to fetch translations
 const fetchTranslations = async () => {
   try {
-    const response = await fetch('http://localhost:3091/translations');
+    const response = await fetch('http://gs1ksa.org:3091/translations');
     const data = await response.json();
 
     if (data) {
@@ -56,27 +56,7 @@ const fetchTranslations = async () => {
 };
 
 // Call the fetchTranslations function
-// fetchTranslations();
-i18n
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .init({
-    resources: {
-      en: {
-        translation: enTranslation,
-      },
-      ar: {
-        translation: arTranslation,
-      },
-    },
-    fallbackLng: 'en',
-    detection: {
-      order: ['navigator'],
-    },
-    interpolation: {
-      escapeValue: false,
-    },
-    lng: initialLanguage,
-  });
+fetchTranslations();
+
 
 export default i18n;

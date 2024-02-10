@@ -20,6 +20,7 @@ import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/Selec
 import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
 import GLN from "./Pages/MemberPages/GLN/GLN";
 import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
+import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
 import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
 import MemberDashboard from "./Pages/MemberPages/MemberDashboard/MemberDashboard";
@@ -323,6 +324,7 @@ const App = () => {
                               <Route path="products/add-products" element={<AddProducts />} />
                               <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
+                              <Route path="Language/Dynamic" element={<LaanguageChange />} />
 
                               {/* <Route path="expired-member" element={<ExpiredMember />} /> */}
                               <Route path="expired-member" element={

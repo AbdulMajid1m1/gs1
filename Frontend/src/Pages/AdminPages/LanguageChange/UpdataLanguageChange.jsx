@@ -23,7 +23,7 @@ const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) =>
         setLoading(true);
 
         try {
-            const response = await axios.put(`http://localhost:3091/translations/${updateBrandData?.nameEnglish}`, {
+            const response = await axios.put(`http://gs1ksa.org:3091/translations/${updateBrandData?.nameEnglish}`, {
                 'value': category_name_ar,
             });
 
