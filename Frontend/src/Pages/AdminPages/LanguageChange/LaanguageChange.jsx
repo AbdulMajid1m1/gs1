@@ -17,6 +17,7 @@ import DataTable from '../../../components/Datatable/Datatable';
 import AddLanguageChange from './AddLanguageChange';
 import UpdataLanguageChange from './UpdataLanguageChange';
 import axios from 'axios';
+import { backendUrl } from '../../../utils/config';
 // import i18n from "../../../../i18n";
 const LaanguageChange = () => {
     const { t, i18n } = useTranslation();
@@ -41,7 +42,7 @@ const LaanguageChange = () => {
 
     const refreshcitiesData = async () => {
         try {
-            const response = await axios.get("http://gs1ksa.org:3091/translations");
+            const response = await axios.get(backendUrl + "/translations");
             const dataArray = Object.entries(response.data);
             setData(dataArray);
             setIsLoading(false)
