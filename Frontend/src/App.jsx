@@ -132,6 +132,7 @@ import AdminForeginGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/Admi
 import AdminAddForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminAddForeignGTIN.jsx";
 import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminDigitalLinkInfo.jsx";
 import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedByGS1/MemberVerifiedByGS1.jsx";
+import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 
 const queryClient = new QueryClient()
 
@@ -326,6 +327,7 @@ const App = () => {
 
                               <Route path="Language/Dynamic" element={<LaanguageChange />} />
 
+                              <Route path="Language/Dynamic" element={<LaanguageChange />} />
                               {/* <Route path="expired-member" element={<ExpiredMember />} /> */}
                               <Route path="expired-member" element={
                                 <ProtectedRoute requiredPermission="expired_member_gln_location">

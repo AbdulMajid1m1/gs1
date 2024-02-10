@@ -44,12 +44,12 @@ const AdminAddForeignGTIN = () => {
         console.log(error);
         if (error.response && error.response.status === 404) {
           Swal.fire({
-            title: 'Product Not Found',
-            text: 'Do you want to query in Global Database (GEPIR)?',
+            title: `${t('Product Not Found')}`,
+            text: `${t('Do you want to query in Global Database (GEPIR)?')}`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes Search',
-            cancelButtonText: 'Close',
+            confirmButtonText: `${t('Yes Search')}`,
+            cancelButtonText: `${t('Close')}`,
             // changes the color of the confirm button to red
             confirmButtonColor: '#021F69',
             cancelButtonColor: '#FF693A',
@@ -62,13 +62,13 @@ const AdminAddForeignGTIN = () => {
               } 
               catch (globalError) {
                 console.log(globalError);
-                toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || 'Something went wrong');
+                toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
                 setData([]);
               }
             }
           });
         } else {
-          toast.error(error?.response?.data?.error || 'Something went wrong');
+          toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
           setData([]);
         }
         setIsLoading(false);
@@ -79,23 +79,23 @@ const AdminAddForeignGTIN = () => {
 
     
     const products = [
-        { name: "GTIN", value: data?.gtin },
-        { name: "Brand Name", value: data?.brandName },
-        { name: "Product Description", value: data?.productDescription },
-        { name: "productImageUrl", value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
-        { name: "Country of sale", value: data?.countryOfSaleName },
-        { name: "Gcp GLNID", value: data?.gcpGLNID },
-        { name: "type", value: data?.type },
+        { name: `${t('GTIN')}`, value: data?.gtin },
+        { name: `${t('Brand Name')}`, value: data?.brandName },
+        { name: `${t('Product Description')}`, value: data?.productDescription },
+        { name:`${t('Product Image Url')}`, value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
+        { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode },
+        { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID },
+      { name: `${t('Type')}`, value: data?.type },
     
     ]
 
 
     const companyInformation = [
         { name: "GTIN", value: data?.gtin },
-        { name: "Company Name", value: data?.companyName },
-        { name: "Country of sale", value: data?.countryOfSaleName },
-        { name: "Gcp GLNID", value: data?.gcpGLNID },
-        { name: "type", value: data?.type },
+        { name:  `${t('Company Name')}`, value: data?.companyName },
+        { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode },
+        { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID },
+        { name: `${t('Type')}`, value: data?.type },
 
     ]
 
@@ -119,7 +119,7 @@ const AdminAddForeignGTIN = () => {
           companyId: SelectedData?.companyID,
         });
         console.log(response?.data);
-        toast.success(response?.data?.message || 'Product Added Successfully');
+        toast.success(response?.data?.message || `${t('Product Added Successfully')}`);
         setAddProductsLoader(false);
 
         setTimeout(() => {
@@ -129,7 +129,7 @@ const AdminAddForeignGTIN = () => {
       } 
       catch (error) {
         console.log(error);
-        toast.error(error?.response?.data?.error || 'Something went wrong');
+        toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
         setAddProductsLoader(false);
       }
     };
@@ -151,8 +151,17 @@ const AdminAddForeignGTIN = () => {
                       <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
                         <p className="font-semibold"> {t('Complete Data')}</p>
                         <p>
-                          {t('This number is registered to company')}: :{" "}
+                        {i18n.language === 'ar' ? (
+                      <>
                           <span className="font-semibold">{SelectedData?.company_name_eng}</span>
+                        :: {t('This number is registered to company')}
+                      </>
+                    ) : (
+                      <>
+                        {t('This number is registered to company')}: :{" "}
+                            <span className="font-semibold">{SelectedData?.company_name_eng}</span>
+                      </>
+                    )}
                             {/* <span className="font-semibold">Hasnain, Majid</span> */}
                         </p>
                       </div>
@@ -168,8 +177,8 @@ const AdminAddForeignGTIN = () => {
                           id="fields1"
                             value={userSearch}
                           onChange={(e) => setUserSearch(e.target.value)}
-                          className="border-1 w-full rounded-sm border-secondary p-2"
-                          placeholder='Search'
+                      className="border-1 w-full rounded-sm border-secondary p-2"
+                      placeholder={`${t('SEARCH')}`}
                         />
                     </div>
 
@@ -182,7 +191,7 @@ const AdminAddForeignGTIN = () => {
                             className="sm:w-[70%] w-full ml-2"
                             endIcon={isLoading ? <CircularProgress size={24} color="inherit" /> : null}
                         >
-                            SEARCH
+                      {t('SEARCH')}
                         </Button>
                     </div>
                  </div>
@@ -198,7 +207,7 @@ const AdminAddForeignGTIN = () => {
                   onClick={() => handleTabClick('product-Infomation')}
                   type='button'
                 >
-                  Product Infomation
+                    {t('Product Infomation')}
                 </button>
 
                 <button
@@ -207,7 +216,7 @@ const AdminAddForeignGTIN = () => {
                   onClick={() => handleTabClick('company-information')}
                   type='button'
                 >
-                  Company Information
+                    {t('Company Information')}
                 </button>
 
                 <button
@@ -338,7 +347,7 @@ const AdminAddForeignGTIN = () => {
                             className="px-3 py-2 ml-2"
                             endIcon={addProductsLoader ? <CircularProgress size={24} color="inherit" /> : null}
                         >
-                            Save Product
+                            {t('Save Product')}
                         </Button>
                     </div>
                 </form>
