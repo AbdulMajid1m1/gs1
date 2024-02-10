@@ -353,22 +353,44 @@ const MemmberRegisteration = () => {
             })
         });
 
+        // if entity selected is organization then make cr number and cr activity required
 
-
-
-
+        if (entityType?.value === 'organization') {
+            if (!addCrNumber) {
+                setIsLoading(false);
+                toast.error(`${t('Please enter Cr Number')}`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
+                return;
+            }
+            if (!crActivity) {
+                setIsLoading(false);
+                toast.error(`${t('Please enter Cr Activity')}`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
+                return;
+            }
+        }
 
         const requestBody = {
-            "cr_number": addCrNumber,
-            "cr_activity": crActivity,
+            ...(addCrNumber && { "cr_number": addCrNumber }),
+            ...(crActivity && { "cr_activity": crActivity }),
             "email": email,
             "contactPerson": contactPerson,
             "company_name_eng": companyEnglish,
             "company_name_arabic": companyArabic,
             "companyLandLine": companyLandLine,
             "mobile": mobileNumber,
-            // "zip_code": zipCode,
-
             // Conditionally include zip_code based on user input
             ...(zipCode && { "zip_code": zipCode }),
 
@@ -1044,6 +1066,8 @@ const MemmberRegisteration = () => {
                                 <Autocomplete
                                     id="category"
                                     options={categories}
+                                    // disable option selection if entity type is Individual/Family Business
+                                    disabled={entityType.value === 'individual/family business'}
                                     value={selectedCategories}
                                     required
                                     getOptionLabel={(option) => option.name || ""}
