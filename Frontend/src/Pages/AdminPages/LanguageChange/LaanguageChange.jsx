@@ -13,11 +13,19 @@ import { toast } from "react-toastify";
 // import Addunit from './addunit';
 // import Updateunit from './updateunit';
 import { I18nextProvider, useTranslation } from "react-i18next";
+<<<<<<< HEAD
 import DataTable from "../../../components/Datatable/Datatable";
 import AddLanguageChange from "./AddLanguageChange";
 import UpdataLanguageChange from "./UpdataLanguageChange";
 import axios from "axios";
 import { backendUrl } from "../../../utils/config";
+=======
+import DataTable from '../../../components/Datatable/Datatable';
+import AddLanguageChange from './AddLanguageChange';
+import UpdataLanguageChange from './UpdataLanguageChange';
+import axios from 'axios';
+import { backendUrl } from '../../../utils/config';
+>>>>>>> 35bed694b2df0c8705fefb86e6f9ea88de78b796
 // import i18n from "../../../../i18n";
 const LaanguageChange = () => {
   const { t, i18n } = useTranslation();
@@ -32,6 +40,7 @@ const LaanguageChange = () => {
 
   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
 
+<<<<<<< HEAD
   const handleShowUpdatePopup = (row) => {
     setUpdatePopupVisibility(true);
     sessionStorage.setItem("updatelanguageData", JSON.stringify(row));
@@ -43,6 +52,45 @@ const LaanguageChange = () => {
     setTableSelectedRows,
   } = useContext(DataTableContext);
   const [filteredData, setFilteredData] = useState([]);
+=======
+    const handleShowUpdatePopup = (row) => {
+        setUpdatePopupVisibility(true);
+        sessionStorage.setItem("updatelanguageData", JSON.stringify(row));
+    };
+    const { rowSelectionModel, setRowSelectionModel,
+        tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
+    const [filteredData, setFilteredData] = useState([]);
+
+    const refreshcitiesData = async () => {
+        try {
+            const response = await axios.get(backendUrl + "/translations");
+            const dataArray = Object.entries(response.data);
+            setData(dataArray);
+            setIsLoading(false)
+
+        } catch (err) {
+            console.log(err);
+            setIsLoading(false)
+        }
+    };
+
+    useEffect(() => {
+
+        refreshcitiesData() // Calling the function within useEffect, not inside itself
+    }, []);
+    const formattedData = data.map((item, index) => ({
+        id: index,
+        nameEnglish: item[0], // English translation
+        namearabic: item[1], // Arabic translation
+    }));
+
+    const handleRowClickInParent = (item) => {
+        if (!item || item?.length === 0) {
+            setTableSelectedRows(data)
+            setFilteredData(data)
+            return
+        }
+>>>>>>> 35bed694b2df0c8705fefb86e6f9ea88de78b796
 
   const refreshcitiesData = async () => {
     try {

@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 // import newRequest from '../../../../../utils/userRequest';
+<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { backendUrl } from "../../../utils/config";
+=======
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { backendUrl } from '../../../utils/config';
+>>>>>>> 35bed694b2df0c8705fefb86e6f9ea88de78b796
 
 const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
   const [category_name_en, setcategory_name_en] = useState("");
@@ -15,12 +21,21 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
     setVisibility(false);
   };
 
+<<<<<<< HEAD
   const handleAddCompany = async () => {
     try {
       const response = await axios.post(backendUrl + "/translations", {
         key: category_name_en,
         value: category_name_ar,
       });
+=======
+    const handleAddCompany = async () => {
+        try {
+            const response = await axios.post(backendUrl + '/translations', {
+                'key': category_name_en,
+                'value': category_name_ar,
+            });
+>>>>>>> 35bed694b2df0c8705fefb86e6f9ea88de78b796
 
       toast.success(
         `${t("Word")} ${category_name_ar} ${t("has been added successfully")}.`,
