@@ -1122,7 +1122,17 @@ const MemmberRegisteration = () => {
                                     id='GTIN'
                                     disabled={!selectedCategories}
                                     // options={gtinNumber}
-                                    options={selectedCategories ? gtinNumber : []}
+                                    // 
+                                    // options={selectedCategories ? gtinNumber : []}
+                                    // total_no_of_barcodes
+                                    options={
+                                        selectedCategories
+                                            ? entityType.value === 'organization'
+                                                ? gtinNumber.filter(option => option?.total_no_of_barcodes !== 10)
+                                                : gtinNumber
+                                            : []
+                                    }
+
                                     value={selectedGtinNumber}
                                     getOptionLabel={(option) => option?.member_category_description || ''}
                                     onChange={handleGtinNumberChange}
