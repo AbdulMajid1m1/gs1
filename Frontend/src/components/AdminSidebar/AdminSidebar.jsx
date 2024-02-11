@@ -403,6 +403,21 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Foreign GTIN')}</p>
               </div>
 
+              <div
+                className={`main-images-container ${selectedItem === '/admin/Language/Dynamic' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/Language/Dynamic', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/Language/Dynamic')
+                }
+              >
+                <img
+                  src={pageicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Language')}</p>
+              </div>
+
             </div>
           )}
 

@@ -3,6 +3,9 @@ import {
   initReactI18next
 } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import enTranslation from './english.json';
+import arTranslation from './arabic.json';
+import { backendUrl } from './utils/config';
 
 const storedLanguage = sessionStorage.getItem('selectedLanguaged');
 const initialLanguage = storedLanguage || 'ar';
@@ -15,7 +18,7 @@ const dynamicTranslations = {
 // Function to fetch translations
 const fetchTranslations = async () => {
   try {
-    const response = await fetch('http://gs1ksa.org:3091/translations');
+    const response = await fetch(backendUrl + '/translations');
     const data = await response.json();
 
     if (data) {
@@ -49,6 +52,28 @@ const fetchTranslations = async () => {
     }
   } catch (error) {
     console.error('Error fetching translations:', error);
+      i18n
+        .use(LanguageDetector)
+        .use(initReactI18next) // Move initReactI18next here
+        .init({
+          dynamicTranslations: {
+            en: {
+              translation: enTranslation,
+            },
+            ar: {
+              translation: arTranslation,
+            },
+          },
+          fallbackLng: ['ar', 'en'],
+          detection: {
+            order: ['navigator'],
+          },
+          interpolation: {
+            escapeValue: false,
+          },
+          lng: initialLanguage,
+          debug: true,
+        });
   }
 };
 
