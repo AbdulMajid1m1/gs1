@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 // import newRequest from '../../../../../utils/userRequest';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { backendUrl } from '../../../utils/config';
 
 const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_en, setcategory_name_en] = useState("");
@@ -16,7 +17,7 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleAddCompany = async () => {
         try {
-            const response = await axios.post('http://gs1ksa.org:3091/translations', {
+            const response = await axios.post(backendUrl + '/translations', {
                 'key': category_name_en,
                 'value': category_name_ar,
             });
