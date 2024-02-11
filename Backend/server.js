@@ -194,6 +194,7 @@ app.get('/translations', (req, res) =>
             res.status(500).json({ error: 'Internal Server Error' });
         } else {
             res.json(JSON.parse(data));
+        
         }
     });
 });

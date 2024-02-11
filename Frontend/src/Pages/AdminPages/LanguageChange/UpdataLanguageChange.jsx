@@ -5,6 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { backendUrl } from '../../../utils/config';
 
 const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -23,7 +24,7 @@ const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) =>
         setLoading(true);
 
         try {
-            const response = await axios.put(`http://gs1ksa.org:3091/translations/${updateBrandData?.nameEnglish}`, {
+            const response = await axios.put(backendUrl +`/translations/${updateBrandData?.nameEnglish}`, {
                 'value': category_name_ar,
             });
 

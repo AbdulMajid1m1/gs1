@@ -1,14 +1,12 @@
-import i18n from 'i18next';
-import {
-  initReactI18next
-} from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import enTranslation from './english.json';
-import arTranslation from './arabic.json';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import enTranslation from "./english.json";
+import arTranslation from "./arabic.json";
+import { backendUrl, baseUrl } from "./utils/config";
 
-
-const storedLanguage = sessionStorage.getItem('selectedLanguaged');
-const initialLanguage = storedLanguage || 'ar';
+const storedLanguage = sessionStorage.getItem("selectedLanguaged");
+const initialLanguage = storedLanguage || "ar";
 
 const dynamicTranslations = {
   ar: {},
@@ -18,7 +16,7 @@ const dynamicTranslations = {
 // Function to fetch translations
 const fetchTranslations = async () => {
   try {
-    const response = await fetch('http://gs1ksa.org:3091/translations');
+    const response = await fetch(backendUrl + "/translations");
     const data = await response.json();
 
     if (data) {
@@ -35,9 +33,9 @@ const fetchTranslations = async () => {
         .use(initReactI18next) // Move initReactI18next here
         .init({
           dynamicTranslations: {},
-          fallbackLng: ['ar', 'en'],
+          fallbackLng: ["ar", "en"],
           detection: {
-            order: ['navigator'],
+            order: ["navigator"],
           },
           interpolation: {
             escapeValue: false,
@@ -47,16 +45,15 @@ const fetchTranslations = async () => {
         });
 
       // Add resource bundles after initializing i18n
-      i18n.addResourceBundle('ar', 'translation', dynamicTranslations.ar);
-      i18n.addResourceBundle('en', 'translation', dynamicTranslations.en);
+      i18n.addResourceBundle("ar", "translation", dynamicTranslations.ar);
+      i18n.addResourceBundle("en", "translation", dynamicTranslations.en);
     }
   } catch (error) {
-    console.error('Error fetching translations:', error);
+    console.error("Error fetching translations:", error);
   }
 };
 
 // Call the fetchTranslations function
 fetchTranslations();
-
 
 export default i18n;

@@ -848,21 +848,6 @@
   "Edit Staff Member": "تحرير عضو هيئة التدريس",
   "Word[English]": "كلمة [إنجليزي]",
   "Word[Arabic]": "كلمة[عربي]",
-<<<<<<< HEAD
-  "KPI REPORTS": "KPI رپورٹس",
-  "Add Foreign GTIN": "أضف رقم GTIN الأجنبي",
-  "SEARCH": "البحث",
-  "Company Information": "معلومات الشركة",
-  "Product Infomation": "معلومات المنتج",
-  "Country of sale": "بلد المبيعات",
-  "Product Image Url": "رابط صورة المنتج",
-  "Gcp GLNID": "جلنيد GCP",
-  "Save Product": "حفظ المنتج",
-  "Yes Search": "نعم بحث",
-  "Do you want to query in Global Database (GEPIR)?": "هل تريد الاستعلام في قاعدة البيانات العالمية (GEPIR)؟",
-  "Product Not Found": "الصنف غير موجود",
-  "Product Added Successfully": "تمت إضافة المنتج بنجاح"
-=======
   "Staff Assigned Desk": "اسٹاف تفویض کردہ ڈیسک",
   "Licence Registry": "سجل الترخيص",
   "EXCEL": "اكسل",
@@ -874,6 +859,13 @@
   "Update Data": "تحديث البيانات",
   "Regenerate GCP": "إعادة إنشاء GCP",
   "GCP Licence": "ترخيص GCP",
-  "KPI REPORTS": "التقارير KPI"
->>>>>>> 18333d8a212293fff4f3fc7fc5e2e76afe4606e2
+  "KPI REPORTS": "التقارير KPI",
+  "Business Type": "نوع العمل",
+  "License Ref. No": "مرجع الترخيص. لا",
+  "License Name": "اسم الرخصة",
+  "Enter License Ref. No.": "أدخل رقم الترخيص لا.",
+  "Enter Cr Number": "أدخل رقم السجل التجاري",
+  "Enter License Name": "أدخل اسم الترخيص",
+  "Enter Cr Activity": "أدخل نشاط الكروم",
+  "Select Business Type": "حدد نوع العمل"
 }
