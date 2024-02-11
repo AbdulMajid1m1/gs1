@@ -51,7 +51,7 @@ const fetchTranslations = async () => {
       i18n.addResourceBundle("en", "translation", dynamicTranslations.en);
     }
   } catch (error) {
-    console.error('Error fetching translations:', error);
+    // console.error('Error fetching translations:', error);
       i18n
         .use(LanguageDetector)
         .use(initReactI18next) // Move initReactI18next here

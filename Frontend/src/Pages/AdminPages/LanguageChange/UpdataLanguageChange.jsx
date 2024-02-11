@@ -24,11 +24,7 @@ const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) =>
         setLoading(true);
 
         try {
-<<<<<<< HEAD
-            const response = await axios.put(backendUrl +`/translations/${updateBrandData?.nameEnglish}`, {
-=======
             const response = await axios.put(backendUrl + `/translations/${updateBrandData?.nameEnglish}`, {
->>>>>>> 35bed694b2df0c8705fefb86e6f9ea88de78b796
                 'value': category_name_ar,
             });
 
