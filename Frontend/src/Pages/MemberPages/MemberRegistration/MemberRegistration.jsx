@@ -583,7 +583,9 @@ const MemmberRegisteration = () => {
     };
 
     const handleInputFocusCrActivity = () => {
-        setIsCrActivityPopUpVisible(true);
+        if (entityType?.value === 'organization') {
+            setIsCrActivityPopUpVisible(true);
+        }
     };
 
     const handleInputBlurCrActivity = () => {
@@ -591,7 +593,9 @@ const MemmberRegisteration = () => {
     };
 
     const handleInputFocusCrNumber = () => {
-        setIsCrNumberPopUpVisible(true);
+        if (entityType?.value === 'organization') {
+            setIsCrNumberPopUpVisible(true);
+        }
     };
 
     const handleInputBlurCrNumber = () => {
