@@ -830,13 +830,13 @@ export const memberLogin = async (req, res, next) => {
         });
 
         if (!user) {
-            return res.status(401).json({ error: 'User not found' });
+            throw createError(404, 'User not found');
         }
 
         const passwordMatch = password.trim().toLowerCase() === user.password.trim().toLowerCase();
 
         if (!passwordMatch) {
-            return res.status(401).json({ error: 'Incorrect password' });
+            throw createError(401, 'Incorrect password');
         }
 
         // If email, activity, and password are correct, generate a JWT token
@@ -845,10 +845,42 @@ export const memberLogin = async (req, res, next) => {
         // Send the token in the response
         // res.status(200).json({ token });
         delete user.password;
-        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token });
+        // return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token });
+        return res.status(200).json({ success: true, memberData: user, token });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        next(error)
+    }
+};
+export const setMemberCredentials = async (req, res, next) => {
+    try {
+        // Validate user data (email, activity, password)
+        const { token } = req.body;
+        if (!token) {
+            throw createError(400, 'Token is required');
+        }
+        const decodedToken = jwt.verify(token, MEMBER_JWT_SECRET);
+        // Query the database to find a user with the provided email and activity
+        const user = await prisma.users.findUnique({
+            where: { id: decodedToken.userId },
+            include: { carts: true },
+        });
+
+        if (!user) {
+            throw createError(404, 'User not found');
+
+        }
+
+
+        // If email, activity, and password are correct, generate a JWT token
+        const memberToken = jwt.sign({ userId: user.id, email: user.email }, MEMBER_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+
+        delete user.password;
+        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token: memberToken });
+    } catch (error) {
+        console.error(error);
+        next(error)
     }
 };
 
