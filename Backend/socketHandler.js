@@ -3,41 +3,54 @@ import { Server } from "socket.io";
 const socketHandler = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: "http://localhost:3000", // Adjust according to your client app's origin
+            // origin: "http://localhost:3000", // Adjust according to your client app's origin
+            origin: "*",
             methods: ["GET", "POST"],
         },
     });
 
+    // Store user sockets and random numbers
+    let userSockets = {};
+    let randomNumberForUsers = {};
+
     io.on("connection", (socket) => {
         console.log("a user connected", socket.id);
 
-        socket.on("requestRandomNumber", () => {
-            const randomNumber = generateRandomNumber(); // Implement this function based on your logic
-            socket.emit("randomNumber", randomNumber);
+        socket.on('register', (userId) => {
+            userSockets[userId] = socket.id;
+            console.log(`User registered: ${userId}`);
         });
 
-        socket.on("verifyNumber", (selectedNumber) => {
-            if (verifyNumber(selectedNumber)) { // Implement verifyNumber function
-                socket.emit("verificationResult", { success: true });
-            } else {
-                socket.emit("verificationResult", { success: false });
+        // Handle sending random number to a specific user
+        socket.on('sendRandomNumber', ({ userId, numbers }) => {
+            const userSocketId = userSockets[userId];
+            if (userSocketId) {
+                randomNumberForUsers[userId] = numbers.find(number => number.isCorrect).number;
+                io.to(userSocketId).emit('randomNumber', numbers);
             }
         });
 
-        socket.on("disconnect", () => {
-            console.log("user disconnected");
+        // Handle number selection from mobile
+        socket.on('verifyNumber', ({ userId, selectedNumber }) => {
+            if (randomNumberForUsers[userId] && randomNumberForUsers[userId] === selectedNumber) {
+                io.to(userSockets[userId]).emit('authSuccess', { message: "Authentication successful" });
+            } else {
+                io.to(userSockets[userId]).emit('authError', { message: "Authentication failed" });
+            }
+        });
+
+        socket.on('disconnect', () => {
+            console.log(`User disconnected: ${socket.id}`);
+            // Cleanup user socket and random number info
+            const userId = Object.keys(userSockets).find(key => userSockets[key] === socket.id);
+            if (userId) {
+                delete userSockets[userId];
+                delete randomNumberForUsers[userId];
+            }
         });
     });
+
 };
 
-const generateRandomNumber = () => {
-    // Your logic to generate a random number
-    return Math.floor(Math.random() * 100); // Example implementation
-};
-
-const verifyNumber = (selectedNumber) => {
-    // Your logic to verify the selected number
-    return true; // Example implementation
-};
 
 export default socketHandler;

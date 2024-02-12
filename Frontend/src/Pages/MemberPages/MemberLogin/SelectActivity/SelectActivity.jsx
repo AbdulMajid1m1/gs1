@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { DotLoader } from 'react-spinners'
 import newRequest from '../../../../utils/userRequest'
 import { useTranslation } from 'react-i18next';
+import TwoFactorAuthPopup from './twoFactorAuthPopup'
 
 const SelectActivity = () => {
     const { t, i18n } = useTranslation();
@@ -41,16 +42,6 @@ const SelectActivity = () => {
         
         console.log('activity', selectedUserActivity?.cr_activity, 'password', password)
 
-        // Swal.fire({
-        //     icon: 'success',
-        //     iconColor: '#01A6BC',
-        //     title: 'OTP',
-        //     text: 'OTP send to your Registered Mobile and Email',
-        //     confirmButtonText: 'Ok',
-        //     confirmButtonColor: '#021F69',
-            
-        // })
-        // navigate('/verify-code');
 
         newRequest.post('/users/memberLogin',
             {
@@ -103,8 +94,8 @@ const SelectActivity = () => {
 
   return (
     <div>
+            <TwoFactorAuthPopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={Id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
         {isLoading &&
-
             <div className='loading-spinner-background'
                 style={{
                     zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
