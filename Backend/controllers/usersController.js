@@ -858,7 +858,7 @@ export const getLicenseRegisteryUser = async (req, res) => {
         const activeUsers = await prisma.users.findMany({
             where: {
                 status: 'active',
-                gpc: { not: null }, 
+                gpc: { not: null },
                 parent_memberID: '0',
                 gcp_expiry: { gt: new Date() }
             }
@@ -1929,4 +1929,94 @@ export const updateCartReceipt = async (req, res, next) => {
         message: 'Receipt uploaded and cart updated successfully.',
         updatedCart: cart,
     });
+};
+
+
+export const mobileCheckSchema = Joi.object({
+    mobile: Joi.string().required(),
+});
+
+export const otpVerifySchema = Joi.object({
+    token: Joi.string().required(),
+    otp: Joi.string().length(4).required(),
+});
+
+
+export const generateOtp = async (req, res, next) => {
+    const { error, value } = mobileCheckSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({ success: false, message: error.details[0].message });
+    }
+
+    const { mobile } = value;
+
+
+
+    try {
+        const user = await prisma.users.findFirst({
+            where: { mobile },
+        });
+
+        if (!user) {
+            throw createError(404, 'Mobile number not found!');
+        }
+
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        const token = jwt.sign({ id: user.id, otp, isVerified: false }, MEMBER_JWT_SECRET, { expiresIn: '15m' });
+
+
+        // await sendOtpSms(mobile, otp); // Implement this function based on SMS service provider
+        const emailSubject = `GS1 Authenticator OTP Verification`
+        const emailContent = `
+            <h1>GS1 Authenticator OTP Verification</h1>
+            <h2>Your Verification OTP Is: <strong>${otp}</strong></h2>
+            `;
+        console.log(user.email)
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: user.email,
+            subject: emailSubject,
+            htmlContent: emailContent,
+        });
+
+        return res.status(200).json({ success: true, message: "OTP sent to your mobile and email", token });
+    } catch (error) {
+        console.error(error);
+        next(error)
+    }
+};
+
+export const verifyOtp = async (req, res, next) => {
+
+
+    try {
+        const { error, value } = otpVerifySchema.validate(req.body);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { otp, token } = value;
+        const decoded = jwt.verify(token, MEMBER_JWT_SECRET);
+
+        if (decoded.otp === otp) {
+            const newToken = jwt.sign({ id: decoded.id, isVerified: true }, MEMBER_JWT_SECRET, { expiresIn: '120d' });
+            // fetch user
+            const user = await prisma.users.findUnique({
+                where: { id: decoded.id }
+            });
+
+            return res.status(200).json({ success: true, error: "OTP verified", token: newToken, user });
+        } else {
+            return res.status(400).json({ success: false, error: "Wrong OTP" });
+        }
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ success: false, error: "Token expired" });
+        } else {
+            console.error(error);
+            next(error)
+        }
+    }
 };
