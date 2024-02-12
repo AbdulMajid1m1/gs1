@@ -716,7 +716,7 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field1" className="text-secondary font-semibold">
-                                    {entityType === 'organization' ? t('Cr Number') : t('License Ref. No')}<span className='text-red-600'> *</span>
+                                    {entityType?.value === 'organization' ? t('Cr Number') : t('License Ref. No')}<span className='text-red-600'> *</span>
                                 </label>
                                 <input
                                     type="number"
