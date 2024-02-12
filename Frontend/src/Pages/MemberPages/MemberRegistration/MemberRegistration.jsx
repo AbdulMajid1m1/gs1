@@ -17,6 +17,7 @@ import CompanyNamePopUp from './CompanyNamePopUp';
 import CompanyArabicPopUp from './CompanyArabicPopUp';
 import CrActivityPopUp from './CrActivityPopUp';
 import CrNumberPopUp from './CrNumberPopUp';
+import TermsAndCondition from './TermsAndCondition';
 
 
 const MemmberRegisteration = () => {
@@ -561,6 +562,8 @@ const MemmberRegisteration = () => {
     const [isCompanyArabicPopUpVisible, setIsCompanyArabicPopUpVisible] = useState(false);
     const [isCrActivityPopUpVisible, setIsCrActivityPopUpVisible] = useState(false);
     const [isCrNumberPopUpVisible, setIsCrNumberPopUpVisible] = useState(false);
+    const [isTermsAndConditionPopUp, setIsTermsAndConditionPopUp] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleCompanyNamePopUp = () => {
         setIsCompanyNamePopUpVisible(true);
@@ -601,6 +604,22 @@ const MemmberRegisteration = () => {
     const handleInputBlurCrNumber = () => {
         setIsCrNumberPopUpVisible(false);
     };
+
+    const handleTermsAndCondition = () => {
+        setIsTermsAndConditionPopUp(true);
+    };
+
+    const handleAccept = () => {
+        setIsChecked(true);
+        setIsTermsAndConditionPopUp(false);
+    };
+
+    const handleClose = () => {
+        setIsChecked(false);
+        setIsTermsAndConditionPopUp(false);
+    };
+
+
 
     // Static options for the Autocomplete component
     const options = [
@@ -1204,6 +1223,18 @@ const MemmberRegisteration = () => {
                             </div>
 
                         </div>
+                        
+                        
+                        <div className='mt-2'>
+                            <input
+                                id='terms'
+                                type='checkbox'
+                                onChange={handleTermsAndCondition}
+                                checked={isChecked}
+                                className='bg-[#8E9CAB] rounded-sm transform scale-150'
+                             />
+                            <label className='text-secondary font-body pl-2 cursor-pointer' htmlFor='terms'> Accept Term & Conditions</label><span className='text-red-600 -ml-1'>(Download Terms & Conditions)</span>
+                        </div>
 
 
                         <div>
@@ -1291,6 +1322,10 @@ const MemmberRegisteration = () => {
 
                 {isCrNumberPopUpVisible && (
                     <CrNumberPopUp isVisible={isCrNumberPopUpVisible} setVisibility={setIsCrNumberPopUpVisible} />
+                )}
+
+                {isTermsAndConditionPopUp && (
+                    <TermsAndCondition isVisible={isTermsAndConditionPopUp} handleClose={handleClose} handleAccept={handleAccept}/>
                 )}
                 {/* </div> */}
             </div >

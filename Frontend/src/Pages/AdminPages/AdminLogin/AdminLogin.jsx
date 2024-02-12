@@ -144,7 +144,7 @@ const AdminLogin = () => {
             </div>
           </div>
           <div className={`hidden lg:block lg:w-2/3 transform transition-transform duration-1000 ease-in-out ${showImage ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[-100%]'}`}
-            style={{ backgroundImage: 'url(https://gs1ksa.org/backend/images/login/613f2a06120da1631529478.jpg)' }}>
+            style={{ backgroundImage: 'url(https://www.gs1.org.sa/backend/images/login/613f2a06120da1631529478.jpg)' }}>
             <div className="flex items-center h-full px-14 bg-gray-900 bg-opacity-10">
               <div>
                 <h2 className="text-6xl pt-40 font-semibold font-sans text-white">Good Morning</h2>
