@@ -12,10 +12,16 @@ import QRCode from 'qrcode';
 import ejs from 'ejs';
 import { BACKEND_URL } from "./configs/envConfig.js";
 import cron from 'node-cron';
+import { createServer } from "http";
+// Other imports remain the same
+
+import socketHandler from "./socketHandler.js"; // Import the socket handler
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
+
+
 
 dotenv.config();
 
@@ -41,6 +47,11 @@ app.use(cors({
     },
     credentials: true
 }));
+
+
+
+
+
 
 app.use(express.json());
 
@@ -177,6 +188,20 @@ app.use((err, req, res, next) => {
 });
 
 
+<<<<<<< HEAD
+=======
+
+// Setting up a cron job to run every hour
+cron.schedule('0 * * * *', () => {
+    console.log('Running a task every hour');
+    handleInvoiceReminders();
+});
+
+app.get('/test', async (req, res) => {
+    handleInvoiceReminders();
+    res.send('test');
+});
+>>>>>>> 2bc563b26b75beacffa6ed3070d904c63b49dff0
 //-------------------arabic---------------------------------------
 import { promisify } from 'util';
 import fs from 'fs';
@@ -185,10 +210,8 @@ const writeFileAsync = promisify(fs.writeFile);
 
 const jsonFilePath = './arabic.json';
 
-app.get('/translations', (req, res) =>
-{
-    fs.readFile(jsonFilePath, 'utf-8', (err, data) =>
-    {
+app.get('/translations', (req, res) => {
+    fs.readFile(jsonFilePath, 'utf-8', (err, data) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -198,13 +221,11 @@ app.get('/translations', (req, res) =>
         }
     });
 });
-app.put('/translations/:key', (req, res) =>
-{
+app.put('/translations/:key', (req, res) => {
     const { key } = req.params;
     const { value } = req.body;
 
-    fs.readFile(jsonFilePath, 'utf-8', (readErr, data) =>
-    {
+    fs.readFile(jsonFilePath, 'utf-8', (readErr, data) => {
         if (readErr) {
             console.log(readErr);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -217,8 +238,7 @@ app.put('/translations/:key', (req, res) =>
             if (jsonData.hasOwnProperty(key)) {
                 jsonData[key] = value;
 
-                fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) =>
-                {
+                fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) => {
                     if (writeErr) {
                         console.log(writeErr);
                         res.status(500).json({ error: 'Internal Server Error' });
@@ -235,8 +255,7 @@ app.put('/translations/:key', (req, res) =>
         }
     });
 });
-app.post('/translations', async (req, res) =>
-{
+app.post('/translations', async (req, res) => {
     try {
         const { key, value } = req.body;
 
@@ -259,6 +278,7 @@ app.post('/translations', async (req, res) =>
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+<<<<<<< HEAD
 // Setting up a cron job to run every hour
 cron.schedule('0 * * * *', () => {
     console.log('Running a task every hour');
@@ -272,8 +292,23 @@ app.get('/test', async (req, res) => {
 
 const PORT = process.env.PORT || 3091;
 app.listen(PORT, () => {
+=======
+
+
+// Create an HTTP server from the Express app
+const httpServer = createServer(app);
+
+// Pass the server to the socketHandler
+socketHandler(httpServer);
+const PORT = process.env.PORT || 3091;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
+
+
+httpServer.listen(PORT, () => {
+>>>>>>> 2bc563b26b75beacffa6ed3070d904c63b49dff0
     console.log(`Server is running on port ${PORT}`);
 });
-
 
 

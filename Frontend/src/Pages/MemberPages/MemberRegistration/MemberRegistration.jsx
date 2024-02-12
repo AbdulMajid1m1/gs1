@@ -421,7 +421,7 @@ const MemmberRegisteration = () => {
 
 
         newRequest
-            // .post("/users", formData, {
+           
             .post("/users", requestBody)
             .then((response) => {
                 console.log(response.data);
