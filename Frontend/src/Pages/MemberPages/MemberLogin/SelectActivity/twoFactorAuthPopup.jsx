@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { Button, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
@@ -6,159 +6,113 @@ import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 import { backendUrl } from '../../../../utils/config';
 import newRequest from '../../../../utils/userRequest';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
     const userId = sessionStorage.getItem('MemberUserId');
-
-
-    console.log(userId)
 
     const [randomNumber, setRandomNumber] = useState('');
     const [loading, setLoading] = useState(false);
     const [timer, setTimer] = useState(60);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
-    const { t, i18n } = useTranslation();
     const [socket, setSocket] = useState(null);
-    const navigate = useNavigate();
 
-
+    // Initialize socket connection
     useEffect(() => {
-        const newSocket = io(backendUrl); // Connect to the server
-        //  const newSocket = io(backendUrl, { path: '/gs1backend/socket.io' });
+        if (!isVisible) return;
+
+        const newSocket = io(backendUrl, {
+            path: '/socket.io', // Update this if your server requires a specific socket path
+            transports: ['websocket'], // Use WebSocket transport to avoid issues in some environments
+        });
         setSocket(newSocket);
 
-        return () => {
-            newSocket.disconnect(); // Disconnect when component unmounts
-        };
-    }, [backendUrl]);
-
-    useEffect(() => {
-        console.log(userId)
-        if (socket && isVisible) {
-            socket.on('connect', () => {
-                console.log('Connected to server');
-
-            });
-            socket.emit('register', userId); // Register user ID with the server
-
-            generateRandomNumber(); // Generate random number when the component becomes visible
-
-            socket.on('randomNumber', (numbers) => {
-                const randomNumber = numbers.find(number => number.isCorrect).number;
-                setRandomNumber(randomNumber); // Update the random number when received from the server
-            });
-
-            socket.on('authSuccess', async ({ message, memberData, getCredentialsToken }) => {
-                console.log("authSuccess")
-
-                try {
-
-                    const response = await newRequest.post("/users/setMemberCredentials", {
-                        token: getCredentialsToken
-                    })
-                    console.log(response.data)
-                    sessionStorage.setItem('memberData', JSON.stringify(response?.data?.memberData));
-                    toast.success(`${t('Member Login Successfully')}`, {
-                        position: "top-right",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                    navigate('/member/dashboard');
-
-                } catch (e) {
-                    console.log(e)
-                    toast.error(error?.response?.data?.error || 'something went wrong')
-                }
-                setVisibility(false);
-            });
-
-            socket.on('authError', ({ message }) => {
-                // Handle authentication failure with the exact message received from the server
-                toast.error(message || 'Authentication failed! Try again');
-                // generateRandomNumber(); // Regenerate random number
-            });
-
-
-        }
-    }, [socket, userId, setVisibility]);
-
-    useEffect(() => {
-        if (isVisible) {
-            const interval = setInterval(() => {
-                setTimer((prevTimer) => {
-                    if (prevTimer > 0) {
-                        return prevTimer - 1;
-                    } else {
-                        setButtonDisabled(true);
-                        return prevTimer;
-                    }
-                });
-            }, 1000);
-            return () => clearInterval(interval);
-        }
+        return () => newSocket.disconnect();
     }, [isVisible]);
 
-    const generateRandomNumber = () => {
-        if (socket) {
-            console.log("sendRandomNumberTriggered")
-            const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
-            setRandomNumber(randomNum);
-            console.log("adminIdadminId", userId)
-            socket.emit('sendRandomNumber', { userId, numbers: randomNum });
-            setTimer(60);
-            setButtonDisabled(false);
-        }
-    };
+    // Socket event listeners
+    useEffect(() => {
+        if (!socket || !isVisible) return;
 
+        socket.on('connect', () => {
+            console.log('Connected to server');
+            socket.emit('register', userId);
+            generateRandomNumber();
+        });
 
+        socket.on('randomNumber', (numbers) => {
+            const number = numbers.find(number => number.isCorrect).number;
+            setRandomNumber(number);
+        });
 
-    return (
-        <div>
-            {isVisible && (
-                <div className="popup-overlay">
-                    <div className="popup-container h-auto sm:w-[40%] w-full">
-                        <div className="popup-form w-full">
-                            <form className="w-full" >
-                                <div className="text-center mt-4 mb-2">
-                                    <p className="text-lg sm:text-xl text-gray-600">
-                                        {t(`Click 'GENERATE' to create new Random number.`)}
-                                    </p>
-                                </div>
-                                <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
-                                    <h2 className="text-white text-4xl">{randomNumber}</h2>
-                                </div>
-                                <div className="w-full flex justify-center mb-4 mt-4">
-                                    <Button
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: buttonDisabled ? '#021F69' : 'lightgray', color: '#ffffff',
-                                            cursor: buttonDisabled ? "pointer" : "not-allowed"
-                                        }}
-                                        type="submit"
-                                        disabled={loading || !buttonDisabled}
-                                        endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
-                                        onClick={generateRandomNumber}
-                                    >
-                                        {t('GENERATE AGAIN')}
-                                    </Button>
-                                </div>
+        socket.on('authSuccess', async (data) => {
+            try {
+                const response = await newRequest.post("/users/setMemberCredentials", {
+                    token: data.getCredentialsToken,
+                });
+                sessionStorage.setItem('memberData', JSON.stringify(response.data.memberData));
+                toast.success(t('Member Login Successfully'));
+                navigate('/member/dashboard');
+            } catch (error) {
+                console.error(error);
+                toast.error(t('Something went wrong!'));
+            } finally {
+                setVisibility(false);
+            }
+        });
 
-                                <div className="text-center">
-                                    <p className="text-secondary">
-                                        {t('Number will regenerate in')} {timer} {t('seconds')}
-                                    </p>
-                                </div>
-                            </form>
-                        </div>
+        socket.on('authError', ({ message }) => {
+            toast.error(message || t('Authentication failed! Try again'));
+        });
+
+    }, [socket, userId, isVisible, navigate, setVisibility, t]);
+
+    // Generate random number
+    const generateRandomNumber = useCallback(() => {
+        if (!socket) return;
+        const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+        socket.emit('sendRandomNumber', { userId, numbers: randomNum });
+        setRandomNumber(randomNum);
+        setTimer(60);
+    }, [socket, userId]);
+
+    // Timer countdown
+    useEffect(() => {
+        if (!isVisible) return;
+        const intervalId = setInterval(() => {
+            setTimer(prevTimer => prevTimer > 0 ? prevTimer - 1 : 0);
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [isVisible]);
+
+    return isVisible && (
+        <div className="popup-overlay">
+            <div className="popup-container h-auto sm:w-[40%] w-full">
+                <div className="popup-form w-full">
+                    <div className="text-center mt-4 mb-2">
+                        <p className="text-lg sm:text-xl text-gray-600">{t("Click 'GENERATE' to create new Random number.")}</p>
+                    </div>
+                    <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
+                        <h2 className="text-white text-4xl">{randomNumber}</h2>
+                    </div>
+                    <div className="w-full flex justify-center mb-4 mt-4">
+                        <Button
+                            variant="contained"
+                            style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                            disabled={loading || timer > 0}
+                            endIcon={loading ? <CircularProgress size={24} /> : <SendIcon />}
+                            onClick={generateRandomNumber}
+                        >
+                            {t('GENERATE AGAIN')}
+                        </Button>
+                    </div>
+                    <div className="text-center">
+                        <p className="text-secondary">{t('Number will regenerate in')} {timer} {t('seconds')}</p>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
