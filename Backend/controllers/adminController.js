@@ -85,7 +85,7 @@ export const adminLogin = async (req, res, next) => {
             token,
             permissions,
         };
-
+        //      TODO: remove set cookie here as it is not needed here, it's in setAdminCredentials
         return res.cookie("adminToken", token, cookieOptions()).status(200).json(response);
 
     } catch (error) {
@@ -93,6 +93,57 @@ export const adminLogin = async (req, res, next) => {
         next(error);
     } finally {
         await prisma.$disconnect();
+    }
+};
+
+
+export const setAdminCredentials = async (req, res, next) => {
+    try {
+        // Extract the token from the request body
+        const { token } = req.body;
+        if (!token) {
+            throw createError(400, 'Token is required');
+        }
+
+        // Verify the token
+        const decodedToken = jwt.verify(token, ADMIN_JWT_SECRET);
+
+        // Query the database to find the admin with the provided ID
+        const admin = await prisma.admins.findUnique({
+            where: { id: decodedToken.adminId },
+            include: {
+                roles: {
+                    include: {
+                        role: true
+                    }
+                }
+            }
+        });
+
+        if (!admin) {
+            throw createError(404, 'Admin not found');
+        }
+
+        // Generate a new JWT token for the admin with extended permissions and information
+        const adminToken = jwt.sign({
+            adminId: admin.id,
+            email: admin.email,
+            is_super_admin: admin.is_super_admin,
+            username: admin.username,
+            // Include any other necessary details or permissions in the token payload
+        }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+        delete admin.password;
+        
+        // Set the new token in a cookie and return the admin data and new token in the response
+        return res.cookie("adminToken", adminToken, cookieOptions()).status(200).json({
+            success: true,
+            adminData: admin,
+            token: adminToken
+        });
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
 };
 
@@ -513,3 +564,98 @@ export const deleteAdmin = async (req, res, next) => {
         next(error);
     }
 }
+
+
+
+
+// Admin OTP generation schema
+const adminMobileCheckSchema = Joi.object({
+    mobile: Joi.string().required(),
+});
+
+// Admin OTP verification schema
+const otpVerifySchema = Joi.object({
+    token: Joi.string().required(),
+    otp: Joi.string().length(4).required(),
+});
+
+
+
+// Function to generate OTP and send it to admin's email
+export const generateAdminOtp = async (req, res, next) => {
+    const { error, value } = adminMobileCheckSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({ success: false, message: error.details[0].message });
+    }
+
+    const { mobile } = value;
+
+    try {
+        const admin = await prisma.admins.findFirst({
+            where: { mobile },
+        });
+
+        if (!admin) {
+            throw createError(404, 'Admin mobile number not found!');
+        }
+
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        const token = jwt.sign({ id: admin.id, otp, isVerified: false }, ADMIN_JWT_SECRET, { expiresIn: '15m' });
+
+        // Here you would implement sending the OTP to admin's email
+        const emailSubject = `Admin OTP Verification`
+        const emailContent = `
+            <h1>GS1 Authenticator Admin OTP Verification</h1>
+            <p>Your Verification OTP Is: <strong>${otp}</strong></p>
+            `;
+
+        console.log(admin.email); // Replace this with your email sending logic
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: admin.email,
+            subject: emailSubject,
+            htmlContent: emailContent,
+        });
+
+
+        return res.status(200).json({ success: true, message: "OTP sent to your email", token });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+// Function to verify the OTP sent to admin
+export const verifyAdminOtp = async (req, res, next) => {
+    try {
+        const { error, value } = otpVerifySchema.validate(req.body);
+
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { otp, token } = value;
+        const decoded = jwt.verify(token, ADMIN_JWT_SECRET);
+
+        if (decoded.otp !== otp) {
+            return res.status(400).json({ success: false, error: "Wrong OTP" });
+        }
+
+        const newToken = jwt.sign({ id: decoded.id, isVerified: true }, ADMIN_JWT_SECRET, { expiresIn: '120d' });
+
+        // Optionally fetch admin details to return with response
+        const admin = await prisma.admins.findUnique({
+            where: { id: decoded.id },
+        });
+
+        return res.status(200).json({ success: true, message: "OTP verified", token: newToken, admin });
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ success: false, error: "Token expired" });
+        } else {
+            console.error(error);
+            next(error);
+        }
+    }
+};
