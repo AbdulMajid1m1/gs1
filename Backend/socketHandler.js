@@ -20,7 +20,8 @@ const socketHandler = (server) => {
     let randomNumberForAdmins = {};
     io.on("connection", (socket) => {
         console.log("a user connected", socket.id);
-
+        // Emit a connection success event right after a successful connection
+        socket.emit('connectionSuccess', { message: "Successfully connected to the server." });
         socket.on('register', (userId) => {
             userSockets[userId] = socket.id;
             console.log(`User registered: ${userId}`);
