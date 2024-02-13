@@ -8,7 +8,7 @@ import { backendUrl } from '../../../../utils/config';
 import newRequest from '../../../../utils/userRequest';
 import { useNavigate } from 'react-router-dom'
 
-const TwoFactorAuthPopup = ({ isVisible, setVisibility, userData }) => {
+const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
     const userId = sessionStorage.getItem('MemberUserId');
 
     console.log(userId)
@@ -36,11 +36,11 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userData }) => {
             socket.on('connect', () => {
                 console.log('Connected to server');
                 socket.emit('register', userId); // Register user ID with the server
-                setTimeout(() => {
-                    generateRandomNumber(); // Generate random number when the component becomes visible
-                }, 10)
+              
             });
-
+            setTimeout(() => {
+                generateRandomNumber(); // Generate random number when the component becomes visible
+            }, 10)
             socket.on('randomNumber', (numbers) => {
                 const randomNumber = numbers.find(number => number.isCorrect).number;
                 setRandomNumber(randomNumber); // Update the random number when received from the server
