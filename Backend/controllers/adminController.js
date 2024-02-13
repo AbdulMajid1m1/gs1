@@ -25,7 +25,7 @@ export const adminLogin = async (req, res, next) => {
         const { email, password } = value;
 
         // Check if the admin user exists and fetch roles and permissions
-        const adminUser = await prisma.admins.findFirst({
+        const adminUser = await prisma.admitwns.findFirst({
             where: { email, status: 1 },
             include: {
                 roles: {
