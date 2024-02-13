@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { DotLoader } from 'react-spinners'
 import newRequest from '../../../../utils/userRequest'
 import { useTranslation } from 'react-i18next';
-import TwoFactorAuthPopup from './twoFactorAuthPopup'
+import TwoFactorAuthPopup from './TwoFactorAuthPopup'
 
 const SelectActivity = () => {
     const { t, i18n } = useTranslation();
