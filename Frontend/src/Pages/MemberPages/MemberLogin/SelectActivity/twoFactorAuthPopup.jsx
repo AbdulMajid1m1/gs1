@@ -36,7 +36,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
             socket.on('connect', () => {
                 console.log('Connected to server');
                 socket.emit('register', userId); // Register user ID with the server
-              
+
             });
             setTimeout(() => {
                 generateRandomNumber(); // Generate random number when the component becomes visible
@@ -103,6 +103,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
 
     const generateRandomNumber = () => {
         if (socket) {
+            console.log("sendRandomNumberTriggered")
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             setRandomNumber(randomNum);
             socket.emit('sendRandomNumber', { userId, numbers: randomNum });
