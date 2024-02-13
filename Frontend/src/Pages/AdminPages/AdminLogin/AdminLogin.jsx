@@ -16,7 +16,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showImage, setShowImage] = useState(false);
   const navigate = useNavigate();
-  const [isVisible, setVisibility] = useState(true);
+  const [isVisible, setVisibility] = useState(false);
   const { adminData, setAdminData, permissions, setPermissions,
     login, fetchPermissions } = useContext(AuthContext);
 

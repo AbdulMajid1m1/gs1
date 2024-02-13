@@ -36,7 +36,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
                 setTimeout(() => {
 
                     generateRandomNumber(); // Generate random number when the component becomes visible
-                }, 1000)
+                }, 10)
             });
 
             socket.on('randomNumber', (numbers) => {
@@ -109,40 +109,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
         }
     };
 
-    const handleGenerateCertificate = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
 
-            setTimeout(() => {
-                toast.success(`${t('Certificate generated successfully')}`, {
-                    position: 'top-right',
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
-                });
-                setLoading(false);
-                setVisibility(false);
-            }, 2000);
-        } catch (err) {
-            console.log(err);
-            setLoading(false);
-            toast.error(err?.response?.data?.error || `${t('Something went wrong!')}`, {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-        }
-    };
 
     return (
         <div>
@@ -150,7 +117,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
                 <div className="popup-overlay">
                     <div className="popup-container h-auto sm:w-[40%] w-full">
                         <div className="popup-form w-full">
-                            <form className="w-full" onSubmit={handleGenerateCertificate}>
+                            <form className="w-full" >
                                 <div className="text-center mt-4 mb-2">
                                     <p className="text-lg sm:text-xl text-gray-600">
                                         {t(`Click 'GENERATE' to create new Random number.`)}
