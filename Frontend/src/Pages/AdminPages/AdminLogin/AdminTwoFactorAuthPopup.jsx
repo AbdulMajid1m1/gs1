@@ -25,8 +25,11 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
     console.log("adminDataadminData", adminData)
     console.log("adminId", adminId)
     useEffect(() => {
-        const newSocket = io(backendUrl); // Connect to the server
+        const newSocket = io(backendUrl, {
 
+            path: 'gs1backend/socket.io', // Update this if your server requires a specific socket path
+            transports: ['websocket'], // Use WebSocket transport to avoid issues in some environments
+        });
         setSocket(newSocket);
 
         return () => {
