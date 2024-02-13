@@ -12,10 +12,16 @@ import QRCode from 'qrcode';
 import ejs from 'ejs';
 import { BACKEND_URL } from "./configs/envConfig.js";
 import cron from 'node-cron';
+import { createServer } from "http";
+// Other imports remain the same
+
+import socketHandler from "./socketHandler.js"; // Import the socket handler
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
+
+
 
 dotenv.config();
 
@@ -27,8 +33,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: function (origin, callback)
-    {
+    origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps, curl requests)
         if (!origin) return callback(null, true);
 
@@ -40,6 +45,11 @@ app.use(cors({
     },
     credentials: true
 }));
+
+
+
+
+
 
 app.use(express.json());
 
@@ -58,8 +68,7 @@ app.set('views', path.join(__dirname, 'views'));
 // calling the routes
 app.use("/api", rootRoute);
 
-app.get('/renderInvoice', async (req, res) =>
-{
+app.get('/renderInvoice', async (req, res) => {
     // Define your dummy data here
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
@@ -137,8 +146,7 @@ app.get('/renderInvoice', async (req, res) =>
 });
 
 // Define your API route to render the certificate
-app.get('/renderCertificate', async (req, res) =>
-{
+app.get('/renderCertificate', async (req, res) => {
     const BACKEND_URL = 'http://localhost:3000'; // Adjust this URL as needed
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     // Define your data object with missing or dynamic data
@@ -169,8 +177,7 @@ app.get('/renderCertificate', async (req, res) =>
 });
 
 
-app.use((err, req, res, next) =>
-{
+app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong!";
 
@@ -181,14 +188,12 @@ app.use((err, req, res, next) =>
 
 
 // Setting up a cron job to run every hour
-cron.schedule('0 * * * *', () =>
-{
+cron.schedule('0 * * * *', () => {
     console.log('Running a task every hour');
     handleInvoiceReminders();
 });
 
-app.get('/test', async (req, res) =>
-{
+app.get('/test', async (req, res) => {
     handleInvoiceReminders();
     res.send('test');
 });
@@ -200,10 +205,8 @@ const writeFileAsync = promisify(fs.writeFile);
 
 const jsonFilePath = './arabic.json';
 
-app.get('/translations', (req, res) =>
-{
-    fs.readFile(jsonFilePath, 'utf-8', (err, data) =>
-    {
+app.get('/translations', (req, res) => {
+    fs.readFile(jsonFilePath, 'utf-8', (err, data) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -212,13 +215,11 @@ app.get('/translations', (req, res) =>
         }
     });
 });
-app.put('/translations/:key', (req, res) =>
-{
+app.put('/translations/:key', (req, res) => {
     const { key } = req.params;
     const { value } = req.body;
 
-    fs.readFile(jsonFilePath, 'utf-8', (readErr, data) =>
-    {
+    fs.readFile(jsonFilePath, 'utf-8', (readErr, data) => {
         if (readErr) {
             console.log(readErr);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -231,8 +232,7 @@ app.put('/translations/:key', (req, res) =>
             if (jsonData.hasOwnProperty(key)) {
                 jsonData[key] = value;
 
-                fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) =>
-                {
+                fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) => {
                     if (writeErr) {
                         console.log(writeErr);
                         res.status(500).json({ error: 'Internal Server Error' });
@@ -249,8 +249,7 @@ app.put('/translations/:key', (req, res) =>
         }
     });
 });
-app.post('/translations', async (req, res) =>
-{
+app.post('/translations', async (req, res) => {
     try {
         const { key, value } = req.body;
 
@@ -273,11 +272,21 @@ app.post('/translations', async (req, res) =>
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
+// Create an HTTP server from the Express app
+const httpServer = createServer(app);
+
+// Pass the server to the socketHandler
+socketHandler(httpServer);
 const PORT = process.env.PORT || 3091;
-app.listen(PORT, () =>
-{
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
+
+
+httpServer.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
 
 

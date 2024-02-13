@@ -17,6 +17,7 @@ import CompanyNamePopUp from './CompanyNamePopUp';
 import CompanyArabicPopUp from './CompanyArabicPopUp';
 import CrActivityPopUp from './CrActivityPopUp';
 import CrNumberPopUp from './CrNumberPopUp';
+import TermsAndCondition from './TermsAndCondition';
 
 
 const MemmberRegisteration = () => {
@@ -353,22 +354,44 @@ const MemmberRegisteration = () => {
             })
         });
 
+        // if entity selected is organization then make cr number and cr activity required
 
-
-
-
+        if (entityType?.value === 'organization') {
+            if (!addCrNumber) {
+                setIsLoading(false);
+                toast.error(`${t('Please enter Cr Number')}`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
+                return;
+            }
+            if (!crActivity) {
+                setIsLoading(false);
+                toast.error(`${t('Please enter Cr Activity')}`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
+                return;
+            }
+        }
 
         const requestBody = {
-            "cr_number": addCrNumber,
-            "cr_activity": crActivity,
+            ...(addCrNumber && { "cr_number": addCrNumber }),
+            ...(crActivity && { "cr_activity": crActivity }),
             "email": email,
             "contactPerson": contactPerson,
             "company_name_eng": companyEnglish,
             "company_name_arabic": companyArabic,
             "companyLandLine": companyLandLine,
             "mobile": mobileNumber,
-            // "zip_code": zipCode,
-
             // Conditionally include zip_code based on user input
             ...(zipCode && { "zip_code": zipCode }),
 
@@ -398,7 +421,7 @@ const MemmberRegisteration = () => {
 
 
         newRequest
-            // .post("/users", formData, {
+           
             .post("/users", requestBody)
             .then((response) => {
                 console.log(response.data);
@@ -539,6 +562,8 @@ const MemmberRegisteration = () => {
     const [isCompanyArabicPopUpVisible, setIsCompanyArabicPopUpVisible] = useState(false);
     const [isCrActivityPopUpVisible, setIsCrActivityPopUpVisible] = useState(false);
     const [isCrNumberPopUpVisible, setIsCrNumberPopUpVisible] = useState(false);
+    const [isTermsAndConditionPopUp, setIsTermsAndConditionPopUp] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleCompanyNamePopUp = () => {
         setIsCompanyNamePopUpVisible(true);
@@ -561,7 +586,9 @@ const MemmberRegisteration = () => {
     };
 
     const handleInputFocusCrActivity = () => {
-        setIsCrActivityPopUpVisible(true);
+        if (entityType?.value === 'organization') {
+            setIsCrActivityPopUpVisible(true);
+        }
     };
 
     const handleInputBlurCrActivity = () => {
@@ -569,12 +596,30 @@ const MemmberRegisteration = () => {
     };
 
     const handleInputFocusCrNumber = () => {
-        setIsCrNumberPopUpVisible(true);
+        if (entityType?.value === 'organization') {
+            setIsCrNumberPopUpVisible(true);
+        }
     };
 
     const handleInputBlurCrNumber = () => {
         setIsCrNumberPopUpVisible(false);
     };
+
+    const handleTermsAndCondition = () => {
+        setIsTermsAndConditionPopUp(true);
+    };
+
+    const handleAccept = () => {
+        setIsChecked(true);
+        setIsTermsAndConditionPopUp(false);
+    };
+
+    const handleClose = () => {
+        setIsChecked(false);
+        setIsTermsAndConditionPopUp(false);
+    };
+
+
 
     // Static options for the Autocomplete component
     const options = [
@@ -671,14 +716,14 @@ const MemmberRegisteration = () => {
                         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field1" className="text-secondary font-semibold">
-                                    {entityType === 'organization' ? t('Cr Number') : t('License Ref. No')}<span className='text-red-600'> *</span>
+                                    {entityType?.value === 'organization' ? t('Cr Number') : t('License Ref. No')}<span className='text-red-600'> *</span>
                                 </label>
                                 <input
                                     type="number"
                                     id="field1"
                                     value={addCrNumber}
                                     onChange={handleInputChange}
-                                    placeholder={entityType === 'organization' ? t('Enter Cr Number') : t('Enter License Ref. No.')}
+                                    placeholder={entityType?.value === 'organization' ? t('Enter Cr Number') : t('Enter License Ref. No.')}
                                     onFocus={handleInputFocusCrNumber}
                                     onBlur={handleInputBlurCrNumber}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
@@ -688,14 +733,14 @@ const MemmberRegisteration = () => {
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                                 <label htmlFor="field2" className="text-secondary font-semibold">
-                                    {entityType === 'organization' ? t('Cr Activity') : t('License Name')}<span className='text-red-600'> *</span>
+                                    {entityType?.value === 'organization' ? t('Cr Activity') : t('License Name')}<span className='text-red-600'> *</span>
                                 </label>
                                 <input
                                     type="text"
                                     id="field2"
                                     //  value={addCrNumber}
                                     onChange={(e) => setCrActivity(e.target.value)}
-                                    placeholder={entityType === 'organization' ? t('Enter Cr Activity') : t('Enter License Name')}
+                                    placeholder={entityType?.value === 'organization' ? t('Enter Cr Activity') : t('Enter License Name')}
                                     onFocus={handleInputFocusCrActivity}
                                     onBlur={handleInputBlurCrActivity}
                                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
@@ -1044,6 +1089,8 @@ const MemmberRegisteration = () => {
                                 <Autocomplete
                                     id="category"
                                     options={categories}
+                                    // disable option selection if entity type is Individual/Family Business
+                                    disabled={entityType.value === 'individual/family business'}
                                     value={selectedCategories}
                                     required
                                     getOptionLabel={(option) => option.name || ""}
@@ -1098,7 +1145,17 @@ const MemmberRegisteration = () => {
                                     id='GTIN'
                                     disabled={!selectedCategories}
                                     // options={gtinNumber}
-                                    options={selectedCategories ? gtinNumber : []}
+                                    // 
+                                    // options={selectedCategories ? gtinNumber : []}
+                                    // total_no_of_barcodes
+                                    options={
+                                        selectedCategories
+                                            ? entityType.value === 'organization'
+                                                ? gtinNumber.filter(option => option?.total_no_of_barcodes !== 10)
+                                                : gtinNumber
+                                            : []
+                                    }
+
                                     value={selectedGtinNumber}
                                     getOptionLabel={(option) => option?.member_category_description || ''}
                                     onChange={handleGtinNumberChange}
@@ -1165,6 +1222,18 @@ const MemmberRegisteration = () => {
 
                             </div>
 
+                        </div>
+                        
+                        
+                        <div className='mt-2'>
+                            <input
+                                id='terms'
+                                type='checkbox'
+                                onChange={handleTermsAndCondition}
+                                checked={isChecked}
+                                className='bg-[#8E9CAB] rounded-sm transform scale-150'
+                             />
+                            <label className='text-secondary font-body pl-2 cursor-pointer' htmlFor='terms'> Accept Term & Conditions</label><span className='text-red-600 -ml-1'>(Download Terms & Conditions)</span>
                         </div>
 
 
@@ -1253,6 +1322,10 @@ const MemmberRegisteration = () => {
 
                 {isCrNumberPopUpVisible && (
                     <CrNumberPopUp isVisible={isCrNumberPopUpVisible} setVisibility={setIsCrNumberPopUpVisible} />
+                )}
+
+                {isTermsAndConditionPopUp && (
+                    <TermsAndCondition isVisible={isTermsAndConditionPopUp} handleClose={handleClose} handleAccept={handleAccept}/>
                 )}
                 {/* </div> */}
             </div >
