@@ -7,7 +7,7 @@ import { DotLoader } from 'react-spinners'
 import { useTranslation } from 'react-i18next';
 // import { DataTableContext2 } from "../../Contexts/DataTableContext2";
 import { AuthContext } from '../../../Contexts/AuthContext'
-import AdminTwoFactorAuthPopup from './AdminTwoFactorAuthPopup';
+import TwoFactorAuthPopupForAdmin from './AdminTwoFactorAuthPopup';
 
 const AdminLogin = () => {
   const { t } = useTranslation();
@@ -66,7 +66,7 @@ const AdminLogin = () => {
 
   return (
     <>
-      <AdminTwoFactorAuthPopup isVisible={isVisible} setVisibility={setVisibility} />
+      <TwoFactorAuthPopupForAdmin isVisible={isVisible} setVisibility={setVisibility} />
       {isLoading &&
 
         <div className='loading-spinner-background'

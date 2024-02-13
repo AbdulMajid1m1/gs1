@@ -8,8 +8,11 @@ import { backendUrl } from '../../../../utils/config';
 import newRequest from '../../../../utils/userRequest';
 import { useNavigate } from 'react-router-dom'
 
-const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
+const TwoFactorAuthPopup = ({ isVisible, setVisibility, userData }) => {
+    const userId = sessionStorage.getItem('MemberUserId');
+
     console.log(userId)
+
     const [randomNumber, setRandomNumber] = useState('');
     const [loading, setLoading] = useState(false);
     const [timer, setTimer] = useState(60);
@@ -28,13 +31,12 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
     }, []);
 
     useEffect(() => {
+        console.log(userId)
         if (socket) {
             socket.on('connect', () => {
                 console.log('Connected to server');
-                let userId = 3 // Replace with the user ID from the database
                 socket.emit('register', userId); // Register user ID with the server
                 setTimeout(() => {
-
                     generateRandomNumber(); // Generate random number when the component becomes visible
                 }, 10)
             });
@@ -103,7 +105,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
         if (socket) {
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             setRandomNumber(randomNum);
-            socket.emit('sendRandomNumber', { userId: 3, numbers: randomNum });
+            socket.emit('sendRandomNumber', { userId, numbers: randomNum });
             setTimer(60);
             setButtonDisabled(false);
         }

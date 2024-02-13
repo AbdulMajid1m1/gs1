@@ -20,7 +20,8 @@ const socketHandler = (server) => {
     let randomNumberForAdmins = {};
     io.on("connection", (socket) => {
         console.log("a user connected", socket.id);
-
+        // Emit a connection success event right after a successful connection
+        socket.emit('connectionSuccess', { message: "Successfully connected to the server." });
         socket.on('register', (userId) => {
             userSockets[userId] = socket.id;
             console.log(`User registered: ${userId}`);
@@ -118,6 +119,7 @@ const socketHandler = (server) => {
             try {
                 if (randomNumberForAdmins[adminId] && randomNumberForAdmins[adminId].includes(selectedNumber)) {
                     // Query the database to find the admin
+                    console.log("triiggered", randomNumberForAdmins[adminId], " ", selectedNumber)
                     const admin = await prisma.admins.findUnique({
                         where: { id: adminId.toString() },
                     });
@@ -131,7 +133,7 @@ const socketHandler = (server) => {
 
                     // Optionally, remove sensitive information from the admin object
                     delete admin.password;
-
+                    console.log("socketAuth", adminSockets[adminId])
                     io.to(adminSockets[adminId]).emit('authSuccess', { message: "Authentication successful", adminData: admin, getCredentialsToken: token });
                 } else {
                     io.to(adminSockets[adminId]).emit('authError', { message: "Authentication failed" });
@@ -153,11 +155,11 @@ const socketHandler = (server) => {
             }
 
             // Cleanup admin socket and random number info
-            // const adminId = Object.keys(adminSockets).find(key => adminSockets[key] === socket.id);
-            // if (adminId) {
-            //     delete adminSockets[adminId];
-            //     delete randomNumberForAdmins[adminId];
-            // }
+            const adminId = Object.keys(adminSockets).find(key => adminSockets[key] === socket.id);
+            if (adminId) {
+                delete adminSockets[adminId];
+                delete randomNumberForAdmins[adminId];
+            }
         });
     });
 

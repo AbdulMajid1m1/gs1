@@ -53,7 +53,11 @@ const SelectActivity = () => {
             .then(response => {
                 console.log(response.data)
                 setIsLoading(false)
-                setMemberData(JSON.stringify(response?.data?.memberData))
+                setMemberData(response?.data?.memberData)
+                // save userId in session
+                let userId = response?.data?.memberData?.id
+                console.log('userId', userId)
+                sessionStorage.setItem('MemberUserId', userId);
                 setIsvisible(true)
                 // save the response in sesstion
                 // sessionStorage.setItem('memberData', JSON.stringify(response?.data?.memberData));
@@ -74,14 +78,11 @@ const SelectActivity = () => {
                 });
                 setIsLoading(false)
             })
-
-
-
     }
 
     return (
         <div>
-            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible} userId={memberData?.id} />
+            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible} userData={memberData} />
             {isLoading &&
                 <div className='loading-spinner-background'
                     style={{
