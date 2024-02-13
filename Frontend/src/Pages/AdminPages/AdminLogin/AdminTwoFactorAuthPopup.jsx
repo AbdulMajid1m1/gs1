@@ -42,7 +42,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
             socket.emit('registerAdmin', adminId); // Register admin ID with the server
             setTimeout(() => {
                 generateRandomNumber(); // Generate random number when the component becomes visible
-            }, 10)
+            }, 50)
             socket.on('randomNumberForAdmin', (numbers) => {
                 const randomNumber = numbers.toString(); // Adjust based on how numbers are sent
                 setRandomNumber(randomNumber); // Update the random number when received from the server

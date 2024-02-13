@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
     const userId = sessionStorage.getItem('MemberUserId');
 
+
     console.log(userId)
 
     const [randomNumber, setRandomNumber] = useState('');
@@ -22,25 +23,25 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
     const navigate = useNavigate();
     useEffect(() => {
         const newSocket = io(backendUrl); // Connect to the server
-
+        //  const newSocket = io(backendUrl, { path: '/gs1backend/socket.io' });
         setSocket(newSocket);
 
         return () => {
             newSocket.disconnect(); // Disconnect when component unmounts
         };
-    }, []);
+    }, [backendUrl]);
 
     useEffect(() => {
         console.log(userId)
-        if (socket) {
+        if (socket && isVisible) {
             socket.on('connect', () => {
                 console.log('Connected to server');
-                socket.emit('register', userId); // Register user ID with the server
 
             });
+            socket.emit('register', userId); // Register user ID with the server
             setTimeout(() => {
                 generateRandomNumber(); // Generate random number when the component becomes visible
-            }, 10)
+            }, 50)
             socket.on('randomNumber', (numbers) => {
                 const randomNumber = numbers.find(number => number.isCorrect).number;
                 setRandomNumber(randomNumber); // Update the random number when received from the server
