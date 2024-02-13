@@ -87,6 +87,61 @@ const socketHandler = (server) => {
         });
 
 
+        // admin channels ---------------
+
+
+        // Store admin sockets and random numbers
+        let adminSockets = {};
+        let randomNumberForAdmins = {};
+        
+        socket.on('registerAdmin', (adminId) => {
+            adminSockets[adminId] = socket.id;
+            console.log(`Admin registered: ${adminId}`);
+        });
+
+        socket.on('sendRandomNumberToAdmin', ({ adminId, numbers }) => {
+            const adminSocketId = adminSockets[adminId];
+            console.log("adminId: ", adminId, "number: ", numbers)
+            if (adminSocketId) {
+                randomNumberForAdmins[adminId] = numbers;
+                console.log("rand for admin", randomNumberForAdmins)
+                io.to(adminSocketId).emit('randomNumberForAdmin', numbers);
+            }
+        });
+
+        socket.on('verifyAdminNumber', async ({ adminId, selectedNumber }) => {
+            console.log("randomNumberForAdmins", randomNumberForAdmins)
+            console.log("adminID:", adminId)
+            console.log("selectedNumber", selectedNumber)
+            console.log("randomNumberForAdmins[adminId]", randomNumberForAdmins[adminId])
+            try {
+                if (randomNumberForAdmins[adminId] && randomNumberForAdmins[adminId].includes(selectedNumber)) {
+                    // Query the database to find the admin
+                    const admin = await prisma.admins.findUnique({
+                        where: { id: adminId.toString() },
+                    });
+
+                    if (!admin) {
+                        return io.to(adminSockets[adminId]).emit('authError', { message: "Admin not found" });
+                    }
+
+                    // Generate a JWT token for the admin
+                    const token = jwt.sign({ adminId: admin.id, email: admin.email }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+                    // Optionally, remove sensitive information from the admin object
+                    delete admin.password;
+
+                    io.to(adminSockets[adminId]).emit('authSuccess', { message: "Authentication successful", adminData: admin, getCredentialsToken: token });
+                } else {
+                    io.to(adminSockets[adminId]).emit('authError', { message: "Authentication failed" });
+                }
+            } catch (error) {
+                console.error(error);
+                io.to(adminSockets[adminId]).emit('authError', { message: "Internal server error" });
+            }
+        });
+
+
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`);
             // Cleanup user socket and random number info
@@ -94,6 +149,13 @@ const socketHandler = (server) => {
             if (userId) {
                 delete userSockets[userId];
                 delete randomNumberForUsers[userId];
+            }
+
+            // Cleanup admin socket and random number info
+            const adminId = Object.keys(adminSockets).find(key => adminSockets[key] === socket.id);
+            if (adminId) {
+                delete adminSockets[adminId];
+                delete randomNumberForAdmins[adminId];
             }
         });
     });

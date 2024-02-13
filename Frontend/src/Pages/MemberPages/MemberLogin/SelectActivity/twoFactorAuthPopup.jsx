@@ -31,7 +31,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
         if (socket) {
             socket.on('connect', () => {
                 console.log('Connected to server');
-                let userId = 3
+                let userId = 3 // Replace with the user ID from the database
                 socket.emit('register', userId); // Register user ID with the server
                 setTimeout(() => {
 
