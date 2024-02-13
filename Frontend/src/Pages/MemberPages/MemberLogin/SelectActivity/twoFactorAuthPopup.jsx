@@ -21,6 +21,8 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
     const { t, i18n } = useTranslation();
     const [socket, setSocket] = useState(null);
     const navigate = useNavigate();
+
+
     useEffect(() => {
         const newSocket = io(backendUrl); // Connect to the server
         //  const newSocket = io(backendUrl, { path: '/gs1backend/socket.io' });
@@ -39,9 +41,9 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
 
             });
             socket.emit('register', userId); // Register user ID with the server
-            setTimeout(() => {
-                generateRandomNumber(); // Generate random number when the component becomes visible
-            }, 50)
+
+            generateRandomNumber(); // Generate random number when the component becomes visible
+
             socket.on('randomNumber', (numbers) => {
                 const randomNumber = numbers.find(number => number.isCorrect).number;
                 setRandomNumber(randomNumber); // Update the random number when received from the server
@@ -107,6 +109,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
             console.log("sendRandomNumberTriggered")
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             setRandomNumber(randomNum);
+            console.log("adminIdadminId", userId)
             socket.emit('sendRandomNumber', { userId, numbers: randomNum });
             setTimer(60);
             setButtonDisabled(false);
