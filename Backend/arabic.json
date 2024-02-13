@@ -859,5 +859,17 @@
   "Update Data": "تحديث البيانات",
   "Regenerate GCP": "إعادة إنشاء GCP",
   "GCP Licence": "ترخيص GCP",
-  "KPI REPORTS": "التقارير KPI"
+  "KPI REPORTS": "التقارير KPI",
+  "Business Type": "الأعمال يكتب",
+  "Organization": "منظمة",
+  "Individual/Family Business": "الأعمال الفردية/العائلية",
+  "Enter Cr Number": "أدخل رقم السجل التجاري",
+  "Enter License Ref. No.": "أدخل رقم الترخيص لا.",
+  "Enter Cr Activity": "أدخل نشاط الكروم",
+  "Enter License Name": "أدخل اسم الترخيص",
+  "Terms & Conditions": "البنود و الظروف",
+  "Accept": "يقبل",
+  "Cancel": "يلغي",
+  "Accept Term & Conditions": "قبول الشروط والأحكام",
+  "(Download Terms & Conditions)": "(تحميل الشروط والأحكام)"
 }

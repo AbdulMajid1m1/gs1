@@ -188,7 +188,7 @@ const MemmberRegisteration = () => {
         setSelectedState(null);
         setFilteredCities([]);
         setSelectedCity(null);
-        console.log(filteredStates)
+        console.log("filteredStates", filteredStates);
     };
 
     // Handle state selection
@@ -421,7 +421,7 @@ const MemmberRegisteration = () => {
 
 
         newRequest
-           
+
             .post("/users", requestBody)
             .then((response) => {
                 console.log(response.data);
@@ -623,8 +623,8 @@ const MemmberRegisteration = () => {
 
     // Static options for the Autocomplete component
     const options = [
-        { label: 'Organization', value: 'organization' },
-        { label: 'Individual/Family Business', value: 'individual/family business' },
+        { label: `${t('Organization')}`, value: 'organization' },
+        { label: `${t('Individual/Family Business')}`, value: 'individual/family business' },
 
     ];
 
@@ -1223,17 +1223,59 @@ const MemmberRegisteration = () => {
                             </div>
 
                         </div>
-                        
-                        
-                        <div className='mt-2'>
-                            <input
-                                id='terms'
-                                type='checkbox'
-                                onChange={handleTermsAndCondition}
-                                checked={isChecked}
-                                className='bg-[#8E9CAB] rounded-sm transform scale-150'
-                             />
-                            <label className='text-secondary font-body pl-2 cursor-pointer' htmlFor='terms'> Accept Term & Conditions</label><span className='text-red-600 -ml-1'>(Download Terms & Conditions)</span>
+
+
+                        <div className={`mt-2 ${i18n.language === 'ar' ? 'text-right' : 'text-start'}`}>
+
+                            {i18n.language === 'ar' ? (
+                                <>
+
+                                    <label className='text-secondary font-body pl-2 cursor-pointer' htmlFor='terms'>
+                                        {i18n.language === 'ar' ? (
+                                            <>
+                                                {t('(Download Terms & Conditions)')} {t('Accept Term & Conditions')}
+
+                                            </>
+                                        ) : (
+                                            <>
+                                                {t('Accept Term & Conditions')}  {t('(Download Terms & Conditions)')}
+                                            </>
+                                        )}
+                                    </label><span className='text-red-600 -ml-1'></span>
+                                    <input
+                                        id='terms'
+                                        type='checkbox'
+                                        onChange={handleTermsAndCondition}
+                                        checked={isChecked}
+                                        className='bg-[#8E9CAB] rounded-sm transform scale-150'
+                                    />
+                                </>
+                            ) : (
+                                <>
+
+
+                                    <input
+                                        id='terms'
+                                        type='checkbox'
+                                        onChange={handleTermsAndCondition}
+                                        checked={isChecked}
+                                        className='bg-[#8E9CAB] rounded-sm transform scale-150'
+                                    />
+                                    <label className='text-secondary font-body pl-2 cursor-pointer' htmlFor='terms'>
+                                        {i18n.language === 'ar' ? (
+                                            <>
+                                                {t('(Download Terms & Conditions)')} {t('Accept Term & Conditions')}
+
+                                            </>
+                                        ) : (
+                                            <>
+                                                {t('Accept Term & Conditions')}  {t('(Download Terms & Conditions)')}
+                                            </>
+                                        )}
+                                    </label><span className='text-red-600 -ml-1'></span>
+                                </>
+                            )}
+
                         </div>
 
 
@@ -1325,7 +1367,7 @@ const MemmberRegisteration = () => {
                 )}
 
                 {isTermsAndConditionPopUp && (
-                    <TermsAndCondition isVisible={isTermsAndConditionPopUp} handleClose={handleClose} handleAccept={handleAccept}/>
+                    <TermsAndCondition isVisible={isTermsAndConditionPopUp} handleClose={handleClose} handleAccept={handleAccept} />
                 )}
                 {/* </div> */}
             </div >
