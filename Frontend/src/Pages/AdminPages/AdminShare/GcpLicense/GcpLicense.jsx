@@ -119,7 +119,7 @@ const GcpLicense = () => {
 
                 <DataTable data={data}
                   title={'Gcp Licence'}
-                  columnsName={licenceRegistryColumn}
+                  columnsName={licenceRegistryColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}
