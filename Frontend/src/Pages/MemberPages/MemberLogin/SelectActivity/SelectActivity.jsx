@@ -82,7 +82,7 @@ const SelectActivity = () => {
 
     return (
         <div>
-            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible} userData={memberData} />
+            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible}  />
             {isLoading &&
                 <div className='loading-spinner-background'
                     style={{
