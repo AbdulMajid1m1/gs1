@@ -29,7 +29,11 @@ const allowedOrigins = [
     "http://localhost:3092",
     "http://gs1ksa.org:3092",
     "http://gs1ksa.org",
-    "https://gs1ksa.org"
+    "https://gs1ksa.org",
+    "http://gs1ksa.org:82",
+    "http://gs1ksa.org:83",
+    "https://gs1ksa.org:82",
+    "https://gs1ksa.org:83"
 
 
 ];
@@ -188,8 +192,6 @@ app.use((err, req, res, next) => {
 });
 
 
-<<<<<<< HEAD
-=======
 
 // Setting up a cron job to run every hour
 cron.schedule('0 * * * *', () => {
@@ -201,7 +203,6 @@ app.get('/test', async (req, res) => {
     handleInvoiceReminders();
     res.send('test');
 });
->>>>>>> 2bc563b26b75beacffa6ed3070d904c63b49dff0
 //-------------------arabic---------------------------------------
 import { promisify } from 'util';
 import fs from 'fs';
@@ -278,21 +279,6 @@ app.post('/translations', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-<<<<<<< HEAD
-// Setting up a cron job to run every hour
-cron.schedule('0 * * * *', () => {
-    console.log('Running a task every hour');
-    handleInvoiceReminders();
-});
-
-app.get('/test', async (req, res) => {
-    handleInvoiceReminders();
-    res.send('test');
-});
-
-const PORT = process.env.PORT || 3091;
-app.listen(PORT, () => {
-=======
 
 
 // Create an HTTP server from the Express app
@@ -307,7 +293,6 @@ const PORT = process.env.PORT || 3091;
 
 
 httpServer.listen(PORT, () => {
->>>>>>> 2bc563b26b75beacffa6ed3070d904c63b49dff0
     console.log(`Server is running on port ${PORT}`);
 });
 
