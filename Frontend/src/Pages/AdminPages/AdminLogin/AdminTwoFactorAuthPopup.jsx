@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
@@ -8,8 +8,9 @@ import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import { backendUrl } from '../../../utils/config';
 import newRequest from '../../../utils/userRequest';
+import { AuthContext } from '../../../Contexts/AuthContext';
 
-const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminId = "1" }) => {
+const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
     const [randomNumber, setRandomNumber] = useState('');
     const [loading, setLoading] = useState(false);
     const [timer, setTimer] = useState(60);
@@ -17,7 +18,12 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminId = "1" })
     const { t } = useTranslation();
     const [socket, setSocket] = useState(null);
     const navigate = useNavigate();
+    const { adminData, setAdminData, permissions, setPermissions,
+        login, fetchPermissions } = useContext(AuthContext);
 
+    const adminId = adminData?.id;
+    console.log("adminDataadminData", adminData)
+    console.log("adminId", adminId)
     useEffect(() => {
         const newSocket = io(backendUrl); // Connect to the server
 
@@ -32,10 +38,9 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminId = "1" })
         if (socket && isVisible) {
             socket.on('connect', () => {
                 console.log('Connected to server');
-                socket.emit('registerAdmin', adminId); // Register admin ID with the server
             });
+            socket.emit('registerAdmin', adminId); // Register admin ID with the server
             setTimeout(() => {
-
                 generateRandomNumber(); // Generate random number when the component becomes visible
             }, 10)
             socket.on('randomNumberForAdmin', (numbers) => {
@@ -44,7 +49,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminId = "1" })
             });
 
             socket.on('authSuccess', async ({ message, adminData, getCredentialsToken }) => {
-              
+
                 try {
 
                     const response = await newRequest.post("/admin/setAdminCredentials", {
@@ -61,9 +66,9 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminId = "1" })
                         progress: undefined,
                         theme: "light",
                     });
-                    
+
                     setVisibility(false);
-                 
+
                     navigate('/admin/dashboard');
                 } catch (e) {
                     console.log(e)
@@ -92,6 +97,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminId = "1" })
         if (socket) {
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             setRandomNumber(randomNum);
+            console.log("adminIdadminId", adminId)
             socket.emit('sendRandomNumberToAdmin', { adminId, numbers: randomNum });
             setTimer(60);
             setButtonDisabled(false);
