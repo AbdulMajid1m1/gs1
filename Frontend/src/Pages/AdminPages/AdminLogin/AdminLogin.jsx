@@ -16,7 +16,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showImage, setShowImage] = useState(false);
   const navigate = useNavigate();
-  const [isVisible, setVisibility] = useState(false);
+  const [isVisible, setVisibility] = useState(true);
   const { adminData, setAdminData, permissions, setPermissions,
     login, fetchPermissions } = useContext(AuthContext);
 
@@ -35,12 +35,11 @@ const AdminLogin = () => {
     })
       .then((res) => {
         console.log(res);
-       
+
         setIsLoading(false);
         login(res.data.adminData, res.data.permissions);
 
-        // navigate('/admin/dashboard');
-        // Assuming res.data is an object
+        setVisibility(true);
         const adminData = res?.data?.adminData;
         const adminDataString = JSON.stringify(adminData);
         sessionStorage.setItem('adminData', adminDataString);

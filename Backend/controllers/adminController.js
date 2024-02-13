@@ -25,7 +25,7 @@ export const adminLogin = async (req, res, next) => {
         const { email, password } = value;
 
         // Check if the admin user exists and fetch roles and permissions
-        const adminUser = await prisma.admitwns.findFirst({
+        const adminUser = await prisma.admins.findFirst({
             where: { email, status: 1 },
             include: {
                 roles: {
@@ -134,9 +134,9 @@ export const setAdminCredentials = async (req, res, next) => {
         }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
         delete admin.password;
-
+        
         // Set the new token in a cookie and return the admin data and new token in the response
-        return res.cookie("mydminToken", adminToken, cookieOptions()).status(200).json({
+        return res.cookie("adminToken", adminToken, cookieOptions()).status(200).json({
             success: true,
             adminData: admin,
             token: adminToken

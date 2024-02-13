@@ -36,7 +36,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
                 setTimeout(() => {
 
                     generateRandomNumber(); // Generate random number when the component becomes visible
-                }, 3000)
+                }, 1000)
             });
 
             socket.on('randomNumber', (numbers) => {

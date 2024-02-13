@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { cookieOptions } from "./utils/authUtilities.js"
-import { JWT_EXPIRATION, MEMBER_JWT_SECRET } from "./configs/envConfig.js"
+import { ADMIN_JWT_SECRET, JWT_EXPIRATION, MEMBER_JWT_SECRET } from "./configs/envConfig.js"
 import prisma from "./prismaClient.js";
 import jwt from 'jsonwebtoken';
 const socketHandler = (server) => {
@@ -15,7 +15,9 @@ const socketHandler = (server) => {
     // Store user sockets and random numbers
     let userSockets = {};
     let randomNumberForUsers = {};
-
+    // Store admin sockets and random numbers
+    let adminSockets = {};
+    let randomNumberForAdmins = {};
     io.on("connection", (socket) => {
         console.log("a user connected", socket.id);
 
@@ -87,21 +89,19 @@ const socketHandler = (server) => {
         });
 
 
-        // admin channels ---------------
 
 
-        // Store admin sockets and random numbers
-        let adminSockets = {};
-        let randomNumberForAdmins = {};
-        
+
+
+
         socket.on('registerAdmin', (adminId) => {
-            adminSockets[adminId] = socket.id;
+            adminSockets[adminId.toString()] = socket.id;
             console.log(`Admin registered: ${adminId}`);
         });
-
         socket.on('sendRandomNumberToAdmin', ({ adminId, numbers }) => {
             const adminSocketId = adminSockets[adminId];
             console.log("adminId: ", adminId, "number: ", numbers)
+            console.log("adminSocketId: ", adminSocketId)
             if (adminSocketId) {
                 randomNumberForAdmins[adminId] = numbers;
                 console.log("rand for admin", randomNumberForAdmins)
@@ -111,6 +111,7 @@ const socketHandler = (server) => {
 
         socket.on('verifyAdminNumber', async ({ adminId, selectedNumber }) => {
             console.log("randomNumberForAdmins", randomNumberForAdmins)
+            console.log("adminSockets", adminSockets)
             console.log("adminID:", adminId)
             console.log("selectedNumber", selectedNumber)
             console.log("randomNumberForAdmins[adminId]", randomNumberForAdmins[adminId])
@@ -152,11 +153,11 @@ const socketHandler = (server) => {
             }
 
             // Cleanup admin socket and random number info
-            const adminId = Object.keys(adminSockets).find(key => adminSockets[key] === socket.id);
-            if (adminId) {
-                delete adminSockets[adminId];
-                delete randomNumberForAdmins[adminId];
-            }
+            // const adminId = Object.keys(adminSockets).find(key => adminSockets[key] === socket.id);
+            // if (adminId) {
+            //     delete adminSockets[adminId];
+            //     delete randomNumberForAdmins[adminId];
+            // }
         });
     });
 
