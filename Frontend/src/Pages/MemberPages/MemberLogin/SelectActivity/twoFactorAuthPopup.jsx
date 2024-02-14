@@ -101,7 +101,7 @@ const TwoFactorAuthPopup = ({ isVisible, setVisibility }) => {
                         <Button
                             variant="contained"
                             style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                            disabled={loading || timer > 0}
+                            // disabled={loading || timer > 0}
                             endIcon={loading ? <CircularProgress size={24} /> : <SendIcon />}
                             onClick={generateRandomNumber}
                         >

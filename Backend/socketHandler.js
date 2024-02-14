@@ -23,13 +23,21 @@ const socketHandler = (server) => {
         // Emit a connection success event right after a successful connection
         socket.emit('connectionSuccess', { message: "Successfully connected to the server." });
         socket.on('register', (userId) => {
+            // Update the mapping of userId to the new socketId
             userSockets[userId] = socket.id;
-            console.log(`User registered: ${userId}`);
+            console.log(`User ${userId} registered with socket ID ${socket.id}`);
+
+            // Optionally, if you keep track of the last randomNumber sent to the user,
+            // you can resend it upon reconnection
+            if (randomNumberForUsers[userId]) {
+                io.to(socket.id).emit('randomNumber', randomNumberForUsers[userId]);
+            }
         });
 
         // Handle sending random number to a specific user
         socket.on('sendRandomNumber', ({ userId, numbers }) => {
             const userSocketId = userSockets[userId];
+            console.log(`Sending random number to ${userId} with ${numbers}`);
             console.log("userId: ", userId, "number: ", numbers)
             if (userSocketId) {
                 randomNumberForUsers[userId] = numbers;
@@ -149,7 +157,10 @@ const socketHandler = (server) => {
             console.log(`User disconnected: ${socket.id}`);
             // Cleanup user socket and random number info
             const userId = Object.keys(userSockets).find(key => userSockets[key] === socket.id);
+            console.log(`User disconnected: userId: ${userId}`);
             if (userId) {
+                console.log(`User disconnected: ${socket.id}`);
+                console.log(`User disconnected: ${userId}`);    
                 delete userSockets[userId];
                 delete randomNumberForUsers[userId];
             }
