@@ -59,6 +59,12 @@ const SelectActivity = () => {
                 console.log('userId', userId)
                 sessionStorage.setItem('MemberUserId', userId);
                 setIsvisible(true)
+
+                // commnet below two line for for 2 auth TODO:
+                sessionStorage.setItem('memberData', JSON.stringify(response.data.memberData));
+                navigate('/member/dashboard');
+
+                
                 // save the response in sesstion
                 // sessionStorage.setItem('memberData', JSON.stringify(response?.data?.memberData));
 
@@ -82,7 +88,7 @@ const SelectActivity = () => {
 
     return (
         <div>
-            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible}  />
+            {/* <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible}  /> */}
             {isLoading &&
                 <div className='loading-spinner-background'
                     style={{

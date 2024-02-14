@@ -43,7 +43,7 @@ const AdminLogin = () => {
         const adminData = res?.data?.adminData;
         const adminDataString = JSON.stringify(adminData);
         sessionStorage.setItem('adminData', adminDataString);
-
+        navigate('/admin/dashboard');
       })
       .catch((err) => {
         console.log(err);
@@ -66,7 +66,7 @@ const AdminLogin = () => {
 
   return (
     <>
-      <TwoFactorAuthPopupForAdmin isVisible={isVisible} setVisibility={setVisibility} />
+      {/* <TwoFactorAuthPopupForAdmin isVisible={isVisible} setVisibility={setVisibility} /> */}
       {isLoading &&
 
         <div className='loading-spinner-background'
