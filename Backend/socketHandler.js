@@ -13,32 +13,6 @@ const socketHandler = (server) => {
     // Define a Map to store random numbers for each user
     const randomNumbersMap = new Map();
     io.on("connection", (socket) => {
-<<<<<<< HEAD
-        console.log("a user connected", socket.id);
-        // Emit a connection success event right after a successful connection
-        socket.emit('connectionSuccess', { message: "Successfully connected to the server." });
-        socket.on('register', (userId) => {
-            // Update the mapping of userId to the new socketId
-            userSockets[userId] = socket.id;
-            console.log(`User ${userId} registered with socket ID ${socket.id}`);
-
-            // Optionally, if you keep track of the last randomNumber sent to the user,
-            // you can resend it upon reconnection
-            if (randomNumberForUsers[userId]) {
-                io.to(socket.id).emit('randomNumber', randomNumberForUsers[userId]);
-            }
-        });
-
-        // Handle sending random number to a specific user
-        socket.on('sendRandomNumber', ({ userId, numbers }) => {
-            const userSocketId = userSockets[userId];
-            console.log(`Sending random number to ${userId} with ${numbers}`);
-            console.log("userId: ", userId, "number: ", numbers)
-            if (userSocketId) {
-                randomNumberForUsers[userId] = numbers;
-                console.log("rand", randomNumberForUsers)
-                io.to(userSocketId).emit('randomNumber', numbers);
-=======
         console.log("A user connected", socket.id);
 
         // User and Admin Registration
@@ -50,7 +24,6 @@ const socketHandler = (server) => {
             const randomNumber = randomNumbersMap.get(userId);
             if (randomNumber) {
                 socket.emit('randomNumber', randomNumber);
->>>>>>> 2f7209f56f064f05584642f0cf27dade79702a26
             }
         });
 
@@ -159,26 +132,7 @@ const socketHandler = (server) => {
 
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`);
-<<<<<<< HEAD
-            // Cleanup user socket and random number info
-            const userId = Object.keys(userSockets).find(key => userSockets[key] === socket.id);
-            console.log(`User disconnected: userId: ${userId}`);
-            if (userId) {
-                console.log(`User disconnected: ${socket.id}`);
-                console.log(`User disconnected: ${userId}`);    
-                delete userSockets[userId];
-                delete randomNumberForUsers[userId];
-            }
-
-            // Cleanup admin socket and random number info
-            const adminId = Object.keys(adminSockets).find(key => adminSockets[key] === socket.id);
-            if (adminId) {
-                delete adminSockets[adminId];
-                delete randomNumberForAdmins[adminId];
-            }
-=======
             // Socket.IO automatically cleans up the rooms the socket was in
->>>>>>> 2f7209f56f064f05584642f0cf27dade79702a26
         });
     });
 };
