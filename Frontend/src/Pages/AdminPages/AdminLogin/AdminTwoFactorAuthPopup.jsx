@@ -70,6 +70,17 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
         }
         return () => clearInterval(intervalId);
     }, [isVisible]);
+    const handleRegnerateRandomNumber = () => {
+        setLoading(true);
+        const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+        setRandomNumber(randomNum);
+        setTimer(8);
+        setTimeout(() => {
+            setLoading(false);
+        }, 500);
+    };
+
+
 
     return isVisible ? (
         <div className="popup-overlay">
@@ -96,15 +107,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
                             style={{ backgroundColor: timer > 0 ? '#ccc' : '#021f69', color: '#ffffff', cursor: timer > 0 ? 'not-allowed' : 'pointer' }}
                             disabled={loading || timer > 0}
                             endIcon={loading ? <CircularProgress size={24} /> : <SendIcon />}
-                            onClick={() => {
-                                setLoading(true);
-                                // Simulate async operation
-                                generateRandomNumber();
-                                setTimeout(() => {
-                                    setLoading(false);
-                                    // Optionally, generate a new random number here
-                                }, 500);
-                            }}
+                            onClick={handleRegnerateRandomNumber}
                         >
                             {t('GENERATE AGAIN')}
                         </Button>
