@@ -23,7 +23,7 @@ const socketHandler = (server) => {
             // if number is already generated, send it to the user
             const randomNumber = randomNumbersMap.get(userId);
             if (randomNumber) {
-                socket.emit('randomNumber', randomNumber);
+                io.to(roomName).emit('randomNumber', randomNumber);
             }
         });
 
@@ -86,6 +86,12 @@ const socketHandler = (server) => {
             const adminRoomName = `admin-${adminId}`;
             socket.join(adminRoomName);
             console.log(`Admin ${adminId} registered and joined room ${adminRoomName}`);
+            // if number is already generated, send it to the user
+            const randomNumber = randomNumbersMap.get(adminId);
+            if (randomNumber) {
+                io.to(adminRoomName).emit('randomNumberForAdmin', randomNumber);
+            }
+
         });
 
         // Send Random Number to Admin
