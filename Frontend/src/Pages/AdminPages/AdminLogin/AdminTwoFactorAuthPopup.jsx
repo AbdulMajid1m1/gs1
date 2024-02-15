@@ -99,10 +99,11 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
                             onClick={() => {
                                 setLoading(true);
                                 // Simulate async operation
+                                generateRandomNumber();
                                 setTimeout(() => {
                                     setLoading(false);
                                     // Optionally, generate a new random number here
-                                }, 2000);
+                                }, 500);
                             }}
                         >
                             {t('GENERATE AGAIN')}
