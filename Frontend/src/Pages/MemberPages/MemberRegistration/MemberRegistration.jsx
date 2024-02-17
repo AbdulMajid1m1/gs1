@@ -84,6 +84,7 @@ const MemmberRegisteration = () => {
                     name: industryType.name,
                 }));
                 setIndustryTypes(industryTypes);
+                console.log("industryTypes", industryTypes);
             }
             catch (error) {
                 console.error('Error fetching on Search GPC Api:', error);
@@ -113,6 +114,7 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get('/otherProducts');
                 setOtherProductsOptions(response.data);
+                console.log("response.data", response.data);
             }
             catch (error) {
                 console.error('Error fetching data:', error);
@@ -130,17 +132,23 @@ const MemmberRegisteration = () => {
 
                 const countries = data.map((country) => ({
                     id: country.id,
-                    name: country.name_en,
+                    //   name: country.name_en,
+                    name: i18n.language === "ar" ? country.name_ar : country.name_en,
+                }));
+
+                const states = getStatesdata.map((state) => ({
+                    id: state.id,
+                    name: i18n.language === "ar" ? state.name_ar : state.name,
+                    country_id: state.country_id,
                 }));
 
                 setCountry(countries);
-                setState(getStatesdata);
+                setState(states);
                 // setCountry(countries);
                 const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
                 setSelectedCountry(defaultCountry);
-                const filteredStates = getStatesdata.filter((state) => state.country_id == defaultCountry?.id);
+                const filteredStates = states.filter((state) => state.country_id == defaultCountry?.id);
                 setFilteredStates(filteredStates);
-
 
             }
             catch (error) {
@@ -155,7 +163,18 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get(`/address/getAllCities`);
                 const data = response.data;
-                setCity(data);
+                //   setCity(data);
+
+                const Citydata = data.map((city) => ({
+                    id: city.id,
+                    name: i18n.language === "ar" ? city.name_ar : city.name,
+                    state_id: city.state_id,
+                }));
+
+                console.log("Citydata", Citydata);
+                //  console.log("Citydata", data);
+                setCity(Citydata);
+
             }
             catch (error) {
                 console.error('Error fetching states:', error);
@@ -172,7 +191,7 @@ const MemmberRegisteration = () => {
         handleGetAllCities();
         handleOtherProductsData();
 
-    }, []);
+    }, [i18n.language]);
 
 
 
@@ -188,7 +207,6 @@ const MemmberRegisteration = () => {
         setSelectedState(null);
         setFilteredCities([]);
         setSelectedCity(null);
-        console.log("filteredStates", filteredStates);
     };
 
     // Handle state selection
@@ -531,8 +549,16 @@ const MemmberRegisteration = () => {
             try {
                 // const response = await newRequest.get(`/gtinProducts?category=${selectedCategories}`);
                 const response = await newRequest.get(`/gtinProducts`);
-                console.log(response.data)
-                setGtinNumber(response.data);
+                const gtinProductsData = response.data;
+
+                const gtinProducts = gtinProductsData.map((product) => ({
+                    ...product,
+                    member_category_description: i18n.language === "ar" ? product.member_category_description_ar : product.member_category_description
+,
+                }));
+                
+                setGtinNumber(gtinProducts);
+                // setGtinNumber(gtinProductsData);
             } catch (error) {
                 console.error('Error fetching GTIN products:', error);
             }

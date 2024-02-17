@@ -326,6 +326,7 @@ CREATE TABLE [dbo].[chats] (
 CREATE TABLE [dbo].[cities] (
     [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [state_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -2045,6 +2046,7 @@ CREATE TABLE [dbo].[staff_help_desks] (
 CREATE TABLE [dbo].[states] (
     [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [country_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,

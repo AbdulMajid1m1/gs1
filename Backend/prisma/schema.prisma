@@ -342,6 +342,7 @@ model chats {
 model cities {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   state_id   Int?
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -1857,6 +1858,7 @@ model staff_help_desks {
 model states {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   country_id Int?
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
