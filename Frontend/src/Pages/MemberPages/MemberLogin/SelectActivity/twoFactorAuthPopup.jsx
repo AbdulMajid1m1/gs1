@@ -13,10 +13,10 @@ const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const userId = sessionStorage.getItem('MemberUserId');
-
+    let duration = 30;
     const [randomNumber, setRandomNumber] = useState('');
     const [loading, setLoading] = useState(false);
-    const [timer, setTimer] = useState(2);
+    const [timer, setTimer] = useState(duration);
     const [socket, setSocket] = useState(null);
 
     // Initialize and manage socket connection
@@ -58,7 +58,7 @@ const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             newSocket.emit('sendRandomNumber', { userId, numbers: randomNum });
             setRandomNumber(randomNum);
-            setTimer(2);
+            setTimer(duration);
 
         });
 
@@ -75,19 +75,35 @@ const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             socket.emit('sendRandomNumber', { userId, numbers: randomNum });
             setRandomNumber(randomNum);
-            setTimer(2);
+            setTimer(duration);
         }
     }, [socket, userId, isVisible]);
 
     // Timer countdown
     useEffect(() => {
         if (!isVisible) return;
+
         const intervalId = setInterval(() => {
-            setTimer(prevTimer => prevTimer > 0 ? prevTimer - 1 : 0);
+            setTimer(prevTimer => {
+                // Decrease timer by 1 every second
+                const newTimer = prevTimer > 0 ? prevTimer - 1 : 0;
+
+                // When timer reaches 0, regenerate random number and reset timer
+                if (newTimer === 0) {
+                    const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+                    socket.emit('sendRandomNumber', { userId, numbers: randomNum });
+                    setRandomNumber(randomNum);
+                    return duration; // Reset timer
+                }
+
+                return newTimer; // Update timer
+            });
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, [isVisible]);
+    }, [isVisible, duration, socket, userId, setRandomNumber]);
+
+
 
     return isVisible && (
         <div className="popup-overlay">
@@ -100,31 +116,10 @@ const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
                         <CloseIcon />
                     </Button>
                     <div className="text-center mt-4 mb-2">
-                        <p className="text-lg sm:text-xl text-gray-20">{t("Click 'GENERATE' to create new Random number.")}</p>
+                        <p className="text-lg sm:text-xl text-gray-20">{t("Select the number you see on your mobile")}</p>
                     </div>
                     <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
                         <h2 className="text-white text-4xl">{randomNumber}</h2>
-                    </div>
-                    <div className="w-full flex justify-center mb-4 mt-4">
-                        <Button
-                            variant="contained"
-                            style={{ backgroundColor: timer > 0 ? '#ccc' : '#021f69', color: '#ffffff', cursor: timer > 0 ? 'not-allowed' : 'pointer' }}
-                            disabled={loading || timer > 0}
-                            endIcon={loading ? <CircularProgress size={24} /> : <SendIcon />}
-                            onClick={() => {
-                                setLoading(true);
-                                // Call the function to generate a new random number
-                                setTimeout(() => {
-                                    setLoading(false);
-                                    const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
-                                    socket.emit('sendRandomNumber', { userId, numbers: randomNum });
-                                    setRandomNumber(randomNum);
-                                    setTimer(2);
-                                }, 500); // Simulate network request time
-                            }}
-                        >
-                            {t('GENERATE AGAIN')}
-                        </Button>
                     </div>
                     <div className="text-center">
                         <p className="text-secondary">{t('Number will regenerate in')} {timer} {t('seconds')}</p>
