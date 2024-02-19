@@ -332,7 +332,15 @@ CREATE TABLE [dbo].[cities] (
     [updated_at] DATETIME,
     CONSTRAINT [cities_pkey] PRIMARY KEY CLUSTERED ([id])
 );
-
+CREATE TABLE [dbo].[product_categroies] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
+    [state_id] INT,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    
+);
 -- CreateTable
 CREATE TABLE [dbo].[classes] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -1574,6 +1582,7 @@ CREATE TABLE [dbo].[old_users] (
 CREATE TABLE [dbo].[other_products] (
     [id] NVARCHAR(1000) NOT NULL,
     [product_name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [total_no_of_barcodes] FLOAT(53),
     [product_subscription_fee] FLOAT(53),
     [code] NVARCHAR(max),
@@ -1792,6 +1801,7 @@ CREATE TABLE [dbo].[cr_documents] (
 CREATE TABLE [dbo].[product_types] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,

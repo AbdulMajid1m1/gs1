@@ -322,6 +322,7 @@ model rejected_carts {
 model product_categroies {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
+  name_ar       String?  @db.NVarChar(Max)
   status     Int?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -1480,6 +1481,7 @@ model old_users {
 model other_products {
   id                                    String                                  @id @default(cuid())
   product_name                          String?                                 @db.NVarChar(Max)
+  name_ar                          String?                                 @db.NVarChar(Max)
   total_no_of_barcodes                  Float?
   product_subscription_fee              Float?
   code                                  String?                                 @db.NVarChar(Max)
@@ -1627,6 +1629,7 @@ model product_packagings {
 model product_types {
   id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
+  name_ar       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime

@@ -33,11 +33,9 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
         console.log(error);
       }
     };
-
-
-
     getDocuments();
 
+    
   }, []);
   const handleSelectedDocuments = (event, value) => {
     console.log(value?.id);
@@ -116,18 +114,18 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
                     />
                   </div>
 
-                  
-                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="field1" className="text-secondary">{t('State')} {t('Name Arabic')}</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name_ar}
-                    onChange={(e) => setname_ar(e.target.value)}
-                    placeholder={`${t('Enter')} ${t('State')} ${t('Name Arabic')}`}
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                  />
-                </div>
+
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">{t('State')} {t('Name Arabic')}</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name_ar}
+                      onChange={(e) => setname_ar(e.target.value)}
+                      placeholder={`${t('Enter')} ${t('State')} ${t('Name Arabic')}`}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">{t('Select Country')}</label>

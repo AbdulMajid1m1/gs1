@@ -3692,7 +3692,11 @@ export const Other_Products = (t) => [
 
   {
     field: 'product_name',
-    headerName: t('product_name'),
+    headerName: t('product Name English'),
+    width: 260,
+  },{
+    field: 'name_ar',
+    headerName: t('product Name Arabic'),
     width: 260,
   },
   {
@@ -3845,13 +3849,18 @@ export const city = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: t('Name'),
-    width: 280,
+    headerName: t('Name English'),
+    width: 250,
+  },
+   {
+    field: 'name_ar',
+    headerName: t('Name Arabic'),
+    width: 250,
   },
   {
     field: 'state_name',
     headerName: t('State'),
-    width: 280,
+    width: 250,
   },
 
   {
@@ -3880,8 +3889,13 @@ export const state = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: t('Name'),
-    width: 280,
+    headerName: t('Name English'),
+    width: 200,
+  },
+   {
+    field: 'name_ar',
+    headerName: t('Name Arabic'),
+    width: 200,
   },
   {
     field: 'country_id',
@@ -7284,7 +7298,12 @@ export const AdminUsersColumn = (t, i18n) => [
 export const productsCategoriesColumn = (t, i18n) => [
   {
     field: 'name',
-    headerName: t('Name'),
+    headerName: t('Name English'),
+    width: 180,
+  },
+   {
+    field: 'name_ar',
+    headerName: t('Name Arabic'),
     width: 180,
   },
   {

@@ -5,6 +5,7 @@ import { createError } from '../utils/createError.js';
 // Validation schema
 const productCategorySchema = Joi.object({
     name: Joi.string().max(255),
+    name_ar: Joi.string().max(255),
     status: Joi.number().integer(),
 });
 
@@ -77,10 +78,18 @@ export const updateProductCategory = async (req, res, next) => {
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { name, status } = req.body;
+        const {
+            name,
+            status,
+            name_ar
+        } = req.body;
         const updatedProductCategory = await prisma.product_categroies.update({
             where: { id: id },
-            data: { name, status },
+            data: {
+                name,
+                status,
+                name_ar
+            },
         });
 
         res.json(updatedProductCategory);
