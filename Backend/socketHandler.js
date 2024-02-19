@@ -38,11 +38,12 @@ const socketHandler = (server) => {
 
 
         socket.on('verifyNumber', async ({ userId, selectedNumber }) => {
+            let userRoomName = `${userId}-web`;
+            let mobileRoomName = `${userId}-mobile`;
             try {
                 // Retrieve the stored random number for the user
                 const randomNumber = randomNumbersMap.get(userId);
-                let userRoomName = `${userId}-web`;
-                let mobileRoomName = `${userId}-mobile`;
+
                 // Compare the selected number with the stored random number
                 if (randomNumber === selectedNumber) {
                     // Query the database to find the user
