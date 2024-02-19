@@ -1201,7 +1201,7 @@ const MemmberRegisteration = () => {
                       <TextField
                         autoComplete="off"
                         {...params}
-                        label="Select matching industries"
+                        label={`${t("Select matching industries")}`}
                         placeholder="select industries types"
                         variant="outlined"
                       />
