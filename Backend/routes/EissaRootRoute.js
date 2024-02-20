@@ -56,7 +56,7 @@ router.delete('/deletecr_documents/:id', adminAuth, checkPermission(["documents"
 router.post('/createotherProduct', adminAuth, checkPermission(['other_products']), createotherproduct);
 router.get('/getAllotherproduct', getAllotherproduct);
 router.get('/getotherproductById/:id', getotherproductById);
-router.put('/updateotherproduct/:id', adminAuth, checkPermission(['other_products']), updateotherproduct);
+router.put('/updateotherproduct/:id',  updateotherproduct);
 router.delete('/deleteotherproduct/:id', adminAuth, checkPermission(['other_products']), deleteotherproduct);
 // Routes for GCP_type
 router.post('/creategpctype', adminAuth, checkPermission(['gcp_type']), creategpctype);

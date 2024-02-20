@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from "react-i18next";
 
 const TermsAndCondition = ({ isVisible, setVisibility, handleClose, handleAccept }) => {
 
     // const closePopUp = () => {
     //     setVisibility(false)
     // }
+    const { t} = useTranslation();
 
     return (
         <div>
@@ -37,7 +39,7 @@ const TermsAndCondition = ({ isVisible, setVisibility, handleClose, handleAccept
                             <form className='w-full'>
                                 <div className="mb-2">
                                     <p className="text-lg sm:text-3xl font-body text-secondary text-center font-normal">
-                                        Terms & Conditions
+                                          {t('Terms & Conditions')}
                                     </p>
                                 </div>
                                 <hr />
@@ -71,13 +73,13 @@ const TermsAndCondition = ({ isVisible, setVisibility, handleClose, handleAccept
                                         className="bg-[#c82333] hover:bg-red-700 text-white px-3 py-1.5 rounded mr-2"
                                         onClick={handleAccept}
                                     >
-                                        Accept
+                                          {t('Accept')}
                                     </button>
                                     <button
                                         className="bg-[#ffc107] hover:bg-[#e0a800] px-3 py-1.5 rounded"
                                         onClick={handleClose}
                                     >
-                                        Cancel
+                                         {t('Cancel')}
                                     </button>
                                 </div>
                             </form>

@@ -9,6 +9,7 @@ const AddCategories = ({ isVisible, setVisibility, refreshCategories }) =>
 {
   const { t, i18n } = useTranslation();
   const [name, setName] = useState("");
+  const [name_ar, setname_ar] = useState("");
   const [status, setstatus] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -24,8 +25,9 @@ const AddCategories = ({ isVisible, setVisibility, refreshCategories }) =>
     setLoading(true);
     //  integrate the post api in try catch blcck
     try {
-      const response = await newRequest.post('/productCategories', {
+      const response = await newRequest.post("/productCategories", {
         name: name,
+        name_ar: name_ar,
         status: status,
       });
 
@@ -60,17 +62,28 @@ const AddCategories = ({ isVisible, setVisibility, refreshCategories }) =>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                      
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field2" className="text-secondary">{t('Name')}</label>
+                    <label htmlFor="field2" className="text-secondary">{t('Name English')}</label>
                     <input
                       type="text"
                       id="field2"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder={`${t('Enter Name')}`}
+                      placeholder={`${t('Enter')} ${t('Name English')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>
             
+                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary"> {t('Name Arabic')}</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name_ar}
+                      onChange={(e) => setname_ar(e.target.value)}
+                      placeholder={`${t('Enter')} ${t('Name Arabic')}`}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
 
                   <label htmlFor="field7" className="text-secondary">{t('Status')}</label>
                     <select
