@@ -132,6 +132,7 @@ import AdminAddForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/A
 import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminDigitalLinkInfo.jsx";
 import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedByGS1/MemberVerifiedByGS1.jsx";
 import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
+import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDigitalUrlInfo.jsx";
 
 const queryClient = new QueryClient()
 
@@ -430,6 +431,8 @@ const App = () => {
                                 path="admin-view-gtin/:productId"
                                 element={<AdminGTINView />}
                               />
+                              <Route path="admin-digitalurl" element={<AdminDigitalUrlInfo />} />
+
 
                               {/* <Route path="gln" element={<Gln />} /> */}
                               <Route path="gln" element={

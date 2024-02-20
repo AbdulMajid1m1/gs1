@@ -4,187 +4,128 @@ import { Button, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
+import CloseIcon from '@mui/icons-material/Close'; // Import CloseIcon for the close button
 import { backendUrl } from '../../../../utils/config';
 import newRequest from '../../../../utils/userRequest';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
-const TwoFactorAuthPopup = ({ isVisible, setVisibility, userId }) => {
-    console.log(userId)
+const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const userId = sessionStorage.getItem('MemberUserId');
+    let duration = 30;
     const [randomNumber, setRandomNumber] = useState('');
     const [loading, setLoading] = useState(false);
-    const [timer, setTimer] = useState(60);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
-    const { t, i18n } = useTranslation();
+    const [timer, setTimer] = useState(duration);
     const [socket, setSocket] = useState(null);
-    const navigate = useNavigate();
+
+    // Initialize and manage socket connection
     useEffect(() => {
-        const newSocket = io(backendUrl); // Connect to the server
+        if (!isVisible) return;
+
+        const newSocket = io(backendUrl, {
+            path: '/socket.io',
+            transports: ['websocket'],
+        });
+
+        newSocket.on('connect', () => {
+            console.log('Connected to server');
+            newSocket.emit('register', { userId, clientType: 'web' });
+        });
+
+        newSocket.on('randomNumber', (number) => {
+            setRandomNumber(number);
+        });
+
+        newSocket.on('authSuccess', async (data) => {
+            try {
+                const response = await newRequest.post("/users/setMemberCredentials", {
+                    token: data.getCredentialsToken,
+                });
+                sessionStorage.setItem('memberData', JSON.stringify(response.data.memberData));
+                toast.success(t('Member Login Successfully'));
+                navigate('/member/dashboard');
+                setIsvisible(false);
+            } catch (error) {
+                console.error(error);
+                toast.error(t('Something went wrong!'));
+            }
+        });
+
+        newSocket.on('authError', ({ message }) => {
+            toast.error(message || t('Authentication failed! Try again'));
+            // regenerate random number
+            const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            newSocket.emit('sendRandomNumber', { userId, numbers: randomNum });
+            setRandomNumber(randomNum);
+            setTimer(duration);
+
+        });
 
         setSocket(newSocket);
 
         return () => {
-            newSocket.disconnect(); // Disconnect when component unmounts
+            newSocket.disconnect();
         };
-    }, []);
+    }, [isVisible, t, navigate, setIsvisible, userId]);
 
+    // Generate random number
     useEffect(() => {
-        if (socket) {
-            socket.on('connect', () => {
-                console.log('Connected to server');
-                let userId = 3
-                socket.emit('register', userId); // Register user ID with the server
-                setTimeout(() => {
-
-                    generateRandomNumber(); // Generate random number when the component becomes visible
-                }, 3000)
-            });
-
-            socket.on('randomNumber', (numbers) => {
-                const randomNumber = numbers.find(number => number.isCorrect).number;
-                setRandomNumber(randomNumber); // Update the random number when received from the server
-            });
-
-            socket.on('authSuccess', async ({ message, memberData, getCredentialsToken }) => {
-                console.log("authSuccess")
-
-                try {
-
-                    const response = await newRequest.post("/users/setMemberCredentials", {
-                        token: getCredentialsToken
-                    })
-                    console.log(response.data)
-                    sessionStorage.setItem('memberData', JSON.stringify(response?.data?.memberData));
-                    toast.success(`${t('Member Login Successfully')}`, {
-                        position: "top-right",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                    navigate('/member/dashboard');
-
-                } catch (e) {
-                    console.log(e)
-                    toast.error(error?.response?.data?.error || 'something went wrong')
-                }
-                setVisibility(false);
-            });
-
-            socket.on('authError', ({ message }) => {
-                // Handle authentication failure with the exact message received from the server
-                toast.error(message || 'Authentication failed! Try again');
-                // generateRandomNumber(); // Regenerate random number
-            });
-
-
-        }
-    }, [socket, userId, setVisibility]);
-
-    useEffect(() => {
-        if (isVisible) {
-            const interval = setInterval(() => {
-                setTimer((prevTimer) => {
-                    if (prevTimer > 0) {
-                        return prevTimer - 1;
-                    } else {
-                        setButtonDisabled(true);
-                        return prevTimer;
-                    }
-                });
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [isVisible]);
-
-    const generateRandomNumber = () => {
-        if (socket) {
+        if (socket && isVisible) {
             const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            socket.emit('sendRandomNumber', { userId, numbers: randomNum });
             setRandomNumber(randomNum);
-            socket.emit('sendRandomNumber', { userId: 3, numbers: randomNum });
-            setTimer(60);
-            setButtonDisabled(false);
+            setTimer(duration);
         }
-    };
+    }, [socket, userId, isVisible]);
 
-    const handleGenerateCertificate = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
+    // Timer countdown
+    useEffect(() => {
+        if (!isVisible) return;
 
-            setTimeout(() => {
-                toast.success(`${t('Certificate generated successfully')}`, {
-                    position: 'top-right',
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
-                });
-                setLoading(false);
-                setVisibility(false);
-            }, 2000);
-        } catch (err) {
-            console.log(err);
-            setLoading(false);
-            toast.error(err?.response?.data?.error || `${t('Something went wrong!')}`, {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
+        const intervalId = setInterval(() => {
+            setTimer(prevTimer => {
+                // Decrease timer by 1 every second
+                const newTimer = prevTimer > 0 ? prevTimer - 1 : 0;
+
+                // When timer reaches 0, regenerate random number and reset timer
+                if (newTimer === 0) {
+                    const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+                    socket.emit('sendRandomNumber', { userId, numbers: randomNum });
+                    setRandomNumber(randomNum);
+                    return duration; // Reset timer
+                }
+
+                return newTimer; // Update timer
             });
-        }
-    };
+        }, 1000);
 
-    return (
-        <div>
-            {isVisible && (
-                <div className="popup-overlay">
-                    <div className="popup-container h-auto sm:w-[40%] w-full">
-                        <div className="popup-form w-full">
-                            <form className="w-full" onSubmit={handleGenerateCertificate}>
-                                <div className="text-center mt-4 mb-2">
-                                    <p className="text-lg sm:text-xl text-gray-600">
-                                        {t(`Click 'GENERATE' to create new Random number.`)}
-                                    </p>
-                                </div>
-                                <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
-                                    <h2 className="text-white text-4xl">{randomNumber}</h2>
-                                </div>
-                                <div className="w-full flex justify-center mb-4 mt-4">
-                                    <Button
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: buttonDisabled ? '#021F69' : 'lightgray', color: '#ffffff',
-                                            cursor: buttonDisabled ? "pointer" : "not-allowed"
-                                        }}
-                                        type="submit"
-                                        disabled={loading || !buttonDisabled}
-                                        endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
-                                        onClick={generateRandomNumber}
-                                    >
-                                        {t('GENERATE AGAIN')}
-                                    </Button>
-                                </div>
+        return () => clearInterval(intervalId);
+    }, [isVisible, duration, socket, userId, setRandomNumber]);
 
-                                <div className="text-center">
-                                    <p className="text-secondary">
-                                        {t('Number will regenerate in')} {timer} {t('seconds')}
-                                    </p>
-                                </div>
-                            </form>
-                        </div>
+
+
+    return isVisible && (
+        <div className="popup-overlay">
+            <div className="popup-container h-auto sm:w-[40%] w-full">
+                <div className="popup-form w-full">
+                    <Button
+                        style={{ position: 'absolute', top: '10px', right: '10px' }}
+                        onClick={() => setIsvisible(false)}
+                    >
+                        <CloseIcon />
+                    </Button>
+                    <div className="text-center mt-4 mb-2">
+                        <p className="text-lg sm:text-xl text-gray-20">{t("Select the number you see on your mobile")}</p>
+                    </div>
+                    <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
+                        <h2 className="text-white text-4xl">{randomNumber}</h2>
+                    </div>
+                    <div className="text-center">
+                        <p className="text-secondary">{t('Number will regenerate in')} {timer} {t('seconds')}</p>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };

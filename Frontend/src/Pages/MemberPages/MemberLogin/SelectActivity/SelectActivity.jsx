@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { DotLoader } from 'react-spinners'
 import newRequest from '../../../../utils/userRequest'
 import { useTranslation } from 'react-i18next';
-import TwoFactorAuthPopup from './twoFactorAuthPopup'
+import TwoFactorAuthPopup from './TwoFactorAuthPopup';
 
 const SelectActivity = () => {
     const { t, i18n } = useTranslation();
@@ -53,8 +53,18 @@ const SelectActivity = () => {
             .then(response => {
                 console.log(response.data)
                 setIsLoading(false)
-                setMemberData(JSON.stringify(response?.data?.memberData))
+                setMemberData(response?.data?.memberData)
+                // save userId in session
+                let userId = response?.data?.memberData?.id
+                console.log('userId', userId)
+                sessionStorage.setItem('MemberUserId', userId);
                 setIsvisible(true)
+
+                // commnet below two line for for 2 auth TODO:
+                // sessionStorage.setItem('memberData', JSON.stringify(response.data.memberData));
+                // navigate('/member/dashboard');
+
+                
                 // save the response in sesstion
                 // sessionStorage.setItem('memberData', JSON.stringify(response?.data?.memberData));
 
@@ -74,14 +84,11 @@ const SelectActivity = () => {
                 });
                 setIsLoading(false)
             })
-
-
-
     }
 
     return (
         <div>
-            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible} userId={memberData?.id} />
+            <TwoFactorAuthPopup setIsvisible={setIsvisible} isVisible={isVisible}  />
             {isLoading &&
                 <div className='loading-spinner-background'
                     style={{

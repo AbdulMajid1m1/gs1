@@ -1,5 +1,5 @@
 import express from 'express';
-import { addAdmin, adminLogin, assignAdminToUser, deleteAdmin, getAdmin, getAllAdmins, searchAdmins, updateAdmin } from '../../controllers/adminController.js';
+import { addAdmin, adminLogin, assignAdminToUser, deleteAdmin, generateAdminOtp, getAdmin, getAllAdmins, searchAdmins, setAdminCredentials, updateAdmin, verifyAdminOtp } from '../../controllers/adminController.js';
 import { superAdminAuth } from '../../middlewares/auth.js';
 import { upload } from '../../configs/multerConfig.js';
 
@@ -40,5 +40,13 @@ router.put('/updateAdmin/:adminId', superAdminAuth,
         },
     ]),
     updateAdmin);
+
+
+
+// mobile login APIS for authenticator
+
+router.post('/generateOtp', generateAdminOtp);
+router.post('/verifyOtp', verifyAdminOtp);
+router.post('/setAdminCredentials', setAdminCredentials);
 
 export default router;

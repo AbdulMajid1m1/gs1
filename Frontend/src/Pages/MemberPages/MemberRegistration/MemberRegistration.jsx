@@ -416,7 +416,7 @@ const MemmberRegisteration = () => {
             "contactPerson": contactPerson,
             "company_name_eng": companyEnglish,
             "company_name_arabic": companyArabic,
-            "companyLandLine": companyLandLine,
+            ...(companyLandLine && { "companyLandLine": companyLandLine }),
             "mobile": mobileNumber,
             // Conditionally include zip_code based on user input
             ...(zipCode && { "zip_code": zipCode }),

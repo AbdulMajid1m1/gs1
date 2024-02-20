@@ -7,6 +7,7 @@ import { DotLoader } from 'react-spinners'
 import { useTranslation } from "react-i18next";
 // import { DataTableContext2 } from "../../Contexts/DataTableContext2";
 import { AuthContext } from '../../../Contexts/AuthContext'
+import TwoFactorAuthPopupForAdmin from './AdminTwoFactorAuthPopup';
 
 const AdminLogin = () => {
   // const t = useTranslation();
@@ -15,7 +16,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showImage, setShowImage] = useState(false);
   const navigate = useNavigate();
-  
+  const [isVisible, setVisibility] = useState(false);
   const { adminData, setAdminData, permissions, setPermissions,
     login, fetchPermissions } = useContext(AuthContext);
 
@@ -34,26 +35,15 @@ const AdminLogin = () => {
     })
       .then((res) => {
         console.log(res);
-        toast.success(res?.data?.message || `Login Successfully`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
 
         setIsLoading(false);
         login(res.data.adminData, res.data.permissions);
 
-        navigate('/admin/dashboard');
-        // Assuming res.data is an object
+        setVisibility(true);
         const adminData = res?.data?.adminData;
         const adminDataString = JSON.stringify(adminData);
         sessionStorage.setItem('adminData', adminDataString);
-
+        // navigate('/admin/dashboard');
       })
       .catch((err) => {
         console.log(err);
@@ -76,6 +66,7 @@ const AdminLogin = () => {
 
   return (
     <>
+      <TwoFactorAuthPopupForAdmin isVisible={isVisible} setVisibility={setVisibility} />
       {isLoading &&
 
         <div className='loading-spinner-background'
