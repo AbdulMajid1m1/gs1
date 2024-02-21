@@ -188,7 +188,7 @@ const BankSlip = () => {
                                     <i className="fas fa-arrow-left mr-1"></i>{t('Back')}
                                 </button>
                             </div>
-
+  
                             <form onSubmit={handleSubmit}>
                                 <div className="w-full font-sans sm:text-base text-sm flex flex-col gap-2 px-4">
                                     <label htmlFor="translate">
