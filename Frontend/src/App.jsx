@@ -133,6 +133,7 @@ import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/
 import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedByGS1/MemberVerifiedByGS1.jsx";
 import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDigitalUrlInfo.jsx";
+import AdminUpdateGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminUpdateGLN.jsx";
 
 const queryClient = new QueryClient()
 
@@ -441,6 +442,7 @@ const App = () => {
                                 </ProtectedRoute>
                               } />
                               <Route path="admin-addgln" element={<AdminAddGLN />} />
+                              <Route path="admin-update-gln/:Id" element={<AdminUpdateGLN />} />
 
                               {/* <Route path="sscc" element={<Sscc />} /> */}
                               <Route path="sscc" element={
