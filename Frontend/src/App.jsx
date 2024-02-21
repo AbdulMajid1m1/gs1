@@ -265,7 +265,8 @@ const App = () => {
 
                               {/* <Route path="payment-slips" element={<PaymentSlips />} /> */}
                               <Route path="payment-slips" element={<MemberProtectedRoute Component={PaymentSlips} />} />
-                              <Route path="bank-slip" element={<BankSlip />} />
+                              {/* <Route path="bank-slip" element={<BankSlip />} /> */}
+                              <Route path="bank-slip" element={<MemberProtectedRoute Component={BankSlip} />} />
                               <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} />
                               <Route path="transaction-history" element={<TransactionHistory />} />
                               <Route path="member-helpdesk" element={<MemberHelpDesk />} />
