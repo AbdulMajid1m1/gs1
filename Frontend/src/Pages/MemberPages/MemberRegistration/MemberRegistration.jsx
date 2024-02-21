@@ -82,6 +82,7 @@ const MemmberRegisteration = () => {
                 const industryTypes = data.map((industryType) => ({
                     id: industryType.id,
                     name: industryType.name,
+                   name_ar_en: i18n.language === "ar" ? industryType.name_ar : industryType.name,
                 }));
                 setIndustryTypes(industryTypes);
             }
@@ -98,8 +99,15 @@ const MemmberRegisteration = () => {
                 const categories = data.map((category) => ({
                     id: category.id,
                     name: category.name,
+                    namesa: i18n.language === "ar" ? category.name_ar : category.name,
+                
                 }));
+                //    const categories = data.map((category) => ({
+                //     id: category.id,
+                //     name: i18n.language === "ar" ? category.name_ar : category.name,
+                // }));
                 setCategories(categories);
+                console.log("datadata", data);
             }
             catch (error) {
                 console.error('Error fetching on product Categories Api:', error);
@@ -113,6 +121,7 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get('/otherProducts');
                 setOtherProductsOptions(response.data);
+                console.log("response.data", response.data);
             }
             catch (error) {
                 console.error('Error fetching data:', error);
@@ -130,17 +139,23 @@ const MemmberRegisteration = () => {
 
                 const countries = data.map((country) => ({
                     id: country.id,
-                    name: country.name_en,
+                    //   name: country.name_en,
+                    name: i18n.language === "ar" ? country.name_ar : country.name_en,
+                }));
+
+                const states = getStatesdata.map((state) => ({
+                    id: state.id,
+                    name: i18n.language === "ar" ? state.name_ar : state.name,
+                    country_id: state.country_id,
                 }));
 
                 setCountry(countries);
-                setState(getStatesdata);
+                setState(states);
                 // setCountry(countries);
                 const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
                 setSelectedCountry(defaultCountry);
-                const filteredStates = getStatesdata.filter((state) => state.country_id == defaultCountry?.id);
+                const filteredStates = states.filter((state) => state.country_id == defaultCountry?.id);
                 setFilteredStates(filteredStates);
-
 
             }
             catch (error) {
@@ -155,7 +170,19 @@ const MemmberRegisteration = () => {
             try {
                 const response = await newRequest.get(`/address/getAllCities`);
                 const data = response.data;
-                setCity(data);
+                //   setCity(data);
+
+                const Citydata = data.map((city) => ({
+                    id: city.id,
+                    name_ar: i18n.language === "ar" ? city.name_ar : city.name,
+                    name: city.name,
+                    state_id: city.state_id,
+                }));
+
+                console.log("Citydata", Citydata);
+                //  console.log("Citydata", data);
+                setCity(Citydata);
+
             }
             catch (error) {
                 console.error('Error fetching states:', error);
@@ -172,7 +199,7 @@ const MemmberRegisteration = () => {
         handleGetAllCities();
         handleOtherProductsData();
 
-    }, []);
+    }, [i18n.language]);
 
 
 
@@ -188,7 +215,6 @@ const MemmberRegisteration = () => {
         setSelectedState(null);
         setFilteredCities([]);
         setSelectedCity(null);
-        console.log(filteredStates)
     };
 
     // Handle state selection
@@ -421,7 +447,7 @@ const MemmberRegisteration = () => {
 
 
         newRequest
-           
+
             .post("/users", requestBody)
             .then((response) => {
                 console.log(response.data);
@@ -462,7 +488,7 @@ const MemmberRegisteration = () => {
 
     const handleCategoryChange = (event, value) => {
         console.log(value)
-        console.log(value)
+        console.log("value", value);
         setSelectedCategories(value);
         // Reset selectedGtinNumber when category changes
         // check if user cancelled the selection then reset the selectedGtinNumber as well as other products
@@ -531,8 +557,16 @@ const MemmberRegisteration = () => {
             try {
                 // const response = await newRequest.get(`/gtinProducts?category=${selectedCategories}`);
                 const response = await newRequest.get(`/gtinProducts`);
-                console.log(response.data)
-                setGtinNumber(response.data);
+                const gtinProductsData = response.data;
+
+//                 const gtinProducts = gtinProductsData.map((product) => ({
+//                     ...product,
+//                     member_category_description: i18n.language === "ar" ? product.member_category_description_ar : product.member_category_description
+// ,
+//                 }));
+                
+                // setGtinNumber(gtinProducts);
+                setGtinNumber(gtinProductsData);
             } catch (error) {
                 console.error('Error fetching GTIN products:', error);
             }
@@ -623,8 +657,8 @@ const MemmberRegisteration = () => {
 
     // Static options for the Autocomplete component
     const options = [
-        { label: 'Organization', value: 'organization' },
-        { label: 'Individual/Family Business', value: 'individual/family business' },
+        { label: `${t('Organization')}`, value: 'organization' },
+        { label: `${t('Individual/Family Business')}`, value: 'individual/family business' },
 
     ];
 
@@ -649,163 +683,236 @@ const MemmberRegisteration = () => {
 
     // handleOptionChange 
     return (
-        <div>
-            {isLoading &&
+      <div>
+        {isLoading && (
+          <div
+            className="loading-spinner-background"
+            style={{
+              zIndex: 9999,
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(255, 255, 255, 0.5)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "fixed",
+            }}
+          >
+            <DotLoader
+              size={45}
+              color={"#FF693A"}
+              // height={4}
+              loading={isLoading}
+            />
+          </div>
+        )}
 
-                <div className='loading-spinner-background'
-                    style={{
-                        zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                        display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
-
-
-                    }}
-                >
-                    <DotLoader
-                        size={45}
-                        color={"#FF693A"}
-                        // height={4}
-                        loading={isLoading}
-                    />
-                </div>
-            }
-
-            <div className='sticky top-0 z-50 bg-white'>
-                {/* Headers */}
-                <Header />
+        <div className="sticky top-0 z-50 bg-white">
+          {/* Headers */}
+          <Header />
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="h-auto w-full sm:w-2/3 border-l border-r border-primary">
+            <div className="h-5 w-full bg-primary rounded-t-md"></div>
+            <div className="h-auto w-full flex justify-between items-center px-5 py-2">
+              <p
+                className={`sm:text-2xl w-full font-semibold text-sm text-secondary ${
+                  i18n.language === "ar" ? "text-end" : "text-start"
+                }`}
+              >
+                {" "}
+                {t("Member Registration")}{" "}
+              </p>
+              {/* <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p> */}
             </div>
-            <div className="flex flex-col justify-center items-center">
-                <div className='h-auto w-full sm:w-2/3 border-l border-r border-primary'>
-                    <div className='h-5 w-full bg-primary rounded-t-md'></div>
-                    <div className='h-auto w-full flex justify-between items-center px-5 py-2'>
-                        <p className={`sm:text-2xl w-full font-semibold text-sm text-secondary ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}> {t('Member Registration')} </p>
-                        {/* <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p> */}
-                    </div>
+          </div>
+
+          <div className="h-auto w-full sm:w-2/3 p-6 shadow-xl border-l border-r border-b border-primary">
+            <form onSubmit={handleSubmit}>
+              <div className="w-full font-body sm:text-base text-sm flex flex-col">
+                <label
+                  className="text-secondary font-semibold"
+                  htmlFor="entityType"
+                >
+                  {t("Business Type")}
+                  <span className="text-red-600">*</span>
+                </label>
+                <Autocomplete
+                  id="entityType"
+                  options={options}
+                  value={entityType}
+                  getOptionLabel={(option) => option.label}
+                  onChange={handleOptionChange}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className="bg-gray-50 border border-gray-300 text-black text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                      placeholder={t("Select Business Type")}
+                      InputProps={{
+                        ...params.InputProps,
+                        className: "text-black",
+                      }}
+                      InputLabelProps={{
+                        ...params.InputLabelProps,
+                        style: { color: "black" },
+                      }}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                  <label
+                    htmlFor="field1"
+                    className="text-secondary font-semibold"
+                  >
+                    {entityType?.value === "organization"
+                      ? t("Cr Number")
+                      : t("License Ref. No")}
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="field1"
+                    value={addCrNumber}
+                    onChange={handleInputChange}
+                    placeholder={
+                      entityType?.value === "organization"
+                        ? t("Enter Cr Number")
+                        : t("Enter License Ref. No.")
+                    }
+                    onFocus={handleInputFocusCrNumber}
+                    onBlur={handleInputBlurCrNumber}
+                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                  />
+                  {error && <p className="text-red-500 text-xs">{error}</p>}
                 </div>
 
-                <div className='h-auto w-full sm:w-2/3 p-6 shadow-xl border-l border-r border-b border-primary'>
-                    <form onSubmit={handleSubmit}>
-                        <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                            <label className='text-secondary font-semibold' htmlFor='entityType'>
-                                {t('Business Type')}<span className='text-red-600'>*</span>
-                            </label>
-                            <Autocomplete
-                                id="entityType"
-                                options={options}
-                                value={entityType}
-                                getOptionLabel={(option) => option.label}
-                                onChange={handleOptionChange}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        className="bg-gray-50 border border-gray-300 text-black text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                        placeholder={t('Select Business Type')}
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            className: "text-black",
-                                        }}
-                                        InputLabelProps={{
-                                            ...params.InputLabelProps,
-                                            style: { color: "black" },
-                                        }}
-                                    />
-                                )}
-                            />
-                        </div>
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                  <label
+                    htmlFor="field2"
+                    className="text-secondary font-semibold"
+                  >
+                    {entityType?.value === "organization"
+                      ? t("Cr Activity")
+                      : t("License Name")}
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="field2"
+                    //  value={addCrNumber}
+                    onChange={(e) => setCrActivity(e.target.value)}
+                    placeholder={
+                      entityType?.value === "organization"
+                        ? t("Enter Cr Activity")
+                        : t("Enter License Name")
+                    }
+                    onFocus={handleInputFocusCrActivity}
+                    onBlur={handleInputBlurCrActivity}
+                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                  />
+                </div>
+              </div>
 
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
+                <div className="w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="email"
+                  >
+                    {" "}
+                    {t("Email")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    onChange={(e) => setEmail(e.target.value)}
+                    id="email"
+                    placeholder={`${t("Enter")} ${t("Email")}`}
+                    required
+                    type="text"
+                    className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  />
+                </div>
 
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field1" className="text-secondary font-semibold">
-                                    {entityType?.value === 'organization' ? t('Cr Number') : t('License Ref. No')}<span className='text-red-600'> *</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    id="field1"
-                                    value={addCrNumber}
-                                    onChange={handleInputChange}
-                                    placeholder={entityType?.value === 'organization' ? t('Enter Cr Number') : t('Enter License Ref. No.')}
-                                    onFocus={handleInputFocusCrNumber}
-                                    onBlur={handleInputBlurCrNumber}
-                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                                {error && <p className="text-red-500 text-xs">{error}</p>}
-                            </div>
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="contactperson"
+                  >
+                    {" "}
+                    {t("Contact Person")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    onChange={(e) => setContactPerson(e.target.value)}
+                    id="contactperson"
+                    placeholder={`${t("Enter")} ${t("Contact Person")}`}
+                    required
+                    type="text"
+                    className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  />
+                </div>
+              </div>
 
-                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                <label htmlFor="field2" className="text-secondary font-semibold">
-                                    {entityType?.value === 'organization' ? t('Cr Activity') : t('License Name')}<span className='text-red-600'> *</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    id="field2"
-                                    //  value={addCrNumber}
-                                    onChange={(e) => setCrActivity(e.target.value)}
-                                    placeholder={entityType?.value === 'organization' ? t('Enter Cr Activity') : t('Enter License Name')}
-                                    onFocus={handleInputFocusCrActivity}
-                                    onBlur={handleInputBlurCrActivity}
-                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                />
-                            </div>
-                        </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="companyEnglish"
+                  >
+                    {t("Company Name [English]")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    onChange={(e) => setCompanyEnglish(e.target.value)}
+                    // id='companyEnglish'
+                    placeholder={`${t("Enter")} ${t("Company Name [English]")}`}
+                    required
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    type="text"
+                    className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  />
+                </div>
 
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
-                            <div className='w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='email'> {t('Email')}<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    id='email'
-                                    placeholder={`${t('Enter')} ${t('Email')}`}
-                                    required
-                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
-                            </div>
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="companyArabic"
+                  >
+                    {" "}
+                    {t("Company Name [Arabic]")}{" "}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    onChange={(e) => setCompanyArabic(e.target.value)}
+                    // id='companyArabic'
+                    placeholder={`${t("Enter")} ${t("Company Name [Arabic]")}`}
+                    required
+                    onFocus={handleInputFocusArabic}
+                    onBlur={handleInputBlurArabic}
+                    type="text"
+                    className="border-1 border-[#8E9CAB] w-full text-right rounded-sm p-2 mb-3"
+                  />
+                </div>
+              </div>
 
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='contactperson'> {t('Contact Person')}<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setContactPerson(e.target.value)}
-                                    id='contactperson'
-                                    placeholder={`${t('Enter')} ${t('Contact Person')}`}
-                                    required
-                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
-                            </div>
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='companyEnglish'>{t('Company Name [English]')}<span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setCompanyEnglish(e.target.value)}
-                                    // id='companyEnglish'
-                                    placeholder={`${t('Enter')} ${t('Company Name [English]')}`}
-                                    required
-                                    onFocus={handleInputFocus}
-                                    onBlur={handleInputBlur}
-                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='companyArabic'> {t('Company Name [Arabic]')} <span className='text-red-600'>*</span></label>
-                                <input
-                                    onChange={(e) => setCompanyArabic(e.target.value)}
-                                    // id='companyArabic'
-                                    placeholder={`${t('Enter')} ${t('Company Name [Arabic]')}`}
-                                    required
-                                    onFocus={handleInputFocusArabic}
-                                    onBlur={handleInputBlurArabic}
-                                    type='text' className='border-1 border-[#8E9CAB] w-full text-right rounded-sm p-2 mb-3' />
-                            </div>
-
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='mobile'> {t('Company Landline')}</label>
-                                <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm '>
-                                    {/* <PhoneInput
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="mobile"
+                  >
+                    {" "}
+                    {t("Company Landline")}
+                  </label>
+                  <div className="flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm ">
+                    {/* <PhoneInput
                                         international
                                         defaultCountry="SA"
                                         value={companyLandLine}
@@ -826,59 +933,62 @@ const MemmberRegisteration = () => {
                                             marginBottom: '3px',
                                         }}
                                     /> */}
-                                    <PhoneInput
-                                        international
-                                        country={'sa'}
-                                        defaultCountry={'sa'}
-                                        value={companyLandLine}
-                                        // onChange={setCompanyLandLine}
-                                        onChange={handlecompanyLandLine}
-                                        inputProps={{
-                                            id: 'landline',
-                                            placeholder: 'Company Landline',
-                                        }}
+                    <PhoneInput
+                      international
+                      country={"sa"}
+                      defaultCountry={"sa"}
+                      value={companyLandLine}
+                      // onChange={setCompanyLandLine}
+                      onChange={handlecompanyLandLine}
+                      inputProps={{
+                        id: "landline",
+                        placeholder: "Company Landline",
+                      }}
+                      inputStyle={{
+                        width: "100%",
+                        borderRadius: "0px",
+                        border: "none",
+                      }}
+                      // required
+                    />
+                  </div>
+                  {companyLandlineError && (
+                    <p className="text-red-600">{companyLandlineError}</p>
+                  )}
+                </div>
 
-                                        inputStyle={{
-                                            width: '100%',
-                                            borderRadius: '0px',
-                                            border: 'none'
-                                        }}
-                                    // required
-                                    />
-                                </div>
-                                {companyLandlineError && <p className="text-red-600">{companyLandlineError}</p>}
-                            </div>
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="mobile"
+                  >
+                    {" "}
+                    {t("Mobile Number")} <span> {t("(Omit Zero)")}</span>
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <div className="flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm">
+                    <PhoneInput
+                      international
+                      country={"sa"}
+                      defaultCountry={"sa"}
+                      value={mobileNumber}
+                      onChange={handleMobileNumber}
+                      inputProps={{
+                        id: "mobile",
+                        placeholder: "Mobile Number",
+                      }}
+                      inputStyle={{
+                        width: "100%",
+                        borderRadius: "0px",
+                        border: "none",
+                      }}
+                      required
+                    />
+                  </div>
+                  {mobileError && <p className="text-red-600">{mobileError}</p>}
+                </div>
 
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='mobile'> {t('Mobile Number')}  <span> {t('(Omit Zero)')}</span><span className='text-red-600'>*</span></label>
-                                <div className='flex items-center border-[1px] border-[#8E9CAB] w-full rounded-sm'>
-
-                                    <PhoneInput
-                                        international
-                                        country={'sa'}
-                                        defaultCountry={'sa'}
-                                        value={mobileNumber}
-                                        onChange={handleMobileNumber}
-
-                                        inputProps={{
-                                            id: 'mobile',
-                                            placeholder: 'Mobile Number',
-                                        }}
-
-                                        inputStyle={{
-                                            width: '100%',
-                                            borderRadius: '0px',
-                                            border: 'none',
-                                        }}
-                                        required
-                                    />
-
-
-                                </div>
-                                {mobileError && <p className="text-red-600">{mobileError}</p>}
-                            </div>
-
-                            {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+                {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='extension'>Extension no.</label>
                                 <input
                                     onChange={(e) => setExtension(e.target.value)}
@@ -886,168 +996,182 @@ const MemmberRegisteration = () => {
                                     placeholder='Extension no.'
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div> */}
+              </div>
 
-                        </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
+                <div className="w-full font-body sm:text-base text-sm flex flex-col">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="country"
+                  >
+                    {" "}
+                    {t("Country")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <Autocomplete
+                    id="country"
+                    options={country}
+                    value={selectedCountry}
+                    required
+                    getOptionLabel={(option) => option?.name || ""}
+                    onChange={handleCountryName}
+                    onInputChange={(event, value) => {
+                      if (!value) {
+                        // perform operation when input is cleared
+                        console.log("Input cleared");
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        InputProps={{
+                          ...params.InputProps,
+                          className: "text-white",
+                        }}
+                        InputLabelProps={{
+                          ...params.InputLabelProps,
+                          style: { color: "white" },
+                        }}
+                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder={`${t("Enter")} ${t("Country")}`}
+                        // required
+                      />
+                    )}
+                    classes={{
+                      endAdornment: "text-white",
+                    }}
+                    sx={{
+                      "& .MuiAutocomplete-endAdornment": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                </div>
 
+                <div className="w-full font-body sm:text-base text-sm flex flex-col">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="state"
+                  >
+                    {" "}
+                    {t("State")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <Autocomplete
+                    id="state"
+                    options={filteredStates}
+                    value={selectedState}
+                    required
+                    getOptionLabel={(option) => option?.name || ""}
+                    onChange={handleState}
+                    onInputChange={(event, value) => {
+                      if (!value) {
+                        // perform operation when input is cleared
+                        console.log("Input cleared");
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        InputProps={{
+                          ...params.InputProps,
+                          className: "text-white",
+                        }}
+                        InputLabelProps={{
+                          ...params.InputLabelProps,
+                          style: { color: "white" },
+                        }}
+                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder={`${t("Enter")} ${t("State")}`}
+                        // required
+                      />
+                    )}
+                    classes={{
+                      endAdornment: "text-white",
+                    }}
+                    sx={{
+                      "& .MuiAutocomplete-endAdornment": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                </div>
+              </div>
 
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                <div className="w-full font-body sm:text-base text-sm flex flex-col">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="city"
+                  >
+                    {" "}
+                    {t("City")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <Autocomplete
+                    id="city"
+                    options={filteredCities}
+                    value={selectedCity}
+                    required
+                    getOptionLabel={(option) => option?.name_ar || ""}
+                    onChange={handleCity}
+                    onInputChange={(event, value) => {
+                      if (!value) {
+                        // perform operation when input is cleared
+                        console.log("Input cleared");
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        InputProps={{
+                          ...params.InputProps,
+                          className: "text-white",
+                        }}
+                        InputLabelProps={{
+                          ...params.InputLabelProps,
+                          style: { color: "white" },
+                        }}
+                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder={`${t("Enter")} ${t("City")}`}
+                        // required
+                      />
+                    )}
+                    classes={{
+                      endAdornment: "text-white",
+                    }}
+                    sx={{
+                      "& .MuiAutocomplete-endAdornment": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                </div>
 
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-3'>
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="zipcode"
+                  >
+                    {" "}
+                    {t("Zip Code")}
+                  </label>
+                  <input
+                    onChange={(e) => setZipCode(e.target.value)}
+                    id="zipcode"
+                    placeholder={`${t("Enter")} ${t("Zip Code")}`}
+                    // required
+                    type="text"
+                    className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  />
+                </div>
+              </div>
 
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='country'> {t('Country')}<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-                                    id="country"
-                                    options={country}
-                                    value={selectedCountry}
-                                    required
-                                    getOptionLabel={(option) => option?.name || ""}
-                                    onChange={handleCountryName}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            // perform operation when input is cleared
-                                            console.log("Input cleared");
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            autoComplete="off"
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: "text-white",
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: "white" },
-                                            }}
-                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder={`${t('Enter')} ${t('Country')}`}
-                                        // required
-                                        />
-                                    )}
-                                    classes={{
-                                        endAdornment: "text-white",
-                                    }}
-                                    sx={{
-                                        "& .MuiAutocomplete-endAdornment": {
-                                            color: "white",
-                                        },
-                                    }}
-                                />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='state'> {t('State')}<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-                                    id="state"
-                                    options={filteredStates}
-                                    value={selectedState}
-                                    required
-                                    getOptionLabel={(option) => option?.name || ""}
-                                    onChange={handleState}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            // perform operation when input is cleared
-                                            console.log("Input cleared");
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            autoComplete="off"
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: "text-white",
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: "white" },
-                                            }}
-                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder={`${t('Enter')} ${t('State')}`}
-                                        // required
-                                        />
-                                    )}
-                                    classes={{
-                                        endAdornment: "text-white",
-                                    }}
-                                    sx={{
-                                        "& .MuiAutocomplete-endAdornment": {
-                                            color: "white",
-                                        },
-                                    }}
-                                />
-                            </div>
-
-
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col'>
-                                <label className='text-secondary font-semibold' htmlFor='city'> {t('City')}<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-                                    id="city"
-                                    options={filteredCities}
-                                    value={selectedCity}
-                                    required
-                                    getOptionLabel={(option) => option?.name || ""}
-                                    onChange={handleCity}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            // perform operation when input is cleared
-                                            console.log("Input cleared");
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            autoComplete="off"
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: "text-white",
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: "white" },
-                                            }}
-                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder={`${t('Enter')} ${t('City')}`}
-                                        // required
-                                        />
-                                    )}
-                                    classes={{
-                                        endAdornment: "text-white",
-                                    }}
-                                    sx={{
-                                        "& .MuiAutocomplete-endAdornment": {
-                                            color: "white",
-                                        },
-                                    }}
-                                />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='zipcode'> {t('Zip Code')}</label>
-                                <input
-                                    onChange={(e) => setZipCode(e.target.value)}
-                                    id='zipcode'
-                                    placeholder={`${t('Enter')} ${t('Zip Code')}`}
-                                    // required
-                                    type='text' className='border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3' />
-                            </div>
-
-
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between mt-6'>
-
-
-
-                            {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
+                {/* <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
                                 <label className='text-secondary font-semibold' htmlFor='website'>Website</label>
                                 <input
                                     onChange={(e) => setWebsite(e.target.value)}
@@ -1056,288 +1180,392 @@ const MemmberRegisteration = () => {
                                     type='text' className='border-2 border-[#e4e4e4] w-full rounded-sm p-2 mb-3' />
                             </div> */}
 
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <label className='text-secondary font-semibold' htmlFor='industriesTypes'> {t('Select Industries Releated to your Business')}<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-
-                                    multiple
-                                    id='industriesTypes'
-                                    options={industryTypes}
-                                    getOptionLabel={(option) => option.name}
-                                    value={selectedIndustries}
-                                    onChange={handleIndustryTypeChange}
-                                    filterSelectedOptions
-                                    renderInput={(params) => (
-                                        <TextField
-
-
-                                            autoComplete="off"
-                                            {...params}
-                                            label='Select matching industries'
-                                            placeholder='select industries types'
-                                            variant='outlined'
-                                        />
-                                    )}
-                                    required
-                                />
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col mt-0'>
-                                <label className='text-secondary font-semibold' htmlFor='category'> {t('Membership category')}<span className='text-red-600'>*</span></label>
-                                <Autocomplete
-                                    id="category"
-                                    options={categories}
-                                    // disable option selection if entity type is Individual/Family Business
-                                    disabled={entityType.value === 'individual/family business'}
-                                    value={selectedCategories}
-                                    required
-                                    getOptionLabel={(option) => option.name || ""}
-                                    onChange={handleCategoryChange}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            // perform operation when input is cleared
-                                            console.log("Input cleared");
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            autoComplete="off"
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: "text-white",
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: "white" },
-                                            }}
-                                            className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                            placeholder="medical/Non-medical"
-                                        />
-                                    )}
-                                    classes={{
-                                        endAdornment: "text-white",
-                                    }}
-                                    sx={{
-                                        "& .MuiAutocomplete-endAdornment": {
-                                            color: "white",
-                                        },
-                                    }}
-                                />
-                            </div>
-
-                        </div>
-
-
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3'>
-                                <label
-                                    className='flex justify-start items-center text-secondary font-semibold -mt-5' htmlFor='GTIN'
-                                >GTIN  {t('Barcode')}
-                                    <span className='text-red-600'>*</span>
-                                    <img src={barcodeImage} className='h-10 w-auto' alt='' />
-                                </label>
-
-                                <Autocomplete
-                                    id='GTIN'
-                                    disabled={!selectedCategories}
-                                    // options={gtinNumber}
-                                    // 
-                                    // options={selectedCategories ? gtinNumber : []}
-                                    // total_no_of_barcodes
-                                    options={
-                                        selectedCategories
-                                            ? entityType.value === 'organization'
-                                                ? gtinNumber.filter(option => option?.total_no_of_barcodes !== 10)
-                                                : gtinNumber
-                                            : []
-                                    }
-
-                                    value={selectedGtinNumber}
-                                    getOptionLabel={(option) => option?.member_category_description || ''}
-                                    onChange={handleGtinNumberChange}
-                                    onInputChange={(event, value) => {
-                                        if (!value) {
-                                            console.log('Input cleared');
-                                        }
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            autoComplete="off"
-
-                                            {...params}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                className: 'text-white',
-                                            }}
-                                            InputLabelProps={{
-                                                ...params.InputLabelProps,
-                                                style: { color: 'white' },
-                                            }}
-                                            className='bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full'
-                                            placeholder='GTIN'
-                                        />
-                                    )}
-                                    required
-                                    classes={{
-                                        endAdornment: 'text-white',
-                                    }}
-                                    sx={{
-                                        '& .MuiAutocomplete-endAdornment': {
-                                            color: 'white',
-                                        },
-                                    }}
-                                />
-
-                            </div>
-
-
-                            <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1'>
-                                <label className='text-secondary font-semibold' htmlFor='other'> {t('Other Products')}<span className='font-normal'> (GLN,SSCC,UDI)</span></label>
-                                <Autocomplete
-                                    multiple
-                                    id='other'
-                                    // Disable this field if no GTIN number is selected or if the entity type is Individual/Family Business
-                                    disabled={!selectedGtinNumber || selectedGtinNumber.length === 0 || entityType.value === 'individual/family business'}
-                                    options={otherProductsOptions}
-                                    required
-                                    getOptionLabel={(option) => option.product_name}
-                                    value={selectedOtherProducts}
-                                    onChange={handleOtherProductsChange}
-                                    filterSelectedOptions
-                                    renderInput={(params) => (
-                                        <TextField
-                                            autoComplete="off"
-                                            {...params}
-                                            label={`${t('Other Products')}`}
-                                            placeholder={`${t('Enter')} ${t('Other Products')}`}
-                                            variant='outlined'
-                                        />
-                                    )}
-                                    getOptionDisabled={getOptionDisabled}
-                                />
-
-                            </div>
-
-                        </div>
-                        
-                        
-                        <div className='mt-2'>
-                            <input
-                                id='terms'
-                                type='checkbox'
-                                onChange={handleTermsAndCondition}
-                                checked={isChecked}
-                                className='bg-[#8E9CAB] rounded-sm transform scale-150'
-                             />
-                            <label className='text-secondary font-body pl-2 cursor-pointer' htmlFor='terms'> Accept Term & Conditions</label><span className='text-red-600 -ml-1'>(Download Terms & Conditions)</span>
-                        </div>
-
-
-                        <div>
-                            <div className='mt-6'>
-                                <label className='text-secondary text-3xl font-sans font-bold'> {t('Your Subscription')}</label>
-                                <div className="table-Bintobin-Axapta px-4">
-                                    <p className='text-secondary text-2xl font-sans font-bold text-center mb-4 mt-4'> {t('Subscription Summary')}</p>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>{t('PRODUCT')}</th>
-                                                <th> {t('REGISTRATION FEE')}</th>
-                                                <th> {t('YEARLY FEE')}</th>
-                                                <th> {t('PRICE')}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {subscriptionData.map((item, index) => (
-                                                <tr key={index}>
-                                                    <td>{item.product}</td>
-                                                    <td>{item.registrationFee}</td>
-                                                    <td>{item.yearlyFee}</td>
-                                                    <td>{item.price}</td>
-                                                </tr>
-                                            ))}
-                                            {otherSubscriptionData?.map((item, index) => (
-                                                <tr key={index}>
-                                                    <td>{item.product_name}</td>
-                                                    <td>0</td>
-                                                    <td>{item.price}</td>
-                                                    <td>{item.price}</td>
-                                                </tr>
-                                            ))}
-
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colSpan="3" className="text-right font-bold"> {t('Total')}:</td>
-
-                                                <td>
-                                                    {totalPrice}
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* add one radio button */}
-                        <div className='flex flex-col gap-3 sm:flex-row sm:justify-start mt-6'>
-                            <div className='w-full sm:w-[18%] font-body sm:text-base text-sm flex flex-col gap-1'>
-                                <div className='flex items-center gap-3'>
-                                    <input
-                                        // onChange={(e) => setLocationArabic(e.target.value)}
-                                        id='radio'
-                                        placeholder='radio'
-                                        defaultChecked
-                                        type='radio' className='border-1 border-[#8E9CAB] w-5 h-5 rounded-sm p-2 mb-3' />
-                                    <p className='text-secondary font-semibold'>{t('Bank Transfer')}</p>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <button type='submit' className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200">
-                            <i className="fas fa-check-circle mr-1"></i>  {t('Submit')}
-                        </button>
-
-                    </form>
-
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="industriesTypes"
+                  >
+                    {" "}
+                    {t("Select Industries Releated to your Business")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <Autocomplete
+                    multiple
+                    id="industriesTypes"
+                    options={industryTypes}
+                    getOptionLabel={(option) => option.name_ar_en}
+                    value={selectedIndustries}
+                    onChange={handleIndustryTypeChange}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        label={`${t("Select matching industries")}`}
+                        placeholder="select industries types"
+                        variant="outlined"
+                      />
+                    )}
+                    required
+                  />
                 </div>
 
-                {isCompanyNamePopUpVisible && (
-                    <CompanyNamePopUp isVisible={isCompanyNamePopUpVisible} setVisibility={setIsCompanyNamePopUpVisible} />
+                <div className="w-full font-body sm:text-base text-sm flex flex-col mt-0">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="category"
+                  >
+                    {" "}
+                    {t("Membership category")}
+                    <span className="text-red-600">*</span>
+                  </label>
+                  <Autocomplete
+                    id="category"
+                    options={categories}
+                    // disable option selection if entity type is Individual/Family Business
+                    disabled={entityType.value === "individual/family business"}
+                    value={selectedCategories}
+                    required
+                    getOptionLabel={(option) => option.namesa || ""}
+                    onChange={handleCategoryChange}
+                    onInputChange={(event, value) => {
+                      if (!value) {
+                        // perform operation when input is cleared
+                        console.log("Input cleared");
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        InputProps={{
+                          ...params.InputProps,
+                          className: "text-white",
+                        }}
+                        InputLabelProps={{
+                          ...params.InputLabelProps,
+                          style: { color: "white" },
+                        }}
+                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder="medical/Non-medical"
+                      />
+                    )}
+                    classes={{
+                      endAdornment: "text-white",
+                    }}
+                    sx={{
+                      "& .MuiAutocomplete-endAdornment": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-start mt-6">
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3">
+                  <label
+                    className="flex justify-start items-center text-secondary font-semibold -mt-5"
+                    htmlFor="GTIN"
+                  >
+                    GTIN {t("Barcode")}
+                    <span className="text-red-600">*</span>
+                    <img src={barcodeImage} className="h-10 w-auto" alt="" />
+                  </label>
+
+                  <Autocomplete
+                    id="GTIN"
+                    disabled={!selectedCategories}
+                    // options={gtinNumber}
+                    //
+                    // options={selectedCategories ? gtinNumber : []}
+                    // total_no_of_barcodes
+                    options={
+                      selectedCategories
+                        ? entityType.value === "organization"
+                          ? gtinNumber.filter(
+                              (option) => option?.total_no_of_barcodes !== 10
+                            )
+                          : gtinNumber
+                        : []
+                    }
+                    value={selectedGtinNumber}
+                    // getOptionLabel={(option) => {option?.member_category_description;
+                    // }}
+                    getOptionLabel={(option) => {
+                      if (i18n.language === "ar") {
+                        return option?.member_category_description_ar || "";
+                      } else {
+                        return option?.member_category_description || "";
+                      }
+                    }}
+                    onChange={handleGtinNumberChange}
+                    onInputChange={(event, value) => {
+                      if (!value) {
+                        console.log("Input cleared");
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        InputProps={{
+                          ...params.InputProps,
+                          className: "text-white",
+                        }}
+                        InputLabelProps={{
+                          ...params.InputLabelProps,
+                          style: { color: "white" },
+                        }}
+                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder="GTIN"
+                      />
+                    )}
+                    required
+                    classes={{
+                      endAdornment: "text-white",
+                    }}
+                    sx={{
+                      "& .MuiAutocomplete-endAdornment": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                </div>
+
+                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1">
+                  <label
+                    className="text-secondary font-semibold"
+                    htmlFor="other"
+                  >
+                    {" "}
+                    {t("Other Products")}
+                    <span className="font-normal"> (GLN,SSCC,UDI)</span>
+                  </label>
+                  <Autocomplete
+                    multiple
+                    id="other"
+                    // Disable this field if no GTIN number is selected or if the entity type is Individual/Family Business
+                    disabled={
+                      !selectedGtinNumber ||
+                      selectedGtinNumber.length === 0 ||
+                      entityType.value === "individual/family business"
+                    }
+                    options={otherProductsOptions}
+                    required
+                    // getOptionLabel={(option) => option.product_name}
+                    getOptionLabel={(option) => {
+                      if (i18n.language === "ar") {
+                        return option?.name_ar || "";
+                      } else {
+                        return option?.product_name || "";
+                      }
+                    }}
+                    value={selectedOtherProducts}
+                    onChange={handleOtherProductsChange}
+                    filterSelectedOptions
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        label={`${t("Other Products")}`}
+                        placeholder={`${t("Enter")} ${t("Other Products")}`}
+                        variant="outlined"
+                      />
+                    )}
+                    getOptionDisabled={getOptionDisabled}
+                  />
+                </div>
+              </div>
+
+              <div
+                className={`mt-2 ${
+                  i18n.language === "ar" ? "text-right" : "text-start"
+                }`}
+              >
+                {i18n.language === "ar" ? (
+                  <>
+                    <label
+                      className="text-secondary font-body pl-2 cursor-pointer"
+                      htmlFor="terms"
+                    >
+                      {i18n.language === "ar" ? (
+                        <>
+                          {t("(Download Terms & Conditions)")}{" "}
+                          {t("Accept Term & Conditions")}
+                        </>
+                      ) : (
+                        <>
+                          {t("Accept Term & Conditions")}{" "}
+                          {t("(Download Terms & Conditions)")}
+                        </>
+                      )}
+                    </label>
+                    <span className="text-red-600 -ml-1"></span>
+                    <input
+                      id="terms"
+                      type="checkbox"
+                      onChange={handleTermsAndCondition}
+                      checked={isChecked}
+                      className="bg-[#8E9CAB] rounded-sm transform scale-150"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <input
+                      id="terms"
+                      type="checkbox"
+                      onChange={handleTermsAndCondition}
+                      checked={isChecked}
+                      className="bg-[#8E9CAB] rounded-sm transform scale-150"
+                    />
+                    <label
+                      className="text-secondary font-body pl-2 cursor-pointer"
+                      htmlFor="terms"
+                    >
+                      {i18n.language === "ar" ? (
+                        <>
+                          {t("(Download Terms & Conditions)")}{" "}
+                          {t("Accept Term & Conditions")}
+                        </>
+                      ) : (
+                        <>
+                          {t("Accept Term & Conditions")}{" "}
+                          {t("(Download Terms & Conditions)")}
+                        </>
+                      )}
+                    </label>
+                    <span className="text-red-600 -ml-1"></span>
+                  </>
                 )}
+              </div>
 
-                {isCompanyArabicPopUpVisible && (
-                    <CompanyArabicPopUp isVisible={isCompanyArabicPopUpVisible} setVisibility={setIsCompanyArabicPopUpVisible} />
-                )}
+              <div>
+                <div className="mt-6">
+                  <label className="text-secondary text-3xl font-sans font-bold">
+                    {" "}
+                    {t("Your Subscription")}
+                  </label>
+                  <div className="table-Bintobin-Axapta px-4">
+                    <p className="text-secondary text-2xl font-sans font-bold text-center mb-4 mt-4">
+                      {" "}
+                      {t("Subscription Summary")}
+                    </p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>{t("PRODUCT")}</th>
+                          <th> {t("REGISTRATION FEE")}</th>
+                          <th> {t("YEARLY FEE")}</th>
+                          <th> {t("PRICE")}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {subscriptionData.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.product}</td>
+                            <td>{item.registrationFee}</td>
+                            <td>{item.yearlyFee}</td>
+                            <td>{item.price}</td>
+                          </tr>
+                        ))}
+                        {otherSubscriptionData?.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.product_name}</td>
+                            <td>0</td>
+                            <td>{item.price}</td>
+                            <td>{item.price}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colSpan="3" className="text-right font-bold">
+                            {" "}
+                            {t("Total")}:
+                          </td>
 
-                {isCrActivityPopUpVisible && (
-                    <CrActivityPopUp isVisible={isCrActivityPopUpVisible} setVisibility={setIsCrActivityPopUpVisible} />
-                )}
+                          <td>{totalPrice}</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
 
-                {isCrNumberPopUpVisible && (
-                    <CrNumberPopUp isVisible={isCrNumberPopUpVisible} setVisibility={setIsCrNumberPopUpVisible} />
-                )}
+              {/* add one radio button */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-start mt-6">
+                <div className="w-full sm:w-[18%] font-body sm:text-base text-sm flex flex-col gap-1">
+                  <div className="flex items-center gap-3">
+                    <input
+                      // onChange={(e) => setLocationArabic(e.target.value)}
+                      id="radio"
+                      placeholder="radio"
+                      defaultChecked
+                      type="radio"
+                      className="border-1 border-[#8E9CAB] w-5 h-5 rounded-sm p-2 mb-3"
+                    />
+                    <p className="text-secondary font-semibold">
+                      {t("Bank Transfer")}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-                {isTermsAndConditionPopUp && (
-                    <TermsAndCondition isVisible={isTermsAndConditionPopUp} handleClose={handleClose} handleAccept={handleAccept}/>
-                )}
-                {/* </div> */}
-            </div >
+              <button
+                type="submit"
+                className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200"
+              >
+                <i className="fas fa-check-circle mr-1"></i> {t("Submit")}
+              </button>
+            </form>
+          </div>
 
+          {isCompanyNamePopUpVisible && (
+            <CompanyNamePopUp
+              isVisible={isCompanyNamePopUpVisible}
+              setVisibility={setIsCompanyNamePopUpVisible}
+            />
+          )}
 
-            {/* Footer */}
-            <div div className='mt-6' >
-                <Footer />
-            </div >
-            {/* End Footer */}
-        </div >
-    )
+          {isCompanyArabicPopUpVisible && (
+            <CompanyArabicPopUp
+              isVisible={isCompanyArabicPopUpVisible}
+              setVisibility={setIsCompanyArabicPopUpVisible}
+            />
+          )}
+
+          {isCrActivityPopUpVisible && (
+            <CrActivityPopUp
+              isVisible={isCrActivityPopUpVisible}
+              setVisibility={setIsCrActivityPopUpVisible}
+            />
+          )}
+
+          {isCrNumberPopUpVisible && (
+            <CrNumberPopUp
+              isVisible={isCrNumberPopUpVisible}
+              setVisibility={setIsCrNumberPopUpVisible}
+            />
+          )}
+
+          {isTermsAndConditionPopUp && (
+            <TermsAndCondition
+              isVisible={isTermsAndConditionPopUp}
+              handleClose={handleClose}
+              handleAccept={handleAccept}
+            />
+          )}
+          {/* </div> */}
+        </div>
+
+        {/* Footer */}
+        <div div className="mt-6">
+          <Footer />
+        </div>
+        {/* End Footer */}
+      </div>
+    );
 }
 
 export default MemmberRegisteration

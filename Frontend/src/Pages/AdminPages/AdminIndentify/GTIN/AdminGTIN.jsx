@@ -202,7 +202,7 @@ const Gtin = () => {
 
   const handleDigitalUrlInfo = (row) => {
     sessionStorage.setItem("selectedGtinData", JSON.stringify(row));
-    navigate("/member/digitalurl")
+    navigate("/admin/admin-digitalurl")
   }
 
   const handleDelete = async (row) => {

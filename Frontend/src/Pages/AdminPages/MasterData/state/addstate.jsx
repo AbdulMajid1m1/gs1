@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
   const [name, setName] = useState("");
+  const [name_ar, setname_ar] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
   const [SelectedCountryId, setSelectedCountryId] = useState("");
@@ -42,9 +43,10 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
   {
     //  integrate the post api in try catch blcck
     try {
-      const response = await newRequest.post('/address/createStates/', {
+      const response = await newRequest.post("/address/createStates/", {
         name: name,
         country_id: SelectedCountryId,
+        name_ar: name_ar,
       });
 
       toast.success(`${t('State')} ${name} ${t('has been added successfully')}.`, {
@@ -95,13 +97,25 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('State')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Country name')}</label>
+                    <label htmlFor="field1" className="text-secondary">{t('State')} {t('Name [English]')}</label>
                     <input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder={`${t('Enter')} ${t('Country name')}`}
+                      placeholder={`${t('Enter')} ${t('Name [English]')}`}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
+
+                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">{t('State')} {t('Name Arabic')}</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name_ar}
+                      onChange={(e) => setname_ar(e.target.value)}
+                      placeholder={`${t('Enter')} ${t('State')} ${t('Name Arabic')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>

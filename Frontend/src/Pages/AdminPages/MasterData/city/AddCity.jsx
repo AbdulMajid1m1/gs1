@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
   const [name, setName] = useState("");
+  const [name_ar, setname_ar] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
   const [SelectedCountryId, setSelectedCountryId] = useState("");
@@ -44,9 +45,10 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
   {
     //  integrate the post api in try catch blcck
     try {
-      const response = await newRequest.post('/address/createCities/', {
+      const response = await newRequest.post("/address/createCities/", {
         name: name,
         state_id: SelectedCountryId,
+        name_ar: name_ar,
       });
 
       toast.success(`${t('Cities')} ${name} ${t('has been added successfully')}.`, {
@@ -97,13 +99,25 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('city')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('city')} {t('Name')}</label>
+                    <label htmlFor="field1" className="text-secondary">{t('City')} {t('Name [English]')}</label>
                     <input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder={`${t('Enter')} ${t('city')} ${t('Name')}`}
+                      placeholder={`${t('Enter')} ${t('City')} ${t('Name [English]')}`}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
+
+                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">{t('city')} {t('Name Arabic')}</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name_ar}
+                      onChange={(e) => setname_ar(e.target.value)}
+                      placeholder={`${t('Enter')} ${t('City')} ${t('Name Arabic')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>

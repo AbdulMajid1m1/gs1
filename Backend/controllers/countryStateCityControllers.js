@@ -11,10 +11,12 @@ const countrySchema = Joi.object({
 });
 const stateSchema = Joi.object({
     name: Joi.string().max(255).required(),
+    name_ar: Joi.string().max(255),
     country_id: Joi.number().required(),
 });
 const citiesSchema = Joi.object({
     name: Joi.string().max(255).required(),
+    name_ar: Joi.string().max(255),
     state_id: Joi.number().required(),
 });
 //--------------------Country---------------------------------------
@@ -226,12 +228,13 @@ const { id } = req.params;
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { name, country_id } = req.body;
+        const { name, country_id,name_ar } = req.body;
         const updatedUNSPSC = await prisma.states.update({
             where: {id: id },
             data: {
                 name,
                 country_id,
+                name_ar
             },
         });
 
@@ -331,12 +334,13 @@ const { id } = req.params;
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { name, state_id } = req.body;
+        const { name, state_id,name_ar } = req.body;
         const updatedUNSPSC = await prisma.cities.update({
             where: {id: id },
             data: {
                 name,
                 state_id,
+                name_ar,
             },
         });
 

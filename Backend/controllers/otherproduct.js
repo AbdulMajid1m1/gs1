@@ -7,6 +7,7 @@ import { createError } from '../utils/createError.js';
 
 const otherProductSchema = Joi.object({
     product_name: Joi.string().max(255).required(),
+    name_ar: Joi.string().max(255),
     total_no_of_barcodes: Joi.number().required(),
     product_subscription_fee: Joi.number().required(),
     code: Joi.string().max(255).required(),
@@ -87,7 +88,16 @@ const { id } = req.params;
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { product_name, total_no_of_barcodes, product_subscription_fee, code,status,med_subscription_fee,variant } = req.body;
+        const {
+            product_name,
+            total_no_of_barcodes,
+            product_subscription_fee,
+            code,
+            status,
+            med_subscription_fee,
+            variant,
+            name_ar
+        } = req.body;
         const updatedUNSPSC = await prisma.other_products.update({
             where: {id: id },
             data: {
@@ -97,7 +107,8 @@ const { id } = req.params;
                 status,
                 med_subscription_fee,
                 variant,
-                product_subscription_fee
+                product_subscription_fee,
+                name_ar
                 
             },
         });
