@@ -60,8 +60,18 @@ const BankSlip = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (selectedTranslationID === '') {
+            toast.info('Please select a TranslationID.');
+            return;
+        }
+        else if (!document) {
+            toast.info('Please upload a document.');
+            return;
+        }
         setIsLoading(true);
         console.log(translationID, document, description);
+
 
         // if (memberData?.payment_status === 0 && !selectedTranslationID) {
         //     setError('Please select a TranslationID.');
@@ -231,6 +241,7 @@ const BankSlip = () => {
                                                 color: "white",
                                             },
                                         }}
+                                        required
                                     />
                                     {/* )} */}
                                 </div>
@@ -270,6 +281,7 @@ const BankSlip = () => {
 
                                 <div className='mt-5 px-4'>
                                     <button
+                                        type='submit'
                                         className="rounded-full bg-secondary font-body px-5 py-2 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
                                         <i className="fas fa-cloud-upload-alt mr-2"></i> {t('Upload')}
                                     </button>
