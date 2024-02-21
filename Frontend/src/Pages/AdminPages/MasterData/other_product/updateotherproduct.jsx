@@ -14,6 +14,7 @@ const Updateotherproduct = ({ isVisible, setVisibility, refreshBrandData }) =>
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   console.log(updateBrandData)
   const [product_name, setproduct_name] = useState(updateBrandData?.product_name || '');
+  const [name_ar, setname_ar] = useState(updateBrandData?.name_ar || "");
   const [total_no_of_barcodes, settotal_no_of_barcodes] = useState(updateBrandData?.total_no_of_barcodes || '');
   const [product_subscription_fee, setproduct_subscription_fee] = useState(updateBrandData?.product_subscription_fee || '');
   const [code, setcode] = useState(updateBrandData?.code || '');
@@ -39,6 +40,7 @@ const Updateotherproduct = ({ isVisible, setVisibility, refreshBrandData }) =>
     try {
       const response = await newRequest.put(`/updateotherproduct/${updateBrandData?.id}`, {
         product_name: product_name,
+        name_ar: name_ar,
         total_no_of_barcodes: Number(total_no_of_barcodes),
         product_subscription_fee: Number(product_subscription_fee),
         code: code,
@@ -96,14 +98,26 @@ const Updateotherproduct = ({ isVisible, setVisibility, refreshBrandData }) =>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update otherproduct')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('product name')}</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Product')} {t('Name [English]')} </label>
                     <input
                       type="text"
                       id="product_name"
                       value={product_name}
                       onChange={(e) => setproduct_name(e.target.value)}
                       //   readOnly
-                      placeholder={t('Enter product name')}
+                      placeholder={`${t('Enter')} ${t('Product')} ${t('Name [English]')}`}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
+
+                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">{t('Product')} {t('Name Arabic')}</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name_ar}
+                      onChange={(e) => setname_ar(e.target.value)}
+                      placeholder={`${t('Enter')} ${t('Product')} ${t('Name Arabic')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>

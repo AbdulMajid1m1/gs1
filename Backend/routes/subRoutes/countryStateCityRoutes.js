@@ -23,13 +23,13 @@ router.delete("/deleteCountries/:id", adminAuth, checkPermission(["country"]), d
 router.get("/getAllStates", getAllStates);
 router.get("/getAllStatesName", getAllStatesName);
 router.get("/getStatesById/:id", getStatesById)
-router.put("/updateStates/:id", adminAuth, checkPermission(["state"]), updateStates)
+router.put("/updateStates/:id",  updateStates)
 router.post("/createStates", adminAuth, checkPermission(["state"]), createStates)
 router.delete("/deleteStates/:id", adminAuth, checkPermission(["state"]), deleteStates)
 //--------------CITIES----------------------------------
 router.get("/getAllCities", getAllCities);
 router.get("/getCitiesById/:id", getCitiesById)
-router.put("/updateCities/:id", adminAuth, checkPermission(["cities"]), updateCities)
+router.put("/updateCities/:id", updateCities)
 router.post("/createCities", adminAuth, checkPermission(["cities"]), createCities)
 router.delete("/deleteCities/:id", adminAuth, checkPermission(["cities"]), deleteCities)
 //------------------------------------------------------

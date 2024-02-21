@@ -20,7 +20,6 @@ import SelectActivity from "./Pages/MemberPages/MemberLogin/SelectActivity/Selec
 import VerifyCode from "./Pages/MemberPages/MemberLogin/VerifyCode/VerifyCode";
 import GLN from "./Pages/MemberPages/GLN/GLN";
 import Gs1Members from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1Members";
-import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 import MemberProfile from "./Pages/MemberPages/MemberLogin/MemberProfile/MemberProfile";
 import Gs1MembersView from "./Pages/AdminPages/AllGs1Members/Gs1Members/Gs1MembersView";
 import MemberDashboard from "./Pages/MemberPages/MemberDashboard/MemberDashboard";
@@ -132,7 +131,8 @@ import AdminForeginGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/Admi
 import AdminAddForeignGTIN from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminAddForeignGTIN.jsx";
 import AdminDigitalLinkInfo from "./Pages/AdminPages/AdminIndentify/ForeignGTIN/AdminDigitalLinkInfo.jsx";
 import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedByGS1/MemberVerifiedByGS1.jsx";
-
+import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
+import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDigitalUrlInfo.jsx";
 
 const queryClient = new QueryClient()
 
@@ -325,7 +325,6 @@ const App = () => {
                               <Route path="products/add-products" element={<AddProducts />} />
                               <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
-                              <Route path="Language/Dynamic" element={<LaanguageChange />} />
 
                               <Route path="Language/Dynamic" element={<LaanguageChange />} />
                               {/* <Route path="expired-member" element={<ExpiredMember />} /> */}
@@ -432,6 +431,8 @@ const App = () => {
                                 path="admin-view-gtin/:productId"
                                 element={<AdminGTINView />}
                               />
+                              <Route path="admin-digitalurl" element={<AdminDigitalUrlInfo />} />
+
 
                               {/* <Route path="gln" element={<Gln />} /> */}
                               <Route path="gln" element={
