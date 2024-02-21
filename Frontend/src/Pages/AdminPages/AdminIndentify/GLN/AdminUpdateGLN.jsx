@@ -3,27 +3,27 @@ import { useNavigate } from 'react-router-dom'
 import { GoogleMap, Marker, StandaloneSearchBox } from '@react-google-maps/api';
 import { DotLoader, RiseLoader } from 'react-spinners';
 import { useParams } from 'react-router-dom';
-import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader';
-import newRequest from '../../../utils/userRequest';
-import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
+import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
+import newRequest from '../../../../utils/userRequest';
+import imageLiveUrl from '../../../../utils/urlConverter/imageLiveUrl';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 
 
-const UpdateGLN = () => {
+const AdminUpdateGLN = () => {
     const navigate = useNavigate()
   let { productId } = useParams();
   const { t, i18n } = useTranslation();
     // console.log(productId);
-    const memberDataString = sessionStorage.getItem('memberData');
-    const memberData = JSON.parse(memberDataString);
+    // const memberDataString = sessionStorage.getItem('memberData');
+    // const memberData = JSON.parse(memberDataString);
     // console.log(memberData);
     const glnDataString = sessionStorage.getItem('glnData');
     const glnData = JSON.parse(glnDataString);
     // console.log(glnData);
 
-
+    const [user_id, setUser_id] = React.useState('')
     const [locationEnglish, setLocationEnglish] = React.useState('')
     const [locationArabic, setLocationArabic] = React.useState('')
     const [addressEnglish, setAddressEnglish] = React.useState('')
@@ -61,6 +61,7 @@ const UpdateGLN = () => {
                 setAddressArabic(productData?.AddressAr);
                 setPo(productData?.pobox);
                 setPostal(productData?.postal_code);
+                setUser_id(productData?.user_id);
                 setStatus(productData?.status);
                 setLatitude(productData?.latitude);
                 setLongitude(productData?.longitude);
@@ -93,7 +94,7 @@ const UpdateGLN = () => {
     
       const formData = new FormData();
       // formData.append('product_id', '1');
-      formData.append('user_id', memberData?.id);
+      formData.append('user_id', user_id);
       // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
       formData.append('locationNameEn', locationEnglish);
       formData.append('locationNameAr', locationArabic);
@@ -104,12 +105,11 @@ const UpdateGLN = () => {
       formData.append('longitude', longitude);
       formData.append('latitude', latitude);
       formData.append('status', status);
-
       const imageOptional1Input = document.querySelector('#imageInput');
       if (imageOptional1Input.files && imageOptional1Input.files[0]) {
         formData.append('gln_image', imageFile);
       }
-    
+      
       newRequest
         .put(`/gln/${glnData?.id}`, formData)
         .then((response) => {
@@ -564,4 +564,4 @@ const UpdateGLN = () => {
   )
 }
 
-export default UpdateGLN
+export default AdminUpdateGLN
