@@ -8,10 +8,18 @@ export const userDataProperties = user => ({
     createdAt: user.createdAt,
     updatedAt: user.updatedAt
 });
+// for https:
+// export const cookieOptions = () => ({
+//     httpOnly: true,
+//     // secure: true,
+//     secure: false,// False to Allow both HTTP and HTTPS
+//     sameSite: 'Lax', // Lax to allow CSRF protection by default and strict to disallow CSRF protection and None to disable CSRF protection
+// });
 
+
+// for http 
 export const cookieOptions = () => ({
-    httpOnly: true, // Prevents client-side script from accessing the cookie
-    secure: true, // Ensures the cookie is sent only over HTTPS
-    sameSite: 'None', // Use 'None' for cross-site cookie use. Requires `secure: true` to work.
+    httpOnly: true,
+    secure: false, // Allow both HTTP and HTTPS
+    sameSite: 'Lax', // Lax to allow CSRF protection by default and strict to disallow CSRF protection and None to disable CSRF protection
 });
-

@@ -117,10 +117,12 @@ const Gln = () => {
     }
   }, 400);
 
+  const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
 
   const fetchData = async (value) => {
     setIsLoading(true);
     console.log(value);
+    setAllSearchMemberDetails(value);
     try {
       const response = await newRequest.get(`/gln?user_id=${value?.user_id}`);
       console.log(response.data);
@@ -134,9 +136,18 @@ const Gln = () => {
   };
 
 
+  const handleAddGln = (row) => {
+    if (!allSearchMemberDetails) {
+      toast.error(`${t('Please select a member first')}!`);
+      return;
+    }
+    navigate("/admin/admin-addgln");
+    sessionStorage.setItem("selectedAddGlnData", JSON.stringify(allSearchMemberDetails));
+  }
+
   const handleEdit = (row) => {
     console.log(row);
-    navigate("/member/update-gln/" + row?.id)
+    navigate("/admin/admin-update-gln/" + row?.id)
     // save the response in session 
     sessionStorage.setItem('glnData', JSON.stringify(row));
   }
@@ -259,7 +270,7 @@ const Gln = () => {
                   <i className="fas fa-arrow-left mr-1"></i> {t('Back')}
                 </button>
 
-                <button onClick={() => navigate('/admin/admin-addgln')} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                <button onClick={handleAddGln} className="rounded-full bg-secondary font-body px-8 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                   <i className="fas fa-plus mr-1"></i>{t('Add GLN')}
                 </button>
 

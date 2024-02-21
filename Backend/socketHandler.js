@@ -107,10 +107,12 @@ const socketHandler = (server) => {
 
         // Verify Admin Number
         socket.on('verifyAdminNumber', async ({ adminId, selectedNumber }) => {
+               // Retrieve the stored random number for the admin
+            const randomNumber = randomNumbersMap.get(adminId);
+            let adminRoomName = `admin-${adminId}`;
             try {
-                // Retrieve the stored random number for the admin
-                const randomNumber = randomNumbersMap.get(adminId);
-                let adminRoomName = `admin-${adminId}`;
+             
+               
                 // Compare the selected number with the stored random number
                 if (randomNumber === selectedNumber) {
                     // Query the database to find the admin
