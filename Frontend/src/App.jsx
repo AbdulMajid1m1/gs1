@@ -134,6 +134,7 @@ import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedB
 import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDigitalUrlInfo.jsx";
 import AdminUpdateGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminUpdateGLN.jsx";
+import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtectedRoute.jsx";
 
 const queryClient = new QueryClient()
 
@@ -217,11 +218,13 @@ const App = () => {
                         <MainLayout>
                           <QueryClientProvider client={queryClient}>
                             <Routes>
-                              <Route path="dashboard" element={<MemberDashboard />} />
+                              {/* <Route path="dashboard" element={<MemberDashboard />} /> */}
+                              <Route path="dashboard" element={<MemberProtectedRoute Component={MemberDashboard} />} />
                               <Route path="update-vendor" element={<UpdateVendor />} />
                               <Route path="customer-list" element={<ListOfCustomer />} />
                               <Route path="member-brands" element={<MemberBrands />} />
-                              <Route path="gtin" element={<GTIN />} />
+                              {/* <Route path="gtin" element={<GTIN />} /> */}
+                              <Route path="gtin" element={<MemberProtectedRoute Component={GTIN} />} />
                               <Route path="addproducts" element={<GTINAddProducts />} />
                               <Route
                                 path="upate-gtin-product/:productId"
@@ -238,11 +241,13 @@ const App = () => {
                               />
                               <Route path="digitalurl" element={<DigitalUrlInfo />} />
 
-                              <Route path="gln" element={<GLN />} />
+                              {/* <Route path="gln" element={<GLN />} /> */}
+                              <Route path="gln" element={<MemberProtectedRoute Component={GLN} />} />
                               <Route path="add-gln" element={<AddGLN />} />
                               <Route path="update-gln/:Id" element={<UpdateGLN />} />
 
-                              <Route path="sscc" element={<SSCC />} />
+                              {/* <Route path="sscc" element={<SSCC />} /> */}
+                              <Route path="sscc" element={<MemberProtectedRoute Component={SSCC} />} />
                               <Route path="addsscc" element={<AddSSCC />} />
                               <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
 
@@ -258,7 +263,8 @@ const App = () => {
                             element={<Gs1MembersView />}
                           /> */}
 
-                              <Route path="payment-slips" element={<PaymentSlips />} />
+                              {/* <Route path="payment-slips" element={<PaymentSlips />} /> */}
+                              <Route path="payment-slips" element={<MemberProtectedRoute Component={PaymentSlips} />} />
                               <Route path="bank-slip" element={<BankSlip />} />
                               <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} />
                               <Route path="transaction-history" element={<TransactionHistory />} />
