@@ -4,21 +4,20 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../utils/userRequest';
 import { useNavigate } from 'react-router-dom';
 import { DotLoader } from 'react-spinners'
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from "react-i18next";
 // import { DataTableContext2 } from "../../Contexts/DataTableContext2";
 import { AuthContext } from '../../../Contexts/AuthContext'
 import TwoFactorAuthPopupForAdmin from './AdminTwoFactorAuthPopup';
 
 const AdminLogin = () => {
-  const { t } = useTranslation();
+  // const t = useTranslation();
+  const { login, adminData } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const [showImage, setShowImage] = useState(false);
-  const navigate = useNavigate();
+
   const [isVisible, setVisibility] = useState(false);
-  const { adminData, setAdminData, permissions, setPermissions,
-    login, fetchPermissions } = useContext(AuthContext);
 
 
   useEffect(() => {
@@ -66,7 +65,6 @@ const AdminLogin = () => {
 
   return (
     <>
-      <TwoFactorAuthPopupForAdmin isVisible={isVisible} setVisibility={setVisibility} />
       {isLoading &&
 
         <div className='loading-spinner-background'
@@ -92,12 +90,12 @@ const AdminLogin = () => {
             <div className="flex-1">
               <div className="flex flex-col gap-6 items-start">
                 <img src={gs1logoWhite} className='h-16 w-auto px-4 object-contain' alt='' />
-                <h2 className="text-2xl font-medium font-sans px-5">{t('Welcome To')} <span className='font-sans font-bold'>{t('GS1 Saudia Arabia')}</span></h2>
+                <h2 className="text-2xl font-medium font-sans px-5">Welcome To <span className='font-sans font-bold'>GS1 Saudia Arabia</span></h2>
               </div>
               <div className="mt-3 px-5">
                 <form onSubmit={handleSubmit}>
                   <div>
-                    <label htmlFor="email" className="block mb-2 text-sm text-secondary"> {t('User ID')}</label>
+                    <label htmlFor="email" className="block mb-2 text-sm text-secondary"> User ID</label>
                     <input
                       required
                       type="email"
@@ -110,7 +108,7 @@ const AdminLogin = () => {
 
                   <div className="mt-6">
                     <div className="flex justify-between mb-2">
-                      <label htmlFor="password" className="text-sm text-secondary">{t('Password')}</label>
+                      <label htmlFor="password" className="text-sm text-secondary">Password</label>
                     </div>
                     <input
                       required
@@ -125,12 +123,12 @@ const AdminLogin = () => {
                     <button
                       type='submit'
                       className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-secondary rounded-md hover:bg-primary focus:outline-none focus:bg-primary focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                      {t('Login')}
+                      Login
                     </button>
                   </div>
                 </form>
                 {/* <p className="mt-6 text-sm text-center text-gray-400"></p> */}
-                <a href="#" className="text-sm text-gray-400 mt-5 focus:text-blue-500 hover:text-blue-500 hover:underline">{t('Forgot password?')}</a>
+                <a href="#" className="text-sm text-gray-400 mt-5 focus:text-blue-500 hover:text-blue-500 hover:underline">Forgot password</a>
 
               </div>
             </div>
@@ -145,6 +143,8 @@ const AdminLogin = () => {
           </div>
         </div>
       </div>
+      {isVisible && <TwoFactorAuthPopupForAdmin isVisible={isVisible} setVisibility={setVisibility} adminData={adminData} />
+      }
     </>
   )
 }

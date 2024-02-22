@@ -875,5 +875,8 @@
   "Name [English]": "الاسم [إنجليزي]",
   "Select Business Type": "حدد نوع العمل",
   "Name English": "اسم الانجليزية",
-  "Select matching industries": "حدد الصناعات المطابقة"
+  "Select matching industries": "حدد الصناعات المطابقة",
+  "Number will regenerate in": "سيتم إعادة إنشاء الرقم في",
+  "seconds": "ثواني",
+  "Select the number you see on your mobile": "اختر الرقم الذي تراه على هاتفك المحمول"
 }
