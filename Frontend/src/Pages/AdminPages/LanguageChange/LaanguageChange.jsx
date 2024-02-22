@@ -1,15 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { DataTableContext } from '../../../Contexts/DataTableContext'
 import { LanguageDataColumn } from '../../../utils/datatablesource'
 import DashboardRightHeader from '../../../components/DashboardRightHeader/DashboardRightHeader'
-import newRequest from '../../../utils/userRequest'
-import { useQuery } from 'react-query'
-import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
 // import Addunit from './addunit';
 // import Updateunit from './updateunit';
 import { I18nextProvider, useTranslation } from "react-i18next";
@@ -42,13 +36,13 @@ const LaanguageChange = () => {
 
     const refreshcitiesData = async () => {
         try {
-            const response = await axios.get(backendUrl + "/translations");
-            const dataArray = Object.entries(response.data);
-            setData(dataArray);
+            const response = await axios.get(backendUrl + "/translations_table");
+            // const dataArray = Object.entries(response.data);
+            const resdata = response?.data;
+            setData(resdata);
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
             setIsLoading(false)
         }
     };
@@ -97,7 +91,7 @@ const LaanguageChange = () => {
                             {/* DataGrid */}
                             <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-                                <DataTable data={formattedData}
+                                <DataTable data={data}
                                     title={t('Language')}
                                     columnsName={LanguageDataColumn(t)}
                                     loading={isLoading}

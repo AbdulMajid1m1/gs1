@@ -894,8 +894,8 @@ model languages {
   type       String?   @db.NVarChar(Max)
   key        String?   @db.NVarChar(Max)
   value      String?   @db.NVarChar(Max)
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
+ created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   LanguageID Int       @id(map: "PK__language__B938558B03AB874B") @default(autoincrement())
 }
 
