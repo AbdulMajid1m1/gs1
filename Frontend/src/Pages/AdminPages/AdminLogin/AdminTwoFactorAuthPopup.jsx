@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminData }) => {
 
-    const adminId = adminData?.id;
+    const adminId = adminData?.id; // admin id from adminData for socket connection
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [randomNumber, setRandomNumber] = useState('');
