@@ -134,6 +134,7 @@ import MemberVerifiedByGS1 from "./Pages/MemberPages/MemberShare/MemberVerifiedB
 import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDigitalUrlInfo.jsx";
 import AdminUpdateGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminUpdateGLN.jsx";
+import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtectedRoute.jsx";
 
 const queryClient = new QueryClient()
 
@@ -217,61 +218,94 @@ const App = () => {
                         <MainLayout>
                           <QueryClientProvider client={queryClient}>
                             <Routes>
-                              <Route path="dashboard" element={<MemberDashboard />} />
+                              {/* <Route path="dashboard" element={<MemberDashboard />} /> */}
+                              <Route path="dashboard" element={<MemberProtectedRoute Component={MemberDashboard} />} />
                               <Route path="update-vendor" element={<UpdateVendor />} />
-                              <Route path="customer-list" element={<ListOfCustomer />} />
-                              <Route path="member-brands" element={<MemberBrands />} />
-                              <Route path="gtin" element={<GTIN />} />
-                              <Route path="addproducts" element={<GTINAddProducts />} />
-                              <Route
+                              {/* <Route path="customer-list" element={<ListOfCustomer />} /> */}
+                              <Route path="customer-list" element={<MemberProtectedRoute Component={ListOfCustomer} />} />
+                              {/* <Route path="member-brands" element={<MemberBrands />} /> */}
+                              <Route path="member-brands" element={<MemberProtectedRoute Component={MemberBrands} />} />
+                              {/* <Route path="gtin" element={<GTIN />} /> */}
+                              <Route path="gtin" element={<MemberProtectedRoute Component={GTIN} />} />
+                              {/* <Route path="addproducts" element={<GTINAddProducts />} /> */}
+                              <Route path="addproducts" element={<MemberProtectedRoute Component={GTINAddProducts} />} />
+                              {/* <Route
                                 path="upate-gtin-product/:productId"
                                 element={<GTINUpdateProducts />}
-                              />
+                              /> */}
+                              <Route path="upate-gtin-product/:productId" element={<MemberProtectedRoute Component={GTINUpdateProducts} />} />
 
-                              <Route path="front-end" element={<Frontend />} />
-                              <Route path="settings" element={<Settings />} />
-                              <Route path="master-data" element={<MasterData />} />
-                              <Route path="reports" element={<Reports />} />
-                              <Route
+                              {/* <Route path="front-end" element={<Frontend />} /> */}
+                              <Route path="front-end" element={<MemberProtectedRoute Component={Frontend} />} />
+                              {/* <Route path="settings" element={<Settings />} /> */}
+                              <Route path="settings" element={<MemberProtectedRoute Component={Settings} />} />
+                              {/* <Route path="master-data" element={<MasterData />} /> */}
+                              <Route path="master-data" element={<MemberProtectedRoute Component={MasterData} />} />
+                              {/* <Route path="reports" element={<Reports />} /> */}
+                              <Route path="reports" element={<MemberProtectedRoute Component={Reports} />} />
+                              {/* <Route
                                 path="view-gtin-product/:productId"
                                 element={<GTINViewProduct />}
-                              />
-                              <Route path="digitalurl" element={<DigitalUrlInfo />} />
+                              /> */}
+                              <Route path="view-gtin-product/:productId" element={<MemberProtectedRoute Component={GTINViewProduct} />} />
+                              {/* <Route path="digitalurl" element={<DigitalUrlInfo />} /> */}
+                              <Route path="digitalurl" element={<MemberProtectedRoute Component={DigitalUrlInfo} />} />
 
-                              <Route path="gln" element={<GLN />} />
-                              <Route path="add-gln" element={<AddGLN />} />
-                              <Route path="update-gln/:Id" element={<UpdateGLN />} />
+                              {/* <Route path="gln" element={<GLN />} /> */}
+                              <Route path="gln" element={<MemberProtectedRoute Component={GLN} />} />
+                              {/* <Route path="add-gln" element={<AddGLN />} /> */}
+                              <Route path="add-gln" element={<MemberProtectedRoute Component={AddGLN} />} />
+                              {/* <Route path="update-gln/:Id" element={<UpdateGLN />} /> */}
+                              <Route path="update-gln/:Id" element={<MemberProtectedRoute Component={UpdateGLN} />} />
 
-                              <Route path="sscc" element={<SSCC />} />
-                              <Route path="addsscc" element={<AddSSCC />} />
-                              <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} />
+                              {/* <Route path="sscc" element={<SSCC />} /> */}
+                              <Route path="sscc" element={<MemberProtectedRoute Component={SSCC} />} />
+                              {/* <Route path="addsscc" element={<AddSSCC />} /> */}
+                              <Route path="addsscc" element={<MemberProtectedRoute Component={AddSSCC} />} />
+                              {/* <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} /> */}
+                              <Route path="update-sscc/:sscc_id" element={<MemberProtectedRoute Component={UpdateSSCC} />} />
 
-                              <Route path="member-foregin-gtin" element={<ForeginGtin />} />
-                              <Route path="foreign-digital-link" element={<DigitalLinkInfo />} />
-                              <Route path="member-add-foreign" element={<AddForeignGtin />} />
+                              {/* <Route path="member-foregin-gtin" element={<ForeginGtin />} /> */}
+                              <Route path="member-foregin-gtin" element={<MemberProtectedRoute Component={ForeginGtin} />} />
+                              {/* <Route path="foreign-digital-link" element={<DigitalLinkInfo />} /> */}
+                              <Route path="foreign-digital-link" element={<MemberProtectedRoute Component={DigitalLinkInfo} />} />
+                              {/* <Route path="member-add-foreign" element={<AddForeignGtin />} /> */}
+                              <Route path="member-add-foreign" element={<MemberProtectedRoute Component={AddForeignGtin} />} />
 
-                              <Route path="gs1-members" element={<Gs1Members />} />
-                              <Route path="member-profile" element={<MemberProfile />} />
+                              {/* <Route path="gs1-members" element={<Gs1Members />} /> */}
+                              <Route path="gs1-members" element={<MemberProtectedRoute Component={Gs1Members} />} />
+                              {/* <Route path="member-profile" element={<MemberProfile />} /> */}
+                              <Route path="member-profile" element={<MemberProtectedRoute Component={MemberProfile} />} />
 
                               {/* <Route
                             path="view-gs1-member/:Id"
                             element={<Gs1MembersView />}
                           /> */}
 
-                              <Route path="payment-slips" element={<PaymentSlips />} />
-                              <Route path="bank-slip" element={<BankSlip />} />
-                              <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} />
-                              <Route path="transaction-history" element={<TransactionHistory />} />
-                              <Route path="member-helpdesk" element={<MemberHelpDesk />} />
-                              <Route path="subscribed-gtin" element={<SubscribedGTIN />} />
+                              {/* <Route path="payment-slips" element={<PaymentSlips />} /> */}
+                              <Route path="payment-slips" element={<MemberProtectedRoute Component={PaymentSlips} />} />
+                              {/* <Route path="bank-slip" element={<BankSlip />} /> */}
+                              <Route path="bank-slip" element={<MemberProtectedRoute Component={BankSlip} />} />
+                              {/* <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} /> */}
+                              <Route path="member-verified-by-gs1" element={<MemberProtectedRoute Component={MemberVerifiedByGS1} />} />
+                              {/* <Route path="transaction-history" element={<TransactionHistory />} /> */}
+                              <Route path="transaction-history" element={<MemberProtectedRoute Component={TransactionHistory} />} />
+                              {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
+                              <Route path="member-helpdesk" element={<MemberProtectedRoute Component={MemberHelpDesk} />} />
+                              {/* <Route path="subscribed-gtin" element={<SubscribedGTIN />} /> */}
+                              <Route path="subscribed-gtin" element={<MemberProtectedRoute Component={SubscribedGTIN} />} />
 
-                              <Route path="udi" element={<UDI />} />
+                              {/* <Route path="udi" element={<UDI />} /> */}
+                              <Route path="udi" element={<MemberProtectedRoute Component={UDI} />} />
                               {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
                               {/* <Route path="member-data" element={<MemberData />} /> */}
-                              <Route path="member-crnumber" element={<MemberCrNumber />} />
-                              <Route path="member-data" element={<MemberData />} />
-                              <Route path="member-crnumber" element={<MemberCrNumber />} />
+                              {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
+                              <Route path="member-crnumber" element={<MemberProtectedRoute Component={MemberCrNumber} />} />
+                              {/* <Route path="member-data" element={<MemberData />} /> */}
+                              <Route path="member-data" element={<MemberProtectedRoute Component={MemberData} />} />
+                              {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
+                              <Route path="member-crnumber" element={<MemberProtectedRoute Component={MemberCrNumber} />} />
 
 
                             </Routes>
