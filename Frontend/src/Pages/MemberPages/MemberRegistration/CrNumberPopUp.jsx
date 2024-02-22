@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import crnumber from '../../../Images/crnumber.gif'
+import crnumber from '../../../Images/crnumbershaded.gif'
 import './CompanyNamePopUp.css'
 const CrNumberPopUp = ({ isVisible, setVisibility, language }) => {
     const closePopUp = () => {

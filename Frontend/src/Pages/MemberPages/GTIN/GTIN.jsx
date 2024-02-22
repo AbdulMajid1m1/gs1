@@ -613,18 +613,18 @@ const  Gtin = () => {
                   action: handleEdit
 
                 },
-                {
-                  label: `${t('Digital Links')}`,
-                  icon: (
-                    <VisibilityIcon
-                      fontSize="small"
-                      color="action"
-                      style={{ color: "rgb(37 99 235)" }}
-                    />
-                  ),
-                  action: handleDigitalUrlInfo,
-                }
-                ,
+                // {
+                //   label: `${t('Digital Links')}`,
+                //   icon: (
+                //     <VisibilityIcon
+                //       fontSize="small"
+                //       color="action"
+                //       style={{ color: "rgb(37 99 235)" }}
+                //     />
+                //   ),
+                //   action: handleDigitalUrlInfo,
+                // }
+                // ,
                 {
                   label: `${t('Delete')}`,
                   icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
