@@ -1,22 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; // Import CloseIcon for the close button
-import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 import { backendUrl } from '../../../utils/config';
-import { AuthContext } from '../../../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
-    const { adminData } = useContext(AuthContext);
-    const adminId = adminData?.id;
+const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminData }) => {
+
+    const adminId = adminData?.id; // admin id from adminData for socket connection
     const { t } = useTranslation();
     const navigate = useNavigate();
-    let duration = 30;
     const [randomNumber, setRandomNumber] = useState('');
-    const [loading, setLoading] = useState(false);
+    let duration = 30;
     const [timer, setTimer] = useState(duration)
     const [socket, setSocket] = useState(null);
     useEffect(() => {
@@ -82,10 +79,10 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
         }
         return () => clearInterval(intervalId);
     }, [isVisible, socket, duration, adminId]); // Add socket to the dependency array
-    
 
 
-    return isVisible ? (
+
+    return (
         <div className="popup-overlay">
             <div className="popup-container h-auto sm:w-[40%] w-full">
                 <div className="popup-form w-full">
@@ -111,7 +108,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility }) => {
                 </div>
             </div>
         </div>
-    ) : null;
+    )
 };
 
 export default TwoFactorAuthPopupForAdmin;

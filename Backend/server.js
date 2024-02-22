@@ -206,77 +206,148 @@ app.get('/test', async (req, res) => {
 //-------------------arabic---------------------------------------
 import { promisify } from 'util';
 import fs from 'fs';
+import Joi from 'joi';
+import prisma from './prismaClient.js';
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
+const languageSchema = Joi.object({
+    type: Joi.string().max(255),
+    key: Joi.string().max(255).required(),
+    value: Joi.string().required(),
+    
 
+});
 const jsonFilePath = './arabic.json';
 
-app.get('/translations', (req, res) => {
-    fs.readFile(jsonFilePath, 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: 'Internal Server Error' });
-        } else {
-            res.json(JSON.parse(data));
-        
-        }
-    });
+app.get('/translations', async (req, res, next) => {
+   try {
+       const AllUNSPSC = await prisma.languages.findMany();
+
+       // Create an empty object to store the formatted data
+       let formattedData = {};
+
+       // Loop through the data and populate the formatted object
+       AllUNSPSC.forEach(item => {
+           formattedData[item.key] = item.value;
+       });
+
+       res.json(formattedData);
+   } catch (error) {
+       next(error);
+   }
 });
-app.put('/translations/:key', (req, res) => {
-    const { key } = req.params;
-    const { value } = req.body;
-
-    fs.readFile(jsonFilePath, 'utf-8', (readErr, data) => {
-        if (readErr) {
-            console.log(readErr);
-            res.status(500).json({ error: 'Internal Server Error' });
-            return;
-        }
-
-        try {
-            const jsonData = JSON.parse(data);
-            console.log(jsonData);
-            if (jsonData.hasOwnProperty(key)) {
-                jsonData[key] = value;
-
-                fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) => {
-                    if (writeErr) {
-                        console.log(writeErr);
-                        res.status(500).json({ error: 'Internal Server Error' });
-                    } else {
-                        res.json({ message: 'Translation updated successfully' });
-                    }
-                });
-            } else {
-                res.status(404).json({ error: 'Key not found' });
-            }
-        } catch (parseErr) {
-            console.log(parseErr);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    });
-});
-app.post('/translations', async (req, res) => {
+app.get('/translations_table', async (req, res, next) => {
     try {
-        const { key, value } = req.body;
+        const AllUNSPSC = await prisma.languages.findMany();
 
-        const data = await readFileAsync(jsonFilePath, { encoding: 'utf-8' });
-        console.log(data);
-        const jsonData = JSON.parse(data);
-        console.log(jsonData);
 
-        if (jsonData.hasOwnProperty(key)) {
-            res.status(400).json({ error: 'Key already exists, use PUT to update' });
-        } else {
-            jsonData[key] = value;
-
-            await writeFileAsync(jsonFilePath, JSON.stringify(jsonData, null, 2));
-
-            res.json({ message: 'Translation added successfully' });
-        }
+        res.json(AllUNSPSC);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        next(error);
+    }
+});
+app.put('/translations/:LanguageID', async (req, res, next) => {
+    try {
+        const languageSchema = Joi.object({
+            value: Joi.string().required(),
+        });
+
+        const schema = Joi.object({
+            LanguageID: Joi.number().required(),
+        });
+
+        const {
+            error: idError
+        } = schema.validate(req.params);
+        if (idError) {
+            throw createError(400, idError.details[0].message);
+        }
+
+        const {
+            LanguageID
+        } = req.params;
+
+        const {
+            error: validationError
+        } = languageSchema.validate(req.body);
+        if (validationError) {
+            throw createError(400, validationError.details[0].message);
+        }
+
+        const {
+            value
+        } = req.body;
+        const updatedTranslation = await prisma.languages.update({
+            where: {
+                LanguageID: parseInt(LanguageID), // Assuming "key" is the correct field to identify the record
+            },
+            data: {
+                value: value,
+            },
+        });
+
+        res.json(updatedTranslation);
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.get('/convert', async (req, res, next) => {
+    try {
+        // Read the JSON file
+        fs.readFile(jsonFilePath, 'utf8', async (err, data) => {
+            if (err) {
+                console.error('Error reading file:', err);
+                return res.status(500).send('Error reading file');
+            }
+
+            try {
+                // Parse JSON data to JavaScript object
+                const languageObject = JSON.parse(data);
+
+                // Convert object to array of key-value pairs
+                const languages = Object.entries(languageObject);
+
+                for (const [key, value] of languages) {
+                    await prisma.languages.create({
+                        data: {
+                            key,
+                            value,
+                        },
+                    });
+                    console.log(`Created language with key: ${key}`);
+                }
+                res.status(200).send('Languages inserted successfully');
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                res.status(500).send('Error parsing JSON');
+            } finally {
+                await prisma.$disconnect();
+            }
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/translations', async (req, res, next) => {
+    try {
+        const {
+            error,
+            value
+        } = languageSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({
+                error: error.details[0].message
+            });
+        }
+        const unit = await prisma.languages.create({
+            data: value,
+        });
+        res.status(201).json(unit);
+    } catch (error) {
+        next(error);
     }
 });
 

@@ -866,6 +866,21 @@
   "Enter License Ref. No.": "أدخل رقم الترخيص لا.",
   "Enter Cr Number": "أدخل رقم السجل التجاري",
   "Enter License Name": "أدخل اسم الترخيص",
+<<<<<<< HEAD
   "Enter Cr Activity": "أدخل نشاط الكروم",
   "Select Business Type": "حدد نوع العمل"
+=======
+  "Terms & Conditions": "البنود و الظروف",
+  "Accept": "يقبل",
+  "Cancel": "يلغي",
+  "Accept Term & Conditions": "قبول الشروط والأحكام",
+  "(Download Terms & Conditions)": "(تحميل الشروط والأحكام)",
+  "Name [English]": "الاسم [إنجليزي]",
+  "Select Business Type": "حدد نوع العمل",
+  "Name English": "اسم الانجليزية",
+  "Select matching industries": "حدد الصناعات المطابقة",
+  "Number will regenerate in": "سيتم إعادة إنشاء الرقم في",
+  "seconds": "ثواني",
+  "Select the number you see on your mobile": "اختر الرقم الذي تراه على هاتفك المحمول"
+>>>>>>> 4a8a6b56c1e7e8feffc05f2218a48d092288147d
 }

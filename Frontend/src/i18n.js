@@ -20,7 +20,6 @@ const fetchTranslations = async () => {
   try {
     const response = await fetch(backendUrl + '/translations');
     const data = await response.json();
-
     if (data) {
       const dataArray = Object.entries(data);
 
@@ -50,28 +49,24 @@ const fetchTranslations = async () => {
       i18n.addResourceBundle("ar", "translation", dynamicTranslations.ar);
       i18n.addResourceBundle("en", "translation", dynamicTranslations.en);
     }
+    else{
+      console.log("Error fetching translations");
+    }
   } catch (error) {
     // console.error('Error fetching translations:', error);
       i18n
         .use(LanguageDetector)
         .use(initReactI18next) // Move initReactI18next here
         .init({
-          dynamicTranslations: {
-            en: {
-              translation: enTranslation,
-            },
-            ar: {
-              translation: arTranslation,
-            },
-          },
-          fallbackLng: ['ar', 'en'],
+          dynamicTranslations: {},
+          fallbackLng: ['en'],
           detection: {
             order: ['navigator'],
           },
           interpolation: {
             escapeValue: false,
           },
-          lng: initialLanguage,
+          lng: 'en',
           debug: true,
         });
   }

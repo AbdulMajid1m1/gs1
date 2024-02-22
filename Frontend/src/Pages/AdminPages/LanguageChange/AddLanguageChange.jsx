@@ -22,17 +22,29 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
                 'value': category_name_ar,
             });
 
-      toast.success(
-        `${t("Word")} ${category_name_ar} ${t("has been added successfully")}.`,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+            toast.success(`${t('Word')} ${category_name_ar} ${t('has been added successfully')}.`, {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+            refreshBrandData();
+            handleCloseCreatePopup();
+        } catch (error) {
+            toast.error(error|| 'Error', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
         }
       );
       console.log(response.data);
