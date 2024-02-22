@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; // Import CloseIcon for the close button
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
