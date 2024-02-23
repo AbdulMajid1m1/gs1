@@ -2277,3 +2277,16 @@ model add_gln_cart {
   gln_upgrade_pricing               gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
   other_products_subcriptions       other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }
+
+
+model tblEmailSettings {
+  id         String    @id @default(cuid())
+  emailSentFrom String?   @db.NVarChar(Max)
+  emailMethod   String?   @db.NVarChar(Max)
+  smtpHost      String?   @db.NVarChar(Max)
+  smtpPort      String?   @db.NVarChar(Max)
+  smtpUser      String?   @db.NVarChar(Max)
+  smtpPassword  String?   @db.NVarChar(Max)
+  smtpEncryption String?   @db.NVarChar(Max)
+
+}
