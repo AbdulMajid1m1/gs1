@@ -332,6 +332,20 @@ CREATE TABLE [dbo].[cities] (
     [updated_at] DATETIME,
     CONSTRAINT [cities_pkey] PRIMARY KEY CLUSTERED ([id])
 );
+CREATE TABLE [dbo].[emailsetting] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [emailfrom] NVARCHAR(max),
+    [emailmethod] NVARCHAR(max),
+    [smtp_host] NVARCHAR(max),
+    [smtp_username] NVARCHAR(max),
+    [smtp_password] NVARCHAR(max),
+    [smtp_port] NVARCHAR(max),
+    [smtp_encryption] NVARCHAR(max),
+    [status] INT,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    CONSTRAINT [emailsetting_pkey] PRIMARY KEY CLUSTERED ([id])
+);
 CREATE TABLE [dbo].[product_categroies] (
     [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),

@@ -1,78 +1,71 @@
 import nodemailer from 'nodemailer';
 import prisma from '../prismaClient.js';
-// Function to fetch email settings from the database using Prisma
+
+
+
+
+
+
+// Assuming PrismaClient and nodemailer have been imported as shown previously
+
+// Function to fetch email settings from the database or use defaults
 async function fetchEmailSettings() {
-  try {
-    const settings = await prisma.tblEmailSettings.findFirst();
-    if (!settings) {
-      // throw new Error('No email settings found in the database.');
-    }
-    return settings;
-  } catch (error) {
-    console.error('Error fetching email settings from database:', error);
-    // Fallback to default settings if fetch fails
-    return {
-      emailMethod: 'SMTP',
-      emailSentFrom: 'gs1noreply@gs1.org.sa',
-      smtpHost: 'smtp.office365.com',
-      smtpUser: 'gs1noreply@gs1.org.sa',
-      smtpPort: 587,
-      smtpPassword: 'Nud34189',
-      smtpEncryption: 'TLS'
-    };
-  }
+  const settings = await prisma.emailsetting.findFirst({
+    where: { status: 1 }, // Example: fetch settings where status is active
+  });
+  console.log('settings, ', settings)
+  return settings || {
+    emailMethod: 'SMTP',
+    emailSentFrom: 'gs1noreply@gs1.org.sa',
+    smtpHost: 'smtp.office365.com',
+    smtpUser: 'gs1noreply@gs1.org.sa',
+    smtpPort: 587,
+    smtpPassword: 'Nud34189',
+    smtpEncryption: 'TLS',
+  };
 }
 
-// Utility function to create a transporter with settings from database or defaults
+// Dynamically create email transporter based on fetched settings
 async function createEmailTransporter() {
   const settings = await fetchEmailSettings();
-  const transporter = nodemailer.createTransport({
+  console.log('settings 2, ', settings)
+  return nodemailer.createTransport({
     host: settings.smtpHost,
     port: settings.smtpPort,
-    secure: settings.smtpEncryption === 'TLS', // true for 465, false for other ports
+    secure: false,// true for 465, false for other ports
     auth: {
       user: settings.smtpUser,
-      pass: settings.smtpPassword
+      pass: settings.smtpPassword,
+    },
+    tls: {
+      // If required, enable additional TLS options here
+      rejectUnauthorized: false
     }
   });
-
-  return transporter;
 }
+
 
 // Updated sendOTPEmail function
 export const sendOTPEmail = async (email, password, subject, footerMessage, pdfBuffer, pdfBuffer2) => {
   return new Promise(async (resolve, reject) => {
     try {
       const transporter = await createEmailTransporter();
-      let attachments = [];
-
-      if (pdfBuffer && pdfBuffer.invoiceBuffer) {
-        attachments.push({
-          filename: pdfBuffer.pdfFilename ? pdfBuffer.pdfFilename : 'Invoice.pdf',
-          content: pdfBuffer.invoiceBuffer,
-          contentType: 'application/pdf'
-        });
-      }
-
-      if (pdfBuffer2) {
-        attachments.push({
-          filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf',
-          content: pdfBuffer2,
-          contentType: 'application/pdf'
-        });
-      }
-
       const settings = await fetchEmailSettings();
+
+      let attachments = [];
+      if (pdfBuffer && pdfBuffer.invoiceBuffer) {
+        attachments.push({ filename: pdfBuffer.pdfFilename || 'Invoice.pdf', content: pdfBuffer.invoiceBuffer, contentType: 'application/pdf' });
+      }
+      if (pdfBuffer2) {
+        attachments.push({ filename: 'GS1_Saudi_Arabia_Data_Declaration.pdf', content: pdfBuffer2, contentType: 'application/pdf' });
+      }
 
       const mailOptions = {
         from: `Gs1Ksa <${settings.emailSentFrom}>`,
         to: email,
         subject: subject || 'Login Credentials for GS1',
-        html: `<h1>Your Login Credentials for GS1</h1>
-               <p>Your Login ID: ${email}</p>
-               <p>Your Password: ${password}</p>
-               ${footerMessage ? `<p>${footerMessage}</p>` : ''}`,
-        attachments: attachments
+        html: `<h1>Your Login Credentials for GS1</h1><p>Your Login ID: ${email}</p><p>Your Password: ${password}</p>${footerMessage ? `<p>${footerMessage}</p>` : ''}`,
+        attachments: attachments,
       };
 
       await transporter.sendMail(mailOptions);
@@ -98,8 +91,8 @@ export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, atta
         attachments: attachments.map(attachment => ({
           filename: attachment.filename,
           content: attachment.content,
-          contentType: attachment.contentType
-        }))
+          contentType: attachment.contentType,
+        })),
       };
 
       await transporter.sendMail(mailOptions);
@@ -125,13 +118,13 @@ export const sendMultipleEmails = async ({ emailData, fromEmail }) => {
         const mailOptions = {
           from: `Gs1Ksa <${fromEmail || settings.emailSentFrom}>`,
           to: toEmail,
-          subject: subject || '', // Use the specified subject or empty string
-          html: htmlContent || '', // Use the specified content or empty string
+          subject: subject || '',
+          html: htmlContent || '',
           attachments: attachments.map(attachment => ({
             filename: attachment.filename,
             content: attachment.content,
-            contentType: attachment.contentType
-          }))
+            contentType: attachment.contentType,
+          })),
         };
 
         await transporter.sendMail(mailOptions);
