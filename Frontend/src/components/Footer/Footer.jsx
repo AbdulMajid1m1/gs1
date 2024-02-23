@@ -61,42 +61,42 @@ const Footer = () => {
                 <img
                   src={whatsApp}
                   alt=""
-                  className='h-12 w-12 p-2 object-contain hover:scale-110 transition-transform duration-300 ease-in-out'
+                  className='h-12 w-12 p-2 object-contain hover:scale-110 hover:animate-pulse transition-transform duration-300 ease-in-out'
                 />
               </a>
               <a href="https://www.linkedin.com/in/gs1-saudi-ksa-389876263/" target="_blank" rel="noopener noreferrer">
                 <img
                   src={linkedIn}
                   alt=""
-                  className='h-12 w-12 p-2 object-contain hover:scale-110 transition-transform duration-300 ease-in-out'
+                  className='h-12 w-12 p-2 object-contain hover:scale-110 hover:animate-pulse transition-transform duration-300 ease-in-out'
                 />
               </a>
               <a href="https://www.linkedin.com/in/gs1-saudi-ksa-389876263/" target="_blank" rel="noopener noreferrer">
                 <img
                   src={facebook}
                   alt=""
-                  className='h-12 w-12 p-2 object-contain hover:scale-110 transition-transform duration-300 ease-in-out'
+                  className='h-12 w-12 p-2 object-contain hover:scale-110 hover:animate-pulse transition-transform duration-300 ease-in-out'
                 />
               </a>
               <a href="https://twitter.com/gs1Saudi" target="_blank" rel="noopener noreferrer">
                 <img
                   src={twitter}
                   alt=""
-                  className='h-12 w-12 p-2 object-contain hover:scale-110 transition-transform duration-300 ease-in-out'
+                  className='h-12 w-12 p-2 object-contain hover:scale-110 hover:animate-pulse transition-transform duration-300 ease-in-out'
                 />
               </a>
               <a href="https://www.instagram.com/gs1saudi/" target="_blank" rel="noopener noreferrer">
                 <img
                   src={instagram}
                   alt=""
-                  className='h-12 w-12 p-2 object-contain hover:scale-110 transition-transform duration-300 ease-in-out'
+                  className='h-12 w-12 p-2 object-contain hover:scale-110 hover:animate-pulse transition-transform duration-300 ease-in-out'
                 />
               </a>
               <a href="https://www.youtube.com/@gs1global/videos" target="_blank" rel="noopener noreferrer">
                 <img
                   src={youtube}
                   alt=""
-                  className='h-12 w-12 p-2 object-contain hover:scale-110 transition-transform duration-300 ease-in-out'
+                  className='h-12 w-12 p-2 object-contain hover:scale-110 hover:animate-pulse transition-transform duration-300 ease-in-out'
                 />
               </a>
             </div>
