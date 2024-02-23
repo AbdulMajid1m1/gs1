@@ -7643,3 +7643,83 @@ export const foreignGtinColumn = (t, i18n) => [
 
 
 ];
+
+
+export const emailsettingDataColumn = (t, i18n) => [
+  {
+    field: "emailfrom",
+    headerName: t("Email Sent From"),
+    width: 180,
+  },
+  {
+    field: "emailmethod",
+    headerName: t("Email Method"),
+    width: 180,
+  },
+  {
+    field: "smtp_host",
+    headerName: t("SMTP HOST"),
+    width: 180,
+  },
+  {
+    field: "smtp_username",
+    headerName: t("SMTP Username"),
+    width: 180,
+  },
+  {
+    field: "smtp_password",
+    headerName: t("SMTP Password"),
+    width: 180,
+  },
+  {
+    field: "smtp_port",
+    headerName: t("SMTP Port"),
+    width: 220,
+  },
+  {
+    field: "smtp_encryption",
+    headerName: t("SMTP Encryption"),
+    width: 180,
+  },
+  // {
+  //   field: "status",
+  //   headerName: t("Status"),
+  //   width: 120,
+  //   renderCell: (params) => (
+  //     <div
+  //       style={{
+  //         padding: "5px",
+  //         paddingLeft: "10px",
+  //         paddingRight: "10px",
+  //         borderRadius: "20px",
+  //         border: "2px solid",
+  //         borderColor: params.row.status === 1 ? "green" : "red",
+  //         color: params.row.status === 1 ? "green" : "red",
+  //       }}
+  //     >
+  //       {params.row.status === 1 ? "Active" : "Inactive"}
+  //     </div>
+  //   ),
+  // },
+  {
+    field: "created_at",
+    headerName: t("Created At"),
+    width: 180,
+
+    type: "dateTime",
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    },
+  },
+  {
+    field: "updated_at",
+    headerName: t("Updated At"),
+    width: 180,
+    type: "dateTime",
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    },
+  },
+];

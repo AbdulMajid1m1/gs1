@@ -28,6 +28,14 @@ import { createfaq_categories, getAllfaq_categories, getfaq_categoriesById, upda
 import { getAllour_teams, creatour_teams, getour_teamsById, updateour_teams, deleteour_teams } from '../controllers/our_teams.js'
 import { getAllboard_members, creatboard_members, getboard_membersById, updateboard_members, deleteboard_members } from "../controllers/board_members.js"
 import { adminAuth, checkPermission, generalAuth } from '../middlewares/auth.js';
+import {createemailsetting,getAllemailsetting,getemailsettingById,updateemailsetting,deleteemailsetting} from "../controllers/emailsetting.js"
+// Routes for faq_categories
+router.post('/createemailsetting', createemailsetting);
+router.get('/getAllemailsetting', getAllemailsetting);
+router.get('/getemailsettingById/:id', getemailsettingById);
+router.put('/updateemailsetting/:id', updateemailsetting);
+router.delete('/deleteemailsetting/:id', deleteemailsetting);
+
 // Routes for faq_categories
 router.post('/createfaq_categories', adminAuth, checkPermission(["faq_categories"]), createfaq_categories);
 router.get('/getAllfaq_categories', getAllfaq_categories);

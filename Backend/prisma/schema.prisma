@@ -349,6 +349,20 @@ model cities {
   updated_at DateTime @default(now()) @updatedAt
 }
 
+model emailsetting {
+  id         String   @id @default(cuid())
+  emailfrom       String?  @db.NVarChar(Max)
+  emailmethod    String?  @db.NVarChar(Max)
+  smtp_host       String?  @db.NVarChar(Max)
+  smtp_username    String?  @db.NVarChar(Max)
+  smtp_password    String?  @db.NVarChar(Max)
+  smtp_port       String?  @db.NVarChar(Max)
+  smtp_encryption    String?  @db.NVarChar(Max)
+  status   Int?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+}
+
 model classes {
   id               BigInt    @id(map: "PK_classes") @default(autoincrement())
   class_code       String?   @db.NVarChar(Max)
