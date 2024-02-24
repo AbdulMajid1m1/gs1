@@ -10,12 +10,12 @@ import { useNavigate } from 'react-router-dom';
 const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) => {
 
     const adminId = adminData?.id; // admin id from adminData for socket connection
-    const { t } = useTranslation();
     const navigate = useNavigate();
     const [randomNumber, setRandomNumber] = useState('');
     let duration = 30;
     const [timer, setTimer] = useState(duration)
     const [socket, setSocket] = useState(null);
+    const { t } = useTranslation();
     useEffect(() => {
         if (!isVisible || !adminId) return;
 
