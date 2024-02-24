@@ -2291,3 +2291,5 @@ model add_gln_cart {
   gln_upgrade_pricing               gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
   other_products_subcriptions       other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }
+
+

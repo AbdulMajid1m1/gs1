@@ -18,7 +18,14 @@ const MemberVerifiedByGS1 = () => {
   const [searchedData, setSearchedData] = useState({}); // State to store API data
   const navigate = useNavigate();
 
-  
+  const handleViewGridClick = () => {
+    if (!parsedMappedData) {
+      toast.error("Data is not available.");
+    } else {
+      setIsTableVisible(!isTableVisible);
+    }
+  };
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -151,7 +158,7 @@ const MemberVerifiedByGS1 = () => {
           </div>
         </div> */}
 
-        <div className="grid sm:grid-cols-3 grid-cols-1 gap-5 p-5">
+        <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 p-5">
           <button
             className={`p-4 rounded ${activeTab === 'home' ? 'bg-primary text-white' : 'bg-white text-primary'
               } shadow-md flex items-center justify-center`}
@@ -174,7 +181,7 @@ const MemberVerifiedByGS1 = () => {
           {t('GTIN INFORMATION')}
           </button>
 
-          <button
+          {/* <button
             className={`p-4 rounded ${activeTab === 'profile' ? 'bg-primary text-white' : 'bg-white text-primary'
               } shadow-md flex items-center justify-center`}
             onClick={() => handleTabClick('profile')}
@@ -200,7 +207,7 @@ const MemberVerifiedByGS1 = () => {
               />
             </svg>
             {t('DIGITAL LINK')}
-          </button>
+          </button> */}
 
           <button
             className={`p-4 rounded ${activeTab === 'profile2' ? 'bg-primary text-white' : 'bg-white text-primary'
@@ -364,14 +371,16 @@ const MemberVerifiedByGS1 = () => {
                   {/* <button className='bg-indigo-500 text-white rounded-sm px-4 py-2 mt-4'>View Grid</button> */}
                   <button
                     className='bg-primary text-white rounded-sm px-4 py-2 mt-4'
-                    onClick={() => setIsTableVisible(!isTableVisible)}
+                    // onClick={() => setIsTableVisible(!isTableVisible)}
+                    onClick={handleViewGridClick}
                   >
                     {t('View Grid')}
                   </button>
                 </div>
 
                 {/* Gtin View TableData */}
-                {isTableVisible && (
+                {/* {isTableVisible && ( */}
+                {parsedMappedData && parsedMappedData.gtinInformation && isTableVisible && (
                   <div className=''>
                     <div className="Events-Grid-Data">
                       <table>

@@ -3,6 +3,7 @@ import axios from "axios";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { GoogleMap, StandaloneSearchBox, Marker, Polyline, DirectionsRenderer, OverlayView, InfoWindow } from '@react-google-maps/api';
+import newRequest from "../../../utils/userRequest";
 
 const style = {
     width: '95%',
