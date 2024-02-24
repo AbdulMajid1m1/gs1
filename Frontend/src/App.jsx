@@ -135,6 +135,7 @@ import LaanguageChange from "./Pages/AdminPages/LanguageChange/LaanguageChange";
 import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDigitalUrlInfo.jsx";
 import AdminUpdateGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminUpdateGLN.jsx";
 import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtectedRoute.jsx";
+import EmailConfigure from "./Pages/AdminPages/MasterData/EmailSettings/EmailConfigure.jsx";
 
 const queryClient = new QueryClient()
 
@@ -590,6 +591,12 @@ const App = () => {
                               <Route path="Cities" element={
                                 <ProtectedRoute requiredPermission="cities">
                                   <Cities />
+                                </ProtectedRoute>
+                              } />
+                               {/* <Route path="EmailConfigure" element={<EmailConfigure />} /> */}
+                              <Route path="EmailConfigure" element={
+                                <ProtectedRoute requiredPermission="EmailConfigure">
+                                  <EmailConfigure />
                                 </ProtectedRoute>
                               } />
                               {/* <Route path="State" element={<State />} /> */}

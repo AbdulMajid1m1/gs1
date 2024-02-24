@@ -7,15 +7,15 @@ import io from 'socket.io-client';
 import { backendUrl } from '../../../utils/config';
 import { useNavigate } from 'react-router-dom';
 
-const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminData }) => {
+const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) => {
 
     const adminId = adminData?.id; // admin id from adminData for socket connection
-    const { t } = useTranslation();
     const navigate = useNavigate();
     const [randomNumber, setRandomNumber] = useState('');
     let duration = 30;
     const [timer, setTimer] = useState(duration)
     const [socket, setSocket] = useState(null);
+    const { t } = useTranslation();
     useEffect(() => {
         if (!isVisible || !adminId) return;
 
@@ -34,7 +34,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminData }) => 
 
         newSocket.on('authSuccess', () => {
             toast.success(t('Admin Login Successfully'));
-            setVisibility(false);
+            toggleVisibility(false);
             navigate('/admin/dashboard');
         });
 
@@ -56,7 +56,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminData }) => 
         return () => {
             newSocket.disconnect();
         };
-    }, [isVisible, adminId, t, navigate, setVisibility]);
+    }, [isVisible, adminId, t, navigate]);
 
     useEffect(() => {
         let intervalId;
@@ -90,7 +90,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, setVisibility, adminData }) => 
                         style={{ position: 'absolute', top: '10px', right: '10px' }}
                         onClick={() => {
                             console.log('Close button clicked');
-                            setVisibility(false);
+                            toggleVisibility(false);
                         }}
                     >
                         <CloseIcon />
