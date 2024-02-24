@@ -349,6 +349,20 @@ model cities {
   updated_at DateTime @default(now()) @updatedAt
 }
 
+model emailsetting {
+  id         String   @id @default(cuid())
+  emailfrom       String?  @db.NVarChar(Max)
+  emailmethod    String?  @db.NVarChar(Max)
+  smtp_host       String?  @db.NVarChar(Max)
+  smtp_username    String?  @db.NVarChar(Max)
+  smtp_password    String?  @db.NVarChar(Max)
+  smtp_port       String?  @db.NVarChar(Max)
+  smtp_encryption    String?  @db.NVarChar(Max)
+  status   Int?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+}
+
 model classes {
   id               BigInt    @id(map: "PK_classes") @default(autoincrement())
   class_code       String?   @db.NVarChar(Max)
@@ -2277,3 +2291,5 @@ model add_gln_cart {
   gln_upgrade_pricing               gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
   other_products_subcriptions       other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }
+
+

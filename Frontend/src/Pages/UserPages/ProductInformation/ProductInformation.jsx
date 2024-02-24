@@ -27,7 +27,14 @@ const ProductInformation = () => {
   const navigate = useNavigate();
   const { openSnackbar } = useContext(SnackbarContext);
 
-
+  const handleViewGridClick = () => {
+    if (!parsedMappedData) {
+      toast.error("Data is not available.");
+    } else {
+      setIsTableVisible(!isTableVisible);
+    }
+  };
+  
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -158,12 +165,12 @@ const ProductInformation = () => {
 
         {/* Head  */}
         <div className='h-auto w-full px-1 mb-4'>
-          <div className='h-16 w-full bg-white shadow-xl flex justify-start items-center gap-3 px-5 border-l-2 border-[#e49515]'>
+          <div className='h-16 w-full bg-white shadow-xl rounded-md flex justify-start items-center gap-3 px-5 border-l-2 border-[#e49515]'>
             <i onClick={() => navigate(-1)} className="fas fa-arrow-left text-2xl text-[#e49515] cursor-pointer"></i>
             <p className='sm:text-2xl text-sm font-body font-semibold'> {t('GTIN INFORMATION')}</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 grid-cols-1 gap-5">
           <button
             className={`p-4 rounded ${activeTab === 'home' ? 'bg-primary text-white' : 'bg-white text-primary'
               } shadow-md flex items-center justify-center`}
@@ -186,7 +193,7 @@ const ProductInformation = () => {
           {t('GTIN INFORMATION')}
           </button>
 
-          <button
+          {/* <button
             className={`p-4 rounded ${activeTab === 'profile' ? 'bg-primary text-white' : 'bg-white text-primary'
               } shadow-md flex items-center justify-center`}
             onClick={() => handleTabClick('profile')}
@@ -212,7 +219,7 @@ const ProductInformation = () => {
               />
             </svg>
             {t('DIGITAL LINK')}
-          </button>
+          </button> */}
 
           <button
             className={`p-4 rounded ${activeTab === 'profile2' ? 'bg-primary text-white' : 'bg-white text-primary'
@@ -376,14 +383,16 @@ const ProductInformation = () => {
                   {/* <button className='bg-indigo-500 text-white rounded-sm px-4 py-2 mt-4'>View Grid</button> */}
                   <button
                     className='bg-primary text-white rounded-sm px-4 py-2 mt-4'
-                    onClick={() => setIsTableVisible(!isTableVisible)}
+                    // onClick={() => setIsTableVisible(!isTableVisible)}
+                    onClick={handleViewGridClick}
                   >
                     {t('View Grid')}
                   </button>
                 </div>
 
                 {/* Gtin View TableData */}
-                {isTableVisible && (
+                {/* {isTableVisible && ( */}
+                {parsedMappedData && parsedMappedData.gtinInformation && isTableVisible && (
                   <div className=''>
                     <div className="Events-Grid-Data">
                       <table>

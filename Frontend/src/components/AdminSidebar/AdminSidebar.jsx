@@ -66,6 +66,7 @@ import usersicon from "../../Images/usersicon.png"
 import licenseregistry from "../../Images/licenseregistry.png"
 import productcategories from "../../Images/productcategories.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
+import emailicons from "../../Images/email.png"
 import i18ns from "../../i18n";
 import LanguageSwitcher from "../../switer";
 
@@ -882,6 +883,21 @@ const AdminSideBar = () =>
                 <p className="sidebar-text"> {t('Users')}</p>
               </div>
 
+ <div
+
+                className={`main-images-container ${selectedItem === '/admin/EmailConfigure' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/EmailConfigure', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/EmailConfigure')
+                }
+              >
+                <img
+                  src={emailicons}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text"> {t('Email Settings')}</p>
+              </div>
               
               <div
                 // className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
