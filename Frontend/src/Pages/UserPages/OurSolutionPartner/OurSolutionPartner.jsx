@@ -25,6 +25,15 @@ const OurSolutionPartner = () => {
   useEffect(() => {
     fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
   }, []);
+
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
   return (
     <div>
           {/* Our Solution Partners */}
@@ -79,7 +88,11 @@ const OurSolutionPartner = () => {
        
       </div>
       </Swiper>
-        </div>
+
+      <div className='flex justify-center items-center mt-10'>
+        <button className='bg-primary font-medium text-white text-lg rounded-md px-5 py-1 hover:scale-105 transition-transform duration-300 ease-in-out' onClick={scrollToTop}>Back To Top</button>
+      </div>
+    </div>
 
     </div>
   )
