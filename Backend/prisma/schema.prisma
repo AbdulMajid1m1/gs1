@@ -322,7 +322,7 @@ model rejected_carts {
 model product_categroies {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
-  name_ar       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   status     Int?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -350,17 +350,17 @@ model cities {
 }
 
 model emailsetting {
-  id         String   @id @default(cuid())
+  id              String   @id @default(cuid())
   emailfrom       String?  @db.NVarChar(Max)
-  emailmethod    String?  @db.NVarChar(Max)
+  emailmethod     String?  @db.NVarChar(Max)
   smtp_host       String?  @db.NVarChar(Max)
-  smtp_username    String?  @db.NVarChar(Max)
-  smtp_password    String?  @db.NVarChar(Max)
+  smtp_username   String?  @db.NVarChar(Max)
+  smtp_password   String?  @db.NVarChar(Max)
   smtp_port       String?  @db.NVarChar(Max)
-  smtp_encryption    String?  @db.NVarChar(Max)
-  status   Int?
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  smtp_encryption String?  @db.NVarChar(Max)
+  status          Int?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
 }
 
 model classes {
@@ -904,13 +904,12 @@ model issuing_agencies {
 }
 
 model languages {
-  id         Float?
-  type       String?   @db.NVarChar(Max)
-  key        String?   @db.NVarChar(Max)
-  value      String?   @db.NVarChar(Max)
- created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  LanguageID Int       @id(map: "PK__language__B938558B03AB874B") @default(autoincrement())
+  id         String   @id @default(cuid())
+  type       String?  @db.NVarChar(Max)
+  key        String?  @db.NVarChar(Max)
+  value      String?  @db.NVarChar(Max)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model locations {
@@ -1495,7 +1494,7 @@ model old_users {
 model other_products {
   id                                    String                                  @id @default(cuid())
   product_name                          String?                                 @db.NVarChar(Max)
-  name_ar                          String?                                 @db.NVarChar(Max)
+  name_ar                               String?                                 @db.NVarChar(Max)
   total_no_of_barcodes                  Float?
   product_subscription_fee              Float?
   code                                  String?                                 @db.NVarChar(Max)
@@ -1643,7 +1642,7 @@ model product_packagings {
 model product_types {
   id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
-  name_ar       String?   @db.NVarChar(Max)
+  name_ar    String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
@@ -2291,5 +2290,3 @@ model add_gln_cart {
   gln_upgrade_pricing               gln_upgrade_pricing         @relation(fields: [new_gln_id], references: [id])
   other_products_subcriptions       other_products_subcriptions @relation(fields: [other_products_subscription_id], references: [id])
 }
-
-
