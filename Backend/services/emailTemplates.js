@@ -14,14 +14,14 @@ async function fetchEmailSettings() {
     where: { status: 1 }, // Example: fetch settings where status is active
   });
   console.log('settings, ', settings)
-  return settings || {
-    emailMethod: 'SMTP',
-    emailSentFrom: 'gs1noreply@gs1.org.sa',
-    smtpHost: 'smtp.office365.com',
-    smtpUser: 'gs1noreply@gs1.org.sa',
-    smtpPort: 587,
-    smtpPassword: 'Nud34189',
-    smtpEncryption: 'TLS',
+  return {
+    emailMethod: settings?.emailmethod,
+    emailSentFrom: settings?.emailfrom,
+    smtpHost: settings?.smtp_host,
+    smtpUser: settings?.smtp_username,
+    smtpPort: settings?.smtp_port,
+    smtpPassword: settings?.smtp_password,
+    smtpEncryption: settings?.smtp_encryption,
   };
 }
 
