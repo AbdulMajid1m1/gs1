@@ -17,7 +17,10 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
   const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
   const [loading, setLoading] = useState(false);
   const [docuements, setDocuments] = React.useState([])
-  const [selectedDocuments, setSelectedDocuments] = useState(updateBrandData?.state_name || 0);
+  const [selectedDocuments, setSelectedDocuments] = useState({
+    id: updateBrandData?.state_id || 0,
+    name: updateBrandData?.state_name || "",
+  });
   const { t, i18n } = useTranslation();
   const handleCloseUpdatePopup = () =>
   {
