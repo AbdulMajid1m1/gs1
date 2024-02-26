@@ -136,6 +136,7 @@ import AdminDigitalUrlInfo from "./Pages/AdminPages/AdminIndentify/GTIN/AdminDig
 import AdminUpdateGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminUpdateGLN.jsx";
 import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtectedRoute.jsx";
 import EmailConfigure from "./Pages/AdminPages/MasterData/EmailSettings/EmailConfigure.jsx";
+import GTINReports from "./Pages/UserPages/GTINReports/GTINReports.jsx";
 
 const queryClient = new QueryClient()
 
@@ -208,6 +209,7 @@ const App = () => {
                         </MapProvider>
                       }
                     />
+                    <Route path="/gtin-reporter" element={<GTINReports />} />
 
                     {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
