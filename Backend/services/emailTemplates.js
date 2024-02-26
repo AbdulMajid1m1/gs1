@@ -77,7 +77,7 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
 };
 
 // Updated sendEmail function
-export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, attachments = [] }) => {
+export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, attachments = [], replyToEmail = null }) => {
   return new Promise(async (resolve, reject) => {
     try {
       const transporter = await createEmailTransporter();
@@ -85,6 +85,8 @@ export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, atta
 
       const mailOptions = {
         from: `Gs1Ksa <${fromEmail || settings.emailSentFrom}>`,
+        // If replyToEmail is provided, set the reply-to address
+        replyTo: replyToEmail,
         to: toEmail,
         subject: subject,
         html: htmlContent,
@@ -102,6 +104,9 @@ export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, atta
     }
   });
 };
+
+
+
 
 // Updated sendMultipleEmails function
 export const sendMultipleEmails = async ({ emailData, fromEmail }) => {

@@ -3,6 +3,7 @@ import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import fs from 'fs';
 import path from 'path';
+import { sendEmail } from '../services/emailTemplates.js';
 
 // Helper function to delete old images if they exist
 const deleteOldImage = (imagePath) => {
@@ -167,5 +168,40 @@ export const deleteGtinHelperReport = async (req, res, next) => {
         res.json({ message: 'GTIN Helper Report deleted successfully' });
     } catch (error) {
         next(error);
+    }
+};
+
+const emailSchema = Joi.object({
+    toEmail: Joi.string().email().required(),
+    subject: Joi.string().required(),
+    body: Joi.string().required(),
+    replyToEmail: Joi.string().email().allow('').optional(),
+});
+
+export const sendEmailToGtinReporter = async (req, res) => {
+    try {
+
+
+        const { error, value } = emailSchema.validate(req.body);
+
+        if (error) {
+            return createError(400, `Invalid request parameters: ${error.details[0].message}`);
+        }
+
+        const { toEmail, subject, body, replyToEmail } = value;
+
+        // Call the sendEmail function
+        const emailResponse = await sendEmail({
+            replyToEmail: replyToEmail, // This allows setting the reply-to address dynamically
+            toEmail: toEmail,
+            subject: subject,
+            htmlContent: body,
+            // Include attachments if needed
+        });
+
+        res.json({ success: true, message: 'Email sent successfully to GTIN reporter.', data: emailResponse });
+    } catch (error) {
+        console.error('Failed to send email:', error);
+        res.status(500).json({ success: false, message: 'Failed to send email', error: error.message });
     }
 };
