@@ -103,7 +103,7 @@ const Updatecountry = ({ isVisible, setVisibility, refreshBrandData }) =>
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Country name')} {t('Name[Arabic]')}c</label>
+                    <label htmlFor="field1" className="text-secondary">{t('Country name')} {t('Name[Arabic]')}</label>
                     <input
                       type="text"
                       id="name_ar"
