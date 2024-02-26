@@ -137,6 +137,7 @@ import AdminUpdateGLN from "./Pages/AdminPages/AdminIndentify/GLN/AdminUpdateGLN
 import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtectedRoute.jsx";
 import EmailConfigure from "./Pages/AdminPages/MasterData/EmailSettings/EmailConfigure.jsx";
 import GTINReports from "./Pages/UserPages/GTINReports/GTINReports.jsx";
+import AdminGtinReports from "./Pages/AdminPages/AdminTab/Reports/AdminGtinReports/AdminGtinReports.jsx";
 
 const queryClient = new QueryClient()
 
@@ -522,6 +523,8 @@ const App = () => {
                                   <AdminActivityReport />
                                 </ProtectedRoute>
                               } />
+                              
+                              <Route path="admin-gtin-reports" element={<AdminGtinReports />} />
 
 
                               {/* <Route path="users-permissions" element={<Users />} /> */}

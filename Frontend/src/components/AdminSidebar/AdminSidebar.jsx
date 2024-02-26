@@ -65,6 +65,7 @@ import roleicon from "../../Images/roleicon.png"
 import usersicon from "../../Images/usersicon.png"
 import licenseregistry from "../../Images/licenseregistry.png"
 import productcategories from "../../Images/productcategories.png"
+import gtinreports from "../../Images/gtinreports.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import emailicons from "../../Images/email.png"
 import i18ns from "../../i18n";
@@ -833,6 +834,22 @@ const AdminSideBar = () =>
                       alt=""
                     />
                     <p className="sidebar-text">{t('Admin Activity')}</p>
+                  </div>
+
+
+                  <div
+                    className={`main-images-container ${selectedItem === '/admin/admin-gtin-reports' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
+                    onClick={(event) => handleItemClick('/admin/admin-gtin-reports', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/admin-gtin-reports')
+                    }
+                  >
+                    <img
+                      src={gtinreports}
+                      className="main-inside-image bg-white rounded-full"
+                      alt=""
+                    />
+                    <p className="sidebar-text">GTIN Reports</p>
                   </div>
 
                 </div>
