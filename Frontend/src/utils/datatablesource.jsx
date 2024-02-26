@@ -7723,3 +7723,83 @@ export const emailsettingDataColumn = (t, i18n) => [
     },
   },
 ];
+
+
+
+export const gtinReportsColumns = [
+  {
+    field: 'reporter_email',
+    headerName: 'Reporter',
+    width: 180,
+  },
+   {
+    field: 'report_barcode',
+    headerName: 'Barcode',
+    width: 180,
+  },
+  {
+    field: 'report_comment',
+    headerName: 'Comment',
+    width: 180,
+  },
+  {
+    field: "created_at",
+    headerName: "Date",
+    width: 180,
+    type: "dateTime",
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    },
+  },
+  {
+    field: 'report_action',
+    headerName: 'Reporter Action',
+    width: 180,
+  },
+  {
+    field: "report_images",
+    headerName: 'Report Image',
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.report_images)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.report_images), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+  {
+    field: 'report_status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.report_status === 1 ? 'green' : 'red',
+          color: params.row.report_status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.report_status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+  
+  
+  
+];

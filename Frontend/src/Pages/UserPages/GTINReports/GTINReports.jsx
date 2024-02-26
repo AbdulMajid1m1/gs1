@@ -8,52 +8,130 @@ import DropDownSelection from '../DropDownSelection/DropDownSelection';
 import Footer from '../../../components/Footer/Footer';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import newRequest from '../../../utils/userRequest';
+import Swal from 'sweetalert2';
 
 const GTINReports = () => {
   const { t, i18n } = useTranslation();
-  const [gtin, setGTIN] = useState("");
+  const [userSearch, setUserSearch] = useState('');
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  
-  const handleSearch = () => {
-    // 6281000000113-25 2023-batch01-01 2023-BSW220200512603
-    if (!gtin) {
-      toast.error("Please enter GTIN");
-      return;
-    }
-    setLoading(true);
-  
-    axios.post("https://gs1ksa.org/api/search/member/gtin", { gtin: gtin })
-      .then((response) => {
-        if (response.data?.gtinArr === undefined || Object.keys(response.data?.gtinArr).length === 0) {
-          toast.error("No data found");
-          setData(null);
-          setLoading(false);
-          return
-        }
-        console.log(response?.data);
-        setData(response?.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [typeComment, setTypeComment] = useState('');
+  const [gtinselection, setGtinselection] = useState('');
+  const [addProductLoader, setAddProductLoader] = useState(false);
+
+  const handleUserSearch = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromLocalDb?barcode=${userSearch}`);
+      console.log(response?.data);
+      setData(response?.data);
+      setIsLoading(false);
+    } 
+    catch (error) {
+      console.log(error);
+      if (error.response && error.response.status === 404) {
+        Swal.fire({
+          title: `${t('Product Not Found')}`,
+          text: `${t('Do you want to query in Global Database (GEPIR)?')}`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: `${t('Yes Search')}`,
+          cancelButtonText: `${t('Close')}`,
+          // changes the color of the confirm button to red
+          confirmButtonColor: '#021F69',
+          cancelButtonColor: '#FF693A',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${userSearch}`);
+              console.log(globalResponse?.data);
+              setData(globalResponse?.data);
+            } 
+            catch (globalError) {
+              console.log(globalError);
+              toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
+              setData(null);
+            }
+          }
+        });
+      } else {
+        toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
         setData(null);
-        toast.error("Something went wrong");
-        setLoading(false);
-      });
+      }
+      setIsLoading(false);
+
+    }
+  };
+  
+
+  const products = [
+    { name: `${t('GTIN')}`, value: data?.gtin },
+    { name: `${t('Brand Name')}`, value: data?.brandName },
+    { name: `${t('Product Description')}`, value: data?.productDescription },
+    { name:`${t('Product Image Url')}`, value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
+    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode },
+    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID },
+  { name: `${t('Type')}`, value: data?.type },
+
+]
+
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageChange = (event) => {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setSelectedImage(imageUrl);
+  };
+
+  const handleRemoveImage = () => {
+      setSelectedImage(null);
   };
 
 
-  const products = [
-    { name: "GTIN", value: data?.gtinArr?.gtin },
-    { name: i18n.language === "ar" ? `${t('Brand Name')}`: "Brand name", value: data?.gtinArr?.brandName },
-    { name: i18n.language === "ar" ? `${t('Product Description')}` : "Product description", value: data?.gtinArr?.productDescription },
-    { name: i18n.language === "ar" ? `${t('Product image URL')}` : "Product image URL", value: data?.gtinArr?.productImageUrl },
-    { name: i18n.language === "ar" ? `${t('Global product category')}` : "Global product category", value: data?.gtinArr?.gpcCategoryCode },
-    // check if data has unitcode then show value
-    { name: i18n.language === "ar" ? `${t('Net content')}` : "Net content", value: data?.gtinArr?.unitCode && data?.gtinArr?.unitValue && `${data?.gtinArr?.unitCode} ${data?.gtinArr?.unitValue}` },
-    { name: i18n.language === "ar" ? `${t('Country of Sale')}` : "Country of sale", value: data?.gtinArr?.countryOfSaleCode },
-  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setAddProductLoader(true);
+    console.log( email, typeComment, gtinselection, selectedImage)
+
+    const formData = new FormData();
+    formData.append('report_barcode', data?.gtin);
+    formData.append('report_comment', typeComment);
+    formData.append('report_action', gtinselection);
+    formData.append('report_status', 0);
+    formData.append('reporter_email', email);
+
+    // Append front image file
+    const imageInput = document.querySelector('#imageInput');
+    if (imageInput && imageInput.files && imageInput.files[0]) {
+        formData.append('report_images', imageInput.files[0]);
+    }
+
+    try {
+        const response = await newRequest.post(
+            '/gtinHelperReports',
+            formData
+        );
+
+        console.log(response);
+        setSelectedImage(null);
+        setTypeComment('');
+        setGtinselection('');
+        setEmail('');
+        setAddProductLoader(false);
+        toast.success(response?.data?.message || `${t('Product created Successfully')}`); 
+
+    }
+    catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.error || "Error");
+        setAddProductLoader(false);
+    }
+  };
+
 
 
   return (
@@ -68,41 +146,43 @@ const GTINReports = () => {
        </div>
 
        <div className='mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
-          <div className="">
+           <div className="">
+           <form onSubmit={handleUserSearch}>
               <div className='flex flex-col gap-2'>
-                <label className='text-secondary sm:text-2xl text-lg font-body'>Enter a barcode number/GTIN</label>
+                <label htmlFor='barcode' className='text-secondary sm:text-2xl text-lg font-body'>Enter a barcode number/GTIN</label>
                 <div className='flex sm:w-[60%] w-full'>
                   <input
+                    id="barcode"
                     type="text"
-                    name='gtin'
                     className="sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200"
                     placeholder='Search'
-                    value={gtin}
-                    onChange={(event) => setGTIN(event.target.value)}
+                    value={userSearch}
+                    onChange={(event) => setUserSearch(event.target.value)}
                   />
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#cd3c0d', color: '#ffffff' }}
-                    onClick={handleSearch}
-                    disabled={loading}
+                    type='submit'
+                    disabled={isLoading}
                     className="ml-2"
-                    endIcon={loading ? <CircularProgress size={24} color="inherit" /> : null}
+                    endIcon={isLoading ? <CircularProgress size={24} color="inherit" /> : null}
                   >
                     Search
                   </Button>
                 </div>
                 <p className='text-secondary text-base'>Example search: 628000000000</p>
               </div>
+            </form>
 
-              {data && data.gtinArr && (
+              {data && (
                 <div>
                   <div className='flex justify-end sm:px-40 px-10 py-10'>
                     <div style={{ height: "80px"}}>
                       <DataMatrixGenerator
-                        text={`${data?.gtinArr?.gtin} - ${data?.gtinArr?.brandName}`} 
-                      />
-                      <p className='text-sm text-secondary'>{data?.gtinArr?.gtin}</p>
-                      <p className='text-sm text-secondary'>{data?.gtinArr?.brandName}</p>
+                        text={`${data?.gtin} - ${data?.brandName}`} 
+                        />
+                      <p className='text-sm text-secondary'>{data?.gtin}</p>
+                      <p className='text-sm text-secondary'>{data?.brandName}</p>
                     </div>
                   </div>
 
@@ -112,20 +192,20 @@ const GTINReports = () => {
                         <p className="font-semibold"> {t('Complete Data')}</p>
                           <p>
                             {t('This number is registered to company')}: :{" "}
-                            <span className="font-semibold">{data?.gtinArr?.companyName}</span>
+                            <span className="font-semibold">{data?.companyName}</span>
                           </p>
                       </div>
                     </div>
                   </div>
 
                  <div className='text-center text-2xl font-medium text-secondary mb-2'>
-                    <p>{data?.gtinArr?.productDescription}</p>
+                    <p>{data?.productDescription}</p>
                  </div>
                  
                   <div className="flex flex-col md:flex-row border-[0.9px] border-gray-300">
                     <div className="w-full md:w-1/3 flex justify-center items-center p-4">
-                      {data?.gtinArr?.productImageUrl && (
-                        <img src={data.gtinArr.productImageUrl} alt="Product" className="w-1/2" />
+                      {data?.productImageUrl && (
+                        <img src={data?.productImageUrl} alt="Product" className="w-1/2" />
                       )}
                     </div>
 
@@ -148,12 +228,27 @@ const GTINReports = () => {
                   </div>
 
               
+              {/* Email Feild */}
+              <div className="w-full font-body sm:text-base text-sm mt-4">
+                <label htmlFor="email" className="text-secondary">Email <span className='text-red-500'>*</span></label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder='Email'
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
+                  />
+              </div>
+
               <div className="flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4">
                   <div className="w-full sm:h-28 font-body sm:text-base text-sm">
                     <label htmlFor="fields1" className="text-secondary">Write your comment here <span className='text-red-500'>*</span></label>
                       <textarea
                           type="text"
                           id="fields1"
+                          onChange={(e) => setTypeComment(e.target.value)}
+                          value={typeComment}
                           className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
                           />
                   </div>
@@ -163,17 +258,64 @@ const GTINReports = () => {
                       <select
                           type="text"
                           id="fields2"
+                          onChange={(e) => setGtinselection(e.target.value)}
+                          value={gtinselection}
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                           >
                           <option>-select-</option>
-                          <option>1</option>
+                          <option value="Product Photo is not correct">Product Photo is not correct</option>
+                          <option value="Product Description is not correct">Product Description is not correct</option>
+                          <option value="GPC Code is not correct">GPC Code is not correct</option>
+                          <option value="Net Contents is not correct">Net Contents is not correct</option>
+                          <option value="Brand Name is not correct">Brand Name is not correct</option>
+                          <option value="GTIN is not correct">GTIN is not correct</option>
                       </select>
                   </div>
               </div>
 
-              <div>
-                  <button className='bg-primary text-white px-3 py-2' type='button'>Take Photo of Item</button>
-              </div>
+            
+              <div className='flex flex-col justify-between'>
+                  <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
+                    <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
+                      <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
+                        Take Photo of Item
+                        <input
+                          type="file"
+                          id="imageInput"
+                          // accept="image/*"
+                          onChange={handleImageChange}
+                          style={{ display: 'none' }}
+                        />
+                      </label>
+                      </div>
+                        {selectedImage && (
+                          <div className='h-56 flex justify-center items-center object-contain w-auto'>
+                            <div className="absolute top-2 right-2">
+                              <button onClick={handleRemoveImage} className="text-red-500 text-2xl px-1 hover:bg-red-200 hover:rounded-md">
+                                  &times;
+                              </button>
+                           </div>
+                            <img src={selectedImage} className='h-56 w-56' alt="Selected Image" />
+                          </div>
+                        )}
+                    </div>
+
+                  <div className='flex justify-end'> 
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: '#cd3c0d', color: '#ffffff' }}
+                      onClick={handleSubmit}
+                      disabled={addProductLoader}
+                      className="ml-2"
+                      endIcon={addProductLoader ? <CircularProgress size={24} color="inherit" /> : null}
+                      >
+                      Add Gtin
+                    </Button>
+                  </div>
+                </div>
+                      
+
+            
 
             </div>
             )}
