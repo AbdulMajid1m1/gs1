@@ -739,15 +739,15 @@ model gtin_compliants {
 }
 
 model gtin_helper_reports {
-  id             BigInt    @id(map: "PK__gtin_hel__3213E83FEEB618AB") @default(autoincrement())
-  report_barcode String    @db.NVarChar(255)
-  report_comment String    @db.NVarChar(255)
-  report_action  String    @db.NVarChar(255)
-  report_images  String    @db.NVarChar(Max)
-  report_status  Int       @default(0, map: "DF_gtin_helper_reports_report_status")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  reporter_email String?   @db.VarChar(50)
+  id             String   @id @default(cuid())
+  report_barcode String   @db.NVarChar(255)
+  report_comment String   @db.NVarChar(255)
+  report_action  String   @db.NVarChar(255)
+  report_images  String   @db.NVarChar(Max)
+  report_status  Int      @default(0, map: "DF_gtin_helper_reports_report_status")
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  reporter_email String?  @db.VarChar(50)
 }
 
 model gtin_non_compliants {

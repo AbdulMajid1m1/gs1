@@ -35,6 +35,7 @@ export const getProducts = async (req, res, next) => {
             user_id: Joi.string(),
             gcpGLNID: Joi.string(),
             memberID: Joi.string(),
+            barcode: Joi.string(),
 
         };
 
