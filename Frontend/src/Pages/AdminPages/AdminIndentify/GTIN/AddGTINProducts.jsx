@@ -991,7 +991,7 @@ const AddGTINProducts = () => {
 
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                <label htmlFor="field10" className="text-secondary">GPC <span className='text-red-500 text-sm cursor-pointer' onClick={handleGpcPopUp}>(What is GPC?)</span></label>
+                                <label htmlFor="field10" className="text-secondary">GPC <span className='text-red-500 text-sm cursor-pointer' onClick={handleGpcPopUp}> {t('(What is GPC?)')}</span></label>
                                 <Autocomplete
                                     // id="field10"
                                     required

@@ -161,7 +161,7 @@ const StaffHelpDesk = () => {
               <div className="h-auto w-full p-3 bg-white shadow-xl rounded-md">
 
                 <div className='pt-3 px-3'>
-                  <label htmlFor='adminSearch' className='text-secondary'>Search Admin</label>
+                  <label htmlFor='adminSearch' className='text-secondary'> {t('Search Admin')} </label>
                     <Autocomplete
                       id="adminSearch"
                       required

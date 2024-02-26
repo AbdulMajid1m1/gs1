@@ -44,7 +44,7 @@ const HelpDesk = () => {
     <div>
         <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
           <div>
-            <AdminDashboardRightHeader title={'List of created tickets'} />
+            <AdminDashboardRightHeader title={`${t('List of created tickets')}`} />
           </div>
 
           <div className='flex justify-center items-center'>
@@ -55,7 +55,7 @@ const HelpDesk = () => {
                 <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                   <DataTable data={data}
-                    title={'List of created tickets'}
+                    title={`${t('List of created tickets')}`}
                     columnsName={staffAssignedTaskColumn(t)}
                     loading={isLoading}
                     secondaryColor="secondary"

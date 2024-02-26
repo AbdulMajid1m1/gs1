@@ -151,7 +151,7 @@ const VerifiedByGS1 = () => {
         <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         {/* <div className="p-3 h-full "> */}
         <div>
-          <AdminDashboardRightHeader title={'Verified By GS1'}/>
+          <AdminDashboardRightHeader title={`${t('Verified By GS1')}`} />
         </div>
 
         {/* Head  */}

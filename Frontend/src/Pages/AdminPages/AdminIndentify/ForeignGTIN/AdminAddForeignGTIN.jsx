@@ -76,7 +76,6 @@ const AdminAddForeignGTIN = () => {
       }
     };
     
-
     
     const products = [
         { name: `${t('GTIN')}`, value: data?.gtin },
