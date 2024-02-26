@@ -8,6 +8,7 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import SendEmailPopUp from './SendEmailPopUp';
 
 const AdminGtinReports = () => {
   const [gtinReports, setGtinReports] = useState([]);
@@ -49,6 +50,19 @@ const AdminGtinReports = () => {
           toast.error(err?.response?.data?.error || 'Error');
         }
       };
+
+    const [isAssignToPopUpVisible, setIsAssignToPopUpVisible] = useState(false);
+    const [assignUser, setAssignUser] = useState([]);
+    
+    const handleAssignToPopUp = (row) => {
+      setIsAssignToPopUpVisible(true);
+      console.log(row);
+      setAssignUser(row);
+      // set this data in session storage
+      // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+    
+    };
+    
     
   return (
     <div>
@@ -78,6 +92,13 @@ const AdminGtinReports = () => {
 
               },
               {
+                label: 'Email To Brand Owner',
+                icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                ,
+                action: handleAssignToPopUp,
+
+              },
+              {
                 label: `${t('Delete')}`,
                 icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
                 ,
@@ -91,6 +112,14 @@ const AdminGtinReports = () => {
 
           />
         </div>
+
+
+        {/* AssignTo component with handleShowDowngradePopup prop */}
+        {isAssignToPopUpVisible && (
+          <SendEmailPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}
+            fetchData={fetchData}
+          />
+        )}
 
       </div>
     </div>
