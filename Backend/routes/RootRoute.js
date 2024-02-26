@@ -37,6 +37,8 @@ import roleRoutes from './subRoutes/roleRoutes.js';
 
 import foreignGtinRoutes from './subRoutes/foreignGtinRoutes.js';
 
+import gtinHelperReportsRoutes from './subRoutes/gtinHelperReportsRoutes.js';
+
 const router = express.Router();
 
 
@@ -99,5 +101,7 @@ router.use('/permissions', permissionRoutes);
 router.use('/roles', roleRoutes);
 
 router.use('/foreignGtin', foreignGtinRoutes);
+
+router.use('/gtinHelperReports', gtinHelperReportsRoutes);
 
 export default router;
