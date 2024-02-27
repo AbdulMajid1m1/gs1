@@ -1140,7 +1140,7 @@ model member_documents {
   uploaded_by         String?
   no_of_years         Int      @default(1, map: "DF_member_documents_no_of_years")
   // point userId to users table
-  user                users    @relation(fields: [user_id], references: [id])
+  user                users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cron_job_check_time DateTime @default(now())
 }
 

@@ -941,103 +941,103 @@ export const getLicenseRegisteryUser = async (req, res) => {
     }
 };
 
-    export const getUserDetails = async (req, res, next) => {
-        try {
-            // Define allowable columns for filtering
-            const allowedColumns = {
-                id: Joi.string(),
-                user_type: Joi.string(),
-                slug: Joi.string(),
-                email: Joi.string().email(),
-                parent_memberID: Joi.string(),
-                status: Joi.string().valid('active', 'inactive'),
-                // ... define validation for other allowed columns
-            };
+export const getUserDetails = async (req, res, next) => {
+    try {
+        // Define allowable columns for filtering
+        const allowedColumns = {
+            id: Joi.string(),
+            user_type: Joi.string(),
+            slug: Joi.string(),
+            email: Joi.string().email(),
+            parent_memberID: Joi.string(),
+            status: Joi.string().valid('active', 'inactive'),
+            // ... define validation for other allowed columns
+        };
 
-            // Create a dynamic schema based on the allowed columns
-            const filterSchema = Joi.object(
-                Object.keys(allowedColumns).reduce((schema, column) => {
-                    schema[column] = allowedColumns[column];
-                    return schema;
-                }, {})
-            ).unknown(false); // Disallows any keys that are not defined in the schema
+        // Create a dynamic schema based on the allowed columns
+        const filterSchema = Joi.object(
+            Object.keys(allowedColumns).reduce((schema, column) => {
+                schema[column] = allowedColumns[column];
+                return schema;
+            }, {})
+        ).unknown(false); // Disallows any keys that are not defined in the schema
 
-            // Validate the request query
-            const { error, value } = filterSchema.validate(req.query);
-            if (error) {
-                return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
-            }
-
-            // Check if any filter conditions are provided
-            const hasFilterConditions = Object.keys(value).length > 0;
-
-            // Construct filter conditions for Prisma query
-            const filterConditions = hasFilterConditions
-                ? Object.keys(value).reduce((obj, key) => {
-                    obj[key] = value[key];
-                    return obj;
-                }, {})
-                : {};
-
-            // Start a transaction to fetch users and their carts
-            // if there is no filter conditions, fetch all users without carts
-            if (!hasFilterConditions) {
-                const users = await prisma.users.findMany({
-                    where: filterConditions,
-                    orderBy: { updated_at: 'desc' },
-                });
-
-                //sort the users by updated_at
-
-
-
-
-
-                return res.json(users);
-            }
-            const [users, allCarts] = await prisma.$transaction(async (prisma) => {
-                // Fetch users based on filter conditions
-                const users = await prisma.users.findMany({
-                    where: filterConditions,
-                    orderBy: { updated_at: 'desc' },
-                    // get top 10
-                    // take: 10
-                });
-
-                // If no users are found, return early
-                if (users.length === 0) {
-                    return [users, []];
-                }
-
-                // Fetch all carts for these users in one query
-                const userIds = users.map(user => user.id);
-                const allCarts = await prisma.carts.findMany({
-                    where: {
-                        user_id: { in: userIds }
-                    }
-                });
-                // sort the users by updated_at
-
-
-
-                return [users, allCarts];
-
-
-            }, { timeout: 50000 });
-
-            // Map carts to their respective users
-            const usersWithCarts = users.map(user => ({
-                ...user,
-                carts: allCarts.filter(cart => cart.user_id == user.id)
-            }));
-
-
-            return res.json(usersWithCarts);
-        } catch (error) {
-            console.log(error);
-            next(error);
+        // Validate the request query
+        const { error, value } = filterSchema.validate(req.query);
+        if (error) {
+            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
         }
-    };
+
+        // Check if any filter conditions are provided
+        const hasFilterConditions = Object.keys(value).length > 0;
+
+        // Construct filter conditions for Prisma query
+        const filterConditions = hasFilterConditions
+            ? Object.keys(value).reduce((obj, key) => {
+                obj[key] = value[key];
+                return obj;
+            }, {})
+            : {};
+
+        // Start a transaction to fetch users and their carts
+        // if there is no filter conditions, fetch all users without carts
+        if (!hasFilterConditions) {
+            const users = await prisma.users.findMany({
+                where: filterConditions,
+                orderBy: { updated_at: 'desc' },
+            });
+
+            //sort the users by updated_at
+
+
+
+
+
+            return res.json(users);
+        }
+        const [users, allCarts] = await prisma.$transaction(async (prisma) => {
+            // Fetch users based on filter conditions
+            const users = await prisma.users.findMany({
+                where: filterConditions,
+                orderBy: { updated_at: 'desc' },
+                // get top 10
+                // take: 10
+            });
+
+            // If no users are found, return early
+            if (users.length === 0) {
+                return [users, []];
+            }
+
+            // Fetch all carts for these users in one query
+            const userIds = users.map(user => user.id);
+            const allCarts = await prisma.carts.findMany({
+                where: {
+                    user_id: { in: userIds }
+                }
+            });
+            // sort the users by updated_at
+
+
+
+            return [users, allCarts];
+
+
+        }, { timeout: 50000 });
+
+        // Map carts to their respective users
+        const usersWithCarts = users.map(user => ({
+            ...user,
+            carts: allCarts.filter(cart => cart.user_id == user.id)
+        }));
+
+
+        return res.json(usersWithCarts);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
 
 
 export const getUsersWithAssignTo = async (req, res, next) => {
@@ -1820,6 +1820,7 @@ export const deleteUser = async (req, res, next) => {
         if (error.message.includes('Record to delete does not exist')) {
             return next(createError(404, 'User not found'));
         }
+        console.error(error);
         next(error);
     }
 };
