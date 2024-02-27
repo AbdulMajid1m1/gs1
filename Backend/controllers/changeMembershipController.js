@@ -859,8 +859,6 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             });
 
 
-
-
             // Send email with optional reject reason
             await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
         }

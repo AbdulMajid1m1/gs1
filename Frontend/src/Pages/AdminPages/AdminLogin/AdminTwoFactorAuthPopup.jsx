@@ -56,7 +56,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
         return () => {
             newSocket.disconnect();
         };
-    }, [isVisible, adminId, t, navigate]);
+    }, [isVisible, adminId, navigate]);
 
     useEffect(() => {
         let intervalId;

@@ -23,6 +23,8 @@ export const getAllgtinProducts = async (req, res, next) => {
 };
 
 
+
+
 export const getGtinSubscriptions = async (req, res, next) => {
     try {
         // Define allowable columns for filtering
