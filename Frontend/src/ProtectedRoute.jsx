@@ -13,14 +13,14 @@ const ProtectedRoute = ({ children, requiredPermission }) => {
     }
 
     if (!permissions.includes(requiredPermission)) {
-        // Only show the toast if it hasn't been shown before
-        if (!toastShownRef.current) {
+        const toastShownKey = `toastShown_${requiredPermission}`;
+        if (!sessionStorage.getItem(toastShownKey)) {
             toast.error(`You don't have permission ${requiredPermission} to access this page`);
-            toastShownRef.current = true; // Mark the toast as shown
+            sessionStorage.setItem(toastShownKey, 'true');
         }
-        // Redirect user or show an unauthorized component
         return <Navigate to="/admin/dashboard" />;
     }
+    
 
     return children;
 };

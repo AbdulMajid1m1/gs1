@@ -666,7 +666,6 @@ function mapMemberToNewUser(member) {
         gcp_expiry: null,
         member_type: 'old',
         remarks: 'Pending Invoice', // Default value
-        assign_to: 0, // Default value
         membership_category: '',
         upgradation_disc: 0, // Default value
         upgradation_disc_amount: 0.0, // Default value
