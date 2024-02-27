@@ -7743,6 +7743,26 @@ export const gtinReportsColumns = [
     width: 180,
   },
   {
+    field: 'report_status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.report_status === 1 ? 'green' : 'red',
+          color: params.row.report_status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.report_status === 1 ? 'completed' : 'pending'}
+      </div>
+    ),
+  },
+  {
     field: "created_at",
     headerName: "Date",
     width: 180,
@@ -7778,26 +7798,6 @@ export const gtinReportsColumns = [
         }}
       />
     )
-  },
-  {
-    field: 'report_status',
-    headerName: 'Status',
-    width: 120,
-    renderCell: params => (
-      <div
-        style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
-          border: '2px solid',
-          borderColor: params.row.report_status === 1 ? 'green' : 'red',
-          color: params.row.report_status === 1 ? 'green' : 'red',
-        }}
-      >
-        {params.row.report_status === 1 ? 'Active' : 'Inactive'}
-      </div>
-    ),
   },
   
   

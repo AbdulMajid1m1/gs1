@@ -3,6 +3,8 @@ import DataTable from '../../../../../components/Datatable/Datatable'
 import newRequest from '../../../../../utils/userRequest'
 import { gtinReportsColumns } from '../../../../../utils/datatablesource'
 import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PendingIcon from '@mui/icons-material/Pending';
 import DeleteIcon from "@mui/icons-material/Delete";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
@@ -17,6 +19,7 @@ const AdminGtinReports = () => {
 
 
   const fetchData = async () => {
+    setGtinReportsLoader(true);
     try {
       const response = await newRequest.get('/gtinHelperReports');
       console.log(response.data);
@@ -57,12 +60,73 @@ const AdminGtinReports = () => {
     const handleAssignToPopUp = (row) => {
       setIsAssignToPopUpVisible(true);
       console.log(row);
-      setAssignUser(row);
-      // set this data in session storage
-      // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
-    
+      setAssignUser(row);  
     };
     
+
+    const filterDropdownOptions = (row, dropDownOptions) => {
+      let filteredOptions = dropDownOptions;
+      
+      // Check if the row's report_status is 0 or 1
+      if (row.report_status === 0) {
+        // If report_status is 0, keep only the "Mark as Completed" option
+        filteredOptions = dropDownOptions.filter(option => option.label === 'Mark as Completed');
+      } else {
+        // If report_status is 1, keep only the "Mark as Pending" option
+        filteredOptions = dropDownOptions.filter(option => option.label === 'Mark as Pending');
+      }
+      
+      // Always include "Email To Brand Owner" and "Delete" options
+      filteredOptions.push(
+        {
+          label: 'Email To Brand Owner',
+          icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />,
+          action: handleAssignToPopUp,
+        },
+        {
+          label: `${t('Delete')}`,
+          icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />,
+          action: handleDelete,
+        }
+      );
+    
+      return filteredOptions;
+    };
+    
+    
+    // Mark As complete function
+    const handleStatusChanged = async (row) => {
+      console.log(row);
+    
+      // Determine the new status based on the current status
+      const newStatus = row.report_status === 0 ? 1 : 0;
+    
+      const formData = new FormData();
+      formData.append('report_barcode', row.report_barcode);
+      formData.append('report_comment', row.report_comment);
+      formData.append('report_action', row.report_action);
+      formData.append('report_status', newStatus);
+      formData.append('reporter_email', row.reporter_email);
+      // formData.append('report_images', row.report_images);
+    
+      try {
+        // Send the PUT request with the FormData
+        const response = await newRequest.put(`/gtinHelperReports/${row?.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
+          },
+        });
+        toast.success('GTIN Report status change successfully.')
+        console.log(response.data);
+        fetchData();
+       
+      } catch (err) {
+        console.log(err);
+        toast.error('Error on changing status');
+      }
+    }
+    
+ 
     
   return (
     <div>
@@ -82,14 +146,18 @@ const AdminGtinReports = () => {
             globalSearch={true}
             // handleRowClickInParent={handleRowClickInParent}
             uniqueId="members_gtin_reports"
+            getFilteredOptions={filterDropdownOptions}
 
             dropDownOptions={[
               {
-                label: 'Edit',
-                icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                ,
-                // action: handleOpen,
-
+                label: 'Mark as Completed',
+                icon: <CheckCircleIcon fontSize="small" color="action" style={{ color: "green" }} />,
+                action: handleStatusChanged,
+              },
+              {
+                label: 'Mark as Pending',
+                icon: <PendingIcon fontSize="small" color="action" style={{ color: "orange" }} />,
+                action: handleStatusChanged,
               },
               {
                 label: 'Email To Brand Owner',
