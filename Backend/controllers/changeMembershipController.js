@@ -33,6 +33,7 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
                 gtin_product: true, // Fetch gtin_product details
             },
         });
+        console.log("oldSubscription", oldSubscription);
 
         const user = await prisma.users.findUnique({
             where: { id: userId },
@@ -1190,7 +1191,10 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
         await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
         await updateUserPendingInvoiceStatus(result.user.id);
-        res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
+        // make conditionaal rendering for email
+        res.status(200).json({
+            message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created` + (result?.email ? ` and sent to ${result.email} successfully` : "")
+        });
     } catch (error) {
         console.error(error);
         next(error);
@@ -2232,6 +2236,10 @@ export const approveMembershipRequest = async (req, res, next) => {
         });
 
 
+
+        //  use calculateSubscriptionPrice function to calculate the price
+        const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
+        //    insert new record in gtin_subcriptions table with new subscription
         const updateResponse = await prisma.gtin_subcriptions.updateMany({
             // update based on the transaction ID
             where: {
@@ -2248,9 +2256,8 @@ export const approveMembershipRequest = async (req, res, next) => {
         if (!updateResponse) {
             throw createError(404, 'GTIN subscription not found for the user');
         }
-        //  use calculateSubscriptionPrice function to calculate the price
-        const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
-        //    insert new record in gtin_subcriptions table with new subscription
+
+
 
         await prisma.gtin_subcriptions.create({
             data: {
@@ -2718,7 +2725,8 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
         await updateUserPendingInvoiceStatus(result.user.id);
 
-        res.status(200).json({ message: `Downgrade Subscription invoice created & sent to ${result} successfully` });
+        res.status(200).json({ message: `Downgrade Subscription invoice created + (result?.user?.email ? '& sent to ' + result?.user?.email : '')` });
+
     } catch (error) {
         console.error(error);
         next(error);

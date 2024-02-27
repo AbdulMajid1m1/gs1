@@ -19,6 +19,9 @@ const AdminUpdateGLN = () => {
     // const memberDataString = sessionStorage.getItem('memberData');
     // const memberData = JSON.parse(memberDataString);
     // console.log(memberData);
+    const selectedAddGtinData = sessionStorage.getItem('selectedAddGlnData');
+    const SelectedData = JSON.parse(selectedAddGtinData);
+    // console.log(SelectedData);
     const glnDataString = sessionStorage.getItem('glnData');
     const glnData = JSON.parse(glnDataString);
     // console.log(glnData);
@@ -310,13 +313,13 @@ const AdminUpdateGLN = () => {
                   <p>
                     {i18n.language === 'ar' ? (
                       <>
-                          <span className="font-semibold">Hasnain, Majid</span>
+                          <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                         :: {t('This number is registered to company')}
                       </>
                     ) : (
                       <>
                         {t('This number is registered to company')}: :{" "}
-                       <span className="font-semibold">Hasnain, Majid</span>
+                       <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                       </>
                     )}
                             {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}

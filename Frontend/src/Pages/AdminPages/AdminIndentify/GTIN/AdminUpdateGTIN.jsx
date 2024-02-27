@@ -19,6 +19,10 @@ const AdminUpdateGTIN = () => {
     // const memberDataString = sessionStorage.getItem('memberData');
     // const memberData = JSON.parse(memberDataString);
     // console.log(memberData);
+    // get the sessionRow data
+    const selectedAddGtinData = sessionStorage.getItem('selectedAddGtinData');
+    const SelectedData = JSON.parse(selectedAddGtinData);
+    // console.log(SelectedData);
     const [isLoading, setIsLoading] = useState(false);
     const [barcode, setBarcode] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
@@ -646,7 +650,7 @@ const AdminUpdateGTIN = () => {
                                     <p className="font-semibold">{t('Complete Data')}</p>
                                     <p>
                                         {t('This number is registered to company')}: :{" "}
-                                        <span className="font-semibold">{productNameEnglish}</span>
+                                        <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                                         {/* <span className="font-semibold">Hasnain, Majid</span> */}
                                     </p>
                                 </div>

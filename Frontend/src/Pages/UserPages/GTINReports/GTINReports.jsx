@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import newRequest from '../../../utils/userRequest';
 import Swal from 'sweetalert2';
+import { GtinDataMatrixGenerator } from '../../../utils/Barcodes/GtinReportsDataMatrix';
 
 const GTINReports = () => {
   const { t, i18n } = useTranslation();
@@ -177,8 +178,8 @@ const GTINReports = () => {
               {data && (
                 <div>
                   <div className='flex justify-end sm:px-40 px-10 py-10'>
-                    <div style={{ height: "80px"}}>
-                      <DataMatrixGenerator
+                    <div style={{ height: "120px"}}>
+                      <GtinDataMatrixGenerator
                         text={`${data?.gtin} - ${data?.brandName}`} 
                         />
                       <p className='text-sm text-secondary'>{data?.gtin}</p>

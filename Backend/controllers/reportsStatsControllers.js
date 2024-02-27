@@ -151,7 +151,7 @@ export const getAdminActivityReport = async (req, res, next) => {
         const { error, value } = Joi.object({
             startDate: dateSchema.required(),
             endDate: dateSchema.required(),
-            admin_id: Joi.number().required(),
+            admin_id: Joi.string().required(),
 
         }).validate(req.body); // Use req.body instead of req.query
 
@@ -170,6 +170,8 @@ export const getAdminActivityReport = async (req, res, next) => {
                 gte: new Date(startDate),
                 lte: new Date(endDate),
             },
+            // if admin_id is not provided, it will be ignored
+            ...(value.admin_id && { admin_id: value.admin_id }),
         };
 
         // Fetch data from both tables
