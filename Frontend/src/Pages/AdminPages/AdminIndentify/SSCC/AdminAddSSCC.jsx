@@ -261,8 +261,8 @@ const AdminAddSSCC = () => {
                   <p className="font-semibold">{t('Complete Data')}</p>
                   <p>
                     {t('This number is registered to company')}: :{" "}
-                    {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
-                    <span className="font-semibold">Hasnain, Majid</span>
+                    <span className="font-semibold">{SelectedData?.company_name_eng}</span>
+                    {/* <span className="font-semibold">Hasnain, Majid</span> */}
                   </p>
                 </div>
               </div>

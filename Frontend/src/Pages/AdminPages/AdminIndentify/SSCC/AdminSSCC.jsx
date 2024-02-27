@@ -167,6 +167,10 @@ const AdminSSCC = () => {
 
     const handleAddSSCC = (row) => {
       // console.log(row);
+      if (!allSearchMemberDetails) {
+        toast.error(`${t('Please select a member first')}!`);
+        return;
+      }
       navigate('/admin/admin-addsscc')
       sessionStorage.setItem("selectedAddSSCCData", JSON.stringify(allSearchMemberDetails));
     }
