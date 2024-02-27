@@ -310,13 +310,13 @@ const UpdateGLN = () => {
                   <p>
                     {i18n.language === 'ar' ? (
                       <>
-                          <span className="font-semibold">Hasnain, Majid</span>
+                          <span className="font-semibold">{memberData?.company_name_eng}</span>
                         :: {t('This number is registered to company')}
                       </>
                     ) : (
                       <>
                         {t('This number is registered to company')}: :{" "}
-                       <span className="font-semibold">Hasnain, Majid</span>
+                       <span className="font-semibold">{memberData?.company_name_eng}</span>
                       </>
                     )}
                             {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}

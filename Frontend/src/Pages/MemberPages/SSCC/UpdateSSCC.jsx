@@ -316,7 +316,7 @@ const UpdateSSCC = () => {
                     <p className='sm:text-2xl text-sm font-body'>Update SSCC</p>
                 </div> */}
                  <div>
-                   <DashboardRightHeader title={`${t('Add SSCC')}`}/>
+                   <DashboardRightHeader title={`${t('Update SSCC')}`}/>
                 </div>
 
             <div className='h-auto w-full px-0 pt-2 shadow-xl'>
