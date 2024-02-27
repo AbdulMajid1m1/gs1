@@ -7730,7 +7730,7 @@ export const gtinReportsColumns = [
   {
     field: 'reporter_email',
     headerName: 'Reporter',
-    width: 180,
+    width: 220,
   },
    {
     field: 'report_barcode',
