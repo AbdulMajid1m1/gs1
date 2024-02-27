@@ -4,8 +4,10 @@ import { useState } from 'react';
 import newRequest from '../../../../utils/userRequest';
 import { SnackbarContext } from '../../../../Contexts/SnackbarContext';
 import DataTable from '../../../../components/Datatable/Datatable';
+import { useTranslation } from 'react-i18next';
 
 const AdminMiscellaneous = () => {
+  const { t, i18n } = useTranslation();
     const [selectedOption, setSelectedOption] = useState("customs-tariff");
     const [safetyInformation, setSafetyInformation] = useState([]);
     const [recipe, setRecipe] = useState([]);
@@ -86,34 +88,10 @@ const AdminMiscellaneous = () => {
     switch (selectedOption) {
       case "customs-tariff":
         return (
-         <div>
-              <DataTable
-                data={safetyInformation}
-                title={"Customs Tariff"}
-                secondaryColor="secondary"
-                // columnsName={SafetyInformationColumn}
-                checkboxSelection="disabled"
-                // backButton={false}
-                // dropDownOptions={[
-                // {
-                //     label: "Delete",
-                //     icon: (
-                //     <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
-                //     ),
-                //     action: handleDelete,
-                // },
-                // ]}
-            />
-         </div>
-        );
-
-     
-      case "Suggested-Retail-Price":
-        return (
-            <div>
+          <div>
             <DataTable
               data={safetyInformation}
-              title={"Sugguest Retail Price"}
+              title={`${t("Customs Tariff")}`}
               secondaryColor="secondary"
               // columnsName={SafetyInformationColumn}
               checkboxSelection="disabled"
@@ -127,8 +105,32 @@ const AdminMiscellaneous = () => {
               //     action: handleDelete,
               // },
               // ]}
-          />
-       </div>
+            />
+          </div>
+        );
+
+     
+      case "Suggested-Retail-Price":
+        return (
+          <div>
+            <DataTable
+              data={safetyInformation}
+              title={`${t("Sugguest Retail Price")}`}
+              secondaryColor="secondary"
+              // columnsName={SafetyInformationColumn}
+              checkboxSelection="disabled"
+              // backButton={false}
+              // dropDownOptions={[
+              // {
+              //     label: "Delete",
+              //     icon: (
+              //     <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
+              //     ),
+              //     action: handleDelete,
+              // },
+              // ]}
+            />
+          </div>
         );
 
         case "Other-Importers":
@@ -136,7 +138,7 @@ const AdminMiscellaneous = () => {
             <div>
             <DataTable
               data={safetyInformation}
-              title={"Other Importers"}
+              title={`${t("Other Importers")}`}
               secondaryColor="secondary"
               // columnsName={SafetyInformationColumn}
               checkboxSelection="disabled"
@@ -161,50 +163,42 @@ const AdminMiscellaneous = () => {
 
 
   return (
-    <div className='flex justify-between gap-2 w-full'>
-        <div className='w-[25%] flex flex-col gap-2 mt-3'>
-            <span
-                className={`bg-[#3b5998] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer 
+    <div className="flex justify-between gap-2 w-full">
+      <div className="w-[25%] flex flex-col gap-2 mt-3">
+        <span
+          className={`bg-[#3b5998] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer 
                 }`}
-                onClick={() => handleOptionChange("customs-tariff")}
-            >
-            <img
-                src={gtrackIcon}
-                className="w-5 h-5 ml-1"
-                alt=""
-            />
-                Customs Tariff
-            </span>
-            
-            <span
-                className={`bg-[#00acee] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${selectedOption === "Suggested-Retail-Price" ? "bg-yellow-500" : ""
-                }`}
-                onClick={() => handleOptionChange("Suggested-Retail-Price")}
-            >
-            <img
-                src={gtrackIcon}
-                className="w-5 h-5 ml-1"
-                alt=""
-            />
-                Suggested Retail Price
-            </span>
-            
-            <span
-                className={`bg-[#0072b1] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${selectedOption === "Other-Importers" ? "bg-yellow-500" : ""
-                }`}
-                onClick={() => handleOptionChange("Other-Importers")}
-            >
-            <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
-                Other Importers
-            </span>
+          onClick={() => handleOptionChange("customs-tariff")}
+        >
+          <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+          {t("Customs Tariff")}
+        </span>
 
-        </div>
+        <span
+          className={`bg-[#00acee] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${
+            selectedOption === "Suggested-Retail-Price" ? "bg-yellow-500" : ""
+          }`}
+          onClick={() => handleOptionChange("Suggested-Retail-Price")}
+        >
+          <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+          {t("Sugguest Retail Price")}
+        </span>
 
-        {/* All Datagird Display on the right side */}
-        <div className="sm:w-[75%] w-full">{renderDataGrid()}</div>
+        <span
+          className={`bg-[#0072b1] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${
+            selectedOption === "Other-Importers" ? "bg-yellow-500" : ""
+          }`}
+          onClick={() => handleOptionChange("Other-Importers")}
+        >
+          <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+          {t("Other Importers")}
+        </span>
+      </div>
 
+      {/* All Datagird Display on the right side */}
+      <div className="sm:w-[75%] w-full">{renderDataGrid()}</div>
     </div>
-  )
+  );
 }
 
 export default AdminMiscellaneous
