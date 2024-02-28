@@ -267,12 +267,12 @@ const OldInActiveMembers = () => {
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  Old GTIN: {oldGtinProuductCount}
+                   {t('Old GTIN')}: {oldGtinProuductCount}
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                  Old GLN: {oldGlnProuductCount}
+                   {t('Old GLN')}: {oldGlnProuductCount}
                 </button>
 
               </div>

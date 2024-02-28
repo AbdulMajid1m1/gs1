@@ -130,22 +130,27 @@ const AdminGtinReports = () => {
     
   return (
     <div>
-      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
+      <div
+        className={`p-0 h-full ${
+          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+        }`}
+      >
         <div>
-          <AdminDashboardRightHeader
-            title={'GTIN Reports'}
-          />
+          <AdminDashboardRightHeader title={t("GTIN Reports")} />
         </div>
 
-        <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
-
-          <DataTable data={gtinReports} title={'GTIN Reports'} columnsName={gtinReportsColumns}
+        <div style={{ marginLeft: "-0px", marginRight: "-0px" }}>
+          <DataTable
+            data={gtinReports}
+            title={t("GTIN Reports")}
+            columnsName={gtinReportsColumns(t)}
             loading={gtinReportsLoader}
             checkboxSelection="disabled"
             secondaryColor="secondary"
             globalSearch={true}
             // handleRowClickInParent={handleRowClickInParent}
             uniqueId="members_gtin_reports"
+<<<<<<< HEAD
             getFilteredOptions={filterDropdownOptions}
 
             dropDownOptions={[
@@ -165,21 +170,31 @@ const AdminGtinReports = () => {
                 ,
                 action: handleAssignToPopUp,
 
+=======
+            dropDownOptions={[
+              {
+                label: `${t("Edit")}`,
+                icon: (
+                  <EditIcon
+                    fontSize="small"
+                    color="action"
+                    style={{ color: "rgb(37 99 235)" }}
+                  />
+                ),
+                // action: handleOpen,
+>>>>>>> 52bd67cabfa9387197992fa56a5be644ca6e6446
               },
               {
-                label: `${t('Delete')}`,
-                icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
-                ,
+                label: `${t("Delete")}`,
+                icon: (
+                  <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
+                ),
                 action: handleDelete,
-              }
-
-
-
+              },
             ]}
-
-
           />
         </div>
+<<<<<<< HEAD
 
 
         {/* AssignTo component with handleShowDowngradePopup prop */}
@@ -189,9 +204,11 @@ const AdminGtinReports = () => {
           />
         )}
 
+=======
+>>>>>>> 52bd67cabfa9387197992fa56a5be644ca6e6446
       </div>
     </div>
-  )
+  );
 }
 
 export default AdminGtinReports

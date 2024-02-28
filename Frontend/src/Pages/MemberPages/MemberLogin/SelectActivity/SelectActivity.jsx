@@ -146,7 +146,7 @@ const SelectActivity = () => {
                                                 }}
                                                 className={`bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  ${i18n.language === 'ar' ? ' text-right' : 'text-left'
                                                     }`}
-                                                placeholder="CR Activities"
+                                                placeholder={`${t('CR Activities')}`}
                                             // required
                                             />
                                         )}

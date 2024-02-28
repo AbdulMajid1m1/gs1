@@ -283,14 +283,14 @@ app.get('/translations_table', async (req, res, next) => {
         next(error);
     }
 });
-app.put('/translations/:LanguageID', async (req, res, next) => {
+app.put('/translations/:id', async (req, res, next) => {
     try {
         const languageSchema = Joi.object({
             value: Joi.string().required(),
         });
 
         const schema = Joi.object({
-            LanguageID: Joi.number().required(),
+            id: Joi.string().required(),
         });
 
         const {
@@ -301,7 +301,7 @@ app.put('/translations/:LanguageID', async (req, res, next) => {
         }
 
         const {
-            LanguageID
+            id
         } = req.params;
 
         const {
@@ -316,7 +316,7 @@ app.put('/translations/:LanguageID', async (req, res, next) => {
         } = req.body;
         const updatedTranslation = await prisma.languages.update({
             where: {
-                LanguageID: parseInt(LanguageID), // Assuming "key" is the correct field to identify the record
+                id: id, // Assuming "key" is the correct field to identify the record
             },
             data: {
                 value: value,
