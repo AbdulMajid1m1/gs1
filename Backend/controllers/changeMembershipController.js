@@ -1686,7 +1686,13 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
         await updateUserPendingInvoiceStatus(result.user.id);
 
-        res.status(200).json({ message: `Add GLN invoice created & sent to ${result} successfully` });
+        try {
+            res.status(200).json({ message: 'Add GLN invoice created' + (result?.email ? ` and sent to ${result.email} successfully` : '') });
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+
     } catch (error) {
         console.error(error);
         next(error);

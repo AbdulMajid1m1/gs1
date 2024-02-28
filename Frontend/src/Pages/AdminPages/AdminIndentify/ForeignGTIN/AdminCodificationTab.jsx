@@ -5,8 +5,10 @@ import axios from 'axios';
 import { DotLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const AdminCodificationTab = ({ gs1ProductData }) => {
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const [subOpen, setSubOpen] = useState(false);
   const [thirdOpen, setThirdOpen] = useState(false);
@@ -17,8 +19,8 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
   const [isLoading, setIsLoading] = useState(false);
   // gs1ProductData get the product session data
   // const gs1ProductData = JSON.parse(sessionStorage.getItem("gs1ProductData"));
-//   console.log(gs1ProductData);
-//   console.log(gs1ProductData?.gpc)
+  //   console.log(gs1ProductData);
+  //   console.log(gs1ProductData?.gpc)
   // const number = gs1ProductData.split("-")[0];
   // console.log(number);
 
@@ -135,7 +137,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       // Handle the response data from the first API call as needed
       .catch((err) => {
         console.log(err);
-        toast.error(err?.response?.data?.message ?? "something went wrong!");
+        toast.error(err?.response?.data?.message ?? `${t('Something went wrong!')}`);
         setGpcData([]);
         setIsLoading(false);
       });
@@ -155,7 +157,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error?.response?.data?.message ?? "something went wrong!");
+        toast.error(error?.response?.data?.message ?? `${t('Something went wrong!')}`);
         setIsLoading(false);
       })
   }
@@ -173,7 +175,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error?.response?.data?.message ?? "something went wrong!");
+        toast.error(error?.response?.data?.message ?? `${t('Something went wrong!')}`);
         setIsLoading(false);
       })
   }
@@ -199,27 +201,27 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
 
         break;
 
-        case "OTHER":
-          setIsLoading(true);
-            axios.post('https://gs1ksa.org/api/GROUTE/find/brick/by/hs/name', {
-                 "hs_name": selectedRow?.ItemEnglishName
-              // "hs_name": "Pineapples" // this is a test
-            })
-              .then((response) => {
-                console.log(response?.data)
-                setOthers(response?.data)
-                setIsLoading(false);
-              })
-              .catch((error) => {
-                console.log(error);
-                // openSnackbar(
-                //   error?.response?.data?.message ?? "something went wrong!",
-                //   "error"
-                // );
-                toast.error(error?.response?.data?.message ?? "something went wrong!");
-                setIsLoading(false);
-              })
-          break;
+      case "OTHER":
+        setIsLoading(true);
+        axios.post('https://gs1ksa.org/api/GROUTE/find/brick/by/hs/name', {
+          "hs_name": selectedRow?.ItemEnglishName
+          // "hs_name": "Pineapples" // this is a test
+        })
+          .then((response) => {
+            console.log(response?.data)
+            setOthers(response?.data)
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.log(error);
+            // openSnackbar(
+            //   error?.response?.data?.message ??  `${t('Something went wrong!')}`,
+            //   "error"
+            // );
+            toast.error(error?.response?.data?.message ?? `${t('Something went wrong!')}`);
+            setIsLoading(false);
+          })
+        break;
 
       // Add more cases for other options
       default:
@@ -243,29 +245,24 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       case "GS1-GPC":
         return (
           <div>
-            <div className='flex gap-2 w-full'>
+            <div className="flex gap-2 w-full">
               <span
                 className={`bg-[#00acee] w-full py-2 flex justify-center px-1 rounded-md text-white items-center gap-2 cursor-pointer
                     `}
                 onClick={() => handleOptionChange("GS1-GPC")}
               >
-                <img
-                  src={gtrackIcon}
-                  className="w-5 h-5 ml-1"
-                  alt=""
-                />
-                Global Product Classification (GPC)
+                <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+                Global Product Classification (GPC) {t("Complete")}
               </span>
               <span
                 className={`bg-[#00acee] w-full py-2 flex justify-center px-1 rounded-md items-center gap-2 cursor-pointer`}
               >
-                <img
-                  src={gtrackIcon}
-                  className="w-5 h-5 ml-1"
-                  alt=""
-                />
-                <select className='bg-[#00acee] w-full text-white' onChange={handleBrickChange}>
-                  <option value="">GPC Bricks Title</option>
+                <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+                <select
+                  className="bg-[#00acee] w-full text-white"
+                  onChange={handleBrickChange}
+                >
+                  <option value=""> {t("GPC Bricks Title")}</option>
                   {uniqueGPCBricks(gpcBricks)?.map((brick, index) => (
                     <option key={index} value={brick.BrickTitle}>
                       {brick.BrickTitle}
@@ -274,70 +271,74 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
                 </select>
               </span>
             </div>
-            <ul className='h-[80vh] w-full'>
+            <ul className="h-[80vh] w-full">
               <li>
                 <Link
                   // href="#"
                   onClick={toggleOpen}
-                  className={`flex items-center px-4 hover:bg-secondary-100 focus:text-primary active:text-primary ${open ? 'text-primary' : ''}`}
+                  className={`flex items-center px-4 hover:bg-secondary-100 focus:text-primary active:text-primary ${open ? "text-primary" : ""
+                    }`}
                 >
-                  {open ? (
-                    <FaAngleDown />
-                  ) : (
-                    <FaAngleRight />
-                  )}
-                  <h1 className='font-bold'>Segment: </h1> {gpcData?.data?.SegmentTitle}
+                  {open ? <FaAngleDown /> : <FaAngleRight />}
+                  <h1 className="font-bold"> {t("Segment")}: </h1>{" "}
+                  {gpcData?.data?.SegmentTitle}
                 </Link>
-                <ul className={`ml-6 ${open ? 'block' : 'hidden'}`}>
-                  <li className="px-2 hover:bg-secondary-100">{gpcData?.data?.SegmentCode}</li>
+                <ul className={`ml-6 ${open ? "block" : "hidden"}`}>
+                  <li className="px-2 hover:bg-secondary-100">
+                    {gpcData?.data?.SegmentCode}
+                  </li>
                   {/* <li className="px-2 hover:bg-secondary-100">Second-two</li> */}
                   <li>
                     <Link
                       // href="#"
                       onClick={toggleSubOpen}
-                      className={`flex items-center px-2 hover:bg-secondary-100 focus:text-primary active:text-primary ${subOpen ? 'text-primary' : ''}`}
+                      className={`flex items-center px-2 hover:bg-secondary-100 focus:text-primary active:text-primary ${subOpen ? "text-primary" : ""
+                        }`}
                     >
-                      {subOpen ? (
-                        <FaAngleDown />
-                      ) : (
-                        <FaAngleRight />
-                      )}
-                      <h1 className='font-bold'>FamilyTitle: </h1>{gpcData?.data?.FamilyTitle}
+                      {subOpen ? <FaAngleDown /> : <FaAngleRight />}
+                      <h1 className="font-bold">{t("FamilyTitle")}: </h1>
+                      {gpcData?.data?.FamilyTitle}
                     </Link>
-                    <ul className={`ml-6 ${subOpen ? 'block' : 'hidden'}`}>
-                      <li className="px-2 hover:bg-secondary-100">{gpcData?.data?.FamilyCode}</li>
+                    <ul className={`ml-6 ${subOpen ? "block" : "hidden"}`}>
+                      <li className="px-2 hover:bg-secondary-100">
+                        {gpcData?.data?.FamilyCode}
+                      </li>
                       <li>
                         <Link
                           // href="#"
                           onClick={toggleThirdOpen}
-                          className={`flex items-center px-4 hover:bg-secondary-100 focus:text-primary active:text-primary ${thirdOpen ? 'text-primary' : ''}`}
+                          className={`flex items-center px-4 hover:bg-secondary-100 focus:text-primary active:text-primary ${thirdOpen ? "text-primary" : ""
+                            }`}
                         >
-                          {thirdOpen ? (
-                            <FaAngleDown />
-                          ) : (
-                            <FaAngleRight />
-                          )}
-                          <h1 className='font-bold'>Class: </h1>{gpcData?.data?.ClassTitle}
+                          {thirdOpen ? <FaAngleDown /> : <FaAngleRight />}
+                          <h1 className="font-bold"> {t("Class")}: </h1>
+                          {gpcData?.data?.ClassTitle}
                         </Link>
-                        <ul className={`ml-10 ${thirdOpen ? 'block' : 'hidden'}`}>
-                          <li className="px-2 hover:bg-secondary-100">{gpcData?.data?.ClassCode}</li>
+                        <ul
+                          className={`ml-10 ${thirdOpen ? "block" : "hidden"}`}
+                        >
+                          <li className="px-2 hover:bg-secondary-100">
+                            {gpcData?.data?.ClassCode}
+                          </li>
                         </ul>
                       </li>
                       <li>
                         <Link
                           // href="#"
                           onClick={toggleFourthOpen}
-                          className={`flex items-center px-10 hover:bg-secondary-100 focus:text-primary active:text-primary ${thirdOpen ? 'text-primary' : ''}`}
+                          className={`flex items-center px-10 hover:bg-secondary-100 focus:text-primary active:text-primary ${thirdOpen ? "text-primary" : ""
+                            }`}
                         >
-                          {fourthOpen ? (
-                            <FaAngleDown />
-                          ) : (
-                            <FaAngleRight />
-                          )}
-                          <h1 className='font-bold'>Brick: </h1> {gpcData?.data?.BrickTitle}
+                          {fourthOpen ? <FaAngleDown /> : <FaAngleRight />}
+                          <h1 className="font-bold">{t("Brick")}: </h1>{" "}
+                          {gpcData?.data?.BrickTitle}
                         </Link>
-                        <ul className={`ml-16 ${fourthOpen ? 'block' : 'hidden'}`}>
-                          <li className="px-2 hover:bg-secondary-100">{gpcData?.data?.BrickCode}</li>
+                        <ul
+                          className={`ml-16 ${fourthOpen ? "block" : "hidden"}`}
+                        >
+                          <li className="px-2 hover:bg-secondary-100">
+                            {gpcData?.data?.BrickCode}
+                          </li>
                         </ul>
                       </li>
                       {/* <li>
@@ -398,12 +399,12 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
 
               >
                 <div className='h-auto w-full shadow-xl p-3 rounded-md'>
-                  <h1 className='text-primary'>Harmonized Code: <span className='text-black'>{item.HarmonizedCode}</span></h1>
-                  <h1 className='text-primary'>Arabic Name: <span className='text-black'>{item.ItemArabicName}</span></h1>
-                  <h1 className='text-primary'>English Name: <span className='text-black'>{item.ItemEnglishName}</span></h1>
-                  <h1 className='text-primary'>Duty Rate: <span className='text-black'>{item.DutyRate || 'N/A'}</span></h1>
-                  <h1 className='text-primary'>Procedures: <span className='text-black'>{item.Procedures || 'N/A'}</span></h1>
-                  <h1 className='text-primary'>Date: <span className='text-black'>{item.Date || 'N/A'}</span></h1>
+                  <h1 className='text-primary'> {t("Harmonized Code")}: <span className='text-black'>{item.HarmonizedCode}</span></h1>
+                  <h1 className='text-primary'> {t("Arabic Name")}: <span className='text-black'>{item.ItemArabicName}</span></h1>
+                  <h1 className='text-primary'> {t("English Name")}: <span className='text-black'>{item.ItemEnglishName}</span></h1>
+                  <h1 className='text-primary'> {t("Duty Rate")}: <span className='text-black'>{item.DutyRate || 'N/A'}</span></h1>
+                  <h1 className='text-primary'> {t("Procedures")}: <span className='text-black'>{item.Procedures || 'N/A'}</span></h1>
+                  <h1 className='text-primary'> {t("Date")}: <span className='text-black'>{item.Date || 'N/A'}</span></h1>
                 </div>
               </div>
             ))}
@@ -439,11 +440,11 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
                     key={index}
                     className='shadow-xl p-3 rounded-md mb-2'
                   >
-                    <h1 className='text-primary'>Family Title: <span className='text-black'>{item.FamilyTitle}</span></h1>
-                    <h1 className='text-primary'>Class: <span className='text-black'>{item.Class}</span></h1>
-                    <h1 className='text-primary'>ClassTitle: <span className='text-black'>{item.ClassTitle}</span></h1>
-                    <h1 className='text-primary'>Commodity: <span className='text-black'>{item.Commodity}</span></h1>
-                    <h1 className='text-primary'>CommodityTitle: <span className='text-black'>{item.CommodityTitle}</span></h1>
+                    <h1 className='text-primary'>{t("Family Title")}: <span className='text-black'>{item.FamilyTitle}</span></h1>
+                    <h1 className='text-primary'>{t("Class")}: <span className='text-black'>{item.Class}</span></h1>
+                    <h1 className='text-primary'>{t("ClassTitle")}: <span className='text-black'>{item.ClassTitle}</span></h1>
+                    <h1 className='text-primary'> {t("Commodity")}: <span className='text-black'>{item.Commodity}</span></h1>
+                    <h1 className='text-primary'> {t("CommodityTitle")}: <span className='text-black'>{item.CommodityTitle}</span></h1>
                   </div>
                 ))}
               </div>
@@ -458,18 +459,18 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
             {others?.data?.map((item, index) => (
               <div key={index}>
                 <div className='h-auto w-full shadow-xl p-3 rounded-md'>
-                  <h1 className='text-primary'>Segment Code: <span className='text-black'>{item.SegmentCode}</span></h1>
-                  <h1 className='text-primary'>Segment Title: <span className='text-black'>{item.SegmentTitle}</span></h1>
-                  <h1 className='text-primary'>Family Code: <span className='text-black'>{item.FamilyCode}</span></h1>
-                  <h1 className='text-primary'>Family Title: <span className='text-black'>{item.FamilyTitle}</span></h1>
-                  <h1 className='text-primary'>Class Code: <span className='text-black'>{item.ClassCode}</span></h1>
-                  <h1 className='text-primary'>Class Title: <span className='text-black'>{item.ClassTitle}</span></h1>
-                  <h1 className='text-primary'>Brick Code: <span className='text-black'>{item.BrickCode}</span></h1>
-                  <h1 className='text-primary'>Brick Title: <span className='text-black'>{item.BrickTitle}</span></h1>
-                  <h1 className='text-primary'>Attribute Code: <span className='text-black'>{item.AttributeCode}</span></h1>
-                  <h1 className='text-primary'>Attribute Title: <span className='text-black'>{item.AttributeTitle}</span></h1>
-                  <h1 className='text-primary'>Attribute Value Code: <span className='text-black'>{item.AttributeValueCode}</span></h1>
-                  <h1 className='text-primary'>Attribute Value Title: <span className='text-black'>{item.AttributeValueTitle}</span></h1>
+                  <h1 className='text-primary'> {t("Segment Code")}: <span className='text-black'>{item.SegmentCode}</span></h1>
+                  <h1 className='text-primary'> {t("Segment Title")}: <span className='text-black'>{item.SegmentTitle}</span></h1>
+                  <h1 className='text-primary'> {t("Family Code")}: <span className='text-black'>{item.FamilyCode}</span></h1>
+                  <h1 className='text-primary'> {t("Family Title")}: <span className='text-black'>{item.FamilyTitle}</span></h1>
+                  <h1 className='text-primary'> {t("Class Code")}: <span className='text-black'>{item.ClassCode}</span></h1>
+                  <h1 className='text-primary'> {t("Class Title")}: <span className='text-black'>{item.ClassTitle}</span></h1>
+                  <h1 className='text-primary'> {t("Brick Code")}: <span className='text-black'>{item.BrickCode}</span></h1>
+                  <h1 className='text-primary'> {t("Brick Title")}: <span className='text-black'>{item.BrickTitle}</span></h1>
+                  <h1 className='text-primary'> {t("Attribute Code")}: <span className='text-black'>{item.AttributeCode}</span></h1>
+                  <h1 className='text-primary'> {t("Attribute Title")}: <span className='text-black'>{item.AttributeTitle}</span></h1>
+                  <h1 className='text-primary'> {t("Attribute Value Code")}: <span className='text-black'>{item.AttributeValueCode}</span></h1>
+                  <h1 className='text-primary'> {t("Attribute Value Title")}: <span className='text-black'>{item.AttributeValueTitle}</span></h1>
                 </div>
               </div>
             ))}
@@ -480,73 +481,68 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
   }
 
   return (
-    <div className='flex justify-between gap-2 w-full'>
-    
-      {isLoading &&
-
-        <div className='loading-spinner-background'
-            style={{
-                zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
-
-
-            }}
+    <div className={`gap-2 w-full flex justify-between ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
+      {isLoading && (
+        <div
+          className="loading-spinner-background"
+          style={{
+            zIndex: 9999,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "fixed",
+          }}
         >
-            <DotLoader
-                size={45}
-                color={"#FF693A"}
-                // height={4}
-                loading={isLoading}
-            />
+          <DotLoader
+            size={45}
+            color={"#FF693A"}
+            // height={4}
+            loading={isLoading}
+          />
         </div>
-        }
+      )}
 
-      <div className='w-[20%] flex flex-col gap-2 mt-2'>
+      <div className="w-[20%] flex flex-col gap-2 mt-2">
         <span
           className={`bg-[#3b5998] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer 
                             }`}
           onClick={() => handleOptionChange("GS1-GPC")}
         >
-          <img
-            src={gtrackIcon}
-            className="w-5 h-5 ml-1"
-            alt=""
-          />
-          GS1 GPC
+          <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+          {t("GS1 GPC")}
         </span>
         <span
-          className={`bg-[#00acee] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${selectedOption === "HS-CODES" ? "bg-yellow-500" : ""
-            }`}
+          className={`bg-[#00acee] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${
+            selectedOption === "HS-CODES" ? "bg-yellow-500" : ""
+          }`}
           onClick={() => handleOptionChange("HS-CODES")}
         >
-          <img
-            src={gtrackIcon}
-            className="w-5 h-5 ml-1"
-            alt=""
-          />
-          HS CODES
+          <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+          {t("HS CODES")}
         </span>
         <span
-          className={`bg-[#0072b1] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${selectedOption === "UNSPSC" ? "bg-yellow-500" : ""
-            }`}
+          className={`bg-[#0072b1] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${
+            selectedOption === "UNSPSC" ? "bg-yellow-500" : ""
+          }`}
           onClick={() => handleOptionChange("UNSPSC")}
         >
           <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
-          UNSPSC
+          {t("UNSPSC")}
         </span>
         <span
-          className={`bg-[#E60023] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${selectedOption === "OTHER"
-            ? "bg-yellow-500"
-            : ""
-            }`}
+          className={`bg-[#E60023] py-2 flex justify-start px-1 rounded-md text-white items-center gap-2 cursor-pointer ${
+            selectedOption === "OTHER" ? "bg-yellow-500" : ""
+          }`}
           onClick={() => handleOptionChange("OTHER")}
         >
-          <img
-            src={gtrackIcon}
-            className="w-5 h-5 ml-1"
-            alt=""
-          />
-          OTHER
+          <img src={gtrackIcon} className="w-5 h-5 ml-1" alt="" />
+          {t("OTHER")}
         </span>
       </div>
 

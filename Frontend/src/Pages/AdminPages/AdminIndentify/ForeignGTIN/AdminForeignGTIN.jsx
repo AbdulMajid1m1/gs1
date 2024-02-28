@@ -548,8 +548,8 @@ const AdminForeginGTIN = () => {
 
               {isExportBarcode && (
                 <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
-                  <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
-                  <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
+                  <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer"> {t('1D Barcode')}</p>
+                  <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">{t('2D Barcode')}</p>
                 </div>
               )}
             </div>
@@ -622,7 +622,7 @@ const AdminForeginGTIN = () => {
 
             <button
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-               {totalCategory ? `${totalCategory}` : 'Category C'}
+               {totalCategory ? `${totalCategory}` : `${t('Category C')}`}
             </button>
 
             <button

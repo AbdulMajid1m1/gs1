@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import newRequest from '../../../utils/userRequest';
 import Gs1GtinPopUp from './Gs1GtinPopUp';
 import { useTranslation } from 'react-i18next';
+import MemberRenewPopUp from './MemberRenewPopUp';
 
 const SubscribedGTIN = () => {
   const { t, i18n } = useTranslation();
@@ -64,14 +65,10 @@ const SubscribedGTIN = () => {
     setIsUpgradePopupVisible(true);
     console.log(row);
   };
-  // const filterDropdownOptions = (row, dropDownOptions) => {
-  //   if (row.product_identity === 'gtin') {
-  //     return dropDownOptions.filter(option => option.label === 'Upgrade' || option.label === 'Add GTIN' || option.label === 'Downgrade');
-  //   } else if (row.product_identity === 'gln') {
-  //     return dropDownOptions.filter(option => option.label === 'Add GLN');
-  //   }
-  //   return []; // No options available
-  // };
+ 
+
+
+
   const filterDropdownOptions = (row, dropDownOptions) => {
     console.log(memberData);
     if (memberData?.status !== 'active') {
@@ -153,6 +150,16 @@ const SubscribedGTIN = () => {
   };
 
 
+  const [isRenewPopupVisible, setIsRenewPopupVisible] = useState(false);
+
+  const handleShowMemberRenewPopup = (row) => {
+    setIsRenewPopupVisible(true);
+    console.log(row);
+   
+  };
+
+
+
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
@@ -223,11 +230,12 @@ const SubscribedGTIN = () => {
                   >
                     {allUserData?.isproductApproved == 1 ? `${t('Approved')}` : allUserData?.isproductApproved == 2 ? `${t('Rejected')}` :  `${t('Pending For Approval')}`}
                   </button>
-                  {/* <button
-                      className='bg-green-500 font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
+                  <button 
+                      onClick={handleShowMemberRenewPopup}
+                      className='bg-secondary font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'
                     >
-                      Approved
-                    </button> */}
+                      Renew
+                    </button>
                 </div>
 
               </div>
@@ -312,9 +320,14 @@ const SubscribedGTIN = () => {
             </div>
       
             
-          {/* Upgrade component with handle prop */}
+        {/* Upgrade component with handle prop */}
          {isUpgradePopupVisible && (
           <Gs1GtinPopUp isVisible={isUpgradePopupVisible} setVisibility={setIsUpgradePopupVisible} userData={allUserData} subType={subType}/>
+        )}
+
+        {/* Renew component with handleShowRenewPopup prop */}
+        {isRenewPopupVisible && (
+          <MemberRenewPopUp isVisible={isRenewPopupVisible} setVisibility={setIsRenewPopupVisible} />
         )}
 
       </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
 import newRequest from '../../../utils/userRequest';
@@ -45,8 +45,24 @@ const UpdateSSCC = () => {
     const [vendorItem, setVendorItem] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [shortQtyCode, setShortQtyCode] = React.useState('');
-    const [countryOfOrigin, setCountryOfOrigin] = React.useState('');
+    const [countryOfOrigin, setCountryOfOrigin] = useState([]);
+    const [selectedCountryOfOrigin, setSelectedCountryOfOrigin] = useState('');
     const [carton, setCarton] = React.useState('');
+
+    const handleCountryOfOrigin = async () => {
+      try {
+          const response = await newRequest.get('/getAllcountryofsale');
+          console.log(response.data);
+          const data = response.data;
+          setCountryOfOrigin(data);
+      } catch (error) {
+          console.log(error);
+      }
+    };
+  
+    useEffect(() => {
+      handleCountryOfOrigin();
+    },[])
 
     // selected state
     const [palletForm, setShowPalletForm] = React.useState(ssccType === 'pallet');
@@ -91,7 +107,7 @@ const UpdateSSCC = () => {
               setVendorItem(productData?.vendor_item_no);
               setCarton(productData?.carton);
               setShortQtyCode(productData?.short_qty_code);
-              setCountryOfOrigin(productData?.country_id);
+              setSelectedCountryOfOrigin(productData?.country_id);
               setDescription(productData?.description);
               // Update the form visibility based on ssccType
               setShowPalletForm(productData?.sscc_type === 'pallet');
@@ -227,7 +243,8 @@ const UpdateSSCC = () => {
           vendor_item_no: vendorItem,
           short_qty_code: shortQtyCode,
           description : description,
-          country_id: countryOfOrigin,
+          // country_id: countryOfOrigin,
+          country_id: selectedCountryOfOrigin,
           carton: carton,
         
         };
@@ -612,15 +629,18 @@ const UpdateSSCC = () => {
                         <div className='w-full font-body sm:text-base text-sm flex flex-col gap-2'>
                             <label htmlFor='country'>{t('Country Of Origin')}<span className='text-red-600'>*</span></label>
                             <select
-                            value={countryOfOrigin}
-                              onChange={(e) => setCountryOfOrigin(e.target.value)} 
+                             onChange={(e) => setSelectedCountryOfOrigin(e.target.value)}
+                             value={selectedCountryOfOrigin} 
                             id='country' 
                             type='text' className='border-2 border-[#e4e4e4] w-full rounded-lg p-2 mb-3' 
                             >
                                 <option>-{t('select')}-</option>
-                                <option value='1'>1</option>
+                                {/* <option value='1'>1</option>
                                 <option value='2'>2</option>
-                                <option value='3'>3</option>
+                                <option value='3'>3</option> */}
+                                {countryOfOrigin.map((countryId, index) => (
+                                  <option key={index} value={countryId.id}>{countryId.country_name}</option>
+                                ))}
                             </select>                      
                         </div>
 

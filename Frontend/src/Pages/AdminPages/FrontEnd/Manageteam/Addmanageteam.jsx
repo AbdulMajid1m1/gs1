@@ -149,7 +149,7 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
 
                                             <div className="row " htmlFor="file-inputs">
                                                 <label htmlFor="file-inputs" className='choosefile bg-secondary hover:bg-primary'>
-                                                    choose file
+                                                    {t("choose file")}
                                                 </label>
                                                 <input
                                                     id="file-inputs"
