@@ -1,7 +1,7 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
-import { backendUrl } from './config';
+import { backendUrl, baseUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
@@ -1252,6 +1252,30 @@ export const GtinColumn = (t, i18n) => [
     field: "BrandNameAr",
     headerName: t('Brand Name Arabic'),
     width: 180,
+  },
+  {
+    field: 'certificate',
+    headerName: t('Certificate'),
+    width: 120,
+    renderCell: (params) => {
+      const productId = params.row.id; // Assuming id is the productId
+      const onClickIcon = () => {
+        // Call the API when icon is clicked
+        window.open(`${baseUrl}/products/getGtinCertificate/${productId}`, "_blank");
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
   },
   {
     field: "qrcode",
@@ -7830,7 +7854,7 @@ export const subscribeOtherProductsColumn = [
   },
   {
     field: 'code',
-    headerName: 'Code', 
+    headerName: 'Code',
     width: 120,
   },
   {
@@ -7874,24 +7898,22 @@ export const subscribeOtherProductsColumn = [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   {
     field: 'updated_at',
     headerName: 'Updated At',
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
-  
-  
-  
+
+
+
 ];

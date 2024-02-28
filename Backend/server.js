@@ -68,95 +68,95 @@ app.set('views', path.join(__dirname, 'views'));
 // calling the routes
 app.use("/api", rootRoute);
 
-    app.get('/renderInvoice', async (req, res) => {
-        // Define your dummy data here
-        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-        const data = {
-            type: "downgrade",
-            memberData: {
-                // add New Rigistriont with current date
-                registeration: `New Registration ${new Date().toLocaleDateString()}`,
-                qrCodeDataURL: qrCodeDataURL,
-                yearsToPay: 2,
-                // Assuming $addMember->id is already known
-                company_name_eng: 'Sample Company',
-                mobile: '+966-123-456789',
-                address: {
-                    zip: '12345',
-                    countryName: 'Saudi Arabia',
-                    stateName: 'Riyadh',
-                    cityName: 'Riyadh City',
+app.get('/renderInvoice', async (req, res) => {
+    // Define your dummy data here
+    const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+    const data = {
+        type: "downgrade",
+        memberData: {
+            // add New Rigistriont with current date
+            registeration: `New Registration ${new Date().toLocaleDateString()}`,
+            qrCodeDataURL: qrCodeDataURL,
+            yearsToPay: 2,
+            // Assuming $addMember->id is already known
+            company_name_eng: 'Sample Company',
+            mobile: '+966-123-456789',
+            address: {
+                zip: '12345',
+                countryName: 'Saudi Arabia',
+                stateName: 'Riyadh',
+                cityName: 'Riyadh City',
+            },
+            companyID: '1234567890',
+            gtin_subscription: {
+                products: {
+                    member_category_description: 'Gold Membership',
                 },
-                companyID: '1234567890',
-                gtin_subscription: {
-                    products: {
-                        member_category_description: 'Gold Membership',
-                    },
+            },
+
+
+        },
+        general: {
+            service_default_image: 'default_service_image.png',
+            logo: 'company_logo.png',
+        },
+        cart: {
+            request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
+            transaction_id: 'T123456789',
+            payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
+
+            cart_items: [
+                {
+
+                    productName: 'Product Name',
+                    registration_fee: 100,
+                    yearly_fee: 100,
                 },
+                {
 
+                    productName: 'Product Name',
+                    registration_fee: 100,
+                    yearly_fee: 100,
+                }
+            ],
+        },
+        currentDate: {
+            day: new Date().getDate(),
+            month: new Date().getMonth() + 1, // getMonth() returns 0-11
+            year: new Date().getFullYear(),
+        },
+        custom_amount: 100, // Example custom amount
 
-            },
-            general: {
-                service_default_image: 'default_service_image.png',
-                logo: 'company_logo.png',
-            },
-            cart: {
-                request_type: 'registration', // Can be 'registration', 'renew', or 'addon'
-                transaction_id: 'T123456789',
-                payment_type: 'bank_transfer', // Can be 'bank_transfer' or 'Mada/Visa'
+        general: {
+            service_default_image: 'default_service_image.png',
+            logo: 'company_logo.png',
+        },
+        company_details: {
+            title: 'Sample Company',
+            account_no: '1234567890',
+            iban_no: 'SA1234567890123456789012',
+            bank_name: 'Sample Bank',
+            bank_swift_code: 'SAMPLEBANK123',
+        },
+        BACKEND_URL: BACKEND_URL,
+    };
 
-                cart_items: [
-                    {
-
-                        productName: 'Product Name',
-                        registration_fee: 100,
-                        yearly_fee: 100,
-                    },
-                    {
-
-                        productName: 'Product Name',
-                        registration_fee: 100,
-                        yearly_fee: 100,
-                    }
-                ],
-            },
-            currentDate: {
-                day: new Date().getDate(),
-                month: new Date().getMonth() + 1, // getMonth() returns 0-11
-                year: new Date().getFullYear(),
-            },
-            custom_amount: 100, // Example custom amount
-
-            general: {
-                service_default_image: 'default_service_image.png',
-                logo: 'company_logo.png',
-            },
-            company_details: {
-                title: 'Sample Company',
-                account_no: '1234567890',
-                iban_no: 'SA1234567890123456789012',
-                bank_name: 'Sample Bank',
-                bank_swift_code: 'SAMPLEBANK123',
-            },
-            BACKEND_URL: BACKEND_URL,
-        };
-
-        // Render the EJS template with the dummy data
-        res.render('pdf/oldMembersCustomInvoice', { data });
-    });
+    // Render the EJS template with the dummy data
+    res.render('pdf/oldMembersCustomInvoice', { data });
+});
 
 app.get('/renderGtinCertificate', async (req, res) => {
     // Define your dummy data here
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     const data = {
         BACKEND_URL: BACKEND_URL,
+        qrCodeDataURL: qrCodeDataURL,
         member: {
             company_name_eng: 'Sample Company', // Replace with actual company name
         },
         memberProduct: {
             barcode: '123456789012', // Replace with actual barcode
         },
-        public_path: (path) => 'http://your-domain.com/' + path, // Define the public_path function
         user: {
             companyID: '1234567890', // Replace with actual company ID
             gcpGLNID: 'GCP123456', // Replace with actual GCP GLN ID
@@ -171,12 +171,6 @@ app.get('/renderGtinCertificate', async (req, res) => {
             month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),
         },
-        DNS2D: {
-            getBarcodeHTML: (barcode, type, width, height) => {
-                // Mock function, replace with your actual implementation
-                return `<img src="data:image/png;base64,${Buffer.from('barcode-image-data').toString('base64')}" width="${width}" height="${height}" alt="barcode" />`;
-            },
-        },
     };
 
     // Render the EJS template with the dummy data
@@ -190,7 +184,7 @@ app.get('/renderGtinCertificate', async (req, res) => {
 
 // Define your API route to render the certificate
 app.get('/renderCertificate', async (req, res) => {
-    const BACKEND_URL = 'http://localhost:3000'; // Adjust this URL as needed
+    const BACKEND_URL = BACKEND_URL; // Adjust this URL as needed
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     // Define your data object with missing or dynamic data
     const data = {

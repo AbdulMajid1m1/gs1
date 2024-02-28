@@ -3,8 +3,6 @@ import DataTable from '../../../../../components/Datatable/Datatable'
 import newRequest from '../../../../../utils/userRequest'
 import { gtinReportsColumns } from '../../../../../utils/datatablesource'
 import EditIcon from "@mui/icons-material/Edit";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PendingIcon from '@mui/icons-material/Pending';
 import DeleteIcon from "@mui/icons-material/Delete";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
@@ -150,27 +148,6 @@ const AdminGtinReports = () => {
             globalSearch={true}
             // handleRowClickInParent={handleRowClickInParent}
             uniqueId="members_gtin_reports"
-<<<<<<< HEAD
-            getFilteredOptions={filterDropdownOptions}
-
-            dropDownOptions={[
-              {
-                label: 'Mark as Completed',
-                icon: <CheckCircleIcon fontSize="small" color="action" style={{ color: "green" }} />,
-                action: handleStatusChanged,
-              },
-              {
-                label: 'Mark as Pending',
-                icon: <PendingIcon fontSize="small" color="action" style={{ color: "orange" }} />,
-                action: handleStatusChanged,
-              },
-              {
-                label: 'Email To Brand Owner',
-                icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                ,
-                action: handleAssignToPopUp,
-
-=======
             dropDownOptions={[
               {
                 label: `${t("Edit")}`,
@@ -182,7 +159,6 @@ const AdminGtinReports = () => {
                   />
                 ),
                 // action: handleOpen,
->>>>>>> 52bd67cabfa9387197992fa56a5be644ca6e6446
               },
               {
                 label: `${t("Delete")}`,
@@ -194,18 +170,6 @@ const AdminGtinReports = () => {
             ]}
           />
         </div>
-<<<<<<< HEAD
-
-
-        {/* AssignTo component with handleShowDowngradePopup prop */}
-        {isAssignToPopUpVisible && (
-          <SendEmailPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}
-            fetchData={fetchData}
-          />
-        )}
-
-=======
->>>>>>> 52bd67cabfa9387197992fa56a5be644ca6e6446
       </div>
     </div>
   );
