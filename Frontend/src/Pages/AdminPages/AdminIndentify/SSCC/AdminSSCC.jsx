@@ -217,7 +217,15 @@ const AdminSSCC = () => {
 
       const [isBulkPopupVisible, setBulkPopupVisibility] = useState(false);
       const handleShowBulkPopup = () => {
-        setBulkPopupVisibility(true);
+
+        if (!allSearchMemberDetails) {
+          toast.error(`${t('Please select a member first')}!`);
+          return;
+        }
+        else {
+          sessionStorage.setItem("selectedAddSSCCData", JSON.stringify(allSearchMemberDetails));
+          setBulkPopupVisibility(true);
+        }
       };
 
       
