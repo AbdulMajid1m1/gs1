@@ -150,7 +150,6 @@ const AdminGtinReports = () => {
             globalSearch={true}
             // handleRowClickInParent={handleRowClickInParent}
             uniqueId="members_gtin_reports"
-<<<<<<< HEAD
             getFilteredOptions={filterDropdownOptions}
 
             dropDownOptions={[
@@ -170,19 +169,6 @@ const AdminGtinReports = () => {
                 ,
                 action: handleAssignToPopUp,
 
-=======
-            dropDownOptions={[
-              {
-                label: `${t("Edit")}`,
-                icon: (
-                  <EditIcon
-                    fontSize="small"
-                    color="action"
-                    style={{ color: "rgb(37 99 235)" }}
-                  />
-                ),
-                // action: handleOpen,
->>>>>>> 52bd67cabfa9387197992fa56a5be644ca6e6446
               },
               {
                 label: `${t("Delete")}`,
@@ -194,7 +180,6 @@ const AdminGtinReports = () => {
             ]}
           />
         </div>
-<<<<<<< HEAD
 
 
         {/* AssignTo component with handleShowDowngradePopup prop */}
@@ -204,8 +189,6 @@ const AdminGtinReports = () => {
           />
         )}
 
-=======
->>>>>>> 52bd67cabfa9387197992fa56a5be644ca6e6446
       </div>
     </div>
   );
