@@ -1,7 +1,7 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
-import { backendUrl } from './config';
+import { backendUrl, baseUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
@@ -1252,6 +1252,30 @@ export const GtinColumn = (t, i18n) => [
     field: "BrandNameAr",
     headerName: t('Brand Name Arabic'),
     width: 180,
+  },
+  {
+    field: 'certificate',
+    headerName: t('Certificate'),
+    width: 120,
+    renderCell: (params) => {
+      const productId = params.row.id; // Assuming id is the productId
+      const onClickIcon = () => {
+        // Call the API when icon is clicked
+        window.open(`${baseUrl}/products/getGtinCertificate/${productId}`, "_blank");
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
   },
   {
     field: "qrcode",
@@ -7809,6 +7833,85 @@ export const gtinReportsColumns = (t, i18n) => [
         {params.row.report_status === 1 ? 'Active' : 'Inactive'}
       </div>
     ),
+  },
+
+
+
+];
+
+
+
+export const subscribeOtherProductsColumn = [
+  {
+    field: 'product_name',
+    headerName: 'Product Name',
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'code',
+    headerName: 'Code',
+    width: 120,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+  {
+    field: 'product_subscription_fee',
+    headerName: 'Product Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'med_subscription_fee',
+    headerName: 'Medical Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'total_no_of_barcodes',
+    headerName: 'Total Number Of Barcodes',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 
 

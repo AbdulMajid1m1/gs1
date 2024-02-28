@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <style>
+             @page {
+        size: landscape;
+    }
         body,
         html {
             font-family: DejaVu Sans, sans-serif;
@@ -14,17 +17,21 @@
             margin: 0;
             padding: 0;
             height: 100%;
+    
         }
+
+
 
         .p-text {
             margin: 0;
             margin-bottom: 5px;
-            font-size: 12px;
+            font-size: 1rem;
+      
         }
 
         .table-suply {
             border: none;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .table-suply tr th,
@@ -139,21 +146,22 @@
         }
 
         .contents {
-            position: absolute;
-            top: 52%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            /* position: absolute; */
+            /* top: 50%; */
+            /* left: 50%; */
+            /* transform: translate(-50%, -50%); */
             width: 80%;
             max-width: 800px;
             padding: 20px;
             z-index: 1;
+            /* margin-top: 10px;; */
         }
 
         .table-heading1 {
-            position: absolute;
-            left: 45%;
+            /* position: absolute; */
+            /* left: 45%; */
             top: 15%;
-            transform: translate(-50%, -50%);
+            /* transform: translate(-50%, -50%); */
             width: 90%;
             padding: 20px;
             z-index: 1;
@@ -185,27 +193,27 @@
             <div class="table-heading1">
                 <table class="content-table">
                     <tr>
-                        <td class="text-left" style="line-height: 1;">
-                            <img src="<%= data.BACKEND_URL %>"
-                                alt="logo" style="width: 125.64px; height: 58px;">
+                        <td class="text-left" style="line-height: 1.5rem;">
+                            <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/service_default_image.jpeg"
+                            alt="logo" style="width: 250px; height: 100px; object-fit: contain;">
+
                         </td>
-                        <td class="text-center" style="margin-top: 20px !important; line-height: 1;">
-                            <p style="line-height:1;">
+                        <td class="text-center" style="margin-top: 20px !important; line-height: 1.5rem;">
+                            <p style="line-height:1.5rem;">
                                 <span style="color: #042E6A;">Certificate of GTIN Assignment</span> <br>
                                 <span class="orangeText" style=""><%= data.member.company_name_eng?.toUpperCase() %></span>
                             </p>
                         </td>
-                        <td class="text-right" style="line-height: 1;">
-                            <img src="<%= data.BACKEND_URL %>" alt="logo"
-                                style="width: 80.64px; height: 20px;">
+                        <td class="text-right" style="line-height: 1.5rem;">
+                            <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/logo.png" width="210" height="100">
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="3" class="text-center" style="font-size: 12px; color: #042E6A;">
                             <span>Is Assigned the following Global Trade Item Number "GTIN"
-                                series: "baroce"</span>
+                                series: <%= data.memberProduct.barcode %></span>
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
 
@@ -214,43 +222,47 @@
                 <div class="row col-md-12"
                     style="background-color: #EEEEEE; border-radius: 40px; padding: 20px; text-align: center; margin-left: -30px;">
                     <table class="table-suply" width="100%" cellspacing="0" cellpadding="0"
-                        style="border:none; font-size: 14px;">
+                        style="border:none; font-size: 1.2rem;">
                         <tr>
                             <td>
-                                <p style="line-height: 1rem; text-align: left;">
+                                <p style="line-height: 1.5rem; text-align: left;">
                                     <span style="font-weight: bold; color: #042E6A;">Proof of Ownership from Brand
                                         Owner</span><br>
                                     The Brand Owner <span class="orangeText"><%= data.member.company_name_eng.toUpperCase() %></span> has Contracted
                                     with
                                     the GS1 Saudi Arabia to allow the GTIN prefix <span
-                                        class="orangeText">"baroce"</span> to be used by GS1 International Barcode Standards.
+                                        class="orangeText"><%= data.memberProduct.barcode %></span> to be used by GS1 International Barcode Standards.
                                 </p>
-                                <p style="line-height: 1rem; text-align: left;">
+                                <p style="line-height: 1.5rem; text-align: left;">
                                     The GS1 Saudi Arabia Certificate that the GTIN <span
-                                        class="orangeText">"baroce"</span> Is Internationally
+                                        class="orangeText"><%= data.memberProduct.barcode %></span> Is Internationally
                                     recognised and unique of it’s kind Originally issued by the GS1 Saudi Arabia,<br>
                                     The GS1 Saudi Arabia hereby assigned the GTIN <span
-                                        class="orangeText">"baroce"</span> to <span class="orangeText"><%= data.member.company_name_eng.toUpperCase() %></span>
+                                        class="orangeText"><%= data.memberProduct.barcode %></span> to <span class="orangeText"><%= data.member.company_name_eng.toUpperCase() %></span>
 
                                 </p>
                             </td>
                         </tr>
                     </table>
                     <table class="table-suply" width="100%" cellspacing="0" cellpadding="0"
-                        style="border:none; font-size: 14px;">
+                        style="border:none; font-size: 1.2rem;">
                         <tr class="text-left">
                             <td rowspan="2">
                                
-                                check this
+                                <span>
+                                    <img src="<%= data.qrCodeDataURL %>"
+                                    style="width: 80px; height: 80px;"
+                                    alt="QR Code">
+                                </span>
                             </td>
-                            <td class="text-left" style="padding-top: 25px;">
-                                <p style="line-height: 1rem; text-align: left;">
+                            <td class="text-left" style="padding-top: 20px;">
+                                <p style="line-height: 1.5rem; text-align: left;">
                                     Member ID : <strong><%= data.user.companyID %></strong><br>
                                     GCP: <strong><%= data.user.gcpGLNID %></strong>
                                 </p>
                             </td>
-                            <td class="text-left" style="padding-top: 25px;">
-                                <p style="line-height: 1rem; text-align: left;">
+                            <td class="text-left" style="padding-top: 20px;">
+                                <p style="line-height: 1.5rem; text-align: left;">
                                     Issue Date:
                                     <strong><span><%= data.date.day %></span>-<span><%= data.date.month %></span>-<span><%= data.date.year %></span></strong></br>
                                     Expiry Date:

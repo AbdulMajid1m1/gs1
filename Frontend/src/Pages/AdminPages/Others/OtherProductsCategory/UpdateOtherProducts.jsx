@@ -89,7 +89,7 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
   return (
     <div>
       {isVisible && (
-        <div className="popup-overlay">
+        <div className="popup-overlay z-50">
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateBrand} className='w-full'>

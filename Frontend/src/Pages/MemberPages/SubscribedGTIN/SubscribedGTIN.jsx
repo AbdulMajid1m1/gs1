@@ -13,6 +13,7 @@ import newRequest from '../../../utils/userRequest';
 import Gs1GtinPopUp from './Gs1GtinPopUp';
 import { useTranslation } from 'react-i18next';
 import MemberRenewPopUp from './MemberRenewPopUp';
+import SubscribeOtherProductsPopUp from './SubscribeOtherProductsPopUp';
 
 const SubscribedGTIN = () => {
   const { t, i18n } = useTranslation();
@@ -154,10 +155,18 @@ const SubscribedGTIN = () => {
 
   const handleShowMemberRenewPopup = (row) => {
     setIsRenewPopupVisible(true);
-    console.log(row);
+    // console.log(row);
    
   };
 
+
+  const [isSubscribeOtherPopupVisible, setIsSubscribeOtherPopupVisible] = useState(false);
+
+  const handleShowSubscribeOtherPopup = (row) => {
+    setIsSubscribeOtherPopupVisible(true);
+    // console.log(row);
+   
+  };
 
 
   return (
@@ -256,7 +265,7 @@ const SubscribedGTIN = () => {
                     {/* <div className='h-auto w-full shadow-xl'> */}
                         <div className='flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 pt-5'>
                             <button
-                            //   onClick={handleShowCreatePopup}
+                                onClick={handleShowSubscribeOtherPopup}
                                 className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
                                   {t('Subscribe Other Product')}
                             </button>
@@ -328,6 +337,11 @@ const SubscribedGTIN = () => {
         {/* Renew component with handleShowRenewPopup prop */}
         {isRenewPopupVisible && (
           <MemberRenewPopUp isVisible={isRenewPopupVisible} setVisibility={setIsRenewPopupVisible} />
+        )}
+
+        {/* Subscribe Other Products component with handleShowRenewPopup prop */}
+        {isSubscribeOtherPopupVisible && (
+          <SubscribeOtherProductsPopUp isVisible={isSubscribeOtherPopupVisible} setVisibility={setIsSubscribeOtherPopupVisible} />
         )}
 
       </div>

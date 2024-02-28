@@ -2,12 +2,13 @@ import prisma from '../prismaClient.js';
 import Joi from 'joi';
 import { createError } from '../utils/createError.js';
 import { fileURLToPath } from 'url';
-
+import puppeteer from 'puppeteer';
 import XLSX from 'xlsx';
 import path from 'path';
 import fs1 from 'fs/promises';
 import fs from 'fs';
-
+import ejs from 'ejs';
+import QRCode from 'qrcode';
 import { generateProdcutGTIN, isValidGCPInBarcode } from '../utils/functions/barcodesGenerator.js';
 import { ADMIN_EMAIL } from '../configs/envConfig.js';
 import { sendEmail } from '../services/emailTemplates.js';
@@ -894,5 +895,99 @@ export const deleteProduct = async (req, res, next) => {
     } catch (err) {
         console.error(err);
         next(err);
+    }
+};
+
+
+export async function convertEjsToPdf2(ejsFilePath, data, landscapeMode = false) {
+    try {
+        const ejsTemplate = await fs.promises.readFile(ejsFilePath, 'utf-8');
+        const htmlContent = ejs.render(ejsTemplate, { data });
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+
+        const pdfOptions = {
+            format: 'A4',
+            printBackground: true,
+            landscape: landscapeMode,
+        };
+
+        const pdfBuffer = await page.pdf(pdfOptions);
+        await browser.close();
+
+        return pdfBuffer;
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        throw error;
+    }
+}
+
+export const generateGtinCertificate = async (req, res, next) => {
+    try {
+        const productId = req.params.productId;
+
+        // Fetch product details using productId
+        const product = await prisma.products.findFirst({
+            where: {
+                id: productId,
+                deleted_at: null,
+            },
+        });
+
+        if (!product) {
+            return res.status(404).json({ status: 404, message: 'Product not found!' });
+        }
+
+        // Fetch member details using user_id from product
+        const member = await prisma.users.findFirst({
+            where: {
+                id: product.user_id,
+            },
+        });
+        console.log(req.protocol + '://' + req.get('host'))
+        // Define data object for EJS template
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const data = {
+            qrCodeDataURL: qrCodeDataURL,
+            BACKEND_URL: req.protocol + '://' + req.get('host'), // Construct backend URL
+            member: {
+                company_name_eng: member.company_name_eng,
+            },
+            memberProduct: {
+                barcode: product.barcode,
+            },
+            user: {
+                companyID: member.companyID,
+                gcpGLNID: member.gcpGLNID,
+            },
+            date: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1,
+                year: new Date().getFullYear(),
+            },
+            Expirydate: {
+                day: new Date().getDate() + 30,
+                month: new Date().getMonth() + 1,
+                year: new Date().getFullYear(),
+            },
+        };
+
+        // Generate PDF using provided function
+        const pdfBuffer = await convertEjsToPdf2(path.join(__dirname, '..', 'views', 'pdf', 'gtinCertificate.ejs'), data);
+
+        // Set response headers for PDF
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${productId}_gtin_certificate.pdf"`);
+
+        // Send PDF buffer as response
+        res.send(pdfBuffer);
+
+        // Optionally, you can delete the file after sending it
+        // fs.unlinkSync(pdfFilePath);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 500, message: 'Internal server error' });
     }
 };

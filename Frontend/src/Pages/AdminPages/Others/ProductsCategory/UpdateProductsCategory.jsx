@@ -82,7 +82,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
     <div>
       {/* create the post api popup */}
       {isVisible && (
-        <div className="popup-overlay overflow-x-auto">
+        <div className="popup-overlay z-50 overflow-x-auto">
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateCategory} className='w-full'>

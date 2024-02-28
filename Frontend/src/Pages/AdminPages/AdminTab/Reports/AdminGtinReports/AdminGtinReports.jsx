@@ -3,8 +3,6 @@ import DataTable from '../../../../../components/Datatable/Datatable'
 import newRequest from '../../../../../utils/userRequest'
 import { gtinReportsColumns } from '../../../../../utils/datatablesource'
 import EditIcon from "@mui/icons-material/Edit";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PendingIcon from '@mui/icons-material/Pending';
 import DeleteIcon from "@mui/icons-material/Delete";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import AdminDashboardRightHeader from '../../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'

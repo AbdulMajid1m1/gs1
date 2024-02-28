@@ -833,6 +833,19 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 data: { status: value.status }
             });
 
+            // delete bank slip documents deleteMany
+
+            await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+
+            });
+
+
+
             if (req?.admin?.adminId) {
 
                 const adminLog = {
@@ -1906,6 +1919,16 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         });
 
 
+        // delete bank slip delete many
+        await prisma.member_documents.deleteMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'bank_slip',
+            },
+        });
+
+
 
         if (req?.admin?.adminId) {
 
@@ -2127,6 +2150,15 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             },
             data: {
                 status: 'approved',
+            },
+        });
+
+        // delete bank slip delete many
+        await prisma.member_documents.deleteMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'bank_slip',
             },
         });
 
@@ -2473,6 +2505,17 @@ export const approveMembershipRequest = async (req, res, next) => {
                 status: 'approved',
             },
         });
+
+        // delete the bank slip documents
+        await prisma.member_documents.deleteMany({
+            where: {
+                user_id: userId,
+                transaction_id: transactionId,
+                type: 'bank_slip',
+            }
+        });
+
+
         // Delete the upgrade_membership_cart record
         await prisma.upgrade_member_ship_cart.delete({
             where: { id: upgradeCart.id },
@@ -3226,6 +3269,16 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
                 status: 'approved',
             },
         });
+
+        // delet the bank slip document
+        await prisma.member_documents.deleteMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'bank_slip',
+            }
+        });
+
         // Delete the upgrade_membership_cart record
         await prisma.upgrade_member_ship_cart.delete({
             where: { id: upgradeCart.id },
