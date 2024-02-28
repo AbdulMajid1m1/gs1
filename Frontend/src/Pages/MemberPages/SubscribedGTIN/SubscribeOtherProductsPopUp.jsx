@@ -1,48 +1,103 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import DataTable from '../../../components/Datatable/Datatable';
-import { subscribeOtherProductsColumn } from '../../../utils/datatablesource';
+import { registeredmemberColumn, subscribeOtherProductsColumn } from '../../../utils/datatablesource';
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Button, CircularProgress, TextField } from '@mui/material';
 
 const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const { t, i18n } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [registeredProductsData, setRegisteredProductsData] = useState([]);
+  const [registeredProductsLoader, setRegisteredProductsLoader] = useState(false);
   const [otherProductsOptions, setOtherProductsOptions] = useState([]);
   const [selectedOtherProducts, setSelectedOtherProducts] = useState([]);
- 
+  const memberDataString = sessionStorage.getItem('memberData');
+  const memberData = JSON.parse(memberDataString);
 
-  const fetchData = async () => {
-    setIsLoading(true);
+
+  const fetchRegisteredProductsData = async () => {
+    setRegisteredProductsLoader(true);
     try {
-      const response = await newRequest.get('/otherProducts');
-      console.log(response.data);
-      setData(response?.data || []);
-      setOtherProductsOptions(response?.data);
-      setIsLoading(false)
+      const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${memberData?.id}&isDeleted=false`);
 
-    } catch (err) {
+      console.log(response.data);
+      // Extract gtinSubscriptions data and flatten the nested gtin_product
+      const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
+        ...item,
+        combined_description: item?.gtin_product?.member_category_description,
+        subscription_limit: item.gtin_subscription_limit,
+        Yearly_fee: item.gtin_subscription_total_price,
+        product_identity: "gtin"
+      }));
+
+      const otherProductSubscriptionsData = response?.data?.otherProductSubscriptions?.map(item => ({
+        ...item,
+        combined_description: item?.product?.product_name,
+        subscription_limit: item.other_products_subscription_limit,
+        Yearly_fee: item.other_products_subscription_total_price,
+        // product_identity: "gln"
+        product_identity: item?.product?.product_name?.toLowerCase().includes('gln') ? 'gln' : 'otherProduct'
+      }));
+
+      // Combine gtinSubscriptions and otherProductSubscriptions
+      const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
+      console.log(combinedData);
+      setRegisteredProductsData(combinedData);
+      setRegisteredProductsLoader(false)
+
+    }
+    catch (err) {
       console.log(err);
-      setIsLoading(false)
+      setRegisteredProductsLoader(false)
     }
   };
 
+  
+
+const fetchData = async () => {
+    try {
+      const response = await newRequest.get('/otherProducts');
+      console.log(response.data);
+  
+      // Filter out options that are already subscribed to
+      const filteredOptions = response.data.filter(option => {
+        // Check if the option's product_name matches any combined_description in registeredProductsData
+        return !registeredProductsData.some(item => item.combined_description === option.product_name);
+      });
+  
+      setOtherProductsOptions(filteredOptions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
+  
+
+
+
   useEffect(() => {
+    fetchRegisteredProductsData();
     fetchData();
   }, [])
+
+  
+  const handleOtherProductsChange = (event, value) => {
+    console.log(value);
+    setSelectedOtherProducts(value);
+  };
+
+
+
 
   const handleCloseFinacePopup = () => {
     setVisibility(false);
   }
 
 
-  const handleOtherProductsChange = (event, value) => {
-    console.log(value);
-    setSelectedOtherProducts(value);
-  };
 
   return (
     <div>
@@ -58,12 +113,11 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                   <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
                   className='w-full'
                   >
-                    <DataTable data={data}
+                    <DataTable data={registeredProductsData}
                       title={'Subscribe Other Products'}
-                      columnsName={subscribeOtherProductsColumn}
-                      loading={isLoading}
+                      columnsName={registeredmemberColumn(t)}
+                      loading={registeredProductsLoader}
                       secondaryColor="secondary"
-                    //   handleRowClickInParent={handleRowClickInParent}
                       buttonVisibility={false}
                       checkboxSelection={"disabled"}
                       actionColumnVisibility={false}
@@ -115,6 +169,11 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                         />
                         )}
                         // getOptionDisabled={getOptionDisabled}
+                        getOptionDisabled={(option) => {
+                            // Disable GLN options if any GLN product is present in registeredProductsData
+                            const isGLNSubscribed = registeredProductsData.some(item => item.product_identity === 'gln');
+                            return isGLNSubscribed && option.product_name.toLowerCase().includes('gln');
+                          }}
                     />
                     </div>
                 </div>
@@ -122,7 +181,7 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                 {/* </div> */}
 
 
-                <div className="w-full flex justify-start items-center mt-5 px-5">
+                <div className="w-full flex justify-between items-center mt-5 px-5">
                   <button
                     type="button"
                     className="px-7 py-2 rounded-sm bg-primary text-white font-body text-sm"
@@ -130,6 +189,17 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                   >
                     {t('Close')}
                   </button>
+
+                  <Button
+                    variant="contained"
+                    style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                    type="submit"
+                    disabled={loading}
+                    className="ml-2"
+                    endIcon={loading ? <CircularProgress size={24} color="inherit" /> : null}
+                  >
+                     Submit
+                  </Button>
                 </div>
               </form>
             </div>
