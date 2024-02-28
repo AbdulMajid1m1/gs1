@@ -7803,3 +7803,84 @@ export const gtinReportsColumns = [
   
   
 ];
+
+
+
+export const subscribeOtherProductsColumn = [
+  {
+    field: 'product_name',
+    headerName: 'Product Name',
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'code',
+    headerName: 'Code', 
+    width: 120,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+  {
+    field: 'product_subscription_fee',
+    headerName: 'Product Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'med_subscription_fee',
+    headerName: 'Medical Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'total_no_of_barcodes',
+    headerName: 'Total Number Of Barcodes',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }    
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) =>
+    {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  
+  
+  
+];
