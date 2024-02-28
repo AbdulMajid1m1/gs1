@@ -946,6 +946,7 @@ export const generateGtinCertificate = async (req, res, next) => {
                 id: product.user_id,
             },
         });
+        let gcp_expiry = new Date(member.gcp_expiry);
         console.log(req.protocol + '://' + req.get('host'))
         // Define data object for EJS template
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
@@ -963,14 +964,14 @@ export const generateGtinCertificate = async (req, res, next) => {
                 gcpGLNID: member.gcpGLNID,
             },
             date: {
-                day: new Date().getDate(),
-                month: new Date().getMonth() + 1,
-                year: new Date().getFullYear(),
+                day: gcp_expiry.getDate(),
+                month: gcp_expiry.getMonth(),
+                year: gcp_expiry.getFullYear() - 1,
             },
             Expirydate: {
-                day: new Date().getDate() + 30,
-                month: new Date().getMonth() + 1,
-                year: new Date().getFullYear(),
+                day: gcp_expiry.getDate(),
+                month: gcp_expiry.getMonth(),
+                year: gcp_expiry.getFullYear(),
             },
         };
 
@@ -984,8 +985,6 @@ export const generateGtinCertificate = async (req, res, next) => {
         // Send PDF buffer as response
         res.send(pdfBuffer);
 
-        // Optionally, you can delete the file after sending it
-        // fs.unlinkSync(pdfFilePath);
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: 500, message: 'Internal server error' });
