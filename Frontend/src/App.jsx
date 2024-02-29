@@ -138,6 +138,7 @@ import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtec
 import EmailConfigure from "./Pages/AdminPages/MasterData/EmailSettings/EmailConfigure.jsx";
 import GTINReports from "./Pages/UserPages/GTINReports/GTINReports.jsx";
 import AdminGtinReports from "./Pages/AdminPages/AdminTab/Reports/AdminGtinReports/AdminGtinReports.jsx";
+import UserGuide from "./Pages/UserPages/UserGuide/UserGuide.jsx";
 
 const queryClient = new QueryClient()
 
@@ -211,6 +212,7 @@ const App = () => {
                       }
                     />
                     <Route path="/gtin-reporter" element={<GTINReports />} />
+                    <Route path="/user-guide" element={<UserGuide />} />
 
                     {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
