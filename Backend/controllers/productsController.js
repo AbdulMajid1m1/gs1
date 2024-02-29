@@ -980,8 +980,7 @@ export const generateGtinCertificate = async (req, res, next) => {
 
         // Set response headers for PDF
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="${productId}_gtin_certificate.pdf"`);
-
+        res.setHeader('Content-Disposition', `inline; filename="${productId}_gtin_certificate.pdf"`);
         // Send PDF buffer as response
         res.send(pdfBuffer);
 
