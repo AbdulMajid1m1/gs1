@@ -130,20 +130,16 @@ const AdminGtinReports = () => {
     
   return (
     <div>
-      <div
-        className={`p-0 h-full ${
-          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
-        }`}
-      >
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         <div>
-          <AdminDashboardRightHeader title={t("GTIN Reports")} />
+          <AdminDashboardRightHeader
+            title={'GTIN Reports'}
+          />
         </div>
 
-        <div style={{ marginLeft: "-0px", marginRight: "-0px" }}>
-          <DataTable
-            data={gtinReports}
-            title={t("GTIN Reports")}
-            columnsName={gtinReportsColumns(t)}
+        <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
+
+          <DataTable data={gtinReports} title={'GTIN Reports'} columnsName={gtinReportsColumns}
             loading={gtinReportsLoader}
             checkboxSelection="disabled"
             secondaryColor="secondary"
@@ -171,13 +167,17 @@ const AdminGtinReports = () => {
 
               },
               {
-                label: `${t("Delete")}`,
-                icon: (
-                  <DeleteIcon fontSize="small" style={{ color: "#FF0032" }} />
-                ),
+                label: `${t('Delete')}`,
+                icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
+                ,
                 action: handleDelete,
-              },
+              }
+
+
+
             ]}
+
+
           />
         </div>
 
@@ -191,7 +191,7 @@ const AdminGtinReports = () => {
 
       </div>
     </div>
-  );
+  )
 }
 
 export default AdminGtinReports

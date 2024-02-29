@@ -146,9 +146,9 @@ const GTINReports = () => {
          <DropDownSelection />
        </div>
 
-       <div className='mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
+       <div className='mt-10 mb-20 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
            <div className="">
-           <form onSubmit={handleUserSearch}>
+           <div>
               <div className='flex flex-col gap-2'>
                 <label htmlFor='barcode' className='text-secondary sm:text-2xl text-lg font-body'>Enter a barcode number/GTIN</label>
                 <div className='flex sm:w-[60%] w-full'>
@@ -163,7 +163,8 @@ const GTINReports = () => {
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#cd3c0d', color: '#ffffff' }}
-                    type='submit'
+                    // type='submit'
+                    onClick={handleUserSearch}
                     disabled={isLoading}
                     className="ml-2"
                     endIcon={isLoading ? <CircularProgress size={24} color="inherit" /> : null}
@@ -173,7 +174,7 @@ const GTINReports = () => {
                 </div>
                 <p className='text-secondary text-base'>Example search: 628000000000</p>
               </div>
-            </form>
+            </div>
 
               {data && (
                 <div>
@@ -230,6 +231,7 @@ const GTINReports = () => {
 
               
               {/* Email Feild */}
+              <form onSubmit={handleSubmit}>
               <div className="w-full font-body sm:text-base text-sm mt-4">
                 <label htmlFor="email" className="text-secondary">Email <span className='text-red-500'>*</span></label>
                   <input
@@ -238,6 +240,7 @@ const GTINReports = () => {
                     placeholder='Email'
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
+                    required
                     className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
                   />
               </div>
@@ -250,6 +253,7 @@ const GTINReports = () => {
                           id="fields1"
                           onChange={(e) => setTypeComment(e.target.value)}
                           value={typeComment}
+                          required
                           className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
                           />
                   </div>
@@ -262,6 +266,7 @@ const GTINReports = () => {
                           onChange={(e) => setGtinselection(e.target.value)}
                           value={gtinselection}
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                          required
                           >
                           <option>-select-</option>
                           <option value="Product Photo is not correct">Product Photo is not correct</option>
@@ -305,7 +310,8 @@ const GTINReports = () => {
                     <Button
                       variant="contained"
                       style={{ backgroundColor: '#cd3c0d', color: '#ffffff' }}
-                      onClick={handleSubmit}
+                      // onClick={handleSubmit}
+                      type='submit'
                       disabled={addProductLoader}
                       className="ml-2"
                       endIcon={addProductLoader ? <CircularProgress size={24} color="inherit" /> : null}
@@ -314,7 +320,7 @@ const GTINReports = () => {
                     </Button>
                   </div>
                 </div>
-                      
+              </form>        
 
             
 
