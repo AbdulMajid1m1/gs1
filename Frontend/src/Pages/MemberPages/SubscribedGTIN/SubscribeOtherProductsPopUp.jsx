@@ -46,8 +46,9 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
       // Combine gtinSubscriptions and otherProductSubscriptions
       const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
       console.log(combinedData);
-      setRegisteredProductsData(combinedData);
+      setRegisteredProductsData(combinedData); 
       setRegisteredProductsLoader(false)
+      fetchData(combinedData);
 
     }
     catch (err) {
@@ -56,35 +57,34 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
     }
   };
 
-  
 
-const fetchData = async () => {
+  const fetchData = async (combinedData) => {
     try {
       const response = await newRequest.get('/otherProducts');
       console.log(response.data);
-  
+
       // Filter out options that are already subscribed to
       const filteredOptions = response.data.filter(option => {
         // Check if the option's product_name matches any combined_description in registeredProductsData
-        return !registeredProductsData.some(item => item.combined_description === option.product_name);
+        return !combinedData.some(item => item.combined_description === option.product_name);
       });
-  
+      console.log(filteredOptions);
       setOtherProductsOptions(filteredOptions);
     } catch (err) {
       console.log(err);
     }
   };
-  
-  
+
+
 
 
 
   useEffect(() => {
     fetchRegisteredProductsData();
-    fetchData();
+
   }, [])
 
-  
+
   const handleOtherProductsChange = (event, value) => {
     console.log(value);
     setSelectedOtherProducts(value);
@@ -111,7 +111,7 @@ const fetchData = async () => {
 
                 <div className='flex gap-5 justify-center items-center flex-wrap'>
                   <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                  className='w-full'
+                    className='w-full'
                   >
                     <DataTable data={registeredProductsData}
                       title={'Subscribe Other Products'}
@@ -126,7 +126,7 @@ const fetchData = async () => {
                           label: `${t('Activation')}`,
                           icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                           ,
-                        //   action: handleShowMemberInvoicePopup,
+                          //   action: handleShowMemberInvoicePopup,
 
                         },
 
@@ -139,43 +139,43 @@ const fetchData = async () => {
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1">
                     <label
-                        className="text-secondary font-semibold"
-                        htmlFor="other"
+                      className="text-secondary font-semibold"
+                      htmlFor="other"
                     >
-                        {" "}
-                        Add More Other Products
+                      {" "}
+                      Add More Other Products
                     </label>
                     <Autocomplete
-                        multiple
-                        id="other"
-                        options={otherProductsOptions}
-                        required
-                        getOptionLabel={(option) => {
+                      multiple
+                      id="other"
+                      options={otherProductsOptions}
+                      required
+                      getOptionLabel={(option) => {
                         if (i18n.language === "ar") {
-                            return option?.name_ar || "";
+                          return option?.name_ar || "";
                         } else {
-                            return option?.product_name || "";
+                          return option?.product_name || "";
                         }
-                        }}
-                        value={selectedOtherProducts}
-                        onChange={handleOtherProductsChange}
-                        renderInput={(params) => (
+                      }}
+                      value={selectedOtherProducts}
+                      onChange={handleOtherProductsChange}
+                      renderInput={(params) => (
                         <TextField
-                            autoComplete="off"
-                            {...params}
-                            label={`${t("Other Products")}`}
-                            placeholder={`${t("Enter")} ${t("Other Products")}`}
-                            variant="outlined"
+                          autoComplete="off"
+                          {...params}
+                          label={`${t("Other Products")}`}
+                          placeholder={`${t("Enter")} ${t("Other Products")}`}
+                          variant="outlined"
                         />
-                        )}
-                        // getOptionDisabled={getOptionDisabled}
-                        getOptionDisabled={(option) => {
-                            // Disable GLN options if any GLN product is present in registeredProductsData
-                            const isGLNSubscribed = registeredProductsData.some(item => item.product_identity === 'gln');
-                            return isGLNSubscribed && option.product_name.toLowerCase().includes('gln');
-                          }}
+                      )}
+                      // getOptionDisabled={getOptionDisabled}
+                      getOptionDisabled={(option) => {
+                        // Disable GLN options if any GLN product is present in registeredProductsData
+                        const isGLNSubscribed = registeredProductsData.some(item => item.product_identity === 'gln');
+                        return isGLNSubscribed && option.product_name.toLowerCase().includes('gln');
+                      }}
                     />
-                    </div>
+                  </div>
                 </div>
 
                 {/* </div> */}
@@ -198,7 +198,7 @@ const fetchData = async () => {
                     className="ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : null}
                   >
-                     Submit
+                    Submit
                   </Button>
                 </div>
               </form>
