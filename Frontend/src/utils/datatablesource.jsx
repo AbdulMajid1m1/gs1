@@ -7741,20 +7741,20 @@ export const emailsettingDataColumn = (t, i18n) => [
 
 
 
-export const gtinReportsColumns = (t, i18n) => [
+export const gtinReportsColumns = [
   {
     field: 'reporter_email',
-    headerName: t("Reporter"),
+    headerName: "Reporter",
     width: 180,
   },
   {
     field: 'report_barcode',
-    headerName: t("Barcode"),
+    headerName: "Barcode",
     width: 180,
   },
   {
     field: 'report_comment',
-    headerName: t("Comment"),
+    headerName: "Comment",
     width: 180,
   },
   {
@@ -7779,7 +7779,7 @@ export const gtinReportsColumns = (t, i18n) => [
   },
   {
     field: "created_at",
-    headerName: t("Date"),
+    headerName: "Date",
     width: 180,
     type: "dateTime",
     valueGetter: (params) => {
@@ -7789,12 +7789,12 @@ export const gtinReportsColumns = (t, i18n) => [
   },
   {
     field: 'report_action',
-    headerName: t("Reporter Action"),
+    headerName: "Reporter Action",
     width: 180,
   },
   {
     field: "report_images",
-    headerName: t("Report Image"),
+    headerName: "Report Image",
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -7814,27 +7814,6 @@ export const gtinReportsColumns = (t, i18n) => [
       />
     )
   },
-  {
-    field: 'report_status',
-    headerName: t("Status"),
-    width: 120,
-    renderCell: params => (
-      <div
-        style={{
-          padding: '5px',
-          paddingLeft: '10px',
-          paddingRight: '10px',
-          borderRadius: '20px',
-          border: '2px solid',
-          borderColor: params.row.report_status === 1 ? 'green' : 'red',
-          color: params.row.report_status === 1 ? 'green' : 'red',
-        }}
-      >
-        {params.row.report_status === 1 ? 'Active' : 'Inactive'}
-      </div>
-    ),
-  },
-
 
 
 ];
