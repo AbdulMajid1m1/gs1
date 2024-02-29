@@ -1042,21 +1042,39 @@ export const getUserDetails = async (req, res, next) => {
 
 export const getUsersWithAssignTo = async (req, res, next) => {
     try {
-        const users = await prisma.users.findMany({
-            where: {
-                NOT: [
-                    { assign_to: null },
-                    { assign_to: "" },
-                    { assign_to: undefined }
-                ]
-            },
-            orderBy: { updated_at: 'desc' },
-            include: {
-                assign_to_admin: true
-            }
-        });
+        const { id } = req.query;
 
-
+        let users;
+        if (id) {
+            users = await prisma.users.findMany({
+                where: {
+                    id: id,
+                    NOT: [
+                        { assign_to: null },
+                        { assign_to: "" },
+                        { assign_to: undefined }
+                    ]
+                },
+                include: {
+                    assign_to_admin: true
+                }
+            });
+        } else {
+            users = await prisma.users.findMany({
+                where: {
+                    NOT: [
+                        { assign_to: null },
+                        { assign_to: "" },
+                        { assign_to: undefined }
+                    ]
+                },
+                orderBy: { updated_at: 'desc' },
+                include: {
+                    assign_to_admin: true
+                }
+            });
+        }
+        console.log("users")
         return res.json(users);
     } catch (error) {
         console.log(error);
