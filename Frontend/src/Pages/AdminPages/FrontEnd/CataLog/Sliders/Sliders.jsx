@@ -299,17 +299,17 @@ const Sliders = () => {
                                     handleRowClickInParent={handleRowClickInParent}
 
                                     dropDownOptions={[
-                                        {
-                                            label: `${t('View')}`,
-                                         icon: (
-                                                <VisibilityIcon
-                                                    fontSize="small"
-                                                    color="action"
-                                                    style={{ color: "rgb(37 99 235)" }}
-                                                />
-                                            ),
-                                            action: handleView,
-                                        },
+                                        // {
+                                        //     label: `${t('View')}`,
+                                        //  icon: (
+                                        //         <VisibilityIcon
+                                        //             fontSize="small"
+                                        //             color="action"
+                                        //             style={{ color: "rgb(37 99 235)" }}
+                                        //         />
+                                        //     ),
+                                        //     action: handleView,
+                                        // },
                                         {
                                             label: `${t('Edit')}`,
                                             icon: (
