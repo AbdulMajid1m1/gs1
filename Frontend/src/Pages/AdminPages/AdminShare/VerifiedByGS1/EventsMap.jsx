@@ -3,6 +3,7 @@ import axios from "axios";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { GoogleMap, StandaloneSearchBox, Marker, Polyline, DirectionsRenderer, OverlayView, InfoWindow } from '@react-google-maps/api';
+import { toast } from "react-toastify";
 
 const style = {
     width: '95%',
@@ -139,6 +140,7 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
             }
         } catch (err) {
             console.log(err);
+            toast.error(err?.response?.data?.message || "Something Went Wrong")
         }
     };
 
