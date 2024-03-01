@@ -6,69 +6,72 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import './TicketPopUp.css'
 import { useTranslation } from 'react-i18next';
+import newRequest from '../../../utils/userRequest';
 
 const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   const { t } = useTranslation();
-    const [companyName, setCompanyName] = useState("");
-    const [companyNameArabic, setCompanyNameArabic] = useState("");
-    // get the sesstion data
-    // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
+  // get the sesstion data
+  const gs1MemberData = JSON.parse(sessionStorage.getItem("updateTicketRow"));
+    const [Title, setTitle] = useState(gs1MemberData?.title || "");
+    const [Description, setDescription] = useState(gs1MemberData?.description || '');
     // console.log(gs1MemberData)
     const [loading, setLoading] = useState(false);
+  const [selecteddocument, setSelecteddocument] = useState(gs1MemberData?.document || null);
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelecteddocument(file);
+  };
     
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
       };
     
+  const emailget = sessionStorage.getItem("email");
+  const useriddata = sessionStorage.getItem("MemberUserId");
+       const handleUpdateBrand = async () => {
+        setLoading(true);
+        const formData = new FormData();
+        formData.append("title", Title);
+        formData.append("description", Description);
+        formData.append("document", selecteddocument);
+        formData.append("assignedTo", 1);
+        formData.append("status", 0);
+        // formData.append('status', Number(status));
+        try {
+            const response = await newRequest.put(`/updatehelp_desks/${gs1MemberData?.id}`, formData);
 
-//     const handleAddCompany = async () => {
-//     //  integrate the post api in try catch blcck
-//     setLoading(true);
-//     try {
-//       const response = await newRequest.post('/brands/', {
-//         name: companyName,
-//         name_ar: companyNameArabic,
-//         status: 'active', // You may want to modify this based on your requirements
-//         user_id: gs1MemberData?.id, // Replace with the actual user ID
-//       });
+            toast.success(response?.data?.message || `${t('Help Desk')} ${t('has been')} ${t('Updated Successfully')}.`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            console.log(response.data);
+            refreshBrandData();
+            handleCloseUpdatePopup();
 
-//       toast.success(`Company ${companyName} with Arabic name "${companyNameArabic}" has been added successfully.`, {
-//         position: 'top-right',
-//         autoClose: 2000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//         progress: undefined,
-//         theme: 'light',
-//       });
-
-
-//       console.log(response.data);
-//       refreshBrandData();
-//       handleCloseCreatePopup();
-
-
-//     } catch (error) {
-//       toast.error(error?.response?.data?.error || 'Error', {
-//         position: 'top-right',
-//         autoClose: 2000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//         progress: undefined,
-//         theme: 'light',
-//       });
-
-
-//       console.log(error);
-//     }
-
-
-//   };
-
+        } catch (error) {
+            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            console.log(error);
+        }
+        finally {
+            setLoading(false);
+        }
+    };
    
   return (
     <div>
@@ -85,8 +88,8 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  <input
                                    type="text"
                                    id="field1"
-                                   value={companyName}
-                                   onChange={(e) => setCompanyName(e.target.value)}
+                                   value={Title}
+                                   onChange={(e) => setTitle(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Title')}`}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
@@ -97,8 +100,8 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  <textarea
                                    type="text"
                                    id="field2"
-                                   value={companyNameArabic}
-                                   onChange={(e) => setCompanyNameArabic(e.target.value)}
+                                   value={Description}
+                                   onChange={(e) => setDescription(e.target.value)}
                                    placeholder={`${t('Enter')}${t('Description')}`}
                                    className="border-1 w-full h-28 rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
@@ -112,9 +115,10 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                  <input
                                    type="file"
                                    id="field3"
-                                  //  value={companyName}
-                                  //  onChange={(e) => setCompanyName(e.target.value)}
+                                  //  value={Title}
+                                  //  onChange={(e) => setTitle(e.target.value)}
                                   //  placeholder="Enter Title"
+                                   onChange={handleFileChange}
                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                  />
                                </div>
@@ -138,7 +142,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                                <Button
                                   variant="contained"
                                   style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                                //   onClick={handleAddCompany}
+                                onClick={handleUpdateBrand}
                                   disabled={loading}
                                   className="w-[70%] ml-2"
                                   endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}

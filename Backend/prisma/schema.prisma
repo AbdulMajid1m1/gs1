@@ -872,17 +872,17 @@ model help_desk_comments {
 }
 
 model help_desks {
-  id          BigInt    @id(map: "PK_help_desks") @default(autoincrement())
+  id          String    @id @default(cuid())
   title       String?   @db.NVarChar(Max)
   email       String?   @db.NVarChar(Max)
   ticket_no   String?   @db.NVarChar(Max)
   description String?   @db.NVarChar(Max)
   document    String?   @db.NVarChar(Max)
-  user_id     Int?
-  assignedTo  Int?
+  user_id     String?   @db.NVarChar(Max)
+  assignedTo  String?   @db.NVarChar(Max)
   status      Int?
-  created_at  DateTime? @db.DateTime
-  updated_at  DateTime? @db.DateTime
+ created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   deleted_at  DateTime? @db.DateTime
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { useTranslation } from 'react-i18next';
 import DataTable from '../../../../components/Datatable/Datatable';
-import { staffAssignedTaskColumn } from '../../../../utils/datatablesource';
+import { helpdeskTaskColumn } from "../../../../utils/datatablesource";
 import newRequest from '../../../../utils/userRequest';
 
 const HelpDesk = () => {
@@ -10,26 +10,20 @@ const HelpDesk = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
  
-  // const fetchData = async () => {
-  //   setIsLoading(true)
-  //   try {
-  //     const response = await newRequest.get("/users/getUsersWithAssignTo");
-
-  //     console.log(response.data);
-  //     setData(response?.data || []);
-  //     setIsLoading(false)
-
-  //   } catch (err) {
-  //     console.log(err);
-  //     toast.error(err?.response?.data?.error || err?.response?.data || "Something went wrong!");
-  //     setIsLoading(false)
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData(); // Calling the function within useEffect, not inside itself
-  // }, []); // Empty array dependency ensures this useEffect runs once on component mount
-
+ const refreshHelpDeskData = async () => {
+   try {
+     const response = await newRequest.get(`/getAllhelpdesk`);
+     console.log(response.data);
+     setData(response?.data || []);
+     setIsLoading(false);
+   } catch (err) {
+     console.log(err);
+     setIsLoading(false);
+   }
+ };
+ useEffect(() => {
+   refreshHelpDeskData();
+ }, []); 
 
   const handleRowClickInParent = (item) =>
   {
@@ -39,6 +33,7 @@ const HelpDesk = () => {
     }
 
   }
+  
  
   return (
     <div>
@@ -56,7 +51,7 @@ const HelpDesk = () => {
 
                   <DataTable data={data}
                     title={`${t('List of created tickets')}`}
-                    columnsName={staffAssignedTaskColumn(t)}
+                    columnsName={helpdeskTaskColumn(t)}
                     loading={isLoading}
                     secondaryColor="secondary"
                     checkboxSelection={'disabled'}

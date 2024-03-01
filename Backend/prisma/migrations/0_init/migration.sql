@@ -924,14 +924,14 @@ CREATE TABLE [dbo].[help_desk_comments] (
 
 -- CreateTable
 CREATE TABLE [dbo].[help_desks] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+   [id] NVARCHAR(1000) NOT NULL,
     [title] NVARCHAR(max),
     [email] NVARCHAR(max),
     [ticket_no] NVARCHAR(max),
     [description] NVARCHAR(max),
     [document] NVARCHAR(max),
-    [user_id] INT,
-    [assignedTo] INT,
+    [user_id] NVARCHAR(max),
+    [assignedTo] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,

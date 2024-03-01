@@ -29,6 +29,27 @@ import { getAllour_teams, creatour_teams, getour_teamsById, updateour_teams, del
 import { getAllboard_members, creatboard_members, getboard_membersById, updateboard_members, deleteboard_members } from "../controllers/board_members.js"
 import { adminAuth, checkPermission, generalAuth } from '../middlewares/auth.js';
 import {createemailsetting,getAllemailsetting,getemailsettingById,updateemailsetting,deleteemailsetting} from "../controllers/emailsetting.js"
+import {
+    getAllhelpdesk,
+    gethelpdeskById,
+    deletehelpdesk,
+    createhelpdesk,
+    gethelpdeskByuserid,
+    updatehelp_desks
+} from "../controllers/help_desks.js"
+// Routes for help_desks
+router.post('/createhelpdesk', upload([{
+    name: 'document',
+    path: 'public/uploads/help_desks_DOC',
+}]), createhelpdesk);
+router.get('/getAllhelpdesk', getAllhelpdesk);
+router.get('/gethelpdeskById/:id', gethelpdeskById);
+router.get('/gethelpdeskByuserid/:user_id', gethelpdeskByuserid);
+router.put('/updatehelp_desks/:id', upload([{
+    name: 'document',
+    path: 'public/uploads/help_desks_DOC',
+}]), updatehelp_desks);
+router.delete('/deletehelpdesk/:id', deletehelpdesk);
 // Routes for faq_categories
 router.post('/createemailsetting', createemailsetting);
 router.get('/getAllemailsetting', getAllemailsetting);
