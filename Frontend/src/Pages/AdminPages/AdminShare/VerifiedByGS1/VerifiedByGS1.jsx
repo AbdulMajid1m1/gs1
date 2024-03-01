@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import newRequest from '../../../../utils/userRequest';
+import Swal from 'sweetalert2';
 
 const VerifiedByGS1 = () => {
   const { t, i18n } = useTranslation();
@@ -57,50 +58,129 @@ const VerifiedByGS1 = () => {
     return extracted;
   }
 
-  const handleSearch = () => {
-    // 6281000000113-25 2023-batch01-01 2023-BSW220200512603
-    const result = parseInput(gtin);
-    setSearchedData(result)
-    sessionStorage.setItem("barcodeData", JSON.stringify(result));
-    console.log(result)
-    //  mapDate, batch and serial are in result if needed".
-    if (!result.gtin) {
-      // openSnackbar("Please enter GTIN", 'error');
-      toast.error("Please enter GTIN");
-      return;
-    }
+  // const handleSearch = async () => {
+  //   try {
+  //     const result = parseInput(gtin);
+  //     setSearchedData(result);
+  //     sessionStorage.setItem("barcodeData", JSON.stringify(result));
+  //     console.log(result);
+  //     //  mapDate, batch and serial are in result if needed".
+  //     if (!result.gtin) {
+  //       toast.error("Please enter GTIN");
+  //       return;
+  //     }
 
-    const bodyData = {
-      gtin: result.gtin,
+  //     const response = await newRequest.post("/products/sarchGtin", { gtin: result.gtin });
+  //     if (response.data?.gtinArr === undefined || Object.keys(response.data?.gtinArr).length === 0) {
+  //       toast.error("No data found");
+  //       setData(null);
+  //       return;
+  //     }
+  //     console.log(response?.data);
+  //     setData(response?.data);
+  //     sessionStorage.setItem("gtinData", JSON.stringify(response?.data));
+  //     setGTIN(result.gtin);
+  //   } 
+  //   // catch (error) {
+  //   //   console.log(error);
+  //   //   setData(null);
+  //   //   toast.error(error?.response?.data?.message || "Something went wrong");
+  //   // }
+  //   catch (error) {
+  //     console.log(error);
+  //     if (error.response && error.response.status === 404) {
+  //       Swal.fire({
+  //         title: `${t('Product Not Found')}`,
+  //         text: `${t('Do you want to query in Global Database (GEPIR)?')}`,
+  //         icon: 'warning',
+  //         showCancelButton: true,
+  //         confirmButtonText: `${t('Yes Search')}`,
+  //         cancelButtonText: `${t('Close')}`,
+  //         // changes the color of the confirm button to red
+  //         confirmButtonColor: '#021F69',
+  //         cancelButtonColor: '#FF693A',
+  //       }).then(async (result) => {
+  //         if (result.isConfirmed) {
+  //           try {
+  //             console.log(result.gtin)
+  //             const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${result.gtin}`);
+  //             console.log(globalResponse?.data);
+  //             setData(globalResponse?.data);
+  //           }
+  //           catch (globalError) {
+  //             console.log(globalError);
+  //             toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
+  //             setData([]);
+  //           }
+  //         }
+  //       });
+  //     } else {
+  //       toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
+  //       setData([]);
+  //     }
 
-    };
+  //   }
+  // };
 
-    // axios.get("https://gs1ksa.org/api/search/member/gtin", { params: bodyData })
-    // axios.post("https://gs1ksa.org/api/search/member/gtin", { gtin: result.gtin })
-    newRequest.post("/products/sarchGtin", { gtin: result.gtin })
-      .then((response) => {
-        if (response.data?.gtinArr === undefined || Object.keys(response.data?.gtinArr).length === 0) {
-          // Display error message when the array is empty
-          // openSnackbar("No data found", 'error');
-          toast.error("No data found");
-          setData(null);
-          return
-        }
-        console.log(response?.data);
-        setData(response?.data);
-        sessionStorage.setItem("gtinData", JSON.stringify(response?.data));
-        // sessionStorage.setItem("EventgtinArr", JSON.stringify(response?.data?.gtinArr));
-        setGTIN(result.gtin)
-      })
-      .catch((error) => {
-        console.log(error);
+
+  const handleSearch = async () => {
+    let gtinValue;
+    try {
+      const result = parseInput(gtin);
+      gtinValue = result.gtin; // Store gtin value here
+      setSearchedData(result);
+      sessionStorage.setItem("barcodeData", JSON.stringify(result));
+      console.log(result);
+      //  mapDate, batch and serial are in result if needed".
+      if (!result.gtin) {
+        toast.error("Please enter GTIN");
+        return;
+      }
+  
+      const response = await newRequest.post("/products/sarchGtin", { gtin: result.gtin });
+      if (response.data?.gtinArr === undefined || Object.keys(response.data?.gtinArr).length === 0) {
+        toast.error("No data found");
         setData(null);
-        // openSnackbar("Something went wrong", 'error');
-        toast.error(error?.response?.data?.message || "Something went wrong");
-
-      });
+        return;
+      }
+      console.log(response?.data);
+      setData(response?.data);
+      sessionStorage.setItem("gtinData", JSON.stringify(response?.data));
+      setGTIN(result.gtin);
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.status === 404) {
+        Swal.fire({
+          title: `${t('Product Not Found')}`,
+          text: `${t('Do you want to query in Global Database (GEPIR)?')}`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: `${t('Yes Search')}`,
+          cancelButtonText: `${t('Close')}`,
+          // changes the color of the confirm button to red
+          confirmButtonColor: '#021F69',
+          cancelButtonColor: '#FF693A',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              console.log(gtinValue);
+              const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${gtinValue}`);
+              console.log(globalResponse?.data);
+              setData(globalResponse?.data);
+            } catch (globalError) {
+              console.log(globalError);
+              toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
+              setData([]);
+            }
+          }
+        });
+      } else {
+        toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
+        setData([]);
+      }
+    }
   };
-
+  
 
 
   const products = [
@@ -113,6 +193,8 @@ const VerifiedByGS1 = () => {
     { name: i18n.language === "ar" ? `${t('Net content')}` : "Net content", value: data?.gtinArr?.unitCode && data?.gtinArr?.unitValue && `${data?.gtinArr?.unitCode} ${data?.gtinArr?.unitValue}` },
     { name: i18n.language === "ar" ? `${t('Country of Sale')}` : "Country of sale", value: data?.gtinArr?.countryOfSaleCode },
   ];
+
+
 
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [selectedSerial, setSelectedSerial] = useState(null);
@@ -294,7 +376,7 @@ const VerifiedByGS1 = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data && data.productContents.map(item => (
+                      {data && data?.productContents?.length > 0 && data?.productContents?.map(item => (
                         <tr key={item.ID}>
                           <td>{item.ProductAllergenInformation}</td>
                           <td>{item.ProductNutrientsInformation}</td>
