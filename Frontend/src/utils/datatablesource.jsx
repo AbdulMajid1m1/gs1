@@ -7878,25 +7878,25 @@ export const emailsettingDataColumn = (t, i18n) => [
 
 
 
-export const gtinReportsColumns = [
+export const gtinReportsColumns = (t, i18n) => [
   {
     field: 'reporter_email',
-    headerName: "Reporter",
+    headerName: t("Reporter"),
     width: 180,
   },
   {
     field: 'report_barcode',
-    headerName: "Barcode",
+    headerName: t("Barcode"),
     width: 180,
   },
   {
     field: 'report_comment',
-    headerName: "Comment",
+    headerName: t("Comment"),
     width: 180,
   },
   {
     field: 'report_status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -7916,7 +7916,7 @@ export const gtinReportsColumns = [
   },
   {
     field: "created_at",
-    headerName: "Date",
+    headerName: t("Date"),
     width: 180,
     type: "dateTime",
     valueGetter: (params) => {
@@ -7926,12 +7926,12 @@ export const gtinReportsColumns = [
   },
   {
     field: 'report_action',
-    headerName: "Reporter Action",
+    headerName: t("Reporter Action"),
     width: 180,
   },
   {
     field: "report_images",
-    headerName: "Report Image",
+    headerName: t("Report Image"),
     width: 180,
     editable: true,
     renderCell: (params) => (
