@@ -35,7 +35,8 @@ import {
     deletehelpdesk,
     createhelpdesk,
     gethelpdeskByuserid,
-    updatehelp_desks
+    updatehelp_desks,
+ getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment
 } from "../controllers/help_desks.js"
 // Routes for help_desks
 router.post('/createhelpdesk', upload([{
@@ -43,8 +44,14 @@ router.post('/createhelpdesk', upload([{
     path: 'public/uploads/help_desks_DOC',
 }]), createhelpdesk);
 router.get('/getAllhelpdesk', getAllhelpdesk);
+router.get('/getAllassignto', getAllassignto);
 router.get('/gethelpdeskById/:id', gethelpdeskById);
 router.get('/gethelpdeskByuserid/:user_id', gethelpdeskByuserid);
+router.get('/gethelpdesk_commentByuserid/:helpDeskID', gethelpdesk_commentByuserid);
+router.post('/createhelpdesk_comment', upload([{
+    name: 'document',
+    path: 'public/uploads/help_desks_DOC',
+}]), createhelpdesk_comment);
 router.put('/updatehelp_desks/:id', upload([{
     name: 'document',
     path: 'public/uploads/help_desks_DOC',

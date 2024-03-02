@@ -232,3 +232,93 @@ export const updatehelp_desks = async (req, res, next) => {
         next(error);
     }
 };
+export const getAllassignto = async (req, res, next) => {
+    try {
+        const AllUNSPSC = await prisma.admins.findMany({
+           where: {
+               is_super_admin: 1
+           }
+        });
+
+
+        res.json(AllUNSPSC);
+    } catch (error) {
+        next(error);
+    }
+};
+const helpdesk_commentSchema = Joi.object({
+    helpDeskID: Joi.string(),
+    comment: Joi.string(),
+
+   
+
+ 
+    commentByAdmin: Joi.string(),
+    commentByUser: Joi.string(),
+
+});
+export const gethelpdesk_commentByuserid = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            helpDeskID: Joi.string().required(),
+        });
+
+        const {
+            error
+        } = schema.validate(req.params);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const {
+            helpDeskID
+        } = req.params;
+
+        const helpDesk = await prisma.help_desk_comments.findMany({
+            where: {
+                helpDeskID: helpDeskID
+            },
+        });
+
+        if (!helpDesk) {
+            throw createError(404, 'Help desk comment not found');
+        }
+
+        return res.json(helpDesk);
+    } catch (error) {
+        next(error);
+    }
+};
+export const createhelpdesk_comment = async (req, res, next) => {
+    try {
+        const {
+            error,
+            value
+        } = helpdesk_commentSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({
+                error: error.details[0].message
+            });
+        }
+
+       
+
+        // Check if req.files and req.files.document exist
+        if (req.files && req.files.document) {
+            const uploadedDocument = req.files.document;
+            const documentFile = uploadedDocument[0];
+            const documentPath = path.join(documentFile.destination, documentFile.filename);
+            const imagePathWithoutPublic = documentPath.replace(/^public[\\/]/, '');
+            value.document = imagePathWithoutPublic;
+        }
+
+        const unit = await prisma.help_desk_comments.create({
+            data: value,
+        });
+        res.status(201).json(unit);
+    } catch (error) {
+        next(error);
+    } finally {
+        await prisma.$disconnect();
+    }
+};

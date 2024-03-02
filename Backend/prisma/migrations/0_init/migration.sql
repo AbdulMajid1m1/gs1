@@ -911,12 +911,12 @@ CREATE TABLE [dbo].[gtin_subscription_histories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[help_desk_comments] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
-    [helpDeskID] INT,
+    [id] NVARCHAR(1000) NOT NULL,
+    [helpDeskID]  NVARCHAR(max),
     [comment] NVARCHAR(max),
     [document] NVARCHAR(max),
-    [commentByAdmin] INT,
-    [commentByUser] INT,
+    [commentByAdmin]  NVARCHAR(max),
+    [commentByUser]  NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
     CONSTRAINT [PK_help_desk_comments] PRIMARY KEY CLUSTERED ([id])

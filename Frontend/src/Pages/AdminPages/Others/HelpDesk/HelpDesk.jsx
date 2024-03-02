@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next';
 import DataTable from '../../../../components/Datatable/Datatable';
 import { helpdeskTaskColumn } from "../../../../utils/datatablesource";
 import newRequest from '../../../../utils/userRequest';
+import UpdateTicketPopUp from '../../../MemberPages/MemberHelpDesk/UpdateTicketPopUp';
+import HelpDeskAssigneto from './HelpDeskAssigneto';
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 const HelpDesk = () => {
   const { t, i18n } = useTranslation();
@@ -34,55 +37,64 @@ const HelpDesk = () => {
 
   }
   
- 
+   const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
+
+   const handleShowUpdatePopup = (row) => {
+     setUpdatePopupVisibility(true);
+    sessionStorage.setItem("updateassigento", JSON.stringify(row));
+   };
+
   return (
     <div>
-        <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
-          <div>
-            <AdminDashboardRightHeader title={`${t('List of created tickets')}`} />
-          </div>
+      <div
+        className={`p-0 h-full ${
+          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+        }`}
+      >
+        <div>
+          <AdminDashboardRightHeader
+            title={`${t("List of created tickets")}`}
+          />
+        </div>
 
-          <div className='flex justify-center items-center'>
-            <div className="h-auto w-[97%] px-0 pt-4">
-              <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
-              
-                {/* DataGrid */}
-                <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-
-                  <DataTable data={data}
-                    title={`${t('List of created tickets')}`}
-                    columnsName={helpdeskTaskColumn(t)}
-                    loading={isLoading}
-                    secondaryColor="secondary"
-                    checkboxSelection={'disabled'}
-                    actionColumnVisibility={false}
-                    handleRowClickInParent={handleRowClickInParent}
-
-                    dropDownOptions={[
-                      // {
-                      //   label: t("View"),
-                      //   icon: (
-                      //     <VisibilityIcon
-                      //       fontSize="small"
-                      //       color="action"
-                      //       style={{ color: "rgb(37 99 235)" }}
-                      //     />
-                      //   ),
-                      //   action: handleView,
-                      // },
-                     
-                    ]}
-                    uniqueId="gtinMainTableId"
-
-                  />
-                </div>
-
+        <div className="flex justify-center items-center">
+          <div className="h-auto w-[97%] px-0 pt-4">
+            <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
+              {/* DataGrid */}
+              <div style={{ marginLeft: "-11px", marginRight: "-11px" }}>
+                <DataTable
+                  data={data}
+                  title={`${t("List of created tickets")}`}
+                  columnsName={helpdeskTaskColumn(t)}
+                  loading={isLoading}
+                  secondaryColor="secondary"
+                  checkboxSelection={"disabled"}
+                  actionColumnVisibility={true}
+                  handleRowClickInParent={handleRowClickInParent}
+                  dropDownOptions={[
+                    {
+                      label: `${t("Assign To")}`,
+                      icon: <AssignmentTurnedInIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />,
+                      action: handleShowUpdatePopup,
+                    },
+                  ]}
+                  uniqueId="gtinMainTableId"
+                />
               </div>
             </div>
           </div>
         </div>
+
+        {isUpdatePopupVisible && (
+          <HelpDeskAssigneto
+            isVisible={isUpdatePopupVisible}
+            setVisibility={setUpdatePopupVisibility}
+            refreshBrandData={refreshHelpDeskData}
+          />
+        )}
+      </div>
     </div>
-  )
+  );
 }
 
 export default HelpDesk
