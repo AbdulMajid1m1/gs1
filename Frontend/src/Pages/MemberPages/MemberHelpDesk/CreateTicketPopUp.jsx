@@ -37,7 +37,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     formData.append("document", selecteddocument);
     formData.append("email", emailget);
     formData.append("user_id", useriddata);
-    formData.append("assignedTo", "aa");
+    // formData.append("assignedTo", "");
     formData.append("status", 0);
     try {
       const response = await newRequest.post("/createhelpdesk", formData, {
