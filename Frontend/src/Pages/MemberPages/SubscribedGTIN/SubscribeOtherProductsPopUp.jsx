@@ -97,8 +97,6 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
     setVisibility(false);
   }
 
-
-
   return (
     <div>
       {/* create the popup */}
