@@ -92,6 +92,7 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
                 ? newSubscription.gtin_yearly_subscription_fee
                 : newSubscription.med_yearly_subscription_fee;
 
+
         // Calculate remaining yearly fee for new subscription
         const remainingYearlyFee = (remainingMonths / 12) * newSubscriptionYearlyFee;
 
@@ -3154,107 +3155,12 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         });
 
 
-        // Update product's gcp_start_range
-        // await prisma.gtin_products.update({
-        //     where: { id: gtinProduct.id },
-        //     data: {
-        //         gcp_start_range: String(parseInt(gtinProduct.gcp_start_range) + 1),
-        //     },
-        // });
-
-
-        // let cart = {
-        //     cart_items: [],
-        // }
-
-        // cart.cart_items = []
-
-        // cart.cart_items.push({
-        //     // check user category and add price accordingly
-        //     registration_fee: user.membership_category === "non_med_category" ? gtinProduct.member_registration_fee : gtinProduct.med_registration_fee,
-        //     yearly_fee: user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee,
-        //     productName: gtinProduct.member_category_description,
-
-        // });
-        // cart.cart_items.push({
-        //     // check user category and add price accordingly
-        //     registration_fee: 0,
-        //     yearly_fee: 0,
-        //     productName: gtinProduct.member_category_description,
-
-        // });
-
-        // cart.transaction_id = transactionId;
-        // // Generate receipt
-        // const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-
-        // const receiptData = {
-        //     topHeading: "RECEIPT",
-        //     secondHeading: "RECEIPT FOR DOWNGRADE MEMBERSHIP",
-        //     memberData: {
-        //         qrCodeDataURL: qrCodeDataURL,
-        //         registeration: `Receipt for dowgrading membership to ${gtinProduct.member_category_description}`,
-        //         company_name_eng: user.company_name_eng,
-        //         mobile: user.mobile,
-        //         address: {
-        //             zip: user.zip_code,
-        //             countryName: user.country,
-        //             stateName: user.state,
-        //             cityName: user.city,
-        //         },
-        //         companyID: user.companyID,
-        //         membership_otherCategory: user.membership_category,
-        //         gtin_subscription: {
-        //             products: {
-        //                 member_category_description: gtinProduct.member_category_description,
-        //             },
-        //         },
-        //     },
-
-        //     cart: cart,
-        //     currentDate: {
-        //         day: new Date().getDate(),
-        //         month: new Date().getMonth() + 1,
-        //         year: new Date().getFullYear(),
-        //     },
-        //     company_details: {
-        //         title: 'Federation of Saudi Chambers',
-        //         account_no: '25350612000200',
-        //         iban_no: 'SA90 1000 0025 3506 1200 0200',
-        //         bank_name: 'Saudi National Bank - SNB',
-        //         bank_swift_code: 'NCBKSAJE',
-        //     },
-        //     BACKEND_URL: BACKEND_URL,
-        // };
-
-        // const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-        // const pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-        // const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-
-        // if (!fsSync.existsSync(pdfDirectory)) {
-        //     fsSync.mkdirSync(pdfDirectory, { recursive: true });
-        // }
-
-        // await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
-        // const pdfBuffer = await fs1.readFile(pdfFilePath);
-
-
-
-
-
         // Send email with receipt
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
             toEmail: user.email,
             subject: 'Membership Downgrade Request Approval - GS1 Saudi Arabia',
             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
-            // attachments: [
-            //     {
-            //         filename: pdfFilename,
-            //         content: pdfBuffer,
-            //         contentType: 'application/pdf',
-            //     },
-            // ],
         });
 
 
@@ -3302,5 +3208,146 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
     } catch (error) {
         console.error(error);
         next(error);
+    }
+};
+const productSubscriptionSchema = Joi.object({
+    productId: Joi.string().required(),
+    productIdentifierName: Joi.string().required(),
+
+});
+
+const addMultipleOtherProductSubscriptionsSchema = Joi.object({
+    userId: Joi.string().required(),
+    subscriptions: Joi.array().items(productSubscriptionSchema).min(1).required(),
+});
+
+export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req, res, next) => {
+    const { error, value } = addMultipleOtherProductSubscriptionsSchema.validate(req.body);
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+
+    try {
+        const { userId, subscriptions } = value;
+
+        const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+        if (!existingUser) {
+            return next(createError(404, 'User not found'));
+        }
+
+
+        const transactionId = generateRandomTransactionId(10);
+
+        const subscriptionEntries = subscriptions.map(sub => ({
+            user_id: userId,
+            product_id: sub.productId,
+            status: "inactive",
+            other_products_subscription_total_price:
+                existingUser.membership_category === "non_med_category"
+                    ? product.product_subscription_fee
+                    : product.med_subscription_fee,
+            product_identifier_name: sub.productIdentifierName,
+            transaction_id: transactionId, // Assuming all subscriptions in a request share the same transaction ID
+        }));
+
+        let totalPrice = subscriptionEntries.reduce((acc, entry) => acc + entry.other_products_subscription_total_price, 0);
+        console.log("totalPrice", totalPrice);
+
+        await prisma.$transaction(
+            subscriptionEntries.map(entry => prisma.other_products_subcriptions.create({ data: entry }))
+        );
+
+        let cart = { cart_items: [] };
+
+    
+
+        // add products to cart
+        cart.cart_items = subscriptionEntries.map(sub => ({
+            registration_fee: 0,
+            yearly_fee: sub.other_products_subscription_total_price,
+            productName: sub.product_identifier_name,
+        }));
+        // Generate QR code
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+
+        const invoiceDetails = {
+            topHeading: "INVOICE",
+            secondHeading: "BILL TO",
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+                // registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                registeration: `Addition of other products`,
+                // Assuming $addMember->id is already known
+                company_name_eng: existingUser.company_name_eng,
+                mobile: existingUser.mobile,
+                address: {
+                    zip: existingUser.zip_code,
+                    countryName: existingUser.country,
+                    stateName: existingUser.state,
+                    cityName: existingUser.city,
+                },
+                companyID: existingUser.companyID,
+                membership_otherCategory: existingUser.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: subscriptions.map(sub => sub.productIdentifierName).join(', '),
+                    },
+                },
+            },
+
+            cart: cart,
+
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL
+        };
+
+
+
+
+        // Generate and save the invoice PDF
+        const pdfFilename = `Invoice-additional-products-${existingUser.company_name_eng}-${transactionId}.pdf`;
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberInvoices');
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+
+        if (!fs.existsSync(pdfDirectory)) {
+            fs.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+        await convertEjsToPdf('invoiceTemplate.ejs', invoiceDetails, pdfFilePath);
+
+        // Save invoice reference in member_documents
+        await prisma.member_documents.create({
+            data: {
+                type: 'additional_other_products_invoice',
+                document: `/uploads/documents/MemberInvoices/${pdfFilename}`,
+                transaction_id: transactionId,
+                user_id: userId,
+                status: 'pending',
+                // uploaded_by: req?.admin?.email ? req.admin.email : req.user.email || '',
+            }
+        });
+
+        res.status(201).json({
+            message: "Subscriptions added and invoice generated successfully",
+            invoicePath: `/uploads/documents/MemberInvoices/${pdfFilename}`,
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
     }
 };
