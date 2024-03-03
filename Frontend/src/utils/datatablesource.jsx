@@ -4523,35 +4523,70 @@ export const bankSlipColumn = (t, i18n) => [
 ];
 
 export const helpDeskColumn = (t, i18n) => [
+ 
   {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
-  {
-    field: 'ticket_id',
+    field: 'ticket_no',
     headerName: t('Ticket ID'),
-    width: 180,
+    width: 150,
+  },
+   {
+    field: 'title',
+    headerName: t('Title'),
+    width: 150,
   },
   {
-    field: 'subject',
-    headerName: t('Subject'),
-    width: 180,
+    field: 'description',
+    headerName: t('Description'),
+    width: 250,
   },
   {
-    field: 'priority',
-    headerName: t('Priority'),
-    width: 180,
+    field: 'document',
+    headerName: t('Documents'),
+    width: 200,
+    //   renderCell: (params) => (
+    //   <img
+    //     src={params.row.document}
+    //     alt="Documents"
+    //     style={{ width: '100%', height: 'auto' }}
+    //   />
+
+    // ),
+      renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.document)}
+        alt="Image"
+        style={{
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          // cursor: 'pointer'
+        }}
+      
+      />
+    ),
   },
   {
     field: 'created_at',
     headerName: t('Created At'),
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+
+    }
   },
   {
     field: 'updated_at',
     headerName: t('Updated At'),
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 
 
@@ -7496,6 +7531,108 @@ export const staffAssignedTaskColumn = (t, i18n) => [
 
 ]
 
+export const helpdeskTaskColumn = (t, i18n) => [
+  {
+    field: 'ticket_no',
+    headerName: t('Ticket No'),
+    width: 150,
+  },
+  
+  {
+    field: 'title',
+    headerName: t('Title'),
+    width: 180,
+     renderCell: params => (
+      <div
+        style={{
+          cursor:'pointer',
+          color:'#3560b7'
+        }}
+      >
+        {params.row.title}
+      </div>
+    ),
+  },
+ 
+  {
+    field: 'assignedTo', // or any unique name you prefer
+    headerName: t('Assigned To'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: params.row.assignedTo ? '2px solid' : 'none',
+          // background: '#D1FFBD', // customize as needed
+          color: 'green',
+        }}
+      >
+        {params.row.assignedTo}
+      </div>
+    ),
+  },
+  {
+    field: 'description',
+    headerName: t('Description'),
+    width: 250,
+  },
+  {
+    field: 'email',
+    headerName: t('Email'),
+    width: 220,
+  },
+  {
+    field: 'user_id',
+    headerName: t('User ID'),
+    width: 200,
+  },
+  {
+    field: 'status',
+    headerName: t('Status'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 0 ? 'green' : 'red',
+          color: params.row.status === 0 ? 'green' : 'red',
+        }}
+      >
+     {params.row.status === 0 ? 'InProgress' : 'Closed'}
+      </div>
+    ),
+  },
+
+
+ {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+
+]
+
 
 
 export const licenceRegistryColumn = (t, i18n) => [
@@ -7741,25 +7878,25 @@ export const emailsettingDataColumn = (t, i18n) => [
 
 
 
-export const gtinReportsColumns = [
+export const gtinReportsColumns = (t, i18n) => [
   {
     field: 'reporter_email',
-    headerName: "Reporter",
+    headerName: t("Reporter"),
     width: 180,
   },
   {
     field: 'report_barcode',
-    headerName: "Barcode",
+    headerName: t("Barcode"),
     width: 180,
   },
   {
     field: 'report_comment',
-    headerName: "Comment",
+    headerName: t("Comment"),
     width: 180,
   },
   {
     field: 'report_status',
-    headerName: 'Status',
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -7779,7 +7916,7 @@ export const gtinReportsColumns = [
   },
   {
     field: "created_at",
-    headerName: "Date",
+    headerName: t("Date"),
     width: 180,
     type: "dateTime",
     valueGetter: (params) => {
@@ -7789,12 +7926,12 @@ export const gtinReportsColumns = [
   },
   {
     field: 'report_action',
-    headerName: "Reporter Action",
+    headerName: t("Reporter Action"),
     width: 180,
   },
   {
     field: "report_images",
-    headerName: "Report Image",
+    headerName: t("Report Image"),
     width: 180,
     editable: true,
     renderCell: (params) => (

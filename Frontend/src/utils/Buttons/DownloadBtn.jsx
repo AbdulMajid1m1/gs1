@@ -2,8 +2,10 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
+import { useTranslation } from "react-i18next";
 
 export default function DownloadButton({ id, name }) {
+    const { t, i18n } = useTranslation();
   const downloadBarcode = () => {
     const canvas = document.querySelector("#" + id);
 
@@ -40,7 +42,7 @@ export default function DownloadButton({ id, name }) {
       startIcon={<DownloadIcon />}
       onClick={downloadBarcode}
     >
-      Download
+      {t("Download")}
     </Button>
   );
 }

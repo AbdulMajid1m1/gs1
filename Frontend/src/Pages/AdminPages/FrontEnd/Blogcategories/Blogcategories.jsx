@@ -258,7 +258,7 @@ const Blogcategories = () => {
                                     className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
                                     <i className="fas fa-plus mr-2"></i>{t('Add')}
                                 </button>
-                                <div className="relative">
+                                {/* <div className="relative">
                                     <button
                                         className="rounded-full bg-secondary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary cursor-pointer"
                                     >
@@ -270,7 +270,7 @@ const Blogcategories = () => {
                                         className="absolute inset-0 opacity-0 cursor-pointer"
                                         onChange={handleFileUpload}
                                     />
-                                </div>
+                                </div> */}
 
 
                                 <CSVLink data={data}
@@ -290,17 +290,17 @@ const Blogcategories = () => {
                                     handleRowClickInParent={handleRowClickInParent}
 
                                     dropDownOptions={[
-                                        {
-                                            label: `${t('View')}`,
-                                            icon: (
-                                                <VisibilityIcon
-                                                    fontSize="small"
-                                                    color="action"
-                                                    style={{ color: "rgb(37 99 235)" }}
-                                                />
-                                            ),
-                                            action: handleView,
-                                        },
+                                        // {
+                                        //     label: `${t('View')}`,
+                                        //     icon: (
+                                        //         <VisibilityIcon
+                                        //             fontSize="small"
+                                        //             color="action"
+                                        //             style={{ color: "rgb(37 99 235)" }}
+                                        //         />
+                                        //     ),
+                                        //     action: handleView,
+                                        // },
                                         {
                                             label: `${t('Edit')}`,
                                             icon: (
