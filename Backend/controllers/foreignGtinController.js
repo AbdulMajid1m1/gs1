@@ -124,6 +124,15 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
 
         if (globalGepir.length > 0 && !globalGepir[0]['validationErrors']) {
             // Ensure that globalGepir[0] and other required properties are defined before accessing them
+
+            // You can fetch productContents and other data here as needed
+            const productContents = await gs1dlPrisma.tblProductContents.findMany({
+                where: {
+                    GTIN: gtin,
+                },
+            });
+
+
             const firstEntry = globalGepir[0];
             const globalGepirArr = {
                 gtin: firstEntry.gtin ?? '',
@@ -144,7 +153,7 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
                 gcpGLNID: firstEntry.gs1Licence && firstEntry.gs1Licence.licenseeGLN ? firstEntry.gs1Licence.licenseeGLN : '',
             };
 
-            return res.status(200).json(globalGepirArr);
+            return res.status(200).json({ globalGepirArr, productContents });
         } else {
             // Handle the case when there are validation errors or the product is not found
             throw createError(404, globalGepir[0]?.validationErrors[0]?.errors[0]?.message ?? 'Product not found');

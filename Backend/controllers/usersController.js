@@ -1048,7 +1048,7 @@ export const getUsersWithAssignTo = async (req, res, next) => {
         if (id) {
             users = await prisma.users.findMany({
                 where: {
-                    id: id,
+                    assign_to: id,
                     NOT: [
                         { assign_to: null },
                         { assign_to: "" },
