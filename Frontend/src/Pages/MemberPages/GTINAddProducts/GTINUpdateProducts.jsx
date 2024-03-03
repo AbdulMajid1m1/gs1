@@ -1386,7 +1386,7 @@ const GTINUpdateProducts = () => {
                                         style={{ width: "50%" }}
                                         className=" flex items-center justify-start gap-7 flex-wrap"
                                     >
-                                        <label htmlFor="field12"> {t('1D Barcod')}</label>
+                                        <label htmlFor="field12"> {t('1D Barcode')}</label>
                                         <BarcodeGenerator text={barcode} />
                                     </div>
                                     <div>
@@ -1399,7 +1399,7 @@ const GTINUpdateProducts = () => {
                                         style={{ width: "50%" }}
                                         className=" flex items-center justify-start gap-7 flex-wrap"
                                     >
-                                        <label htmlFor="field12"> {t('2D Barcod')}</label>
+                                        <label htmlFor="field12"> {t('2D Barcode')}</label>
                                         <DataMatrixGenerator
                                             text={barcode}
                                         />

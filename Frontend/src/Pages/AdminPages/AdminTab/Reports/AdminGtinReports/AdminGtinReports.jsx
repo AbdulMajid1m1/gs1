@@ -70,16 +70,16 @@ const AdminGtinReports = () => {
       // Check if the row's report_status is 0 or 1
       if (row.report_status === 0) {
         // If report_status is 0, keep only the "Mark as Completed" option
-        filteredOptions = dropDownOptions.filter(option => option.label === 'Mark as Completed');
+        filteredOptions = dropDownOptions.filter(option => option.label ===  `${t('Mark as Completed')}`);
       } else {
         // If report_status is 1, keep only the "Mark as Pending" option
-        filteredOptions = dropDownOptions.filter(option => option.label === 'Mark as Pending');
+        filteredOptions = dropDownOptions.filter(option => option.label ===  `${t('Mark as Pending')}`);
       }
       
       // Always include "Email To Brand Owner" and "Delete" options
       filteredOptions.push(
         {
-          label: 'Email To Brand Owner',
+          label: `${t('Email To Brand Owner')}`,
           icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />,
           action: handleAssignToPopUp,
         },
@@ -133,13 +133,13 @@ const AdminGtinReports = () => {
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         <div>
           <AdminDashboardRightHeader
-            title={'GTIN Reports'}
+          title={`${t('GTIN Reports')}`}
           />
         </div>
 
         <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-          <DataTable data={gtinReports} title={'GTIN Reports'} columnsName={gtinReportsColumns}
+          <DataTable data={gtinReports} title={`${t('GTIN Reports')}`} columnsName={gtinReportsColumns(t)}
             loading={gtinReportsLoader}
             checkboxSelection="disabled"
             secondaryColor="secondary"
@@ -150,17 +150,17 @@ const AdminGtinReports = () => {
 
             dropDownOptions={[
               {
-                label: 'Mark as Completed',
+                label: `${t('Mark as Completed')}`,
                 icon: <CheckCircleIcon fontSize="small" color="action" style={{ color: "green" }} />,
                 action: handleStatusChanged,
               },
               {
-                label: 'Mark as Pending',
+                label: `${t('Mark as Pending')}`,
                 icon: <PendingIcon fontSize="small" color="action" style={{ color: "orange" }} />,
                 action: handleStatusChanged,
               },
               {
-                label: 'Email To Brand Owner',
+                label:   `${t('Email To Brand Owner')}`,
                 icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
                 action: handleAssignToPopUp,

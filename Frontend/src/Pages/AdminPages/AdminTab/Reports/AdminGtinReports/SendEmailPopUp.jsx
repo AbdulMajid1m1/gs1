@@ -35,7 +35,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
             });
 
             console.log(res?.data);
-            toast.success(res?.data?.message || 'Email Sent Successfully!');
+            toast.success(res?.data?.message ||`${t("Email Sent Successfully!")}`);
             setIsLoading(false);
             closePopUp();
             fetchData();
@@ -57,7 +57,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
                     <div className="popup-container h-auto sm:w-[40%] w-full">
                         <div className="popup-form w-full">
                           <div className="flex justify-between w-full">
-                             <h2 className='text-gray-500 font-body font-medium text-xl'>Send Mail to Brand Owner</h2>
+                             <h2 className='text-gray-500 font-body font-medium text-xl'> {t('Send Mail to Brand Owner')}</h2>
                                 <button
                                     className="text-gray-500 hover:text-gray-700 focus:outline-none"
                                     onClick={closePopUp}
@@ -80,20 +80,20 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
                             </div>
                             <form onSubmit={handleAssignToData} className='w-full'>
                                 <div className='mt-3'>
-                                  <label htmlFor='subject' className="font-body text-sm text-secondary">Subject</label>
+                                  <label htmlFor='subject' className="font-body text-sm text-secondary"> {t('Subject')}</label>
                                     <input
                                         id='subject'
                                         type='text'
                                         value={subject}
                                         onChange={(e) => setSubject(e.target.value)}
                                         className="w-full mt-1 border border-gray-300 rounded outline-none px-3 py-2"
-                                        placeholder='Subject'
+                                        placeholder={`${t('Subject')}`}
                                         required
                                     />
                                 </div>
 
                                 <div className='mt-3'>
-                                  <label htmlFor='bcc' className="font-body text-sm text-secondary">Bcc <span className='text-red-500'>[Optional]</span></label>
+                                  <label htmlFor='bcc' className="font-body text-sm text-secondary">Bcc <span className='text-red-500'> {t('[Optional]')}</span></label>
                                     <input
                                         id='bcc'
                                         type='text'
@@ -106,7 +106,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
                                 </div>
                              
                                 <div className='mt-3'>
-                                    <label htmlFor='message' className="font-body text-sm text-secondary">Message</label>
+                                    <label htmlFor='message' className="font-body text-sm text-secondary"> {t('Message')}</label>
                                     <textarea
                                         id='message'
                                         value={message}
@@ -123,7 +123,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
                                     type="button"
                                     onClick={closePopUp}
                                 >
-                                    Cancel
+                                     {t('Cancel')}
                                 </button>
                                     <Button
                                         variant="contained"
@@ -133,7 +133,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
                                         className="px-6 py-3"
                                         endIcon={loading ? <CircularProgress size={24} color="inherit" /> : null}
                                     >
-                                        Send Mail
+                                         {t('Send Mail')}
                                     </Button>
                                 </div>
 

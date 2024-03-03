@@ -104,15 +104,15 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
         <div className="popup-overlay z-50 overflow-x-auto">
           <div className="popup-container h-auto sm:w-[60%] w-full">
             <div className="popup-form w-full">
-              <form className='w-full'>
-
-
-                <div className='flex gap-5 justify-center items-center flex-wrap'>
-                  <div style={{ marginLeft: '-11px', marginRight: '-11px' }}
-                    className='w-full'
+              <form className="w-full">
+                <div className="flex gap-5 justify-center items-center flex-wrap">
+                  <div
+                    style={{ marginLeft: "-11px", marginRight: "-11px" }}
+                    className="w-full"
                   >
-                    <DataTable data={registeredProductsData}
-                      title={'Subscribe Other Products'}
+                    <DataTable
+                      data={registeredProductsData}
+                      title={`${t("Subscribe Other Products")}`}
                       columnsName={registeredmemberColumn(t)}
                       loading={registeredProductsLoader}
                       secondaryColor="secondary"
@@ -121,19 +121,20 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                       actionColumnVisibility={false}
                       dropDownOptions={[
                         {
-                          label: `${t('Activation')}`,
-                          icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                          ,
+                          label: `${t("Activation")}`,
+                          icon: (
+                            <SwapHorizIcon
+                              fontSize="small"
+                              color="action"
+                              style={{ color: "rgb(37 99 235)" }}
+                            />
+                          ),
                           //   action: handleShowMemberInvoicePopup,
-
                         },
-
                       ]}
                       uniqueId="journalMovementClId"
-
                     />
                   </div>
-
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1">
                     <label
@@ -141,7 +142,7 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                       htmlFor="other"
                     >
                       {" "}
-                      Add More Other Products
+                      {t("Add More Other Products")}
                     </label>
                     <Autocomplete
                       multiple
@@ -169,8 +170,13 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
                       // getOptionDisabled={getOptionDisabled}
                       getOptionDisabled={(option) => {
                         // Disable GLN options if any GLN product is present in registeredProductsData
-                        const isGLNSubscribed = registeredProductsData.some(item => item.product_identity === 'gln');
-                        return isGLNSubscribed && option.product_name.toLowerCase().includes('gln');
+                        const isGLNSubscribed = registeredProductsData.some(
+                          (item) => item.product_identity === "gln"
+                        );
+                        return (
+                          isGLNSubscribed &&
+                          option.product_name.toLowerCase().includes("gln")
+                        );
                       }}
                     />
                   </div>
@@ -178,25 +184,28 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
 
                 {/* </div> */}
 
-
                 <div className="w-full flex justify-between items-center mt-5 px-5">
                   <button
                     type="button"
                     className="px-7 py-2 rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseFinacePopup}
                   >
-                    {t('Close')}
+                    {t("Close")}
                   </button>
 
                   <Button
                     variant="contained"
-                    style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                    style={{ backgroundColor: "#021F69", color: "#ffffff" }}
                     type="submit"
                     disabled={loading}
                     className="ml-2"
-                    endIcon={loading ? <CircularProgress size={24} color="inherit" /> : null}
+                    endIcon={
+                      loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : null
+                    }
                   >
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </form>
@@ -204,9 +213,8 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
           </div>
         </div>
       )}
-
     </div>
-  )
+  );
 }
 
 export default SubscribeOtherProductsPopUp
