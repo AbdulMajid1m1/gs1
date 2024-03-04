@@ -138,6 +138,7 @@ import MemberProtectedRoute from "./components/MemberProtectedRoute/MemberProtec
 import EmailConfigure from "./Pages/AdminPages/MasterData/EmailSettings/EmailConfigure.jsx";
 import GTINReports from "./Pages/UserPages/GTINReports/GTINReports.jsx";
 import AdminGtinReports from "./Pages/AdminPages/AdminTab/Reports/AdminGtinReports/AdminGtinReports.jsx";
+import Managesections from "./Pages/AdminPages/FrontEnd/ManageSections/Managesections.jsx";
 
 const queryClient = new QueryClient()
 
@@ -703,6 +704,14 @@ const App = () => {
                               <Route path="Faq_categories" element={
                                 <ProtectedRoute requiredPermission="faq_categories">
                                   <Faqcategories />
+                                </ProtectedRoute>
+                              } />
+
+                               {/* manage_section */}
+                              {/* <Route path="manage_section" element={<manage_section />} /> */}
+                              <Route path="manage_section" element={
+                                <ProtectedRoute requiredPermission="manage_section">
+                                  <Managesections />
                                 </ProtectedRoute>
                               } />
 

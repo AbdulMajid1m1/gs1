@@ -3348,6 +3348,37 @@ export const ManageTeamDataColumn = (t, i18n) => [
   },
 ];
 
+export const ManageSectionsDataColumn = (t, i18n) => [
+
+  {
+    field: 'name',
+    headerName: t('Section Name'),
+    width: 300,
+  },
+  {
+    field: 'created_at',
+    headerName: t('Created At'),
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: t('Updated At'),
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+
+
 export const BoardMembersDataColumn = (t, i18n) => [
 
   {
@@ -3443,26 +3474,38 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
     width: 300,
   },
   {
-    field: 'Download',
+    field: 'pdf',
     headerName: t('Download'),
     width: 250,
-    renderCell: (params) => (
-      <button
-        style={{
-          width: '100%',
-          height: '70%',
-          padding: '8px',
-          background: '#6777ef',
-          border: '1px solid #6777ef',
-          color: 'white',
-          borderRadius: '10px'
-        }}
-        onClick={() => handlepdfDownload(params.row.pdf)}
-      >
-        {/* {params.value} */}
+    renderCell: (params) => {
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        const fileUrl = docUrl;
+        saveAs(fileUrl, `${docUrl}.pdf`);
+      };
+
+      return (
+        <button
+          style={{
+            width: '100%',
+            height: '70%',
+            padding: '8px',
+            background: '#6777ef',
+            border: '1px solid #6777ef',
+            color: 'white',
+            borderRadius: '10px'
+          }}
+          onClick={onClickIcon}
+        >
+          {/* {params.value} */}
           {t('Download')}
-      </button>
-    ),
+        </button>
+
+      );
+    },
   },
   {
     field: 'status',
@@ -3494,11 +3537,7 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
   },
 ];
 
-const handlepdfDownload = (pdfurl) => {
-  const fileUrl = pdfurl;
-  saveAs(fileUrl, `${pdfurl}.pdf`);
-  console.log(fileUrl);
-};
+
 
 
 export const UserGuideVideoDataColumn = (t, i18n) => [
@@ -3509,26 +3548,56 @@ export const UserGuideVideoDataColumn = (t, i18n) => [
     width: 300,
   },
   {
-    field: 'Download',
+    field: 'video',
     headerName: t('Download'),
     width: 250,
-    renderCell: (params) => (
-      <button
-        style={{
-          width: '100%',
-          height: '70%',
-          padding: '8px',
-          background: '#6777ef',
-          border: '1px solid #6777ef',
-          color: 'white',
-          borderRadius: '10px'
-        }}
-        onClick={() => handleVideoDownload(params.row.video)}
-      >
-        {/* {params.value} */}
-         {t('Download')}
-      </button>
-    ),
+    renderCell: (params) => {
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        console.log(docUrl);
+        const fileUrl = docUrl;
+        saveAs(fileUrl, `${docUrl}.mp4`);
+      };
+
+      return (
+        <button
+          style={{
+            width: '100%',
+            height: '70%',
+            padding: '8px',
+            background: '#6777ef',
+            border: '1px solid #6777ef',
+            color: 'white',
+            borderRadius: '10px'
+          }}
+          onClick={onClickIcon}
+        >
+          {/* {params.value} */}
+          {t('Download')}
+        </button>
+
+      );
+    },
+    // renderCell: (params) => (
+    //   <button
+    //     style={{
+    //       width: '100%',
+    //       height: '70%',
+    //       padding: '8px',
+    //       background: '#6777ef',
+    //       border: '1px solid #6777ef',
+    //       color: 'white',
+    //       borderRadius: '10px'
+    //     }}
+    //     onClick={() => handleVideoDownload(params.row.video)}
+    //   >
+    //     {/* {params.value} */}
+    //     {t('Download')}
+    //   </button>
+    // ),
   },
   {
     field: 'status',
