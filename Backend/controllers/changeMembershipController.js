@@ -3387,7 +3387,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
     });
 
     const { error, value } = schema.validate(req.body);
-
+    let otherProductsSubscriptionHistoryData;
     try {
         if (error) {
             throw createError(400, error.details[0].message);
@@ -3414,21 +3414,84 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
             throw createError(404, 'No subscription entries found for the transaction ID');
         }
 
-        await prisma.other_products_subcriptions.updateMany({
-            where: {
-                transaction_id: transactionId,
-                user_id: userId,
-            },
-            data: {
-                status: 'active',
-            },
+        // fetch other products based on product id
+
+
+        // Fetch the necessary data from other_products table
+        const products = await prisma.other_products.findMany({
+            select: {
+                id: true,
+                total_no_of_barcodes: true,
+                product_subscription_fee: true,
+                med_subscription_fee: true,
+            }
         });
+        let activatedOtherProducts = [];
+        // Update other_products_subcriptions table for each product
+        for (const product of products) {
+            console.log("product", product);
+            let subscriptionFee = user.membership_category === 'non_med_category'
+                ? product.product_subscription_fee
+                : product.med_subscription_fee;
+
+            await prisma.other_products_subcriptions.updateMany({
+                where: {
+                    product_id: product.id,
+                    isDeleted: false,
+                    transaction_id: transactionId
+                },
+                data: {
+                    other_products_subscription_limit: product.total_no_of_barcodes,
+                    other_products_subscription_total_price: subscriptionFee,
+                    status: 'active',  // Update the status
+                    expiry_date: user.gcp_expiry, // Update the expiry date
+                }
+            });
+            // now get the updated records and push them to the array
+
+            let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+                where: {
+                    product_id: product.id,
+                    isDeleted: false,
+                    transaction_id: transactionId
+                },
+
+            });
+            activatedOtherProducts.push(...activatedOtherProduct);
+        }
+
+        console.log("activatedOtherProducts", activatedOtherProducts);
+        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
+            ...(item.react_no && { react_no: item.react_no }),
+            transaction_id: item.transaction_id,
+            product_id: item.product_id,
+            user_id: item.user_id,
+            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+            status: 'approved',
+            request_type: 'registration',
+            expiry_date: item.expiry_date,
+            admin_id: req?.admin?.adminId,
+        }));
+
+        // await prisma.other_products_subcriptions.updateMany({
+        //     where: {
+        //         transaction_id: transactionId,
+        //         user_id: userId,
+        //     },
+        //     data: {
+        //         status: 'active',
+        //     },
+        // });
+
+        // update otherproductHistory table
+        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
 
         await prisma.member_documents.updateMany({
             where: {
                 transaction_id: transactionId,
                 user_id: userId,
                 type: 'additional_other_products_invoice',
+
             },
             data: {
                 status: 'approved',
