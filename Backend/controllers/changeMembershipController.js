@@ -3367,7 +3367,7 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
                 },
             ],
         });
-
+        await updateUserPendingInvoiceStatus(userId);
 
         res.status(201).json({
             message: "Subscriptions added and invoice generated successfully",
@@ -3571,14 +3571,6 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         }
 
         await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceDetails, pdfFilePath);
-
-
-
-
-
-
-
-
 
 
 
