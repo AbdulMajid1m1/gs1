@@ -3616,7 +3616,6 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
             ],
         });
 
-
         res.status(200).json({ message: 'Additional other products subscription request approved successfully' });
     } catch (error) {
         console.error(error);

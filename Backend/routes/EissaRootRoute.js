@@ -102,20 +102,20 @@ router.put('/updategpctype/:id', adminAuth, checkPermission(['gcp_type']), updat
 router.delete('/deletegpctype/:id', adminAuth, checkPermission(['gcp_type']), deletegpctype);
 // Routes for countryofsale
 router.post('/createcountryofsale', adminAuth, checkPermission(['country_of_sales']), createcountryofsale);
-router.get('/getAllcountryofsale', adminAuth, getAllcountryofsale);
-router.get('/getcountryof_saleById/:id', adminAuth, getcountryof_saleById);
+router.get('/getAllcountryofsale', generalAuth, getAllcountryofsale);
+router.get('/getcountryof_saleById/:id', generalAuth, getcountryof_saleById);
 router.put('/updatecountryofsale/:id', adminAuth, checkPermission(['country_of_sales']), updatecountryofsale);
 router.delete('/deletecountryofsale/:id', adminAuth, checkPermission(['country_of_sales']), deletecountryofsale);
 // Routes for HsCode
 router.post('/createHsCode', adminAuth, checkPermission(['hs_code']), createHsCode);
-router.get('/getAllHsCode', adminAuth, getAllHsCode);
+router.get('/getAllHsCode', generalAuth, getAllHsCode);
 router.get('/getHsCodeById/:id', adminAuth, getHsCodeById);
 router.put('/updateHsCode/:id', adminAuth, checkPermission(['hs_code']), updateHsCode);
 router.delete('/deleteHsCode/:id', adminAuth, checkPermission(['hs_code']), deleteHsCode);
 
 // Routes for unspscs
 router.post('/createUNSPSC', adminAuth, checkPermission(['unspcs']), createUNSPSC);
-router.get('/getAllUNSPSC', adminAuth, getAllUNSPSC);
+router.get('/getAllUNSPSC', generalAuth, getAllUNSPSC);
 router.get('/getUNSPSCById/:id', adminAuth, getUNSPSCById);
 router.put('/updateUNSPSC/:id', adminAuth, checkPermission(['unspcs']), updateUNSPSC);
 router.delete('/deleteUNSPSC/:id', adminAuth, checkPermission(['unspcs']), deleteUNSPSC);
