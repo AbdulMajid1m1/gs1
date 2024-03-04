@@ -3499,7 +3499,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
 
 
         // Generate and save the invoice PDF
-        const pdfFilename = `Invoice-additional-products-${existingUser.company_name_eng}-${transactionId}.pdf`;
+        const pdfFilename = `Invoice-additional-products-${user.company_name_eng}-${transactionId}.pdf`;
         const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberInvoices');
         const pdfFilePath = path.join(pdfDirectory, pdfFilename);
 
@@ -3532,7 +3532,26 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
 
         await updateUserPendingInvoiceStatus(userId);
 
+        // send mail to user with attachment
+        const pdfBuffer = await fs1.readFile(pdfFilePath);
 
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: user.email,
+            subject: 'Additional Other Products Subscription Request Approval - GS1 Saudi Arabia',
+            htmlContent: `Dear ${user.name},<br><br>
+            We are pleased to inform you that your additional other products subscription request has been approved. Please find the attached receipt for your reference.<br><br>
+            Thank you for your continued support.<br><br>
+            Regards,<br>
+            GS1 Saudi Arabia`,
+            attachments: [
+                {
+                    filename: pdfFilename,
+                    content: pdfBuffer,
+                    contentType: 'application/pdf',
+                },
+            ],
+        });
 
 
         res.status(200).json({ message: 'Additional other products subscription request approved successfully' });

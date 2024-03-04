@@ -1,5 +1,5 @@
 import express from 'express';
-import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, getInvoiceDetailsForUpgradeSubscription, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest, addAdditionalProductsRequest, approveAdditionalProductsRequest, addAdditionalGlnRequest, approveAdditionalGlnRequest, getAddGlnCarts, getUpgradeMembershipCarts, addMultipleOtherProductSubscriptionsAndGenerateInvoice } from '../../controllers/changeMembershipController.js';
+import { approveDowngradeMembershipRequest, approveMembershipRequest, downgradeMemberSubscriptionRequest, membershipRenewRequest, getInvoiceDetailsForUpgradeSubscription, updateMemberRenewalDocumentStatus, upgradeMemberSubscriptionRequest, addAdditionalProductsRequest, approveAdditionalProductsRequest, addAdditionalGlnRequest, approveAdditionalGlnRequest, getAddGlnCarts, getUpgradeMembershipCarts, addMultipleOtherProductSubscriptionsAndGenerateInvoice, approveAdditionalOtherProductsSubscriptionRequest } from '../../controllers/changeMembershipController.js';
 import { adminAuth, generalAuth } from '../../middlewares/auth.js';
 
 
@@ -38,7 +38,7 @@ router.put('/approveDowngradeMembershipRequest', adminAuth, approveDowngradeMemb
 router.post('/addMultipleOtherProductSubscriptionsAndGenerateInvoice', addMultipleOtherProductSubscriptionsAndGenerateInvoice);
 
 
-
+router.post("/approveAdditionalOtherProductsSubscriptionRequest", approveAdditionalOtherProductsSubscriptionRequest);
 
 
 export default router;
