@@ -341,7 +341,7 @@ const SubscribedGTIN = () => {
 
         {/* Subscribe Other Products component with handleShowRenewPopup prop */}
         {isSubscribeOtherPopupVisible && (
-          <SubscribeOtherProductsPopUp isVisible={isSubscribeOtherPopupVisible} setVisibility={setIsSubscribeOtherPopupVisible} />
+          <SubscribeOtherProductsPopUp isVisible={isSubscribeOtherPopupVisible} setVisibility={setIsSubscribeOtherPopupVisible} refreshSubscriptionData={fetchRegisteredProductsData} />
         )}
 
       </div>
