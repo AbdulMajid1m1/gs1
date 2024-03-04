@@ -203,6 +203,7 @@ export const getMemberInvoices = async (req, res, next) => {
                             { type: 'downgrade_invoice' },
                             { type: "additional_gln_invoice" },
                             { type: "additional_gtin_invoice" },
+                            { type: "additional_other_products_invoice" },
                         ]
                     }
                 ]
@@ -236,6 +237,7 @@ export const getMemberPendingInvoices = async (req, res, next) => {
                             { type: 'downgrade_invoice' },
                             { type: "additional_gln_invoice" },
                             { type: "additional_gtin_invoice" },
+                            { type: "additional_other_products_invoice" },
                         ]
                     },
 
