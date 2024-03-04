@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
 import { Autocomplete, Button, CircularProgress, TextField } from '@mui/material';
 
-const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
+const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility, refreshSubscriptionData }) => {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -77,6 +77,33 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
 
 
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);    
+    try {
+      const body = {
+        userId: memberData?.id,
+        subscriptions: selectedOtherProducts.map(product => ({
+          productId: product?.id,
+          productIdentifierName: product?.product_name
+        }))
+      };
+
+      const response = await newRequest.post('/changeMembership/addMultipleOtherProductSubscriptionsAndGenerateInvoice', body);
+      console.log(response.data);
+      toast.success(response?.data?.message || 'Subscription Added')
+      setLoading(false);
+      handleCloseFinacePopup();
+      refreshSubscriptionData();
+    } 
+    catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.error || 'Something Went Wrong')
+      setLoading(false);
+    }
+  }
+
+
 
 
   useEffect(() => {
@@ -104,7 +131,7 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility }) => {
         <div className="popup-overlay z-50 overflow-x-auto">
           <div className="popup-container h-auto sm:w-[60%] w-full">
             <div className="popup-form w-full">
-              <form className="w-full">
+              <form onSubmit={handleSubmit} className="w-full">
                 <div className="flex gap-5 justify-center items-center flex-wrap">
                   <div
                     style={{ marginLeft: "-11px", marginRight: "-11px" }}
