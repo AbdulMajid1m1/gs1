@@ -3539,7 +3539,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
             fromEmail: ADMIN_EMAIL,
             toEmail: user.email,
             subject: 'Additional Other Products Subscription Request Approval - GS1 Saudi Arabia',
-            htmlContent: `Dear ${user.name},<br><br>
+            htmlContent: `<br>
             We are pleased to inform you that your additional other products subscription request has been approved. Please find the attached receipt for your reference.<br><br>
             Thank you for your continued support.<br><br>
             Regards,<br>

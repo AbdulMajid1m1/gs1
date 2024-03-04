@@ -221,6 +221,12 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       apiEndpoint = `/changeMembership/approveAdditionalGlnRequest`;
       requestBody = addGln;
     }
+    else if (gs1MemberInvoiceData?.type === "additional_other_products_invoice") {
+      apiEndpoint = `/changeMembership/approveAdditionalOtherProductsSubscriptionRequest`;
+      requestBody = addGln;
+    }
+
+
 
 
 

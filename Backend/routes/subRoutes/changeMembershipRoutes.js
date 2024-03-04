@@ -38,7 +38,7 @@ router.put('/approveDowngradeMembershipRequest', adminAuth, approveDowngradeMemb
 router.post('/addMultipleOtherProductSubscriptionsAndGenerateInvoice', addMultipleOtherProductSubscriptionsAndGenerateInvoice);
 
 
-router.post("/approveAdditionalOtherProductsSubscriptionRequest", approveAdditionalOtherProductsSubscriptionRequest);
+router.put("/approveAdditionalOtherProductsSubscriptionRequest", approveAdditionalOtherProductsSubscriptionRequest);
 
 
 export default router;
