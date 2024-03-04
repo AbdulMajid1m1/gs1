@@ -112,7 +112,7 @@ const Updtauserguidespdf = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         <input
                                             id="file-Video"
                                             type="file"
-                                            accept="video/*"
+                                            accept=".pdf"
                                             onChange={handleFileChange}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
 
