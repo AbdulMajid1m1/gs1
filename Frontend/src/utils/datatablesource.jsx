@@ -3460,7 +3460,7 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
         onClick={() => handlepdfDownload(params.row.pdf)}
       >
         {/* {params.value} */}
-        Download
+          {t('Download')}
       </button>
     ),
   },
@@ -3497,7 +3497,9 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
 const handlepdfDownload = (pdfurl) => {
   const fileUrl = pdfurl;
   saveAs(fileUrl, `${pdfurl}.pdf`);
+  console.log(fileUrl);
 };
+
 
 export const UserGuideVideoDataColumn = (t, i18n) => [
 
@@ -3524,7 +3526,7 @@ export const UserGuideVideoDataColumn = (t, i18n) => [
         onClick={() => handleVideoDownload(params.row.video)}
       >
         {/* {params.value} */}
-        Download
+         {t('Download')}
       </button>
     ),
   },
@@ -4523,13 +4525,13 @@ export const bankSlipColumn = (t, i18n) => [
 ];
 
 export const helpDeskColumn = (t, i18n) => [
- 
+
   {
     field: 'ticket_no',
     headerName: t('Ticket ID'),
     width: 150,
   },
-   {
+  {
     field: 'title',
     headerName: t('Title'),
     width: 150,
@@ -4551,7 +4553,7 @@ export const helpDeskColumn = (t, i18n) => [
     //   />
 
     // ),
-      renderCell: (params) => (
+    renderCell: (params) => (
       < img
         src={imageLiveUrl(params.row.document)}
         alt="Image"
@@ -4561,8 +4563,28 @@ export const helpDeskColumn = (t, i18n) => [
           objectFit: 'contain',
           // cursor: 'pointer'
         }}
-      
+
       />
+    ),
+  },
+  {
+    field: 'status',
+    headerName: t('Status'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 0 ? 'green' : 'red',
+          color: params.row.status === 0 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 0 ? 'pending' : 'Closed'}
+      </div>
     ),
   },
   {
@@ -7537,23 +7559,23 @@ export const helpdeskTaskColumn = (t, i18n) => [
     headerName: t('Ticket No'),
     width: 150,
   },
-  
+
   {
     field: 'title',
     headerName: t('Title'),
     width: 180,
-     renderCell: params => (
+    renderCell: params => (
       <div
         style={{
-          cursor:'pointer',
-          color:'#3560b7'
+          cursor: 'pointer',
+          color: '#3560b7'
         }}
       >
         {params.row.title}
       </div>
     ),
   },
- 
+
   {
     field: 'assignedTo', // or any unique name you prefer
     headerName: t('Assigned To'),
@@ -7603,13 +7625,13 @@ export const helpdeskTaskColumn = (t, i18n) => [
           color: params.row.status === 0 ? 'green' : 'red',
         }}
       >
-     {params.row.status === 0 ? 'InProgress' : 'Closed'}
+        {params.row.status === 0 ? 'InProgress' : 'Closed'}
       </div>
     ),
   },
 
 
- {
+  {
     field: 'created_at',
     headerName: 'Created At',
     width: 180,

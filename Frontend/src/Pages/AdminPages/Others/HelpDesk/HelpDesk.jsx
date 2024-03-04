@@ -7,6 +7,8 @@ import newRequest from '../../../../utils/userRequest';
 import UpdateTicketPopUp from '../../../MemberPages/MemberHelpDesk/UpdateTicketPopUp';
 import HelpDeskAssigneto from './HelpDeskAssigneto';
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ViewHelpdask from './ViewHelpdask';
 
 const HelpDesk = () => {
   const { t, i18n } = useTranslation();
@@ -38,11 +40,17 @@ const HelpDesk = () => {
   }
   
    const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
-
+ const [isViewPopupVisible, setviewPopupVisibility] = useState(false);
    const handleShowUpdatePopup = (row) => {
      setUpdatePopupVisibility(true);
     sessionStorage.setItem("updateassigento", JSON.stringify(row));
    };
+
+   const handleShowviewPopup = (row) => {
+     setviewPopupVisibility(true);
+    sessionStorage.setItem("Viewassigento", JSON.stringify(row));
+   };
+
 
   return (
     <div>
@@ -72,6 +80,17 @@ const HelpDesk = () => {
                   actionColumnVisibility={true}
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
+                     {
+                    label: "View",
+                    icon: (
+                        <VisibilityIcon
+                        fontSize="small"
+                        color="action"
+                        style={{ color: "rgb(37 99 235)" }}
+                        />
+                    ),
+                    action: handleShowviewPopup,
+                    },
                     {
                       label: `${t("Assign To")}`,
                       icon: <AssignmentTurnedInIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />,
@@ -89,6 +108,14 @@ const HelpDesk = () => {
           <HelpDeskAssigneto
             isVisible={isUpdatePopupVisible}
             setVisibility={setUpdatePopupVisibility}
+            refreshBrandData={refreshHelpDeskData}
+          />
+        )}
+
+          {isViewPopupVisible && (
+          <ViewHelpdask
+            isVisible={isViewPopupVisible}
+            setVisibility={setviewPopupVisibility}
             refreshBrandData={refreshHelpDeskData}
           />
         )}
