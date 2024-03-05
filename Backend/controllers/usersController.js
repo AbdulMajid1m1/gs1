@@ -862,13 +862,13 @@ export const setMemberCredentials = async (req, res, next) => {
 
         }
 
-        console.log("JWT_EXPIRATION", JWT_EXPIRATION)
+
         // If email, activity, and password are correct, generate a JWT token
         const memberToken = jwt.sign({ userId: user.id, email: user.email }, MEMBER_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
 
         delete user.password;
-        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token: memberToken });
+        return res.cookie("memberToken", memberToken, cookieOptions()).status(200).json({ success: true, memberData: user, token: memberToken });
     } catch (error) {
         console.error(error);
         next(error)

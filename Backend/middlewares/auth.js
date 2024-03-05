@@ -8,32 +8,43 @@ import {
 import prisma from "../prismaClient.js";
 
 export const userAuth = (req, res, next) => {
+  console.log("trigger userAuth");
   const token =
     req.cookies.memberToken ||
     (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   if (!token) return next(createError(401, "User authentication required!"));
 
   jwt.verify(token, MEMBER_JWT_SECRET, (err, userPayload) => {
-    if (err) return next(createError(403, "User token is not valid!"));
+    if (err) {
+      console.log("Error in userAuth", err);
+      return next(createError(403, err.message));
+    }
+    console.log("User Payload", userPayload);
     req.user = userPayload;
     next();
   });
 };
 
 export const adminAuth = (req, res, next) => {
+  console.log("trigger adminAuth");
   const token =
     req.cookies.adminToken ||
     (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   if (!token) return next(createError(401, "Admin authentication required!"));
 
   jwt.verify(token, ADMIN_JWT_SECRET, (err, adminPayload) => {
-    if (err) return next(createError(403, "Admin token is not valid!"));
+    if (err) {
+      console.log("Error in adminAuth", err);
+      return next(createError(403, err.message));
+    }
+    console.log("Admin Payload", adminPayload);
     req.admin = adminPayload;
     next();
   });
 };
 
 export const superAdminAuth = (req, res, next) => {
+  console.log("trigger superAdminAuth");
   const token =
     req.cookies.adminToken ||
     (req.headers.authorization && req.headers.authorization.split(" ")[1]);
@@ -55,37 +66,42 @@ export const superAdminAuth = (req, res, next) => {
   });
 };
 
-export const generalAuth = (req, res, next) => {
-  const adminToken =
-    req.cookies.adminToken ||
-    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
-  const userToken =
-    req.cookies.memberToken ||
-    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
 
-  const verifyToken = (token, key, type) => {
+export const generalAuth = (req, res, next) => {
+  console.log("trigger generalAuth");
+  const adminToken =
+    req.cookies.adminToken
+  // ||
+  // (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+  const userToken =
+    req.cookies.memberToken
+  // ||
+  // (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+  console.log(adminToken, " .... ", userToken);
+
+  function verifyToken(token, key, type) {
     if (!token) return;
     console.log("Verifying...", key, "..", type);
     jwt.verify(token, key, (err, payload) => {
-      if (!err) {
-          // Calculate remaining time
-      const now = moment().unix(); // current time in Unix epoch seconds
-      const exp = payload.exp; // expiration time from the token payload
-      const remainingTime = exp - now; // remaining time in seconds
-      const duration = moment.duration(remainingTime, 'seconds');
-      
-      // Format remaining time into days and minutes
-      const days = duration.days();
-      const hours = duration.hours();
-      const minutes = duration.minutes();
-      console.log(`Token expires in ${days} days, ${hours} hours, and ${minutes} minutes.`);
-        console.log("payload");
-        if (type === "admin") req.admin = payload;
-        if (type === "user") req.user = payload;
+      if (err) {
+        console.log("Token verification failed:", err);
+        throw createError(403, err.message);
       }
-      if(err){
-        return next(err);
-      }
+      // console.log("Payload:", payload);
+      // const expirationDate = new Date(payload.exp * 1000);
+      // console.log("Token Expiration Date:", expirationDate.toString());
+      // Token is valid, calculate remaining time
+      // const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+      // const remainingTime = payload.exp - currentTime; // Remaining time in seconds
+      // const days = Math.floor(remainingTime / (24 * 60 * 60)); // Convert to days
+      // const hours = Math.floor((remainingTime % (24 * 60 * 60)) / (60 * 60)); // Convert remainder to hours
+      // const minutes = Math.floor((remainingTime % (60 * 60)) / 60); // Convert remainder to minutes
+
+      // console.log(`Token expires in: ${days} days, ${hours} hours, and ${minutes} minutes`);
+      if (type === "admin") req.admin = payload;
+      if (type === "user") req.user = payload;
+
+
     });
   };
 

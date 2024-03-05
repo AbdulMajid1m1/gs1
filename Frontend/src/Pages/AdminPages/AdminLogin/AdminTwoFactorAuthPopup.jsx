@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 import { backendUrl } from '../../../utils/config';
 import { useNavigate } from 'react-router-dom';
+import newRequest from '../../../utils/userRequest';
 
 const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) => {
 
@@ -32,10 +33,22 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
             setRandomNumber(number);
         });
 
-        newSocket.on('authSuccess', () => {
-            toast.success(t('Admin Login Successfully'));
-            toggleVisibility(false);
-            navigate('/admin/dashboard');
+        newSocket.on('authSuccess', async (data) => {
+
+            try {
+                const response = await newRequest.post("/admin/setAdminCredentials", {
+                    token: data.getCredentialsToken,
+                });
+                toast.success(t('Admin Login Successfully'));
+                toggleVisibility(false);
+                navigate('/admin/dashboard');
+
+            } catch (error) {
+                console.error(error);
+                toast.error(t('Something went wrong!'));
+            }
+
+
         });
 
         newSocket.on('authError', ({ message }) => {
