@@ -1338,10 +1338,10 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Faq Categories')}</p>
               </div>
               <div
-                className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/CountryofSales', event)}
+                className={`main-images-container ${selectedItem === '/admin/manage_section' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/manage_section', event)}
                 onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/CountryofSales')
+                  handleContextMenu(event, '/admin/manage_section')
                 }
               >
                 <img
