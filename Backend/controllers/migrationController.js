@@ -520,11 +520,11 @@ export const migrateUser = async (req, res, next) => {
 
         //send email to user
         const mailOptions = {
-            subject: 'GS1 Saudi Arabia Invoice',
+            subject: 'GS1 Saudi Arabia Credentials & Invoice',
             html: `
             <div style="font-family: Arial, sans-serif; color: #333;">
                 <h2 style="color: #004aad;">Thank you for your interest in GS1 Saudi Arabia.</h2>
-                <p>These are your member credentials:</p>
+                <p>These are your GS1 Member Portal login credentials:</p>
                 <ul>
                     <li>Username: <strong>${createdUser.email}</strong></li>
                     <li>Password: <strong>${newPassword}</strong></li>
@@ -532,7 +532,7 @@ export const migrateUser = async (req, res, next) => {
                 </ul>
                 <p>Please find attached invoice for your GS1 Saudi Arabia membership.</p>
                 <p>Kindly note that your membership will be activated upon receipt of payment.</p>
-                <>Login to your Member Portal to view and upload the receipt.</p>   
+                <p>Login to your Member Portal to view and upload the receipt.</p>   
                 <p>For any queries, please contact us on <strong>920000927</strong> or email us at <a href="mailto:${ADMIN_EMAIL}" style="color: #004aad;">${ADMIN_EMAIL}</a>.</p>
                 <p>Best regards,</p>
                 <p>GS1 Saudi Arabia</p>

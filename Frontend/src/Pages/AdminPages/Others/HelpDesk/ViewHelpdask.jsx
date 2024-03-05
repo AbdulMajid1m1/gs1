@@ -18,8 +18,9 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
     id: updateBrandData?.assignedTo || 0,
     username: updateBrandData?.assignedTo || "",
   });
-  const [status, setstatus] = useState(updateBrandData?.status || 0); 
-   const [title, setTitle] = useState("");
+
+  const [status, setstatus] = useState(updateBrandData?.status || 0);
+  const [title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
   const { t, i18n } = useTranslation();
   const [replyshoww, setreplyshoww] = useState(false);
@@ -40,34 +41,36 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
       }
     };
 
-      const getbyid = async () => {
-        try {
-          const response = await newRequest.get(`/gethelpdeskById/${updateBrandData?.id}`);
-          setTitle(response?.data?.title);
-          setDescription(response?.data?.description);
-          console.log("----------", response);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getbyid()
+    const getbyid = async () => {
+      try {
+        const response = await newRequest.get(`/gethelpdeskById/${updateBrandData?.id}`);
+        setTitle(response?.data?.title);
+        setDescription(response?.data?.description);
+        console.log("----------", response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getbyid()
     getDocuments();
   }, []);
 
   const handleSelectedDocuments = (event, value) => {
     setSelectedDocuments(value);
   };
-  const image = imageLiveUrl(updateBrandData?.document) || "";
-  const [selecteddocument, setSelecteddocument] = useState(null);
-  const [Comments, setComments] = useState("");
 
-
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imageshow, setimageshow] = useState(imageLiveUrl(updateBrandData?.document) || '')
+  function handleChangeback(e) {
+    setSelectedFile(e.target.files[0]);
+    setimageshow(e.target.files[0]);
+  }
   return (
     <div>
       {isVisible && (
         <div className="popup-overlay">
           <div className="popup-container h-auto sm:w-[45%] w-full">
-            <div className="popup-form w-full">
+            <div className="popup-form w-full max-h-screen overflow-y-auto">
               <form className="w-full">
                 <div className="flex justify-between">
                   <h2 className="text-secondary font-sans font-semibold text-2xl">
@@ -79,7 +82,7 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
                 </div>
 
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">
                       {t("Title")}
                       <span className="text-red-600"> *</span>
@@ -167,6 +170,45 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
                     </select>
                   </div>
 
+                  <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
+                    {/* <center> */}
+                    <label htmlFor="Image" className="text-secondary">
+                      {t("Image")}
+                    </label>
+                    <div className="imgesection">
+                      <img
+                        src={
+                          selectedFile
+                            ? URL.createObjectURL(selectedFile)
+                            : imageshow != null
+                            ? imageshow
+                            : ""
+                        }
+                        className="printerpic"
+                        style={{
+                          width: selectedFile || imageshow ? "200px" : "200px",
+                          height: selectedFile || imageshow ? "200px" : "200px",
+                        }}
+                      />
+
+                      <div className="row " htmlFor="file-inputs">
+                        <label
+                          htmlFor="file-inputs"
+                          className="choosefile bg-secondary hover:bg-primary"
+                        >
+                          {t("choose file")}
+                        </label>
+                        <input
+                          id="file-inputs"
+                          type="file"
+                          onChange={handleChangeback}
+                          style={{ display: "none" }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* </center> */}
+                  </div>
                 </div>
 
                 <div className=" mt-5">
@@ -177,7 +219,6 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
                   >
                     {t("Close")}
                   </button>
-
                 </div>
               </form>
             </div>

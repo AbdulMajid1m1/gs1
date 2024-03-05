@@ -18,7 +18,7 @@ const HelpDesk = () => {
  const refreshHelpDeskData = async () => {
    try {
      const response = await newRequest.get(`/getAllhelpdesk`);
-     console.log(response.data);
+     console.log("response.data", response.data);
      setData(response?.data || []);
      setIsLoading(false);
    } catch (err) {
