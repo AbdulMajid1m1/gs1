@@ -7673,11 +7673,11 @@ export const helpdeskTaskColumn = (t, i18n) => [
     headerName: t('Email'),
     width: 220,
   },
-  {
-    field: 'user_id',
-    headerName: t('User ID'),
-    width: 200,
-  },
+  // {
+  //   field: 'user_id',
+  //   headerName: t('User ID'),
+  //   width: 200,
+  // },
   {
     field: 'status',
     headerName: t('Status'),
