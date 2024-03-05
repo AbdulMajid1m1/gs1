@@ -3484,7 +3484,8 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
 
       const onClickIcon = () => {
         const fileUrl = docUrl;
-        saveAs(fileUrl, `${docUrl}.pdf`);
+        const fileName = params.row.title;
+        saveAs(fileUrl, `${fileName}.pdf`);
       };
 
       return (
@@ -3557,9 +3558,9 @@ export const UserGuideVideoDataColumn = (t, i18n) => [
         : imageLiveUrl(params.row[params.field]);
 
       const onClickIcon = () => {
-        console.log(docUrl);
         const fileUrl = docUrl;
-        saveAs(fileUrl, `${docUrl}.mp4`);
+        const fileName = params.row.title;
+        saveAs(fileUrl, `${fileName}.mp4`);
       };
 
       return (
@@ -7673,11 +7674,29 @@ export const helpdeskTaskColumn = (t, i18n) => [
     headerName: t('Email'),
     width: 220,
   },
-  // {
-  //   field: 'user_id',
-  //   headerName: t('User ID'),
-  //   width: 200,
-  // },
+
+  {
+    field: "document",
+    headerName: t("Image"),
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.document)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.document), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
   {
     field: 'status',
     headerName: t('Status'),

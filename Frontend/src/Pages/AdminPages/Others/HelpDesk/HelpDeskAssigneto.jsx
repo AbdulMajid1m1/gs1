@@ -51,7 +51,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         const formData = new FormData();
         formData.append("title", updateBrandData?.title);
         formData.append("description", updateBrandData?.description);
-        // formData.append("document", image);
+        // formData.append("document", updateBrandData?.document);
         formData.append("assignedTo", selectedDocuments?.username);
         formData.append("status", Number(status));
         try {
@@ -74,6 +74,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
             refreshBrandData();
             handleCloseUpdatePopup();
         } catch (error) {
+            console.log(error.response.data);
             toast.error(
                 error?.response?.data?.error || `${t("Something went wrong")}`,
                 {
@@ -139,7 +140,7 @@ setSelecteddocument(null)
             {isVisible && (
                 <div className="popup-overlay">
                     <div className="popup-container h-auto sm:w-[45%] w-full">
-                        <div className="popup-form w-full">
+                        <div className="popup-form w-full max-h-screen overflow-y-auto">
                             <form className="w-full">
                                 <div className="flex justify-between">
                                     <h2 className="text-secondary font-sans font-semibold text-2xl">
