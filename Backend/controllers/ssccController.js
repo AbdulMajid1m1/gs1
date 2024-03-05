@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 import { generateSSCCBarcode } from '../utils/functions/barcodesGenerator.js';
-import { createAdminLogs } from '../utils/functions/historyLogs.js';
+import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function checkExpiryDate(expiryDate) {
