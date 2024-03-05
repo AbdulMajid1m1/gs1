@@ -70,13 +70,11 @@ export const superAdminAuth = (req, res, next) => {
 export const generalAuth = (req, res, next) => {
   console.log("trigger generalAuth");
   const adminToken =
-    req.cookies.adminToken
-  // ||
-  // (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+    req.cookies.adminToken ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   const userToken =
-    req.cookies.memberToken
-  // ||
-  // (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+    req.cookies.memberToken ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   console.log(adminToken, " .... ", userToken);
 
   function verifyToken(token, key, type) {
@@ -87,17 +85,6 @@ export const generalAuth = (req, res, next) => {
         console.log("Token verification failed:", err);
         throw createError(403, err.message);
       }
-      // console.log("Payload:", payload);
-      // const expirationDate = new Date(payload.exp * 1000);
-      // console.log("Token Expiration Date:", expirationDate.toString());
-      // Token is valid, calculate remaining time
-      // const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-      // const remainingTime = payload.exp - currentTime; // Remaining time in seconds
-      // const days = Math.floor(remainingTime / (24 * 60 * 60)); // Convert to days
-      // const hours = Math.floor((remainingTime % (24 * 60 * 60)) / (60 * 60)); // Convert remainder to hours
-      // const minutes = Math.floor((remainingTime % (60 * 60)) / 60); // Convert remainder to minutes
-
-      // console.log(`Token expires in: ${days} days, ${hours} hours, and ${minutes} minutes`);
       if (type === "admin") req.admin = payload;
       if (type === "user") req.user = payload;
 
