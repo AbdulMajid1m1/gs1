@@ -836,7 +836,7 @@ export const memberLogin = async (req, res, next) => {
         // Send the token in the response
         // res.status(200).json({ token });
         delete user.password;
-        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token });
+        return res.status(200).json({ success: true, memberData: user, token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
