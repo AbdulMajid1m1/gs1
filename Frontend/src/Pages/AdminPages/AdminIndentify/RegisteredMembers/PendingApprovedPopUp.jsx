@@ -137,7 +137,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
     try {
-      const res = await newRequest.post('/users/sendInvoice', approvedBody);
+    const res = await newRequest.post('/users/sendInvoice', approvedBody);
 
       setLoading(false);
       toast.success(res?.data?.message || `${('Invoice status updated successfully!')}`);

@@ -14,6 +14,7 @@ export async function updateUserPendingInvoiceStatus(userId) {
                             { type: 'downgrade_invoice' },
                             { type: 'additional_gln_invoice' },
                             { type: 'additional_gtin_invoice' },
+                            { type: 'additional_other_products_invoice' },
                         ]
                     },
                     { status: 'pending' }

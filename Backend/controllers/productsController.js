@@ -965,12 +965,12 @@ export const generateGtinCertificate = async (req, res, next) => {
             },
             date: {
                 day: gcp_expiry.getDate(),
-                month: gcp_expiry.getMonth(),
+                month: gcp_expiry.getMonth() + 1,
                 year: gcp_expiry.getFullYear() - 1,
             },
             Expirydate: {
                 day: gcp_expiry.getDate(),
-                month: gcp_expiry.getMonth(),
+                month: gcp_expiry.getMonth() + 1,
                 year: gcp_expiry.getFullYear(),
             },
         };
