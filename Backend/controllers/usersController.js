@@ -862,7 +862,7 @@ export const setMemberCredentials = async (req, res, next) => {
 
         }
 
-
+        console.log("JWT_EXPIRATION", JWT_EXPIRATION)
         // If email, activity, and password are correct, generate a JWT token
         const memberToken = jwt.sign({ userId: user.id, email: user.email }, MEMBER_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
