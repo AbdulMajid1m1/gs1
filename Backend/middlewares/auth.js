@@ -68,6 +68,17 @@ export const generalAuth = (req, res, next) => {
     console.log("Verifying...", key, "..", type);
     jwt.verify(token, key, (err, payload) => {
       if (!err) {
+          // Calculate remaining time
+      const now = moment().unix(); // current time in Unix epoch seconds
+      const exp = payload.exp; // expiration time from the token payload
+      const remainingTime = exp - now; // remaining time in seconds
+      const duration = moment.duration(remainingTime, 'seconds');
+      
+      // Format remaining time into days and minutes
+      const days = duration.days();
+      const hours = duration.hours();
+      const minutes = duration.minutes();
+      console.log(`Token expires in ${days} days, ${hours} hours, and ${minutes} minutes.`);
         console.log("payload");
         if (type === "admin") req.admin = payload;
         if (type === "user") req.user = payload;
