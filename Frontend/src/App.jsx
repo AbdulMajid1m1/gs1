@@ -154,10 +154,12 @@ const App = () => {
 
   const AdminMainLayout = ({ children }) => {
     return (
-      <div className="main-layout-container">
-        <AdminSideBar />
-        <span className="right-layout">{children}</span>
-      </div>
+      <AuthProvider>
+        <div className="main-layout-container">
+          <AdminSideBar />
+          <span className="right-layout">{children}</span>
+        </div>
+      </AuthProvider>
     );
   };
 
@@ -176,7 +178,7 @@ const App = () => {
   };
   return (
     <>
-      <AuthProvider>
+      {/* <AuthProvider> */}
         <DataTableProvider2>
           <DataTableProvider>
             <SnackbarProvider>
@@ -743,7 +745,7 @@ const App = () => {
             </SnackbarProvider>
           </DataTableProvider>
         </DataTableProvider2>
-      </AuthProvider>
+      {/* </AuthProvider> */}
     </>
   );
 };
