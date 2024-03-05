@@ -411,10 +411,11 @@ export const membershipRenewRequest = async (req, res, next) => {
             await createMemberLogs(userLog);
         }
 
-        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+        let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
             where: { user_id: existingUser.id, isDeleted: false },
         });
-
+        console.log("activatedGtinProducts", activatedGtinProducts)
+        activatedGtinProducts = activatedGtinProducts[0];
 
         let gtinSubscriptionHistoryData = [{
             transaction_id: transactionId,
