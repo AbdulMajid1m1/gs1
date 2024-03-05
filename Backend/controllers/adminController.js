@@ -85,8 +85,6 @@ export const adminLogin = async (req, res, next) => {
             token,
             permissions,
         };
-        //      TODO: remove set cookie here as it is not needed here, it's in setAdminCredentials
-        res.cookie("adminToken", token, cookieOptions())    
         return res.status(200).json(response);
 
     } catch (error) {
@@ -324,7 +322,6 @@ export const assignAdminToUser = async (req, res, next) => {
                 </html>
             `;
 
-        // Use your sendEmail function to send the email
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: adminEmail,

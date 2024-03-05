@@ -294,7 +294,7 @@ model carts {
   admin_id       Int?      @default(0, map: "DF_carts_admin_id")
   assign_to      Int?      @default(0, map: "DF_carts_assign_to")
   discount       Float?    @default(0, map: "DF_carts_discount")
-  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model rejected_carts {
@@ -533,8 +533,8 @@ model foreign_gtins {
   companyId          String?
   //create user and admin relation
 
-  user  users?  @relation(fields: [user_id], references: [id])
-  admin admins? @relation(fields: [admin_id], references: [id])
+  user  users?  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  admin admins? @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model g_c_p_information {
@@ -855,20 +855,20 @@ model gtin_subscription_histories {
   // point  additional_products_id  to  gtin_upgrade_pricing optionally
   gtin_upgrade_pricing   gtin_upgrade_pricing? @relation(fields: [additional_products_id], references: [id], onDelete: Cascade)
 
-  admin        admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  user         users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
+  admin        admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user         users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model help_desk_comments {
-  id            String    @id @default(cuid())
-  helpDeskID     String?   @db.NVarChar(Max)
-  comment        String?   @db.NVarChar(Max)
-  document       String?   @db.NVarChar(Max)
-  commentByAdmin String?   @db.NVarChar(Max)
-  commentByUser  String?   @db.NVarChar(Max)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  id             String   @id @default(cuid())
+  helpDeskID     String?  @db.NVarChar(Max)
+  comment        String?  @db.NVarChar(Max)
+  document       String?  @db.NVarChar(Max)
+  commentByAdmin String?  @db.NVarChar(Max)
+  commentByUser  String?  @db.NVarChar(Max)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
 }
 
 model help_desks {
@@ -881,8 +881,8 @@ model help_desks {
   user_id     String?   @db.NVarChar(Max)
   assignedTo  String?   @db.NVarChar(Max)
   status      Int?
- created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime? @db.DateTime
 }
 
@@ -1153,7 +1153,7 @@ model member_history_logs {
   user_id          String
   created_by_admin Boolean?  @default(false, map: "DF_member_history_logs_created_by_admin")
   rejected_usersId String?
-  user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model admin_history_logs {
@@ -1551,9 +1551,9 @@ model other_products_subscription_histories {
   // point additional_gln_id to gln_upgrade_pricing optionaly
   additional_gln    gln_upgrade_pricing? @relation(fields: [additional_gln_id], references: [id], onDelete: Cascade)
 
-  admin   admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  user    users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  admin   admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user    users          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model our_teams {
@@ -1703,7 +1703,7 @@ model products {
   image_2            String?   @db.VarChar(255)
   image_3            String?   @db.VarChar(255)
   // create user relation
-  user               users     @relation(fields: [user_id], references: [id])
+  user               users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([barcode], map: "products_barcode_index")
 }

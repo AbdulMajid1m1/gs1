@@ -411,10 +411,11 @@ export const membershipRenewRequest = async (req, res, next) => {
             await createMemberLogs(userLog);
         }
 
-        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+        let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
             where: { user_id: existingUser.id, isDeleted: false },
         });
-
+        console.log("activatedGtinProducts", activatedGtinProducts)
+        activatedGtinProducts = activatedGtinProducts[0];
 
         let gtinSubscriptionHistoryData = [{
             transaction_id: transactionId,
@@ -3388,12 +3389,28 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
 
     const { error, value } = schema.validate(req.body);
     let otherProductsSubscriptionHistoryData;
+
     try {
         if (error) {
             throw createError(400, error.details[0].message);
         }
 
         const { transactionId, userId } = value;
+
+        const bankSlipDocuments = await prisma.member_documents.findMany({
+            where: {
+                user_id: userId,
+                transaction_id: transactionId,
+                type: 'bank_slip',
+            }
+        });
+        if (bankSlipDocuments.length === 0) {
+            throw createError(400, `No bank slip documents found for this ${transactionId}`);
+        }
+
+
+
+
 
         const user = await prisma.users.findUnique({
             where: { id: userId },
@@ -3499,6 +3516,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         });
 
 
+
         // create cart for invoice
         let cart = { cart_items: [] };
         cart.cart_items = subscriptionEntries.map(sub => ({
@@ -3589,6 +3607,15 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
 
         // send mail to user with attachment
         const pdfBuffer = await fs1.readFile(pdfFilePath);
+
+        await prisma.member_documents.deleteMany({
+            where: {
+                user_id: userId,
+                transaction_id: transactionId,
+                type: 'bank_slip',
+            }
+
+        });
 
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
