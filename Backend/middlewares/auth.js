@@ -61,7 +61,7 @@ export const generalAuth = (req, res, next) => {
   verifyToken(userToken, MEMBER_JWT_SECRET, 'user');
 
   if (!req.user && !req.admin) {
-    return next(createError(401, "Authentication required!"));
+    return next(createError(401, "Authentication required! Please login to access this resource!"));
   }
   next();
 };
