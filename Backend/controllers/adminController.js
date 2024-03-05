@@ -322,7 +322,6 @@ export const assignAdminToUser = async (req, res, next) => {
                 </html>
             `;
 
-        // Use your sendEmail function to send the email
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: adminEmail,
