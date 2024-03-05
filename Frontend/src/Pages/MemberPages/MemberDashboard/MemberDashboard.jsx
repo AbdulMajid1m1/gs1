@@ -10,6 +10,7 @@ import CountdownTimer from './CountdownTimer'
 import Dashboardchart from './DashboardChart'
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const MemberDashboard = () => {
   const memberData = JSON.parse(sessionStorage.getItem('memberData'));
@@ -22,6 +23,7 @@ const MemberDashboard = () => {
   const [totalRange, setTotalRange] = useState('');
   const [gtinBarcodeIssued, setGtinBarcodeIssued] = useState('');
   const [gtinBarcodeRemaining, setGtinBarcodeRemaining] = useState('');
+  const [allUserData, setAllUserData] = useState([]);
 
   const [otherProductSubscriptions, setOtherProductSubscriptions] = useState([]);
   // const [totalCategoryOther, setTotalCategoryOther] = useState('');
@@ -54,29 +56,44 @@ const MemberDashboard = () => {
   }, [location.pathname]); // Update the effect when the route changes
 
   
-  useEffect(() => {
-   const fetchMemberProducts = async () => {
-      try {
-        const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
-        console.log(response.data);
-        setExpiryDate(response?.data?.gtinSubscriptions[0]?.expiry_date);
+  const fetchMemberProducts = async () => {
+     try {
+       const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${memberData?.id}&isDeleted=false`);
+       console.log(response.data);
+       setExpiryDate(response?.data?.gtinSubscriptions[0]?.expiry_date);
 
-        setGtinSubscriptions(response?.data?.gtinSubscriptions);
-        setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-        setTotalRange(response?.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
-        setGtinBarcodeIssued(response?.data?.gtinSubscriptions[0]?.gtin_subscription_counter);
-        setGtinBarcodeRemaining(response?.data?.gtinSubscriptions[0]?.gtin_subscription_limit);
-        
+       setGtinSubscriptions(response?.data?.gtinSubscriptions);
+       setTotalCategory(response?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+       setTotalRange(response?.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes);
+       setGtinBarcodeIssued(response?.data?.gtinSubscriptions[0]?.gtin_subscription_counter);
+       setGtinBarcodeRemaining(response?.data?.gtinSubscriptions[0]?.gtin_subscription_limit);
+       
 
-        setOtherProductSubscriptions(response?.data?.otherProductSubscriptions);
+       setOtherProductSubscriptions(response?.data?.otherProductSubscriptions);
 
 
-     
-      } catch (err) {
-        console.log(err);
-      }
+    
+     } catch (err) {
+       console.log(err);
+     }
+   }
+
+   const fetchAllUserData = async () => {
+    try {
+      const response = await newRequest.get(`/users?id=${memberData?.id}`);
+      // console.log(response.data[0]);
+      const data = response?.data[0] || [];
+      setAllUserData(data);
     }
+    catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.error || 'Something Went Wrong')
+    }
+  };
+
+  useEffect(() => {
     fetchMemberProducts();
+    fetchAllUserData();
   }, []) 
 
   return (
@@ -92,8 +109,8 @@ const MemberDashboard = () => {
             <div className="h-auto w-full px-5 py-4 bg-[#225BED] rounded-md">
               <div className='w-full flex justify-between items-center'>
                 <div className={'w-full flex flex-col gap-1'}>
-                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: {memberData?.gcpGLNID}</p>
-                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>{t('Member ID')}: <span>{memberData?.memberID}</span></p>
+                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>GCP: {allUserData?.gcpGLNID}</p>
+                    <p className='sm:text-3xl text-lg text-white font-sans font-semibold'>{t('Member ID')}: <span>{allUserData?.memberID}</span></p>
                 </div>
  
                 <CountdownTimer expiryDate={expiryDate} />

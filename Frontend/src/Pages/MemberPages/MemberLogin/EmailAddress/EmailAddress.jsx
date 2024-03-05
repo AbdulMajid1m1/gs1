@@ -24,16 +24,7 @@ const EmailAddress = () => {
         newRequest.get(`/users/getCrInfoByEmail?email=${email}`)
          .then(response => {
                 console.log(response.data)
-                toast.success(response?.data?.message, {
-                    position: "top-right",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                  });
+                // toast.success(response?.data?.message);
                 setIsLoading(false)
 
                 navigate('/select-activity');
@@ -46,16 +37,7 @@ const EmailAddress = () => {
             })
             .catch(err => {
                 console.log(err)
-                toast.error(err?.response?.data?.message || `${t('User Not found')}`, {
-                    position: "top-right",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                  });
+                toast.error(err?.response?.data?.message || 'Something When Wrong!');
                 setIsLoading(false)
             })
 
