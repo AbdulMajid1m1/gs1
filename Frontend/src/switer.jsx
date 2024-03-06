@@ -1,11 +1,10 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import engflage from "./Images/Flage.png"
 import arabicflage from "./Images/Arabflage.jpg"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const LanguageSwitcher = () =>
-{
+const LanguageSwitcher = () => {
     const { i18n } = useTranslation();
 
     // const changeLanguage = (language) =>
@@ -16,8 +15,13 @@ const LanguageSwitcher = () =>
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
     };
+
+    // on page load, check if a language is stored in sessionStorage
+
     const storedLanguage = sessionStorage.getItem('selectedLanguaged');
     const initialLanguage = storedLanguage || 'ar'; // Default to Arabic if no language is stored
+    sessionStorage.setItem('selectedLanguaged', initialLanguage);
+    console.log('initialLanguage', initialLanguage);
 
     const [isActive, setIsActive] = useState(false);
     const [currentOption, setCurrentOption] = useState(initialLanguage);
@@ -48,7 +52,7 @@ const LanguageSwitcher = () =>
                                 <div className="icon w-8 h-8 bg-cover bg-center" />
                                 {currentOption === 'en' && <img src={engflage} alt="" width='33px' />}
                                 {currentOption === 'ar' && <img src={arabicflage} alt="" width='33px' />}
-                                <ArrowDropDownIcon/>
+                                <ArrowDropDownIcon />
                             </div>
                         </li>
                     </ul>

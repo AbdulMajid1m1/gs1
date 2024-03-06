@@ -8,8 +8,7 @@ import FeatureArticle from '../FeatureArticle/FeatureArticle';
 import OurSolutionPartner from '../OurSolutionPartner/OurSolutionPartner';
 import DropDownSelection from '../DropDownSelection/DropDownSelection';
 
-const HomePage = () =>
-{
+const HomePage = () => {
 
 
 

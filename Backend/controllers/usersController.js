@@ -167,6 +167,7 @@ const sendAndSaveInvoiceSchema = Joi.object({
     userId: Joi.string().required(),
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     // productIDs: Joi.array().items(Joi.object({
     //     productID: Joi.string().required(),
     //     productType: Joi.string().required(),
@@ -184,7 +185,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
         }
         // Extract user and cart values
 
-        const { userId, status, reject_reason } = value;
+        const { userId, status, reject_reason, selectedLanguage } = value;
 
 
         // fetch user data and cart data
@@ -201,20 +202,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
         const cartValue = user.carts[0];
         cartValue.cart_items = JSON.parse(cartValue.cart_items);
-
-        // Filter out the cart items that have a productID present in the deletedItemIds
-        // cartValue.cart_items = cartValue.cart_items.filter(item => {
-        //     return !deletedItemIds.some(deletedItem =>
-        //         deletedItem.productID === item.productID && deletedItem.productType === item.product_type
-        //     );
-        // });
-        // if (cartValue.cart_items.length === 0) {
-        //     throw createError(400, "no cart items found")
-        // }
-
-        // console.log("cartValue", cartValue);
-
-
         let userUpdateResult; // to store the updated user
         let transaction;
         if (status === 'approved') {
@@ -283,8 +270,10 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
 
+            let ejsFile = selectedLanguage === 'ar' ? 'customInvoice_Ar.ejs' : 'customInvoice.ejs';
+
             // Generate PDF and save it to the specified path
-            const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+            await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data1, pdfFilePath);
 
             // now fetch the pdf file from the path and send it as attachment
             const invoiceBuffer = await fs.readFile(pdfFilePath);
@@ -483,10 +472,10 @@ export const sendInvoiceToUser = async (req, res, next) => {
             // send reject email with appropriate message
             const emailSubject = `Invoice Rejected`;
             const emailContent = `
-        <h1>Invoice Rejected</h1>
-        <p>Your Invoice against transaction id: <strong>${cartValue.transaction_id}</strong> is rejected by the admin</p>
-        <p>Reason: <strong>${reject_reason}</strong></p>
-        `;
+                <h1>Invoice Rejected</h1>
+                <p>Your Invoice against transaction id: <strong>${cartValue.transaction_id}</strong> is rejected by the admin</p>
+                <p>Reason: <strong>${reject_reason}</strong></p>
+                `;
             await sendEmail({
                 toEmail: user.email,
                 subject: emailSubject,
