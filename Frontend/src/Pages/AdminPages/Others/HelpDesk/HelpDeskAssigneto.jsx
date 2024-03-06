@@ -103,7 +103,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         setSelecteddocument(file);
     };
 
-      const Replydata = async () => {
+    const Replydata = async () => {
         const formData = new FormData();
         formData.append("helpDeskID", updateBrandData?.id);
         formData.append("comment", Comments);
@@ -112,25 +112,25 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append("commentByUser", "commentByUser");
         try {
             const response = await newRequest.post(`/createhelpdesk_comment`, formData);
-setComments('')
-setSelecteddocument(null)
- setreplyshoww(false);
+            setComments('')
+            setSelecteddocument(null)
+            setreplyshoww(false);
 
         } catch (error) {
             console.log(error);
-             toast.error(
-               error?.response?.data?.error || `${t("Something went wrong")}`,
-               {
-                 position: "top-right",
-                 autoClose: 5000,
-                 hideProgressBar: false,
-                 closeOnClick: true,
-                 pauseOnHover: true,
-                 draggable: true,
-                 progress: undefined,
-                 theme: "light",
-               }
-             );
+            toast.error(
+                error?.response?.data?.error || `${t("Something went wrong")}`,
+                {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                }
+            );
         }
     };
 
@@ -212,62 +212,62 @@ setSelecteddocument(null)
                                     </div>
                                 </div>
 
-                            <button
-                                type="button"
-                                className="px-5 py-2 my-4 rounded-sm bg-primary text-white font-body text-sm"
-                                onClick={replyshowform}
-                            >
-                                {t("Reply")}
-                                {/* {replyshoww ?'Reply':'Not Reply'} */}
-                            </button>
-                            {
-                                replyshoww && (
-                                    <form className='w-full'>
-                                        <div className="flex flex-col sm:gap-3 gap-3 mt-1">
-                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 -mt-3">
-                                                <label htmlFor="field2" className="text-secondary">{t('Comments')}<span className='text-red-600'> *</span> </label>
-                                                <textarea
-                                                    type="text"
-                                                    id="field2"
-                                                    value={Comments}
-                                                    onChange={(e) => setComments(e.target.value)}
-                                                    placeholder={`${t('Enter')} ${t('Comments')}`}
-                                                    className="border-1 w-full h-28 rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                                />
+                                <button
+                                    type="button"
+                                    className="px-5 py-2 my-4 rounded-sm bg-primary text-white font-body text-sm"
+                                    onClick={replyshowform}
+                                >
+                                    {t("Reply")}
+                                    {/* {replyshoww ?'Reply':'Not Reply'} */}
+                                </button>
+                                {
+                                    replyshoww && (
+                                        <form className='w-full'>
+                                            <div className="flex flex-col sm:gap-3 gap-3 mt-1">
+                                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 -mt-3">
+                                                    <label htmlFor="field2" className="text-secondary">{t('Comments')}<span className='text-red-600'> *</span> </label>
+                                                    <textarea
+                                                        type="text"
+                                                        id="field2"
+                                                        value={Comments}
+                                                        onChange={(e) => setComments(e.target.value)}
+                                                        placeholder={`${t('Enter')} ${t('Comments')}`}
+                                                        className="border-1 w-full h-28 rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="flex flex-col sm:gap-3 gap-3">
-                                            <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="field3" className="text-secondary">{t('Supporting Documents')}<span className='text-red-600'> *</span></label>
-                                                <input
-                                                    type="file"
-                                                    id="field3"
-                                                    //  value={Title}
-                                                    //  onChange={(e) => setTitle(e.target.value)}
-                                                    //  placeholder="Enter Title"
-                                                    onChange={handleFileChange}
-                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                                                />
+                                            <div className="flex flex-col sm:gap-3 gap-3">
+                                                <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                                                    <label htmlFor="field3" className="text-secondary">{t('Supporting Documents')}<span className='text-red-600'> *</span></label>
+                                                    <input
+                                                        type="file"
+                                                        id="field3"
+                                                        //  value={Title}
+                                                        //  onChange={(e) => setTitle(e.target.value)}
+                                                        //  placeholder="Enter Title"
+                                                        onChange={handleFileChange}
+                                                        className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="w-full flex justify-center items-center gap-8 mt-5">
-                                           
-                                            <Button
-                                                variant="contained"
-                                                style={{ backgroundColor: '#021F69', color: '#ffffff' }}
-                                                onClick={Replydata}
-                                                // disabled={loading}
-                                                className="w-[70%] ml-2"
+                                            <div className="w-full flex justify-center items-center gap-8 mt-5">
+
+                                                <Button
+                                                    variant="contained"
+                                                    style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                                                    onClick={Replydata}
+                                                    // disabled={loading}
+                                                    className="w-[70%] ml-2"
                                                 // endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
-                                            >
-                                                {t('Submit')}
-                                            </Button>
-                                        </div>
-                                    </form>
-                                )
-                            }
+                                                >
+                                                    {t('Submit')}
+                                                </Button>
+                                            </div>
+                                        </form>
+                                    )
+                                }
                                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                                     <button
                                         type="button"

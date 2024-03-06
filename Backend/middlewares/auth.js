@@ -77,37 +77,44 @@ export const generalAuth = (req, res, next) => {
     (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   console.log(adminToken, " .... ", userToken);
 
-  function verifyToken(token, key, type) {
-    if (!token) return;
-    console.log("Verifying...", key, "..", type);
-    jwt.verify(token, key, (err, payload) => {
-      if (err) {
-        console.log("Token verification failed:", err);
-        throw createError(403, err.message);
+  // Wrap jwt.verify in a Promise
+  const verifyToken = (token, key, type) => {
+    return new Promise((resolve, reject) => {
+      if (!token) {
+        resolve(null); // Resolve to null if no token is provided, to avoid rejecting the promise
+        return;
       }
-      if (type === "admin") req.admin = payload;
-      if (type === "user") req.user = payload;
-
-
+      jwt.verify(token, key, (err, payload) => {
+        if (err) {
+          console.log("Token verification failed:", err);
+          reject(err); // Reject the promise on error
+        } else {
+          resolve({ type, payload }); // Resolve with the payload and type
+        }
+      });
     });
   };
 
-  verifyToken(adminToken, ADMIN_JWT_SECRET, "admin");
-  verifyToken(userToken, MEMBER_JWT_SECRET, "user");
+  // Use Promise.allSettled to wait for both verifications
+  Promise.allSettled([
+    verifyToken(adminToken, ADMIN_JWT_SECRET, "admin"),
+    verifyToken(userToken, MEMBER_JWT_SECRET, "user"),
+  ]).then(results => {
+    results.forEach(result => {
+      if (result.status === "fulfilled" && result.value) {
+        const { type, payload } = result.value;
+        if (type === "admin") req.admin = payload;
+        if (type === "user") req.user = payload;
+      }
+    });
 
-  console.log("user");
-  console.log(req.user);
-  console.log("admin");
-  console.log(req.admin);
-  if (!req.user && !req.admin) {
-    return next(
-      createError(
-        401,
-        "Authentication required! Please login to access this resource!"
-      )
-    );
-  }
-  next();
+    // Proceed only if at least one token is valid
+    if (!req.user && !req.admin) {
+      next(createError(401, "Authentication required! Please login to access this resource!"));
+    } else {
+      next();
+    }
+  });
 };
 
 // ROles and Permissions based authorization
