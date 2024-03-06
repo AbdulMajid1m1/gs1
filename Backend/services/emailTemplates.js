@@ -9,7 +9,8 @@ import prisma from '../prismaClient.js';
 // Assuming PrismaClient and nodemailer have been imported as shown previously
 
 // Function to fetch email settings from the database or use defaults
-async function fetchEmailSettings() {
+async function fetchEmailSettings()
+{
   const settings = await prisma.emailsetting.findFirst({
     where: { status: 1 }, // Example: fetch settings where status is active
   });
@@ -26,7 +27,8 @@ async function fetchEmailSettings() {
 }
 
 // Dynamically create email transporter based on fetched settings
-async function createEmailTransporter() {
+async function createEmailTransporter()
+{
   const settings = await fetchEmailSettings();
   console.log('settings 2, ', settings)
   return nodemailer.createTransport({
@@ -46,8 +48,10 @@ async function createEmailTransporter() {
 
 
 // Updated sendOTPEmail function
-export const sendOTPEmail = async (email, password, subject, footerMessage, pdfBuffer, pdfBuffer2) => {
-  return new Promise(async (resolve, reject) => {
+export const sendOTPEmail = async (email, password, subject, footerMessage, pdfBuffer, pdfBuffer2) =>
+{
+  return new Promise(async (resolve, reject) =>
+  {
     try {
       const transporter = await createEmailTransporter();
       const settings = await fetchEmailSettings();
@@ -77,8 +81,10 @@ export const sendOTPEmail = async (email, password, subject, footerMessage, pdfB
 };
 
 // Updated sendEmail function
-export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, attachments = [], replyToEmail = null }) => {
-  return new Promise(async (resolve, reject) => {
+export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, attachments = [], replyToEmail = null }) =>
+{
+  return new Promise(async (resolve, reject) =>
+  {
     try {
       const transporter = await createEmailTransporter();
       const settings = await fetchEmailSettings();
@@ -109,8 +115,10 @@ export const sendEmail = async ({ fromEmail, toEmail, subject, htmlContent, atta
 
 
 // Updated sendMultipleEmails function
-export const sendMultipleEmails = async ({ emailData, fromEmail }) => {
-  return new Promise(async (resolve, reject) => {
+export const sendMultipleEmails = async ({ emailData, fromEmail }) =>
+{
+  return new Promise(async (resolve, reject) =>
+  {
     try {
       const transporter = await createEmailTransporter();
       const settings = await fetchEmailSettings();
@@ -119,7 +127,8 @@ export const sendMultipleEmails = async ({ emailData, fromEmail }) => {
         emailData = [emailData]; // Ensure emailData is an array
       }
 
-      await Promise.all(emailData.map(async ({ toEmail, subject, htmlContent, attachments = [] }) => {
+      await Promise.all(emailData.map(async ({ toEmail, subject, htmlContent, attachments = [] }) =>
+      {
         const mailOptions = {
           from: `Gs1Ksa <${fromEmail || settings.emailSentFrom}>`,
           to: toEmail,
