@@ -53,10 +53,6 @@ app.use(cors({
 }));
 
 
-
-
-
-
 app.use(express.json());
 
 
@@ -148,7 +144,7 @@ app.get('/renderInvoice', async (req, res) => {
     };
 
     // Render the EJS template with the dummy data
-    res.render('pdf/oldMembersCustomInvoice', { data });
+    res.render('pdf/customInvoice_Ar', { data });
 });
 
 app.get('/renderGtinCertificate', async (req, res) => {
@@ -190,7 +186,6 @@ app.get('/renderGtinCertificate', async (req, res) => {
 
 // Define your API route to render the certificate
 app.get('/renderCertificate', async (req, res) => {
-    const BACKEND_URL = BACKEND_URL; // Adjust this URL as needed
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
     // Define your data object with missing or dynamic data
     const data = {

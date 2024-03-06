@@ -7,6 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
+import { selectedLanguage } from '../../../../utils/config';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData, userData,
@@ -128,7 +129,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     const approvedBody = {
       "userId": gs1MemberData?.id,
       "status": selectedStatus, // or approved
-      // "productIDs": cartItemsProducts,
+      selectedLanguage: selectedLanguage,
     };
     if (rejected) {
       approvedBody.reject_reason = rejected;
@@ -137,7 +138,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
     try {
-    const res = await newRequest.post('/users/sendInvoice', approvedBody);
+      const res = await newRequest.post('/users/sendInvoice', approvedBody);
 
       setLoading(false);
       toast.success(res?.data?.message || `${('Invoice status updated successfully!')}`);
