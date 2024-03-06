@@ -269,8 +269,8 @@ export const sendInvoiceToUser = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
-
-            let ejsFile = selectedLanguage === 'ar' ? 'customInvoice_Ar.ejs' : 'customInvoice.ejs';
+            console.log("selectedLanguage", selectedLanguage)
+            let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
             // Generate PDF and save it to the specified path
             await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data1, pdfFilePath);
