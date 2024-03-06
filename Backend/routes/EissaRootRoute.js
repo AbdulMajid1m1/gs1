@@ -11,15 +11,16 @@ import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC }
 import { getAllprod_desc_languages } from "../controllers/productsController.js"
 import { upload } from '../configs/multerConfig.js';
 import { getAlluser_guide_pdfs, creatuser_guide_pdfs, getuser_guide_pdfsById, updateuser_guide_pdfs, deleteuser_guide_pdfs, getAlluser_guide_videos, creatuser_guide_videos, getuser_guide_videosById, updateuser_guide_videos, deleteuser_guide_videos } from "../controllers/user_guid.js"
-import {
-    getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
-    getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
-    deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
-    getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
-    , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
-    creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
-    creatupcoming_events, getupcoming_eventsById, updateupcoming_events, deleteupcoming_events, mega_menu_categories_frontSide
-} from "../controllers/catalog.js"
+import
+    {
+        getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
+        getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
+        deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
+        getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
+        , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
+        creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
+        creatupcoming_events, getupcoming_eventsById, updateupcoming_events, deleteupcoming_events, mega_menu_categories_frontSide
+    } from "../controllers/catalog.js"
 const router = express.Router();
 import { createpages, getAllpages, getpagesById, updatepages, deletepages, getAllpagesname, getpagesByslug } from '../controllers/pages.js'
 import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
@@ -28,16 +29,17 @@ import { createfaq_categories, getAllfaq_categories, getfaq_categoriesById, upda
 import { getAllour_teams, creatour_teams, getour_teamsById, updateour_teams, deleteour_teams } from '../controllers/our_teams.js'
 import { getAllboard_members, creatboard_members, getboard_membersById, updateboard_members, deleteboard_members } from "../controllers/board_members.js"
 import { adminAuth, checkPermission, generalAuth } from '../middlewares/auth.js';
-import {createemailsetting,getAllemailsetting,getemailsettingById,updateemailsetting,deleteemailsetting} from "../controllers/emailsetting.js"
-import {
-    getAllhelpdesk,
-    gethelpdeskById,
-    deletehelpdesk,
-    createhelpdesk,
-    gethelpdeskByuserid,
-    updatehelp_desks,
- getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment
-} from "../controllers/help_desks.js"
+import { createemailsetting, getAllemailsetting, getemailsettingById, updateemailsetting, deleteemailsetting } from "../controllers/emailsetting.js"
+import
+    {
+        getAllhelpdesk,
+        gethelpdeskById,
+        deletehelpdesk,
+        createhelpdesk,
+        gethelpdeskByuserid,
+        updatehelp_desks,
+        getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment, sendemailAssign_to_helpdesk
+    } from "../controllers/help_desks.js"
 // Routes for help_desks
 router.post('/createhelpdesk', upload([{
     name: 'document',
@@ -48,6 +50,7 @@ router.get('/getAllassignto', getAllassignto);
 router.get('/gethelpdeskById/:id', gethelpdeskById);
 router.get('/gethelpdeskByuserid/:user_id', gethelpdeskByuserid);
 router.get('/gethelpdesk_commentByuserid/:helpDeskID', gethelpdesk_commentByuserid);
+router.post('/sendemailAssign_to_helpdesk/:email', sendemailAssign_to_helpdesk);
 router.post('/createhelpdesk_comment', upload([{
     name: 'document',
     path: 'public/uploads/help_desks_DOC',
@@ -92,7 +95,7 @@ router.delete('/deletecr_documents/:id', adminAuth, checkPermission(["documents"
 router.post('/createotherProduct', adminAuth, checkPermission(['other_products']), createotherproduct);
 router.get('/getAllotherproduct', getAllotherproduct);
 router.get('/getotherproductById/:id', getotherproductById);
-router.put('/updateotherproduct/:id',  updateotherproduct);
+router.put('/updateotherproduct/:id', updateotherproduct);
 router.delete('/deleteotherproduct/:id', adminAuth, checkPermission(['other_products']), deleteotherproduct);
 // Routes for GCP_type
 router.post('/creategpctype', adminAuth, checkPermission(['gcp_type']), creategpctype);

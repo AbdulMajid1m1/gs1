@@ -21,7 +21,8 @@ const renewMembershipSchema = Joi.object({
     user_id: Joi.string().required(),
 });
 
-async function calculateSubscriptionPrice(userId, newSubscriptionId) {
+async function calculateSubscriptionPrice(userId, newSubscriptionId)
+{
     try {
         // Fetch details of the old subscription based on the user ID
         const oldSubscription = await prisma.gtin_subcriptions.findFirst({
@@ -121,7 +122,8 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
 
 
 
-export const getUpgradeMembershipCarts = async (req, res, next) => {
+export const getUpgradeMembershipCarts = async (req, res, next) =>
+{
     try {
         // Define validation rules for query parameters
         const filterSchema = Joi.object({
@@ -140,7 +142,8 @@ export const getUpgradeMembershipCarts = async (req, res, next) => {
         }
 
         // Construct the filter conditions
-        const filterConditions = Object.keys(value).reduce((obj, key) => {
+        const filterConditions = Object.keys(value).reduce((obj, key) =>
+        {
             obj[key] = value[key];
             return obj;
         }, {});
@@ -159,7 +162,8 @@ export const getUpgradeMembershipCarts = async (req, res, next) => {
 };
 
 
-export const getAddGlnCarts = async (req, res, next) => {
+export const getAddGlnCarts = async (req, res, next) =>
+{
     try {
         // Define validation rules for query parameters
         const filterSchema = Joi.object({
@@ -179,7 +183,8 @@ export const getAddGlnCarts = async (req, res, next) => {
         }
 
         // Construct the filter conditions
-        const filterConditions = Object.keys(value).reduce((obj, key) => {
+        const filterConditions = Object.keys(value).reduce((obj, key) =>
+        {
             obj[key] = value[key];
             return obj;
         }, {});
@@ -202,7 +207,8 @@ export const getAddGlnCarts = async (req, res, next) => {
 
 
 
-export const getInvoiceDetailsForUpgradeSubscription = async (req, res) => {
+export const getInvoiceDetailsForUpgradeSubscription = async (req, res) =>
+{
     const schema = Joi.object({
         userId: Joi.string().required(),
         newSubscriptionId: Joi.string().required(),
@@ -228,7 +234,8 @@ export const getInvoiceDetailsForUpgradeSubscription = async (req, res) => {
 
 
 
-export const membershipRenewRequest = async (req, res, next) => {
+export const membershipRenewRequest = async (req, res, next) =>
+{
 
     // Validate the request body
     const { error, value } = renewMembershipSchema.validate(req.body);
@@ -484,7 +491,8 @@ const updateMemberDocumentStatusSchema = Joi.object({
 
 
 
-export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
+export const updateMemberRenewalDocumentStatus = async (req, res, next) =>
+{
     const documentId = req.params.id;
     if (!documentId) {
         return next(createError(400, 'Document ID is required'));
@@ -535,7 +543,8 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
         if (value.status === 'approved') {
-            await prisma.$transaction(async (prisma) => {
+            await prisma.$transaction(async (prisma) =>
+            {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
 
@@ -923,7 +932,8 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '') => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '') =>
+{
     let subject, emailContent;
     let attachments = [];
     if (status === 'approved') {
@@ -982,7 +992,8 @@ const upgradeMembershipSchema = Joi.object({
 
 
 
-export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
+export const upgradeMemberSubscriptionRequest = async (req, res, next) =>
+{
     // Validate the request body
     const { error, value } = upgradeMembershipSchema.validate(req.body);
 
@@ -1052,7 +1063,8 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
         }
 
         // Start a transaction
-        const result = await prisma.$transaction(async (prisma) => {
+        const result = await prisma.$transaction(async (prisma) =>
+        {
 
             const totalBarcodes = gtinSubscriptions.gtin_subscription_limit +
                 gtinSubscriptions.gtin_subscription_counter +
@@ -1226,7 +1238,8 @@ const addAdditionalProductsSchema = Joi.object({
 
 
 
-export const addAdditionalProductsRequest = async (req, res, next) => {
+export const addAdditionalProductsRequest = async (req, res, next) =>
+{
     // Validate the request body
     const { error, value } = addAdditionalProductsSchema.validate(req.body);
 
@@ -1236,7 +1249,8 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
 
     try {
         // Start a transaction
-        const result = await prisma.$transaction(async (prisma) => {
+        const result = await prisma.$transaction(async (prisma) =>
+        {
             const user = await prisma.users.findUnique({
                 where: { id: value.user_id },
                 include: { carts: true },
@@ -1478,7 +1492,8 @@ const addAdditionalGlnSchema = Joi.object({
 
 });
 
-export const addAdditionalGlnRequest = async (req, res, next) => {
+export const addAdditionalGlnRequest = async (req, res, next) =>
+{
     // Validate the request body
     const { error, value } = addAdditionalGlnSchema.validate(req.body);
 
@@ -1488,7 +1503,8 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
     try {
         // Start a transaction
-        const result = await prisma.$transaction(async (prisma) => {
+        const result = await prisma.$transaction(async (prisma) =>
+        {
             const user = await prisma.users.findUnique({
                 where: { id: value.userId },
                 include: { carts: true },
@@ -1715,7 +1731,8 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
     }
 };
 
-export const approveAdditionalProductsRequest = async (req, res, next) => {
+export const approveAdditionalProductsRequest = async (req, res, next) =>
+{
 
 
     const schema = Joi.object({
@@ -1954,7 +1971,8 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         next(error);
     }
 };
-export const approveAdditionalGlnRequest = async (req, res, next) => {
+export const approveAdditionalGlnRequest = async (req, res, next) =>
+{
 
     const schema = Joi.object({
         transactionId: Joi.string().required(),
@@ -2187,7 +2205,8 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
     }
 };
 
-export const approveMembershipRequest = async (req, res, next) => {
+export const approveMembershipRequest = async (req, res, next) =>
+{
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
@@ -2561,7 +2580,8 @@ const downgradeMembershipSchema = Joi.object({
 
 
 
-export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
+export const downgradeMemberSubscriptionRequest = async (req, res, next) =>
+{
     // Validate the request body
     const { error, value } = downgradeMembershipSchema.validate(req.body);
 
@@ -2573,7 +2593,8 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
 
         // Start a transaction
-        const result = await prisma.$transaction(async (prisma) => {
+        const result = await prisma.$transaction(async (prisma) =>
+        {
             const user = await prisma.users.findUnique({
                 where: { id: value.user_id },
                 include: { carts: true },
@@ -2999,7 +3020,8 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
 
 
-export const approveDowngradeMembershipRequest = async (req, res, next) => {
+export const approveDowngradeMembershipRequest = async (req, res, next) =>
+{
 
 
     const schema = Joi.object({
@@ -3223,7 +3245,8 @@ const addMultipleOtherProductSubscriptionsSchema = Joi.object({
     subscriptions: Joi.array().items(productSubscriptionSchema).min(1).required(),
 });
 
-export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req, res, next) => {
+export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req, res, next) =>
+{
     const { error, value } = addMultipleOtherProductSubscriptionsSchema.validate(req.body);
     if (error) {
         return next(createError(400, error.details[0].message));
@@ -3242,7 +3265,8 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
 
 
 
-        const subscriptionEntries = subscriptions.map(async (sub) => {
+        const subscriptionEntries = subscriptions.map(async (sub) =>
+        {
             const product = await prisma.other_products.findUnique({
                 where: { id: sub.productId },
             });
@@ -3381,7 +3405,8 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
 
 
 // appvove additional other products subscription request
-export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res, next) => {
+export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res, next) =>
+{
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),

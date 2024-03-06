@@ -18,6 +18,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         id: updateBrandData?.assignedTo || 0,
         username: updateBrandData?.assignedTo || "",
     });
+    const [emailpost, setemailpost] = useState('')
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const { t, i18n } = useTranslation();
     const [replyshoww, setreplyshoww] = useState(false)
@@ -43,6 +44,8 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleSelectedDocuments = (event, value) => {
         setSelectedDocuments(value);
+        console.log("-------", value.email);
+        setemailpost(value.email);
     };
     const image = imageLiveUrl(updateBrandData?.document) || "";
     const handleUpdateBrand = async () => {
@@ -56,7 +59,8 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append("status", Number(status));
         try {
             const response = await newRequest.put(`/updatehelp_desks/${updateBrandData?.id}`, formData);
-
+            const emaiilpostrec = await newRequest.post(`/sendemailAssign_to_helpdesk/${emailpost}`);
+            console.log("emaiilpostrec", emaiilpostrec);
             toast.success(
                 response?.data?.message ||
                 `${t("Ticket")} ${t("has been")} ${t("Updated Successfully")}.`,
@@ -71,6 +75,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
                     theme: "light",
                 }
             );
+
             refreshBrandData();
             handleCloseUpdatePopup();
         } catch (error) {
