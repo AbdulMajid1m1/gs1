@@ -50,7 +50,9 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
   // }
 
   const handleMemberInvoiceData = async () => {
-    if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+    // if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice") {
+      if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice"
+      || gs1MemberInvoiceData?.type === "additional_other_products_invoice") {  
       try {
 
         // check invoice type
@@ -206,9 +208,39 @@ const handleSubmit = async (e) => {
   let apiEndpoint = "";
   let requestBody = {};
 
+  // if (gs1MemberInvoiceData?.type === "invoice") {
+  //   apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+  //   requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+  // }
+  // else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
+  //   apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
+  //   requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+  // }
+  // else if (gs1MemberInvoiceData?.type === "upgrade_invoice") {
+  //   apiEndpoint = `/changeMembership/approveMembershipRequest`;
+  //   requestBody = changeGtinSub;
+  // }
+  // else if (gs1MemberInvoiceData?.type === "downgrade_invoice") {
+  //   apiEndpoint = `/changeMembership/approveDowngradeMembershipRequest`;
+  //   requestBody = downgradeInvoiceBody;
+  // }
+  // else if (gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
+  //   apiEndpoint = `/changeMembership/approveAdditionalProductsRequest`;
+  //   requestBody = addGtin;
+  // }
+
+  // else if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
+  //   apiEndpoint = `/changeMembership/approveAdditionalGlnRequest`;
+  //   requestBody = addGln;
+  // }
+
   if (gs1MemberInvoiceData?.type === "invoice") {
     apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
     requestBody = selectedStatus === "approved" ? approvedBody : rejectBody;
+  }
+  if (gs1MemberInvoiceData?.type === "migration_invoice") {
+    apiEndpoint = `/memberDocuments/status/${gs1MemberInvoiceData?.id}`;
+    requestBody = selectedStatus === "approved" ? migrationApprovedBody : rejectBody;
   }
   else if (gs1MemberInvoiceData?.type === "renewal_invoice") {
     apiEndpoint = `/changeMembership/changeRenewStatus/${gs1MemberInvoiceData?.id}`;
@@ -231,6 +263,11 @@ const handleSubmit = async (e) => {
     apiEndpoint = `/changeMembership/approveAdditionalGlnRequest`;
     requestBody = addGln;
   }
+  else if (gs1MemberInvoiceData?.type === "additional_other_products_invoice") {
+    apiEndpoint = `/changeMembership/approveAdditionalOtherProductsSubscriptionRequest`;
+    requestBody = addGln;
+  }
+
 
 
 
@@ -326,7 +363,7 @@ return (
 
               </div>
 
-              <div className="table-member-inoive px-4">
+              {/* <div className="table-member-inoive px-4">
 
 
                 {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" ? (
@@ -428,7 +465,171 @@ return (
                 )}
 
 
+              </div> */}
+
+
+              <div className="table-member-inoive px-4">
+
+
+              {gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice"
+
+                ? (
+                  <>
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th> {t('PRODUCT')}</th>
+                          <th> {t('REGISTRATION FEE')}</th>
+                          <th> {t('YEARLY FEE')}</th>
+                          <th> {t('EXPIRY DATE')}</th>
+                          <th> {t('PRICE')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
+                          const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                          return (
+                            <tr key={'gtin_product' + index}>
+                              <td>{item?.gtin_product?.member_category_description}</td>
+                              <td>{item?.price}</td>
+                              <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.gtin_subscription_total_price : 0}</td>
+                              <td>{expiryDate}</td>
+                              <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                            </tr>
+                          );
+                        })}
+                        {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
+                          const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                          return (
+                            <tr key={'other_products' + index}>
+                              <td>{item?.product?.product_name}</td>
+                              <td>{item?.price}</td>
+                              <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
+                              <td>{expiryDate}</td>
+                              <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot
+                      >
+                        <tr
+
+                          className='font-bold bg-secondary text-white'>
+                          <td
+                            style={{ fontSize: '16px' }}
+                            colSpan="2" className="text-right font-bold "> {t('Total')} {t('(No of years -')} {t(` ${gs1MemberInvoiceData?.no_of_years})`)}</td>
+                          <td
+                            style={{ fontSize: '16px' }}
+                            colSpan="3"> {totalPrice * gs1MemberInvoiceData?.no_of_years}</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </>
+                ) :
+                gs1MemberInvoiceData?.type === "additional_other_products_invoice" ?
+                  (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-secondary font-sans text-sm"> {t('Transaction ID')}: {gs1MemberInvoiceData?.transaction_id}</h2>
+                      </div>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th> {t('PRODUCT')}</th>
+                            <th> {t('REGISTRATION FEE')}</th>
+                            <th> {t('YEARLY FEE')}</th>
+                            <th> {t('EXPIRY DATE')}</th>
+                            <th> {t('PRICE')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+
+                          {memberInoviceData?.otherProductSubscriptions?.filter(item => item.status === 'inactive').map((item, index) => {
+                            console.log(item);
+                            const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                            return (
+                              <tr key={'other_products' + index}>
+                                <td>{item?.product?.product_name}</td>
+                                <td>0</td>
+                                <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
+                                <td>{expiryDate}</td>
+                                <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                        <tfoot
+                        >
+                          {/* <tr
+
+                            className='font-bold bg-secondary text-white'>
+                            <td
+                              style={{ fontSize: '16px' }}
+                              colSpan="2" className="text-right font-bold "> {t('Total')} {t('(No of years -')} {t(` ${gs1MemberInvoiceData?.no_of_years})`)}</td>
+                            <td
+                              style={{ fontSize: '16px' }}
+                              colSpan="3"> {totalPrice * gs1MemberInvoiceData?.no_of_years}</td>
+                          </tr> */}
+                        </tfoot>
+                      </table>
+                    </>
+                  ) :
+
+
+                  (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-secondary font-sans text-sm mb-2">{t('Transaction ID')}: <strong>{gs1MemberInvoiceData?.transaction_id}</strong></h2>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-secondary font-sans text-sm mb-2"> {t('TYPE OF PAYMENT')}: <strong>{typeOfPayment}</strong></h2>
+                      </div>
+                      {gs1MemberInvoiceData?.type === "downgrade_invoice" && (
+                        <div className="flex justify-between items-center">
+                          <h2 className="text-secondary font-sans text-sm mb-2">{t('New Subscription Yearly Fee')}: <strong>{memberInoviceData?.[0]?.newDowngradeYearlyFee}</strong></h2>
+                        </div>
+                      )}
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>{t('PRODUCT')}</th>
+                            <th>{t('REGISTRATION FEE')}</th>
+                            {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <th> {t('YEARLY FEE')}</th>}
+                            <th>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? "TOTAL" : "SUB TOTAL"}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {memberInoviceData?.map((item, index) => {
+                            return (
+                              <tr key={'gtin_product' + index}>
+                                <td>{item?.productName}</td>
+                                <td>{item?.registrationFee}</td>
+                                {gs1MemberInvoiceData?.type !== "downgrade_invoice" && <td>{item?.yearlyFee}</td>}
+                                <td>{gs1MemberInvoiceData?.type === "downgrade_invoice" ? item?.registrationFee + item?.yearlyFee : item?.registrationFee + item?.yearlyFee}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                        {gs1MemberInvoiceData?.type !== "downgrade_invoice" && (
+                          <tfoot>
+                            <tr>
+                              <td colSpan="3" className="text-right font-bold">{t('Total')}:</td>
+                              <td>{totalPrice}</td>
+                            </tr>
+                          </tfoot>
+                        )}
+                      </table>
+                    </>
+                  )}
+
+
               </div>
+
 
               <div className="w-full flex justify-center items-center gap-8 mt-5">
                 <button

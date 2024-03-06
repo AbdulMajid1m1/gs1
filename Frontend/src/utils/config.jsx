@@ -5,3 +5,5 @@ export const backendUrl = 'http://localhost:3091';
 export const gtrackUrl = 'http://gs1ksa.org:7000/api';
 // export const gtrackUrl = 'http://localhost:7000/api';
 export const phpImagesBaseUrl = 'https://gs1ksa.org/backend/images/products';
+
+export const selectedLanguage = sessionStorage.getItem('selectedLanguaged') || 'ar';

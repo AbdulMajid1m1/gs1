@@ -45,7 +45,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
       res.data?.otherProductSubscriptions.forEach((item) => {
         // add price and other_products_subscription_total_price
-        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+        total += parseInt(item?.price || 0) + parseInt(item.other_products_subscription_total_price);
       });
       console.log(total);
       setTotalPrice(total);
@@ -226,7 +226,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
         fetchMemberInvoiceData();
         fetchMemberHistoryData();
-        
+
         // Close the popup
         handleCloseUpgradePopup();
       }

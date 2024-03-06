@@ -5,9 +5,9 @@ import { I18nextProvider, useTranslation } from 'react-i18next';
 import LanguageSwitcher from "../../switer"
 import i18n from '../../i18n';
 
-const Header = () =>
-{
+const Header = () => {
   const { t } = useTranslation();
+
   const navigate = useNavigate()
 
   return (
@@ -38,14 +38,14 @@ const Header = () =>
                   onClick={() => navigate('/member-registration')}
                   className='bg-secondary text-white px-2 py-1 rounded-md transition-transform transform hover:scale-90'
                 >
-                  {t('Get a Barcode')} 
+                  {t('Get a Barcode')}
                 </button>
 
                 <button
                   onClick={() => navigate('/email-address')}
                   className='bg-primary text-white px-2 py-1 rounded-md transition-transform transform hover:scale-90'
                 >
-                  {t('GS1 Member Login')} 
+                  {t('GS1 Member Login')}
                 </button>
 
               </div>
