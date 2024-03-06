@@ -80,20 +80,26 @@ const HelpDesk = () => {
                   actionColumnVisibility={true}
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
-                     {
-                    label: "View",
-                    icon: (
+                    {
+                      label: "View",
+                      icon: (
                         <VisibilityIcon
-                        fontSize="small"
-                        color="action"
-                        style={{ color: "rgb(37 99 235)" }}
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
                         />
-                    ),
-                    action: handleShowviewPopup,
+                      ),
+                      action: handleShowviewPopup,
                     },
                     {
                       label: `${t("Assign To")}`,
-                      icon: <AssignmentTurnedInIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />,
+                      icon: (
+                        <AssignmentTurnedInIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
                       action: handleShowUpdatePopup,
                     },
                   ]}
@@ -112,7 +118,7 @@ const HelpDesk = () => {
           />
         )}
 
-          {isViewPopupVisible && (
+        {isViewPopupVisible && (
           <ViewHelpdask
             isVisible={isViewPopupVisible}
             setVisibility={setviewPopupVisibility}
