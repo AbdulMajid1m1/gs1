@@ -3676,6 +3676,16 @@ export const Commentcolumdata = (t) => [
     field: 'comment',
     headerName: t('Comment'),
     width: 250,
+     renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '500px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
   },
   {
     field: 'document',

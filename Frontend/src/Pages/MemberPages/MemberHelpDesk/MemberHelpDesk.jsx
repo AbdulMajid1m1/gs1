@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import Viewmemberhelpdesk from './Viewmemberhelpdesk';
 
 const HelpDesk = () => {
   const { t, i18n } = useTranslation();
@@ -23,7 +24,7 @@ const HelpDesk = () => {
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
   const [filteredData, setFilteredData] = useState([]);
-  
+
   const useriddata = sessionStorage.getItem("MemberUserId");
 
   const refreshHelpDeskData = async () => {
@@ -41,7 +42,7 @@ const HelpDesk = () => {
   };
   useEffect(() => {
     refreshHelpDeskData(); // Calling the function within useEffect, not inside itself
-  }, []); 
+  }, []);
 
   // const { isLoading, error, data, isFetching } = useQuery("fetchPaymentSlip", async () => {
   //   const response = await newRequest.get("/bankslip",);
@@ -142,56 +143,77 @@ const HelpDesk = () => {
     // save this row data in session storage 
     sessionStorage.setItem("updateTicketRow", JSON.stringify(row));
   };
+const [isViewPopupVisible, setviewPopupVisibility] = useState(false);
+   const handleShowviewPopup = (row) => {
+     setviewPopupVisibility(true);
+     sessionStorage.setItem("Viewassigentomember", JSON.stringify(row));
+   };
 
-
+  const filterDropdownOptions = (row, dropDownOptions) => {
+      let filteredOptions = dropDownOptions;
+      if (row.status !== 1) {
+        filteredOptions = filteredOptions.filter(option => option.label !== 'View');
+      }
+      return filteredOptions;
+  };
 
   return (
     <div>
-      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+      <div
+        className={`p-0 h-full ${
+          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+        }`}
+      >
         <div>
-          <DashboardRightHeader title={`${t('Help Desk')}`} />
+          <DashboardRightHeader title={`${t("Help Desk")}`} />
         </div>
 
-
-        <div className='flex justify-center items-center'>
+        <div className="flex justify-center items-center">
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
-
               {/* Buttons */}
               {/* <div className='h-auto w-full shadow-xl'> */}
-              <div className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+              <div
+                className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${
+                  i18n.language === "ar"
+                    ? "flex-row-reverse justify-start"
+                    : "flex-row justify-start"
+                }`}
+              >
                 <button
                   onClick={handleShowCreatePopup}
-                  className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700">
-                  <i className="fas fa-plus mr-1"></i>{t('Create Ticket')}
+                  className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary active:bg-blue-700"
+                >
+                  <i className="fas fa-plus mr-1"></i>
+                  {t("Create Ticket")}
                 </button>
               </div>
               {/* </div> */}
 
               {/* DataGrid */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-
-                <DataTable data={data}
-                  title={`${t('Help Desk')}`}
+              <div style={{ marginLeft: "-11px", marginRight: "-11px" }}>
+                <DataTable
+                  data={data}
+                  title={`${t("Help Desk")}`}
                   columnsName={helpDeskColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}
-
+                  getFilteredOptions={filterDropdownOptions}
                   dropDownOptions={[
-                    // {
-                    // label: "View",
-                    // icon: (
-                    //     <VisibilityIcon
-                    //     fontSize="small"
-                    //     color="action"
-                    //     style={{ color: "rgb(37 99 235)" }}
-                    //     />
-                    // ),
-                    // action: handleView,
-                    // },
                     {
-                      label: `${t('Edit')}`,
+                      label: `${t("View")}`,
+                      icon: (
+                        <VisibilityIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleShowviewPopup,
+                    },
+                    {
+                      label: `${t("Edit")}`,
                       icon: (
                         <EditIcon
                           fontSize="small"
@@ -202,7 +224,7 @@ const HelpDesk = () => {
                       action: handleShowUpdatePopup,
                     },
                     {
-                      label: `${t('Delete')}`,
+                      label: `${t("Delete")}`,
                       icon: (
                         <DeleteIcon
                           fontSize="small"
@@ -212,31 +234,42 @@ const HelpDesk = () => {
                       ),
                       action: handleDelete,
                     },
-
                   ]}
                   uniqueId="gtinMainTableId"
-
                 />
               </div>
-
             </div>
           </div>
         </div>
 
-
         {/* AddBrands component with handleShowCreatePopup prop */}
         {isCreatePopupVisible && (
-          <CreateTicketPopUp isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshHelpDeskData} />
+          <CreateTicketPopUp
+            isVisible={isCreatePopupVisible}
+            setVisibility={setCreatePopupVisibility}
+            refreshBrandData={refreshHelpDeskData}
+          />
         )}
 
         {/* UpdateBrands component with handleShowUpdatePopup prop */}
         {isUpdatePopupVisible && (
-          <UpdateTicketPopUp isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshHelpDeskData} />
+          <UpdateTicketPopUp
+            isVisible={isUpdatePopupVisible}
+            setVisibility={setUpdatePopupVisibility}
+            refreshBrandData={refreshHelpDeskData}
+          />
         )}
 
+        {isViewPopupVisible && (
+          <Viewmemberhelpdesk
+            isVisible={isViewPopupVisible}
+            setVisibility={setviewPopupVisibility}
+            refreshBrandData={refreshHelpDeskData}
+          />
+        )}
       </div>
     </div>
-  )
+  );
 }
 
 export default HelpDesk
