@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import newRequest from '../../../utils/userRequest';
 import { toast } from 'react-toastify';
@@ -46,9 +46,26 @@ const AdminAddSSCC = () => {
   const [vendorItem, setVendorItem] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [shortQtyCode, setShortQtyCode] = React.useState('');
-  const [countryOfOrigin, setCountryOfOrigin] = React.useState('');
+  const [countryOfOrigin, setCountryOfOrigin] = useState([]);
+  const [selectedCountryOfOrigin, setSelectedCountryOfOrigin] = useState('');
   const [carton, setCarton] = React.useState('');
+  
+  
+    
+    const handleCountryOfOrigin = async () => {
+      try {
+          const response = await newRequest.get('/getAllcountryofsale');
+          console.log(response.data);
+          const data = response.data;
+          setCountryOfOrigin(data);
+      } catch (error) {
+          console.log(error);
+      }
+  };
 
+  useEffect(() => {
+    handleCountryOfOrigin();
+  },[])
 
 
   const handleSubmit = (e) => {
@@ -167,7 +184,8 @@ const AdminAddSSCC = () => {
           vendor_item_no: vendorItem,
           short_qty_code: shortQtyCode,
           description : description,
-          country_id: countryOfOrigin,
+          // country_id: countryOfOrigin,
+          country_id: selectedCountryOfOrigin,
           carton: carton,
 
         };
@@ -222,8 +240,7 @@ const AdminAddSSCC = () => {
       }
     };
 
-
-
+    
 
   return (
     <div>
@@ -261,8 +278,8 @@ const AdminAddSSCC = () => {
                   <p className="font-semibold">{t('Complete Data')}</p>
                   <p>
                     {t('This number is registered to company')}: :{" "}
-                    {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
-                    <span className="font-semibold">Hasnain, Majid</span>
+                    <span className="font-semibold">{SelectedData?.company_name_eng}</span>
+                    {/* <span className="font-semibold">Hasnain, Majid</span> */}
                   </p>
                 </div>
               </div>
@@ -538,14 +555,18 @@ const AdminAddSSCC = () => {
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
                       <label htmlFor='country'> {t('Country Of Origin')} <span className='text-red-600'>*</span></label>
                       <select
-                        onChange={(e) => setCountryOfOrigin(e.target.value)}
+                        onChange={(e) => setSelectedCountryOfOrigin(e.target.value)}
+                        value={selectedCountryOfOrigin}
                         id='country'
                         type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                       >
                         <option>-{t('select')}-</option>
-                        <option value='1'>1</option>
+                        {/* <option value='1'>1</option>
                         <option value='2'>2</option>
-                        <option value='3'>3</option>
+                        <option value='3'>3</option> */}
+                        {countryOfOrigin.map((countryId, index) => (
+                          <option key={index} value={countryId.id}>{countryId.country_name}</option>
+                        ))}
                       </select>
                     </div>
 

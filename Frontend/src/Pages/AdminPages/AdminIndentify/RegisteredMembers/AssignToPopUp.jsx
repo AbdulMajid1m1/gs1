@@ -137,7 +137,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
         <div>
             {/* create the post api popup */}
             {isVisible && (
-                <div className="popup-overlay">
+                <div className="popup-overlay z-50">
                     <div className="popup-container h-auto sm:w-[40%] w-full">
                         <div onSubmit={handleAssignToData} className="popup-form w-full">
                             <div className="flex justify-end w-full">

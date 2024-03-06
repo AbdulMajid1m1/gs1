@@ -294,7 +294,7 @@ model carts {
   admin_id       Int?      @default(0, map: "DF_carts_admin_id")
   assign_to      Int?      @default(0, map: "DF_carts_assign_to")
   discount       Float?    @default(0, map: "DF_carts_discount")
-  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user           users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model rejected_carts {
@@ -322,6 +322,7 @@ model rejected_carts {
 model product_categroies {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   status     Int?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -342,9 +343,24 @@ model chats {
 model cities {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   state_id   Int?
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
+}
+
+model emailsetting {
+  id              String   @id @default(cuid())
+  emailfrom       String?  @db.NVarChar(Max)
+  emailmethod     String?  @db.NVarChar(Max)
+  smtp_host       String?  @db.NVarChar(Max)
+  smtp_username   String?  @db.NVarChar(Max)
+  smtp_password   String?  @db.NVarChar(Max)
+  smtp_port       String?  @db.NVarChar(Max)
+  smtp_encryption String?  @db.NVarChar(Max)
+  status          Int?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
 }
 
 model classes {
@@ -517,8 +533,8 @@ model foreign_gtins {
   companyId          String?
   //create user and admin relation
 
-  user  users?  @relation(fields: [user_id], references: [id])
-  admin admins? @relation(fields: [admin_id], references: [id])
+  user  users?  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  admin admins? @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model g_c_p_information {
@@ -723,15 +739,15 @@ model gtin_compliants {
 }
 
 model gtin_helper_reports {
-  id             BigInt    @id(map: "PK__gtin_hel__3213E83FEEB618AB") @default(autoincrement())
-  report_barcode String    @db.NVarChar(255)
-  report_comment String    @db.NVarChar(255)
-  report_action  String    @db.NVarChar(255)
-  report_images  String    @db.NVarChar(Max)
-  report_status  Int       @default(0, map: "DF_gtin_helper_reports_report_status")
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
-  reporter_email String?   @db.VarChar(50)
+  id             String   @id @default(cuid())
+  report_barcode String   @db.NVarChar(255)
+  report_comment String   @db.NVarChar(255)
+  report_action  String   @db.NVarChar(255)
+  report_images  String   @db.NVarChar(Max)
+  report_status  Int      @default(0, map: "DF_gtin_helper_reports_report_status")
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  reporter_email String?  @db.VarChar(50)
 }
 
 model gtin_non_compliants {
@@ -839,34 +855,34 @@ model gtin_subscription_histories {
   // point  additional_products_id  to  gtin_upgrade_pricing optionally
   gtin_upgrade_pricing   gtin_upgrade_pricing? @relation(fields: [additional_products_id], references: [id], onDelete: Cascade)
 
-  admin        admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  user         users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
+  admin        admins?       @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user         users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  gtin_product gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model help_desk_comments {
-  id             BigInt    @id(map: "PK_help_desk_comments") @default(autoincrement())
-  helpDeskID     Int?
-  comment        String?   @db.NVarChar(Max)
-  document       String?   @db.NVarChar(Max)
-  commentByAdmin Int?
-  commentByUser  Int?
-  created_at     DateTime? @db.DateTime
-  updated_at     DateTime? @db.DateTime
+  id             String   @id @default(cuid())
+  helpDeskID     String?  @db.NVarChar(Max)
+  comment        String?  @db.NVarChar(Max)
+  document       String?  @db.NVarChar(Max)
+  commentByAdmin String?  @db.NVarChar(Max)
+  commentByUser  String?  @db.NVarChar(Max)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
 }
 
 model help_desks {
-  id          BigInt    @id(map: "PK_help_desks") @default(autoincrement())
+  id          String    @id @default(cuid())
   title       String?   @db.NVarChar(Max)
   email       String?   @db.NVarChar(Max)
   ticket_no   String?   @db.NVarChar(Max)
   description String?   @db.NVarChar(Max)
   document    String?   @db.NVarChar(Max)
-  user_id     Int?
-  assignedTo  Int?
+  user_id     String?   @db.NVarChar(Max)
+  assignedTo  String?   @db.NVarChar(Max)
   status      Int?
-  created_at  DateTime? @db.DateTime
-  updated_at  DateTime? @db.DateTime
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime? @db.DateTime
 }
 
@@ -888,13 +904,12 @@ model issuing_agencies {
 }
 
 model languages {
-  id         Float?
-  type       String?   @db.NVarChar(Max)
-  key        String?   @db.NVarChar(Max)
-  value      String?   @db.NVarChar(Max)
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @db.DateTime
-  LanguageID Int       @id(map: "PK__language__B938558B03AB874B") @default(autoincrement())
+  id         String   @id @default(cuid())
+  type       String?  @db.NVarChar(Max)
+  key        String?  @db.NVarChar(Max)
+  value      String?  @db.NVarChar(Max)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model locations {
@@ -1125,7 +1140,7 @@ model member_documents {
   uploaded_by         String?
   no_of_years         Int      @default(1, map: "DF_member_documents_no_of_years")
   // point userId to users table
-  user                users    @relation(fields: [user_id], references: [id])
+  user                users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cron_job_check_time DateTime @default(now())
 }
 
@@ -1138,7 +1153,7 @@ model member_history_logs {
   user_id          String
   created_by_admin Boolean?  @default(false, map: "DF_member_history_logs_created_by_admin")
   rejected_usersId String?
-  user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user             users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model admin_history_logs {
@@ -1479,6 +1494,7 @@ model old_users {
 model other_products {
   id                                    String                                  @id @default(cuid())
   product_name                          String?                                 @db.NVarChar(Max)
+  name_ar                               String?                                 @db.NVarChar(Max)
   total_no_of_barcodes                  Float?
   product_subscription_fee              Float?
   code                                  String?                                 @db.NVarChar(Max)
@@ -1535,9 +1551,9 @@ model other_products_subscription_histories {
   // point additional_gln_id to gln_upgrade_pricing optionaly
   additional_gln    gln_upgrade_pricing? @relation(fields: [additional_gln_id], references: [id], onDelete: Cascade)
 
-  admin   admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  user    users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  admin   admins?        @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product other_products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user    users          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model our_teams {
@@ -1626,6 +1642,7 @@ model product_packagings {
 model product_types {
   id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
+  name_ar    String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
@@ -1686,7 +1703,7 @@ model products {
   image_2            String?   @db.VarChar(255)
   image_3            String?   @db.VarChar(255)
   // create user relation
-  user               users     @relation(fields: [user_id], references: [id])
+  user               users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([barcode], map: "products_barcode_index")
 }
@@ -1857,6 +1874,7 @@ model staff_help_desks {
 model states {
   id         String   @id @default(cuid())
   name       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   country_id Int?
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

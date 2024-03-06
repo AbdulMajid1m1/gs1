@@ -10,25 +10,24 @@ import { backendUrl } from '../../../utils/config';
 const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updatelanguageData"));
-    console.log(updateBrandData)
     const [loading, setLoading] = useState(false);
     const { t, i18n } = useTranslation();
     const handleCloseUpdatePopup = () => {
         setVisibility(false);
     };
 
-    const [category_name_en, setcategory_name_en] = useState(updateBrandData?.nameEnglish || '');
-    const [category_name_ar, setcategory_name_ar] = useState(updateBrandData?.namearabic || '');
+    const [category_name_en, setcategory_name_en] = useState(updateBrandData?.key || '');
+    const [category_name_ar, setcategory_name_ar] = useState(updateBrandData?.value || '');
 
     const handleUpdateBrand = async () => {
         setLoading(true);
 
         try {
-            const response = await axios.put(backendUrl + `/translations/${updateBrandData?.nameEnglish}`, {
+            const response = await axios.put(backendUrl + `/translations/${updateBrandData?.id}`, {
                 'value': category_name_ar,
             });
 
-            toast.success(response?.data?.message || `${t('Word')} ${category_name_ar}  ${t('has been')} ${t('Updated Successfully')}.`, {
+            toast.success(response?.data?.message || `${t('Word')} ${category_name_en}  ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -38,8 +37,6 @@ const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) =>
                 progress: undefined,
                 theme: "light",
             });
-
-            console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 
@@ -54,7 +51,6 @@ const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) =>
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error);
         }
         finally {
             setLoading(false);

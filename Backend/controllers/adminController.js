@@ -85,8 +85,7 @@ export const adminLogin = async (req, res, next) => {
             token,
             permissions,
         };
-        //      TODO: remove set cookie here as it is not needed here, it's in setAdminCredentials
-        return res.cookie("adminToken", token, cookieOptions()).status(200).json(response);
+        return res.status(200).json(response);
 
     } catch (error) {
         console.log(error);
@@ -134,7 +133,7 @@ export const setAdminCredentials = async (req, res, next) => {
         }, ADMIN_JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
         delete admin.password;
-        
+
         // Set the new token in a cookie and return the admin data and new token in the response
         return res.cookie("adminToken", adminToken, cookieOptions()).status(200).json({
             success: true,
@@ -323,7 +322,6 @@ export const assignAdminToUser = async (req, res, next) => {
                 </html>
             `;
 
-        // Use your sendEmail function to send the email
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: adminEmail,

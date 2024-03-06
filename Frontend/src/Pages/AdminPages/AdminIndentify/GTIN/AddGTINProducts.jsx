@@ -587,8 +587,8 @@ const AddGTINProducts = () => {
                         <p className="font-semibold">{t('Complete Data')}</p>
                         <p>
                           {t('This number is registered to company')}: :{" "}
-                            {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}
-                            <span className="font-semibold">Hasnain, Majid</span>
+                            <span className="font-semibold">{SelectedData?.company_name_eng}</span>
+                            {/* <span className="font-semibold">Hasnain, Majid</span> */}
                         </p>
                         </div>
                     </div>
@@ -991,7 +991,7 @@ const AddGTINProducts = () => {
 
 
                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                <label htmlFor="field10" className="text-secondary">GPC <span className='text-red-500 text-sm cursor-pointer' onClick={handleGpcPopUp}>(What is GPC?)</span></label>
+                                <label htmlFor="field10" className="text-secondary">GPC <span className='text-red-500 text-sm cursor-pointer' onClick={handleGpcPopUp}> {t('(What is GPC?)')}</span></label>
                                 <Autocomplete
                                     // id="field10"
                                     required

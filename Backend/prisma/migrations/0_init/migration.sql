@@ -326,12 +326,35 @@ CREATE TABLE [dbo].[chats] (
 CREATE TABLE [dbo].[cities] (
     [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [state_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
     CONSTRAINT [cities_pkey] PRIMARY KEY CLUSTERED ([id])
 );
-
+CREATE TABLE [dbo].[emailsetting] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [emailfrom] NVARCHAR(max),
+    [emailmethod] NVARCHAR(max),
+    [smtp_host] NVARCHAR(max),
+    [smtp_username] NVARCHAR(max),
+    [smtp_password] NVARCHAR(max),
+    [smtp_port] NVARCHAR(max),
+    [smtp_encryption] NVARCHAR(max),
+    [status] INT,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    CONSTRAINT [emailsetting_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+CREATE TABLE [dbo].[product_categroies] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
+    [state_id] INT,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    
+);
 -- CreateTable
 CREATE TABLE [dbo].[classes] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -888,12 +911,12 @@ CREATE TABLE [dbo].[gtin_subscription_histories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[help_desk_comments] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
-    [helpDeskID] INT,
+    [id] NVARCHAR(1000) NOT NULL,
+    [helpDeskID]  NVARCHAR(max),
     [comment] NVARCHAR(max),
     [document] NVARCHAR(max),
-    [commentByAdmin] INT,
-    [commentByUser] INT,
+    [commentByAdmin]  NVARCHAR(max),
+    [commentByUser]  NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
     CONSTRAINT [PK_help_desk_comments] PRIMARY KEY CLUSTERED ([id])
@@ -901,14 +924,14 @@ CREATE TABLE [dbo].[help_desk_comments] (
 
 -- CreateTable
 CREATE TABLE [dbo].[help_desks] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+   [id] NVARCHAR(1000) NOT NULL,
     [title] NVARCHAR(max),
     [email] NVARCHAR(max),
     [ticket_no] NVARCHAR(max),
     [description] NVARCHAR(max),
     [document] NVARCHAR(max),
-    [user_id] INT,
-    [assignedTo] INT,
+    [user_id] NVARCHAR(max),
+    [assignedTo] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -1573,6 +1596,7 @@ CREATE TABLE [dbo].[old_users] (
 CREATE TABLE [dbo].[other_products] (
     [id] NVARCHAR(1000) NOT NULL,
     [product_name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [total_no_of_barcodes] FLOAT(53),
     [product_subscription_fee] FLOAT(53),
     [code] NVARCHAR(max),
@@ -1791,6 +1815,7 @@ CREATE TABLE [dbo].[cr_documents] (
 CREATE TABLE [dbo].[product_types] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -2045,6 +2070,7 @@ CREATE TABLE [dbo].[staff_help_desks] (
 CREATE TABLE [dbo].[states] (
     [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [country_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,

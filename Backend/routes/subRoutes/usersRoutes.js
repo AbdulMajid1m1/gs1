@@ -52,7 +52,7 @@ userRouter.delete('/:id', generalAuth, deleteUser);
 userRouter.get('/temp', generalAuth, getUsersTempDetails);
 
 userRouter.get('/getCrInfoByEmail', getCrInfo);
-
+// login route
 userRouter.post('/memberLogin', memberLogin);
 
 // carts routes

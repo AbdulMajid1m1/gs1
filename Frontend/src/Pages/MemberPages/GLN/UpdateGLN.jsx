@@ -67,7 +67,7 @@ const UpdateGLN = () => {
                 setNationalAddress(productData?.nationalAddress);
                 // const frontImg = imagePath + "/" + productData?.image
                 // setSelectedImage(frontImg);
-                setSelectedImage(imageLiveUrl(productData?.front_image));
+                setSelectedImage(imageLiveUrl(productData?.image));
               
                 setIsLoading(false);
 
@@ -104,7 +104,11 @@ const UpdateGLN = () => {
       formData.append('longitude', longitude);
       formData.append('latitude', latitude);
       formData.append('status', status);
-      formData.append('gln_image', imageFile);
+
+      const imageOptional1Input = document.querySelector('#imageInput');
+      if (imageOptional1Input.files && imageOptional1Input.files[0]) {
+        formData.append('gln_image', imageFile);
+      }
     
       newRequest
         .put(`/gln/${glnData?.id}`, formData)
@@ -306,13 +310,13 @@ const UpdateGLN = () => {
                   <p>
                     {i18n.language === 'ar' ? (
                       <>
-                          <span className="font-semibold">Hasnain, Majid</span>
+                          <span className="font-semibold">{memberData?.company_name_eng}</span>
                         :: {t('This number is registered to company')}
                       </>
                     ) : (
                       <>
                         {t('This number is registered to company')}: :{" "}
-                       <span className="font-semibold">Hasnain, Majid</span>
+                       <span className="font-semibold">{memberData?.company_name_eng}</span>
                       </>
                     )}
                             {/* <span className="font-semibold">{memberData?.company_name_eng}</span> */}

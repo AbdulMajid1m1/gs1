@@ -25,6 +25,7 @@ const socketHandler = (server) => {
             if (randomNumber) {
                 io.to(roomName).emit('randomNumber', randomNumber);
             }
+ 
         });
 
         // Send Random Number to Mobile Users
@@ -38,11 +39,12 @@ const socketHandler = (server) => {
 
 
         socket.on('verifyNumber', async ({ userId, selectedNumber }) => {
+            let userRoomName = `${userId}-web`;
+            let mobileRoomName = `${userId}-mobile`;
             try {
                 // Retrieve the stored random number for the user
                 const randomNumber = randomNumbersMap.get(userId);
-                let userRoomName = `${userId}-web`;
-                let mobileRoomName = `${userId}-mobile`;
+
                 // Compare the selected number with the stored random number
                 if (randomNumber === selectedNumber) {
                     // Query the database to find the user
@@ -106,10 +108,12 @@ const socketHandler = (server) => {
 
         // Verify Admin Number
         socket.on('verifyAdminNumber', async ({ adminId, selectedNumber }) => {
+            // Retrieve the stored random number for the admin
+            const randomNumber = randomNumbersMap.get(adminId);
+            let adminRoomName = `admin-${adminId}`;
             try {
-                // Retrieve the stored random number for the admin
-                const randomNumber = randomNumbersMap.get(adminId);
-                let adminRoomName = `admin-${adminId}`;
+
+
                 // Compare the selected number with the stored random number
                 if (randomNumber === selectedNumber) {
                     // Query the database to find the admin

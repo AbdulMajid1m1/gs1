@@ -36,6 +36,7 @@ const AddRoles = () => {
                 id: roles.id,
                 name: roles.name,
             }));
+            console.log(data);
             setRolesTypes(rolesTypes);
         }
         catch (error) {

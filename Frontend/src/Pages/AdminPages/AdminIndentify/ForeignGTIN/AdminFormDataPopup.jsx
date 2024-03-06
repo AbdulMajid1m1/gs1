@@ -301,7 +301,7 @@ const AdminFormDataPopup = ({ data, showPopup, togglePopup, barcode, companyId }
       "Product Location of Origin": productLocationOriginData,
       "Product Contents": productContentsData,
       "Packaging Composition": pkgCompositionData,
-      "Electronic Leaflets": productLeafletData,
+      "Electronic Leaflets":  productLeafletData,
       "Safety Information": safetyInformationData,
     };
 

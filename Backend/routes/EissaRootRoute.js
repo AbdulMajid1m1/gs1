@@ -28,6 +28,42 @@ import { createfaq_categories, getAllfaq_categories, getfaq_categoriesById, upda
 import { getAllour_teams, creatour_teams, getour_teamsById, updateour_teams, deleteour_teams } from '../controllers/our_teams.js'
 import { getAllboard_members, creatboard_members, getboard_membersById, updateboard_members, deleteboard_members } from "../controllers/board_members.js"
 import { adminAuth, checkPermission, generalAuth } from '../middlewares/auth.js';
+import {createemailsetting,getAllemailsetting,getemailsettingById,updateemailsetting,deleteemailsetting} from "../controllers/emailsetting.js"
+import {
+    getAllhelpdesk,
+    gethelpdeskById,
+    deletehelpdesk,
+    createhelpdesk,
+    gethelpdeskByuserid,
+    updatehelp_desks,
+ getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment
+} from "../controllers/help_desks.js"
+// Routes for help_desks
+router.post('/createhelpdesk', upload([{
+    name: 'document',
+    path: 'public/uploads/help_desks_DOC',
+}]), createhelpdesk);
+router.get('/getAllhelpdesk', getAllhelpdesk);
+router.get('/getAllassignto', getAllassignto);
+router.get('/gethelpdeskById/:id', gethelpdeskById);
+router.get('/gethelpdeskByuserid/:user_id', gethelpdeskByuserid);
+router.get('/gethelpdesk_commentByuserid/:helpDeskID', gethelpdesk_commentByuserid);
+router.post('/createhelpdesk_comment', upload([{
+    name: 'document',
+    path: 'public/uploads/help_desks_DOC',
+}]), createhelpdesk_comment);
+router.put('/updatehelp_desks/:id', upload([{
+    name: 'document',
+    path: 'public/uploads/help_desks_DOC',
+}]), updatehelp_desks);
+router.delete('/deletehelpdesk/:id', deletehelpdesk);
+// Routes for faq_categories
+router.post('/createemailsetting', createemailsetting);
+router.get('/getAllemailsetting', getAllemailsetting);
+router.get('/getemailsettingById/:id', getemailsettingById);
+router.put('/updateemailsetting/:id', updateemailsetting);
+router.delete('/deleteemailsetting/:id', deleteemailsetting);
+
 // Routes for faq_categories
 router.post('/createfaq_categories', adminAuth, checkPermission(["faq_categories"]), createfaq_categories);
 router.get('/getAllfaq_categories', getAllfaq_categories);
@@ -56,7 +92,7 @@ router.delete('/deletecr_documents/:id', adminAuth, checkPermission(["documents"
 router.post('/createotherProduct', adminAuth, checkPermission(['other_products']), createotherproduct);
 router.get('/getAllotherproduct', getAllotherproduct);
 router.get('/getotherproductById/:id', getotherproductById);
-router.put('/updateotherproduct/:id', adminAuth, checkPermission(['other_products']), updateotherproduct);
+router.put('/updateotherproduct/:id',  updateotherproduct);
 router.delete('/deleteotherproduct/:id', adminAuth, checkPermission(['other_products']), deleteotherproduct);
 // Routes for GCP_type
 router.post('/creategpctype', adminAuth, checkPermission(['gcp_type']), creategpctype);
@@ -66,20 +102,20 @@ router.put('/updategpctype/:id', adminAuth, checkPermission(['gcp_type']), updat
 router.delete('/deletegpctype/:id', adminAuth, checkPermission(['gcp_type']), deletegpctype);
 // Routes for countryofsale
 router.post('/createcountryofsale', adminAuth, checkPermission(['country_of_sales']), createcountryofsale);
-router.get('/getAllcountryofsale', adminAuth, getAllcountryofsale);
-router.get('/getcountryof_saleById/:id', adminAuth, getcountryof_saleById);
+router.get('/getAllcountryofsale', generalAuth, getAllcountryofsale);
+router.get('/getcountryof_saleById/:id', generalAuth, getcountryof_saleById);
 router.put('/updatecountryofsale/:id', adminAuth, checkPermission(['country_of_sales']), updatecountryofsale);
 router.delete('/deletecountryofsale/:id', adminAuth, checkPermission(['country_of_sales']), deletecountryofsale);
 // Routes for HsCode
 router.post('/createHsCode', adminAuth, checkPermission(['hs_code']), createHsCode);
-router.get('/getAllHsCode', adminAuth, getAllHsCode);
+router.get('/getAllHsCode', generalAuth, getAllHsCode);
 router.get('/getHsCodeById/:id', adminAuth, getHsCodeById);
 router.put('/updateHsCode/:id', adminAuth, checkPermission(['hs_code']), updateHsCode);
 router.delete('/deleteHsCode/:id', adminAuth, checkPermission(['hs_code']), deleteHsCode);
 
 // Routes for unspscs
 router.post('/createUNSPSC', adminAuth, checkPermission(['unspcs']), createUNSPSC);
-router.get('/getAllUNSPSC', adminAuth, getAllUNSPSC);
+router.get('/getAllUNSPSC', generalAuth, getAllUNSPSC);
 router.get('/getUNSPSCById/:id', adminAuth, getUNSPSCById);
 router.put('/updateUNSPSC/:id', adminAuth, checkPermission(['unspcs']), updateUNSPSC);
 router.delete('/deleteUNSPSC/:id', adminAuth, checkPermission(['unspcs']), deleteUNSPSC);

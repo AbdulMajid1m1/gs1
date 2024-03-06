@@ -59,10 +59,24 @@ const SideBar = () => {
   const [showThirdData, setShowThirdData] = useState(false);
   const [showFourthData, setShowFourthData] = useState(false);
   const [apiResponse, setApiResponse] = useState([]);
+  const [allUserData, setAllUserData] = useState([]);
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
-  console.log(memberData);
+  // console.log(memberData);
+
   const navigate = useNavigate();
+
+  const fetchAllUserData = async () => {
+    try {
+      const response = await newRequest.get(`/users?id=${memberData?.id}`);
+      // console.log(response.data[0]);
+      const data = response?.data[0] || [];
+      setAllUserData(data);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  };
 
 
   const handleItemClick = (path) => {
@@ -112,6 +126,7 @@ const SideBar = () => {
 
   useEffect(() => {
     fetchData();
+    fetchAllUserData();
   }, []);
 
 
@@ -253,11 +268,11 @@ const SideBar = () => {
             >
               {/* {apiResponse.length === 0 && ( */}
                <div
-                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} ${memberData?.status === 'inactive' ? 'bg-gray-500' : ''}`}
+                  className={`main-images-container ${selectedItem === '/member/gtin' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} ${allUserData?.status === 'inactive' ? 'bg-gray-500' : ''}`}
                   onClick={() => {
-                    if (memberData?.status === 'inactive') {
+                    if (allUserData?.status === 'inactive') {
                       toast.info('Your status is inactive. Cannot open GTIN.');
-                    } else if (memberData?.status === null || memberData?.status === undefined) {
+                    } else if (allUserData?.status === null || allUserData?.status === undefined) {
                       // Show an error message if status is not available
                       toast.info('Member status is not available. Cannot open GTIN.');
                     } else {
@@ -265,16 +280,16 @@ const SideBar = () => {
                     }
                   }}
                   onContextMenu={(event) => {
-                    if (memberData?.status === 'inactive') {
+                    if (allUserData?.status === 'inactive') {
                       toast.info('Your status is inactive. Cannot open GTIN.');
-                    } else if (memberData?.status === null || memberData?.status === undefined) {
+                    } else if (allUserData?.status === null || allUserData?.status === undefined) {
                       // Show an error message if status is not available
                       console.error('Member status is not available. Cannot open GTIN.');
                     } else {
                       handleContextMenu(event, '/member/gtin');
                     }
                   }}
-                  style={{ cursor: memberData?.status === 'inactive' || memberData?.status === null || memberData?.status === undefined ? 'not-allowed' : 'pointer' }}
+                  style={{ cursor: allUserData?.status === 'inactive' || allUserData?.status === null || allUserData?.status === undefined ? 'not-allowed' : 'pointer' }}
                 >
                   <img
                     src={barcodescanner}

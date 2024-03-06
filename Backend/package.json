@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "update:schema": "npm install && cd ./ && npx prisma generate && cd prismaOldGs1Db && npx prisma generate && cd ../prisma/gs1dl && npx prisma generate && cd ../wtrace && npx prisma generate && cd ../../ && npm start"
+
   },
   "keywords": [
     "gs1"
@@ -14,7 +16,7 @@
   "author": "Abdul Majid",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.10.2",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -38,6 +40,6 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "prisma": "^5.9.1"
+    "prisma": "^5.10.2"
   }
 }

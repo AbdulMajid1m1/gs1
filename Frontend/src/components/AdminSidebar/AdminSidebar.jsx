@@ -65,7 +65,9 @@ import roleicon from "../../Images/roleicon.png"
 import usersicon from "../../Images/usersicon.png"
 import licenseregistry from "../../Images/licenseregistry.png"
 import productcategories from "../../Images/productcategories.png"
+import gtinreports from "../../Images/gtinreports.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
+import emailicons from "../../Images/email.png"
 import i18ns from "../../i18n";
 import LanguageSwitcher from "../../switer";
 
@@ -403,20 +405,6 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Foreign GTIN')}</p>
               </div>
 
-              <div
-                className={`main-images-container ${selectedItem === '/admin/Language/Dynamic' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/Language/Dynamic', event)}
-                onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/Language/Dynamic')
-                }
-              >
-                <img
-                  src={pageicon}
-                  className="main-inside-image bg-white rounded-full"
-                  alt=""
-                />
-                <p className="sidebar-text">{t('Language')}</p>
-              </div>
 
             </div>
           )}
@@ -848,6 +836,22 @@ const AdminSideBar = () =>
                     <p className="sidebar-text">{t('Admin Activity')}</p>
                   </div>
 
+
+                  <div
+                    className={`main-images-container ${selectedItem === '/admin/admin-gtin-reports' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'} pl-6`}
+                    onClick={(event) => handleItemClick('/admin/admin-gtin-reports', event)}
+                    onContextMenu={(event) =>
+                      handleContextMenu(event, '/admin/admin-gtin-reports')
+                    }
+                  >
+                    <img
+                      src={gtinreports}
+                      className="main-inside-image bg-white rounded-full"
+                      alt=""
+                    />
+                    <p className="sidebar-text">GTIN Reports</p>
+                  </div>
+
                 </div>
               )}
 
@@ -896,6 +900,21 @@ const AdminSideBar = () =>
                 <p className="sidebar-text"> {t('Users')}</p>
               </div>
 
+ <div
+
+                className={`main-images-container ${selectedItem === '/admin/EmailConfigure' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/EmailConfigure', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/EmailConfigure')
+                }
+              >
+                <img
+                  src={emailicons}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text"> {t('Email Settings')}</p>
+              </div>
               
               <div
                 // className={`main-images-container ${selectedItem === '/admin/units' ? 'selected-item' : ''}`}
@@ -932,6 +951,22 @@ const AdminSideBar = () =>
                 />
                 <p className="sidebar-text">{t('Units')}</p>
               </div>
+
+              <div
+                className={`main-images-container ${selectedItem === '/admin/Language/Dynamic' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/Language/Dynamic', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/Language/Dynamic')
+                }
+              >
+                <img
+                  src={pageicon}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('Language')}</p>
+              </div>
+              
               <div
                 className={`main-images-container ${selectedItem === '/admin/Documents' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Documents', event)}
@@ -1303,10 +1338,10 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('Faq Categories')}</p>
               </div>
               <div
-                className={`main-images-container ${selectedItem === '/admin/CountryofSales' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/CountryofSales', event)}
+                className={`main-images-container ${selectedItem === '/admin/manage_section' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/manage_section', event)}
                 onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/CountryofSales')
+                  handleContextMenu(event, '/admin/manage_section')
                 }
               >
                 <img

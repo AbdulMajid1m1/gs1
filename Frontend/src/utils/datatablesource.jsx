@@ -1,7 +1,7 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
-import { backendUrl } from './config';
+import { backendUrl, baseUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
@@ -168,7 +168,7 @@ export const InventorySuppliersDataColumn = [
 export const ListOfCustomersColumn = (t, i18n) => [
   {
     field: 'id',
-    headerName:  t('Customer Id'),
+    headerName: t('Customer Id'),
     width: 120,
     editable: true,
   },
@@ -192,13 +192,13 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'have_cr',
-    headerName:  t('Have CR'),
+    headerName: t('Have CR'),
     width: 100,
     editable: true,
   },
   {
     field: 'cr_documentID',
-    headerName:  t('CR Document ID'),
+    headerName: t('CR Document ID'),
     width: 180,
     editable: true,
   },
@@ -210,19 +210,19 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'fname',
-    headerName:  t('First Name'),
+    headerName: t('First Name'),
     width: 180,
     editable: true,
   },
   {
     field: 'lname',
-    headerName:  t('Last Name'),
+    headerName: t('Last Name'),
     width: 180,
     editable: true,
   },
   {
     field: 'email',
-    headerName:  t('Email'),
+    headerName: t('Email'),
     width: 180,
     editable: true,
   },
@@ -252,7 +252,7 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'address2',
-    headerName:  t('Address 2'),
+    headerName: t('Address 2'),
     width: 180,
     editable: true,
   },
@@ -264,19 +264,19 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'mbl_extension',
-    headerName:  t('Mobile Extension'),
+    headerName: t('Mobile Extension'),
     width: 180,
     editable: true,
   },
   {
     field: 'website',
-    headerName:  t('Website'),
+    headerName: t('Website'),
     width: 180,
     editable: true,
   },
   {
     field: 'no_of_staff',
-    headerName:  t('Number of Staff'),
+    headerName: t('Number of Staff'),
     width: 100,
     editable: true,
   },
@@ -288,13 +288,13 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'district',
-    headerName:  t('District'),
+    headerName: t('District'),
     width: 180,
     editable: true,
   },
   {
     field: 'building_no',
-    headerName:  t('Building Number'),
+    headerName: t('Building Number'),
     width: 180,
     editable: true,
   },
@@ -306,13 +306,13 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'other_landline',
-    headerName:  t('Other Landline'),
+    headerName: t('Other Landline'),
     width: 180,
     editable: true,
   },
   {
     field: 'unit_number',
-    headerName:  t('Unit Number'),
+    headerName: t('Unit Number'),
     width: 100,
     editable: true,
   },
@@ -324,7 +324,7 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'email_verified_at',
-    headerName:  t('Email Verified At'),
+    headerName: t('Email Verified At'),
     width: 180,
     editable: true,
   },
@@ -336,7 +336,7 @@ export const ListOfCustomersColumn = (t, i18n) => [
   },
   {
     field: 'verification_code',
-    headerName:  t('Verification Code'),
+    headerName: t('Verification Code'),
     width: 180,
     editable: true,
   },
@@ -375,7 +375,7 @@ export const ShipmentRequestColumns = (t, i18n) => [
   },
   {
     field: 'vendor_id',
-    headerName:  t('Vendor Id'),
+    headerName: t('Vendor Id'),
     width: 120,
   },
   {
@@ -1254,6 +1254,30 @@ export const GtinColumn = (t, i18n) => [
     width: 180,
   },
   {
+    field: 'certificate',
+    headerName: t('Certificate'),
+    width: 120,
+    renderCell: (params) => {
+      const productId = params.row.id; // Assuming id is the productId
+      const onClickIcon = () => {
+        // Call the API when icon is clicked
+        window.open(`${baseUrl}/products/getGtinCertificate/${productId}`, "_blank");
+      };
+
+      return (
+        <InsertDriveFileIcon
+          style={{
+            color: "black",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+          }}
+          onClick={onClickIcon}
+        />
+      );
+    },
+  },
+  {
     field: "qrcode",
     headerName: t('QRCode'),
     renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
@@ -1311,7 +1335,7 @@ export const GtinColumn = (t, i18n) => [
   },
   {
     field: "image_1",
-    headerName: t('Optional Image 1'), 
+    headerName: t('Optional Image 1'),
     width: 180,
     editable: true,
     renderCell: (params) => (
@@ -1393,7 +1417,7 @@ export const GtinColumn = (t, i18n) => [
   // },
   {
     field: "product_url",
-    headerName:  t('Product URL'),
+    headerName: t('Product URL'),
     width: 180,
     renderCell: (params) => {
       let url = params.value;
@@ -1410,12 +1434,12 @@ export const GtinColumn = (t, i18n) => [
 
   {
     field: 'ProductType',
-    headerName:  t('Product Type'),
+    headerName: t('Product Type'),
     width: 180,
   },
   {
     field: 'Origin',
-    headerName:  t('Origin'), 
+    headerName: t('Origin'),
     width: 180,
   },
   {
@@ -1441,44 +1465,44 @@ export const GtinColumn = (t, i18n) => [
 ];
 
 export const GlnColumn = (t, i18n) => {
-   const columns =  [
-  {
-    field: 'product_id',
-    headerName: t('Product ID'),
-    width: 180,
-  },
-  {
-    field: 'gcpGLNID',
-    headerName: t('GCP GLN ID'),
-    width: 180,
-  },
-  {
-    field: 'locationNameEn',
-    headerName: t('LOCATION NAME EN'),
-    width: 180,
-  },
-  {
-    field: 'locationNameAr',
-    headerName: t('LOCATION NAME AR'),
-    width: 150,
-  },
+  const columns = [
+    {
+      field: 'product_id',
+      headerName: t('Product ID'),
+      width: 180,
+    },
+    {
+      field: 'gcpGLNID',
+      headerName: t('GCP GLN ID'),
+      width: 180,
+    },
+    {
+      field: 'locationNameEn',
+      headerName: t('LOCATION NAME EN'),
+      width: 180,
+    },
+    {
+      field: 'locationNameAr',
+      headerName: t('LOCATION NAME AR'),
+      width: 150,
+    },
 
-  {
-    field: 'GLNBarcodeNumber',
-    headerName: t('GLN Barcode Number'),
-    width: 180,
-  },
-  {
-    field: 'status',
-    headerName: t('Status'),
-    width: 180,
-  },
-];
+    {
+      field: 'GLNBarcodeNumber',
+      headerName: t('GLN Barcode Number'),
+      width: 180,
+    },
+    {
+      field: 'status',
+      headerName: t('Status'),
+      width: 180,
+    },
+  ];
 
-if (i18n && i18n.language === 'ar') {
-  columns.reverse();
-}
-return columns;
+  if (i18n && i18n.language === 'ar') {
+    columns.reverse();
+  }
+  return columns;
 };
 
 export const ViewSsccColumn = (t, i18n) => {
@@ -1569,7 +1593,7 @@ export const Gs1AllMembers = (t, i18n) => [
   },
   {
     field: 'companyID',
-    headerName:  t('Company ID'),
+    headerName: t('Company ID'),
     width: 140,
   },
   // {
@@ -2607,16 +2631,16 @@ export const masterDataColumn = (t, i18n) => [
 export const LanguageDataColumn = (t, i18n) => [
 
   {
-    field: 'nameEnglish',
+    field: 'key',
     headerName: t('Name[English]'),
     width: 300,
   },
   {
-    field: 'namearabic',
+    field: 'value',
     headerName: t('Name[Arabic]'),
     width: 300,
   },
- 
+
 ];
 
 export const megamenuDataColumn = (t, i18n) => [
@@ -3324,6 +3348,37 @@ export const ManageTeamDataColumn = (t, i18n) => [
   },
 ];
 
+export const ManageSectionsDataColumn = (t, i18n) => [
+
+  {
+    field: 'name',
+    headerName: t('Section Name'),
+    width: 300,
+  },
+  {
+    field: 'created_at',
+    headerName: t('Created At'),
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: t('Updated At'),
+    width: 200,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+
+
 export const BoardMembersDataColumn = (t, i18n) => [
 
   {
@@ -3419,26 +3474,39 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
     width: 300,
   },
   {
-    field: 'Download',
+    field: 'pdf',
     headerName: t('Download'),
     width: 250,
-    renderCell: (params) => (
-      <button
-        style={{
-          width: '100%',
-          height: '70%',
-          padding: '8px',
-          background: '#6777ef',
-          border: '1px solid #6777ef',
-          color: 'white',
-          borderRadius: '10px'
-        }}
-        onClick={() => handlepdfDownload(params.row.pdf)}
-      >
-        {/* {params.value} */}
-        Download
-      </button>
-    ),
+    renderCell: (params) => {
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        const fileUrl = docUrl;
+        const fileName = params.row.title;
+        saveAs(fileUrl, `${fileName}.pdf`);
+      };
+
+      return (
+        <button
+          style={{
+            width: '100%',
+            height: '70%',
+            padding: '8px',
+            background: '#6777ef',
+            border: '1px solid #6777ef',
+            color: 'white',
+            borderRadius: '10px'
+          }}
+          onClick={onClickIcon}
+        >
+          {/* {params.value} */}
+          {t('Download')}
+        </button>
+
+      );
+    },
   },
   {
     field: 'status',
@@ -3470,10 +3538,8 @@ export const UserGuidepdfDataColumn = (t, i18n) => [
   },
 ];
 
-const handlepdfDownload = (pdfurl) => {
-  const fileUrl = pdfurl;
-  saveAs(fileUrl, `${pdfurl}.pdf`);
-};
+
+
 
 export const UserGuideVideoDataColumn = (t, i18n) => [
 
@@ -3483,26 +3549,56 @@ export const UserGuideVideoDataColumn = (t, i18n) => [
     width: 300,
   },
   {
-    field: 'Download',
+    field: 'video',
     headerName: t('Download'),
     width: 250,
-    renderCell: (params) => (
-      <button
-        style={{
-          width: '100%',
-          height: '70%',
-          padding: '8px',
-          background: '#6777ef',
-          border: '1px solid #6777ef',
-          color: 'white',
-          borderRadius: '10px'
-        }}
-        onClick={() => handleVideoDownload(params.row.video)}
-      >
-        {/* {params.value} */}
-        Download
-      </button>
-    ),
+    renderCell: (params) => {
+      const fieldUpdated = params?.row?.[params.field]?.isUpdate;
+      const docUrl = fieldUpdated ? params?.row?.[params.field]?.dataURL
+        : imageLiveUrl(params.row[params.field]);
+
+      const onClickIcon = () => {
+        const fileUrl = docUrl;
+        const fileName = params.row.title;
+        saveAs(fileUrl, `${fileName}.mp4`);
+      };
+
+      return (
+        <button
+          style={{
+            width: '100%',
+            height: '70%',
+            padding: '8px',
+            background: '#6777ef',
+            border: '1px solid #6777ef',
+            color: 'white',
+            borderRadius: '10px'
+          }}
+          onClick={onClickIcon}
+        >
+          {/* {params.value} */}
+          {t('Download')}
+        </button>
+
+      );
+    },
+    // renderCell: (params) => (
+    //   <button
+    //     style={{
+    //       width: '100%',
+    //       height: '70%',
+    //       padding: '8px',
+    //       background: '#6777ef',
+    //       border: '1px solid #6777ef',
+    //       color: 'white',
+    //       borderRadius: '10px'
+    //     }}
+    //     onClick={() => handleVideoDownload(params.row.video)}
+    //   >
+    //     {/* {params.value} */}
+    //     {t('Download')}
+    //   </button>
+    // ),
   },
   {
     field: 'status',
@@ -3551,6 +3647,53 @@ export const document = (t) => [
     valueGetter: (params) => {
       return params.value === 1 ? t('Active') : t('Inactive');
     },
+  },
+
+  {
+    field: 'created_at',
+    headerName: t('Created At'),
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: t('Updated At'),
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
+export const Commentcolumdata = (t) => [
+  {
+    field: 'comment',
+    headerName: t('Comment'),
+    width: 250,
+  },
+  {
+    field: 'document',
+    headerName: t('Image'),
+    width: 180,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.document)}
+        alt="Image"
+        style={{
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          // cursor: 'pointer'
+        }}
+
+      />
+    ),
   },
 
   {
@@ -3692,7 +3835,11 @@ export const Other_Products = (t) => [
 
   {
     field: 'product_name',
-    headerName: t('product_name'),
+    headerName: t('product Name English'),
+    width: 260,
+  }, {
+    field: 'name_ar',
+    headerName: t('product Name Arabic'),
     width: 260,
   },
   {
@@ -3707,7 +3854,7 @@ export const Other_Products = (t) => [
   },
   {
     field: 'status',
-    headerName:t('Status'),
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -3845,13 +3992,18 @@ export const city = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: t('Name'),
-    width: 280,
+    headerName: t('Name English'),
+    width: 250,
+  },
+  {
+    field: 'name_ar',
+    headerName: t('Name Arabic'),
+    width: 250,
   },
   {
     field: 'state_name',
     headerName: t('State'),
-    width: 280,
+    width: 250,
   },
 
   {
@@ -3880,8 +4032,13 @@ export const state = (t, i18n) => [
 
   {
     field: 'name',
-    headerName: t('Name'),
-    width: 280,
+    headerName: t('Name English'),
+    width: 200,
+  },
+  {
+    field: 'name_ar',
+    headerName: t('Name Arabic'),
+    width: 200,
   },
   {
     field: 'country_id',
@@ -4379,7 +4536,7 @@ export const financePopUpMemberBankSlipColumn = (t, i18n) => [
     }
   },
   {
-    field: 'doc_type', 
+    field: 'doc_type',
     headerName: t('Doc Type'),
     width: 180,
   },
@@ -4485,35 +4642,90 @@ export const bankSlipColumn = (t, i18n) => [
 ];
 
 export const helpDeskColumn = (t, i18n) => [
+
   {
-    field: 'id',
-    headerName: 'ID',
-    width: 180,
-  },
-  {
-    field: 'ticket_id',
+    field: 'ticket_no',
     headerName: t('Ticket ID'),
-    width: 180,
+    width: 150,
   },
   {
-    field: 'subject',
-    headerName: t('Subject'),
-    width: 180,
+    field: 'title',
+    headerName: t('Title'),
+    width: 150,
   },
   {
-    field: 'priority',
-    headerName: t('Priority'),
+    field: 'description',
+    headerName: t('Description'),
+    width: 250,
+  },
+  {
+    field: 'document',
+    headerName: t('Documents'),
+    width: 200,
+    //   renderCell: (params) => (
+    //   <img
+    //     src={params.row.document}
+    //     alt="Documents"
+    //     style={{ width: '100%', height: 'auto' }}
+    //   />
+
+    // ),
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.document)}
+        alt="Image"
+        style={{
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          // cursor: 'pointer'
+        }}
+
+      />
+    ),
+  },
+  {
+    field: 'status',
+    headerName: t('Status'),
     width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 0 ? 'green' : 'red',
+          color: params.row.status === 0 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 0 ? 'pending' : 'Closed'}
+      </div>
+    ),
   },
   {
     field: 'created_at',
     headerName: t('Created At'),
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+
+    }
   },
   {
     field: 'updated_at',
     headerName: t('Updated At'),
     width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
   },
 
 
@@ -5091,12 +5303,12 @@ export const registeredmemberColumn = (t) => [
 export const productsColumn = (t) => [
   {
     field: 'transaction_id',
-    headerName: t('Transaction ID'), 
+    headerName: t('Transaction ID'),
     width: 180,
   },
   {
     field: 'created_at',
-    headerName:  t('Operation Date'),
+    headerName: t('Operation Date'),
     width: 180,
     valueGetter: (params) => {
       const operationDate = new Date(params.row.created_at);
@@ -5105,7 +5317,7 @@ export const productsColumn = (t) => [
   },
   {
     field: 'admin_id',
-    headerName:  t('Created By'),
+    headerName: t('Created By'),
     width: 180,
     valueGetter: (params) => {
       return params.row.admin_id ? `User ID ${params.row.admin_id}` : 'Unknown';
@@ -5113,27 +5325,27 @@ export const productsColumn = (t) => [
   },
   {
     field: 'productnameenglish',
-    headerName:  t('Product Name (English)'),
+    headerName: t('Product Name (English)'),
     width: 200,
   },
   {
     field: 'productnamearabic',
-    headerName:  t('Product Name (Arabic)'),
+    headerName: t('Product Name (Arabic)'),
     width: 200,
   },
   {
     field: 'BrandName',
-    headerName:  t('Brand Name'),
+    headerName: t('Brand Name'),
     width: 150,
   },
   {
     field: 'ProductType',
-    headerName:  t('Product Type'),
+    headerName: t('Product Type'),
     width: 180,
   },
   {
     field: 'Origin',
-    headerName:  t('Origin'),
+    headerName: t('Origin'),
     width: 150,
   },
   {
@@ -5153,7 +5365,7 @@ export const productsColumn = (t) => [
   },
   {
     field: 'front_image',
-    headerName:  t('Front Image'),
+    headerName: t('Front Image'),
     width: 150,
     renderCell: (params) => (
       <img
@@ -5202,7 +5414,7 @@ export const productsColumn = (t) => [
   },
   {
     field: 'details_page',
-    headerName:  t('Details (English)'),
+    headerName: t('Details (English)'),
     width: 200,
   },
   {
@@ -5223,7 +5435,7 @@ export const productsColumn = (t) => [
   },
   {
     field: 'product_url',
-    headerName:  t('Product URL'),
+    headerName: t('Product URL'),
     width: 200,
     renderCell: (params) => (
       <a href={params.row.product_url} target="_blank" rel="noopener noreferrer">
@@ -5247,7 +5459,7 @@ export const productsColumn = (t) => [
     width: 150,
   },
   {
-    field: 'readyForGepir', 
+    field: 'readyForGepir',
     headerName: t('Ready for Gepir'),
     width: 150,
   },
@@ -5268,26 +5480,26 @@ export const SafetyInformationColumn = (t, i18n) => [
   },
   {
     field: "LinkType",
-    headerName:  t('Link Type'),
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
   {
     field: "Lang",
-    headerName:  t('Lang'),
+    headerName: t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "TargetURL",
-    headerName:  t('Target URL'),
+    headerName: t('Target URL'),
     width: 150,
     editable: true,
   },
 
   {
     field: "GTIN",
-    headerName: "GTIN" ,
+    headerName: "GTIN",
     width: 180,
     renderCell: GTINCell,
     editable: false,
@@ -5295,7 +5507,7 @@ export const SafetyInformationColumn = (t, i18n) => [
 
   {
     field: "logo",
-    headerName:  t('Logo'),
+    headerName: t('Logo'),
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -5326,7 +5538,7 @@ export const SafetyInformationColumn = (t, i18n) => [
   },
   {
     field: "process",
-    headerName:  t('Process'),
+    headerName: t('Process'),
     width: 150,
     editable: true,
   },
@@ -5335,7 +5547,7 @@ export const SafetyInformationColumn = (t, i18n) => [
 export const RecipeColumn = (t, i18n) => [
   {
     field: "logo",
-    headerName:t('Logo'),
+    headerName: t('Logo'),
     renderCell: (params) => {
       console.log("params");
       console.log(params);
@@ -5360,13 +5572,13 @@ export const RecipeColumn = (t, i18n) => [
   },
   {
     field: "title",
-    headerName:t('Title'),
+    headerName: t('Title'),
     width: 180,
     editable: true,
   },
   {
     field: "description",
-    headerName:  t('Description'),
+    headerName: t('Description'),
     width: 180,
     editable: true,
   },
@@ -5407,13 +5619,13 @@ export const PromotionalOffersColumns = (t, i18n) => [
   },
   {
     field: "Lang",
-    headerName:  t('Lang'),
+    headerName: t('Lang'),
     width: 180,
     editable: true,
   },
   {
     field: "TargetURL",
-    headerName:  t('Target URL'),
+    headerName: t('Target URL'),
     width: 150,
     editable: true,
   },
@@ -5440,16 +5652,16 @@ export const PromotionalOffersColumns = (t, i18n) => [
   },
   {
     field: "banner",
-    headerName:  t('Banner'),
+    headerName: t('Banner'),
     width: 180,
     editable: true,
   },
 ];
 
-export const ProductLocationofOriginColumn  = (t, i18n) => [
+export const ProductLocationofOriginColumn = (t, i18n) => [
   {
     field: "ProductLocationOrigin",
-    headerName:  t('Product Location Origin'),
+    headerName: t('Product Location Origin'),
     width: 180,
     editable: true,
   },
@@ -5487,7 +5699,7 @@ export const ProductLocationofOriginColumn  = (t, i18n) => [
   },
 ];
 
-export const ProductRecallColumn =  (t, i18n) => [
+export const ProductRecallColumn = (t, i18n) => [
   {
     field: "ProductRecall",
     headerName: t('Product Recall'),
@@ -5568,14 +5780,14 @@ export const PackagingCompositionColumn = (t, i18n) => [
   },
   {
     field: "packaging",
-    headerName:  t('Packaging'),
+    headerName: t('Packaging'),
     width: 150,
     editable: true,
   },
 
   {
     field: "material",
-    headerName:  t('Material'),
+    headerName: t('Material'),
     width: 180,
     editable: true,
   },
@@ -5593,7 +5805,7 @@ export const PackagingCompositionColumn = (t, i18n) => [
   },
   {
     field: "LinkType",
-    headerName:  t('Link Type'),
+    headerName: t('Link Type'),
     width: 180,
     editable: true,
   },
@@ -5735,7 +5947,7 @@ export const ProductContentColumn = (t, i18n) => [
 
   {
     field: "Batch",
-    headerName:  t('Batch'),
+    headerName: t('Batch'),
     width: 180,
     editable: true,
   },
@@ -5765,13 +5977,13 @@ export const ProductContentColumn = (t, i18n) => [
   },
   {
     field: "bestBeforeDate",
-    headerName:  t('best Before Date'),
+    headerName: t('best Before Date'),
     width: 180,
     editable: true,
   },
   {
     field: "GLNIDFrom",
-    headerName:  t('GLNID From'),
+    headerName: t('GLNID From'),
     width: 180,
     editable: true,
   },
@@ -5790,31 +6002,31 @@ export const ProductContentColumn = (t, i18n) => [
   },
   {
     field: "allergen_info",
-    headerName:  t('Allergen info'),
+    headerName: t('Allergen info'),
     width: 180,
     editable: true,
   },
   {
     field: "calories",
-    headerName:  t('calories'),
+    headerName: t('calories'),
     width: 180,
     editable: true,
   },
   {
     field: "sugar",
-    headerName:  t('sugar'),
+    headerName: t('sugar'),
     width: 180,
     editable: true,
   },
   {
     field: "salt",
-    headerName:  t('salt'),
+    headerName: t('salt'),
     width: 180,
     editable: true,
   },
   {
     field: "fat",
-    headerName:  t('fat'),
+    headerName: t('fat'),
     width: 180,
     editable: true,
   },
@@ -5921,7 +6133,7 @@ export const pendingApprovalColumn = (t, i18n) => [
   // },
   {
     field: 'profile',
-    headerName:  t('Profile'),
+    headerName: t('Profile'),
     width: 60,
 
   },
@@ -6138,7 +6350,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   // },
   {
     field: 'profile',
-    headerName:  t('Profile'),
+    headerName: t('Profile'),
     width: 60,
 
   },
@@ -6184,7 +6396,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'location_uk',
-    headerName:  t('Location UK'),
+    headerName: t('Location UK'),
     width: 180,
   },
   {
@@ -6194,7 +6406,7 @@ export const memberForRenevalColumn = (t, i18n) => [
   },
   {
     field: 'membership_otherCategory',
-    headerName:  t('Membership Other Category'),
+    headerName: t('Membership Other Category'),
     width: 180,
   },
   {
@@ -6330,7 +6542,7 @@ export const cardsRejectedColumn = (t, i18n) => [
   },
   {
     field: 'other_products',
-    headerName:  t('Other Products') ,
+    headerName: t('Other Products'),
     width: 180,
   },
   {
@@ -6535,7 +6747,7 @@ export const oldInActiveMemberColumn = (t, i18n) => [
   },
   {
     field: 'ApprovedBy',
-    headerName:  t('Approved By'),
+    headerName: t('Approved By'),
     width: 180,
   },
   {
@@ -6550,12 +6762,12 @@ export const oldInActiveMemberColumn = (t, i18n) => [
   },
   {
     field: 'ModeOfPayment',
-    headerName:  t('Mode Of Payment'),
+    headerName: t('Mode Of Payment'),
     width: 180,
   },
   {
     field: 'PaymentDate',
-    headerName:  t('Payment Date'),
+    headerName: t('Payment Date'),
     width: 180,
 
     type: 'dateTime',
@@ -6653,32 +6865,32 @@ export const oldInActiveMemberColumn = (t, i18n) => [
 export const productsCategoryColumn = (t, i18n) => [
   {
     field: 'member_category_description',
-    headerName:  t('Member Category Description'), 
+    headerName: t('Member Category Description'),
     width: 220,
   },
   {
     field: 'member_category_description_ar',
-    headerName:  t('Member Category Description Arabic'),
+    headerName: t('Member Category Description Arabic'),
     width: 220,
   },
   {
     field: 'total_no_of_barcodes',
-    headerName:  t('Total No Of Barcodes'),
+    headerName: t('Total No Of Barcodes'),
     width: 180,
   },
   {
     field: 'member_registration_fee',
-    headerName:  t('Member Registration Fee'),
+    headerName: t('Member Registration Fee'),
     width: 180,
   },
   {
     field: 'gtin_yearly_subscription_fee',
-    headerName:  t('GTIN Yearly Subscription Fee'),
+    headerName: t('GTIN Yearly Subscription Fee'),
     width: 180,
   },
   {
     field: 'type',
-    headerName: t('Type'), 
+    headerName: t('Type'),
     width: 120,
   },
   {
@@ -6708,7 +6920,7 @@ export const productsCategoryColumn = (t, i18n) => [
   },
   {
     field: 'gcp_type',
-    headerName:  t('GCP Type'),
+    headerName: t('GCP Type'),
     width: 180,
   },
   {
@@ -6717,26 +6929,24 @@ export const productsCategoryColumn = (t, i18n) => [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   {
     field: 'updated_at',
     headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
-  
-  
-  
+
+
+
 ];
 
 export const KpiReportColumn = (t, i18n) => [
@@ -6747,12 +6957,12 @@ export const KpiReportColumn = (t, i18n) => [
   },
   {
     field: 'price',
-    headerName:  t('Price'),
+    headerName: t('Price'),
     width: 120,
   },
   {
     field: 'request_type',
-    headerName:  t('Request Type'),
+    headerName: t('Request Type'),
     width: 120,
   },
   // {
@@ -6762,7 +6972,7 @@ export const KpiReportColumn = (t, i18n) => [
   // },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 120,
     renderCell: (params) => (
       <div
@@ -6776,14 +6986,14 @@ export const KpiReportColumn = (t, i18n) => [
             params.row.status === 'active'
               ? 'green'
               : params.row.status === 'approved'
-              ? 'skyblue'
-              : 'red',
+                ? 'skyblue'
+                : 'red',
           color:
             params.row.status === 'active'
               ? 'green'
               : params.row.status === 'approved'
-              ? 'black'
-              : 'red',
+                ? 'black'
+                : 'red',
         }}
       >
         {params.row.status}
@@ -6802,7 +7012,7 @@ export const KpiReportColumn = (t, i18n) => [
   },
   {
     field: 'companyID',
-    headerName:  t('Company ID'),
+    headerName: t('Company ID'),
     width: 180,
   },
   {
@@ -6826,11 +7036,10 @@ export const KpiReportColumn = (t, i18n) => [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   // {
   //   field: 'updated_at',
@@ -6855,9 +7064,9 @@ export const KpiReportColumn = (t, i18n) => [
   //   }
   // },
 
-  
-  
-  
+
+
+
 ];
 
 export const AdminActivityReportColumn = (t, i18n) => [
@@ -6868,12 +7077,12 @@ export const AdminActivityReportColumn = (t, i18n) => [
   },
   {
     field: 'username',
-    headerName:  t('Admin Name'),
+    headerName: t('Admin Name'),
     width: 180,
   },
   {
     field: 'email',
-    headerName:  t('Email'),
+    headerName: t('Email'),
     width: 180,
   },
   {
@@ -6887,26 +7096,24 @@ export const AdminActivityReportColumn = (t, i18n) => [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   {
     field: 'updated_at',
     headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
 
-  
-  
+
+
 ];
 
 export const additionalGtinColumn = (t, i18n) => [
@@ -6922,7 +7129,7 @@ export const additionalGtinColumn = (t, i18n) => [
   },
   {
     field: 'created_at',
-    headerName:  t('Created At'),
+    headerName: t('Created At'),
     width: 180,
     type: 'dateTime',
     valueGetter: (params) => {
@@ -6993,7 +7200,7 @@ export const memberActivityReportColumn = (t, i18n) => [
   },
   {
     field: 'other_products',
-    headerName: t('Other Products'), 
+    headerName: t('Other Products'),
     width: 180,
   },
   {
@@ -7013,7 +7220,7 @@ export const memberActivityReportColumn = (t, i18n) => [
   },
   {
     field: 'companyID',
-    headerName:  t('Company ID'),
+    headerName: t('Company ID'),
     width: 180,
   },
   {
@@ -7043,7 +7250,7 @@ export const memberActivityReportColumn = (t, i18n) => [
   },
   {
     field: 'transaction_id',
-    headerName:  t('Transaction ID'),
+    headerName: t('Transaction ID'),
     width: 180,
   },
   {
@@ -7072,26 +7279,24 @@ export const memberActivityReportColumn = (t, i18n) => [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   {
     field: 'updated_at',
-    headerName:  t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
 
-  
-  
+
+
 ];
 
 
@@ -7145,7 +7350,7 @@ export const expiredMemberColumn = (t, i18n) => [
   },
   {
     field: 'location_uk',
-    headerName:  t('Location UK'),
+    headerName: t('Location UK'),
     width: 180,
   },
   {
@@ -7155,7 +7360,7 @@ export const expiredMemberColumn = (t, i18n) => [
   },
   {
     field: 'membership_otherCategory',
-    headerName:  t('Membership Other Category'),
+    headerName: t('Membership Other Category'),
     width: 180,
   },
   {
@@ -7227,7 +7432,7 @@ export const expiredMemberColumn = (t, i18n) => [
 export const AdminRolesColumn = (t, i18n) => [
   {
     field: 'name',
-    headerName:  t('Roles'),
+    headerName: t('Roles'),
     width: 280,
   },
 
@@ -7251,12 +7456,12 @@ export const AdminUsersColumn = (t, i18n) => [
   },
   {
     field: 'email',
-    headerName:  t('Email'),
+    headerName: t('Email'),
     width: 180,
   },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -7284,7 +7489,12 @@ export const AdminUsersColumn = (t, i18n) => [
 export const productsCategoriesColumn = (t, i18n) => [
   {
     field: 'name',
-    headerName: t('Name'),
+    headerName: t('Name English'),
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: t('Name Arabic'),
     width: 180,
   },
   {
@@ -7313,26 +7523,24 @@ export const productsCategoriesColumn = (t, i18n) => [
     width: 180,
 
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
-    }    
+    }
   },
   {
     field: 'updated_at',
     headerName: t('Updated At'),
     width: 180,
     type: 'dateTime',
-    valueGetter: (params) =>
-    {
+    valueGetter: (params) => {
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
   },
-  
-  
-  
+
+
+
 ];
 
 
@@ -7400,7 +7608,7 @@ export const staffAssignedTaskColumn = (t, i18n) => [
   },
   {
     field: 'companyID',
-    headerName:  t('Company ID'),
+    headerName: t('Company ID'),
     width: 140,
   },
   // {
@@ -7462,6 +7670,126 @@ export const staffAssignedTaskColumn = (t, i18n) => [
 
 ]
 
+export const helpdeskTaskColumn = (t, i18n) => [
+  {
+    field: 'ticket_no',
+    headerName: t('Ticket No'),
+    width: 150,
+  },
+
+  {
+    field: 'title',
+    headerName: t('Title'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          cursor: 'pointer',
+          color: '#3560b7'
+        }}
+      >
+        {params.row.title}
+      </div>
+    ),
+  },
+
+  {
+    field: 'assignedTo', // or any unique name you prefer
+    headerName: t('Assigned To'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '4px 8px',
+          borderRadius: '10px',
+          border: params.row.assignedTo ? '2px solid' : 'none',
+          // background: '#D1FFBD', // customize as needed
+          color: 'green',
+        }}
+      >
+        {params.row.assignedTo}
+      </div>
+    ),
+  },
+  {
+    field: 'description',
+    headerName: t('Description'),
+    width: 250,
+  },
+  {
+    field: 'email',
+    headerName: t('Email'),
+    width: 220,
+  },
+
+  {
+    field: "document",
+    headerName: t("Image"),
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.document)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.document), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+  {
+    field: 'status',
+    headerName: t('Status'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '5px',
+          paddingRight: '5px',
+          borderRadius: '10px',
+          border: '2px solid',
+          borderColor: params.row.status === 0 ? 'green' : 'red',
+          color: params.row.status === 0 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 0 ? 'InProgress' : 'Closed'}
+      </div>
+    ),
+  },
+
+
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+
+]
+
 
 
 export const licenceRegistryColumn = (t, i18n) => [
@@ -7493,12 +7821,12 @@ export const licenceRegistryColumn = (t, i18n) => [
   },
   {
     field: 'company_name_eng',
-    headerName:  t('Company Name'),
+    headerName: t('Company Name'),
     width: 180,
   },
   {
     field: 'gln',
-    headerName:  t('Licensee GLN'),
+    headerName: t('Licensee GLN'),
     width: 180,
     renderCell: params => (
       <div
@@ -7518,13 +7846,13 @@ export const licenceRegistryColumn = (t, i18n) => [
     ),
   },
   {
-    field: 'additional_number', 
+    field: 'additional_number',
     headerName: t('Key (PK)'),
     width: 180,
   },
   {
     field: 'status',
-    headerName:  t('Status'),
+    headerName: t('Status'),
     width: 120,
     renderCell: params => (
       <div
@@ -7542,10 +7870,10 @@ export const licenceRegistryColumn = (t, i18n) => [
       </div>
     ),
   },
-  
-  
-  
-  
+
+
+
+
 ];
 
 
@@ -7554,12 +7882,12 @@ export const licenceRegistryColumn = (t, i18n) => [
 export const foreignGtinColumn = (t, i18n) => [
   {
     field: "BrandName",
-    headerName:  t('Brand Name'),
+    headerName: t('Brand Name'),
     width: 180,
   },
   {
     field: "barcode",
-    headerName:   t('Barcode'),
+    headerName: t('Barcode'),
     renderCell: GTINCell,
     width: 150,
   },
@@ -7575,7 +7903,7 @@ export const foreignGtinColumn = (t, i18n) => [
   },
   {
     field: "gpc_code",
-    headerName:  t('GPC Code'),
+    headerName: t('GPC Code'),
     width: 180,
   },
   {
@@ -7590,17 +7918,17 @@ export const foreignGtinColumn = (t, i18n) => [
   },
   {
     field: "size",
-    headerName:   t('Size'),
+    headerName: t('Size'),
     width: 180,
   },
   {
     field: "unit",
-    headerName:  t('Unit'),
+    headerName: t('Unit'),
     width: 180,
   },
   {
     field: "created_at",
-    headerName:   t('Created At'),
+    headerName: t('Created At'),
     width: 180,
 
     type: 'dateTime',
@@ -7611,7 +7939,7 @@ export const foreignGtinColumn = (t, i18n) => [
   },
   {
     field: "updated_at",
-    headerName:  t('Updated At'),
+    headerName: t('Updated At'),
     width: 180,
 
     type: 'dateTime',
@@ -7619,7 +7947,245 @@ export const foreignGtinColumn = (t, i18n) => [
       // Convert the string date to a Date object
       return params.value ? new Date(params.value) : null;
     }
-  }, 
+  },
+
+
+
+];
+
+
+export const emailsettingDataColumn = (t, i18n) => [
+  {
+    field: "emailfrom",
+    headerName: t("Email Sent From"),
+    width: 180,
+  },
+  {
+    field: "emailmethod",
+    headerName: t("Email Method"),
+    width: 180,
+  },
+  {
+    field: "smtp_host",
+    headerName: t("SMTP HOST"),
+    width: 180,
+  },
+  {
+    field: "smtp_username",
+    headerName: t("SMTP Username"),
+    width: 180,
+  },
+  {
+    field: "smtp_password",
+    headerName: t("SMTP Password"),
+    width: 180,
+  },
+  {
+    field: "smtp_port",
+    headerName: t("SMTP Port"),
+    width: 220,
+  },
+  {
+    field: "smtp_encryption",
+    headerName: t("SMTP Encryption"),
+    width: 180,
+  },
+  // {
+  //   field: "status",
+  //   headerName: t("Status"),
+  //   width: 120,
+  //   renderCell: (params) => (
+  //     <div
+  //       style={{
+  //         padding: "5px",
+  //         paddingLeft: "10px",
+  //         paddingRight: "10px",
+  //         borderRadius: "20px",
+  //         border: "2px solid",
+  //         borderColor: params.row.status === 1 ? "green" : "red",
+  //         color: params.row.status === 1 ? "green" : "red",
+  //       }}
+  //     >
+  //       {params.row.status === 1 ? "Active" : "Inactive"}
+  //     </div>
+  //   ),
+  // },
+  {
+    field: "created_at",
+    headerName: t("Created At"),
+    width: 180,
+
+    type: "dateTime",
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    },
+  },
+  {
+    field: "updated_at",
+    headerName: t("Updated At"),
+    width: 180,
+    type: "dateTime",
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    },
+  },
+];
+
+
+
+export const gtinReportsColumns = (t, i18n) => [
+  {
+    field: 'reporter_email',
+    headerName: t("Reporter"),
+    width: 180,
+  },
+  {
+    field: 'report_barcode',
+    headerName: t("Barcode"),
+    width: 180,
+  },
+  {
+    field: 'report_comment',
+    headerName: t("Comment"),
+    width: 180,
+  },
+  {
+    field: 'report_status',
+    headerName: t('Status'),
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.report_status === 1 ? 'green' : 'red',
+          color: params.row.report_status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.report_status === 1 ? 'completed' : 'pending'}
+      </div>
+    ),
+  },
+  {
+    field: "created_at",
+    headerName: t("Date"),
+    width: 180,
+    type: "dateTime",
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    },
+  },
+  {
+    field: 'report_action',
+    headerName: t("Reporter Action"),
+    width: 180,
+  },
+  {
+    field: "report_images",
+    headerName: t("Report Image"),
+    width: 180,
+    editable: true,
+    renderCell: (params) => (
+      <img
+        src={imageLiveUrl(params.row.report_images)}
+        // src={backendUrl + "/" + params.row.address_image}
+        alt="address_image"
+        style={{
+          width: '90%',
+          height: '90%',
+          objectFit: 'contain',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          window.open(imageLiveUrl(params.row.report_images), '_blank', 'width=400,height=300,top=0,left=0');
+        }}
+      />
+    )
+  },
+
+
+];
+
+
+
+export const subscribeOtherProductsColumn = [
+  {
+    field: 'product_name',
+    headerName: 'Product Name',
+    width: 180,
+  },
+  {
+    field: 'name_ar',
+    headerName: 'Name Arabic',
+    width: 180,
+  },
+  {
+    field: 'code',
+    headerName: 'Code',
+    width: 120,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          borderColor: params.row.status === 1 ? 'green' : 'red',
+          color: params.row.status === 1 ? 'green' : 'red',
+        }}
+      >
+        {params.row.status === 1 ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+  {
+    field: 'product_subscription_fee',
+    headerName: 'Product Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'med_subscription_fee',
+    headerName: 'Medical Subscription Fee',
+    width: 180,
+  },
+  {
+    field: 'total_no_of_barcodes',
+    headerName: 'Total Number Of Barcodes',
+    width: 180,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
 
 
 

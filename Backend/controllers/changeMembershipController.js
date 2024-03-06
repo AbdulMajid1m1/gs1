@@ -33,6 +33,7 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
                 gtin_product: true, // Fetch gtin_product details
             },
         });
+        console.log("oldSubscription", oldSubscription);
 
         const user = await prisma.users.findUnique({
             where: { id: userId },
@@ -90,6 +91,7 @@ async function calculateSubscriptionPrice(userId, newSubscriptionId) {
             user.membership_category === "non_med_category"
                 ? newSubscription.gtin_yearly_subscription_fee
                 : newSubscription.med_yearly_subscription_fee;
+
 
         // Calculate remaining yearly fee for new subscription
         const remainingYearlyFee = (remainingMonths / 12) * newSubscriptionYearlyFee;
@@ -409,10 +411,11 @@ export const membershipRenewRequest = async (req, res, next) => {
             await createMemberLogs(userLog);
         }
 
-        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+        let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
             where: { user_id: existingUser.id, isDeleted: false },
         });
-
+        console.log("activatedGtinProducts", activatedGtinProducts)
+        activatedGtinProducts = activatedGtinProducts[0];
 
         let gtinSubscriptionHistoryData = [{
             transaction_id: transactionId,
@@ -727,6 +730,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
+
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
                 topHeading: "RECEIPT",
@@ -832,6 +836,19 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 data: { status: value.status }
             });
 
+            // delete bank slip documents deleteMany
+
+            await prisma.member_documents.deleteMany({
+                where: {
+                    user_id: currentDocument.user_id,
+                    transaction_id: currentDocument.transaction_id,
+                    type: 'bank_slip',
+                }
+
+            });
+
+
+
             if (req?.admin?.adminId) {
 
                 const adminLog = {
@@ -857,8 +874,6 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 where: { id: documentId },
                 data: { status: 'pending' }
             });
-
-
 
 
             // Send email with optional reject reason
@@ -1192,7 +1207,10 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
         await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
         await updateUserPendingInvoiceStatus(result.user.id);
-        res.status(200).json({ message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created & sent to ${result} successfully` });
+        // make conditionaal rendering for email
+        res.status(200).json({
+            message: `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice created` + (result?.email ? ` and sent to ${result.email} successfully` : "")
+        });
     } catch (error) {
         console.error(error);
         next(error);
@@ -1684,7 +1702,13 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
         await updateUserPendingInvoiceStatus(result.user.id);
 
-        res.status(200).json({ message: `Add GLN invoice created & sent to ${result} successfully` });
+        try {
+            res.status(200).json({ message: 'Add GLN invoice created' + (result?.email ? ` and sent to ${result.email} successfully` : '') });
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+
     } catch (error) {
         console.error(error);
         next(error);
@@ -1894,6 +1918,16 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
             },
             data: {
                 status: 'approved',
+            },
+        });
+
+
+        // delete bank slip delete many
+        await prisma.member_documents.deleteMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'bank_slip',
             },
         });
 
@@ -2122,6 +2156,15 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             },
         });
 
+        // delete bank slip delete many
+        await prisma.member_documents.deleteMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'bank_slip',
+            },
+        });
+
 
         if (req?.admin?.adminId) {
 
@@ -2234,6 +2277,10 @@ export const approveMembershipRequest = async (req, res, next) => {
         });
 
 
+
+        //  use calculateSubscriptionPrice function to calculate the price
+        const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
+        //    insert new record in gtin_subcriptions table with new subscription
         const updateResponse = await prisma.gtin_subcriptions.updateMany({
             // update based on the transaction ID
             where: {
@@ -2250,9 +2297,8 @@ export const approveMembershipRequest = async (req, res, next) => {
         if (!updateResponse) {
             throw createError(404, 'GTIN subscription not found for the user');
         }
-        //  use calculateSubscriptionPrice function to calculate the price
-        const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
-        //    insert new record in gtin_subcriptions table with new subscription
+
+
 
         await prisma.gtin_subcriptions.create({
             data: {
@@ -2462,6 +2508,17 @@ export const approveMembershipRequest = async (req, res, next) => {
                 status: 'approved',
             },
         });
+
+        // delete the bank slip documents
+        await prisma.member_documents.deleteMany({
+            where: {
+                user_id: userId,
+                transaction_id: transactionId,
+                type: 'bank_slip',
+            }
+        });
+
+
         // Delete the upgrade_membership_cart record
         await prisma.upgrade_member_ship_cart.delete({
             where: { id: upgradeCart.id },
@@ -2720,7 +2777,8 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
         await updateUserPendingInvoiceStatus(result.user.id);
 
-        res.status(200).json({ message: `Downgrade Subscription invoice created & sent to ${result} successfully` });
+        res.status(200).json({ message: `Downgrade Subscription invoice created + (result?.user?.email ? '& sent to ' + result?.user?.email : '')` });
+
     } catch (error) {
         console.error(error);
         next(error);
@@ -3099,107 +3157,12 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         });
 
 
-        // Update product's gcp_start_range
-        // await prisma.gtin_products.update({
-        //     where: { id: gtinProduct.id },
-        //     data: {
-        //         gcp_start_range: String(parseInt(gtinProduct.gcp_start_range) + 1),
-        //     },
-        // });
-
-
-        // let cart = {
-        //     cart_items: [],
-        // }
-
-        // cart.cart_items = []
-
-        // cart.cart_items.push({
-        //     // check user category and add price accordingly
-        //     registration_fee: user.membership_category === "non_med_category" ? gtinProduct.member_registration_fee : gtinProduct.med_registration_fee,
-        //     yearly_fee: user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee,
-        //     productName: gtinProduct.member_category_description,
-
-        // });
-        // cart.cart_items.push({
-        //     // check user category and add price accordingly
-        //     registration_fee: 0,
-        //     yearly_fee: 0,
-        //     productName: gtinProduct.member_category_description,
-
-        // });
-
-        // cart.transaction_id = transactionId;
-        // // Generate receipt
-        // const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-
-        // const receiptData = {
-        //     topHeading: "RECEIPT",
-        //     secondHeading: "RECEIPT FOR DOWNGRADE MEMBERSHIP",
-        //     memberData: {
-        //         qrCodeDataURL: qrCodeDataURL,
-        //         registeration: `Receipt for dowgrading membership to ${gtinProduct.member_category_description}`,
-        //         company_name_eng: user.company_name_eng,
-        //         mobile: user.mobile,
-        //         address: {
-        //             zip: user.zip_code,
-        //             countryName: user.country,
-        //             stateName: user.state,
-        //             cityName: user.city,
-        //         },
-        //         companyID: user.companyID,
-        //         membership_otherCategory: user.membership_category,
-        //         gtin_subscription: {
-        //             products: {
-        //                 member_category_description: gtinProduct.member_category_description,
-        //             },
-        //         },
-        //     },
-
-        //     cart: cart,
-        //     currentDate: {
-        //         day: new Date().getDate(),
-        //         month: new Date().getMonth() + 1,
-        //         year: new Date().getFullYear(),
-        //     },
-        //     company_details: {
-        //         title: 'Federation of Saudi Chambers',
-        //         account_no: '25350612000200',
-        //         iban_no: 'SA90 1000 0025 3506 1200 0200',
-        //         bank_name: 'Saudi National Bank - SNB',
-        //         bank_swift_code: 'NCBKSAJE',
-        //     },
-        //     BACKEND_URL: BACKEND_URL,
-        // };
-
-        // const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-        // const pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-        // const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-
-        // if (!fsSync.existsSync(pdfDirectory)) {
-        //     fsSync.mkdirSync(pdfDirectory, { recursive: true });
-        // }
-
-        // await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
-        // const pdfBuffer = await fs1.readFile(pdfFilePath);
-
-
-
-
-
         // Send email with receipt
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
             toEmail: user.email,
             subject: 'Membership Downgrade Request Approval - GS1 Saudi Arabia',
             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
-            // attachments: [
-            //     {
-            //         filename: pdfFilename,
-            //         content: pdfBuffer,
-            //         contentType: 'application/pdf',
-            //     },
-            // ],
         });
 
 
@@ -3214,6 +3177,16 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
                 status: 'approved',
             },
         });
+
+        // delet the bank slip document
+        await prisma.member_documents.deleteMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'bank_slip',
+            }
+        });
+
         // Delete the upgrade_membership_cart record
         await prisma.upgrade_member_ship_cart.delete({
             where: { id: upgradeCart.id },
@@ -3234,6 +3207,435 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         await updateUserPendingInvoiceStatus(userId);
 
         res.status(200).json({ message: 'Membership downgrade request approved successfully' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+const productSubscriptionSchema = Joi.object({
+    productId: Joi.string().required(),
+    productIdentifierName: Joi.string().required(),
+
+});
+
+const addMultipleOtherProductSubscriptionsSchema = Joi.object({
+    userId: Joi.string().required(),
+    subscriptions: Joi.array().items(productSubscriptionSchema).min(1).required(),
+});
+
+export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req, res, next) => {
+    const { error, value } = addMultipleOtherProductSubscriptionsSchema.validate(req.body);
+    if (error) {
+        return next(createError(400, error.details[0].message));
+    }
+
+    try {
+        const { userId, subscriptions } = value;
+
+        const existingUser = await prisma.users.findUnique({ where: { id: userId } });
+        if (!existingUser) {
+            return next(createError(404, 'User not found'));
+        }
+
+
+        const transactionId = generateRandomTransactionId(10);
+
+
+
+        const subscriptionEntries = subscriptions.map(async (sub) => {
+            const product = await prisma.other_products.findUnique({
+                where: { id: sub.productId },
+            });
+            return {
+                user_id: userId,
+                product_id: sub.productId,
+                status: "inactive",
+                other_products_subscription_total_price:
+                    existingUser.membership_category === "non_med_category"
+                        ? product.product_subscription_fee
+                        : product.med_subscription_fee,
+                product_identifier_name: sub.productIdentifierName,
+                transaction_id: transactionId, // Assuming all subscriptions in a request share the same transaction ID
+            };
+        });
+        const resolvedSubscriptionEntries = await Promise.all(subscriptionEntries);
+        console.log("resolvedSubscriptionEntries", resolvedSubscriptionEntries);
+        let totalPrice = resolvedSubscriptionEntries.reduce((acc, entry) => acc + entry.other_products_subscription_total_price, 0);
+        console.log("totalPrice", totalPrice);
+
+        await prisma.$transaction(
+            resolvedSubscriptionEntries.map(entry => prisma.other_products_subcriptions.create({ data: entry }))
+        );
+
+        let cart = { cart_items: [] };
+
+
+
+        // add products to cart
+        cart.cart_items = resolvedSubscriptionEntries.map(sub => ({
+            registration_fee: 0,
+            yearly_fee: sub.other_products_subscription_total_price,
+            productName: sub.product_identifier_name,
+        }));
+        // Generate QR code
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        // save transaction id in cart
+        cart.transaction_id = transactionId;
+        const invoiceDetails = {
+            topHeading: "INVOICE",
+            secondHeading: "BILL TO",
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+                // registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                registeration: `Addition of other products`,
+                // Assuming $addMember->id is already known
+                company_name_eng: existingUser.company_name_eng,
+                mobile: existingUser.mobile,
+                address: {
+                    zip: existingUser.zip_code,
+                    countryName: existingUser.country,
+                    stateName: existingUser.state,
+                    cityName: existingUser.city,
+                },
+                companyID: existingUser.companyID,
+                membership_otherCategory: existingUser.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: subscriptions.map(sub => sub.productIdentifierName).join(', '),
+                    },
+                },
+            },
+
+            cart: cart,
+
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL
+        };
+
+
+
+
+        // Generate and save the invoice PDF
+        const pdfFilename = `Invoice-additional-products-${existingUser.company_name_eng}-${transactionId}.pdf`;
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberInvoices');
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+
+        if (!fs.existsSync(pdfDirectory)) {
+            fs.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceDetails, pdfFilePath);
+        // Save invoice reference in member_documents
+        await prisma.member_documents.create({
+            data: {
+                type: 'additional_other_products_invoice',
+                document: `/uploads/documents/MemberInvoices/${pdfFilename}`,
+                transaction_id: transactionId,
+                user_id: userId,
+                status: 'pending',
+                // uploaded_by: req?.admin?.email ? req.admin.email : req.user.email || '',
+            }
+        });
+
+        // send ivoice in mail to user with attachment
+        const pdfBuffer = await fs1.readFile(pdfFilePath);
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: existingUser.email,
+            subject: 'Additional Other Products Subscription Invoice - GS1 Saudi Arabia',
+            htmlContent: `This is an automated invoice of your additional other products subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`,
+            attachments: [
+                {
+                    filename: pdfFilename,
+                    content: pdfBuffer,
+                    contentType: 'application/pdf',
+                },
+            ],
+        });
+        await updateUserPendingInvoiceStatus(userId);
+
+        res.status(201).json({
+            message: "Subscriptions added and invoice generated successfully",
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+
+// appvove additional other products subscription request
+export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res, next) => {
+    const schema = Joi.object({
+        transactionId: Joi.string().required(),
+        userId: Joi.string().required(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+    let otherProductsSubscriptionHistoryData;
+
+    try {
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const { transactionId, userId } = value;
+
+        const bankSlipDocuments = await prisma.member_documents.findMany({
+            where: {
+                user_id: userId,
+                transaction_id: transactionId,
+                type: 'bank_slip',
+            }
+        });
+        if (bankSlipDocuments.length === 0) {
+            throw createError(400, `No bank slip documents found for this ${transactionId}`);
+        }
+
+
+
+
+
+        const user = await prisma.users.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            throw createError(404, 'User not found');
+        }
+
+        const subscriptionEntries = await prisma.other_products_subcriptions.findMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+            },
+        });
+
+        if (subscriptionEntries.length === 0) {
+            throw createError(404, 'No subscription entries found for the transaction ID');
+        }
+
+        // fetch other products based on product id
+
+
+        // Fetch the necessary data from other_products table
+        const products = await prisma.other_products.findMany({
+            select: {
+                id: true,
+                total_no_of_barcodes: true,
+                product_subscription_fee: true,
+                med_subscription_fee: true,
+            }
+        });
+        let activatedOtherProducts = [];
+        // Update other_products_subcriptions table for each product
+        for (const product of products) {
+            console.log("product", product);
+            let subscriptionFee = user.membership_category === 'non_med_category'
+                ? product.product_subscription_fee
+                : product.med_subscription_fee;
+
+            await prisma.other_products_subcriptions.updateMany({
+                where: {
+                    product_id: product.id,
+                    isDeleted: false,
+                    transaction_id: transactionId
+                },
+                data: {
+                    other_products_subscription_limit: product.total_no_of_barcodes,
+                    other_products_subscription_total_price: subscriptionFee,
+                    status: 'active',  // Update the status
+                    expiry_date: user.gcp_expiry, // Update the expiry date
+                }
+            });
+            // now get the updated records and push them to the array
+
+            let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+                where: {
+                    product_id: product.id,
+                    isDeleted: false,
+                    transaction_id: transactionId
+                },
+
+            });
+            activatedOtherProducts.push(...activatedOtherProduct);
+        }
+
+        console.log("activatedOtherProducts", activatedOtherProducts);
+        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
+            ...(item.react_no && { react_no: item.react_no }),
+            transaction_id: item.transaction_id,
+            product_id: item.product_id,
+            user_id: item.user_id,
+            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+            status: 'approved',
+            request_type: 'registration',
+            expiry_date: item.expiry_date,
+            admin_id: req?.admin?.adminId,
+        }));
+
+        // await prisma.other_products_subcriptions.updateMany({
+        //     where: {
+        //         transaction_id: transactionId,
+        //         user_id: userId,
+        //     },
+        //     data: {
+        //         status: 'active',
+        //     },
+        // });
+
+        // update otherproductHistory table
+        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+
+        await prisma.member_documents.updateMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                type: 'additional_other_products_invoice',
+
+            },
+            data: {
+                status: 'approved',
+            },
+        });
+
+
+
+        // create cart for invoice
+        let cart = { cart_items: [] };
+        cart.cart_items = subscriptionEntries.map(sub => ({
+            registration_fee: 0,
+            yearly_fee: sub.other_products_subscription_total_price,
+            productName: sub.product_identifier_name,
+        }));
+
+        // add transaction id in cart
+        cart.transaction_id = transactionId;
+        // Generate QR code
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+
+        const invoiceDetails = {
+            topHeading: "RECIPT",
+            secondHeading: "RECEIPT FOR",
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+                // registeration: `New Registration for the year ${new Date().getFullYear()}`,
+                registeration: `Addition of other products`,
+                // Assuming $addMember->id is already known
+                company_name_eng: user.company_name_eng,
+                mobile: user.mobile,
+                address: {
+                    zip: user.zip_code,
+                    countryName: user.country,
+                    stateName: user.state,
+                    cityName: user.city,
+                },
+                companyID: user.companyID,
+                membership_otherCategory: user.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: subscriptionEntries.map(sub => sub.product_identifier_name).join(', '),
+                    },
+                },
+            },
+
+            cart: cart,
+
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL
+        };
+
+
+
+
+        // Generate and save the invoice PDF
+        const pdfFilename = `Invoice-additional-products-${user.company_name_eng}-${transactionId}.pdf`;
+        const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberInvoices');
+        const pdfFilePath = path.join(pdfDirectory, pdfFilename);
+
+        if (!fs.existsSync(pdfDirectory)) {
+            fs.mkdirSync(pdfDirectory, { recursive: true });
+        }
+
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceDetails, pdfFilePath);
+
+
+
+
+        if (req?.admin?.adminId) {
+
+            const adminLog = {
+                subject: `Additional Other Products Subscription Request approved by ${req?.admin?.email} for ${user?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: userId
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        await updateUserPendingInvoiceStatus(userId);
+
+        // send mail to user with attachment
+        const pdfBuffer = await fs1.readFile(pdfFilePath);
+
+        await prisma.member_documents.deleteMany({
+            where: {
+                user_id: userId,
+                transaction_id: transactionId,
+                type: 'bank_slip',
+            }
+
+        });
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: user.email,
+            subject: 'Additional Other Products Subscription Request Approval - GS1 Saudi Arabia',
+            htmlContent: `<br>
+            We are pleased to inform you that your additional other products subscription request has been approved. Please find the attached receipt for your reference.<br><br>
+            Thank you for your continued support.<br><br>
+            Regards,<br>
+            GS1 Saudi Arabia`,
+            attachments: [
+                {
+                    filename: pdfFilename,
+                    content: pdfBuffer,
+                    contentType: 'application/pdf',
+                },
+            ],
+        });
+
+        res.status(200).json({ message: 'Additional other products subscription request approved successfully' });
     } catch (error) {
         console.error(error);
         next(error);

@@ -357,6 +357,8 @@ export const migrateUser = async (req, res, next) => {
 
         // Generate a unique transaction ID
         const transactionId = generateRandomTransactionId(10);
+        let newPassword = generateStrongPassword(6);
+        newUser.password = newPassword;
         newUser.transaction_id = transactionId;
 
 
@@ -513,19 +515,29 @@ export const migrateUser = async (req, res, next) => {
 
         // Construct response
         response.invoiceRecord = invoiceRecord;
-
+        // cr_number: member.MOCRegNo || '',
+        // cr_activity: member.MemberNameE || '',
 
         //send email to user
         const mailOptions = {
-            subject: 'GS1 Saudi Arabia Invoice',
-            html: ` <p>Thank you for your interest in GS1 Saudi Arabia.</p>
-            <p>Please find attached invoice for your GS1 Saudi Arabia membership.</p>
-            <p>Kindly note that your membership will be activated upon receipt of payment.</p>
-            <p>For any queries, please contact us on 920000927 or email us on
-            <a href="mailto:
-            ${ADMIN_EMAIL}">${ADMIN_EMAIL}</a></p>
-            <p>Best regards,</p>
-            <p>GS1 Saudi Arabia</p>`,
+            subject: 'GS1 Saudi Arabia Credentials & Invoice',
+            html: `
+            <div style="font-family: Arial, sans-serif; color: #333;">
+                <h2 style="color: #004aad;">Thank you for your interest in GS1 Saudi Arabia.</h2>
+                <p>These are your GS1 Member Portal login credentials:</p>
+                <ul>
+                    <li>Username: <strong>${createdUser.email}</strong></li>
+                    <li>Password: <strong>${newPassword}</strong></li>
+                    <li>Activity: <strong>${member.MemberNameE}</strong></li>
+                </ul>
+                <p>Please find attached invoice for your GS1 Saudi Arabia membership.</p>
+                <p>Kindly note that your membership will be activated upon receipt of payment.</p>
+                <p>Login to your Member Portal to view and upload the receipt.</p>   
+                <p>For any queries, please contact us on <strong>920000927</strong> or email us at <a href="mailto:${ADMIN_EMAIL}" style="color: #004aad;">${ADMIN_EMAIL}</a>.</p>
+                <p>Best regards,</p>
+                <p>GS1 Saudi Arabia</p>
+            </div>
+            `,
             attachments: [
                 {
                     filename: pdfFilename,
@@ -538,8 +550,8 @@ export const migrateUser = async (req, res, next) => {
                     contentType: 'application/pdf',
                 },
             ],
-
         };
+
 
         // Send email
         await sendEmail(
@@ -641,10 +653,10 @@ function mapMemberToNewUser(member) {
         unit_number: '',
         qr_corde: '',
         email_verified_at: null,
-        password: generateStrongPassword(6), // Generate a random string
+        // password: member.newPassword,
         verification_code: null,
-        cr_number: '',
-        cr_activity: '',
+        cr_number: member.MOCRegNo || '',
+        cr_activity: member.MemberNameE || '',
         bussiness_activity: '',
         member_category: '',
         other_products: '',
@@ -666,7 +678,6 @@ function mapMemberToNewUser(member) {
         gcp_expiry: null,
         member_type: 'old',
         remarks: 'Pending Invoice', // Default value
-        assign_to: 0, // Default value
         membership_category: '',
         upgradation_disc: 0, // Default value
         upgradation_disc_amount: 0.0, // Default value
@@ -829,7 +840,7 @@ export const getgs1DbYearlyReport = async (req, res) => {
 
         // Send as download
         const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-        res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
+        res.setHeader('Content-Disposition', `attachment; filename = yearly_report_${year}.xlsx`);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.send(buffer);
     } catch (error) {
@@ -907,7 +918,7 @@ export const getgs1NewDbYearlyReport = async (req, res) => {
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Yearly Report');
 
         const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-        res.setHeader('Content-Disposition', `attachment; filename=yearly_report_${year}.xlsx`);
+        res.setHeader('Content-Disposition', `attachment; filename = yearly_report_${year}.xlsx`);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.send(buffer);
     } catch (error) {
@@ -925,7 +936,7 @@ const initializeMonthlyData = (year) => {
     ];
     let monthlyData = {};
     months.forEach((month, index) => {
-        monthlyData[index] = { Month: `${month} ${year}`, New: 0, Renewal: 0 };
+        monthlyData[index] = { Month: `${month} ${year} `, New: 0, Renewal: 0 };
     });
     return monthlyData;
 };

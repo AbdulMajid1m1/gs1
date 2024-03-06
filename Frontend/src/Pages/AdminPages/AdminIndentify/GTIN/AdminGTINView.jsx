@@ -65,6 +65,9 @@ const AdminGTINView = () => {
     const [selectedProductType, setSelectedProductType] = useState('');
     const [selectedPackageType, setSelectedPackageType] = useState('');
     const [selectedDigitalInformationType, setSelectedDigitalInformationType] = useState('');
+    const selectedAddGtinData = sessionStorage.getItem('selectedAddGtinData');
+    const SelectedData = JSON.parse(selectedAddGtinData);
+    // console.log(SelectedData);
 
     useEffect(() => {
         setIsLoading(true);
@@ -252,7 +255,7 @@ const AdminGTINView = () => {
                                     <p className="font-semibold">{t('Complete Data')}</p>
                                     <p>
                                         {t('This number is registered to company')}: :{" "}
-                                        <span className="font-semibold">{productNameEnglish}</span>
+                                        <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                                         {/* <span className="font-semibold">Hasnain, Majid</span> */}
                                     </p>
                                 </div>

@@ -32,7 +32,6 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
         } catch (error) {
@@ -46,7 +45,6 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
         }
 
 

@@ -13,10 +13,14 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   console.log(updateBrandData)
   const [name, setname] = useState(updateBrandData?.name || '');
+  const [name_ar, setname_ar] = useState(updateBrandData?.name_ar || "");
   const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
   const [loading, setLoading] = useState(false);
   const [docuements, setDocuments] = React.useState([])
-  const [selectedDocuments, setSelectedDocuments] = useState(updateBrandData?.state_name || 0);
+  const [selectedDocuments, setSelectedDocuments] = useState({
+    id: updateBrandData?.state_id || 0,
+    name: updateBrandData?.state_name || "",
+  });
   const { t, i18n } = useTranslation();
   const handleCloseUpdatePopup = () =>
   {
@@ -55,6 +59,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
     try {
       const response = await newRequest.put(`/address/updateCities/${updateBrandData?.id}`, {
         name: name,
+        name_ar: name_ar,
         state_id: Number(selectedDocuments?.id),
       });
 
@@ -107,14 +112,26 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('city')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('city')} {t('Name')}</label>
+                    <label htmlFor="field1" className="text-secondary">{t('City')} {t('Name [English]')}</label>
                     <input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setname(e.target.value)}
                       //   readOnly
-                      placeholder={`${t('Enter')} ${t('city')} ${t('Name')}`}
+                      placeholder={`${t('Enter')} ${t('city')} ${t('Name [English]')}`}
+                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    />
+                  </div>
+
+                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label htmlFor="field1" className="text-secondary">{t('city')} {t('Name Arabic')}</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name_ar}
+                      onChange={(e) => setname_ar(e.target.value)}
+                      placeholder={`${t('Enter')} ${t('City')} ${t('Name Arabic')}`}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     />
                   </div>

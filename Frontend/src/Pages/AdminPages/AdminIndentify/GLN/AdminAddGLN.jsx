@@ -11,6 +11,10 @@ const AdminAddGLN = () => {
   // const memberDataString = sessionStorage.getItem('memberData');
   // const memberData = JSON.parse(memberDataString);
   // console.log(memberData);
+  // get the sessionRow data
+  const selectedAddGtinData = sessionStorage.getItem('selectedAddGlnData');
+  const SelectedData = JSON.parse(selectedAddGtinData);
+  console.log(SelectedData);
   const [locationEnglish, setLocationEnglish] = React.useState('')
   const [locationArabic, setLocationArabic] = React.useState('')
   const [addressEnglish, setAddressEnglish] = React.useState('')
@@ -29,71 +33,71 @@ const AdminAddGLN = () => {
 
 
 
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     setIsLoading(true);
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setIsLoading(true);
 
-  //     const longitude = document.getElementById('longitude').value;
-  //     const latitude = document.getElementById('Latitude').value;
+      const longitude = document.getElementById('longitude').value;
+      const latitude = document.getElementById('Latitude').value;
 
-  //     const imageFile = document.getElementById('imageInput').files[0];
+      const imageFile = document.getElementById('imageInput').files[0];
 
-  //     const formData = new FormData();
-  //     // formData.append('product_id', '1');
-  //     formData.append('user_id', memberData?.id);
-  //     // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
-  //     formData.append('locationNameEn', locationEnglish);
-  //     formData.append('locationNameAr', locationArabic);
-  //     formData.append('AddressEn', selectedLocation ? selectedLocation.address : '');
-  //     formData.append('AddressAr', selectedLocation ? selectedLocation.address : '');
-  //     formData.append('pobox', po);
-  //     formData.append('postal_code', postal);
-  //     formData.append('longitude', longitude);
-  //     formData.append('latitude', latitude);
-  //     // formData.append('user_id', currentUser?.user?.id);
-  //     formData.append('status', status);
-  //     formData.append('gln_image', imageFile);
+      const formData = new FormData();
+      // formData.append('product_id', '1');
+      formData.append('user_id', SelectedData?.user_id);
+      // formData.append('gcpGLNID', currentUser?.user?.gcpGLNID);
+      formData.append('locationNameEn', locationEnglish);
+      formData.append('locationNameAr', locationArabic);
+      formData.append('AddressEn', selectedLocation ? selectedLocation.address : '');
+      formData.append('AddressAr', selectedLocation ? selectedLocation.address : '');
+      formData.append('pobox', po);
+      formData.append('postal_code', postal);
+      formData.append('longitude', longitude);
+      formData.append('latitude', latitude);
+      // formData.append('user_id', currentUser?.user?.id);
+      formData.append('status', status);
+      formData.append('gln_image', imageFile);
 
-  //     newRequest
-  //       .post("/gln", formData)
-  //       .then((response) => {
-  //         console.log(response.data);
+      newRequest
+        .post("/gln", formData)
+        .then((response) => {
+          console.log(response.data);
 
-  //         setIsLoading(false);
-  //         setTimeout(() => {
-  //           navigate(-1);
-  //         }, 1500);
+          setIsLoading(false);
+          setTimeout(() => {
+            navigate(-1);
+          }, 1500);
 
-  //         toast.success(response?.data?.message || 'GLN Added Successfully', {
-  //           position: 'top-right',
-  //           autoClose: 2000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: 'light',
-  //         });
+          toast.success(response?.data?.message || 'GLN Added Successfully', {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
 
 
-  //         e.target.reset();
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         setIsLoading(false);
+          e.target.reset();
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
 
-  //         toast.error(err.response.data.error, {
-  //           position: 'top-right',
-  //           autoClose: 2000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: 'light',
-  //         });
-  //       });
-  //   };
+          toast.error(err.response.data.error, {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        });
+    };
 
 
 
@@ -227,13 +231,13 @@ const AdminAddGLN = () => {
 
                     {i18n.language === 'ar' ? (
                      <>
-                        <span className="font-semibold">Hasnain, Majid</span>
+                        <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                        :: {t('This number is registered to company')}
                       </>
                     ) : (
                       <>
                         {t('This number is registered to company')}: :
-                        <span className="font-semibold">Hasnain, Majid</span>
+                        <span className="font-semibold">{SelectedData?.company_name_eng}</span>
                       </>
                     )}
                   </p>
@@ -348,9 +352,9 @@ const AdminAddGLN = () => {
                     className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                     value={status}
                   >
-                    <option value=''>-{t('Select')}-</option>
-                    <option value="0">{t('Inactive')}</option>
-                    <option value="1">{t('Active')}</option>
+                     <option value=''>-{t('Select')}-</option>
+                     <option value='active'>{t('Active')}</option>
+                     <option value='inactive'>{t('Inactive')}</option>
                   </select>
                 </div>
               </div>
@@ -458,8 +462,7 @@ const AdminAddGLN = () => {
               </>
             )}
 
-            {/* <form onSubmit={handleSubmit}> */}
-            <form className={`flex ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+            <form onSubmit={handleSubmit} className={`flex ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
               <button type='submit' className="rounded-sm bg-secondary font-body px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 hover:bg-primary">
                 <i className="fas fa-check-circle mr-1"></i> {t('Submit')}
               </button>

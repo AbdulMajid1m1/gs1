@@ -291,10 +291,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
             cartValue.cart_items = JSON.stringify(cartValue.cart_items);
 
-
-
-
-
             // Start a transaction to ensure both user and cart are inserted
             transaction = await prisma.$transaction(async (prisma) => {
                 // update cart record with new cartValue
@@ -304,45 +300,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
                     },
                     data: cartValue
                 });
-
-
-                // const cartData = JSON.parse(cartValue.cart_items)
-
-                // const gtinSubscriptionData = {
-                //     transaction_id: cartValue.transaction_id,
-                //     user_id: user.id,
-                //     request_type: "registration",
-                //     status: "inactive",
-                //     price: parseFloat(cartData?.[0]?.registration_fee),
-                //     pkg_id: cartData?.[0]?.productID,
-                //     gtin_subscription_total_price: parseFloat(cartData?.[0]?.yearly_fee),
-
-                // };
-
-
-                // const newGtinSubscription = await prisma.gtin_subcriptions.create({
-                //     data: gtinSubscriptionData
-                // });
-
-                // const otherProductsData = cartData.slice(1).map(item => ({
-                //     transaction_id: cartValue.transaction_id,
-                //     user_id: newUser.id,
-                //     status: "inactive",
-                //     price: parseFloat(item.registration_fee),
-
-                //     product_id: item.productID,
-                //     product_identifier_name: item.productName,
-                //     other_products_subscription_total_price: parseFloat(item.yearly_fee),
-
-
-                // }));
-                // const otherProductsSubscriptions = await Promise.all(
-                //     otherProductsData.map(productData =>
-                //         prisma.other_products_subcriptions.create({ data: productData })
-                //     )
-                // );
-
-
 
                 // add all three documents to the member_documents table
                 const documentsData =
@@ -372,8 +329,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
                         carts: true
                     }
                 });
-
-
 
                 const emailData = [
                     {
@@ -447,7 +402,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
             try {
                 await updateUserPendingInvoiceStatus(transaction.userUpdateResult.id);
-
             }
             catch (error) {
                 console.log("error in member logs")
@@ -669,7 +623,6 @@ export const createUser = async (req, res, next) => {
                     user_id: newUser.id,
                     status: "inactive",
                     price: parseFloat(item.registration_fee),
-
                     product_id: item.productID,
                     product_identifier_name: item.productName,
                     other_products_subscription_total_price: parseFloat(item.yearly_fee),
@@ -883,7 +836,7 @@ export const memberLogin = async (req, res, next) => {
         // Send the token in the response
         // res.status(200).json({ token });
         delete user.password;
-        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token });
+        return res.status(200).json({ success: true, memberData: user, token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -915,7 +868,7 @@ export const setMemberCredentials = async (req, res, next) => {
 
 
         delete user.password;
-        return res.cookie("memberToken", token, cookieOptions()).status(200).json({ success: true, memberData: user, token: memberToken });
+        return res.cookie("memberToken", memberToken, cookieOptions()).status(200).json({ success: true, memberData: user, token: memberToken });
     } catch (error) {
         console.error(error);
         next(error)
@@ -1042,21 +995,39 @@ export const getUserDetails = async (req, res, next) => {
 
 export const getUsersWithAssignTo = async (req, res, next) => {
     try {
-        const users = await prisma.users.findMany({
-            where: {
-                NOT: [
-                    { assign_to: null },
-                    { assign_to: "" },
-                    { assign_to: undefined }
-                ]
-            },
-            orderBy: { updated_at: 'desc' },
-            include: {
-                assign_to_admin: true
-            }
-        });
+        const { id } = req.query;
 
-
+        let users;
+        if (id) {
+            users = await prisma.users.findMany({
+                where: {
+                    assign_to: id,
+                    NOT: [
+                        { assign_to: null },
+                        { assign_to: "" },
+                        { assign_to: undefined }
+                    ]
+                },
+                include: {
+                    assign_to_admin: true
+                }
+            });
+        } else {
+            users = await prisma.users.findMany({
+                where: {
+                    NOT: [
+                        { assign_to: null },
+                        { assign_to: "" },
+                        { assign_to: undefined }
+                    ]
+                },
+                orderBy: { updated_at: 'desc' },
+                include: {
+                    assign_to_admin: true
+                }
+            });
+        }
+        console.log("users")
         return res.json(users);
     } catch (error) {
         console.log(error);
@@ -1820,6 +1791,7 @@ export const deleteUser = async (req, res, next) => {
         if (error.message.includes('Record to delete does not exist')) {
             return next(createError(404, 'User not found'));
         }
+        console.error(error);
         next(error);
     }
 };
