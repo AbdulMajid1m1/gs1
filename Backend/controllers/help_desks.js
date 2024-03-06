@@ -1,6 +1,7 @@
 import prisma from '../prismaClient.js';
 import Joi from 'joi';
-import {
+import
+{
     createError
 } from '../utils/createError.js';
 import fs from 'fs/promises';
@@ -8,16 +9,19 @@ import path from 'path';
 const helpdeskSchema = Joi.object({
     title: Joi.string().max(255).required(),
     email: Joi.string().max(255),
-   
+
     description: Joi.string().required(),
-   
+
     status: Joi.number().valid(0, 1).required(),
     user_id: Joi.string().required(),
     assignedTo: Joi.string().max(255),
 
 });
-
-export const getAllhelpdesk = async (req, res, next) => {
+import { sendEmail } from '../services/emailTemplates.js';
+import { ADMIN_EMAIL } from '../configs/envConfig.js';
+console.log(ADMIN_EMAIL);
+export const getAllhelpdesk = async (req, res, next) =>
+{
     try {
         const AllUNSPSC = await prisma.help_desks.findMany({
             orderBy: {
@@ -31,7 +35,8 @@ export const getAllhelpdesk = async (req, res, next) => {
         next(error);
     }
 };
-export const gethelpdeskById = async (req, res, next) => {
+export const gethelpdeskById = async (req, res, next) =>
+{
     try {
         // const { id } = req.params;
         // use JOi to validate the id
@@ -62,39 +67,41 @@ export const gethelpdeskById = async (req, res, next) => {
         next(error);
     }
 };
-export const gethelpdeskByuserid = async (req, res, next) => {
-      try {
-          const schema = Joi.object({
-              user_id: Joi.string().required(),
-          });
+export const gethelpdeskByuserid = async (req, res, next) =>
+{
+    try {
+        const schema = Joi.object({
+            user_id: Joi.string().required(),
+        });
 
-          const {
-              error
-          } = schema.validate(req.params);
-          if (error) {
-              throw createError(400, error.details[0].message);
-          }
+        const {
+            error
+        } = schema.validate(req.params);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
 
-          const {
-              user_id
-          } = req.params;
+        const {
+            user_id
+        } = req.params;
 
-          const helpDesk = await prisma.help_desks.findMany({
-              where: {
-                  user_id: user_id
-              },
-          });
+        const helpDesk = await prisma.help_desks.findMany({
+            where: {
+                user_id: user_id
+            },
+        });
 
-          if (!helpDesk) {
-              throw createError(404, 'Help desk not found');
-          }
+        if (!helpDesk) {
+            throw createError(404, 'Help desk not found');
+        }
 
-          return res.json(helpDesk);
-      } catch (error) {
-          next(error);
-      }
+        return res.json(helpDesk);
+    } catch (error) {
+        next(error);
+    }
 };
-export const deletehelpdesk = async (req, res, next) => {
+export const deletehelpdesk = async (req, res, next) =>
+{
     try {
         const schema = Joi.object({
             id: Joi.string().required(),
@@ -120,7 +127,8 @@ export const deletehelpdesk = async (req, res, next) => {
         next(error);
     }
 };
-export const createhelpdesk = async (req, res, next) => {
+export const createhelpdesk = async (req, res, next) =>
+{
     try {
         const {
             error,
@@ -167,7 +175,8 @@ export const createhelpdesk = async (req, res, next) => {
         await prisma.$disconnect();
     }
 };
-export const updatehelp_desks = async (req, res, next) => {
+export const updatehelp_desks = async (req, res, next) =>
+{
     try {
         const helpdeskSchema = Joi.object({
             title: Joi.string().max(255).required(),
@@ -232,12 +241,13 @@ export const updatehelp_desks = async (req, res, next) => {
         next(error);
     }
 };
-export const getAllassignto = async (req, res, next) => {
+export const getAllassignto = async (req, res, next) =>
+{
     try {
         const AllUNSPSC = await prisma.admins.findMany({
-           where: {
-               is_super_admin: 1
-           }
+            where: {
+                is_super_admin: 1
+            }
         });
 
 
@@ -250,14 +260,15 @@ const helpdesk_commentSchema = Joi.object({
     helpDeskID: Joi.string(),
     comment: Joi.string(),
 
-   
 
- 
+
+
     commentByAdmin: Joi.string(),
     commentByUser: Joi.string(),
 
 });
-export const gethelpdesk_commentByuserid = async (req, res, next) => {
+export const gethelpdesk_commentByuserid = async (req, res, next) =>
+{
     try {
         const schema = Joi.object({
             helpDeskID: Joi.string().required(),
@@ -289,7 +300,8 @@ export const gethelpdesk_commentByuserid = async (req, res, next) => {
         next(error);
     }
 };
-export const createhelpdesk_comment = async (req, res, next) => {
+export const createhelpdesk_comment = async (req, res, next) =>
+{
     try {
         const {
             error,
@@ -301,7 +313,7 @@ export const createhelpdesk_comment = async (req, res, next) => {
             });
         }
 
-       
+
 
         // Check if req.files and req.files.document exist
         if (req.files && req.files.document) {
@@ -320,5 +332,49 @@ export const createhelpdesk_comment = async (req, res, next) => {
         next(error);
     } finally {
         await prisma.$disconnect();
+    }
+};
+export const sendemailAssign_to_helpdesk = async (req, res, next) =>
+{
+    try {
+        const schema = Joi.object({
+            email: Joi.string().required(),
+        });
+
+        const {
+            error
+        } = schema.validate(req.params);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const {
+            email
+        } = req.params;
+
+        const helpDesk = await prisma.admins.findMany({
+            where: {
+                email: email
+            },
+        });
+        const settings = await prisma.emailsetting.findMany();
+        console.log(settings);
+        if (!helpDesk) {
+            throw createError(404, 'admin not found');
+        }
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: email,
+            subject: "HELP DESK ",
+
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Kindly check your email for helpdesk task </div>`,
+
+
+        });
+        return res.json(helpDesk);
+    } catch (error) {
+        console.log(error);
+        next(error);
     }
 };
