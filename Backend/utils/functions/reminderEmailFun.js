@@ -97,7 +97,7 @@ export const handleInvoiceReminders = async () => {
                 if (!fs1.existsSync(pdfDirectory)) {
                     fs1.mkdirSync(pdfDirectory, { recursive: true });
                 }
-
+                
                 await convertEjsToPdf(path.join(__dirname, '..', '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
 
                 const invoiceBuffer = await fs.readFile(pdfFilePath);

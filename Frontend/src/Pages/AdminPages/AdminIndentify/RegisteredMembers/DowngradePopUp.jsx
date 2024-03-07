@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
+import { selectedLanguage } from '../../../../utils/config';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const DowngradePopUp = ({ isVisible, setVisibility, userData
@@ -52,8 +53,8 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
       const firstApiTotalBarcodes =
         res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
 
-        setGtinId(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
-        console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
+      setGtinId(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
+      console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
 
 
       const filteredOptions = res2.data.filter(
@@ -80,7 +81,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
         }
       });
       console.log(filteredOptions);
-   
+
 
       setGtinBarcodes(filteredOptions);
     }
@@ -109,18 +110,19 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
     setLoading(true);
 
     try {
-       const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
+      const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
         "user_id": userData?.id,
         "gtin_product_id": selectedGtinBarcodes?.id,
         "current_gtin_subscription_id": gtinId,
-    });
-        console.log(res.data);
-    {
+        selectedLanguage: selectedLanguage,
+      });
+      console.log(res.data);
+      {
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         setLoading(false);
         // Close the popup
         handleCloseDowngradePopup();
-    }
+      }
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -135,50 +137,50 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-            {/* <form className='w-full'> */}
+              {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'>Downgrade Invoice</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <label htmlFor="field1" className="text-secondary">Select Barcodes</label>
-                    <Autocomplete
-                      id="field1"
-                      options={gtinBarcodes}
-                      value={selectedGtinBarcodes}
-                      // getOptionLabel={(option) => option ? `GTIN: ${option.total_no_of_barcodes} - Price: ${option.price}` : ""}
-                      getOptionLabel={(option) => option?.total_no_of_barcodes ? `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yealy_fee: ${option?.yearly_fee} - Registeration_Fee ${option?.price}` : ""}
-                      onChange={handleSelectedGtinBarcodes}
-                      onInputChange={(event, value) => {
-                        if (!value) {
-                          // perform operation when input is cleared
-                          console.log("Input cleared");
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          autoComplete="off"
-                          {...params}
-                          InputProps={{
-                            ...params.InputProps,
-                            className: "text-white",
-                          }}
-                          InputLabelProps={{
-                            ...params.InputLabelProps,
-                            style: { color: "white" },
-                          }}
-                          className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Downgrade Barcodes"
+                  <Autocomplete
+                    id="field1"
+                    options={gtinBarcodes}
+                    value={selectedGtinBarcodes}
+                    // getOptionLabel={(option) => option ? `GTIN: ${option.total_no_of_barcodes} - Price: ${option.price}` : ""}
+                    getOptionLabel={(option) => option?.total_no_of_barcodes ? `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yealy_fee: ${option?.yearly_fee} - Registeration_Fee ${option?.price}` : ""}
+                    onChange={handleSelectedGtinBarcodes}
+                    onInputChange={(event, value) => {
+                      if (!value) {
+                        // perform operation when input is cleared
+                        console.log("Input cleared");
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        autoComplete="off"
+                        {...params}
+                        InputProps={{
+                          ...params.InputProps,
+                          className: "text-white",
+                        }}
+                        InputLabelProps={{
+                          ...params.InputLabelProps,
+                          style: { color: "white" },
+                        }}
+                        className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder="Select Downgrade Barcodes"
                         required
-                        />
-                      )}
-                      classes={{
-                        endAdornment: "text-white",
-                      }}
-                      sx={{
-                        "& .MuiAutocomplete-endAdornment": {
-                          color: "white",
-                        },
-                      }}
-                    />
+                      />
+                    )}
+                    classes={{
+                      endAdornment: "text-white",
+                    }}
+                    sx={{
+                      "& .MuiAutocomplete-endAdornment": {
+                        color: "white",
+                      },
+                    }}
+                  />
                 </div>
 
                 <div className="table-member-inoive px-4 pt-3">

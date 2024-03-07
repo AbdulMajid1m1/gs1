@@ -1,7 +1,7 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
-import { backendUrl, baseUrl } from './config';
+import { backendUrl, baseUrl, selectedLanguage } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
@@ -1261,7 +1261,7 @@ export const GtinColumn = (t, i18n) => [
       const productId = params.row.id; // Assuming id is the productId
       const onClickIcon = () => {
         // Call the API when icon is clicked
-        window.open(`${baseUrl}/products/getGtinCertificate/${productId}`, "_blank");
+        window.open(`${baseUrl}/products/getGtinCertificate/${productId}?selectedLanguage=${selectedLanguage}`, "_blank");
       };
 
       return (

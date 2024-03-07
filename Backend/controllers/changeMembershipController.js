@@ -19,6 +19,7 @@ import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions
 // in scheema take user_id 
 const renewMembershipSchema = Joi.object({
     user_id: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 async function calculateSubscriptionPrice(userId, newSubscriptionId) {
@@ -286,12 +287,12 @@ export const membershipRenewRequest = async (req, res, next) => {
 
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const invoiceData = {
-            topHeading: "INVOICE",
-            secondHeading: "RENEWAL INVOICE FOR",
+            topHeading: value.selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+            secondHeading: value.selectedLanguage === 'en' ? "RENEWAL INVOICE FOR" : "فاتورة تجديد العضوية ل",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
 
-                registeration: `Renewal for the year ${renewalYear}`,
+                registeration: value.selectedLanguage === 'en' ? `Renewal for the year ${renewalYear}` : `تجديد العضوية لعام ${renewalYear}`,
                 // Assuming $addMember->id is already known
                 company_name_eng: existingUser.company_name_eng,
                 mobile: existingUser.mobile,
@@ -343,8 +344,9 @@ export const membershipRenewRequest = async (req, res, next) => {
         if (!fsSync.existsSync(pdfDirectory)) {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
+        let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
-        const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+        const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
 
 
         // read the file into a buffer
@@ -368,8 +370,8 @@ export const membershipRenewRequest = async (req, res, next) => {
         });
 
 
-        let subject = 'GS1 Saudi Arabia Membership Renewal Request';
-        let emailContent = `This is automated invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+        let subject = value.selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Renewal Request' : 'طلب تجديد عضوية GS1 السعودية';
+        let emailContent = value.selectedLanguage === 'en' ? `This is automated invoice of your Renewal Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة تجديد اشتراكك تم إنشاؤها تلقائيًا. يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
         let userEmail = existingUser.email;
 
         let attachments = [
@@ -480,6 +482,7 @@ export const membershipRenewRequest = async (req, res, next) => {
 const updateMemberDocumentStatusSchema = Joi.object({
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 
@@ -733,11 +736,13 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
-                topHeading: "RECEIPT",
-                secondHeading: "RECEIPT FOR",
+
+                // do condition for language
+                topHeading: value.selectedLanguage === 'en' ? "RECEIPT" : "إيصال",
+                secondHeading: value.selectedLanguage === 'en' ? "RECEIPT FOR" : "إيصال ل",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `Renewal for the year ${renewalYear}`,
+                    registeration: value.selectedLanguage === 'en' ? `Renewal for the year ${renewalYear}` : `تجديد العضوية لعام ${renewalYear}`,
                     // Assuming $addMember->id is already known
                     company_name_eng: existingUser.company_name_eng,
                     mobile: existingUser.mobile,
@@ -786,8 +791,9 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
+            let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data1, pdfFilePath);
 
 
             // read the file into a buffer
@@ -945,18 +951,20 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
     }
     switch (status) {
         case 'approved':
-            subject = 'Your Gs1Ksa member Account has been Renewed';
-            emailContent = '<p>Your account is renewed successfully. Please find the attached certificate for your reference.<br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia</p>';
+            subject = selectedLanguage === 'en' ? 'Your Gs1Ksa member Account has been Renewed' : 'تم تجديد حسابك في Gs1Ksa';
+            emailContent = selectedLanguage === 'en' ? `Your account is renewed successfully. Please find the attached certificate for your reference.<br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `تم تجديد حسابك بنجاح. يرجى العثور على الشهادة المرفقة للرجوع إليها.<br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
             break;
         case 'rejected':
-            subject = 'Your Gs1Ksa renewal request is Rejected';
-            let rejectionMessage = rejectReason ? `<p>Reason for rejection: ${rejectReason}</p>` : '';
-            emailContent = `<p>Your account status has been updated to: ${status}.</p>${rejectionMessage}`;
+            subject = selectedLanguage === 'en' ? 'Your Gs1Ksa member Account has been Rejected' : 'تم رفض طلب عضويتك في Gs1Ksa';
+            let rejectionMessage = rejectReason ? selectedLanguage === 'en' ? `<p>Reason for rejection: ${rejectReason}</p>` : `<p>سبب الرفض: ${rejectReason}</p>` : '';
+            emailContent = selectedLanguage === 'en' ? `Your account status has been updated to: ${status}.` : `تم تحديث حالة حسابك إلى: ${status}.`;
+
             break;
         // Add more cases for other statuses
         default:
-            subject = 'Your Gs1Ksa renewal request is Rejected';
-            emailContent = `<p>Your account status has been updated to: ${status}.</p>`;
+            subject = selectedLanguage === 'en' ? 'Your Gs1Ksa renewal request is Rejected' : 'تم رفض طلب تجديد عضويتك في Gs1Ksa';
+            emailContent = selectedLanguage === 'en' ? `Your account status has been updated to: ${status}.` : `تم تحديث حالة حسابك إلى: ${status}.`;
+            break;
     }
 
     await sendEmail({
@@ -976,6 +984,7 @@ const upgradeMembershipSchema = Joi.object({
     // additional_barcodes: Joi.number().required(),
     subType: Joi.string().valid('UPGRADE', 'DOWNGRADE').required(),
     new_subscription_product_Id: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 
@@ -1067,11 +1076,13 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             cart.transaction_id = transactionId;
-            let typeOfPayment = `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}`;
+            // do condition for language
+            let typeOfPayment = value.selectedLanguage === 'en' ? `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}` : `${value.subType === "UPGRADE" ? "فاتورة ترقية الاشتراك ل" : "فاتورة تخفيض الاشتراك ل"} ${subscribedProductDetails.member_category_description}`;
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: `INVOICE`,
-                secondHeading: `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR`,
+                // render condition for language
+                topHeading: value.selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+                secondHeading: value.selectedLanguage === 'en' ? `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR` : `${value.subType === "UPGRADE" ? "فاتورة ترقية الاشتراك ل" : "فاتورة تخفيض الاشتراك ل"}`,
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
                     registeration: typeOfPayment,
@@ -1122,8 +1133,9 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
+            let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
 
             const pdfBuffer = await fs1.readFile(pdfFilePath);
             cart.typeOfPayment = typeOfPayment;
@@ -1151,8 +1163,9 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             // Send email with invoice
-            const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
-            const emailContent = `This is an automated invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            // const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
+            const subject = value.selectedLanguage === 'en' ? `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request` : `طلب ${value.subType === "UPGRADE" ? "ترقية" : "تخفيض"} اشتراك GS1 السعودية`;
+            const emailContent = value.selectedLanguage === 'en' ? `This is an automated invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة آلية لاشتراكك في ${value.subType === "UPGRADE" ? "ترقية" : "تخفيض"} . يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1222,6 +1235,7 @@ const addAdditionalProductsSchema = Joi.object({
     // additional_barcodes: Joi.number().required(),
     // subType: Joi.string().valid('UPGRADE', 'DOWNGRADE').required(),
     gtinUpgradeProductId: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 
@@ -1319,12 +1333,15 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
 
             cart.total = gtinUpgradePricing.price;
             cart.transaction_id = transactionId;
-            let typeOfPayment = `ADDITIONAL GTIN invoice for ${gtinUpgradePricing.total_no_of_barcodes} barcodes`;
+            // let typeOfPayment = `ADDITIONAL GTIN invoice for ${gtinUpgradePricing.total_no_of_barcodes} barcodes`;
+            // use selected language to render conditionally
+            let typeOfPayment = value.selectedLanguage === 'en' ? `ADDITIONAL GTIN invoice for ${gtinUpgradePricing.total_no_of_barcodes} barcodes` : `فاتورة GTIN إضافية لـ ${gtinUpgradePricing.total_no_of_barcodes} باركود`;
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: "INVOICE",
-                secondHeading: "ADDITIONAL GTIN INVOICE FOR",
+
+                topHeading: value.selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+                secondHeading: value.selectedLanguage === 'en' ? "ADDITIONAL GTIN INVOICE FOR" : "فاتورة GTIN إضافية لـ",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
 
@@ -1377,8 +1394,9 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdir(pdfDirectory, { recursive: true });
             }
+            let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
 
             // Read the file into a buffer
             const pdfBuffer = await fs1.readFile(pdfFilePath);
@@ -1412,8 +1430,9 @@ export const addAdditionalProductsRequest = async (req, res, next) => {
             });
 
             // Send email with invoice
-            const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-            const emailContent = `This is an automated invoice of your GTIN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+
+            const subject = value.selectedLanguage === 'en' ? `GS1 Saudi Arabia Additional GTIN Request` : `GS1 السعودية طلب GTIN إضافي`;
+            const emailContent = value.selectedLanguage === 'en' ? `This is an automated invoice of your GTIN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة آلية لاشتراكك في GTIN. يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1475,6 +1494,7 @@ const addAdditionalGlnSchema = Joi.object({
     // subType: Joi.string().valid('UPGRADE', 'DOWNGRADE').required(),
     additionalGlnId: Joi.string().required(),
     otherProductSubscriptionId: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 
 });
 
@@ -1562,12 +1582,12 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 
             cart.total = additionalGlnDetails.price;
             cart.transaction_id = transactionId;
-            let typeOfPayment = `ADDITIONAL GLN invoice for ${additionalGlnDetails.total_no_of_gln} GLN`;
+            let typeOfPayment = value.selectedLanguage === 'en' ? `ADDITIONAL GLN invoice for ${additionalGlnDetails.total_no_of_gln} GLN` : `فاتورة GLN إضافية لـ ${additionalGlnDetails.total_no_of_gln} GLN`;
             // Generate an invoice
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: "INVOICE",
-                secondHeading: "ADDITIONAL GLN INVOICE FOR",
+                topHeading: value.selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+                secondHeading: value.selectedLanguage === 'en' ? "ADDITIONAL GLN INVOICE FOR" : "فاتورة GLN إضافية لـ",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
 
@@ -1620,8 +1640,8 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdir(pdfDirectory, { recursive: true });
             }
-
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+            let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
 
             // Read the file into a buffer
             const pdfBuffer = await fs1.readFile(pdfFilePath);
@@ -1656,8 +1676,9 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
             });
 
             // Send email with invoice
-            const subject = 'GS1 Saudi Arabia Membership Upgrade GLN Request';
-            const emailContent = `This is an automated invoice of your additional GLN. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+
+            const subject = value.selectedLanguage === 'en' ? `GS1 Saudi Arabia Additional GLN Request` : `GS1 السعودية طلب GLN إضافي`;
+            const emailContent = value.selectedLanguage === 'en' ? `This is an automated invoice of your GLN subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة آلية لاشتراكك في GLN. يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -1716,11 +1737,10 @@ export const addAdditionalGlnRequest = async (req, res, next) => {
 };
 
 export const approveAdditionalProductsRequest = async (req, res, next) => {
-
-
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -1729,7 +1749,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
     }
 
 
-    const { transactionId, userId } = value;
+    const { transactionId, userId, selectedLanguage } = value;
 
 
     try {
@@ -1808,12 +1828,9 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
 
 
 
-        let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
+        let emailContent = selectedLanguage === 'en' ? `Thank you for upgrading your membership. Please find the attached receipt for your reference.` : `شكرا لترقية عضويتك. يرجى العثور على الفاتورة المرفقة للرجوع إليها.`;
         let gcpGLNIDUpdated = false;
         let oldGcpGLNID = user.gcpGLNID;
-
-
-
 
         let cart = user.carts[0];
 
@@ -1830,10 +1847,11 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "RECEIPT",
-            secondHeading: "RECEIPT FOR ADDITIONAL GTIN",
+            topHeading: selectedLanguage === 'en' ? "RECEIPT" : "إيصال",
+            secondHeading: selectedLanguage === 'en' ? "RECEIPT FOR ADDITIONAL GTIN" : "إيصال لـ GTIN إضافي",
             memberData: {
-                registeration: `Receipt for additional ${gtinUpgradePricing.total_no_of_barcodes} barcodes`,
+
+                registeration: selectedLanguage === 'en' ? `Receipt for additional ${gtinUpgradePricing.total_no_of_barcodes} barcodes` : `إيصال لـ GTIN إضافي`,
                 qrCodeDataURL: qrCodeDataURL,
                 // upgradeDetails: `Receipt for upgrade of ${totalBarcodesToAdd} barcodes`,
                 company_name_eng: user.company_name_eng,
@@ -1878,12 +1896,14 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
+        let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), receiptData, pdfFilePath);
         const pdfBuffer = await fs1.readFile(pdfFilePath);
 
         // Update email content if gcpGLNID is updated
         if (gcpGLNIDUpdated) {
-            emailContent = `Thank you for upgrading your membership. Your GPC/GLN has been updated from ${oldGcpGLNID} to ${user.gcpGLNID}. Please find the attached receipt for your reference.`;
+            emailContent = selectedLanguage === 'en' ? `Thank you for upgrading your membership. Your GPC/GLN has been updated from ${oldGcpGLNID} to ${user.gcpGLNID}. Please find the attached receipt for your reference.` : `شكرا لترقية عضويتك. تم تحديث GPC / GLN الخاص بك من ${oldGcpGLNID} إلى ${user.gcpGLNID}. يرجى العثور على الفاتورة المرفقة للرجوع إليها.`;
         }
 
 
@@ -1892,7 +1912,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
             toEmail: user.email,
-            subject: 'Membership Upgrade Receipt - GS1 Saudi Arabia',
+            subject: selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Upgrade Receipt' : 'إيصال ترقية عضوية GS1 السعودية',
             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
             attachments: [
                 {
@@ -1959,6 +1979,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -1967,7 +1988,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    const { transactionId, userId } = value;
+    const { transactionId, userId, selectedLanguage } = value;
     console.log("trnaactioId", transactionId)
     console.log("userId", userId)
     try {
@@ -2055,7 +2076,8 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         });
 
 
-        let emailContent = `Thank you for upgrading your membership. Please find the attached receipt for your reference.`;
+
+        let emailContent = selectedLanguage === 'en' ? `Thank you for upgrading your membership. Please find the attached receipt for your reference.` : `شكرا لترقية عضويتك. يرجى العثور على الفاتورة المرفقة للرجوع إليها.`;
 
         let cart = user.carts[0];
 
@@ -2072,11 +2094,13 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         // Generate receipt
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
         const receiptData = {
-            topHeading: "RECEIPT",
-            secondHeading: "RECEIPT FOR ADDITIONAL GLN",
+            // topHeading: "RECEIPT",
+            // secondHeading: "RECEIPT FOR ADDITIONAL GLN",
+            topHeading: selectedLanguage === 'en' ? "RECEIPT" : "إيصال",
+            secondHeading: selectedLanguage === 'en' ? "RECEIPT FOR ADDITIONAL GLN" : "إيصال لـ GLN إضافي",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `Receipt for additional ${totalGlnToAdd} GLN`,
+                registeration: selectedLanguage === 'en' ? `Receipt for additional ${totalGlnToAdd} GLN` : `إيصال لـ GLN إضافي`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
@@ -2118,7 +2142,8 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
+        let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), receiptData, pdfFilePath);
         const pdfBuffer = await fs1.readFile(pdfFilePath);
 
         // Update email content if gcpGLNID is updated
@@ -2127,7 +2152,8 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
             toEmail: user.email,
-            subject: 'Membership Upgrade Receipt - GS1 Saudi Arabia',
+            // subject: 'Membership Upgrade Receipt - GS1 Saudi Arabia',
+            subject: selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Upgrade Receipt' : 'إيصال ترقية عضوية GS1 السعودية',
             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
             attachments: [
                 {
@@ -2192,6 +2218,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
         invoiceType: Joi.string().valid('upgrade_invoice', 'downgrade_invoice').required(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -2202,7 +2229,7 @@ export const approveMembershipRequest = async (req, res, next) => {
             throw createError(400, error.details[0].message);
         }
 
-        const { transactionId, userId, invoiceType } = value;
+        const { transactionId, userId, invoiceType, selectedLanguage } = value;
 
         const bankSlipDocuments = await prisma.member_documents.findMany({
             where: {
@@ -2251,9 +2278,7 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
 
-        let emailContent = `Your request for changing membership has been approved. Please find the attached documents for your reference.`;
-
-
+        let emailContent = selectedLanguage === 'en' ? `Thank you for upgrading your membership. Please find the attached receipt for your reference.` : `شكرا لترقية عضويتك. يرجى العثور على الفاتورة المرفقة للرجوع إليها.`;
 
         // Check for special cases and update gcpGLNID and GLN if necessary
 
@@ -2364,11 +2389,11 @@ export const approveMembershipRequest = async (req, res, next) => {
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
 
         const receiptData = {
-            topHeading: "RECEIPT",
-            secondHeading: "RECEIPT FOR MEMBERSHIP UPGRADE",
+            topHeading: selectedLanguage === 'en' ? "RECEIPT" : "إيصال",
+            secondHeading: selectedLanguage === 'en' ? "RECEIPT FOR MEMBERSHIP UPGRADE" : "إيصال لترقية العضوية",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                registeration: `Receipt for upgrading membership to ${gtinProduct.member_category_description}`,
+                registeration: selectedLanguage === 'en' ? `Receipt for upgrading membership to ${gtinProduct.member_category_description}` : `إيصال لترقية العضوية إلى ${gtinProduct.member_category_description}`,
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
                 address: {
@@ -2410,18 +2435,9 @@ export const approveMembershipRequest = async (req, res, next) => {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), receiptData, pdfFilePath);
+        let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), receiptData, pdfFilePath);
         const pdfBuffer = await fs1.readFile(pdfFilePath);
-
-        // Update email content if gcpGLNID is updated
-        // if (gcpGLNIDUpdated) {
-        //     emailContent = `Thank you for upgrading your membership. Your GPC/GLN has been updated from ${oldGcpGLNID} to ${user.gcpGLNID}. Please find the attached receipt for your reference.`;
-        // }
-
-
-
-
-
 
         const CertificateData = {
             BACKEND_URL: BACKEND_URL,
@@ -2480,7 +2496,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
             toEmail: user.email,
-            subject: 'Membership Upgrade Receipt - GS1 Saudi Arabia',
+            subject: selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Upgrade Receipt' : 'إيصال ترقية عضوية GS1 السعودية',
             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
             attachments: [
                 {
@@ -2556,6 +2572,7 @@ const downgradeMembershipSchema = Joi.object({
     // additional_barcodes: Joi.number().required(),
     // subType: Joi.string().valid('UPGRADE', 'DOWNGRADE').required(),
     new_subscription_product_Id: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 
@@ -2643,12 +2660,14 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
                 productName: subscribedProductDetails.member_category_description,
             });
             cart.transaction_id = transactionId;
-            let typeOfPayment = `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}`;
+            let typeOfPayment = value.selectedLanguage === 'en' ? `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}` : `فاتورة تخفيض الاشتراك لـ ${subscribedProductDetails.member_category_description}`;
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const invoiceData = {
-                topHeading: "INVOICE",
+
+
+                topHeading: selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
                 type: 'downgrade',
-                secondHeading: `Downgrade Subscription invoice for ${subscribedProductDetails.member_category_description}`,
+                secondHeading: selectedLanguage === 'en' ? "Downgrade Subscription invoice" : "فاتورة تخفيض الاشتراك",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
                     registeration: typeOfPayment,
@@ -2699,8 +2718,8 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
-
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
+            let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
 
             const pdfBuffer = await fs1.readFile(pdfFilePath);
             cart.typeOfPayment = typeOfPayment;
@@ -2728,8 +2747,8 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
             });
 
             // Send email with invoice
-            const subject = 'GS1 Saudi Arabia Membership Downgrade Subscription Request';
-            const emailContent = `This is an automated invoice of your Downgrade Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`;
+            const subject = selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Downgrade Subscription Request' : 'طلب تخفيض الاشتراك في GS1 السعودية';
+            const emailContent = selectedLanguage === 'en' ? `This is an automated invoice of your Downgrade Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة تخفيض الاشتراك الخاصة بك. يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
             const attachments = [
                 {
                     filename: pdfFilename,
@@ -2784,219 +2803,6 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
         next(error);
     }
 };
-
-
-// export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
-//     // Validate the request body
-//     const { error, value } = downgradeMembershipSchema.validate(req.body);
-
-
-//     try {
-
-//         if (error) {
-//             // return next(createError(400, error.details[0].message));
-//             throw createError(400, error.details[0].message);
-//         }
-
-
-//         const user = await prisma.users.findUnique({
-//             where: { id: value.user_id },
-//             include: {
-//                 carts: true,
-//             },
-
-//         });
-
-//         if (!user) {
-//             throw createError(404, 'User not found');
-//         }
-
-//         // fetch  data from gtin_upgrade_pricing table 
-//         const gtinUpgradePricing = await prisma.gtin_upgrade_pricing.findUnique({
-//             where: { id: value.gtin_product_id },
-//         });
-
-//         if (!gtinUpgradePricing) {
-//             throw createError(404, 'GTIN upgrade pricing not found');
-//         }
-//         console.log("gtinUpgradePricing", gtinUpgradePricing);
-
-
-//         // get gtin_products data baed of  current_gtin_subscription_id
-//         const gtinSubscriptions = await prisma.gtin_products.findFirst({
-//             where: { id: value.current_gtin_subscription_id },
-//         });
-
-//         if (!gtinSubscriptions) {
-//             throw createError(404, 'GTIN subscription not found');
-//         }
-
-//         const newGtinSubscriptions = await prisma.gtin_products.findFirst({
-//             where: { total_no_of_barcodes: gtinUpgradePricing.total_no_of_barcodes },
-//         });
-
-//         if (!newGtinSubscriptions) {
-//             throw createError(404, 'New GTIN subscription not found');
-//         }
-
-
-//         const randomTransactionIdLength = 10; // adjust the length as needed 2*5 = 10 for 10 digit transaction id
-//         const transactionId = generateRandomTransactionId(randomTransactionIdLength);
-
-
-//         let cart = user.carts[0];
-//         let cartData = JSON.parse(cart.cart_items);
-//         cart.cart_items = []
-
-//         cart.cart_items.push({
-//             productName: `${gtinUpgradePricing.total_no_of_barcodes} Barcodes`,
-//             registration_fee: 0,
-//             // yearly_fee: gtinUpgradePricing.price,
-//             yearly_fee: 0,
-//         });
-//         // cart.total = gtinUpgradePricing.price;
-//         cart.total = 0;
-//         cart.transaction_id = transactionId;
-
-//         // Generate an invoice
-//         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-//         const invoiceData = {
-//             topHeading: "INVOICE",
-//             secondHeading: "DOWNGRADE INVOICE FOR",
-//             memberData: {
-//                 qrCodeDataURL: qrCodeDataURL,
-
-//                 registeration: `DOWNGRADE INVOCIE TO ${gtinSubscriptions?.member_category_description} to ${newGtinSubscriptions?.member_category_description}`,
-//                 // Assuming $addMember->id is already known
-//                 company_name_eng: user.company_name_eng,
-//                 mobile: user.mobile,
-//                 address: {
-//                     zip: user.zip_code,
-//                     countryName: user.country,
-//                     stateName: user.state,
-//                     cityName: user.city,
-//                 },
-//                 companyID: user.companyID,
-//                 membership_otherCategory: user.membership_category,
-//                 gtin_subscription: {
-//                     products: {
-//                         member_category_description: newGtinSubscriptions?.member_category_description,
-//                     },
-//                 },
-//             },
-
-
-//             cart: cart,
-
-//             currentDate: {
-//                 day: new Date().getDate(),
-//                 month: new Date().getMonth() + 1, // getMonth() returns 0-11
-//                 year: new Date().getFullYear(),
-//             },
-
-
-
-
-//             company_details: {
-//                 title: 'Federation of Saudi Chambers',
-//                 account_no: '25350612000200',
-//                 iban_no: 'SA90 1000 0025 3506 1200 0200',
-//                 bank_name: 'Saudi National Bank - SNB',
-//                 bank_swift_code: 'NCBKSAJE',
-//             },
-//             BACKEND_URL: BACKEND_URL,
-//         };
-
-
-//         const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-//         const pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-//         const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-
-//         if (!fsSync.existsSync(pdfDirectory)) {
-//             fsSync.mkdir(pdfDirectory, { recursive: true });
-//         }
-
-//         const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceData, pdfFilePath);
-
-//         // Read the file into a buffer
-//         const pdfBuffer = await fs1.readFile(pdfFilePath);
-
-//         // insert into upgrade_member_ship_cart
-//         await prisma.upgrade_member_ship_cart.create({
-//             data: {
-//                 user_id: user.id,
-//                 gtin_product_id: value.gtin_product_id,
-//                 transaction_id: transactionId,
-//                 registered_product_transaction_id: user.transaction_id,
-//                 status: 0,
-//             }
-//         });
-
-
-//         await prisma.member_documents.create({
-//             data: {
-//                 type: 'downgrade_invoice',
-//                 document: `/uploads/documents/MemberRegInvoice/${pdfFilename}`,
-//                 transaction_id: transactionId,
-//                 user_id: user.id,
-//                 doc_type: 'member_document',
-//                 status: 'pending',
-//                 // TODO: take email form current admin token
-//                 // uploaded_by: req.admin.email, // Assuming the admin is logged in
-//                 uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
-//             }
-
-//         });
-
-//         // Send email with invoice
-//         const subject = 'GS1 Saudi Arabia Membership Upgrade Request';
-//         const emailContent = `This is an automated email to confirm that your membership downgrade request has been received. Please find the attached invoice for your reference.`;
-//         const attachments = [
-//             {
-//                 filename: pdfFilename,
-//                 content: pdfBuffer,
-//                 contentType: 'application/pdf',
-//             },
-//         ];
-
-//         await sendEmail({
-//             fromEmail: ADMIN_EMAIL,
-//             toEmail: user.email,
-//             subject: subject,
-
-//             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
-//             attachments: attachments
-//         });
-
-//         // Insert Member History log
-//         const logData = {
-//             subject: 'Downgrade invoice created',
-//             // user user memberId
-//             // member_id: userUpdateResult.memberID,
-//             user_id: user?.id,
-//             // TODO: take email form current admin token
-//             admin_id: 'admin@gs1sa.link',
-
-//         }
-
-
-//         TODO: // chec this
-//         // if (req?.admin.id) {
-//         //     logData.admin_id = admin_email;
-//         // logData.created_by_admin = 1;
-//         // }
-
-//         await createMemberLogs(logData);
-
-
-//         res.status(200).json({ message: `Downgrade invoice created & sent to ${user.email} successfully` });
-//     } catch (error) {
-//         console.error(error);
-//         next(error)
-//     }
-// }
-
-
 
 
 export const approveDowngradeMembershipRequest = async (req, res, next) => {
@@ -3065,7 +2871,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
         const totalBarcodesToAdd = gtinProduct.total_no_of_barcodes;
 
-        let emailContent = `Your request for changing membership has been approved.`;
+        let emailContent = selectedLanguage === 'en' ? `Your request for changing membership has been approved.` : `تمت الموافقة على طلبك لتغيير العضوية.`;
 
 
 
@@ -3161,7 +2967,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
             toEmail: user.email,
-            subject: 'Membership Downgrade Request Approval - GS1 Saudi Arabia',
+            subject: selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Downgrade Request Approval' : 'موافقة طلب تخفيض عضوية GS1 السعودية',
             htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
         });
 
@@ -3221,6 +3027,7 @@ const productSubscriptionSchema = Joi.object({
 const addMultipleOtherProductSubscriptionsSchema = Joi.object({
     userId: Joi.string().required(),
     subscriptions: Joi.array().items(productSubscriptionSchema).min(1).required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req, res, next) => {
@@ -3230,7 +3037,7 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
     }
 
     try {
-        const { userId, subscriptions } = value;
+        const { userId, subscriptions, selectedLanguage } = value;
 
         const existingUser = await prisma.users.findUnique({ where: { id: userId } });
         if (!existingUser) {
@@ -3282,12 +3089,13 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
         // save transaction id in cart
         cart.transaction_id = transactionId;
         const invoiceDetails = {
-            topHeading: "INVOICE",
-            secondHeading: "BILL TO",
+
+            topHeading: selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+            secondHeading: selectedLanguage === 'en' ? "BILL TO" : "فاتورة",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
                 // registeration: `New Registration for the year ${new Date().getFullYear()}`,
-                registeration: `Addition of other products`,
+                registeration: selectedLanguage === 'en' ? "Addition of other products" : "إضافة منتجات أخرى",
                 // Assuming $addMember->id is already known
                 company_name_eng: existingUser.company_name_eng,
                 mobile: existingUser.mobile,
@@ -3339,7 +3147,8 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
             fs.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceDetails, pdfFilePath);
+        let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceDetails, pdfFilePath);
         // Save invoice reference in member_documents
         await prisma.member_documents.create({
             data: {
@@ -3358,8 +3167,8 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: existingUser.email,
-            subject: 'Additional Other Products Subscription Invoice - GS1 Saudi Arabia',
-            htmlContent: `This is an automated invoice of your additional other products subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia`,
+            subject: selectedLanguage === 'en' ? 'Additional Other Products Subscription Invoice - GS1 Saudi Arabia' : 'فاتورة اشتراك منتجات أخرى إضافية - GS1 السعودية',
+            htmlContent: selectedLanguage === 'en' ? `This is an automated invoice of your additional other products subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة اشتراك منتجات أخرى إضافية. يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`,
             attachments: [
                 {
                     filename: pdfFilename,
@@ -3385,6 +3194,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -3395,7 +3205,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
             throw createError(400, error.details[0].message);
         }
 
-        const { transactionId, userId } = value;
+        const { transactionId, userId, selectedLanguage } = value;
 
         const bankSlipDocuments = await prisma.member_documents.findMany({
             where: {
@@ -3531,12 +3341,13 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
 
         const invoiceDetails = {
-            topHeading: "RECIPT",
-            secondHeading: "RECEIPT FOR",
+            // topHeading: "RECIPT",
+            // secondHeading: "RECEIPT FOR",
+            topHeading: selectedLanguage === 'en' ? 'RECEIPT' : 'إيصال',
+            secondHeading: selectedLanguage === 'en' ? 'RECEIPT FOR' : 'إيصال لـ',
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
-                // registeration: `New Registration for the year ${new Date().getFullYear()}`,
-                registeration: `Addition of other products`,
+                registeration: selectedLanguage === 'en' ? "Addition of other products" : "إضافة منتجات أخرى",
                 // Assuming $addMember->id is already known
                 company_name_eng: user.company_name_eng,
                 mobile: user.mobile,
@@ -3588,7 +3399,8 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
             fs.mkdirSync(pdfDirectory, { recursive: true });
         }
 
-        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), invoiceDetails, pdfFilePath);
+        let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+        await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceDetails, pdfFilePath);
 
 
 
@@ -3620,12 +3432,10 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: user.email,
-            subject: 'Additional Other Products Subscription Request Approval - GS1 Saudi Arabia',
-            htmlContent: `<br>
-            We are pleased to inform you that your additional other products subscription request has been approved. Please find the attached receipt for your reference.<br><br>
-            Thank you for your continued support.<br><br>
-            Regards,<br>
-            GS1 Saudi Arabia`,
+            subject: selectedLanguage === 'en' ? 'Additional Other Products Subscription Request Approval - GS1 Saudi Arabia' : 'تمت الموافقة على طلب اشتراك منتجات أخرى إضافية - GS1 السعودية',
+
+
+            htmlContent: selectedLanguage === 'en' ? `We are pleased to inform you that your additional other products subscription request has been approved. Please find the attached receipt for your reference.<br><br> Thank you for your continued support.<br><br> Regards,<br> GS1 Saudi Arabia` : `يسرنا أن نعلمكم بأن طلب اشتراك منتجات أخرى إضافية الخاص بك قد تمت الموافقة عليه. يرجى العثور على الإيصال المرفق للرجوع إليه.<br><br> شكرا لدعمك المستمر.<br><br> تحياتي,<br> GS1 السعودية`,
             attachments: [
                 {
                     filename: pdfFilename,

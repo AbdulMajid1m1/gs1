@@ -19,6 +19,7 @@ import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import AdminDashboardRightHeader from "../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader";
 import { useTranslation } from 'react-i18next';
+import { selectedLanguage } from "../../../../utils/config";
 
 const Gtin = () => {
   const [data, setData] = useState([]);
@@ -117,7 +118,7 @@ const Gtin = () => {
 
       setCrList(crs);
       setDetails(res?.data[0]);
-   
+
       setOpen(true);
       setAutocompleteLoading(false);
 
@@ -130,7 +131,7 @@ const Gtin = () => {
       setAutocompleteLoading(false);
     }
   }, 400);
-  
+
   const [totalCategory, setTotalCategory] = useState([])
   const [allSearchMemberDetails, setAllSearchMemberDetails] = useState('')
 
@@ -148,7 +149,7 @@ const Gtin = () => {
       // console.log(totalCategory)
 
       if (response?.data?.length === 0) {
-        setTotalCategory('Category C' ,[]);
+        setTotalCategory('Category C', []);
       }
 
       setIsLoading(false);
@@ -159,7 +160,7 @@ const Gtin = () => {
   };
 
 
-  
+
 
   // const fetchData = async () => {
   //   try {
@@ -286,25 +287,25 @@ const Gtin = () => {
       size: 'Size',
       barcode: 'GTIN'
     };
-  
+
     // Create a new array with the desired headers in the specified order
     const desiredHeaders = Object.values(headerMapping);
-  
+
     // Create a worksheet with only headers
     const headerWorksheet = XLSX.utils.json_to_sheet([{}], { header: desiredHeaders });
-  
+
     // Create a workbook and append the header worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, headerWorksheet, 'Header Only');
-  
+
     // Generate Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  
+
     // Save Excel file
     saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
-  
+
 
 
 
@@ -379,7 +380,7 @@ const Gtin = () => {
       formData.append('user_id', allSearchMemberDetails?.user_id);
       formData.append('email', allSearchMemberDetails?.email);
 
-      newRequest.post('/products/bulkGtin', formData)
+      newRequest.post('/products/bulkGtin?selectedLanguage=' + selectedLanguage, formData)
         .then((response) => {
           // Handle the successful response
           console.log(response.data);
@@ -387,16 +388,16 @@ const Gtin = () => {
           if (response.data && response.data.errors && response.data.errors.length > 0) {
             // Display a generic error message
             toast.error(response.data.errors[0].error);
-          } 
+          }
           else {
             // Display a generic success message
-            toast.success(response?.data?.message ||  `${t('The data has been imported successfully')}`);
+            toast.success(response?.data?.message || `${t('The data has been imported successfully')}`);
           }
 
           setIsLoading(false);
           // Clear the file input value
           event.target.value = '';
-          
+
           // fetchData();
         })
         .catch((error) => {
@@ -424,7 +425,7 @@ const Gtin = () => {
   // Gtin Page Print
   const handleGtinPage = () => {
     if (tableSelectedRows.length === 0) {
-      setError( `${ t('Please select a row to print') }`);
+      setError(`${t('Please select a row to print')}`);
       return;
     }
     const printWindow = window.open('', 'Print Window', 'height=400,width=800');
@@ -533,314 +534,314 @@ const Gtin = () => {
 
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         {/* <div className='h-auto w-full shadow-xl'> */}
-          <div>
-            <AdminDashboardRightHeader title={"GTIN"} />
-          </div>
+        <div>
+          <AdminDashboardRightHeader title={"GTIN"} />
+        </div>
 
         <div className='flex justify-center items-center'>
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-            <button
-              onClick={handleAddGtin}
-              className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
-             
-              {i18n.language === 'ar' ? (
-                <>
-                  {t('Add Product')}   <i className="fas fa-plus mr-1"></i>
-                </>
-              ) : (
-                <>
-                    <i className="fas fa-plus mr-1"></i> {t('Add Product')}
-                </>
-              )}
-            </button>
+              <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                <button
+                  onClick={handleAddGtin}
+                  className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
 
-            <div className="relative">
-              <button
-                onClick={() => setIsExportBarcode(!isExportBarcode)}
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              
-                {i18n.language === 'ar' ? (
-                  <>
-                    <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')} 
-                  </>
-                ) : (
-                  <>
-                      {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
-                  </>
-                )}
-              </button>
+                  {i18n.language === 'ar' ? (
+                    <>
+                      {t('Add Product')}   <i className="fas fa-plus mr-1"></i>
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-plus mr-1"></i> {t('Add Product')}
+                    </>
+                  )}
+                </button>
 
-              {isExportBarcode && (
-                <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
-                  <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
-                  <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsExportBarcode(!isExportBarcode)}
+                    className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+
+                    {i18n.language === 'ar' ? (
+                      <>
+                        <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')}
+                      </>
+                    ) : (
+                      <>
+                        {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
+                      </>
+                    )}
+                  </button>
+
+                  {isExportBarcode && (
+                    <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
+                      <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
+                      <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
-              onClick={handleExportProducts}
-            >
-             {i18n.language === 'ar' ? (
-                <>
-                  <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')} 
-                </>
-              ) : (
-                <>
-                    {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i> 
-                </>
-              )}
-            </button>
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
+                  onClick={handleExportProducts}
+                >
+                  {i18n.language === 'ar' ? (
+                    <>
+                      <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')}
+                    </>
+                  ) : (
+                    <>
+                      {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i>
+                    </>
+                  )}
+                </button>
 
-            <div>
-              <input
-                type="file"
-                style={{ display: 'none' }}
-                onChange={handleFileInputChange}
-              />
-              <button
-                className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
-                onClick={() => document.querySelector('input[type="file"]').click()}
-              >
-                
-                {i18n.language === 'ar' ? (
-                  <>
-                    {t('Import')}  <i className="fas fa-file-import mr-1"></i>
-                  </>
-                ) : (
-                  <>
-                      <i className="fas fa-file-import mr-1"></i>  {t('Import')} 
-                  </>
-                )}
-              </button>
-            </div>
+                <div>
+                  <input
+                    type="file"
+                    style={{ display: 'none' }}
+                    onChange={handleFileInputChange}
+                  />
+                  <button
+                    className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
+                    onClick={() => document.querySelector('input[type="file"]').click()}
+                  >
 
-            <button
-              onClick={handleExportProductsTemplate}
-              className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-             
-              {i18n.language === 'ar' ? (
-                <>
-                  <i className="fas fa-caret-down ml-1"></i>  {t('Download Template')}
-                </>
-              ) : (
-                <>
-                    {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
-                </>
-              )}
-            </button>
+                    {i18n.language === 'ar' ? (
+                      <>
+                        {t('Import')}  <i className="fas fa-file-import mr-1"></i>
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-file-import mr-1"></i>  {t('Import')}
+                      </>
+                    )}
+                  </button>
+                </div>
 
-            {/* <button
+                <button
+                  onClick={handleExportProductsTemplate}
+                  className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+
+                  {i18n.language === 'ar' ? (
+                    <>
+                      <i className="fas fa-caret-down ml-1"></i>  {t('Download Template')}
+                    </>
+                  ) : (
+                    <>
+                      {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
+                    </>
+                  )}
+                </button>
+
+                {/* <button
               onClick={handleExportProducts}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-download mr-1"></i> Download
             </button> */}
-          </div>
+              </div>
 
-          <div  className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              GCP {allSearchMemberDetails?.gcpGLNID}
-            </button>
+              <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 mt-4 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                  GCP {allSearchMemberDetails?.gcpGLNID}
+                </button>
 
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-               {totalCategory ? `${totalCategory}` : 'Category C'}
-            </button>
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                  {totalCategory ? `${totalCategory}` : 'Category C'}
+                </button>
 
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              {t('Member ID')} {allSearchMemberDetails?.memberID}
-              {/* Member ID */}
-            </button>
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                  {t('Member ID')} {allSearchMemberDetails?.memberID}
+                  {/* Member ID */}
+                </button>
 
-            <button
-              onClick={handleGtinPage}
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              
-              {i18n.language === 'ar' ? (
-                <>
-                  GTIN {t('Print')}
-                </>
-              ) : (
-                <>
-                    {t('Print')} GTIN 
-                </>
-              )}
-            </button>
-          </div>
+                <button
+                  onClick={handleGtinPage}
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
 
-
-          <div className="px-3">
-            <Autocomplete
-              id="companyName"
-              required
-              options={crList}
-              // gcpGLNID: item.gcpGLNID,
-              // gln: item.gln,
-              // memberID: item.memberID,
-              // companyID: item.companyID,
-              // company_name_eng: item.company_name_eng,
-              // email: item.email,
-              // mobile: item.mobile,
-              getOptionLabel={(option) => (option && option.user_id) ? `${option?.gcpGLNID} - ${option?.company_name_eng} - ${option?.memberID} - ${option?.email} - ${option?.mobile} ` : ''}
-              onChange={handleGPCAutoCompleteChange}
-              value={selectedCr?.cr}
-              onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
-              loading={autocompleteLoading}
-              sx={{ marginTop: '10px' }}
-              open={open}
-              onOpen={() => {
-                // setOpen(true);
-              }}
-              onClose={() => {
-                setOpen(false);
-              }}
-              renderOption={(props, option) => (
-                <li key={option.user_id} {...props}>
-                  {option ? `${option.gcpGLNID} - ${option.company_name_eng} - ${option.memberID} - ${option.email} - ${option.mobile}` : 'No options'}
-                </li>
-              )}
+                  {i18n.language === 'ar' ? (
+                    <>
+                      GTIN {t('Print')}
+                    </>
+                  ) : (
+                    <>
+                      {t('Print')} GTIN
+                    </>
+                  )}
+                </button>
+              </div>
 
 
-              renderInput={(params) => (
-                <TextField
-                  // required
-                  error={isSubmitClicked && !selectedCr?.cr}
-                  helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
-                  {...params}
-                  label={`${t('Search Members')}`}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <React.Fragment>
-                        {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </React.Fragment>
-                    ),
+              <div className="px-3">
+                <Autocomplete
+                  id="companyName"
+                  required
+                  options={crList}
+                  // gcpGLNID: item.gcpGLNID,
+                  // gln: item.gln,
+                  // memberID: item.memberID,
+                  // companyID: item.companyID,
+                  // company_name_eng: item.company_name_eng,
+                  // email: item.email,
+                  // mobile: item.mobile,
+                  getOptionLabel={(option) => (option && option.user_id) ? `${option?.gcpGLNID} - ${option?.company_name_eng} - ${option?.memberID} - ${option?.email} - ${option?.mobile} ` : ''}
+                  onChange={handleGPCAutoCompleteChange}
+                  value={selectedCr?.cr}
+                  onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
+                  loading={autocompleteLoading}
+                  sx={{ marginTop: '10px' }}
+                  open={open}
+                  onOpen={() => {
+                    // setOpen(true);
                   }}
-                  sx={{
-                    '& label.Mui-focused': {
-                      color: '#00006A',
-                    },
-                    '& .MuiInput-underline:after': {
-                      borderBottomColor: '#00006A',
-                    },
-                    '& .MuiOutlinedInput-root': {
-                      '&:hover fieldset': {
-                        borderColor: '#000000',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#000000',
-                      },
-                    },
+                  onClose={() => {
+                    setOpen(false);
                   }}
-                />
-              )}
+                  renderOption={(props, option) => (
+                    <li key={option.user_id} {...props}>
+                      {option ? `${option.gcpGLNID} - ${option.company_name_eng} - ${option.memberID} - ${option.email} - ${option.mobile}` : 'No options'}
+                    </li>
+                  )}
 
-            />
 
-          </div>
-
-
-          <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-
-            <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn(t)}
-              loading={isLoading}
-              secondaryColor="secondary"
-              handleRowClickInParent={handleRowClickInParent}
-              uniqueId="customerListId"
-
-              dropDownOptions={[
-                {
-                  label: `${t('View')}`,
-                  icon: (
-                    <VisibilityIcon
-                      fontSize="small"
-                      color="action"
-                      style={{ color: "rgb(37 99 235)" }}
+                  renderInput={(params) => (
+                    <TextField
+                      // required
+                      error={isSubmitClicked && !selectedCr?.cr}
+                      helperText={isSubmitClicked && !selectedCr?.cr ? "Products is required" : ""}
+                      {...params}
+                      label={`${t('Search Members')}`}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <React.Fragment>
+                            {autocompleteLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                            {params.InputProps.endAdornment}
+                          </React.Fragment>
+                        ),
+                      }}
+                      sx={{
+                        '& label.Mui-focused': {
+                          color: '#00006A',
+                        },
+                        '& .MuiInput-underline:after': {
+                          borderBottomColor: '#00006A',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                          '&:hover fieldset': {
+                            borderColor: '#000000',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#000000',
+                          },
+                        },
+                      }}
                     />
-                  ),
-                  action: handleView,
-                },
-                {
-                  label: `${t('Edit')}`,
-                  icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
-                  ,
-                  action: handleEdit
+                  )}
 
-                },
-                // {
-                //   label: `${t('Digital Links')}`,
-                //   icon: (
-                //     <VisibilityIcon
-                //       fontSize="small"
-                //       color="action"
-                //       style={{ color: "rgb(37 99 235)" }}
-                //     />
-                //   ),
-                //   action: handleDigitalUrlInfo,
-                // }
-                // ,
-                {
-                  label: `${t('Delete')}`,
-                  icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
-                  ,
-                  action: handleDelete,
-                }
+                />
 
-              ]}
-
-            />
-          </div>
-
-
-
-          <div id="barcode">
-            {tableSelectedRows?.map((barcode, index) => (
-              <div id="Qrcodeserails" className="hidden" key={index}>
-                <div id="header">
-                  <div>
-                    <img src={logo} id="imglogo" alt="" />
-                  </div>
-                </div>
-                <div id="inside-BRCode">
-                  <QRCodeSVG value={barcode} width="170" height="70" />
-                </div>
-                <div id="itemSerialNo">
-                  {/* {barcode} */}
-                </div>
               </div>
-            ))}
-          </div>
 
 
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-          {/* 2d Barcode */}
-          <div id="2dbarcode">
-            {tableSelectedRows?.map((barcode, index) => (
-              <div id="Qrcodeserails" className="hidden" key={index}>
-                <div id="header">
-                  <div>
-                    <img src={logo} id="imglogo" alt="" />
-                  </div>
-                </div>
-                <div id="inside-BRCode">
-                  <Barcode value={barcode} width={1.9} height={65} />
-                </div>
-                <div id="itemSerialNo">
-                  {/* {barcode} */}
-                </div>
+                <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn(t)}
+                  loading={isLoading}
+                  secondaryColor="secondary"
+                  handleRowClickInParent={handleRowClickInParent}
+                  uniqueId="customerListId"
+
+                  dropDownOptions={[
+                    {
+                      label: `${t('View')}`,
+                      icon: (
+                        <VisibilityIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleView,
+                    },
+                    {
+                      label: `${t('Edit')}`,
+                      icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
+                      ,
+                      action: handleEdit
+
+                    },
+                    // {
+                    //   label: `${t('Digital Links')}`,
+                    //   icon: (
+                    //     <VisibilityIcon
+                    //       fontSize="small"
+                    //       color="action"
+                    //       style={{ color: "rgb(37 99 235)" }}
+                    //     />
+                    //   ),
+                    //   action: handleDigitalUrlInfo,
+                    // }
+                    // ,
+                    {
+                      label: `${t('Delete')}`,
+                      icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
+                      ,
+                      action: handleDelete,
+                    }
+
+                  ]}
+
+                />
               </div>
-            ))}
-          </div>
 
-        </div>
-        </div>
+
+
+              <div id="barcode">
+                {tableSelectedRows?.map((barcode, index) => (
+                  <div id="Qrcodeserails" className="hidden" key={index}>
+                    <div id="header">
+                      <div>
+                        <img src={logo} id="imglogo" alt="" />
+                      </div>
+                    </div>
+                    <div id="inside-BRCode">
+                      <QRCodeSVG value={barcode} width="170" height="70" />
+                    </div>
+                    <div id="itemSerialNo">
+                      {/* {barcode} */}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+
+
+              {/* 2d Barcode */}
+              <div id="2dbarcode">
+                {tableSelectedRows?.map((barcode, index) => (
+                  <div id="Qrcodeserails" className="hidden" key={index}>
+                    <div id="header">
+                      <div>
+                        <img src={logo} id="imglogo" alt="" />
+                      </div>
+                    </div>
+                    <div id="inside-BRCode">
+                      <Barcode value={barcode} width={1.9} height={65} />
+                    </div>
+                    <div id="itemSerialNo">
+                      {/* {barcode} */}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
 import { Autocomplete, Button, CircularProgress, TextField } from '@mui/material';
+import { selectedLanguage } from '../../../utils/config';
 
 const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility, refreshSubscriptionData }) => {
   const { t, i18n } = useTranslation();
@@ -46,7 +47,7 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility, refreshSubscrip
       // Combine gtinSubscriptions and otherProductSubscriptions
       const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
       console.log(combinedData);
-      setRegisteredProductsData(combinedData); 
+      setRegisteredProductsData(combinedData);
       setRegisteredProductsLoader(false)
       fetchData(combinedData);
 
@@ -79,10 +80,11 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility, refreshSubscrip
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);    
+    setLoading(true);
     try {
       const body = {
         userId: memberData?.id,
+        selectedLanguage: selectedLanguage,
         subscriptions: selectedOtherProducts.map(product => ({
           productId: product?.id,
           productIdentifierName: product?.product_name
@@ -95,7 +97,7 @@ const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility, refreshSubscrip
       setLoading(false);
       handleCloseFinacePopup();
       refreshSubscriptionData();
-    } 
+    }
     catch (err) {
       console.log(err);
       toast.error(err?.response?.data?.error || 'Something Went Wrong')

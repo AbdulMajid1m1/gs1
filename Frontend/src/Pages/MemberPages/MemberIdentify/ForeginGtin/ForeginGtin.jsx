@@ -14,8 +14,9 @@ import { toast } from "react-toastify";
 import Barcode from "react-barcode";
 import { useTranslation } from 'react-i18next';
 import DashboardRightHeader from "../../../../components/DashboardRightHeader/DashboardRightHeader";
+import { selectedLanguage } from "../../../../utils/config";
 
-const  ForeginGtin = () => {
+const ForeginGtin = () => {
   const [data, setData] = useState([]);
   const { t, i18n } = useTranslation();
 
@@ -56,7 +57,7 @@ const  ForeginGtin = () => {
     }
   };
 
-  
+
 
   const fetchGtinProducts = async () => {
     try {
@@ -264,7 +265,7 @@ const  ForeginGtin = () => {
       formData.append('user_id', memberData?.id);
       formData.append('email', memberData?.email);
 
-      newRequest.post('/products/bulkGtin', formData)
+      newRequest.post('/products/bulkGtin?selectedLanguage=' + selectedLanguage, formData)
         .then((response) => {
           // Handle the successful response
           console.log(response.data);
@@ -410,7 +411,7 @@ const  ForeginGtin = () => {
 
   return (
     <div>
-      <div  className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
           <DashboardRightHeader title={`${t('Foreign GTIN')}`} />
         </div>
@@ -419,61 +420,61 @@ const  ForeginGtin = () => {
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
 
-          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-            <button
-              onClick={() => navigate('/member/member-add-foreign')}
-              className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
-              {i18n.language === 'ar' ? (
-                <>
-                  {t('Add Foreign GTIN')} <i className="fas fa-plus mr-1"></i>
-                </>
-              ) : (
-                <>
-                  <i className="fas fa-plus mr-1"></i>  {t('Add Foreign GTIN')}
-                </>
-              )}
-            </button>
+              <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                <button
+                  onClick={() => navigate('/member/member-add-foreign')}
+                  className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary">
+                  {i18n.language === 'ar' ? (
+                    <>
+                      {t('Add Foreign GTIN')} <i className="fas fa-plus mr-1"></i>
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-plus mr-1"></i>  {t('Add Foreign GTIN')}
+                    </>
+                  )}
+                </button>
 
-            <div className="relative">
-              <button
-                onClick={() => setIsExportBarcode(!isExportBarcode)}
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                {i18n.language === 'ar' ? (
-                  <>
-                    <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')}
-                  </>
-                ) : (
-                  <>
-                    {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
-                  </>
-                )}
-              </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsExportBarcode(!isExportBarcode)}
+                    className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                    {i18n.language === 'ar' ? (
+                      <>
+                        <i className="fas fa-caret-down ml-1"></i>   {t('Export Bulk Barcodes')}
+                      </>
+                    ) : (
+                      <>
+                        {t('Export Bulk Barcodes')}    <i className="fas fa-caret-down ml-1"></i>
+                      </>
+                    )}
+                  </button>
 
-              {isExportBarcode && (
-                <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
-                  <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
-                  <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
+                  {isExportBarcode && (
+                    <div className="h-20 w-full flex flex-col gap-2 absolute bg-white shadow-xl rounded-md px-2 py-1">
+                      <p onClick={handle2dBarcodePage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">1D Barcode</p>
+                      <p onClick={handleGtinPage} className="text-secondary font-sans w-full hover:bg-yellow-100 hover:font-semibold px-3 cursor-pointer">2D Barcode</p>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            <button
-              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
-              onClick={handleExportProducts}
-            >
-              {i18n.language === 'ar' ? (
-                <>
-                  <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')}
-                </>
-              ) : (
-                <>
-                  {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i>
-                </>
-              )}
-            </button>
+                <button
+                  className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary"
+                  onClick={handleExportProducts}
+                >
+                  {i18n.language === 'ar' ? (
+                    <>
+                      <i className="fas fa-caret-down ml-1"></i> {t('Export in Excel')}
+                    </>
+                  ) : (
+                    <>
+                      {t('Export in Excel')}   <i className="fas fa-caret-down ml-1"></i>
+                    </>
+                  )}
+                </button>
 
 
-            {/* <div>
+                {/* <div>
               <input
                 type="file"
                 ref={fileInputRef}
@@ -488,72 +489,72 @@ const  ForeginGtin = () => {
               </button>
             </div> */}
 
-            <div>
-              <input
-                type="file"
-                style={{ display: 'none' }}
-                onChange={handleFileInputChange}
-              />
-              <button
-                className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
-                onClick={() => document.querySelector('input[type="file"]').click()}
-              >
-                {i18n.language === 'ar' ? (
-                  <>
-                    {t('Import')}  <i className="fas fa-file-import mr-1"></i>
-                  </>
-                ) : (
-                  <>
-                    <i className="fas fa-file-import mr-1"></i>  {t('Import')}
-                  </>
-                )}
-              </button>
-            </div>
+                <div>
+                  <input
+                    type="file"
+                    style={{ display: 'none' }}
+                    onChange={handleFileInputChange}
+                  />
+                  <button
+                    className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
+                    onClick={() => document.querySelector('input[type="file"]').click()}
+                  >
+                    {i18n.language === 'ar' ? (
+                      <>
+                        {t('Import')}  <i className="fas fa-file-import mr-1"></i>
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-file-import mr-1"></i>  {t('Import')}
+                      </>
+                    )}
+                  </button>
+                </div>
 
-            <button
-              onClick={handleExportProductsTemplate}
-              className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-              {i18n.language === 'ar' ? (
-                <>
-                  <i className="fas fa-caret-down ml-1"></i>  {t('Download Template')}
-                </>
-              ) : (
-                <>
-                  {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
-                </>
-              )}
-            </button>
+                <button
+                  onClick={handleExportProductsTemplate}
+                  className="rounded-full bg-[#1E3B8B] font-body px-4 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                  {i18n.language === 'ar' ? (
+                    <>
+                      <i className="fas fa-caret-down ml-1"></i>  {t('Download Template')}
+                    </>
+                  ) : (
+                    <>
+                      {t('Download Template')} <i className="fas fa-caret-down ml-1"></i>
+                    </>
+                  )}
+                </button>
 
-            {/* <button
+                {/* <button
               onClick={handleExportProducts}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               <i className="fas fa-download mr-1"></i> Download
             </button> */}
-          </div>
+              </div>
 
 
 
-          <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-            {memberData?.gcpGLNID && (
-              <button
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                GCP {memberData.gcpGLNID}
-              </button>
-            )}
-            {totalCategory && (
-              <button
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                {totalCategory}
-              </button>
-            )}
-            {memberData?.memberID && (
-              <button
-                className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                {t('Member ID')} {memberData?.memberID}
-              </button>
-            )}
+              <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                {memberData?.gcpGLNID && (
+                  <button
+                    className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                    GCP {memberData.gcpGLNID}
+                  </button>
+                )}
+                {totalCategory && (
+                  <button
+                    className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                    {totalCategory}
+                  </button>
+                )}
+                {memberData?.memberID && (
+                  <button
+                    className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+                    {t('Member ID')} {memberData?.memberID}
+                  </button>
+                )}
 
-            {/* <button
+                {/* <button
               onClick={handleGtinPage}
               className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
               {i18n.language === 'ar' ? (
@@ -566,97 +567,97 @@ const  ForeginGtin = () => {
                 </>
               )}
             </button> */}
-          </div>
-
-
-          <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-
-            <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn(t)}
-              loading={isLoading}
-              secondaryColor="secondary"
-              handleRowClickInParent={handleRowClickInParent}
-              uniqueId="customerListId"
-
-              dropDownOptions={[
-                // {
-                //   label: `${t('View')}`,
-                //   icon: (
-                //     <VisibilityIcon
-                //       fontSize="small"
-                //       color="action"
-                //       style={{ color: "rgb(37 99 235)" }}
-                //     />
-                //   ),
-                //   action: handleView,
-                // },
-                {
-                  label: `${t('Digital Links')}`,
-                  icon: (
-                    <VisibilityIcon
-                      fontSize="small"
-                      color="action"
-                      style={{ color: "rgb(37 99 235)" }}
-                    />
-                  ),
-                  action: handleDigitalUrlInfo,
-                }
-                ,
-                {
-                  label: `${t('Delete')}`,
-                  icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
-                  ,
-                  action: handleDelete,
-                }
-
-              ]}
-
-            />
-          </div>
-
-
-
-          <div id="barcode">
-            {tableSelectedRows?.map((barcode, index) => (
-              <div id="Qrcodeserails" className="hidden" key={index}>
-                <div id="header">
-                  <div>
-                    <img src={logo} id="imglogo" alt="" />
-                  </div>
-                </div>
-                <div id="inside-BRCode">
-                  <QRCodeSVG value={barcode} width="170" height="70" />
-                </div>
-                <div id="itemSerialNo">
-                  {/* {barcode} */}
-                </div>
               </div>
-            ))}
-          </div>
 
 
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-          {/* 2d Barcode */}
-          <div id="2dbarcode">
-            {tableSelectedRows?.map((barcode, index) => (
-              <div id="Qrcodeserails" className="hidden" key={index}>
-                <div id="header">
-                  <div>
-                    <img src={logo} id="imglogo" alt="" />
-                  </div>
-                </div>
-                <div id="inside-BRCode">
-                  <Barcode value={barcode} width={1.9} height={65} />
-                </div>
-                <div id="itemSerialNo">
-                  {/* {barcode} */}
-                </div>
+                <DataTable data={data} title={t('Foreign GTIN')} columnsName={foreignGtinColumn(t)}
+                  loading={isLoading}
+                  secondaryColor="secondary"
+                  handleRowClickInParent={handleRowClickInParent}
+                  uniqueId="customerListId"
+
+                  dropDownOptions={[
+                    // {
+                    //   label: `${t('View')}`,
+                    //   icon: (
+                    //     <VisibilityIcon
+                    //       fontSize="small"
+                    //       color="action"
+                    //       style={{ color: "rgb(37 99 235)" }}
+                    //     />
+                    //   ),
+                    //   action: handleView,
+                    // },
+                    {
+                      label: `${t('Digital Links')}`,
+                      icon: (
+                        <VisibilityIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleDigitalUrlInfo,
+                    }
+                    ,
+                    {
+                      label: `${t('Delete')}`,
+                      icon: <DeleteIcon fontSize="small" style={{ color: '#FF0032' }} />
+                      ,
+                      action: handleDelete,
+                    }
+
+                  ]}
+
+                />
               </div>
-            ))}
-          </div>
 
+
+
+              <div id="barcode">
+                {tableSelectedRows?.map((barcode, index) => (
+                  <div id="Qrcodeserails" className="hidden" key={index}>
+                    <div id="header">
+                      <div>
+                        <img src={logo} id="imglogo" alt="" />
+                      </div>
+                    </div>
+                    <div id="inside-BRCode">
+                      <QRCodeSVG value={barcode} width="170" height="70" />
+                    </div>
+                    <div id="itemSerialNo">
+                      {/* {barcode} */}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+
+
+              {/* 2d Barcode */}
+              <div id="2dbarcode">
+                {tableSelectedRows?.map((barcode, index) => (
+                  <div id="Qrcodeserails" className="hidden" key={index}>
+                    <div id="header">
+                      <div>
+                        <img src={logo} id="imglogo" alt="" />
+                      </div>
+                    </div>
+                    <div id="inside-BRCode">
+                      <Barcode value={barcode} width={1.9} height={65} />
+                    </div>
+                    <div id="itemSerialNo">
+                      {/* {barcode} */}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
         </div>
-        </div>
-       </div>
       </div>
     </div>
   )

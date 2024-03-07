@@ -3,6 +3,7 @@ import { Autocomplete, Button, CircularProgress, TextField, debounce } from '@mu
 import newRequest from '../../../../utils/userRequest';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { selectedLanguage } from '../../../../utils/config';
 
 const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
     const { t, i18n } = useTranslation();
@@ -116,6 +117,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
                 adminId: selectedAdmin?.id,
                 message: optionalMessage ? optionalMessage : "",
                 assigningAdminName: adminData?.username,
+                selectedLanguage: selectedLanguage,
             });
 
             console.log(res?.data);

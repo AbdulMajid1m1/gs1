@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import PhoneInput from 'react-phone-input-2';
 import { useTranslation } from 'react-i18next';
+import { selectedLanguage } from '../../../../utils/config';
 
 const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
   // get the sesstion data
@@ -41,6 +42,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
         "mobile": mobileNumber,
         "cr_number": gs1MemberData?.cr_number,
         "cr_activity": gs1MemberData?.cr_activity,
+        selectedLanguage: selectedLanguage,
       });
 
       toast.success(response?.data?.message || `${t('Sub Member Added Successfully')}`, {

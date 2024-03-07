@@ -211,12 +211,13 @@ export const migrateUser = async (req, res, next) => {
         // Validate the MemberID in the request body
         const schema = Joi.object({
             MemberID: Joi.number().required(),
+            selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         });
         const { error, value } = schema.validate(req.body);
         if (error) {
             return next(createError(400, error.details[0].message));
         }
-        const { MemberID } = value;
+        const { MemberID, selectedLanguage } = value;
 
         // Fetch the latest active membership history record
         const latestMembership = await oldGs1Prisma.membershipHistory.findFirst({
@@ -432,8 +433,9 @@ export const migrateUser = async (req, res, next) => {
         // parse cart items to get the product name
         cart.cart_items = JSON.parse(cart.cart_items);
         const data1 = {
-            topHeading: "INVOICE",
-            secondHeading: "BILL TO",
+
+            topHeading: selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+            secondHeading: selectedLanguage === 'en' ? "BILL TO" : "فاتورة إلى",
             memberData: {
                 qrCodeDataURL: qrCodeDataURL,
                 // registeration: `New Registration for the year ${new Date().getFullYear()}`,
@@ -491,6 +493,7 @@ export const migrateUser = async (req, res, next) => {
         if (!fsSync.existsSync(pdfDirectory)) {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
+        // let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
         // Generate PDF and save it to the specified path
         const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'oldMembersCustomInvoice.ejs'), data1, pdfFilePath);
@@ -520,8 +523,10 @@ export const migrateUser = async (req, res, next) => {
 
         //send email to user
         const mailOptions = {
-            subject: 'GS1 Saudi Arabia Credentials & Invoice',
-            html: `
+            // subject: 'GS1 Saudi Arabia Credentials & Invoice',
+
+            subject: selectedLanguage === 'en' ? 'GS1 Saudi Arabia Credentials & Invoice' : 'اعتمادات GS1 السعودية وفاتورة',
+            html: selectedLanguage === 'en' ? `
             <div style="font-family: Arial, sans-serif; color: #333;">
                 <h2 style="color: #004aad;">Thank you for your interest in GS1 Saudi Arabia.</h2>
                 <p>These are your GS1 Member Portal login credentials:</p>
@@ -536,6 +541,22 @@ export const migrateUser = async (req, res, next) => {
                 <p>For any queries, please contact us on <strong>920000927</strong> or email us at <a href="mailto:${ADMIN_EMAIL}" style="color: #004aad;">${ADMIN_EMAIL}</a>.</p>
                 <p>Best regards,</p>
                 <p>GS1 Saudi Arabia</p>
+            </div>
+            ` : `
+            <div style="font-family: Arial, sans-serif; color: #333;">
+                <h2 style="color: #004aad;">شكراً لاهتمامك بـ GS1 السعودية.</h2>
+                <p>هذه هي بيانات تسجيل الدخول الخاصة بك لبوابة أعضاء GS1:</p>
+                <ul>
+                    <li>اسم المستخدم: <strong>${createdUser.email}</strong></li>
+                    <li>كلمة المرور: <strong>${newPassword}</strong></li>
+                    <li>النشاط: <strong>${member.MemberNameE}</strong></li> <!-- Assuming you need to translate or adjust the member name as well -->
+                </ul>
+                <p>يرجى إيجاد الفاتورة المرفقة لعضويتك في GS1 السعودية.</p>
+                <p>يرجى ملاحظة أنه سيتم تفعيل عضويتك بعد استلام الدفعة.</p>
+                <p>قم بتسجيل الدخول إلى بوابة الأعضاء الخاصة بك لعرض وتحميل الإيصال.</p>
+                <p>لأي استفسارات، يرجى الاتصال بنا على <strong>920000927</strong> أو مراسلتنا عبر البريد الإلكتروني على <a href="mailto:${ADMIN_EMAIL}" style="color: #004aad;">${ADMIN_EMAIL}</a>.</p>
+                <p>مع أطيب التحيات،</p>
+                <p>GS1 السعودية</p>
             </div>
             `,
             attachments: [
@@ -558,7 +579,7 @@ export const migrateUser = async (req, res, next) => {
             {
                 fromEmail: ADMIN_EMAIL,
                 // toEmail: createdUser.email,
-                toEmail: 'abdulmajid1m2@gmail.com',
+                toEmail: 'abdulmajid1m2@gmail.com',// TODO: change it
                 subject: mailOptions.subject,
                 htmlContent: mailOptions.html,
                 attachments: mailOptions.attachments,
@@ -568,10 +589,8 @@ export const migrateUser = async (req, res, next) => {
 
         const logData = {
             subject: 'Member Registration',
-
             user_id: createdUser.id,
-            // TODO: take email form current admin token
-            // admin_id: 'admin@gs1sa.link',
+            admin_id: req?.admin?.adminId,
 
         }
 

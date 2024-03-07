@@ -18,6 +18,7 @@ import CompanyArabicPopUp from './CompanyArabicPopUp';
 import CrActivityPopUp from './CrActivityPopUp';
 import CrNumberPopUp from './CrNumberPopUp';
 import TermsAndCondition from './TermsAndCondition';
+import { selectedLanguage } from '../../../utils/config';
 
 
 const MemmberRegisteration = () => {
@@ -433,11 +434,11 @@ const MemmberRegisteration = () => {
     };
 
 
-
+    console.log(selectedLanguage);
 
     newRequest
 
-      .post("/users", requestBody)
+      .post("/users?selectedLanguage=" + selectedLanguage, requestBody)
       .then((response) => {
         console.log(response.data);
         setIsLoading(false);

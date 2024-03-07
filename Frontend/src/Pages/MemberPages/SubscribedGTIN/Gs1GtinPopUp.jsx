@@ -6,6 +6,7 @@ import SendIcon from '@mui/icons-material/Send';
 import "./Gs1GtinPopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../utils/userRequest';
+import { selectedLanguage } from '../../../utils/config';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData, fetchMemberHistoryData,
@@ -214,7 +215,8 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.put('/changeMembership/upgradeMembershipRequest', {
           "user_id": userData?.id,
           "new_subscription_product_Id": selectedGtinBarcodes?.id,
-          subType: subType
+          subType: subType,
+          selectedLanguage: selectedLanguage,
 
         });
         console.log(res.data);
@@ -230,6 +232,7 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
           "user_id": userData?.id,
           "new_subscription_product_Id": selectedGtinBarcodes?.id,
+          selectedLanguage: selectedLanguage,
 
 
         });
@@ -246,6 +249,7 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.post('/changeMembership/addAdditionalProductsRequest', {
           "user_id": userData?.id,
           "gtinUpgradeProductId": selectedGtinBarcodes?.id,
+          selectedLanguage: selectedLanguage,
         });
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
@@ -260,7 +264,8 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.post('/changeMembership/addAdditionalGlnRequest', {
           "userId": userData?.id,
           "additionalGlnId": selectedGtinBarcodes?.id,
-          otherProductSubscriptionId: selectGLnRow?.id
+          otherProductSubscriptionId: selectGLnRow?.id,
+          selectedLanguage: selectedLanguage,
         });
         console.log(res.data);
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
