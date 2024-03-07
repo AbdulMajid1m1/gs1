@@ -46,6 +46,7 @@ export const handleInvoiceReminders = async () => {
             if (!bankSlip) {
                 // Prepare email data if no bank slip is found
                 const user = invoice.user;
+                console.log("checkUser", invoice.user)
                 const admin = user.assign_to_admin;
                 const cartValue = user.carts[0];
                 cartValue.cart_items = JSON.parse(cartValue.cart_items);
@@ -97,7 +98,7 @@ export const handleInvoiceReminders = async () => {
                 if (!fs1.existsSync(pdfDirectory)) {
                     fs1.mkdirSync(pdfDirectory, { recursive: true });
                 }
-                
+
                 await convertEjsToPdf(path.join(__dirname, '..', '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
 
                 const invoiceBuffer = await fs.readFile(pdfFilePath);

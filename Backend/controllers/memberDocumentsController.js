@@ -612,19 +612,32 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         company_name_eng: userUpdateResult?.company_name_eng,
                     },
                     general: {
-                        gcp_certificate_detail1:
-                            ['Global Trade Item Number(GTIN)',
-                                'Serial Shipping Container Code (SSCC)',
-                                'Global Location Number (GLN)',
-                                'Global Document Type Identifier(GDTI)',
-                                'Global Service Relation Number(GSRN)'
-                            ], // Dummy data, replace with actual detail data from your API
-                        gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
-                            'Global Identification Number for',
-                            'Consignment(GSNC)',
+                        gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
+                            'Global Trade Item Number(GTIN)',
+                            'Serial Shipping Container Code (SSCC)',
+                            'Global Location Number (GLN)',
+                            'Global Document Type Identifier(GDTI)',
+                            'Global Service Relation Number(GSRN)'
+                        ] : [
+                            'رقم السلعة التجارية العالمي (GTIN)',
+                            'رمز الحاوية الشحن التسلسلي (SSCC)',
+                            'رقم الموقع العالمي (GLN)',
+                            'معرف نوع الوثيقة العالمي (GDTI)',
+                            'رقم علاقة الخدمة العالمي (GSRN)'
+                        ],
+                        gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
+                            'Global Individual Asset Identifier(GIAI)',
+                            'Global Returnable Asset Identifier(GRAI)',
+                            'Global Identification Number for Consignment(GSNC)',
                             'Global Shipment Identification Number (GSIN)'
-                        ], // Dummy data, replace with actual detail data from your API
-                        gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+                        ] : [
+                            // Arabic translations for the second list
+                            'معرف الأصل الفردي العالمي (GIAI)',
+                            'معرف الأصل القابل للعودة العالمي (GRAI)',
+                            'رقم التعريف العالمي للشحنة (GSNC)',
+                            'رقم تعريف الشحنة العالمي (GSIN)'
+                        ],
+                        gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
                     },
 
                     userData: {
@@ -646,8 +659,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 if (!fsSync.existsSync(pdfDirectory)) {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
-
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+                let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath, true);
                 pdfBuffer = await fs1.readFile(Certificatepath);
 
                 // Send an email based on the updated status
@@ -991,19 +1004,32 @@ export const regenerateGcpCertificate = async (req, res, next) => {
                 company_name_eng: existingUser?.company_name_eng,
             },
             general: {
-                gcp_certificate_detail1:
-                    ['Global Trade Item Number(GTIN)',
-                        'Serial Shipping Container Code (SSCC)',
-                        'Global Location Number (GLN)',
-                        'Global Document Type Identifier(GDTI)',
-                        'Global Service Relation Number(GSRN)'
-                    ], // Dummy data, replace with actual detail data from your API
-                gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
-                    'Global Identification Number for',
-                    'Consignment(GSNC)',
+                gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
+                    'Global Trade Item Number(GTIN)',
+                    'Serial Shipping Container Code (SSCC)',
+                    'Global Location Number (GLN)',
+                    'Global Document Type Identifier(GDTI)',
+                    'Global Service Relation Number(GSRN)'
+                ] : [
+                    'رقم السلعة التجارية العالمي (GTIN)',
+                    'رمز الحاوية الشحن التسلسلي (SSCC)',
+                    'رقم الموقع العالمي (GLN)',
+                    'معرف نوع الوثيقة العالمي (GDTI)',
+                    'رقم علاقة الخدمة العالمي (GSRN)'
+                ],
+                gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
+                    'Global Individual Asset Identifier(GIAI)',
+                    'Global Returnable Asset Identifier(GRAI)',
+                    'Global Identification Number for Consignment(GSNC)',
                     'Global Shipment Identification Number (GSIN)'
-                ], // Dummy data, replace with actual detail data from your API
-                gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+                ] : [
+                    // Arabic translations for the second list
+                    'معرف الأصل الفردي العالمي (GIAI)',
+                    'معرف الأصل القابل للعودة العالمي (GRAI)',
+                    'رقم التعريف العالمي للشحنة (GSNC)',
+                    'رقم تعريف الشحنة العالمي (GSIN)'
+                ],
+                gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
             },
 
             userData: {
@@ -1050,7 +1076,9 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         } catch (err) {
             console.error(`Error deleting file: ${deletingDocumentPath}`, err);
         }
-        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+        let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
+
+        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath, true);
         let pdfBuffer = await fs1.readFile(Certificatepath);
         const updatedDocument = await prisma.member_documents.update({
             where: { id: currentDocument.id },

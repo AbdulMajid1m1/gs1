@@ -6,11 +6,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, refreshMemberbankSlipData, userData
 }) => {
+  const { selectedLanguage } = useLanguage();
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
@@ -189,7 +190,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       invoiceType: gs1MemberInvoiceData?.type,
-      selectedLanguage:selectedLanguage,
+      selectedLanguage: selectedLanguage,
     }
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,

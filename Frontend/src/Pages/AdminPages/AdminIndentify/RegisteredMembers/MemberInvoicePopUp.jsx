@@ -6,12 +6,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
   fetchRegisteredProductsData, userData, fetchMemberDocumentsData,
 }) => {
+  const { selectedLanguage } = useLanguage();
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log("gs1MemberInvoiceData", gs1MemberInvoiceData);
   const gtinId = sessionStorage.getItem("gtinId");

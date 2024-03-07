@@ -14,12 +14,12 @@ import { toast } from "react-toastify";
 import Barcode from "react-barcode";
 import { useTranslation } from 'react-i18next';
 import DashboardRightHeader from "../../../../components/DashboardRightHeader/DashboardRightHeader";
-import { selectedLanguage } from "../../../../utils/config";
+import { useLanguage } from "../../../../Contexts/LanguageContext";
 
 const ForeginGtin = () => {
   const [data, setData] = useState([]);
   const { t, i18n } = useTranslation();
-
+  const { selectedLanguage } = useLanguage();
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   console.log(memberData);

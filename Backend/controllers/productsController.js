@@ -980,6 +980,7 @@ export const generateGtinCertificate = async (req, res, next) => {
         };
 
         // Generate PDF using provided function
+        
         let ejsFile = selectedLanguage === "en" ? 'gtinCertificate.ejs' : 'gtinCertificate_Ar.ejs';
         const pdfBuffer = await convertEjsToPdf2(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data);
 

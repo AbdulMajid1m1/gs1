@@ -17,12 +17,12 @@ import Barcode from "react-barcode";
 import bwipjs from "bwip-js";
 import { useTranslation } from 'react-i18next';
 import DashboardRightHeader from "../../../components/DashboardRightHeader/DashboardRightHeader";
-import { selectedLanguage } from "../../../utils/config";
+import { useLanguage } from "../../../Contexts/LanguageContext";
 
 const Gtin = () => {
   const [data, setData] = useState([]);
   const { t, i18n } = useTranslation();
-
+  const { selectedLanguage } = useLanguage();
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   console.log(memberData);
@@ -589,7 +589,7 @@ const Gtin = () => {
 
               <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
-                <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn(t)}
+                <DataTable data={data} title={t('GTIN LIST')} columnsName={GtinColumn(t, i18n, selectedLanguage)}
                   loading={isLoading}
                   secondaryColor="secondary"
                   handleRowClickInParent={handleRowClickInParent}

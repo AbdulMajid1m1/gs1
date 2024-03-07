@@ -7,11 +7,8 @@ import { generateRandomTransactionId } from '../utils/utils.js';
 import { ADMIN_EMAIL, BACKEND_URL } from '../configs/envConfig.js';
 import path from 'path';
 import fs from 'fs/promises';
-import fs1 from 'fs';
 import QRCode from 'qrcode';
 import { fileURLToPath } from 'url'; // Import the fileURLToPath function
-import ejs from 'ejs';
-import puppeteer from 'puppeteer';
 import fsSync from 'fs';
 import { createMemberLogs } from '../utils/functions/historyLogs.js';
 import { sendEmail } from '../services/emailTemplates.js';
@@ -493,10 +490,10 @@ export const migrateUser = async (req, res, next) => {
         if (!fsSync.existsSync(pdfDirectory)) {
             fsSync.mkdirSync(pdfDirectory, { recursive: true });
         }
-        // let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+        let ejsFile = selectedLanguage === 'en' ? 'oldMembersCustomInvoice.ejs' : 'oldMembersCustomInvoice_Ar.ejs';
 
         // Generate PDF and save it to the specified path
-        const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'oldMembersCustomInvoice.ejs'), data1, pdfFilePath);
+        const filedata = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data1, pdfFilePath);
 
         // now fetch the pdf file from the path and send it as attachment
         const invoiceBuffer = await fs.readFile(pdfFilePath);
@@ -636,6 +633,12 @@ function mapMembershipTypeToCategory(membershipName) {
 
 
 function mapMemberToNewUser(member) {
+
+    // Function to remove dashes (-) and spaces from a phone number
+    const cleanPhoneNumber = (phoneNumber) => {
+        return phoneNumber.replace(/[-\s]/g, '');
+    };
+
     let newUser = {
         // Direct mappings from Member to users
         // email: member.Email || '', 
@@ -643,12 +646,12 @@ function mapMemberToNewUser(member) {
         email: 'abdulmajid1m1@gmail.com',
         fname: member.MemberNameE || '',
         lname: member.MemberNameA || '',
-        mobile: member.Phone1 || '',
+        mobile: member.Phone1 ? cleanPhoneNumber(member.Phone1) : '',
         company_name_eng: member.MemberNameE || '',
         company_name_arabic: member.MemberNameA || '',
         website: member.Website || '',
         po_box: member.POBox || '',
-        companyLandLine: member.Phone2 || '',
+        companyLandLine: member.Phone2 ? cleanPhoneNumber(member.Phone2) : '',
         no_of_staff: member.Staff ? member.Staff.toString() : '',
         gcpGLNID: member.GLNID ? member.GLNID.toString() : '',
         gln: member.GLN || '',

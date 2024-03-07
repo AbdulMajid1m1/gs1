@@ -5,9 +5,10 @@ import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMemberDocumentsData }) => {
+    const { selectedLanguage } = useLanguage();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const { t, i18n } = useTranslation();

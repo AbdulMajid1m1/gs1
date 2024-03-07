@@ -6,10 +6,11 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
 import { Autocomplete, Button, CircularProgress, TextField } from '@mui/material';
-import { selectedLanguage } from '../../../utils/config';
+import { useLanguage } from '../../../Contexts/LanguageContext';
 
 const SubscribeOtherProductsPopUp = ({ isVisible, setVisibility, refreshSubscriptionData }) => {
   const { t, i18n } = useTranslation();
+  const { selectedLanguage } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [registeredProductsData, setRegisteredProductsData] = useState([]);

@@ -1,7 +1,7 @@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import imageLiveUrl from '../utils/urlConverter/imageLiveUrl';
 import QRCode from 'qrcode.react';
-import { backendUrl, baseUrl, selectedLanguage } from './config';
+import { backendUrl, baseUrl } from './config';
 import { useGridApiContext } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
@@ -1227,7 +1227,7 @@ export const inventoryColumn = [
 //   },
 // ];
 
-export const GtinColumn = (t, i18n) => [
+export const GtinColumn = (t, i18n, selectedLanguage) => [
   // {
   //   field: "product_id",
   //   headerName: "Product ID",

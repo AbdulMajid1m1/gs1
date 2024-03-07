@@ -6,11 +6,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const DowngradePopUp = ({ isVisible, setVisibility, userData
 }) => {
+  const { selectedLanguage } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);

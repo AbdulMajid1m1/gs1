@@ -6,11 +6,12 @@ import SendIcon from '@mui/icons-material/Send';
 import "./Gs1GtinPopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 import newRequest from '../../../utils/userRequest';
-import { selectedLanguage } from '../../../utils/config';
+import { useLanguage } from '../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData, fetchMemberHistoryData,
 }) => {
+  const { selectedLanguage } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -43,7 +44,7 @@ const Gs1GtinPopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
       res.data?.otherProductSubscriptions.forEach((item) => {
         // add price and other_products_subscription_total_price
-        total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+        total += parseInt(item?.price || 0) + parseInt(item.other_products_subscription_total_price);
       });
       console.log(total);
       setTotalPrice(total);

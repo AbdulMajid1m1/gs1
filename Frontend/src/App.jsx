@@ -140,6 +140,7 @@ import GTINReports from "./Pages/UserPages/GTINReports/GTINReports.jsx";
 import AdminGtinReports from "./Pages/AdminPages/AdminTab/Reports/AdminGtinReports/AdminGtinReports.jsx";
 import Managesections from "./Pages/AdminPages/FrontEnd/ManageSections/Managesections.jsx";
 import UserGuide from "./Pages/UserPages/UserGuide/UserGuide.jsx";
+import { LanguageProvider } from "./Contexts/LanguageContext.jsx";
 
 const queryClient = new QueryClient()
 
@@ -180,582 +181,584 @@ const App = () => {
   return (
     <>
       {/* <AuthProvider> */}
-      <DataTableProvider2>
-        <DataTableProvider>
-          <SnackbarProvider>
+      <LanguageProvider>
+        <DataTableProvider2>
+          <DataTableProvider>
+            <SnackbarProvider>
 
-            <div>
-              <BrowserRouter>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <UserLayout>
-                        <Routes>
-                          {/* <Route path="/" element={<HomePage />} /> */}
-                          <Route index element={<HomePage />} />
-                        </Routes>
-                      </UserLayout>
-                    }
-                  />
-                  <Route path="/admin-login" element={<AuthProvider><AdminLogin /></AuthProvider>} />
-
-
-                  <Route path="/get-barcode" element={<GetBarcode />} />
-                  <Route path="/member-registration" element={<MemmberRegisteration />} />
-                  <Route path="/email-address" element={<EmailAddress />} />
-                  <Route path="/select-activity" element={<SelectActivity />} />
-                  <Route path="/verify-code" element={<VerifyCode />} />
-                  <Route path="/:id" element={<BlogPages />} />
-
-                  <Route
-                    path="productinformation"
-                    element={
-                      <MapProvider>
-                        <ProductInformation />
-                      </MapProvider>
-                    }
-                  />
-                  <Route path="/gtin-reporter" element={<GTINReports />} />
-                  <Route path="/user-guide" element={<UserGuide />} />
-
-                  {/* <Route path="main-popup" element={<MainPopUp />} /> */}
-
-
-                  {/* Member Routes */}
-                  <Route
-                    path="/member/*"
-                    element={
-                      <MainLayout>
-                        <QueryClientProvider client={queryClient}>
+              <div>
+                <BrowserRouter>
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={
+                        <UserLayout>
                           <Routes>
-                            {/* <Route path="dashboard" element={<MemberDashboard />} /> */}
-                            <Route path="dashboard" element={<MemberProtectedRoute Component={MemberDashboard} />} />
-                            <Route path="update-vendor" element={<UpdateVendor />} />
-                            {/* <Route path="customer-list" element={<ListOfCustomer />} /> */}
-                            <Route path="customer-list" element={<MemberProtectedRoute Component={ListOfCustomer} />} />
-                            {/* <Route path="member-brands" element={<MemberBrands />} /> */}
-                            <Route path="member-brands" element={<MemberProtectedRoute Component={MemberBrands} />} />
-                            {/* <Route path="gtin" element={<GTIN />} /> */}
-                            <Route path="gtin" element={<MemberProtectedRoute Component={GTIN} />} />
-                            {/* <Route path="addproducts" element={<GTINAddProducts />} /> */}
-                            <Route path="addproducts" element={<MemberProtectedRoute Component={GTINAddProducts} />} />
-                            {/* <Route
+                            {/* <Route path="/" element={<HomePage />} /> */}
+                            <Route index element={<HomePage />} />
+                          </Routes>
+                        </UserLayout>
+                      }
+                    />
+                    <Route path="/admin-login" element={<AuthProvider><AdminLogin /></AuthProvider>} />
+
+
+                    <Route path="/get-barcode" element={<GetBarcode />} />
+                    <Route path="/member-registration" element={<MemmberRegisteration />} />
+                    <Route path="/email-address" element={<EmailAddress />} />
+                    <Route path="/select-activity" element={<SelectActivity />} />
+                    <Route path="/verify-code" element={<VerifyCode />} />
+                    <Route path="/:id" element={<BlogPages />} />
+
+                    <Route
+                      path="productinformation"
+                      element={
+                        <MapProvider>
+                          <ProductInformation />
+                        </MapProvider>
+                      }
+                    />
+                    <Route path="/gtin-reporter" element={<GTINReports />} />
+                    <Route path="/user-guide" element={<UserGuide />} />
+
+                    {/* <Route path="main-popup" element={<MainPopUp />} /> */}
+
+
+                    {/* Member Routes */}
+                    <Route
+                      path="/member/*"
+                      element={
+                        <MainLayout>
+                          <QueryClientProvider client={queryClient}>
+                            <Routes>
+                              {/* <Route path="dashboard" element={<MemberDashboard />} /> */}
+                              <Route path="dashboard" element={<MemberProtectedRoute Component={MemberDashboard} />} />
+                              <Route path="update-vendor" element={<UpdateVendor />} />
+                              {/* <Route path="customer-list" element={<ListOfCustomer />} /> */}
+                              <Route path="customer-list" element={<MemberProtectedRoute Component={ListOfCustomer} />} />
+                              {/* <Route path="member-brands" element={<MemberBrands />} /> */}
+                              <Route path="member-brands" element={<MemberProtectedRoute Component={MemberBrands} />} />
+                              {/* <Route path="gtin" element={<GTIN />} /> */}
+                              <Route path="gtin" element={<MemberProtectedRoute Component={GTIN} />} />
+                              {/* <Route path="addproducts" element={<GTINAddProducts />} /> */}
+                              <Route path="addproducts" element={<MemberProtectedRoute Component={GTINAddProducts} />} />
+                              {/* <Route
                                 path="upate-gtin-product/:productId"
                                 element={<GTINUpdateProducts />}
                               /> */}
-                            <Route path="upate-gtin-product/:productId" element={<MemberProtectedRoute Component={GTINUpdateProducts} />} />
+                              <Route path="upate-gtin-product/:productId" element={<MemberProtectedRoute Component={GTINUpdateProducts} />} />
 
-                            {/* <Route path="front-end" element={<Frontend />} /> */}
-                            <Route path="front-end" element={<MemberProtectedRoute Component={Frontend} />} />
-                            {/* <Route path="settings" element={<Settings />} /> */}
-                            <Route path="settings" element={<MemberProtectedRoute Component={Settings} />} />
-                            {/* <Route path="master-data" element={<MasterData />} /> */}
-                            <Route path="master-data" element={<MemberProtectedRoute Component={MasterData} />} />
-                            {/* <Route path="reports" element={<Reports />} /> */}
-                            <Route path="reports" element={<MemberProtectedRoute Component={Reports} />} />
-                            {/* <Route
+                              {/* <Route path="front-end" element={<Frontend />} /> */}
+                              <Route path="front-end" element={<MemberProtectedRoute Component={Frontend} />} />
+                              {/* <Route path="settings" element={<Settings />} /> */}
+                              <Route path="settings" element={<MemberProtectedRoute Component={Settings} />} />
+                              {/* <Route path="master-data" element={<MasterData />} /> */}
+                              <Route path="master-data" element={<MemberProtectedRoute Component={MasterData} />} />
+                              {/* <Route path="reports" element={<Reports />} /> */}
+                              <Route path="reports" element={<MemberProtectedRoute Component={Reports} />} />
+                              {/* <Route
                                 path="view-gtin-product/:productId"
                                 element={<GTINViewProduct />}
                               /> */}
-                            <Route path="view-gtin-product/:productId" element={<MemberProtectedRoute Component={GTINViewProduct} />} />
-                            {/* <Route path="digitalurl" element={<DigitalUrlInfo />} /> */}
-                            <Route path="digitalurl" element={<MemberProtectedRoute Component={DigitalUrlInfo} />} />
+                              <Route path="view-gtin-product/:productId" element={<MemberProtectedRoute Component={GTINViewProduct} />} />
+                              {/* <Route path="digitalurl" element={<DigitalUrlInfo />} /> */}
+                              <Route path="digitalurl" element={<MemberProtectedRoute Component={DigitalUrlInfo} />} />
 
-                            {/* <Route path="gln" element={<GLN />} /> */}
-                            <Route path="gln" element={<MemberProtectedRoute Component={GLN} />} />
-                            {/* <Route path="add-gln" element={<AddGLN />} /> */}
-                            <Route path="add-gln" element={<MemberProtectedRoute Component={AddGLN} />} />
-                            {/* <Route path="update-gln/:Id" element={<UpdateGLN />} /> */}
-                            <Route path="update-gln/:Id" element={<MemberProtectedRoute Component={UpdateGLN} />} />
+                              {/* <Route path="gln" element={<GLN />} /> */}
+                              <Route path="gln" element={<MemberProtectedRoute Component={GLN} />} />
+                              {/* <Route path="add-gln" element={<AddGLN />} /> */}
+                              <Route path="add-gln" element={<MemberProtectedRoute Component={AddGLN} />} />
+                              {/* <Route path="update-gln/:Id" element={<UpdateGLN />} /> */}
+                              <Route path="update-gln/:Id" element={<MemberProtectedRoute Component={UpdateGLN} />} />
 
-                            {/* <Route path="sscc" element={<SSCC />} /> */}
-                            <Route path="sscc" element={<MemberProtectedRoute Component={SSCC} />} />
-                            {/* <Route path="addsscc" element={<AddSSCC />} /> */}
-                            <Route path="addsscc" element={<MemberProtectedRoute Component={AddSSCC} />} />
-                            {/* <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} /> */}
-                            <Route path="update-sscc/:sscc_id" element={<MemberProtectedRoute Component={UpdateSSCC} />} />
+                              {/* <Route path="sscc" element={<SSCC />} /> */}
+                              <Route path="sscc" element={<MemberProtectedRoute Component={SSCC} />} />
+                              {/* <Route path="addsscc" element={<AddSSCC />} /> */}
+                              <Route path="addsscc" element={<MemberProtectedRoute Component={AddSSCC} />} />
+                              {/* <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} /> */}
+                              <Route path="update-sscc/:sscc_id" element={<MemberProtectedRoute Component={UpdateSSCC} />} />
 
-                            {/* <Route path="member-foregin-gtin" element={<ForeginGtin />} /> */}
-                            <Route path="member-foregin-gtin" element={<MemberProtectedRoute Component={ForeginGtin} />} />
-                            {/* <Route path="foreign-digital-link" element={<DigitalLinkInfo />} /> */}
-                            <Route path="foreign-digital-link" element={<MemberProtectedRoute Component={DigitalLinkInfo} />} />
-                            {/* <Route path="member-add-foreign" element={<AddForeignGtin />} /> */}
-                            <Route path="member-add-foreign" element={<MemberProtectedRoute Component={AddForeignGtin} />} />
+                              {/* <Route path="member-foregin-gtin" element={<ForeginGtin />} /> */}
+                              <Route path="member-foregin-gtin" element={<MemberProtectedRoute Component={ForeginGtin} />} />
+                              {/* <Route path="foreign-digital-link" element={<DigitalLinkInfo />} /> */}
+                              <Route path="foreign-digital-link" element={<MemberProtectedRoute Component={DigitalLinkInfo} />} />
+                              {/* <Route path="member-add-foreign" element={<AddForeignGtin />} /> */}
+                              <Route path="member-add-foreign" element={<MemberProtectedRoute Component={AddForeignGtin} />} />
 
-                            {/* <Route path="gs1-members" element={<Gs1Members />} /> */}
-                            <Route path="gs1-members" element={<MemberProtectedRoute Component={Gs1Members} />} />
-                            {/* <Route path="member-profile" element={<MemberProfile />} /> */}
-                            <Route path="member-profile" element={<MemberProtectedRoute Component={MemberProfile} />} />
+                              {/* <Route path="gs1-members" element={<Gs1Members />} /> */}
+                              <Route path="gs1-members" element={<MemberProtectedRoute Component={Gs1Members} />} />
+                              {/* <Route path="member-profile" element={<MemberProfile />} /> */}
+                              <Route path="member-profile" element={<MemberProtectedRoute Component={MemberProfile} />} />
 
-                            {/* <Route
+                              {/* <Route
                             path="view-gs1-member/:Id"
                             element={<Gs1MembersView />}
                           /> */}
 
-                            {/* <Route path="payment-slips" element={<PaymentSlips />} /> */}
-                            <Route path="payment-slips" element={<MemberProtectedRoute Component={PaymentSlips} />} />
-                            {/* <Route path="bank-slip" element={<BankSlip />} /> */}
-                            <Route path="bank-slip" element={<MemberProtectedRoute Component={BankSlip} />} />
-                            {/* <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} /> */}
-                            <Route path="member-verified-by-gs1" element={<MemberProtectedRoute Component={MemberVerifiedByGS1} />} />
-                            {/* <Route path="transaction-history" element={<TransactionHistory />} /> */}
-                            <Route path="transaction-history" element={<MemberProtectedRoute Component={TransactionHistory} />} />
-                            {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
-                            <Route path="member-helpdesk" element={<MemberProtectedRoute Component={MemberHelpDesk} />} />
-                            {/* <Route path="subscribed-gtin" element={<SubscribedGTIN />} /> */}
-                            <Route path="subscribed-gtin" element={<MemberProtectedRoute Component={SubscribedGTIN} />} />
+                              {/* <Route path="payment-slips" element={<PaymentSlips />} /> */}
+                              <Route path="payment-slips" element={<MemberProtectedRoute Component={PaymentSlips} />} />
+                              {/* <Route path="bank-slip" element={<BankSlip />} /> */}
+                              <Route path="bank-slip" element={<MemberProtectedRoute Component={BankSlip} />} />
+                              {/* <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} /> */}
+                              <Route path="member-verified-by-gs1" element={<MemberProtectedRoute Component={MemberVerifiedByGS1} />} />
+                              {/* <Route path="transaction-history" element={<TransactionHistory />} /> */}
+                              <Route path="transaction-history" element={<MemberProtectedRoute Component={TransactionHistory} />} />
+                              {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
+                              <Route path="member-helpdesk" element={<MemberProtectedRoute Component={MemberHelpDesk} />} />
+                              {/* <Route path="subscribed-gtin" element={<SubscribedGTIN />} /> */}
+                              <Route path="subscribed-gtin" element={<MemberProtectedRoute Component={SubscribedGTIN} />} />
 
-                            {/* <Route path="udi" element={<UDI />} /> */}
-                            <Route path="udi" element={<MemberProtectedRoute Component={UDI} />} />
-                            {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
+                              {/* <Route path="udi" element={<UDI />} /> */}
+                              <Route path="udi" element={<MemberProtectedRoute Component={UDI} />} />
+                              {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
 
-                            {/* <Route path="member-data" element={<MemberData />} /> */}
-                            {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
-                            <Route path="member-crnumber" element={<MemberProtectedRoute Component={MemberCrNumber} />} />
-                            {/* <Route path="member-data" element={<MemberData />} /> */}
-                            <Route path="member-data" element={<MemberProtectedRoute Component={MemberData} />} />
-                            {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
-                            <Route path="member-crnumber" element={<MemberProtectedRoute Component={MemberCrNumber} />} />
-
-
-                          </Routes>
-                        </QueryClientProvider>
-                      </MainLayout>
-                    }
-                  />
-                </Routes>
+                              {/* <Route path="member-data" element={<MemberData />} /> */}
+                              {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
+                              <Route path="member-crnumber" element={<MemberProtectedRoute Component={MemberCrNumber} />} />
+                              {/* <Route path="member-data" element={<MemberData />} /> */}
+                              <Route path="member-data" element={<MemberProtectedRoute Component={MemberData} />} />
+                              {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
+                              <Route path="member-crnumber" element={<MemberProtectedRoute Component={MemberCrNumber} />} />
 
 
+                            </Routes>
+                          </QueryClientProvider>
+                        </MainLayout>
+                      }
+                    />
+                  </Routes>
 
-                <Routes>
-                  {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
 
-                  {/* Admin Routes */}
-                  <Route
-                    path="/admin/*"
-                    element={
-                      <AdminMainLayout>
-                        <QueryClientProvider client={queryClient}>
-                          <Routes>
-                            <Route path="dashboard" element={<Dashboard />} />
 
-                            <Route path="registered-members" element={
-                              <ProtectedRoute requiredPermission="members">
-                                <RegisteredMembers />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="registered-members" element={<RegisteredMembers />} /> */}
-                            {/* <Route
+                  <Routes>
+                    {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
+
+                    {/* Admin Routes */}
+                    <Route
+                      path="/admin/*"
+                      element={
+                        <AdminMainLayout>
+                          <QueryClientProvider client={queryClient}>
+                            <Routes>
+                              <Route path="dashboard" element={<Dashboard />} />
+
+                              <Route path="registered-members" element={
+                                <ProtectedRoute requiredPermission="members">
+                                  <RegisteredMembers />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="registered-members" element={<RegisteredMembers />} /> */}
+                              {/* <Route
                               path="registered-members/view-registered-member/:Id"
                               element={<MemberProfileData><RegisteredMembersView /></MemberProfileData>}
                             /> */}
-                            <Route
-                              path="registered-members/view-registered-member/:Id"
-                              element={<RegisteredMembersView />}
-                            />
+                              <Route
+                                path="registered-members/view-registered-member/:Id"
+                                element={<RegisteredMembersView />}
+                              />
 
-                            <Route
-                              path="view-gs1-member/:Id"
-                              element={<Gs1MembersView />}
-                            />
+                              <Route
+                                path="view-gs1-member/:Id"
+                                element={<Gs1MembersView />}
+                              />
 
-                            {/* <Route path="brands" element={<Brands />} /> */}
-                            <Route path="brands" element={
-                              <ProtectedRoute requiredPermission="brands">
-                                <Brands />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="licence-registry" element={<LicenceRegistry />} />
-                            <Route path="products" element={<Products />} />
-                            <Route path="products/add-products" element={<AddProducts />} />
-                            <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
-
-
-                            <Route path="Language/Dynamic" element={<LaanguageChange />} />
-                            {/* <Route path="expired-member" element={<ExpiredMember />} /> */}
-                            <Route path="expired-member" element={
-                              <ProtectedRoute requiredPermission="expired_member_gln_location">
-                                <ExpiredMember />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="member-products" element={<MemberProducts />} />
-                            {/* <Route path="verified-by-gs1" element={<VerifiedByGS1 />} /> */}
-                            <Route path="verified-by-gs1" element={
-                              <ProtectedRoute requiredPermission="verified_by_gs1">
-                                <VerifiedByGS1 />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="notfications" element={<Notifications />} />
-                            {/* <Route path="rejected" element={<Rejected />} /> */}
-                            <Route path="rejected" element={
-                              <ProtectedRoute requiredPermission="rejected">
-                                <Rejected />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="payment-slips" element={<AdminPaymentSlips />} /> */}
-                            <Route path="payment-slips" element={
-                              <ProtectedRoute requiredPermission="payment_slips_foreign_gtin">
-                                <AdminPaymentSlips />
-                              </ProtectedRoute>
-                            } />
-
-                            {/* <Route path="gcp-license" element={<GcpLicense />} /> */}
-                            <Route path="gcp-license" element={
-                              <ProtectedRoute requiredPermission="gcp_licenses">
-                                <GcpLicense />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="gs1-registries" element={<GS1Registries />} /> */}
-                            <Route path="gs1-registries" element={
-                              <ProtectedRoute requiredPermission="gs1_registries">
-                                <GS1Registries />
-                              </ProtectedRoute>
-                            } />
-
-                            <Route path="migration" element={<Migration />} />
-                            {/* <Route path="help-desk" element={<HelpDesk />} /> */}
-                            <Route path="help-desk" element={
-                              <ProtectedRoute requiredPermission="help_desk">
-                                <HelpDesk />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="old-inactive-members" element={<OldInActiveMembers />} /> */}
-                            <Route path="old-inactive-members" element={
-                              <ProtectedRoute requiredPermission="old_inactive_members">
-                                <OldInActiveMembers />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="staff-help-desk" element={<StaffHelpDesk />} /> */}
-                            <Route path="staff-help-desk" element={
-                              <ProtectedRoute requiredPermission="staff_help_desk">
-                                <StaffHelpDesk />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="member-expiry-page" element={<MembersExpiryPage />} /> */}
-                            <Route path="member-expiry-page" element={
-                              <ProtectedRoute requiredPermission="90_days_expiry_brands">
-                                <MembersExpiryPage />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="products-category" element={<ProductsCategory />} /> */}
-                            <Route path="products-category" element={
-                              <ProtectedRoute requiredPermission="gtin_barcode_pricing">
-                                <ProductsCategory />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="products-categories" element={<ProductCategories />} />
-                            {/* <Route path="others-products-category" element={<OtherProductsCategory />} /> */}
-                            <Route path="others-products-category" element={
-                              <ProtectedRoute requiredPermission="other_services_pricing">
-                                <OtherProductsCategory />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="addtional-gtin" element={<AdditionalGTIN />} /> */}
-                            <Route path="addtional-gtin" element={
-                              <ProtectedRoute requiredPermission="additional_gtin_pricing">
-                                <AdditionalGTIN />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="addtional-gln" element={<AdditionalGLN />} /> */}
-
-                            {/* <Route path="addtional-gln" element={<AdditionalGLN />} /> */}
-                            <Route path="addtional-gln" element={
-                              <ProtectedRoute requiredPermission="additional_gln">
-                                <AdditionalGLN />
-                              </ProtectedRoute>
-                            } />
-
-                            <Route path="gtin" element={
-                              <ProtectedRoute requiredPermission="gtin_barcode">
-                                <Gtin />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="admin-gtin" element={<AddGTINProducts />} />
-                            <Route path="admin-update-gtin/:productId" element={<AdminUpdateGTIN />} />
-                            <Route
-                              path="admin-view-gtin/:productId"
-                              element={<AdminGTINView />}
-                            />
-                            <Route path="admin-digitalurl" element={<AdminDigitalUrlInfo />} />
+                              {/* <Route path="brands" element={<Brands />} /> */}
+                              <Route path="brands" element={
+                                <ProtectedRoute requiredPermission="brands">
+                                  <Brands />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="licence-registry" element={<LicenceRegistry />} />
+                              <Route path="products" element={<Products />} />
+                              <Route path="products/add-products" element={<AddProducts />} />
+                              <Route path="products/edit-products/:Id" element={<UpdateProducts />} />
 
 
-                            {/* <Route path="gln" element={<Gln />} /> */}
-                            <Route path="gln" element={
-                              <ProtectedRoute requiredPermission="gln_location">
-                                <Gln />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="admin-addgln" element={<AdminAddGLN />} />
-                            <Route path="admin-update-gln/:Id" element={<AdminUpdateGLN />} />
+                              <Route path="Language/Dynamic" element={<LaanguageChange />} />
+                              {/* <Route path="expired-member" element={<ExpiredMember />} /> */}
+                              <Route path="expired-member" element={
+                                <ProtectedRoute requiredPermission="expired_member_gln_location">
+                                  <ExpiredMember />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="member-products" element={<MemberProducts />} />
+                              {/* <Route path="verified-by-gs1" element={<VerifiedByGS1 />} /> */}
+                              <Route path="verified-by-gs1" element={
+                                <ProtectedRoute requiredPermission="verified_by_gs1">
+                                  <VerifiedByGS1 />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="notfications" element={<Notifications />} />
+                              {/* <Route path="rejected" element={<Rejected />} /> */}
+                              <Route path="rejected" element={
+                                <ProtectedRoute requiredPermission="rejected">
+                                  <Rejected />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="payment-slips" element={<AdminPaymentSlips />} /> */}
+                              <Route path="payment-slips" element={
+                                <ProtectedRoute requiredPermission="payment_slips_foreign_gtin">
+                                  <AdminPaymentSlips />
+                                </ProtectedRoute>
+                              } />
 
-                            {/* <Route path="sscc" element={<Sscc />} /> */}
-                            <Route path="sscc" element={
-                              <ProtectedRoute requiredPermission="sscc">
-                                <Sscc />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="admin-addsscc" element={<AdminAddSSCC />} />
-                            <Route path="admin-update-sscc/:sscc_id" element={<AdminUpdateSSCC />} />
+                              {/* <Route path="gcp-license" element={<GcpLicense />} /> */}
+                              <Route path="gcp-license" element={
+                                <ProtectedRoute requiredPermission="gcp_licenses">
+                                  <GcpLicense />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="gs1-registries" element={<GS1Registries />} /> */}
+                              <Route path="gs1-registries" element={
+                                <ProtectedRoute requiredPermission="gs1_registries">
+                                  <GS1Registries />
+                                </ProtectedRoute>
+                              } />
 
-                            {/* <Route path="foreign-gtin" element={<ForeignGTIN />} /> */}
-                            <Route path="foreign-gtin" element={
-                              <ProtectedRoute requiredPermission="foreign_gtin">
-                                <AdminForeginGTIN />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="admin-add-foreign" element={<AdminAddForeignGTIN />} />
-                            <Route path="admin-digital-link" element={<AdminDigitalLinkInfo />} />
+                              <Route path="migration" element={<Migration />} />
+                              {/* <Route path="help-desk" element={<HelpDesk />} /> */}
+                              <Route path="help-desk" element={
+                                <ProtectedRoute requiredPermission="help_desk">
+                                  <HelpDesk />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="old-inactive-members" element={<OldInActiveMembers />} /> */}
+                              <Route path="old-inactive-members" element={
+                                <ProtectedRoute requiredPermission="old_inactive_members">
+                                  <OldInActiveMembers />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="staff-help-desk" element={<StaffHelpDesk />} /> */}
+                              <Route path="staff-help-desk" element={
+                                <ProtectedRoute requiredPermission="staff_help_desk">
+                                  <StaffHelpDesk />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="member-expiry-page" element={<MembersExpiryPage />} /> */}
+                              <Route path="member-expiry-page" element={
+                                <ProtectedRoute requiredPermission="90_days_expiry_brands">
+                                  <MembersExpiryPage />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="products-category" element={<ProductsCategory />} /> */}
+                              <Route path="products-category" element={
+                                <ProtectedRoute requiredPermission="gtin_barcode_pricing">
+                                  <ProductsCategory />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="products-categories" element={<ProductCategories />} />
+                              {/* <Route path="others-products-category" element={<OtherProductsCategory />} /> */}
+                              <Route path="others-products-category" element={
+                                <ProtectedRoute requiredPermission="other_services_pricing">
+                                  <OtherProductsCategory />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="addtional-gtin" element={<AdditionalGTIN />} /> */}
+                              <Route path="addtional-gtin" element={
+                                <ProtectedRoute requiredPermission="additional_gtin_pricing">
+                                  <AdditionalGTIN />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="addtional-gln" element={<AdditionalGLN />} /> */}
 
-                            <Route path="front-end" element={<Frontend />} />
-                            <Route path="settings" element={<Settings />} />
-                            <Route path="master-data" element={<MasterData />} />
+                              {/* <Route path="addtional-gln" element={<AdditionalGLN />} /> */}
+                              <Route path="addtional-gln" element={
+                                <ProtectedRoute requiredPermission="additional_gln">
+                                  <AdditionalGLN />
+                                </ProtectedRoute>
+                              } />
 
-                            <Route path="reports" element={<Reports />} />
-                            {/* <Route path="kpi-report" element={<KPIReport />} /> */}
-                            <Route path="kpi-report" element={
-                              <ProtectedRoute requiredPermission="finance_kpi">
-                                <KPIReport />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="member-activity-report" element={<MemberActivityReport />} /> */}
-                            <Route path="member-activity-report" element={
-                              <ProtectedRoute requiredPermission="member_activity">
-                                <MemberActivityReport />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="admin-activity-report" element={<AdminActivityReport />} /> */}
-                            <Route path="admin-activity-report" element={
-                              <ProtectedRoute requiredPermission="admin_activity">
-                                <AdminActivityReport />
-                              </ProtectedRoute>
-                            } />
-
-                            <Route path="admin-gtin-reports" element={<AdminGtinReports />} />
+                              <Route path="gtin" element={
+                                <ProtectedRoute requiredPermission="gtin_barcode">
+                                  <Gtin />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="admin-gtin" element={<AddGTINProducts />} />
+                              <Route path="admin-update-gtin/:productId" element={<AdminUpdateGTIN />} />
+                              <Route
+                                path="admin-view-gtin/:productId"
+                                element={<AdminGTINView />}
+                              />
+                              <Route path="admin-digitalurl" element={<AdminDigitalUrlInfo />} />
 
 
-                            {/* <Route path="users-permissions" element={<Users />} /> */}
-                            <Route path="users-permissions" element={
-                              <ProtectedRoute requiredPermission="users">
-                                <Users />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="roles-permissions" element={<Roles />} /> */}
-                            <Route path="roles-permissions" element={
-                              <ProtectedRoute requiredPermission="roles">
-                                <Roles />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="add-users" element={<AddUsers />} />
-                            <Route path="update-users/:id" element={<UpdateUsers />} />
-                            <Route path="add-roles" element={<AddRoles />} />
-                            <Route path="update-roles/:id" element={<UpdateRoles />} />
+                              {/* <Route path="gln" element={<Gln />} /> */}
+                              <Route path="gln" element={
+                                <ProtectedRoute requiredPermission="gln_location">
+                                  <Gln />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="admin-addgln" element={<AdminAddGLN />} />
+                              <Route path="admin-update-gln/:Id" element={<AdminUpdateGLN />} />
 
-                            {/* <Route path="units" element={<Units />} /> */}
-                            <Route path="units" element={
-                              <ProtectedRoute requiredPermission="units">
-                                <Units />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Documents" element={<Documents />} /> */}
-                            <Route path="Documents" element={
-                              <ProtectedRoute requiredPermission="documents">
-                                <Documents />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="ProductPackaging" element={<ProductPackaging />} /> */}
-                            <Route path="ProductPackaging" element={
-                              <ProtectedRoute requiredPermission="product_packaging">
-                                <ProductPackaging />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Other_products" element={<Other_products />} /> */}
-                            <Route path="Other_products" element={
-                              <ProtectedRoute requiredPermission="other_products">
-                                <Other_products />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Gcp_type" element={<Gcp_type />} /> */}
-                            <Route path="Gcp_type" element={
-                              <ProtectedRoute requiredPermission="gcp_type">
-                                <Gcp_type />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="CountryofSales" element={<CountryofSales />} /> */}
-                            <Route path="CountryofSales" element={
-                              <ProtectedRoute requiredPermission="country_of_sales">
-                                <CountryofSales />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Hscode" element={<Hscode />} /> */}
-                            <Route path="Hscode" element={
-                              <ProtectedRoute requiredPermission="hs_code">
-                                <Hscode />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="UNSPCS" element={<UNSPCS />} /> */}
-                            <Route path="UNSPCS" element={
-                              <ProtectedRoute requiredPermission="unspcs">
-                                <UNSPCS />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Cities" element={<Cities />} /> */}
-                            <Route path="Cities" element={
-                              <ProtectedRoute requiredPermission="cities">
-                                <Cities />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="EmailConfigure" element={<EmailConfigure />} /> */}
-                            <Route path="EmailConfigure" element={
-                              <ProtectedRoute requiredPermission="EmailConfigure">
-                                <EmailConfigure />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="State" element={<State />} /> */}
-                            <Route path="State" element={
-                              <ProtectedRoute requiredPermission="state">
-                                <State />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Country" element={<Country />} /> */}
-                            <Route path="Country" element={
-                              <ProtectedRoute requiredPermission="country">
-                                <Country />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="crnumber" element={<Crnumber />} /> */}
-                            <Route path="crnumber" element={
-                              <ProtectedRoute requiredPermission="cr_number">
-                                <Crnumber />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="documenttype" element={<Document_type />} /> */}
-                            <Route path="documenttype" element={
-                              <ProtectedRoute requiredPermission="document_type">
-                                <Document_type />
-                              </ProtectedRoute>
-                            } />
+                              {/* <Route path="sscc" element={<Sscc />} /> */}
+                              <Route path="sscc" element={
+                                <ProtectedRoute requiredPermission="sscc">
+                                  <Sscc />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="admin-addsscc" element={<AdminAddSSCC />} />
+                              <Route path="admin-update-sscc/:sscc_id" element={<AdminUpdateSSCC />} />
 
-                            {/* Megamenu */}
-                            {/* <Route path="megamenu" element={<Megamenu />} /> */}
-                            <Route path="megamenu" element={
-                              <ProtectedRoute requiredPermission="mega_menu">
-                                <Megamenu />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="categories" element={<Categories />} /> */}
-                            <Route path="categories" element={
-                              <ProtectedRoute requiredPermission="categories">
-                                <Categories />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="footer_menu" element={<Footermenu />} /> */}
-                            <Route path="footer_menu" element={
-                              <ProtectedRoute requiredPermission="footer_menu">
-                                <Footermenu />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Sliders" element={<Sliders />} /> */}
-                            <Route path="Sliders" element={
-                              <ProtectedRoute requiredPermission="sliders">
-                                <Sliders />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="Featured_services" element={<Featuredservices />} /> */}
-                            <Route path="Featured_services" element={
-                              <ProtectedRoute requiredPermission="service">
-                                <Featuredservices />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="events" element={<Events />} /> */}
-                            <Route path="events" element={
-                              <ProtectedRoute requiredPermission="event">
-                                <Events />
-                              </ProtectedRoute>
-                            } />
-                            {/* <Route path="articles" element={<Articles />} /> */}
-                            <Route path="articles" element={
-                              <ProtectedRoute requiredPermission="articles">
-                                <Articles />
-                              </ProtectedRoute>
-                            } />
+                              {/* <Route path="foreign-gtin" element={<ForeignGTIN />} /> */}
+                              <Route path="foreign-gtin" element={
+                                <ProtectedRoute requiredPermission="foreign_gtin">
+                                  <AdminForeginGTIN />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="admin-add-foreign" element={<AdminAddForeignGTIN />} />
+                              <Route path="admin-digital-link" element={<AdminDigitalLinkInfo />} />
 
-                            {/* <Route path="Pages" element={<Pages />} /> */}
-                            <Route path="Pages" element={
-                              <ProtectedRoute requiredPermission="pages">
-                                <Pages />
-                              </ProtectedRoute>
-                            } />
-                            <Route path="Add_Pages" element={<Addpages />} />
-                            <Route path="updata_Pages/:userId" element={<Updatapage />} />
+                              <Route path="front-end" element={<Frontend />} />
+                              <Route path="settings" element={<Settings />} />
+                              <Route path="master-data" element={<MasterData />} />
 
-                            {/* Gs1partners */}
-                            {/* <Route path="partners" element={<Gs1partners />} /> */}
-                            <Route path="partners" element={
-                              <ProtectedRoute requiredPermission="gs1_partners">
-                                <Gs1partners />
-                              </ProtectedRoute>
-                            } />
+                              <Route path="reports" element={<Reports />} />
+                              {/* <Route path="kpi-report" element={<KPIReport />} /> */}
+                              <Route path="kpi-report" element={
+                                <ProtectedRoute requiredPermission="finance_kpi">
+                                  <KPIReport />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="member-activity-report" element={<MemberActivityReport />} /> */}
+                              <Route path="member-activity-report" element={
+                                <ProtectedRoute requiredPermission="member_activity">
+                                  <MemberActivityReport />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="admin-activity-report" element={<AdminActivityReport />} /> */}
+                              <Route path="admin-activity-report" element={
+                                <ProtectedRoute requiredPermission="admin_activity">
+                                  <AdminActivityReport />
+                                </ProtectedRoute>
+                              } />
 
-                            {/* Blogcategories */}
-                            {/* <Route path="Blog_categories" element={<Blogcategories />} /> */}
-                            <Route path="Blog_categories" element={
-                              <ProtectedRoute requiredPermission="blog_category">
-                                <Blogcategories />
-                              </ProtectedRoute>
-                            } />
+                              <Route path="admin-gtin-reports" element={<AdminGtinReports />} />
 
-                            {/* Faqcategories */}
-                            {/* <Route path="Faq_categories" element={<Faqcategories />} /> */}
-                            <Route path="Faq_categories" element={
-                              <ProtectedRoute requiredPermission="faq_categories">
-                                <Faqcategories />
-                              </ProtectedRoute>
-                            } />
 
-                            {/* manage_section */}
-                            {/* <Route path="manage_section" element={<manage_section />} /> */}
-                            <Route path="manage_section" element={
-                              <ProtectedRoute requiredPermission="manage_section">
-                                <Managesections />
-                              </ProtectedRoute>
-                            } />
+                              {/* <Route path="users-permissions" element={<Users />} /> */}
+                              <Route path="users-permissions" element={
+                                <ProtectedRoute requiredPermission="users">
+                                  <Users />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="roles-permissions" element={<Roles />} /> */}
+                              <Route path="roles-permissions" element={
+                                <ProtectedRoute requiredPermission="roles">
+                                  <Roles />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="add-users" element={<AddUsers />} />
+                              <Route path="update-users/:id" element={<UpdateUsers />} />
+                              <Route path="add-roles" element={<AddRoles />} />
+                              <Route path="update-roles/:id" element={<UpdateRoles />} />
 
-                            {/* Manageteam */}
-                            {/* <Route path="Manage_team" element={<Manageteam />} /> */}
-                            <Route path="Manage_team" element={
-                              <ProtectedRoute requiredPermission="manage_sections">
-                                <Manageteam />
-                              </ProtectedRoute>
-                            } />
+                              {/* <Route path="units" element={<Units />} /> */}
+                              <Route path="units" element={
+                                <ProtectedRoute requiredPermission="units">
+                                  <Units />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Documents" element={<Documents />} /> */}
+                              <Route path="Documents" element={
+                                <ProtectedRoute requiredPermission="documents">
+                                  <Documents />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="ProductPackaging" element={<ProductPackaging />} /> */}
+                              <Route path="ProductPackaging" element={
+                                <ProtectedRoute requiredPermission="product_packaging">
+                                  <ProductPackaging />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Other_products" element={<Other_products />} /> */}
+                              <Route path="Other_products" element={
+                                <ProtectedRoute requiredPermission="other_products">
+                                  <Other_products />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Gcp_type" element={<Gcp_type />} /> */}
+                              <Route path="Gcp_type" element={
+                                <ProtectedRoute requiredPermission="gcp_type">
+                                  <Gcp_type />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="CountryofSales" element={<CountryofSales />} /> */}
+                              <Route path="CountryofSales" element={
+                                <ProtectedRoute requiredPermission="country_of_sales">
+                                  <CountryofSales />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Hscode" element={<Hscode />} /> */}
+                              <Route path="Hscode" element={
+                                <ProtectedRoute requiredPermission="hs_code">
+                                  <Hscode />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="UNSPCS" element={<UNSPCS />} /> */}
+                              <Route path="UNSPCS" element={
+                                <ProtectedRoute requiredPermission="unspcs">
+                                  <UNSPCS />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Cities" element={<Cities />} /> */}
+                              <Route path="Cities" element={
+                                <ProtectedRoute requiredPermission="cities">
+                                  <Cities />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="EmailConfigure" element={<EmailConfigure />} /> */}
+                              <Route path="EmailConfigure" element={
+                                <ProtectedRoute requiredPermission="EmailConfigure">
+                                  <EmailConfigure />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="State" element={<State />} /> */}
+                              <Route path="State" element={
+                                <ProtectedRoute requiredPermission="state">
+                                  <State />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Country" element={<Country />} /> */}
+                              <Route path="Country" element={
+                                <ProtectedRoute requiredPermission="country">
+                                  <Country />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="crnumber" element={<Crnumber />} /> */}
+                              <Route path="crnumber" element={
+                                <ProtectedRoute requiredPermission="cr_number">
+                                  <Crnumber />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="documenttype" element={<Document_type />} /> */}
+                              <Route path="documenttype" element={
+                                <ProtectedRoute requiredPermission="document_type">
+                                  <Document_type />
+                                </ProtectedRoute>
+                              } />
 
-                            {/* Boardmembers */}
-                            {/* <Route path="Board_members" element={<Boardmembers />} /> */}
-                            <Route path="Board_members" element={
-                              <ProtectedRoute requiredPermission="board_members">
-                                <Boardmembers />
-                              </ProtectedRoute>
-                            } />
+                              {/* Megamenu */}
+                              {/* <Route path="megamenu" element={<Megamenu />} /> */}
+                              <Route path="megamenu" element={
+                                <ProtectedRoute requiredPermission="mega_menu">
+                                  <Megamenu />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="categories" element={<Categories />} /> */}
+                              <Route path="categories" element={
+                                <ProtectedRoute requiredPermission="categories">
+                                  <Categories />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="footer_menu" element={<Footermenu />} /> */}
+                              <Route path="footer_menu" element={
+                                <ProtectedRoute requiredPermission="footer_menu">
+                                  <Footermenu />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Sliders" element={<Sliders />} /> */}
+                              <Route path="Sliders" element={
+                                <ProtectedRoute requiredPermission="sliders">
+                                  <Sliders />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="Featured_services" element={<Featuredservices />} /> */}
+                              <Route path="Featured_services" element={
+                                <ProtectedRoute requiredPermission="service">
+                                  <Featuredservices />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="events" element={<Events />} /> */}
+                              <Route path="events" element={
+                                <ProtectedRoute requiredPermission="event">
+                                  <Events />
+                                </ProtectedRoute>
+                              } />
+                              {/* <Route path="articles" element={<Articles />} /> */}
+                              <Route path="articles" element={
+                                <ProtectedRoute requiredPermission="articles">
+                                  <Articles />
+                                </ProtectedRoute>
+                              } />
 
-                            {/* Userguide */}
-                            {/* <Route path="User_guide" element={<Userguide />} /> */}
-                            <Route path="User_guide" element={
-                              <ProtectedRoute requiredPermission="user_guide">
-                                <Userguide />
-                              </ProtectedRoute>
-                            } />
+                              {/* <Route path="Pages" element={<Pages />} /> */}
+                              <Route path="Pages" element={
+                                <ProtectedRoute requiredPermission="pages">
+                                  <Pages />
+                                </ProtectedRoute>
+                              } />
+                              <Route path="Add_Pages" element={<Addpages />} />
+                              <Route path="updata_Pages/:userId" element={<Updatapage />} />
 
-                          </Routes>
-                        </QueryClientProvider>
-                      </AdminMainLayout>
-                    }
-                  />
-                </Routes>
-              </BrowserRouter>
-            </div>
-          </SnackbarProvider>
-        </DataTableProvider>
-      </DataTableProvider2>
+                              {/* Gs1partners */}
+                              {/* <Route path="partners" element={<Gs1partners />} /> */}
+                              <Route path="partners" element={
+                                <ProtectedRoute requiredPermission="gs1_partners">
+                                  <Gs1partners />
+                                </ProtectedRoute>
+                              } />
+
+                              {/* Blogcategories */}
+                              {/* <Route path="Blog_categories" element={<Blogcategories />} /> */}
+                              <Route path="Blog_categories" element={
+                                <ProtectedRoute requiredPermission="blog_category">
+                                  <Blogcategories />
+                                </ProtectedRoute>
+                              } />
+
+                              {/* Faqcategories */}
+                              {/* <Route path="Faq_categories" element={<Faqcategories />} /> */}
+                              <Route path="Faq_categories" element={
+                                <ProtectedRoute requiredPermission="faq_categories">
+                                  <Faqcategories />
+                                </ProtectedRoute>
+                              } />
+
+                              {/* manage_section */}
+                              {/* <Route path="manage_section" element={<manage_section />} /> */}
+                              <Route path="manage_section" element={
+                                <ProtectedRoute requiredPermission="manage_section">
+                                  <Managesections />
+                                </ProtectedRoute>
+                              } />
+
+                              {/* Manageteam */}
+                              {/* <Route path="Manage_team" element={<Manageteam />} /> */}
+                              <Route path="Manage_team" element={
+                                <ProtectedRoute requiredPermission="manage_sections">
+                                  <Manageteam />
+                                </ProtectedRoute>
+                              } />
+
+                              {/* Boardmembers */}
+                              {/* <Route path="Board_members" element={<Boardmembers />} /> */}
+                              <Route path="Board_members" element={
+                                <ProtectedRoute requiredPermission="board_members">
+                                  <Boardmembers />
+                                </ProtectedRoute>
+                              } />
+
+                              {/* Userguide */}
+                              {/* <Route path="User_guide" element={<Userguide />} /> */}
+                              <Route path="User_guide" element={
+                                <ProtectedRoute requiredPermission="user_guide">
+                                  <Userguide />
+                                </ProtectedRoute>
+                              } />
+
+                            </Routes>
+                          </QueryClientProvider>
+                        </AdminMainLayout>
+                      }
+                    />
+                  </Routes>
+                </BrowserRouter>
+              </div>
+            </SnackbarProvider>
+          </DataTableProvider>
+        </DataTableProvider2>
+      </LanguageProvider>
       {/* </AuthProvider> */}
     </>
   );

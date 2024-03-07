@@ -7,12 +7,13 @@ import SendIcon from '@mui/icons-material/Send';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetchMemberHistoryData, refreshMemberInoviceData, userData,
   fetchRegisteredProductsData
 }) => {
+  const { selectedLanguage } = useLanguage();
   //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   //   console.log(gs1MemberInvoiceData);
   const gs1MemberData = userData;

@@ -19,9 +19,10 @@ import { debounce } from '@mui/material/utils';
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import AdminDashboardRightHeader from "../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader";
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from "../../../../utils/config";
+import { useLanguage } from "../../../../Contexts/LanguageContext";
 
 const AdminForeginGTIN = () => {
+  const { selectedLanguage } = useLanguage();
   const [data, setData] = useState([]);
   // const memberDataString = sessionStorage.getItem('memberData');
   // const memberData = JSON.parse(memberDataString);

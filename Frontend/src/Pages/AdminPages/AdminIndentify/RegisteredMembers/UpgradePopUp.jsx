@@ -7,12 +7,13 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
   fetchMemberHistoryData,
 }) => {
+  const { selectedLanguage } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);

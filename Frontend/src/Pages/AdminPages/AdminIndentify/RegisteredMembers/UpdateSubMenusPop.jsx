@@ -6,10 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import PhoneInput from 'react-phone-input-2';
 import { useTranslation } from 'react-i18next';
-import { selectedLanguage } from '../../../../utils/config';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
   // get the sesstion data
+  const { selectedLanguage } = useLanguage();
   const subMenusMemberDetails = JSON.parse(sessionStorage.getItem("updateSubMenusData"));
   console.log(subMenusMemberDetails)
   const [firstName, setFirstName] = useState(subMenusMemberDetails?.fname);
