@@ -3691,6 +3691,63 @@ export const document = (t) => [
   },
 ];
 
+export const Commentcolumdata = (t) => [
+  {
+    field: 'comment',
+    headerName: t('Comment'),
+    width: 250,
+     renderCell: (params) => (
+      <div
+        style={{
+          overflowX: 'auto',
+          maxWidth: '500px',
+        }}
+      >
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: 'document',
+    headerName: t('Image'),
+    width: 180,
+    renderCell: (params) => (
+      < img
+        src={imageLiveUrl(params.row.document)}
+        alt="Image"
+        style={{
+          width: '95%',
+          height: '95%',
+          objectFit: 'contain',
+          // cursor: 'pointer'
+        }}
+
+      />
+    ),
+  },
+
+  {
+    field: 'created_at',
+    headerName: t('Created At'),
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
+    field: 'updated_at',
+    headerName: t('Updated At'),
+    width: 180,
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+];
+
 export const product_packaging = (t) => [
 
   {
