@@ -128,7 +128,7 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
             // You can fetch productContents and other data here as needed
             const productContents = await gs1dlPrisma.tblProductContents.findMany({
                 where: {
-                    GTIN: gtin,
+                    GTIN: barcode,
                 },
             });
 
