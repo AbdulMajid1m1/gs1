@@ -1492,10 +1492,30 @@ export const GlnColumn = (t, i18n) => {
       headerName: t('GLN Barcode Number'),
       width: 180,
     },
+    // {
+    //   field: 'status',
+    //   headerName: t('Status'),
+    //   width: 180,
+    // },
     {
       field: 'status',
       headerName: t('Status'),
       width: 180,
+      renderCell: params => (
+        <div
+          style={{
+            padding: '5px',
+            paddingLeft: '5px',
+            paddingRight: '5px',
+            borderRadius: '10px',
+            border: '2px solid',
+            borderColor: params.row.status === 'active' ? 'green' : 'red',
+            color: params.row.status === 'active' ? 'green' : 'red',
+          }}
+        >
+          {params.row.status}
+        </div>
+      )
     },
   ];
 
