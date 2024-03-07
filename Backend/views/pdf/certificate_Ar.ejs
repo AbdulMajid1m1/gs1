@@ -21,6 +21,7 @@
             width: auto;
             height: auto;
             padding: 10px 10px 20px 10px;
+            direction: rtl;
         }
 
         p {
@@ -93,16 +94,6 @@
         <hr style="width: calc(100% - 20px); border: 10px solid #EF6231;"></hr>
         <table class="table-suply" width="100%" cellspacing="0" cellpadding="0" style="border:none; line-height: 0.5rem;">
             <tr>
-                <td width="30%" style="float: left; margin-top: 30%;">
-                    <table>
-                        <!-- ... -->
-                        <tr>
-                            <td>
-                                <img src="<%= data.BACKEND_URL %>/gs1Images/tree.png" width="400" height="400">
-                            </td>
-                        </tr>
-                    </table>
-                </td>
                 <td width="70%">
                     <table>
                         <tr style="width: 60%" class="text-right">
@@ -203,6 +194,16 @@
                             </td>
                             <td class="text-left">
                                 <span>Valid Until: </span>&nbsp;&nbsp;<span><%= data.expiryDate %></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="30%" style="float: right; margin-top: 30%;">
+                    <table>
+                        <!-- ... -->
+                        <tr>
+                            <td>
+                                <img src="<%= data.BACKEND_URL %>/gs1Images/tree.png" width="400" height="400">
                             </td>
                         </tr>
                     </table>
