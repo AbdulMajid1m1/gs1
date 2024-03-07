@@ -1765,14 +1765,7 @@ export const addAdditionalGlnRequest = async (req, res, next) =>
     }
 };
 
-<<<<<<< HEAD
 export const approveAdditionalProductsRequest = async (req, res, next) => {
-=======
-export const approveAdditionalProductsRequest = async (req, res, next) =>
-{
-
-
->>>>>>> 5b757aba92774a15e681bb3199ce306c7987eeb4
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
