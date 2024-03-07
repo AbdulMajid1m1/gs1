@@ -341,10 +341,16 @@ export const sendInvoiceToUser = async (req, res, next) => {
                     },
                     {
                         toEmail: req.admin.email,
-                        subject: `Member Invoice Generated`,
-                        htmlContent: `<h1>You Generated invoice for ${user.company_name_eng} </h1>
-                        <p>Invoice: <strong>${pdfFilename}</strong></p>
-                        `,
+                        subject: selectedLanguage === 'en' ? `Member Invoice Generated` : `تم إنشاء فاتورة العضو`,
+                        // render html content based on selected language
+                        htmlContent: selectedLanguage === 'en' ?
+
+                            `<h1>You Generated invoice for ${user.company_name_eng} </h1>
+                            <p>Invoice: <strong>${pdfFilename}</strong></p>
+                            ` :
+                            `<h1>لقد قمت بإنشاء فاتورة لـ ${user.company_name_arabic} </h1>
+                            <p>الفاتورة: <strong>${pdfFilename}</strong></p>
+                            `,
 
                         attachments: [
                             {
@@ -460,16 +466,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 await prisma.users.delete({ where: { id: userData.id } });
             });
 
-
-
-
-
-
-
-
-            // send email to user that his invoice is rejected with the reason if provided
-            // send reject email with appropriate message
-            // render email subject based on selected language
             const emailSubject = selectedLanguage === 'en' ? `Invoice Rejected` : `تم رفض الفاتورة`;
             const emailContent = `
                 <h1>${selectedLanguage === 'en' ? 'Invoice Rejected' : 'تم رفض الفاتورة'}</h1>
