@@ -24,6 +24,7 @@ export const createMemberDocument = async (req, res, next) => {
         user_id: Joi.string().required(),
         doc_type: Joi.string().default('member_document'),
         uploaded_by: Joi.string(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     });
 
 
@@ -97,10 +98,21 @@ export const createMemberDocument = async (req, res, next) => {
         const emailData = [
             {
                 toEmail: user.email,
-                subject: `GS1 Saudi Arabia -  ${value.type} Document Uploaded`,
-                htmlContent: `<h1>Document Uploaded</h1>
-                              <p>Your ${value.type} document has been uploaded successfully.</p>
-                              <p>Document: <strong>${documentName}</strong></p>`,
+                // subject: `GS1 Saudi Arabia -  ${value.type} Document Uploaded`,
+                // render the subject based on the selected language
+                subject: value.selectedLanguage === 'en'
+                    ? `GS1 Saudi Arabia -  ${value.type} Document Uploaded`
+                    : `GS1 السعودية -  تم تحميل ${value.type} الوثيقة`,
+
+                htmlContent: value.selectedLanguage === 'en'
+                    ? `<h1>Document Uploaded</h1>
+                    <p>Your ${value.type} document has been uploaded successfully.</p>
+                    <p>Document: <strong>${documentName}</strong></p>`
+                    : `<h1>تم تحميل الوثيقة</h1>
+                    <p>تم تحميل ${value.type} الوثيقة بنجاح.</p>
+                    <p>الوثيقة: <strong>${documentName}</strong></p>`,
+
+
                 attachments: [
                     {
                         filename: documentName,

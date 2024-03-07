@@ -6,9 +6,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, refreshHistoryData, userData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
+
+  const { selectedLanguage } = useLanguage();
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
   const [transactionId, setTransactionId] = useState([]);
@@ -20,7 +23,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
   // const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   // console.log(gs1MemberData)
   const gs1MemberData = userData;
-  
+
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
@@ -148,6 +151,8 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
     formData.append('doc_type', 'member_document');
     formData.append('document', uploadDocument);
     formData.append('uploaded_by', gs1MemberData?.email || '');
+    formData.append('selectedLanguage', selectedLanguage);
+    
 
 
     try {
