@@ -7,11 +7,13 @@ import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMemberInvoiceData,
   fetchMemberHistoryData,
 }) => {
+  const { selectedLanguage } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -217,7 +219,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.put('/changeMembership/upgradeMembershipRequest', {
           "user_id": userData?.id,
           "new_subscription_product_Id": selectedGtinBarcodes?.id,
-          subType: subType
+          subType: subType,
+          selectedLanguage: selectedLanguage,
 
         });
         console.log(res.data);
@@ -234,6 +237,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.put('/changeMembership/downgradeMemberSubscriptionRequest', {
           "user_id": userData?.id,
           "new_subscription_product_Id": selectedGtinBarcodes?.id,
+          selectedLanguage: selectedLanguage,
 
 
         });
@@ -250,6 +254,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.post('/changeMembership/addAdditionalProductsRequest', {
           "user_id": userData?.id,
           "gtinUpgradeProductId": selectedGtinBarcodes?.id,
+          selectedLanguage: selectedLanguage,
         });
         console.log(res.data);
         toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
@@ -265,7 +270,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         const res = await newRequest.post('/changeMembership/addAdditionalGlnRequest', {
           "userId": userData?.id,
           "additionalGlnId": selectedGtinBarcodes?.id,
-          otherProductSubscriptionId: selectGLnRow?.id
+          otherProductSubscriptionId: selectGLnRow?.id,
+          selectedLanguage: selectedLanguage,
         });
         console.log(res.data);
         toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);

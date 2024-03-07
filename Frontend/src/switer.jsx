@@ -3,17 +3,15 @@ import { useTranslation } from 'react-i18next';
 import engflage from "./Images/Flage.png"
 import arabicflage from "./Images/Arabflage.jpg"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useLanguage } from './Contexts/LanguageContext';
 
 const LanguageSwitcher = () => {
     const { i18n } = useTranslation();
-
-    // const changeLanguage = (language) =>
-    // {
-    //     i18n.changeLanguage(language);
-    // };
-
+    const { selectedLanguage, setSelectedLanguage } = useLanguage();
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
+        setSelectedLanguage(language);// context update to change language
+
     };
 
     // on page load, check if a language is stored in sessionStorage

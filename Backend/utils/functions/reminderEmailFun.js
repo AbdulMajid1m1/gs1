@@ -46,6 +46,7 @@ export const handleInvoiceReminders = async () => {
             if (!bankSlip) {
                 // Prepare email data if no bank slip is found
                 const user = invoice.user;
+                console.log("checkUser", invoice.user)
                 const admin = user.assign_to_admin;
                 const cartValue = user.carts[0];
                 cartValue.cart_items = JSON.parse(cartValue.cart_items);

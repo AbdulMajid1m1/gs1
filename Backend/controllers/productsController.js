@@ -471,6 +471,7 @@ export const bulkCreateProduct = async (req, res, next) => {
     });
 
     let sendEmailFlag = true;
+    let selectedLanguage = req.query.selectedLanguage || 'ar';
     let user;
     try {
 
@@ -659,7 +660,8 @@ export const bulkCreateProduct = async (req, res, next) => {
     } finally {
         if (sendEmailFlag) {
             const pdfBuffer = await fs1.readFile(req.files.file[0].path);
-            const emailContent = `Dear User, <br><br> Your bulk upload file has been processed. Please find the attached file for the processed records. <br><br> Regards, <br> GS1 KSA`;
+            const emailContent = selectedLanguage === 'en' ? `Dear User, <br><br> Your bulk upload file has been processed. Please find the attached file for the processed records. <br><br> Regards, <br> GS1 KSA` : `عزيزي المستخدم، <br><br> تم معالجة ملف التحميل الجماعي الخاص بك. يرجى العثور على الملف المرفق للسجلات المعالجة. <br><br> تحياتي، <br> GS1 KSA`;
+            
             const attachments = [{
                 filename: user?.memberID + '_processed_file.xlsx',
                 content: pdfBuffer,
@@ -669,7 +671,8 @@ export const bulkCreateProduct = async (req, res, next) => {
             await sendEmail({
                 fromEmail: ADMIN_EMAIL,
                 toEmail: req.body.email,
-                subject: 'GTIN Bulk Upload Processed file',
+               
+                subject: selectedLanguage === 'en' ? 'GTIN Bulk Upload Processed file' : 'ملف تحميل الجملة المعالج',
 
                 htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
                 // if status is approved, attach the certificate PDF
@@ -927,6 +930,7 @@ export async function convertEjsToPdf2(ejsFilePath, data, landscapeMode = false)
 export const generateGtinCertificate = async (req, res, next) => {
     try {
         const productId = req.params.productId;
+        const selectedLanguage = req.query.selectedLanguage || 'ar';
 
         // Fetch product details using productId
         const product = await prisma.products.findFirst({
@@ -976,7 +980,9 @@ export const generateGtinCertificate = async (req, res, next) => {
         };
 
         // Generate PDF using provided function
-        const pdfBuffer = await convertEjsToPdf2(path.join(__dirname, '..', 'views', 'pdf', 'gtinCertificate.ejs'), data);
+        
+        let ejsFile = selectedLanguage === "en" ? 'gtinCertificate.ejs' : 'gtinCertificate_Ar.ejs';
+        const pdfBuffer = await convertEjsToPdf2(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data);
 
         // Set response headers for PDF
         res.setHeader('Content-Type', 'application/pdf');

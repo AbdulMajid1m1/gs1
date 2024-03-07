@@ -6,14 +6,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 
 const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
-//   const [docuements, setDocuments] = React.useState([
-//     'bank_slip'
-//   ])
-//   const [selectedDocuments, setSelectedDocuments] = useState("");
+  const { selectedLanguage } = useLanguage();
+  //   const [docuements, setDocuments] = React.useState([
+  //     'bank_slip'
+  //   ])
+  //   const [selectedDocuments, setSelectedDocuments] = useState("");
   const [transactionId, setTransactionId] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
@@ -23,7 +25,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   const memberData = JSON.parse(memberDataString);
   // console.log(memberData);
   const [loading, setLoading] = useState(false);
-  
+
 
   const handleCloseMemberPopup = () => {
     setVisibility(false);
@@ -59,10 +61,10 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
 
 
   // Handle country selection
-//   const handleSelectedDocuments = (event, value) => {
-//     console.log(value);
-//     setSelectedDocuments(value);
-//   };
+  //   const handleSelectedDocuments = (event, value) => {
+  //     console.log(value);
+  //     setSelectedDocuments(value);
+  //   };
 
   const handleSelectedTransactionId = (event, value) => {
     console.log(value?.transaction_id);
@@ -79,12 +81,12 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
     const file = e.target.files[0];
     if (file) {
       if (file.size <= 500 * 1024) {
-          setUploadDocument(file);
-          setError(''); // Clear any previous error message
+        setUploadDocument(file);
+        setError(''); // Clear any previous error message
       } else {
-          setError('File size should be 500KB or less');
-          e.target.value = null;
-        }
+        setError('File size should be 500KB or less');
+        e.target.value = null;
+      }
     }
   };
 
@@ -129,6 +131,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
     formData.append('doc_type', 'member_document');
     formData.append('document', uploadDocument);
     formData.append('uploaded_by', memberData?.email || '');
+    formData.append('selectedLanguage', selectedLanguage);
 
 
     try {
@@ -191,7 +194,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <label htmlFor="field1" className="text-secondary">Select Documents</label> */}
-                    {/* <select
+                  {/* <select
                                    type="text"
                                    id="field1"
                                    value={selectDocument}
@@ -203,7 +206,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                                       <option value="3">Document 3</option>
                                       <option value="4">Document 4</option>
                                 </select>         */}
-                    {/* <Autocomplete
+                  {/* <Autocomplete
                       id="field1"
                       options={docuements}
                       value={selectedDocuments}

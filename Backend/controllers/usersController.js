@@ -210,12 +210,13 @@ export const sendInvoiceToUser = async (req, res, next) => {
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
 
             const data1 = {
-                topHeading: "INVOICE",
-                secondHeading: "BILL TO",
+                topHeading: selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+                secondHeading: selectedLanguage === 'en' ? "BILL TO" : "الفاتورة إلى",
+
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
                     // registeration: `New Registration for the year ${new Date().getFullYear()}`,
-                    registeration: `New Registration`,
+                    registeration: selectedLanguage === 'en' ? `New Registration` : `تسجيل جديد`,
                     // Assuming $addMember->id is already known
                     company_name_eng: user.company_name_eng,
                     mobile: user.mobile,
@@ -258,8 +259,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
             // get the second pdf file from public/gs1Docs/GS1_Saudi_Arabia_Data_Declaration.pdf and send it as attachment
             const pdfBuffer2 = await fs.readFile(path.join(__dirname, '..', 'public', 'gs1Docs', 'GS1_Saudi_Arabia_Data_Declaration.pdf'));
-
-
             // Define the directory and filename for the PDF
             const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
             const pdfFilename = `Invoice-${user?.company_name_eng}-${cartValue.transaction_id}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
@@ -269,7 +268,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
-            console.log("selectedLanguage", selectedLanguage)
+
             let ejsFile = selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
             // Generate PDF and save it to the specified path
@@ -342,10 +341,16 @@ export const sendInvoiceToUser = async (req, res, next) => {
                     },
                     {
                         toEmail: req.admin.email,
-                        subject: `Member Invoice Generated`,
-                        htmlContent: `<h1>You Generated invoice for ${user.company_name_eng} </h1>
-                        <p>Invoice: <strong>${pdfFilename}</strong></p>
-                        `,
+                        subject: selectedLanguage === 'en' ? `Member Invoice Generated` : `تم إنشاء فاتورة العضو`,
+                        // render html content based on selected language
+                        htmlContent: selectedLanguage === 'en' ?
+
+                            `<h1>You Generated invoice for ${user.company_name_eng} </h1>
+                            <p>Invoice: <strong>${pdfFilename}</strong></p>
+                            ` :
+                            `<h1>لقد قمت بإنشاء فاتورة لـ ${user.company_name_arabic} </h1>
+                            <p>الفاتورة: <strong>${pdfFilename}</strong></p>
+                            `,
 
                         attachments: [
                             {
@@ -461,20 +466,11 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 await prisma.users.delete({ where: { id: userData.id } });
             });
 
-
-
-
-
-
-
-
-            // send email to user that his invoice is rejected with the reason if provided
-            // send reject email with appropriate message
-            const emailSubject = `Invoice Rejected`;
+            const emailSubject = selectedLanguage === 'en' ? `Invoice Rejected` : `تم رفض الفاتورة`;
             const emailContent = `
-                <h1>Invoice Rejected</h1>
-                <p>Your Invoice against transaction id: <strong>${cartValue.transaction_id}</strong> is rejected by the admin</p>
-                <p>Reason: <strong>${reject_reason}</strong></p>
+                <h1>${selectedLanguage === 'en' ? 'Invoice Rejected' : 'تم رفض الفاتورة'}</h1>
+                <p>${selectedLanguage === 'en' ? 'Your Invoice against transaction id:' : 'فاتورتك ضد رقم المعاملة:'} <strong>${cartValue.transaction_id}</strong> ${selectedLanguage === 'en' ? 'is rejected by the admin' : 'تم رفضها من قبل المشرف'}</p>
+                <p>${selectedLanguage === 'en' ? 'Reason:' : 'السبب:'} <strong>${reject_reason}</strong></p>
                 `;
             await sendEmail({
                 toEmail: user.email,
@@ -547,6 +543,8 @@ export const createUser = async (req, res, next) => {
         }
         // Extract user and cart values
         const userValue = { ...value };
+        let selectedLanguage = req.query.selectedLanguage || 'ar';
+        console.log("selectedLanguage", selectedLanguage)
         delete userValue.cart; // Remove cart data from userValue
         const cartValue = value.cart;
         // Generate transaction ID for cart
@@ -569,7 +567,9 @@ export const createUser = async (req, res, next) => {
 
 
         cartValue.cart_items = JSON.stringify(cartValue.cart_items);
-        await sendOTPEmail(userValue.email, password, 'GS1 Login Credentials', "You can now use the services to 'Upload your Bank Slip'.");
+        let subject = selectedLanguage === 'en' ? "GS1 Login Credentials" : "بيانات تسجيل الدخول ل GS1";
+        let secondHeading = selectedLanguage === 'en' ? "You can now use the services to 'Upload your Bank Slip'." : "يمكنك الآن استخدام الخدمات لـ 'تحميل إيصال البنك الخاص بك'.";
+        await sendOTPEmail(userValue.email, password, subject, secondHeading);
         // const hashedPassword = bcrypt.hashSync(password, 10);
         // userValue.password = hashedPassword;
         userValue.password = password;
@@ -680,6 +680,7 @@ const subUserSchema = Joi.object({
     cr_number: Joi.string(),
     cr_activity: Joi.string(),
     status: Joi.string().valid('active', 'inactive').default('active'),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 
 
 });
@@ -719,13 +720,23 @@ export const createSubUser = async (req, res, next) => {
 
 
         // Send OTP Email
-        const emailSubject = `Welcome to GS1Ksa - Your Sub Admin Role`;
-        const emailContent = `
-        <h1>Welcome to GS1Ksa</h1>
-        <p>You have been assigned with the role: ${userData.user_type}</p>
-        <p>Your Password: <strong>${value.password}</strong></p>
-        <p>Please use this  email and Password to login.</p>
-      `;
+        // const emailSubject = `Welcome to GS1Ksa - Your Sub Admin Role`;
+        // render email subject based on selected language
+        const emailSubject = userData.selectedLanguage === 'en' ? `Welcome to GS1Ksa - Your Sub Admin Role` : `مرحبًا بك في GS1Ksa - دور المشرف الفرعي الخاص بك`;
+
+        const emailContent = userData.selectedLanguage === 'en' ?
+            `
+            <h1>Welcome to GS1Ksa</h1>
+            <p>You have been assigned with the role: ${userData.user_type}</p>
+            <p>Your Password: <strong>${value.password}</strong></p>
+            <p>Please use this email and Password to login.</p>
+            ` :
+            `
+            <h1>مرحبًا بك في GS1Ksa</h1>
+            <p>تم تعيينك بالدور: ${userData.user_type}</p>
+            <p>كلمة المرور الخاصة بك: <strong>${value.password}</strong></p>
+            <p>يرجى استخدام هذا البريد الإلكتروني وكلمة المرور لتسجيل الدخول.</p>
+            `;
 
         if (req?.admin?.adminId) {
 

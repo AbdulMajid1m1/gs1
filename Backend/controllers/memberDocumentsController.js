@@ -24,6 +24,7 @@ export const createMemberDocument = async (req, res, next) => {
         user_id: Joi.string().required(),
         doc_type: Joi.string().default('member_document'),
         uploaded_by: Joi.string(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
     });
 
 
@@ -97,10 +98,21 @@ export const createMemberDocument = async (req, res, next) => {
         const emailData = [
             {
                 toEmail: user.email,
-                subject: `GS1 Saudi Arabia -  ${value.type} Document Uploaded`,
-                htmlContent: `<h1>Document Uploaded</h1>
-                              <p>Your ${value.type} document has been uploaded successfully.</p>
-                              <p>Document: <strong>${documentName}</strong></p>`,
+                // subject: `GS1 Saudi Arabia -  ${value.type} Document Uploaded`,
+                // render the subject based on the selected language
+                subject: value.selectedLanguage === 'en'
+                    ? `GS1 Saudi Arabia -  ${value.type} Document Uploaded`
+                    : `GS1 السعودية -  تم تحميل ${value.type} الوثيقة`,
+
+                htmlContent: value.selectedLanguage === 'en'
+                    ? `<h1>Document Uploaded</h1>
+                    <p>Your ${value.type} document has been uploaded successfully.</p>
+                    <p>Document: <strong>${documentName}</strong></p>`
+                    : `<h1>تم تحميل الوثيقة</h1>
+                    <p>تم تحميل ${value.type} الوثيقة بنجاح.</p>
+                    <p>الوثيقة: <strong>${documentName}</strong></p>`,
+
+
                 attachments: [
                     {
                         filename: documentName,
@@ -378,6 +390,7 @@ const updateMemberDocumentStatusSchema = Joi.object({
     reject_reason: Joi.string().optional(),
     migration: Joi.boolean().default(false),
     checkBankSlip: Joi.boolean().default(true),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
@@ -611,19 +624,32 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         company_name_eng: userUpdateResult?.company_name_eng,
                     },
                     general: {
-                        gcp_certificate_detail1:
-                            ['Global Trade Item Number(GTIN)',
-                                'Serial Shipping Container Code (SSCC)',
-                                'Global Location Number (GLN)',
-                                'Global Document Type Identifier(GDTI)',
-                                'Global Service Relation Number(GSRN)'
-                            ], // Dummy data, replace with actual detail data from your API
-                        gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
-                            'Global Identification Number for',
-                            'Consignment(GSNC)',
+                        gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
+                            'Global Trade Item Number(GTIN)',
+                            'Serial Shipping Container Code (SSCC)',
+                            'Global Location Number (GLN)',
+                            'Global Document Type Identifier(GDTI)',
+                            'Global Service Relation Number(GSRN)'
+                        ] : [
+                            'رقم السلعة التجارية العالمي (GTIN)',
+                            'رمز الحاوية الشحن التسلسلي (SSCC)',
+                            'رقم الموقع العالمي (GLN)',
+                            'معرف نوع الوثيقة العالمي (GDTI)',
+                            'رقم علاقة الخدمة العالمي (GSRN)'
+                        ],
+                        gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
+                            'Global Individual Asset Identifier(GIAI)',
+                            'Global Returnable Asset Identifier(GRAI)',
+                            'Global Identification Number for Consignment(GSNC)',
                             'Global Shipment Identification Number (GSIN)'
-                        ], // Dummy data, replace with actual detail data from your API
-                        gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+                        ] : [
+                            // Arabic translations for the second list
+                            'معرف الأصل الفردي العالمي (GIAI)',
+                            'معرف الأصل القابل للعودة العالمي (GRAI)',
+                            'رقم التعريف العالمي للشحنة (GSNC)',
+                            'رقم تعريف الشحنة العالمي (GSIN)'
+                        ],
+                        gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
                     },
 
                     userData: {
@@ -638,9 +664,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     explodeGPCCode: []
                 };
 
-                console.log("userUpdateResult")
-                console.log(userUpdateResult)
-
                 // Generate PDF from EJS template
                 const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
                 pdfFilename = `${userUpdateResult.company_name_eng}-Certificate.pdf`;
@@ -648,8 +671,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 if (!fsSync.existsSync(pdfDirectory)) {
                     fsSync.mkdirSync(pdfDirectory, { recursive: true });
                 }
-
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+                let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
+                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath, true);
                 pdfBuffer = await fs1.readFile(Certificatepath);
 
                 // Send an email based on the updated status
@@ -665,11 +688,12 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             cart.cart_items = cartData
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
-                topHeading: "RECEIPT",
-                secondHeading: "RECEIPT FOR",
+
+                topHeading: value.selectedLanguage === 'en' ? "RECEIPT" : "إيصال",
+                secondHeading: value.selectedLanguage === 'en' ? "RECEIPT FOR" : "إيصال ل",
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
-                    registeration: `New Registration`,
+                    registeration: value.selectedLanguage === 'en' ? "New Registration" : "تسجيل جديد",
                     // Assuming $addMember->id is already known
                     company_name_eng: existingUser.company_name_eng,
                     mobile: existingUser.mobile,
@@ -718,8 +742,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             if (!fsSync.existsSync(pdfDirectory)) {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
+            let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
 
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'customInvoice.ejs'), data1, pdfFilePath);
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data1, pdfFilePath);
 
 
             // read the file into a buffer
@@ -762,7 +787,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             // Update the document status in the database
             // document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
 
-            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
+            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 }, null, value.selectedLanguage);
             await prisma.member_documents.update({
                 where: { id: documentId },
                 data: { status: value.status }
@@ -895,19 +920,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
         }
 
-        // if (value.status === 'rejected') {
-        //     // Set the document status to pending
-        //     await prisma.member_documents.update({
-        //         where: { id: documentId },
-        //         data: { status: 'pending' }
-        //     });
 
-
-
-
-        //     // Send email with optional reject reason
-        //     await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
-        // }
         if (value.status === 'rejected') {
             // Set the document status to pending
             await prisma.member_documents.update({
@@ -915,11 +928,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 data: { status: 'pending' }
             });
 
-
-
-
             // Send email with optional reject reason
-            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason, value.selectedLanguage);
         }
 
 
@@ -970,6 +980,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 const regenerateGcpCertificateSchema = Joi.object({
     userId: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 
 });
 
@@ -1005,19 +1016,32 @@ export const regenerateGcpCertificate = async (req, res, next) => {
                 company_name_eng: existingUser?.company_name_eng,
             },
             general: {
-                gcp_certificate_detail1:
-                    ['Global Trade Item Number(GTIN)',
-                        'Serial Shipping Container Code (SSCC)',
-                        'Global Location Number (GLN)',
-                        'Global Document Type Identifier(GDTI)',
-                        'Global Service Relation Number(GSRN)'
-                    ], // Dummy data, replace with actual detail data from your API
-                gcp_certificate_detail2: ['Global Individual Asset Identifier(GIAI)', 'Global Returnable Asset Identifier(GRAI)',
-                    'Global Identification Number for',
-                    'Consignment(GSNC)',
+                gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
+                    'Global Trade Item Number(GTIN)',
+                    'Serial Shipping Container Code (SSCC)',
+                    'Global Location Number (GLN)',
+                    'Global Document Type Identifier(GDTI)',
+                    'Global Service Relation Number(GSRN)'
+                ] : [
+                    'رقم السلعة التجارية العالمي (GTIN)',
+                    'رمز الحاوية الشحن التسلسلي (SSCC)',
+                    'رقم الموقع العالمي (GLN)',
+                    'معرف نوع الوثيقة العالمي (GDTI)',
+                    'رقم علاقة الخدمة العالمي (GSRN)'
+                ],
+                gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
+                    'Global Individual Asset Identifier(GIAI)',
+                    'Global Returnable Asset Identifier(GRAI)',
+                    'Global Identification Number for Consignment(GSNC)',
                     'Global Shipment Identification Number (GSIN)'
-                ], // Dummy data, replace with actual detail data from your API
-                gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
+                ] : [
+                    // Arabic translations for the second list
+                    'معرف الأصل الفردي العالمي (GIAI)',
+                    'معرف الأصل القابل للعودة العالمي (GRAI)',
+                    'رقم التعريف العالمي للشحنة (GSNC)',
+                    'رقم تعريف الشحنة العالمي (GSIN)'
+                ],
+                gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
             },
 
             userData: {
@@ -1031,13 +1055,6 @@ export const regenerateGcpCertificate = async (req, res, next) => {
             expiryDate: existingUser?.gcp_expiry.toISOString().split('T')[0],
             explodeGPCCode: []
         };
-
-        console.log("existingUser")
-        console.log(existingUser)
-
-
-
-
 
         // Generate PDF from EJS template
         const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
@@ -1071,7 +1088,9 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         } catch (err) {
             console.error(`Error deleting file: ${deletingDocumentPath}`, err);
         }
-        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', 'certificate.ejs'), CertificateData, pdfFilePath, true);
+        let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
+
+        const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath, true);
         let pdfBuffer = await fs1.readFile(Certificatepath);
         const updatedDocument = await prisma.member_documents.update({
             where: { id: currentDocument.id },
@@ -1107,8 +1126,8 @@ export const regenerateGcpCertificate = async (req, res, next) => {
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: existingUser.email,
-            subject: 'New GCP Certificate',
-            htmlContent: '<p>Your GCP Certificate has been updated.</p>',
+            subject: value.selectedLanguage === 'en' ? 'New GCP Certificate' : 'شهادة GCP جديدة',
+            htmlContent: value.selectedLanguage === 'en' ? '<p>Your GCP Certificate has been updated.</p>' : '<p>تم تحديث شهادة GCP الخاصة بك.</p>',
             attachments: [{
                 filename: pdfFilename,
                 content: pdfBuffer,
@@ -1128,7 +1147,7 @@ export const regenerateGcpCertificate = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '') => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '', selectedLanguage = 'ar') => {
     let subject, emailContent;
     let attachments = [];
     if (status === 'approved') {
@@ -1150,25 +1169,25 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
     }
     switch (status) {
         case 'approved':
-            subject = 'Your Gs1Ksa member Account is Now Approved';
-            emailContent = '<p>Your account has been activated. You can now access all the features.</p>';
+            subject = selectedLanguage === 'en' ? 'Your Gs1Ksa member Account is Now Approved' : 'تمت الموافقة على حسابك في Gs1Ksa';
+            emailContent = selectedLanguage === 'en' ? '<p>Your account has been activated. You can now access all the features.</p>' : '<p>تم تفعيل حسابك. يمكنك الآن الوصول إلى جميع الميزات.</p>';
             break;
         case 'rejected':
-            subject = 'Your Gs1Ksa member Account is Rejected';
-            let rejectionMessage = rejectReason ? `<p>Reason for rejection: ${rejectReason}</p>` : '';
-            emailContent = `<p>Your account status has been updated to: ${status}.</p>${rejectionMessage}`;
+            subject = selectedLanguage === 'en' ? 'Your Gs1Ksa member Account is Rejected' : 'تم رفض حسابك في Gs1Ksa';
+            // render conditionally based on selectedLanguage
+            let rejectionMessage = rejectReason ? `<p>${selectedLanguage === 'en' ? 'Reason for rejection' : 'سبب الرفض'}: ${rejectReason}</p>` : '';
+            emailContent = selectedLanguage === 'en' ? `<p>Your account status has been updated to: ${status}.</p>${rejectionMessage}` : `<p>تم تحديث حالة حسابك إلى: ${status}.</p>${rejectionMessage}`;
             break;
         // Add more cases for other statuses
         default:
-            subject = 'Your Gs1Ksa member Account is Rejected';
-            emailContent = `<p>Your account status has been updated to: ${status}.</p>`;
+            subject = selectedLanguage === 'en' ? 'Your Gs1Ksa member Account is Rejected' : 'تم رفض حسابك في Gs1Ksa';
+            rejectionMessage = rejectReason ? `<p>${selectedLanguage === 'en' ? 'Your account status has been updated to: ${status}.' : 'تم تحديث حالة حسابك إلى: ${status}.'}</p>` : '';
     }
 
     await sendEmail({
         fromEmail: ADMIN_EMAIL,
         toEmail: userEmail,
         subject: subject,
-
         htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
         // if status is approved, attach the certificate PDF
         attachments: attachments

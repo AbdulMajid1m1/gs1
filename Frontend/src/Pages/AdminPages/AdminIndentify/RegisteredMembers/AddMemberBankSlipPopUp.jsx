@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fetchMemberbankSlipData, userData }) => {
   // const [selectDocument, setSelectDocument] = useState("");
@@ -13,6 +14,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   //     'bank_slip'
   //   ])
   //   const [selectedDocuments, setSelectedDocuments] = useState("");
+  const { selectedLanguage } = useLanguage();
   const [transactionId, setTransactionId] = useState([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState("")
   const [uploadDocument, setUploadDocument] = useState("");
@@ -98,6 +100,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
     formData.append('doc_type', 'member_document');
     formData.append('document', uploadDocument);
     formData.append('uploaded_by', gs1MemberData?.email || '');
+    formData.append('selectedLanguage', selectedLanguage);
 
 
     try {
