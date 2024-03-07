@@ -11,14 +11,14 @@ import imageLiveUrl from '../../../../utils/urlConverter/imageLiveUrl';
 const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateassigento"));
-    console.log(updateBrandData);
+    console.log(updateBrandData?.email);
     const [loading, setLoading] = useState(false);
     const [docuements, setDocuments] = React.useState([]);
     const [selectedDocuments, setSelectedDocuments] = useState({
         id: updateBrandData?.assignedTo || 0,
         username: updateBrandData?.assignedTo || "",
     });
-    const [emailpost, setemailpost] = useState('')
+    const [emailpost, setemailpost] = useState(updateBrandData?.email);
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const { t, i18n } = useTranslation();
     const [replyshoww, setreplyshoww] = useState(false)
