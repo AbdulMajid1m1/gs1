@@ -249,6 +249,7 @@ export const assignAdminToUser = async (req, res, next) => {
             userId: Joi.string().required(),
             message: Joi.string().optional(),
             assigningAdminName: Joi.string().optional(),
+            selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 
         });
 
@@ -293,34 +294,35 @@ export const assignAdminToUser = async (req, res, next) => {
         // Send an email to the admin with the provided message and user details
 
         const adminEmail = adminExists.email;
-        const emailSubject = 'GS1Ksa Assignment Notification';
+        // const emailSubject = 'GS1Ksa Assignment Notification';
+        const emailSubject = value.selectedLanguage === 'en' ? 'GS1Ksa Assignment Notification' : 'إشعار تعيين GS1Ksa';
         let emailContent = `
-                <html>
-                <head>
-                    <title>GS1Ksa Assignment Notification</title>
-                </head>
-                <body>
-                    <h1>GS1Ksa Assignment Notification</h1>
-                    <p>Hello ${adminExists.username},</p>
-                    <p>You have been assigned to a user in the system. Here are the details:</p>
-                    <ul>
-                        ${user.companyID ? `<li>User ID: ${user.companyID}</li>` : ''}
-                        <li>User Company Name: ${user.company_name_eng}</li>
-                    </ul>
-                </body>
-                </html>
-            `;
+            <html>
+            <head>
+                <title>${value.selectedLanguage === 'en' ? 'GS1Ksa Assignment Notification' : 'إشعار تعيين GS1Ksa'}</title>
+            </head>
+            <body>
+                <h1>${value.selectedLanguage === 'en' ? 'GS1Ksa Assignment Notification' : 'إشعار تعيين GS1Ksa'}</h1>
+                <p>${'مرحبًا'} ${adminExists.username},</p>
+                <p>${'تم تعيينك لمستخدم في النظام. إليك التفاصيل:'}</p>
+                <ul>
+                    ${user.companyID ? `<li>${'معرف المستخدم'}: ${user.companyID}</li>` : ''}
+                    <li>${'اسم شركة المستخدم'}: ${user.company_name_ar}</li>
+                </ul>
+            </body>
+            </html>
+        `;
 
         if (message && value.assigningAdminName) {
-            emailContent += `<p>Message from the assigning Admin ${value.assigningAdminName}: ${message}</p>`;
+            emailContent += `<p>${value.selectedLanguage === 'en' ? 'Message from the assigning Admin' : 'رسالة من المشرف المعين'} ${value.assigningAdminName}: ${message}</p>`;
         }
 
         emailContent += `
-                    <p>Thank you for your assistance.</p>
-                    <p>Best regards,<br>GS1Ksa Team</p>
-                </body>
-                </html>
-            `;
+            <p>${value.selectedLanguage === 'en' ? 'Thank you for your assistance.' : 'شكرا لك على مساعدتك.'}</p>
+            <p>${value.selectedLanguage === 'en' ? 'Best regards' : 'أطيب التحيات'},<br>GS1Ksa Team</p>
+        </body>
+        </html>
+    `;
 
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
@@ -569,6 +571,7 @@ export const deleteAdmin = async (req, res, next) => {
 // Admin OTP generation schema
 const adminMobileCheckSchema = Joi.object({
     mobile: Joi.string().required(),
+    selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
 });
 
 // Admin OTP verification schema
@@ -587,7 +590,7 @@ export const generateAdminOtp = async (req, res, next) => {
         return res.status(400).json({ success: false, message: error.details[0].message });
     }
 
-    const { mobile } = value;
+    const { mobile, selectedLanguage } = value;
 
     try {
         const admin = await prisma.admins.findFirst({
@@ -601,14 +604,15 @@ export const generateAdminOtp = async (req, res, next) => {
         const otp = Math.floor(1000 + Math.random() * 9000).toString();
         const token = jwt.sign({ id: admin.id, otp, isVerified: false }, ADMIN_JWT_SECRET, { expiresIn: '15m' });
 
-        // Here you would implement sending the OTP to admin's email
-        const emailSubject = `Admin OTP Verification`
-        const emailContent = `
-            <h1>GS1 Authenticator Admin OTP Verification</h1>
-            <p>Your Verification OTP Is: <strong>${otp}</strong></p>
-            `;
 
-        console.log(admin.email); // Replace this with your email sending logic
+        const emailSubject = selectedLanguage === 'en' ? 'Admin OTP Verification' : 'تحقق من OTP للمشرف';
+
+
+        let emailContent = `
+            <h1>${selectedLanguage === 'en' ? 'GS1 Authenticator Admin OTP Verification' : 'تحقق من OTP للمشرف'}</h1>
+            <p>${selectedLanguage === 'en' ? 'Your Verification OTP Is:' : 'رمز التحقق الخاص بك هو:'} <strong>${otp}</strong></p>
+        `;
+
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
             toEmail: admin.email,

@@ -18,13 +18,14 @@ import CompanyArabicPopUp from './CompanyArabicPopUp';
 import CrActivityPopUp from './CrActivityPopUp';
 import CrNumberPopUp from './CrNumberPopUp';
 import TermsAndCondition from './TermsAndCondition';
+import { useLanguage } from '../../../Contexts/LanguageContext';
 
 
 const MemmberRegisteration = () => {
   // const sessionData = sessionStorage.getItem('saveCrNumberData');
   const selectedCr = JSON.parse(sessionStorage.getItem('selectedCr'));
   const { t, i18n } = useTranslation();
-
+  const { selectedLanguage } = useLanguage();
   const sesstionDocumentData = sessionStorage.getItem('saveDocumentData');
   const location = sessionStorage.getItem('location');
   const navigate = useNavigate();
@@ -433,11 +434,11 @@ const MemmberRegisteration = () => {
     };
 
 
-
+    console.log(selectedLanguage);
 
     newRequest
 
-      .post("/users", requestBody)
+      .post("/users?selectedLanguage=" + selectedLanguage, requestBody)
       .then((response) => {
         console.log(response.data);
         setIsLoading(false);

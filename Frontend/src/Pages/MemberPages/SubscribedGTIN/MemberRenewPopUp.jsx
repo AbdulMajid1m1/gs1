@@ -6,13 +6,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../Contexts/LanguageContext';
 
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const MemberRenewPopUp = ({ isVisible, setVisibility,
 }) => {
-//   const gs1RegesteredMembersData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
-//   console.log(gs1RegesteredMembersData);
+  const { selectedLanguage } = useLanguage();
+  //   const gs1RegesteredMembersData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
+  //   console.log(gs1RegesteredMembersData);
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
   console.log(memberData)
@@ -25,8 +27,8 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
   const { t } = useTranslation();
 
   //   const [status, setStatus] = useState("");
-//   const [rejected, setRejected] = useState("");
-//   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
+  //   const [rejected, setRejected] = useState("");
+  //   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -65,16 +67,17 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
     setLoading(true);
 
     try {
-       const res = await newRequest.post('/changeMembership/renewRequest', {
-        "user_id": memberData?.id
-       });
-        console.log(res.data);
-    {
+      const res = await newRequest.post('/changeMembership/renewRequest', {
+        "user_id": memberData?.id,
+        selectedLanguage: selectedLanguage,
+      });
+      console.log(res.data);
+      {
         toast.success(res?.data?.message || `${t('Renew request sent successfully!')}`);
         setLoading(false);
         // Close the popup
         handleCloseRenewPopup();
-    }
+      }
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -89,7 +92,7 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
         <div className="member-popup-overlay">
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
-            {/* <form className='w-full'> */}
+              {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Renew Invoice')}</h2>
                 {/* <div className="flex flex-col sm:gap-3 gap-3 mt-5">
@@ -195,7 +198,7 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
                     className="w-[70%] ml-2"
                     endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
                   >
-                     {t('Send Request')}
+                    {t('Send Request')}
                   </Button>
                 </div>
               </form>

@@ -6,11 +6,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import "./MemberInvoicePopUp.css";
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 // const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, fetchMemberHistoryData, fetchMemberbankSlipData,
   fetchRegisteredProductsData, userData, fetchMemberDocumentsData,
 }) => {
+  const { selectedLanguage } = useLanguage();
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   console.log("gs1MemberInvoiceData", gs1MemberInvoiceData);
   const gtinId = sessionStorage.getItem("gtinId");
@@ -155,6 +157,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
     const approvedBody = {
       status: selectedStatus,
+      selectedLanguage: selectedLanguage,
     };
     const migrationApprovedBody = {
       status: selectedStatus,
@@ -165,12 +168,14 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const rejectBody = {
       status: selectedStatus,
       reject_reason: rejected,
+      selectedLanguage: selectedLanguage,
     };
 
     const changeGtinSub = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
-      invoiceType: gs1MemberInvoiceData?.type
+      invoiceType: gs1MemberInvoiceData?.type,
+      selectedLanguage: selectedLanguage,
     }
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
@@ -181,10 +186,12 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       userId: gs1MemberInvoiceData?.user_id,
       // pass selected row transaction id
       transactionId: gs1MemberInvoiceData?.transaction_id,
+      selectedLanguage: selectedLanguage,
     }
     const addGln = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
+      selectedLanguage: selectedLanguage,
     }
 
     // console.log(upgrade_invoice);

@@ -144,7 +144,7 @@ app.get('/renderInvoice', async (req, res) => {
     };
 
     // Render the EJS template with the dummy data
-    res.render('pdf/customInvoice_Ar', { data });
+    res.render('pdf/oldMembersCustomInvoice_Ar', { data });
 });
 
 app.get('/renderGtinCertificate', async (req, res) => {
@@ -195,7 +195,13 @@ app.get('/renderCertificate', async (req, res) => {
         },
         general: {
             gcp_certificate_detail1: ['Global Trade Item Number(GTIN)', 'Certificate Detail 1'], // Dummy data, replace with actual detail data from your API
-            gcp_certificate_detail2: ['Certificate Detail 2', 'Global Trade Item Number(GTIN)'], // Dummy data, replace with actual detail data from your API
+            gcp_certificate_detail2: [
+                // Arabic translations for the second list
+                'معرف الأصل الفردي العالمي (GIAI)',
+                'معرف الأصل القابل للعودة العالمي (GRAI)',
+                'رقم التعريف العالمي للشحنة (GSNC)',
+                'رقم تعريف الشحنة العالمي (GSIN)'
+            ], // Dummy data, replace with actual detail data from your API
             gcp_legal_detail: 'Legal Detail', // Dummy data, replace with actual legal detail from your API
         },
         userData: {

@@ -166,12 +166,10 @@
     <center style="margin: 0px auto;">
         <div class="content-container">
             <div class="contents">
-            
 
                 <table width="100%" cellspacing="0" cellpadding="0" style="border:none;">
                  
                     <tr>
-
                         <td
                             style=" width: 100%; padding-top: 30px; font-size: 18px; font-weight: bold; text-align: center;">
                             <strong><%= data.topHeading %></strong></td>
@@ -197,34 +195,45 @@
                 <hr style=" border: 10px solid #EF6231;"></hr>
                 <table class="" width="100%" cellspacing="0" cellpadding="0" style="border:none; font-size: 1.2rem; line-height: 0.5 rem;">
                     <tr>
-                        <!-- Billing Information -->
+                        <!-- معلومات الفوترة -->
                         <td width="50%">
-                                <p style="line-height: 1.5rem;">
-                                    <b><%= data.secondHeading %></b><br>
-                                        <span><%= data.memberData.company_name_eng %>
-                                    </p>
-                          
+                            <p style="line-height: 1.5rem;"><b><%= data.secondHeading %></b><br><span><%= data.memberData.company_name_eng %></span></p>
                             <address>
                                 <p style="line-height: 1.5rem;">
-                                    <span><%= data.memberData.address.zip %></span> <span><b>: صندوق بريد</b></span><br>
-                                    <span><%= data.memberData.mobile %></span><b>: متحرك</b></span><br>
-                                    <span><%= data.memberData.address.countryName %>, <%= data.memberData.address.stateName %>, <%= data.memberData.address.cityName %></span>
+                                    <% if (data.memberData.address.zip) { %>
+                                        صندوق بريد: <span><%= data.memberData.address.zip %></span><br>
+                                    <% } %>
+                                    <% if (data.memberData.mobile) { %>
+                                        الهاتف المحمول: <span><%= data.memberData.mobile %></span><br>
+                                    <% } %>
+                                    <% if (data.memberData.address.countryName || data.memberData.address.stateName || data.memberData.address.cityName) { %>
+                                        <span>
+                                            <% if (data.memberData.address.countryName) { %>
+                                                <%= data.memberData.address.countryName %>,
+                                            <% } %>
+                                            <% if (data.memberData.address.stateName) { %>
+                                                <%= data.memberData.address.stateName %>,
+                                            <% } %>
+                                            <% if (data.memberData.address.cityName) { %>
+                                                <%= data.memberData.address.cityName %>
+                                            <% } %>
+                                        </span>
+                                    <% } %>
                                 </p>
-
-                            </address>
+                                </address>
                         </td>
                         <!-- Date and Transaction Information -->
-                    
-                        <td width="50%" class="text-right">
-                            <p class="p-text text-right" style="line-height: 1.5rem;">
-                                <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span> <b>: تاريخ الإصدار</b><br>
-                                <span><%= data.cart.transaction_id %></span> <b>: رقم الشركة </b><br>
-                                <span><%= data.cart.transaction_id %></span> <b>: رقم الفاتورة </b> <br>
-                                <span><%= data.memberData.membership_otherCategory %></span>
-                                <<b>فئة العضوية</b>
-
+                        <td width="50%">
+                            <p class="p-text" style="line-height: 1.5rem; direction: rtl; text-align: right;">
+                                <b>تاريخ الإصدار:</b> <span><%= data.currentDate.day %></span>-<span><%= data.currentDate.month %></span>-<span><%= data.currentDate.year %></span><br>
+                                <% if (data.memberData.companyID) { %>
+                                    <b>رقم الشركة:</b> <span><%= data.memberData.companyID %></span><br>
+                                <% } %>
+                                <b>رقم العملية:</b> <span><%= data.cart.transaction_id %></span><br>
+                                <b>فئة العضوية:</b> <span><%= data.memberData.membership_otherCategory %></span><br>
                             </p>
                         </td>
+                        
                     </tr>
                     <tr>
                         <!-- Payment Type and Membership Type -->
@@ -314,7 +323,9 @@
                             <% totalPrice += parseInt(item.registration_fee, 10) + parseInt(item.yearly_fee, 10); %>
                         <% } %>
                     <% }); %>
-                    <td colspan="2" class="text-bold p-text text-left"><%= totalPrice %></td>
+                    
+                    <% let totalPriceWithYears = totalPrice * data.memberData.yearsToPay; %> 
+                    <td colspan="2" class="text-bold p-text text-right"><%= totalPriceWithYears %></td>
                 </tr>
             </table><br>
 

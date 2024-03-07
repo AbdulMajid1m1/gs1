@@ -12,6 +12,7 @@ import newRequest from '../../../utils/userRequest';
 import MapEvents from '../../../components/Maps/MapEvents';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import CustomSnakebar from '../../../utils/CustomSnackbar';
 
 const GLN = () => {
   const [data, setData] = useState([]);
@@ -24,6 +25,14 @@ const GLN = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
+  
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
+  const resetSnakeBarMessages = () => {
+    setError(null);
+    setMessage(null);
+
+  };
  
   const navigate = useNavigate()
   
@@ -153,6 +162,10 @@ const GLN = () => {
 
   return (
     <div>
+
+      {message && <CustomSnakebar message={message} severity="success" onClose={resetSnakeBarMessages} />}
+      {error && <CustomSnakebar message={error} severity="error" onClose={resetSnakeBarMessages} />}
+
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         {/* <div className='h-auto w-full'>
           <div className='h-16 w-full shadow-xl flex justify-start items-center px-5 border-l-2 border-t-2 border-r-2 border-[#e49515]'>

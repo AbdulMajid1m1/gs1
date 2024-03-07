@@ -5,8 +5,10 @@ import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMemberDocumentsData }) => {
+    const { selectedLanguage } = useLanguage();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const { t, i18n } = useTranslation();
@@ -19,10 +21,11 @@ const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMembe
 
             // psot api {{v2gs1Local}}/memberDocuments/regenerateGcpCertificate wiht userId in body
             const response = await newRequest.post(`/memberDocuments/regenerateGcpCertificate`, {
-                userId: userId
+                userId: userId,
+                selectedLanguage: selectedLanguage,
             });
             console.log(response.data);
-            toast.success( `${t('Certificate generated successfully')}`, {
+            toast.success(`${t('Certificate generated successfully')}`, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,

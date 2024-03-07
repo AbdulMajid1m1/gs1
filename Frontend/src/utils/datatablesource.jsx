@@ -1227,7 +1227,7 @@ export const inventoryColumn = [
 //   },
 // ];
 
-export const GtinColumn = (t, i18n) => [
+export const GtinColumn = (t, i18n, selectedLanguage) => [
   // {
   //   field: "product_id",
   //   headerName: "Product ID",
@@ -1261,7 +1261,7 @@ export const GtinColumn = (t, i18n) => [
       const productId = params.row.id; // Assuming id is the productId
       const onClickIcon = () => {
         // Call the API when icon is clicked
-        window.open(`${baseUrl}/products/getGtinCertificate/${productId}`, "_blank");
+        window.open(`${baseUrl}/products/getGtinCertificate/${productId}?selectedLanguage=${selectedLanguage}`, "_blank");
       };
 
       return (
@@ -1492,10 +1492,30 @@ export const GlnColumn = (t, i18n) => {
       headerName: t('GLN Barcode Number'),
       width: 180,
     },
+    // {
+    //   field: 'status',
+    //   headerName: t('Status'),
+    //   width: 180,
+    // },
     {
       field: 'status',
       headerName: t('Status'),
       width: 180,
+      renderCell: params => (
+        <div
+          style={{
+            padding: '5px',
+            paddingLeft: '5px',
+            paddingRight: '5px',
+            borderRadius: '10px',
+            border: '2px solid',
+            borderColor: params.row.status === 'active' ? 'green' : 'red',
+            color: params.row.status === 'active' ? 'green' : 'red',
+          }}
+        >
+          {params.row.status}
+        </div>
+      )
     },
   ];
 

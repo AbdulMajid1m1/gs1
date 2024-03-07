@@ -159,7 +159,7 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
             throw createError(404, globalGepir[0]?.validationErrors[0]?.errors[0]?.message ?? 'Product not found');
         }
     } catch (error) {
-
+        console.log(error);
         console.log(error[0]?.validationErrors);
         next(error);
     }

@@ -34,19 +34,19 @@
             border-top: none;
             margin-top: 20px;
         }
-
+        
         .table-suply tr th,
         .table-suply tr td {
             border-top: none;
-            text-align: left;
+            text-align: right;
             border-right: none;
             padding: 1px;
-
+            
         }
-
+        
         .table-suply tr th:last-child,
         .table-suply tr td:last-child {
-            border-right: none;
+            border-right: none;;
         }
 
 
@@ -85,53 +85,63 @@
     <center style="margin: 0px auto;">
         <footer>
             <span>
-                King Fahad Branch Road, Al-Moatamarat District
-                P.O.Box 16683 Riyadh 11474, Saudi Arabia
+                طريق فهد بن عبدالعزيز، حي المعتمرات
+                ص.ب 16683 الرياض 11474، المملكة العربية السعودية
             </span>
         </footer>
 
         <hr style="width: calc(100% - 20px); border: 10px solid #EF6231;"></hr>
         <table class="table-suply" width="100%" cellspacing="0" cellpadding="0" style="border:none; line-height: 0.5rem;">
             <tr>
+                <td width="30%" style="float: left; margin-top: 30%;">
+                    <table>
+                        <!-- ... -->
+                        <tr>
+                            <td>
+                                <img src="<%= data.BACKEND_URL %>/gs1Images/tree.png" width="400" height="400">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
                 <td width="70%">
                     <table>
-                        <tr style="width: 60%" class="text-left">
+                        <tr style="width: 60%" class="text-right">
+                            <td width="50%">
+                                <p style="margin-bottom:0;">لغة الأعمال العالمية</p>
+                                <p style="margin: 0; padding-top:0; font-size: bold; font-size: 16px; color: #F26334;">
+                                    <strong>شهادة بادئة شركة GS<span>1</span></strong>
+                                </p>
+                            </td>
                             <td width="50%">
                                 <img src="<%= data.BACKEND_URL %>/gs1Images/backend/logo/logo.png" width="210" height="100">
 
                             </td>
-                            <td width="50%">
-                                <p style="margin-bottom:0; text-align: left;">The Global Language of Business</p>
-                                <p style="margin: 0; padding-top:0; text-align: left; font-size: bold; font-size: 16px; color: #F26334;">
-                                    <strong>GS<span>1</span> COMPANY PREFIX CERTIFICATE</strong>
-                                </p>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p style="margin-bottom:0;">مرخص لـ</p>
+                            </td>
+                            <tr>
+                                <td>
+                                    <p style="margin-bottom:0; padding-top:0; padding-bottom: 0; font-size: 20px; color: #F26334;">
+                                        <span><%= data.user.company_name_ar %></span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p style="margin-bottom:0; padding-top:0;">المُرخص له</p>
+                                </td>
+                            </tr>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p style="margin-bottom:0; padding-top:0;"><strong>GS<span>1</span> بادئة الشركة: <span style="color: #F26334;"><%= data.userData.gcpGLNID %></span></strong></p>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <p style="margin-bottom:0;">Licensed To</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p style="margin-bottom:0; padding-top:0; padding-bottom: 0; font-size: 20px; color: #F26334;">
-                                    <span><%= data.user.company_name_eng %></span>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p style="margin-bottom:0; padding-top:0;">LICENSEE</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p style="margin-bottom:0; padding-top:0;"><strong>GS<span>1</span> COMPANY PREFIX: <span style="color: #F26334;"><%= data.userData.gcpGLNID %></span></strong></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p style="padding-top:0;">For use in creating GS1 Identification Numbers</p>
+                            <td colspan="2">
+                                <p style="padding-top:0;">للاستخدام في إنشاء أرقام التعريف GS1</p>
                             </td>
                         </tr>
                         <% let p1_explode = data.general.gcp_certificate_detail1 %>
@@ -153,17 +163,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <p style="margin-bottom:0; padding-top:0;"><strong>GS<span>1</span> GLN Identification: <span style="color: #F26334;"><%= data.userData.gln %></span></strong></p>
-                            </td>
                             <td class="text-center">
                                 <img src="<%= data.BACKEND_URL %>/gs1Images/stamp.png" width="120" height="100" style="transform: rotate(330deg);">
                             </td>
+                            <td>
+                                <p style="margin-bottom:0; padding-top:0;"><strong>هوية GS<span>1</span> GLN: <span style="color: #F26334;"><%= data.userData.gln %></span></strong></p>
+                            </td>
+                            <% 
+                                let _2DVal = data.userData.gcpGLNID + data.expiryDate + Date.now();
+                                let _2DBarCode = 'GCP=' + data.userData.gcpGLNID + ',EXP=' + data.expiryDate + ',HASH=' + _2DVal; // You'll need to generate the QR code in your Node.js backend
+                            %>
                         </tr>
-                        <% 
-                            let _2DVal = data.userData.gcpGLNID + data.expiryDate + Date.now();
-                            let _2DBarCode = 'GCP=' + data.userData.gcpGLNID + ',EXP=' + data.expiryDate + ',HASH=' + _2DVal; // You'll need to generate the QR code in your Node.js backend
-                        %>
                         <!-- <tr>
                             <td>
                                 <p style="margin-bottom:0; padding-top:0;"><strong>Legal Entity GPC: </strong></p>
@@ -193,16 +203,6 @@
                             </td>
                             <td class="text-left">
                                 <span>Valid Until: </span>&nbsp;&nbsp;<span><%= data.expiryDate %></span>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td width="30%" style="float: left; margin-top: 30%;">
-                    <table>
-                        <!-- ... -->
-                        <tr>
-                            <td>
-                                <img src="<%= data.BACKEND_URL %>/gs1Images/tree.png" width="400" height="400">
                             </td>
                         </tr>
                     </table>

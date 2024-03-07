@@ -7,10 +7,12 @@ import UpcomingEvents from '../UpcomingEvents/UpcomingEvents';
 import FeatureArticle from '../FeatureArticle/FeatureArticle';
 import OurSolutionPartner from '../OurSolutionPartner/OurSolutionPartner';
 import DropDownSelection from '../DropDownSelection/DropDownSelection';
+import { useLanguage } from '../../../Contexts/LanguageContext';
 
 const HomePage = () => {
 
-
+  const { selectedLanguage, setSelectedLanguage } = useLanguage();
+  console.log('selectedLanguage', selectedLanguage);
 
   return (
     <div>
