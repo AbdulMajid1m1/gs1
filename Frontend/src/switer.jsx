@@ -8,14 +8,6 @@ import { useLanguage } from './Contexts/LanguageContext';
 const LanguageSwitcher = () => {
     const { i18n } = useTranslation();
     const { selectedLanguage, setSelectedLanguage } = useLanguage();
-
-    // const { selectedLanguage } = useLanguage();
-
-    // const changeLanguage = (language) =>
-    // {
-    //     i18n.changeLanguage(language);
-    // };
-
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
         setSelectedLanguage(language);// context update to change language

@@ -6,8 +6,10 @@ import newRequest from '../../../utils/userRequest';
 import { toast } from 'react-toastify';
 import { DotLoader } from 'react-spinners'
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../Contexts/LanguageContext';
 
 const BankSlip = () => {
+    const { selectedLanguage } = useLanguage();
     const { t, i18n } = useTranslation();
     const [document, setDocument] = useState(null);
     const [description, setDescription] = useState('');
@@ -95,6 +97,7 @@ const BankSlip = () => {
         formData.append('document', document);
 
         formData.append('uploaded_by', memberData.email);
+        formData.append('selectedLanguage', selectedLanguage);
 
 
         try {
@@ -188,7 +191,7 @@ const BankSlip = () => {
                                     <i className="fas fa-arrow-left mr-1"></i>{t('Back')}
                                 </button>
                             </div>
-  
+
                             <form onSubmit={handleSubmit}>
                                 <div className="w-full font-sans sm:text-base text-sm flex flex-col gap-2 px-4">
                                     <label htmlFor="translate">
