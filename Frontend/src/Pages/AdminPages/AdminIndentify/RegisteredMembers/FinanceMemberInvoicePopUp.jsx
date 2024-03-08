@@ -179,6 +179,11 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       status: selectedStatus,
       selectedLanguage: selectedLanguage,
     };
+    const migrationApprovedBody = {
+      status: selectedStatus,
+      migration: true,
+      ...(gs1MemberInvoiceData?.no_of_years === 0 && { checkBankSlip: false })
+    };
 
     const rejectBody = {
       status: selectedStatus,
