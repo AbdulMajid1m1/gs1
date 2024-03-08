@@ -1908,11 +1908,12 @@ model staff_help_desks {
 }
 
 model states {
-  id         BigInt    @id(map: "PK_states") @default(autoincrement())
-  name       String?   @db.NVarChar(Max)
+  id         String   @id @default(cuid())
+  name       String?  @db.NVarChar(Max)
+  name_ar    String?  @db.NVarChar(Max)
   country_id Int?
-  created_at DateTime? @db.DateTime
-  updated_at DateTime? @updatedAt @db.DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model subscribes {
