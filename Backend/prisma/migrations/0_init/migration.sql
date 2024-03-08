@@ -1,16 +1,7 @@
 BEGIN TRY
 
 BEGIN TRAN;
--- CreateTable
-CREATE TABLE [dbo].[units] (
-    [id] INT NOT NULL IDENTITY(1,1),
-    [unit_code] varchar(50),
-    [unit_name] nvarchar(50),
-    [status] int,
-    [created_at] DATETIME2,
-    [updated_at] DATETIME2,
-    
-);
+
 -- CreateTable
 CREATE TABLE [dbo].[add_member_gln_products] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -114,6 +105,34 @@ CREATE TABLE [dbo].[admins] (
 );
 
 -- CreateTable
+CREATE TABLE [dbo].[Role] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [name] NVARCHAR(1000) NOT NULL,
+    CONSTRAINT [Role_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[Permission] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [name] NVARCHAR(1000) NOT NULL,
+    CONSTRAINT [Permission_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[AdminRole] (
+    [adminId] NVARCHAR(1000) NOT NULL,
+    [roleId] NVARCHAR(1000) NOT NULL,
+    CONSTRAINT [AdminRole_pkey] PRIMARY KEY CLUSTERED ([adminId],[roleId])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[RolePermission] (
+    [roleId] NVARCHAR(1000) NOT NULL,
+    [permissionId] NVARCHAR(1000) NOT NULL,
+    CONSTRAINT [RolePermission_pkey] PRIMARY KEY CLUSTERED ([roleId],[permissionId])
+);
+
+-- CreateTable
 CREATE TABLE [dbo].[attribute_values] (
     [id] FLOAT(53),
     [attributes_value_code] NVARCHAR(max),
@@ -121,8 +140,7 @@ CREATE TABLE [dbo].[attribute_values] (
     [attributes_value_definition] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [AttributeValueID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__attribut__335E22569F6BC69D] PRIMARY KEY CLUSTERED ([AttributeValueID])
+    [AttributeValueID] INT NOT NULL
 );
 
 -- CreateTable
@@ -133,8 +151,7 @@ CREATE TABLE [dbo].[attributes] (
     [attributes_definition] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [AttributeID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__attribut__C189298AD25B931E] PRIMARY KEY CLUSTERED ([AttributeID])
+    [AttributeID] INT NOT NULL
 );
 
 -- CreateTable
@@ -169,13 +186,12 @@ CREATE TABLE [dbo].[bank_slips] (
 
 -- CreateTable
 CREATE TABLE [dbo].[blog_categories] (
-    [id] NVARCHAR(max),
+    [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
     [slug] NVARCHAR(max),
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    [BlogCategoryID] NVARCHAR(max) NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__blog_cat__6BD2DA61FF59A720] PRIMARY KEY CLUSTERED ([BlogCategoryID])
+    [created_at] DATETIME CONSTRAINT [blog_categories_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME NOT NULL CONSTRAINT [blog_categories_updated_at_df] DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT [blog_categories_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -189,13 +205,12 @@ CREATE TABLE [dbo].[blog_comments] (
     [disabled] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [BlogCommentID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__blog_com__5F60E1F1D7D1BF0B] PRIMARY KEY CLUSTERED ([BlogCommentID])
+    [BlogCommentID] INT
 );
 
 -- CreateTable
 CREATE TABLE [dbo].[board_members] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(255) NOT NULL,
     [job_title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(max),
@@ -230,8 +245,7 @@ CREATE TABLE [dbo].[bookings] (
     [job_end] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [BookingID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__bookings__73951ACDE903ED32] PRIMARY KEY CLUSTERED ([BookingID])
+    [BookingID] INT NOT NULL
 );
 
 -- CreateTable
@@ -268,24 +282,25 @@ CREATE TABLE [dbo].[bricks] (
     [bricks_definition_excludes] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [BrickID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__bricks__D0B87DC087EC0CFA] PRIMARY KEY CLUSTERED ([BrickID])
+    [BrickID] INT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE [dbo].[carts] (
-    [id] NVARCHAR(1000) NOT NULL,
-    [transaction_id] NVARCHAR(1000),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [transaction_id] INT,
+    [date] NVARCHAR(255),
     [cart_items] NVARCHAR(max),
     [total] FLOAT(53),
     [documents] NVARCHAR(max),
+    [file_path] NVARCHAR(max),
     [request_type] NVARCHAR(max),
     [payment_type] NVARCHAR(max),
     [payment_status] NVARCHAR(max),
-    [user_id] NVARCHAR(1000) NOT NULL,
+    [user_id] INT CONSTRAINT [DF_carts_user_id] DEFAULT 0,
     [status] VARCHAR(10) CONSTRAINT [DF_carts_status] DEFAULT 'pending',
-    [created_at] DATETIME2 NOT NULL CONSTRAINT [carts_created_at_df] DEFAULT CURRENT_TIMESTAMP,
-    [updated_at] DATETIME2 NOT NULL,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
     [deleted_at] DATETIME,
     [reject_reason] TEXT,
     [reject_by] INT,
@@ -294,18 +309,41 @@ CREATE TABLE [dbo].[carts] (
     [admin_id] INT CONSTRAINT [DF_carts_admin_id] DEFAULT 0,
     [assign_to] INT CONSTRAINT [DF_carts_assign_to] DEFAULT 0,
     [discount] FLOAT(53) CONSTRAINT [DF_carts_discount] DEFAULT 0,
-    CONSTRAINT [carts_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_carts] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[categories] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+CREATE TABLE [dbo].[rejected_carts] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [transaction_id] NVARCHAR(1000),
+    [cart_items] NVARCHAR(max),
+    [total] FLOAT(53),
+    [documents] NVARCHAR(max),
+    [request_type] NVARCHAR(max),
+    [payment_type] NVARCHAR(max),
+    [user_id] NVARCHAR(1000) NOT NULL,
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [rejected_carts_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    [deleted_at] DATETIME,
+    [reject_reason] TEXT,
+    [reject_by] INT,
+    [receipt] TEXT,
+    [receipt_path] NVARCHAR(max),
+    [admin_id] INT CONSTRAINT [DF_rejected_carts_admin_id] DEFAULT 0,
+    [assign_to] INT CONSTRAINT [DF_rejected_carts_assign_to] DEFAULT 0,
+    [discount] FLOAT(53) CONSTRAINT [DF_rejected_carts_discount] DEFAULT 0,
+    CONSTRAINT [rejected_carts_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[product_categroies] (
+    [id] NVARCHAR(1000) NOT NULL,
     [name] NVARCHAR(max),
-    [image] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
     [status] INT,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    CONSTRAINT [PK_categories] PRIMARY KEY CLUSTERED ([id])
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [product_categroies_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    CONSTRAINT [product_categroies_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -318,20 +356,20 @@ CREATE TABLE [dbo].[chats] (
     [sender] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [ChatID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__chats__A9FBE6267888992D] PRIMARY KEY CLUSTERED ([ChatID])
+    [ChatID] INT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE [dbo].[cities] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
-    [name_ar] NVARCHAR(max),
     [state_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [cities_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_cities] PRIMARY KEY CLUSTERED ([id])
 );
+
+-- CreateTable
 CREATE TABLE [dbo].[emailsetting] (
     [id] NVARCHAR(1000) NOT NULL,
     [emailfrom] NVARCHAR(max),
@@ -342,19 +380,11 @@ CREATE TABLE [dbo].[emailsetting] (
     [smtp_port] NVARCHAR(max),
     [smtp_encryption] NVARCHAR(max),
     [status] INT,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [emailsetting_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL CONSTRAINT [emailsetting_updated_at_df] DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT [emailsetting_pkey] PRIMARY KEY CLUSTERED ([id])
 );
-CREATE TABLE [dbo].[product_categroies] (
-    [id] NVARCHAR(1000) NOT NULL,
-    [name] NVARCHAR(max),
-    [name_ar] NVARCHAR(max),
-    [state_id] INT,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    
-);
+
 -- CreateTable
 CREATE TABLE [dbo].[classes] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -395,7 +425,7 @@ CREATE TABLE [dbo].[cookie_consents] (
 
 -- CreateTable
 CREATE TABLE [dbo].[countries] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name_en] NVARCHAR(max),
     [name_ar] NVARCHAR(max),
     [country_code] NVARCHAR(max),
@@ -403,7 +433,7 @@ CREATE TABLE [dbo].[countries] (
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [countries_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_countries] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -420,23 +450,23 @@ CREATE TABLE [dbo].[country_of_sales] (
 
 -- CreateTable
 CREATE TABLE [dbo].[cr_documents] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [cr_documents_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_cr_documents] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
 CREATE TABLE [dbo].[crs] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [cr] NVARCHAR(max),
     [activity] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [crs_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_crs] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -473,8 +503,7 @@ CREATE TABLE [dbo].[failed_jobs] (
     [payload] NVARCHAR(max),
     [exception] NVARCHAR(max),
     [failed_at] DATETIME,
-    [failed_jobs_id] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__failed_j__BB09620F734B2573] PRIMARY KEY CLUSTERED ([failed_jobs_id])
+    [failed_jobs_id] INT NOT NULL
 );
 
 -- CreateTable
@@ -485,13 +514,12 @@ CREATE TABLE [dbo].[families] (
     [family_definition] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [FamilyID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__families__41D82F4B3DCAE285] PRIMARY KEY CLUSTERED ([FamilyID])
+    [FamilyID] INT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE [dbo].[faq_categories] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -500,7 +528,7 @@ CREATE TABLE [dbo].[faq_categories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[featured_articales] (
-    [id] NVARCHAR NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [title_ar] NVARCHAR(max),
     [image] NVARCHAR(max),
@@ -514,26 +542,13 @@ CREATE TABLE [dbo].[featured_articales] (
 
 -- CreateTable
 CREATE TABLE [dbo].[featured_services] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [image] NVARCHAR(max),
     [link] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
     CONSTRAINT [PK_featured_services] PRIMARY KEY CLUSTERED ([id])
-);
-
--- CreateTable
-CREATE TABLE [dbo].[footer_menus] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
-    [parent_id] NVARCHAR(max),
-    [category_name_en] NVARCHAR(max),
-    [category_name_ar] NVARCHAR(max),
-    [url] NVARCHAR(max),
-    [status] INT,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    CONSTRAINT [PK_footer_menus] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -692,8 +707,8 @@ CREATE TABLE [dbo].[general_settings] (
 -- CreateTable
 CREATE TABLE [dbo].[gepir_items] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
-    [barcode] INT NOT NULL,
-    [gcpGLNID] INT NOT NULL,
+    [barcode] NVARCHAR(255),
+    [gcpGLNID] NVARCHAR(255),
     [dateTimePost] DATETIME NOT NULL,
     [addedBy] INT NOT NULL CONSTRAINT [DF__gepir_ite__added__76177A41] DEFAULT 0,
     [created_at] DATETIME,
@@ -709,8 +724,7 @@ CREATE TABLE [dbo].[gpc_classes] (
     [class_definition] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [GpcClassID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__gpc_clas__E140D1DA7E572618] PRIMARY KEY CLUSTERED ([GpcClassID])
+    [GpcClassID] INT NOT NULL
 );
 
 -- CreateTable
@@ -849,7 +863,7 @@ CREATE TABLE [dbo].[gtin_non_compliants] (
 
 -- CreateTable
 CREATE TABLE [dbo].[gtin_products] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [member_category_description] NVARCHAR(max),
     [total_no_of_barcodes] INT,
     [member_registration_fee] INT,
@@ -866,7 +880,7 @@ CREATE TABLE [dbo].[gtin_products] (
     [member_category_description_ar] NVARCHAR(max),
     [med_registration_fee] FLOAT(53),
     [med_yearly_subscription_fee] FLOAT(53),
-    CONSTRAINT [gtin_products_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_gtin_products] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -911,12 +925,12 @@ CREATE TABLE [dbo].[gtin_subscription_histories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[help_desk_comments] (
-    [id] NVARCHAR(1000) NOT NULL,
-    [helpDeskID]  NVARCHAR(max),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [helpDeskID] INT,
     [comment] NVARCHAR(max),
     [document] NVARCHAR(max),
-    [commentByAdmin]  NVARCHAR(max),
-    [commentByUser]  NVARCHAR(max),
+    [commentByAdmin] INT,
+    [commentByUser] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
     CONSTRAINT [PK_help_desk_comments] PRIMARY KEY CLUSTERED ([id])
@@ -924,14 +938,14 @@ CREATE TABLE [dbo].[help_desk_comments] (
 
 -- CreateTable
 CREATE TABLE [dbo].[help_desks] (
-   [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [email] NVARCHAR(max),
     [ticket_no] NVARCHAR(max),
     [description] NVARCHAR(max),
     [document] NVARCHAR(max),
-    [user_id] NVARCHAR(max),
-    [assignedTo] NVARCHAR(max),
+    [user_id] INT,
+    [assignedTo] INT,
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -962,14 +976,13 @@ CREATE TABLE [dbo].[issuing_agencies] (
 
 -- CreateTable
 CREATE TABLE [dbo].[languages] (
-    [id] FLOAT(53),
+    [id] NVARCHAR(1000) NOT NULL,
     [type] NVARCHAR(max),
     [key] NVARCHAR(max),
     [value] NVARCHAR(max),
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    [LanguageID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__language__B938558B03AB874B] PRIMARY KEY CLUSTERED ([LanguageID])
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [languages_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    CONSTRAINT [languages_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -981,8 +994,7 @@ CREATE TABLE [dbo].[locations] (
     [status] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [LocationID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__location__E7FEA477E5758800] PRIMARY KEY CLUSTERED ([LocationID])
+    [LocationID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1017,10 +1029,21 @@ CREATE TABLE [dbo].[markeing_emails] (
 );
 
 -- CreateTable
+CREATE TABLE [dbo].[mega_menus] (
+    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [name_en] NVARCHAR(max),
+    [name_ar] NVARCHAR(max),
+    [status] INT NOT NULL,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    CONSTRAINT [PK_mega_menus] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
 CREATE TABLE [dbo].[mega_menu_categories] (
-    [id]NVARCHAR(max) NOT NULL IDENTITY(1,1),
-    [parent_id] NVARCHAR(max),
-    [megamenu_id] NVARCHAR(max),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [parent_id] INT,
+    [megamenu_id] INT,
     [category_name_en] NVARCHAR(max),
     [category_name_ar] NVARCHAR(max),
     [description] NVARCHAR(max),
@@ -1035,14 +1058,16 @@ CREATE TABLE [dbo].[mega_menu_categories] (
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[mega_menus] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
-    [name_en] NVARCHAR(max),
-    [name_ar] NVARCHAR(max),
-    [status] INT NOT NULL,
+CREATE TABLE [dbo].[footer_menus] (
+    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [parent_id] INT,
+    [category_name_en] NVARCHAR(max),
+    [category_name_ar] NVARCHAR(max),
+    [url] NVARCHAR(max),
+    [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [PK_mega_menus] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_footer_menus] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -1225,7 +1250,19 @@ CREATE TABLE [dbo].[member_history_logs] (
     [admin_id] INT NOT NULL CONSTRAINT [DF__member_hi__admin__78F3E6EC] DEFAULT 0,
     [created_at] DATETIME,
     [updated_at] DATETIME,
+    [user_id] INT NOT NULL,
     CONSTRAINT [PK__member_h__3213E83FE53CC71F] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[admin_history_logs] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [subject] NVARCHAR(255) NOT NULL,
+    [admin_id] NVARCHAR(1000) NOT NULL,
+    [created_at] DATETIME CONSTRAINT [admin_history_logs_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME,
+    [user_id] NVARCHAR(1000) NOT NULL,
+    CONSTRAINT [admin_history_logs_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -1321,8 +1358,7 @@ CREATE TABLE [dbo].[MemberDocumentOld] (
     [CreatedDate] DATETIME2 NOT NULL,
     [UpdatedBy] DECIMAL(10,0),
     [UpdatedDate] DATETIME2,
-    [MemberDocumentOldID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__MemberDo__E039ACA69EF86A22] PRIMARY KEY CLUSTERED ([MemberDocumentOldID])
+    [MemberDocumentOldID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1333,8 +1369,7 @@ CREATE TABLE [dbo].[membership_range_increases] (
     [range_end] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [MembershipRangeIncreaseID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__membersh__9E0FEC6F62A68910] PRIMARY KEY CLUSTERED ([MembershipRangeIncreaseID])
+    [MembershipRangeIncreaseID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1345,8 +1380,7 @@ CREATE TABLE [dbo].[membership_ranges] (
     [range_end] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [MembershipRangeID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__membersh__41FFC3EC023AEE6F] PRIMARY KEY CLUSTERED ([MembershipRangeID])
+    [MembershipRangeID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1361,8 +1395,7 @@ CREATE TABLE [dbo].[membership_type_fees] (
     [status] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [MembershipTypeFeeID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__membersh__AF30BFD6DBA5A115] PRIMARY KEY CLUSTERED ([MembershipTypeFeeID])
+    [MembershipTypeFeeID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1375,17 +1408,7 @@ CREATE TABLE [dbo].[membership_types] (
     [status] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [MembershipTypeID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__membersh__F35A3E595FBDD5D8] PRIMARY KEY CLUSTERED ([MembershipTypeID])
-);
-
--- CreateTable
-CREATE TABLE [dbo].[migrated_users] (
-    [loginid] VARCHAR(100),
-    [loginpass] VARCHAR(50),
-    [status] VARCHAR(1) CONSTRAINT [DF_migrated_users_status] DEFAULT '0',
-    [MigratedUserID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__migrated__3BAC2519CAF02728] PRIMARY KEY CLUSTERED ([MigratedUserID])
+    [MembershipTypeID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1588,15 +1611,13 @@ CREATE TABLE [dbo].[old_users] (
     [loginpass] VARCHAR(50),
     [status] VARCHAR(1) CONSTRAINT [DF_old_users_status] DEFAULT '0',
     [UserId] VARCHAR(10),
-    [OldUserID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__old_user__F3D5F2C3EAE92EB8] PRIMARY KEY CLUSTERED ([OldUserID])
+    [OldUserID] INT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE [dbo].[other_products] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [product_name] NVARCHAR(max),
-    [name_ar] NVARCHAR(max),
     [total_no_of_barcodes] FLOAT(53),
     [product_subscription_fee] FLOAT(53),
     [code] NVARCHAR(max),
@@ -1605,7 +1626,7 @@ CREATE TABLE [dbo].[other_products] (
     [updated_at] DATETIME,
     [med_subscription_fee] FLOAT(53),
     [variant] NVARCHAR(10),
-    CONSTRAINT [other_products_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_other_products] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -1623,6 +1644,7 @@ CREATE TABLE [dbo].[other_products_subcriptions] (
     [updated_at] DATETIME,
     [deleted_at] DATETIME,
     [expiry_date] DATETIME,
+    [prod_limit_increment] NCHAR(10) CONSTRAINT [DF_other_products_subcriptions_prod_limit_increment] DEFAULT '1',
     CONSTRAINT [PK_other_products_subcriptions] PRIMARY KEY CLUSTERED ([id])
 );
 
@@ -1650,7 +1672,7 @@ CREATE TABLE [dbo].[other_products_subscription_histories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[our_teams] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(255) NOT NULL,
     [job_title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(max),
@@ -1664,7 +1686,7 @@ CREATE TABLE [dbo].[our_teams] (
 
 -- CreateTable
 CREATE TABLE [dbo].[pages] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [name_ar] NVARCHAR(max),
     [slug] NVARCHAR(max),
@@ -1682,7 +1704,7 @@ CREATE TABLE [dbo].[pages] (
 
 -- CreateTable
 CREATE TABLE [dbo].[partners] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [image] NVARCHAR(max),
     [link] NVARCHAR(max),
     [status] INT,
@@ -1692,24 +1714,15 @@ CREATE TABLE [dbo].[partners] (
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[password_resets] (
-    [email] NVARCHAR(max),
-    [token] NVARCHAR(max),
-    [created_at] DATETIME,
-    [PasswordResetID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__password__2CA0AE7C0D4E1ECB] PRIMARY KEY CLUSTERED ([PasswordResetID])
-);
-
--- CreateTable
 CREATE TABLE [dbo].[prod_desc_languages] (
-   [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [language_code] NVARCHAR(255) NOT NULL,
     [alpha3] NVARCHAR(255) NOT NULL,
     [iso639_2B] NVARCHAR(255) NOT NULL,
     [language_name] NVARCHAR(255) NOT NULL,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-   
+    CONSTRAINT [PK__prod_des__3213E83FBCC24090] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -1741,81 +1754,16 @@ CREATE TABLE [dbo].[product_images] (
 CREATE TABLE [dbo].[product_packagings] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
-    [status] INT DEFAULT 1,
+    [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-   
+    CONSTRAINT [PK_product_packagings] PRIMARY KEY CLUSTERED ([id])
 );
--- CreateTable
-CREATE TABLE [dbo].[unspscs] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [commodity] int,
-    [title] nvarchar(255),
-    [definition] nvarchar(MAX),
-    [addedBy] tinyint,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-   
-);
--- CreateTable
-CREATE TABLE [dbo].[hs_codes] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [CNKEY] nvarchar(255),
-    [HSCODES] nvarchar(255),
-    [DescriptionEN] nvarchar(MAX),
-    [addBy] int,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-   
-);
--- CreateTable
-CREATE TABLE [dbo].[country_of_sales] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [Alpha2] nvarchar(255),
-    [Alpha3] nvarchar(255),
-    [country_code_numeric3] nvarchar(255),
-    [country_name] nvarchar(255),
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-   
-);
--- CreateTable
-CREATE TABLE [dbo].[gcp_types] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [gcp_code] nvarchar(255),
-    [gcp_description] nvarchar(MAX),
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-   
-);
--- CreateTable
-CREATE TABLE [dbo].[other_products] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [product_name] nvarchar(MAX),
-    [total_no_of_barcodes] float,
-    [product_subscription_fee] float,
-    [code] NVARCHAR(max),
-    [med_subscription_fee] float,
-    [variant] nvarchar(10),
-    [status] INT DEFAULT 1,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-   
-);
--- CreateTable
-CREATE TABLE [dbo].[cr_documents] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [name] NVARCHAR(max),
-    [status] INT DEFAULT 1,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-   
-);
+
 -- CreateTable
 CREATE TABLE [dbo].[product_types] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
-    [name_ar] NVARCHAR(max),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -1876,6 +1824,10 @@ CREATE TABLE [dbo].[products] (
     [digitalInfoType] INT,
     [readyForGepir] NCHAR(10) CONSTRAINT [DF_products_readyForGepir] DEFAULT '0',
     [gepirPosted] NCHAR(10) CONSTRAINT [DF_products_gepirPosted] DEFAULT '0',
+    [barcode_type] NVARCHAR(50),
+    [date] DATE,
+    [time] VARCHAR(50),
+    [psource] INT,
     CONSTRAINT [PK__products__3213E83F47013034] PRIMARY KEY CLUSTERED ([id])
 );
 
@@ -1925,8 +1877,7 @@ CREATE TABLE [dbo].[reviews] (
     [status] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [ReviewID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__reviews__74BC79AE5D2369AC] PRIMARY KEY CLUSTERED ([ReviewID])
+    [ReviewID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1939,8 +1890,7 @@ CREATE TABLE [dbo].[schedules] (
     [status] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [ScheduleID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__schedule__9C8A5B694792F6C4] PRIMARY KEY CLUSTERED ([ScheduleID])
+    [ScheduleID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1962,8 +1912,7 @@ CREATE TABLE [dbo].[segments] (
     [segment_definition] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [SegmentID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__segments__C680609BC4E3853D] PRIMARY KEY CLUSTERED ([SegmentID])
+    [SegmentID] INT NOT NULL
 );
 
 -- CreateTable
@@ -1990,7 +1939,7 @@ CREATE TABLE [dbo].[services] (
 
 -- CreateTable
 CREATE TABLE [dbo].[sliders] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [link] NVARCHAR(max),
     [description] NVARCHAR(max),
@@ -2068,13 +2017,12 @@ CREATE TABLE [dbo].[staff_help_desks] (
 
 -- CreateTable
 CREATE TABLE [dbo].[states] (
-    [id] NVARCHAR(1000) NOT NULL,
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
-    [name_ar] NVARCHAR(max),
     [country_id] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    CONSTRAINT [states_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [PK_states] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -2096,8 +2044,7 @@ CREATE TABLE [dbo].[TagTest] (
 -- CreateTable
 CREATE TABLE [dbo].[tblSysNo] (
     [TblSysCtrNo] NCHAR(10) NOT NULL,
-    [SysNoID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__tblSysNo__68661321043D2983] PRIMARY KEY CLUSTERED ([SysNoID])
+    [SysNoID] INT NOT NULL
 );
 
 -- CreateTable
@@ -2188,35 +2135,18 @@ CREATE TABLE [dbo].[udi_regulation_data] (
     [is_software] VARCHAR(50),
     CONSTRAINT [PK__udi_regu__3213E83F47DE9E30] PRIMARY KEY CLUSTERED ([id])
 );
--- CreateTable
-CREATE TABLE [dbo].[product_packagings] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [name] nvarchar(MAX),
-    [status] int DEFAULT 1,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    
-);
 
 -- CreateTable
 CREATE TABLE [dbo].[units] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
     [unit_code] VARCHAR(50),
     [unit_name] NVARCHAR(50),
-    [status] INT DEFAULT 1,
-    [created_at] DATETIME,
-    [updated_at] DATETIME,
-    
-);
--- CreateTable
-CREATE TABLE [dbo].[document_type] (
-    [id] nvarchar(1000) NOT NULL IDENTITY(1,1),
-    [file_name] nvarchar(MAX),
     [status] INT,
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [deleted_at] DATETIME,
+    CONSTRAINT [PK_units] PRIMARY KEY CLUSTERED ([id])
 );
+
 -- CreateTable
 CREATE TABLE [dbo].[unspscs] (
     [id] BIGINT NOT NULL IDENTITY(1,1),
@@ -2231,7 +2161,7 @@ CREATE TABLE [dbo].[unspscs] (
 
 -- CreateTable
 CREATE TABLE [dbo].[upcoming_events] (
-    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [title_ar] NVARCHAR(max),
     [image] NVARCHAR(max),
@@ -2247,7 +2177,7 @@ CREATE TABLE [dbo].[upcoming_events] (
 
 -- CreateTable
 CREATE TABLE [dbo].[user_guide_pdfs] (
-    [id] NVARCHAR(255) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(255) NOT NULL,
     [pdf] NVARCHAR(255) NOT NULL,
     [status] INT NOT NULL CONSTRAINT [DF__user_guid__statu__51851410] DEFAULT 1,
@@ -2259,7 +2189,7 @@ CREATE TABLE [dbo].[user_guide_pdfs] (
 
 -- CreateTable
 CREATE TABLE [dbo].[user_guide_videos] (
-    [id] NVARCHAR(255) NOT NULL IDENTITY(1,1),
+    [id] BIGINT NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(255) NOT NULL,
     [video] NVARCHAR(255) NOT NULL,
     [status] INT NOT NULL CONSTRAINT [DF__user_guid__statu__546180BB] DEFAULT 1,
@@ -2271,12 +2201,97 @@ CREATE TABLE [dbo].[user_guide_videos] (
 
 -- CreateTable
 CREATE TABLE [dbo].[users] (
+    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [user_type] VARCHAR(20),
+    [slug] NVARCHAR(max),
+    [location_uk] NVARCHAR(max),
+    [have_cr] NVARCHAR(max),
+    [cr_documentID] INT,
+    [document_number] NVARCHAR(max),
+    [fname] NVARCHAR(max),
+    [lname] NVARCHAR(max),
+    [email] NVARCHAR(max),
+    [mobile] NVARCHAR(max),
+    [image] NVARCHAR(max),
+    [address] NVARCHAR(max),
+    [address1] NVARCHAR(max),
+    [address2] NVARCHAR(max),
+    [po_box] NVARCHAR(max),
+    [mbl_extension] NVARCHAR(max),
+    [website] NVARCHAR(max),
+    [no_of_staff] NVARCHAR(max),
+    [companyID] NVARCHAR(max),
+    [district] NVARCHAR(max),
+    [building_no] NVARCHAR(max),
+    [additional_number] NVARCHAR(max),
+    [other_landline] NVARCHAR(max),
+    [unit_number] NVARCHAR(max),
+    [qr_corde] NVARCHAR(max),
+    [email_verified_at] DATETIME,
+    [password] NVARCHAR(max),
+    [code] VARCHAR(50),
+    [verification_code] INT,
+    [cr_number] NVARCHAR(max),
+    [cr_activity] NVARCHAR(max),
+    [company_name_eng] NVARCHAR(max),
+    [company_name_arabic] NVARCHAR(max),
+    [bussiness_activity] NVARCHAR(max),
+    [membership_type] NVARCHAR(max),
+    [member_category] NVARCHAR(50),
+    [other_products] NVARCHAR(max),
+    [gpc] NVARCHAR(max),
+    [product_addons] NVARCHAR(max),
+    [total] FLOAT(53),
+    [contactPerson] NVARCHAR(max),
+    [companyLandLine] NVARCHAR(max),
+    [documents] NVARCHAR(max),
+    [address_image] NVARCHAR(max),
+    [status] VARCHAR(10) CONSTRAINT [DF_users_status] DEFAULT 'inactive',
+    [payment_type] NVARCHAR(max),
+    [payment_status] INT,
+    [online_payment] NVARCHAR(max),
+    [remember_token] NVARCHAR(max),
+    [parent_memberID] INT,
+    [member_type] VARCHAR(50),
+    [invoice_file] NVARCHAR(max),
+    [otp_status] INT,
+    [transaction_id] INT,
+    [created_at] DATETIME,
+    [updated_at] DATETIME,
+    [gcpGLNID] VARCHAR(50),
+    [gln] NVARCHAR(50),
+    [gcp_type] VARCHAR(50),
+    [deleted_at] DATETIME,
+    [gcp_expiry] DATETIME,
+    [memberID] NVARCHAR(max),
+    [user_id] NVARCHAR(max),
+    [remarks] NVARCHAR(max),
+    [assign_to] INT CONSTRAINT [DF_users_assign_to] DEFAULT 0,
+    [membership_category] NVARCHAR(50),
+    [upgradation_disc] INT CONSTRAINT [DF_users_upgradation_disc] DEFAULT 0,
+    [upgradation_disc_amount] FLOAT(53) CONSTRAINT [DF_users_upgradation_disc_amount] DEFAULT 0,
+    [renewal_disc] INT CONSTRAINT [DF_users_renewal_disc] DEFAULT 0,
+    [renewal_disc_amount] FLOAT(53) CONSTRAINT [DF_users_renewal_disc_amount] DEFAULT 0,
+    [membership_otherCategory] NVARCHAR(50),
+    [activityID] INT CONSTRAINT [DF_users_activityID] DEFAULT 0,
+    [registration_type] NCHAR(10),
+    [old_member_recheck] INT CONSTRAINT [DF_users_old_member_recheck] DEFAULT 0,
+    [renewal_invitation] NCHAR(10),
+    [renewal_process_by] INT,
+    [member_registration_type] NVARCHAR(50),
+    [licence_no] NVARCHAR(50),
+    [licence_name] NVARCHAR(max),
+    CONSTRAINT [PK_users] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[rejected_users] (
     [id] NVARCHAR(1000) NOT NULL,
     [user_type] VARCHAR(20),
     [slug] NVARCHAR(max),
     [location_uk] NVARCHAR(max),
     [have_cr] NVARCHAR(max),
-    [cr_documentID] INT CONSTRAINT [users_cr_documentID_df] DEFAULT 0,
+    [cr_documentID] NVARCHAR(100),
     [document_number] NVARCHAR(max),
     [fname] NVARCHAR(max),
     [lname] NVARCHAR(max),
@@ -2302,7 +2317,6 @@ CREATE TABLE [dbo].[users] (
     [company_name_eng] NVARCHAR(max),
     [company_name_arabic] NVARCHAR(max),
     [bussiness_activity] NVARCHAR(max),
-    [membership_type] NVARCHAR(max),
     [member_category] NVARCHAR(50),
     [other_products] NVARCHAR(max),
     [gpc] NVARCHAR(max),
@@ -2312,17 +2326,18 @@ CREATE TABLE [dbo].[users] (
     [companyLandLine] NVARCHAR(max),
     [documents] NVARCHAR(max),
     [address_image] NVARCHAR(max),
-    [status] VARCHAR(10) CONSTRAINT [DF_users_status] DEFAULT 'inactive',
+    [status] VARCHAR(10) CONSTRAINT [DF_rejected_users_status] DEFAULT 'inactive',
+    [is_login] INT CONSTRAINT [DF_rejected_users_is_login] DEFAULT 0,
     [payment_type] NVARCHAR(max),
-    [payment_status] INT CONSTRAINT [DF_users_payment_status] DEFAULT 0,
+    [payment_status] INT CONSTRAINT [DF_rejected_users_payment_status] DEFAULT 0,
     [online_payment] NVARCHAR(max),
     [remember_token] NVARCHAR(max),
-    [parent_memberID] INT,
-    [member_type] VARCHAR(50),
+    [parent_memberID] NVARCHAR(1000) CONSTRAINT [DF_rejected_users_member_id] DEFAULT '0',
+    [industryTypes] NVARCHAR(max),
     [invoice_file] NVARCHAR(max),
     [otp_status] INT,
     [transaction_id] NVARCHAR(1000),
-    [created_at] DATETIME2 NOT NULL CONSTRAINT [users_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [rejected_users_created_at_df] DEFAULT CURRENT_TIMESTAMP,
     [updated_at] DATETIME2 NOT NULL,
     [gcpGLNID] VARCHAR(50),
     [gln] NVARCHAR(50),
@@ -2331,22 +2346,26 @@ CREATE TABLE [dbo].[users] (
     [gcp_expiry] DATETIME,
     [memberID] NVARCHAR(max),
     [user_id] NVARCHAR(max),
-    [remarks] NVARCHAR(max),
-    [assign_to] INT CONSTRAINT [DF_users_assign_to] DEFAULT 0,
+    [remarks] NVARCHAR(max) CONSTRAINT [DF_rejected_users_remarks] DEFAULT 'Pending Invoice',
+    [assign_to] INT CONSTRAINT [DF_rejected_users_to] DEFAULT 0,
     [membership_category] NVARCHAR(50),
-    [upgradation_disc] INT CONSTRAINT [DF_users_upgradation_disc] DEFAULT 0,
-    [upgradation_disc_amount] FLOAT(53) CONSTRAINT [DF_users_upgradation_disc_amount] DEFAULT 0,
-    [renewal_disc] INT CONSTRAINT [DF_users_renewal_disc] DEFAULT 0,
-    [renewal_disc_amount] FLOAT(53) CONSTRAINT [DF_users_renewal_disc_amount] DEFAULT 0,
+    [membership_category_id] NVARCHAR(1000),
+    [upgradation_disc] INT CONSTRAINT [DF_rejected_rejected_users_disc] DEFAULT 0,
+    [upgradation_disc_amount] FLOAT(53) CONSTRAINT [DF_rejected_rejected_users_amount] DEFAULT 0,
+    [renewal_disc] INT CONSTRAINT [DF_rejected_users_disc] DEFAULT 0,
+    [renewal_disc_amount] FLOAT(53) CONSTRAINT [DF_rejected_users_renewal_disc_amount] DEFAULT 0,
     [membership_otherCategory] NVARCHAR(50),
-    [activityID] INT CONSTRAINT [DF_users_activityID] DEFAULT 0,
+    [activityID] INT CONSTRAINT [DF_rejected_users_activityID] DEFAULT 0,
     [registration_type] NCHAR(10),
     [city] NVARCHAR(max),
     [country] NVARCHAR(max),
     [state] NVARCHAR(max),
     [zip_code] VARCHAR(50),
-    [old_member_recheck] INT CONSTRAINT [DF_users_old_member_recheck] DEFAULT 0,
-    CONSTRAINT [users_pkey] PRIMARY KEY CLUSTERED ([id])
+    [old_member_recheck] INT CONSTRAINT [DF_rejected_users_old_member_recheck] DEFAULT 0,
+    [isproductApproved] INT CONSTRAINT [DF_rejected_users_isproductApproved] DEFAULT 0,
+    [pending_invoices] VARCHAR(50) NOT NULL CONSTRAINT [DF_rejected_users_for_approval] DEFAULT 'for_review',
+    [reject_reason] NVARCHAR(max),
+    CONSTRAINT [rejected_users_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -2361,8 +2380,7 @@ CREATE TABLE [dbo].[withdraw_gateways] (
     [status] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [WithdrawGatewayID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__withdraw__12283BF1B95F4402] PRIMARY KEY CLUSTERED ([WithdrawGatewayID])
+    [WithdrawGatewayID] INT NOT NULL
 );
 
 -- CreateTable
@@ -2379,8 +2397,67 @@ CREATE TABLE [dbo].[withdraw_logs] (
     [status] FLOAT(53),
     [created_at] DATETIME,
     [updated_at] DATETIME,
-    [WithdrawLogID] INT NOT NULL IDENTITY(1,1),
-    CONSTRAINT [PK__withdraw__AD995F8BC87A4506] PRIMARY KEY CLUSTERED ([WithdrawLogID])
+    [WithdrawLogID] INT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[document_type] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [file_name] NVARCHAR(max),
+    [status] INT,
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [document_type_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    [deleted_at] DATETIME,
+    CONSTRAINT [document_type_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[gtin_upgrade_pricing] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [total_no_of_barcodes] FLOAT(53),
+    [price] FLOAT(53),
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [gtin_upgrade_pricing_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    CONSTRAINT [gtin_upgrade_pricing_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[upgrade_member_ship_cart] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [user_id] NVARCHAR(1000) NOT NULL,
+    [gtin_product_id] NVARCHAR(1000),
+    [transaction_id] NVARCHAR(1000) NOT NULL,
+    [status] INT,
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [upgrade_member_ship_cart_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    [registered_product_transaction_id] NVARCHAR(1000) NOT NULL,
+    [cart] NVARCHAR(1000),
+    CONSTRAINT [upgrade_member_ship_cart_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[gln_upgrade_pricing] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [total_no_of_gln] FLOAT(53),
+    [price] FLOAT(53),
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [gln_upgrade_pricing_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    CONSTRAINT [gln_upgrade_pricing_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[add_gln_cart] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [user_id] NVARCHAR(1000) NOT NULL,
+    [new_gln_id] NVARCHAR(1000) NOT NULL,
+    [other_products_subscription_id] NVARCHAR(1000) NOT NULL,
+    [transaction_id] NVARCHAR(1000) NOT NULL,
+    [registered_product_transaction_id] NVARCHAR(1000) NOT NULL,
+    [status] INT,
+    [created_at] DATETIME2 NOT NULL CONSTRAINT [add_gln_cart_created_at_df] DEFAULT CURRENT_TIMESTAMP,
+    [updated_at] DATETIME2 NOT NULL,
+    [cart] NVARCHAR(1000),
+    CONSTRAINT [add_gln_cart_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateIndex

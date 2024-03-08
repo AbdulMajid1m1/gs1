@@ -136,6 +136,7 @@ model RolePermission {
   @@id([roleId, permissionId])
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model attribute_values {
   id                          Float?
   attributes_value_code       String?   @db.NVarChar(Max)
@@ -188,7 +189,7 @@ model blog_categories {
   slug           String?   @db.NVarChar(Max)
   created_at     DateTime? @default(now()) @db.DateTime
   updated_at     DateTime  @default(now()) @db.DateTime
-  BlogCategoryID String    @default(cuid())
+  BlogCategoryID String?   @default(cuid())
 }
 
 model blog_comments {
@@ -205,17 +206,18 @@ model blog_comments {
 }
 
 model board_members {
-  id          String    @id @default(cuid())
+  id          BigInt    @id(map: "PK__board_me__3213E83FCC16072D") @default(autoincrement())
   name        String    @db.NVarChar(255)
   job_title   String    @db.NVarChar(255)
   description String?   @db.NVarChar(Max)
   image       String    @db.NVarChar(255)
   addedBy     Int       @db.TinyInt
   status      Int       @default(1, map: "DF__board_mem__statu__3726238F") @db.TinyInt
-  created_at  DateTime? @default(now()) @db.DateTime
-  updated_at  DateTime  @default(now()) @db.DateTime
+  created_at  DateTime? @db.DateTime
+  updated_at  DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model bookings {
   id                Float?
   trx               String?   @db.NVarChar(Max)
@@ -238,7 +240,9 @@ model bookings {
   job_end           Float?
   created_at        DateTime? @db.DateTime
   updated_at        DateTime? @db.DateTime
-  BookingID         Int       @id(map: "PK__bookings__73951ACDE903ED32") @default(autoincrement())
+  BookingID         Int
+
+  @@ignore
 }
 
 model brands {
@@ -253,6 +257,8 @@ model brands {
   brand_certificate String?  @db.NVarChar(Max)
 }
 
+// 
+
 model brandsForApproval {
   id         BigInt    @id(map: "PK__brandsFo__3213E83F4A503AE0") @default(autoincrement())
   name       String    @db.NVarChar(255)
@@ -264,6 +270,7 @@ model brandsForApproval {
   updated_at DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model bricks {
   id                         Float?
   bricks_code                String?   @db.NVarChar(Max)
@@ -328,6 +335,7 @@ model product_categroies {
   updated_at DateTime @updatedAt
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model chats {
   id          Float?
   user_id     Float?
@@ -337,7 +345,9 @@ model chats {
   sender      String?   @db.NVarChar(Max)
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
-  ChatID      Int       @id(map: "PK__chats__A9FBE6267888992D") @default(autoincrement())
+  ChatID      Int
+
+  @@ignore
 }
 
 model cities {
@@ -417,11 +427,11 @@ model country_of_sales {
 }
 
 model cr_documents {
-  id         String   @id @default(cuid())
-  name       String?  @db.NVarChar(Max)
+  id         BigInt    @id(map: "PK_cr_documents") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
   status     Int?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @updatedAt @db.DateTime
 }
 
 model crs {
@@ -434,6 +444,7 @@ model crs {
   isRegistered Int      @default(0, map: "DF_crs_isRegistered")
 }
 
+//  -------------- ...................
 model email_reminders {
   id             BigInt    @id(map: "PK_email_reminders") @default(autoincrement())
   transaction_id Int?
@@ -455,6 +466,7 @@ model email_templates {
   updated_at DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model failed_jobs {
   id             Float?
   uuid           String?   @db.NVarChar(Max)
@@ -463,9 +475,12 @@ model failed_jobs {
   payload        String?   @db.NVarChar(Max)
   exception      String?   @db.NVarChar(Max)
   failed_at      DateTime? @db.DateTime
-  failed_jobs_id Int       @id(map: "PK__failed_j__BB09620F734B2573") @default(autoincrement())
+  failed_jobs_id Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model families {
   id                Float?
   family_code       String?   @db.NVarChar(Max)
@@ -473,35 +488,37 @@ model families {
   family_definition String?   @db.NVarChar(Max)
   created_at        DateTime? @db.DateTime
   updated_at        DateTime? @db.DateTime
-  FamilyID          Int       @id(map: "PK__families__41D82F4B3DCAE285") @default(autoincrement())
+  FamilyID          Int
+
+  @@ignore
 }
 
 model faq_categories {
-  id         String    @id @default(cuid())
+  id         BigInt    @id(map: "PK_faq_categories") @default(autoincrement())
   name       String?   @db.NVarChar(Max)
-  created_at DateTime? @default(now()) @db.DateTime
-  updated_at DateTime  @default(now()) @db.DateTime
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
 }
 
 model featured_articales {
-  id         String    @id @default(cuid())
+  id         BigInt    @id(map: "PK_featured_articales") @default(autoincrement())
   title      String?   @db.NVarChar(Max)
   title_ar   String?   @db.NVarChar(Max)
   image      String?   @db.NVarChar(Max)
   date       String?   @db.NVarChar(255)
   link       String?   @db.NVarChar(Max)
   status     Int?
-  created_at DateTime? @default(now()) @db.DateTime
-  updated_at DateTime  @default(now()) @db.DateTime
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
 }
 
 model featured_services {
-  id         String    @id @default(cuid())
+  id         BigInt    @id(map: "PK_featured_services") @default(autoincrement())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
-  created_at DateTime? @default(now()) @db.DateTime
-  updated_at DateTime  @default(now()) @db.DateTime
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @db.DateTime
 }
 
 model foreign_barcodes_downloads {
@@ -590,11 +607,11 @@ model gcp_histories {
 }
 
 model gcp_types {
-  id              String   @id @default(cuid())
-  gcp_code        String   @db.NVarChar(255)
-  gcp_description String?  @db.NVarChar(Max)
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+  id              BigInt    @id(map: "PK__gcp_type__3213E83FD86DB395") @default(autoincrement())
+  gcp_code        String    @db.NVarChar(255)
+  gcp_description String?   @db.NVarChar(Max)
+  created_at      DateTime? @db.DateTime
+  updated_at      DateTime? @updatedAt @db.DateTime
 }
 
 model general_settings {
@@ -650,14 +667,15 @@ model general_settings {
 
 model gepir_items {
   id           BigInt    @id(map: "PK__gepir_it__3213E83F4C68B859") @default(autoincrement())
-  barcode      Int
-  gcpGLNID     Int
+  barcode      String?   @db.NVarChar(255)
+  gcpGLNID     String?   @db.NVarChar(255)
   dateTimePost DateTime  @db.DateTime
   addedBy      Int       @default(0, map: "DF__gepir_ite__added__76177A41")
   created_at   DateTime? @db.DateTime
   updated_at   DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model gpc_classes {
   id               Float?
   class_code       String?   @db.NVarChar(Max)
@@ -665,7 +683,9 @@ model gpc_classes {
   class_definition String?   @db.NVarChar(Max)
   created_at       DateTime? @db.DateTime
   updated_at       DateTime? @db.DateTime
-  GpcClassID       Int       @id(map: "PK__gpc_clas__E140D1DA7E572618") @default(autoincrement())
+  GpcClassID       Int
+
+  @@ignore
 }
 
 model group_modules {
@@ -1199,6 +1219,8 @@ model member_log_activities {
   user        String?   @db.NVarChar(Max)
 }
 
+// ....  .....
+
 model member_migration_temp {
   id                       BigInt    @id(map: "PK__member_m__3213E83FFA6653A6") @default(autoincrement())
   memberID                 Int
@@ -1219,6 +1241,7 @@ model member_migration_temp {
   CompanyID                String?   @db.NVarChar(Max)
 }
 
+// ................ ***********************
 model member_other_products {
   id                String    @id @default(cuid())
   product_id        String?   @db.NVarChar(Max)
@@ -1241,6 +1264,7 @@ model member_other_products {
   updated_at        DateTime? @updatedAt @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model MemberDocumentOld {
   MemberDocumentID    Decimal   @default(0, map: "DF__MemberDoc__Membe__6D2D2E85") @db.Decimal(10, 0)
   MemberID            Decimal?  @db.Decimal(10, 0)
@@ -1251,9 +1275,12 @@ model MemberDocumentOld {
   CreatedDate         DateTime
   UpdatedBy           Decimal?  @db.Decimal(10, 0)
   UpdatedDate         DateTime?
-  MemberDocumentOldID Int       @id(map: "PK__MemberDo__E039ACA69EF86A22") @default(autoincrement())
+  MemberDocumentOldID Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model membership_range_increases {
   id                        Float?
   member_category_id        Float?
@@ -1261,9 +1288,12 @@ model membership_range_increases {
   range_end                 Float?
   created_at                DateTime? @db.DateTime
   updated_at                DateTime? @db.DateTime
-  MembershipRangeIncreaseID Int       @id(map: "PK__membersh__9E0FEC6F62A68910") @default(autoincrement())
+  MembershipRangeIncreaseID Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model membership_ranges {
   id                 Float?
   member_category_id Float?
@@ -1271,9 +1301,12 @@ model membership_ranges {
   range_end          Float?
   created_at         DateTime? @db.DateTime
   updated_at         DateTime? @db.DateTime
-  MembershipRangeID  Int       @id(map: "PK__membersh__41FFC3EC023AEE6F") @default(autoincrement())
+  MembershipRangeID  Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model membership_type_fees {
   id                  Float?
   membershipType_id   Float?
@@ -1285,9 +1318,12 @@ model membership_type_fees {
   status              Float?
   created_at          DateTime? @db.DateTime
   updated_at          DateTime? @db.DateTime
-  MembershipTypeFeeID Int       @id(map: "PK__membersh__AF30BFD6DBA5A115") @default(autoincrement())
+  MembershipTypeFeeID Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model membership_types {
   id               Float?
   name_en          String?   @db.NVarChar(Max)
@@ -1297,14 +1333,9 @@ model membership_types {
   status           String?   @db.NVarChar(Max)
   created_at       DateTime? @db.DateTime
   updated_at       DateTime? @db.DateTime
-  MembershipTypeID Int       @id(map: "PK__membersh__F35A3E595FBDD5D8") @default(autoincrement())
-}
+  MembershipTypeID Int
 
-model migrated_users {
-  loginid        String? @db.VarChar(100)
-  loginpass      String? @db.VarChar(50)
-  status         String? @default("0", map: "DF_migrated_users_status") @db.VarChar(1)
-  MigratedUserID Int     @id(map: "PK__migrated__3BAC2519CAF02728") @default(autoincrement())
+  @@ignore
 }
 
 model migration_activities {
@@ -1483,12 +1514,15 @@ model old_member_reneweds {
   updated_at       DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model old_users {
   loginid   String? @db.VarChar(50)
   loginpass String? @db.VarChar(50)
   status    String? @default("0", map: "DF_old_users_status") @db.VarChar(1)
   UserId    String? @db.VarChar(10)
-  OldUserID Int     @id(map: "PK__old_user__F3D5F2C3EAE92EB8") @default(autoincrement())
+  OldUserID Int
+
+  @@ignore
 }
 
 model other_products {
@@ -1565,7 +1599,7 @@ model our_teams {
   addedBy     Int       @db.TinyInt
   status      Int       @default(1, map: "DF__our_teams__statu__25A691D2") @db.TinyInt
   created_at  DateTime? @default(now()) @db.DateTime
-  updated_at  DateTime  @default(now()) @db.DateTime
+  updated_at  DateTime? @default(now()) @db.DateTime
 }
 
 model pages {
@@ -1581,7 +1615,7 @@ model pages {
   is_dropdown            Int?
   status                 Int?
   created_at             DateTime? @default(now()) @db.DateTime
-  updated_at             DateTime  @default(now()) @db.DateTime
+  updated_at             DateTime? @default(now()) @db.DateTime
 }
 
 model partners {
@@ -1590,14 +1624,7 @@ model partners {
   link       String?   @db.NVarChar(Max)
   status     Int?
   created_at DateTime? @default(now()) @db.DateTime
-  updated_at DateTime  @default(now()) @db.DateTime
-}
-
-model password_resets {
-  email           String?   @db.NVarChar(Max)
-  token           String?   @db.NVarChar(Max)
-  created_at      DateTime? @db.DateTime
-  PasswordResetID Int       @id(map: "PK__password__2CA0AE7C0D4E1ECB") @default(autoincrement())
+  updated_at DateTime? @default(now()) @db.DateTime
 }
 
 model prod_desc_languages {
@@ -1742,6 +1769,7 @@ model products_udis {
   updated_at         DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model reviews {
   id             Float?
   service_id     Float?
@@ -1751,9 +1779,12 @@ model reviews {
   status         Float?
   created_at     DateTime? @db.DateTime
   updated_at     DateTime? @db.DateTime
-  ReviewID       Int       @id(map: "PK__reviews__74BC79AE5D2369AC") @default(autoincrement())
+  ReviewID       Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model schedules {
   id         Float?
   user_id    Float?
@@ -1763,7 +1794,9 @@ model schedules {
   status     Float?
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
-  ScheduleID Int       @id(map: "PK__schedule__9C8A5B694792F6C4") @default(autoincrement())
+  ScheduleID Int
+
+  @@ignore
 }
 
 model section_data {
@@ -1775,6 +1808,7 @@ model section_data {
   updated_at DateTime? @db.DateTime
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model segments {
   id                 Float?
   segment_code       String?   @db.NVarChar(Max)
@@ -1782,7 +1816,9 @@ model segments {
   segment_definition String?   @db.NVarChar(Max)
   created_at         DateTime? @db.DateTime
   updated_at         DateTime? @db.DateTime
-  SegmentID          Int       @id(map: "PK__segments__C680609BC4E3853D") @default(autoincrement())
+  SegmentID          Int
+
+  @@ignore
 }
 
 model services {
@@ -1872,12 +1908,11 @@ model staff_help_desks {
 }
 
 model states {
-  id         String   @id @default(cuid())
-  name       String?  @db.NVarChar(Max)
-  name_ar    String?  @db.NVarChar(Max)
+  id         BigInt    @id(map: "PK_states") @default(autoincrement())
+  name       String?   @db.NVarChar(Max)
   country_id Int?
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  created_at DateTime? @db.DateTime
+  updated_at DateTime? @updatedAt @db.DateTime
 }
 
 model subscribes {
@@ -1892,9 +1927,12 @@ model TagTest {
   name String
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model tblSysNo {
   TblSysCtrNo String @db.NChar(10)
-  SysNoID     Int    @id(map: "PK__tblSysNo__68661321043D2983") @default(autoincrement())
+  SysNoID     Int
+
+  @@ignore
 }
 
 model transactions {
@@ -2206,6 +2244,7 @@ model rejected_users {
   rejected_carts           rejected_carts[]
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model withdraw_gateways {
   id                   Float?
   name                 String?   @db.NVarChar(Max)
@@ -2217,9 +2256,12 @@ model withdraw_gateways {
   status               Float?
   created_at           DateTime? @db.DateTime
   updated_at           DateTime? @db.DateTime
-  WithdrawGatewayID    Int       @id(map: "PK__withdraw__12283BF1B95F4402") @default(autoincrement())
+  WithdrawGatewayID    Int
+
+  @@ignore
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model withdraw_logs {
   id                  Float?
   user_id             Float?
@@ -2233,7 +2275,9 @@ model withdraw_logs {
   status              Float?
   created_at          DateTime? @db.DateTime
   updated_at          DateTime? @db.DateTime
-  WithdrawLogID       Int       @id(map: "PK__withdraw__AD995F8BC87A4506") @default(autoincrement())
+  WithdrawLogID       Int
+
+  @@ignore
 }
 
 model document_type {
