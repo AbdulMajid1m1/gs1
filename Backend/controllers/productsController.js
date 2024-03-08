@@ -372,7 +372,7 @@ const insertProduct = async (productData, user, productsCount) => {
 
 
         // check if the brand name exist for same user usin name_ar and companyID
-
+        console.log("companyID", user.companyID, " .. ", productData.BrandName, " .. ", productData.BrandNameAr)
         const checkBrandName = await prisma.brands.findFirst({
             where: {
                 name: productData.BrandName,
@@ -661,7 +661,7 @@ export const bulkCreateProduct = async (req, res, next) => {
         if (sendEmailFlag) {
             const pdfBuffer = await fs1.readFile(req.files.file[0].path);
             const emailContent = selectedLanguage === 'en' ? `Dear User, <br><br> Your bulk upload file has been processed. Please find the attached file for the processed records. <br><br> Regards, <br> GS1 KSA` : `عزيزي المستخدم، <br><br> تم معالجة ملف التحميل الجماعي الخاص بك. يرجى العثور على الملف المرفق للسجلات المعالجة. <br><br> تحياتي، <br> GS1 KSA`;
-            
+
             const attachments = [{
                 filename: user?.memberID + '_processed_file.xlsx',
                 content: pdfBuffer,
@@ -671,7 +671,7 @@ export const bulkCreateProduct = async (req, res, next) => {
             await sendEmail({
                 fromEmail: ADMIN_EMAIL,
                 toEmail: req.body.email,
-               
+
                 subject: selectedLanguage === 'en' ? 'GTIN Bulk Upload Processed file' : 'ملف تحميل الجملة المعالج',
 
                 htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
@@ -980,7 +980,7 @@ export const generateGtinCertificate = async (req, res, next) => {
         };
 
         // Generate PDF using provided function
-        
+
         let ejsFile = selectedLanguage === "en" ? 'gtinCertificate.ejs' : 'gtinCertificate_Ar.ejs';
         const pdfBuffer = await convertEjsToPdf2(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data);
 

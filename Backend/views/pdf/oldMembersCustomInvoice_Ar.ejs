@@ -314,7 +314,8 @@
 
 
                 <tr style="background-color: #003D79; color: white; font-weight: bold;">
-                    <td colspan="10" class="text-bold p-text text-right">الإجمالي</td>
+                    <td colspan="10" class="text-bold p-text text-left">الإجمالي (عدد السنوات - <%= data.memberData.yearsToPay %>)</td>
+                    
                     <% let totalPrice = 0; %>
                     <% data.cart.cart_items.forEach((item) => { %>
                         <% if (data.type === 'downgrade') { %>
@@ -328,9 +329,6 @@
                     <td colspan="2" class="text-bold p-text text-right"><%= totalPriceWithYears %></td>
                 </tr>
             </table><br>
-
-
-               
 
                 <div>
                 
