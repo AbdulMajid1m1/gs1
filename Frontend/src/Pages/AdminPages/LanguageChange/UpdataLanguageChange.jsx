@@ -51,6 +51,7 @@ const UpdataLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) =>
                 progress: undefined,
                 theme: "light",
             });
+            console.log(error);
         }
         finally {
             setLoading(false);

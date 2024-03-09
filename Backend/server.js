@@ -233,6 +233,7 @@ app.get("/test", async (req, res) => {
   handleInvoiceReminders();
   res.send("test");
 });
+<<<<<<< HEAD
 //-------------------arabic---------------------------------------
 import { promisify } from "util";
 import fs from "fs";
@@ -366,6 +367,10 @@ app.post("/translations", async (req, res, next) => {
     next(error);
   }
 });
+=======
+
+
+>>>>>>> 00d12914bd6ed150d02fa706ea08630a03fff1b9
 
 // Create an HTTP server from the Express app
 const httpServer = createServer(app);
