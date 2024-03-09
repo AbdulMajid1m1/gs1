@@ -45,7 +45,7 @@ import { translations, translations_table, translations_put, translations_post }
 
 router.get('/translations', translations);
 router.get('/translations_table', translations_table);
-router.put('/translations', translations_put);
+router.put('/translations/:id', translations_put);
 router.post('/translations', translations_post);
 // Routes for help_desks
 router.post('/createhelpdesk', upload([{
