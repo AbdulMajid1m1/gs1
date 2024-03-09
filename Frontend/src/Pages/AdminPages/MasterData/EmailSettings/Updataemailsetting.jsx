@@ -38,7 +38,7 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
     try {
       const response = await  newRequest.put(`/updateemailsetting/${updateBrandData?.id}`,  {
         smtp_encryption: SMTPEncryption || "TSL",
-        emailmethod: EmailMethod || "SMTP Mail",
+        emailmethod: EmailMethod || "SMTP",
         emailfrom: EmailSentFrom,
         smtp_host: SMTPHOST,
         smtp_password: SMTPpassword,
@@ -113,8 +113,8 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                       onChange={(e) => setEmailMethod(e.target.value)}
                       className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                     >
-                      <option value="PHP Mail">{t("PHP Mail")}</option>
-                      <option value="SMTP Mail">{t("SMTP Mail")}</option>
+                      <option value="PHP">{t("PHP Mail")}</option>
+                      <option value="SMTP">{t("SMTP Mail")}</option>
                     </select>
                   </div>
 
