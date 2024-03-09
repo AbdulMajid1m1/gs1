@@ -179,6 +179,11 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       status: selectedStatus,
       selectedLanguage: selectedLanguage,
     };
+    const migrationApprovedBody = {
+      status: selectedStatus,
+      migration: true,
+      ...(gs1MemberInvoiceData?.no_of_years === 0 && { checkBankSlip: false })
+    };
 
     const rejectBody = {
       status: selectedStatus,
@@ -195,6 +200,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
+      selectedLanguage: selectedLanguage,
     }
 
     const addGtin = {

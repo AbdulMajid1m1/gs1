@@ -456,6 +456,24 @@ const GTINUpdateProducts = () => {
         setSelectedDigitalInformationType(value);
     };
 
+    const computedEnglishValue = `${productNameEnglish} - ${size} - ${(selectedBrandNameEnglish || '')}`;
+    const computedArabicValue = `${productNameArabic} - ${size} - ${(selectedBrandNameArabic || '')}`;
+    useEffect(() => {
+      setDescriptionEnglish(computedEnglishValue);
+    }, [computedEnglishValue]);
+
+    useEffect(() => {
+      setDescriptionArabic(computedArabicValue);
+    }, [computedArabicValue]);
+    
+    const handleDescriptionChange = (e) => {
+      setDescriptionEnglish(e.target.value);
+    };
+
+    const handleDescriptionArabicChange = (e) => {
+      setDescriptionArabic(e.target.value);
+    };
+
 
     // Testing add
     // const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
@@ -1217,8 +1235,10 @@ const GTINUpdateProducts = () => {
                                         <label htmlFor="field12" className="text-secondary">{t('Description')} {t('[English]')}  </label>
                                         <textarea
                                             type="text"
-                                            onChange={(e) => setDescriptionEnglish(e.target.value)}
+                                            onChange={handleDescriptionChange}
                                             value={descriptionEnglish}
+                                            // onChange={(e) => setDescriptionEnglish(e.target.value)}
+                                            // value={descriptionEnglish}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                             id="field12"
                                         />
@@ -1228,8 +1248,10 @@ const GTINUpdateProducts = () => {
                                         <label htmlFor="field13" className="text-secondary">{t('Description')} {t('[Arabic]')} </label>
                                         <textarea
                                             type="text"
-                                            onChange={(e) => setDescriptionArabic(e.target.value)}
+                                            onChange={handleDescriptionArabicChange}
                                             value={descriptionArabic}
+                                            // onChange={(e) => setDescriptionArabic(e.target.value)}
+                                            // value={descriptionArabic}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                             id="field13"
                                         />
@@ -1307,7 +1329,7 @@ const GTINUpdateProducts = () => {
 
                                     {/* optional images code */}
                                     <div className="flex justify-center">
-                                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-28 lg:gap-y-16 sm:mt-20 mt-24">
+                                        <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-28 lg:gap-y-16 sm:mt-20 mt-24">
                                             <div>
                                                 <span className='text-secondary font-body sm:text-base text-sm'>{t('Optional Photo')} 1</span>
                                                 <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">

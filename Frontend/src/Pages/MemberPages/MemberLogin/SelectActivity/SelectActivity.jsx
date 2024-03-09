@@ -118,7 +118,7 @@ const SelectActivity = () => {
                     <div className='flex justify-center items-center h-[90%]'>
                         <div className='w-full sm:w-[50%] sm:px-4 px-4 h-auto border-[1px] border-[#021F69] rounded-md shadow-xl py-5'>
                             <form onSubmit={handleSubmit}>
-                                <h2 className={`sm:text-2xl text-secondary text-lg font-sans font-bold py-5 ${i18n.language === 'ar' ? ' text-right' : 'text-left'}`}>{t('Select Activity')}<span className='text-red-500'>*</span></h2>
+                                <h2 className={`sm:text-2xl text-secondary text-lg font-sans font-bold py-5 ${i18n.language === 'ar' ? ' text-right' : 'text-left'}`}>{t('Select Activity')}</h2>
                                 <div className='flex flex-col gap-1'>
                                     <label className={`sm:text-2xl text-secondary text-lg font-sans font-normal ${i18n.language === 'ar' ? ' text-right' : 'text-left'}`} htmlFor='test'>{t('Select Activity')}<span className='text-red-500'>*</span></label>
                                     <Autocomplete
