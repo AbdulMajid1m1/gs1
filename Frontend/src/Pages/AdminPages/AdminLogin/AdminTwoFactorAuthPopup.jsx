@@ -112,7 +112,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
 
                     <div className='flex flex-col md:flex-row justify-center items-center'>
                       <div className='flex flex-col justify-center items-center gap-3 mt-6'>
-                        <QRCodeSVG value={"12345"} width="105" height="90" />
+                        <QRCodeSVG value={"https://play.google.com/store/apps/details?id=com.adminauthenticator86"} width="105" height="90" />
                         <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
                             <i className="fab fa-android ml-1"></i>  for andriod
                         </button>
@@ -133,7 +133,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
                     </div>
 
                     <div className='flex flex-col justify-center items-center gap-3 mt-6'>
-                      <QRCodeSVG value={"12345"} width="105" height="90" />
+                      <QRCodeSVG value={"https://play.google.com/store/apps/details?id=com.adminauthenticator86"} width="105" height="90" />
                       <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
                         <i className="fab fa-apple ml-1"></i> for IOS
                       </button>
