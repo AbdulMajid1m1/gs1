@@ -723,6 +723,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 data: {
                     status: 'approved',
                     expiry_date: expiryDate,
+                    approved_date: new Date(),
                 }
             });
 
@@ -735,6 +736,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 data: {
                     status: 'approved',
                     expiry_date: expiryDate,
+                    approved_date: new Date(),
                 }
 
             });
@@ -1835,6 +1837,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req.admin.adminId,
+                approved_date: new Date(),
             }
         });
 
@@ -2080,10 +2083,12 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
                 user_id: userId,
                 request_type: 'additional_gln',
 
+
             },
             data: {
                 status: 'approved',
                 admin_id: req.admin.adminId,
+                approved_date: new Date(),
             }
 
         });
@@ -2368,6 +2373,7 @@ export const approveMembershipRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req?.admin?.adminId,
+                approved_date: new Date(),
 
             }
         });
@@ -2984,6 +2990,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req?.admin?.adminId,
+                approved_date: new Date(),
 
             }
         });
