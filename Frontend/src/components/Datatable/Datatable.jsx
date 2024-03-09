@@ -300,7 +300,7 @@ const DataTable = ({
   const idColumn = [
     {
       field: "no",
-      headerName:t('ID'),
+      headerName: t('ID'),
       width: 30,
     },
   ];
@@ -630,19 +630,29 @@ const DataTable = ({
             console.log(error);
           }}
           // slots={{ toolbar: GridToolbar }}
-            slots={{ toolbar: showToolbarSlot !== false ? GridToolbar : undefined }}
+          slots={{ toolbar: showToolbarSlot !== false ? GridToolbar : undefined }}
           // rows={filteredData}
           rows={muiFilteredData}
 
           // columns={reversedColumns}
-          columns={(actionColumnVisibility !== false
-            ? (i18n && i18n.language === 'ar'
-              ? [...columnsName.reverse(), ...actionColumn, ...idColumn.slice(1), ...idColumn.slice(0, 1)]
-              : [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName])
-            : (i18n && i18n.language === 'ar'
-              ? [...columnsName.reverse(), ...idColumn]
-              : [...idColumn, ...columnsName])
-          )}
+          // columns={(actionColumnVisibility !== false
+          //   ? (i18n && i18n.language === 'ar'
+          //     ? [...columnsName.reverse(), ...actionColumn, ...idColumn.slice(1), ...idColumn.slice(0, 1)]
+          //     : [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName])
+          //   : (i18n && i18n.language === 'ar'
+          //     ? [...columnsName.reverse(), ...idColumn]
+          //     : [...idColumn, ...columnsName])
+          // )}
+
+          columns={
+            i18n.language === 'ar'
+              ? actionColumnVisibility !== false
+                ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName].reverse()
+                : [...idColumn, ...columnsName].reverse()
+              : actionColumnVisibility !== false
+                ? [...idColumn.slice(0, 1), ...actionColumn, ...idColumn.slice(1), ...columnsName]
+                : [...idColumn, ...columnsName]
+          }
           pageSize={30}
           // rowsPerPageOptions={[300, 500, 1000]}
           pageSizeOptions={[50, 100, { value: -1, label: "All" }]}

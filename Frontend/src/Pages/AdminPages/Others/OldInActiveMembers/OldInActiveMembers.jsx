@@ -9,8 +9,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from 'react-toastify';
+import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 const OldInActiveMembers = () => {
+  const { selectedLanguage } = useLanguage();
   const { t, i18n } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -152,6 +154,7 @@ const OldInActiveMembers = () => {
     try {
       const res = await newRequest.post('/migration/migrateUser', {
         "MemberID": selectedOldMember?.MemberID,
+        selectedLanguage: selectedLanguage,
       });
       console.log(res);
       toast.success(res?.data?.message || `${t('Member migrated successfully')}`);
@@ -267,12 +270,12 @@ const OldInActiveMembers = () => {
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                   {t('Old GTIN')}: {oldGtinProuductCount}
+                  {t('Old GTIN')}: {oldGtinProuductCount}
                 </button>
 
                 <button
                   className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                   {t('Old GLN')}: {oldGlnProuductCount}
+                  {t('Old GLN')}: {oldGlnProuductCount}
                 </button>
 
               </div>
