@@ -8,7 +8,6 @@ import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
-
 import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
@@ -1082,7 +1081,7 @@ export const getRegisteredMembers = async (req, res, next) => {
             include: {
                 assign_to_admin: true
             },
-            take: 20
+            take: 200
 
         });
 
