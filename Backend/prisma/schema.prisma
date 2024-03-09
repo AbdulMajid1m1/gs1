@@ -870,6 +870,7 @@ model gtin_subscription_histories {
   updated_at             DateTime?             @updatedAt
   deleted_at             DateTime?             @db.DateTime
   expiry_date            DateTime?             @db.DateTime
+  approved_date          DateTime?             @db.DateTime
   admin_id               String?
   additional_products_id String?
   // point  additional_products_id  to  gtin_upgrade_pricing optionally
@@ -1580,6 +1581,7 @@ model other_products_subscription_histories {
   updated_at        DateTime?            @updatedAt
   deleted_at        DateTime?            @db.DateTime
   expiry_date       DateTime?            @db.DateTime
+  approved_date     DateTime?            @db.DateTime
   admin_id          String?
   additional_gln_id String?
   // point additional_gln_id to gln_upgrade_pricing optionaly
