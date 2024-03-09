@@ -1931,9 +1931,7 @@ model TagTest {
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model tblSysNo {
   TblSysCtrNo String @db.NChar(10)
-  SysNoID     Int
-
-  @@ignore
+  SysNoID     Int    @id(map: "PK__tblSysNo__68661321043D2983") @default(autoincrement())
 }
 
 model transactions {

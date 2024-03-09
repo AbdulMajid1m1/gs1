@@ -2838,18 +2838,17 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
+        selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         // invoiceType: Joi.string().valid('upgrade_invoice', 'downgrade_invoice').required(),
     });
 
     const { error, value } = schema.validate(req.body);
-
-
     try {
         if (error) {
             throw createError(400, error.details[0].message);
         }
 
-        const { transactionId, userId } = value;
+        const { transactionId, userId, selectedLanguage } = value;
 
         // const bankSlipDocuments = await prisma.member_documents.findMany({
         //     where: {
