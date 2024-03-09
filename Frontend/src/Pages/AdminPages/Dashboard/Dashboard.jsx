@@ -171,6 +171,7 @@ const Dashboard = () => {
     setMemberRenevalLoader(true);
 
     try {
+      const adminData = JSON.parse(sessionStorage.getItem('adminData'));
       const response = await newRequest.get("/users/getByGcpExpiry");
 
       const data = response.data.map((item) => {
@@ -287,7 +288,7 @@ const Dashboard = () => {
                       <p className='font-sans font-normal text-md text-gray-200'>{t('In Active Members')}</p>
                     </div>
                   </div>
-                </div>
+                </div>  
                 <div className='h-auto w-full bg-[#1CC085] rounded-md'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>

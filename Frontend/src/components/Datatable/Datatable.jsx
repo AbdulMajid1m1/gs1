@@ -458,6 +458,10 @@ const DataTable = ({
   //     }
   //   };
 
+  let xtraSmallHeightTableScreens = [
+    "gs1ResistriesId",
+  ];
+
   let smallHeightTableScreens = [
     "journalMovementClId",
     "journalMovementClDetId",
@@ -522,7 +526,9 @@ const DataTable = ({
       <div
         className="datatable"
         style={
-          smallHeightTableScreens.includes(uniqueId)
+          xtraSmallHeightTableScreens.includes(uniqueId)
+            ? { height: "350px" }
+            : smallHeightTableScreens.includes(uniqueId)
             ? { height: "450px" }
             : mediumHeightTableScreens.includes(uniqueId)
               ? { height: "600px" }
