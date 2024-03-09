@@ -501,7 +501,7 @@ model faq_categories {
 }
 
 model featured_articales {
-  id         BigInt    @id(map: "PK_featured_articales") @default(autoincrement())
+  id         String    @id @default(cuid())
   title      String?   @db.NVarChar(Max)
   title_ar   String?   @db.NVarChar(Max)
   image      String?   @db.NVarChar(Max)
@@ -513,7 +513,7 @@ model featured_articales {
 }
 
 model featured_services {
-  id         BigInt    @id(map: "PK_featured_services") @default(autoincrement())
+  id         String    @id @default(cuid())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
