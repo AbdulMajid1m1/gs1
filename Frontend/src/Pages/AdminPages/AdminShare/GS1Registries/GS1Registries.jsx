@@ -39,7 +39,7 @@ const GS1Registries = () => {
                           </div>
 
 
-                          {/* second Card */}
+                        {/* second Card */}
                         <div className='w-full flex flex-col gap-1'>
                           <div className='h-10 bg-[#c0d82c] text-xl text-center text-white font-body font-bold'>Registered GCPs</div>
                             <div className='w-full flex justify-between items-center flex-wrap'>
