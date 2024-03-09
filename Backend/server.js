@@ -27,6 +27,7 @@ dotenv.config();
 
 const allowedOrigins = [
     "http://localhost:3092",
+<<<<<<< HEAD
     "http://gs1ksa.org:3092",
     "http://gs1ksa.org",
     "https://gs1ksa.org",
@@ -34,6 +35,10 @@ const allowedOrigins = [
     "http://gs1ksa.org:83",
     "https://gs1ksa.org:82",
     "https://gs1ksa.org:83"
+=======
+    "http://localhost:3091",
+    "http://gs1ksa.org:3092"
+>>>>>>> a9d1fcbe6be1a0a452ec8b95558a77eb970dd203
 
 
 ];
@@ -70,6 +75,9 @@ app.set('views', path.join(__dirname, 'views'));
 // calling the routes
 app.use("/api", rootRoute);
 
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 app.get('/renderInvoice', async (req, res) => {
     // Define your dummy data here
     const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
@@ -222,6 +230,7 @@ app.get('/renderCertificate', async (req, res) => {
 
 
 app.use((err, req, res, next) => {
+    console.error(err.stack);
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong!";
 
