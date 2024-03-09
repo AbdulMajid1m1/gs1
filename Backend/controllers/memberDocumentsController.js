@@ -501,7 +501,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         });
 
 
-                        // Fetch the necessary data from other_products table
+                        // Fetch the necessary data from other_products table  TODO: optiomzed it only call teh api for regiserted products of the user not all
                         const products = await prisma.other_products.findMany({
                             select: {
                                 id: true,
@@ -515,8 +515,8 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         for (const product of products) {
                             console.log("product", product);
                             let subscriptionFee = userUpdateResult.membership_category === 'non_med_category'
-                                ? product.product_subscription_fee
-                                : product.med_subscription_fee;
+                                ? product?.product_subscription_fee
+                                : product?.med_subscription_fee;
 
                             await prisma.other_products_subcriptions.updateMany({
                                 where: {

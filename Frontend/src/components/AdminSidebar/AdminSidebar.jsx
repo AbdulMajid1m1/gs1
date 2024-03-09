@@ -1338,7 +1338,7 @@ const AdminSideBar = () =>
                 />
                 <p className="sidebar-text">{t('Faq Categories')}</p>
               </div>
-              <div
+              {/* <div
                 className={`main-images-container ${selectedItem === '/admin/manage_section' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/manage_section', event)}
                 onContextMenu={(event) =>
@@ -1351,7 +1351,7 @@ const AdminSideBar = () =>
                   alt=""
                 />
                 <p className="sidebar-text">{t('Manage Sections')}</p>
-              </div>
+              </div> */}
               <div
                 className={`main-images-container ${selectedItem === '/admin/Manage_team' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                 onClick={(event) => handleItemClick('/admin/Manage_team', event)}
