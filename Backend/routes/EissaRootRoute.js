@@ -12,15 +12,15 @@ import { getAllprod_desc_languages } from "../controllers/productsController.js"
 import { upload } from '../configs/multerConfig.js';
 import { getAlluser_guide_pdfs, creatuser_guide_pdfs, getuser_guide_pdfsById, updateuser_guide_pdfs, deleteuser_guide_pdfs, getAlluser_guide_videos, creatuser_guide_videos, getuser_guide_videosById, updateuser_guide_videos, deleteuser_guide_videos } from "../controllers/user_guid.js"
 import
-    {
-        getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
-        getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
-        deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
-        getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
-        , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
-        creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
-        creatupcoming_events, getupcoming_eventsById, updateupcoming_events, deleteupcoming_events, mega_menu_categories_frontSide
-    } from "../controllers/catalog.js"
+{
+    getAllmega_menu, createmega_menus, getmega_menusById, updatemega_menus, deletemega_menus,
+    getAllmega_menu_categories, creatmega_menu_categories, getmega_menu_categoriesById, updatemega_menu_categories,
+    deletemega_menu_categories, getAllfooter_menus, creatfooter_menus, getfooter_menusById, updatefooter_menus, deletefooter_menus,
+    getAllsliders, creatsliders, getslidersById, updatesliders, deletesliders, getAllfeatured_services, creatfeatured_services
+    , getfeatured_servicesById, updatefeatured_services, deletefeatured_services, getAllfeatured_articales,
+    creatfeatured_articales, getfeatured_articalesById, updatefeatured_articales, deletefeatured_articales, getAllupcoming_events,
+    creatupcoming_events, getupcoming_eventsById, updateupcoming_events, deleteupcoming_events, mega_menu_categories_frontSide
+} from "../controllers/catalog.js"
 const router = express.Router();
 import { createpages, getAllpages, getpagesById, updatepages, deletepages, getAllpagesname, getpagesByslug } from '../controllers/pages.js'
 import { getAllpartners, creatpartners, getpartnersById, updatepartners, deletepartners } from '../controllers/partners.js'
@@ -31,15 +31,22 @@ import { getAllboard_members, creatboard_members, getboard_membersById, updatebo
 import { adminAuth, checkPermission, generalAuth } from '../middlewares/auth.js';
 import { createemailsetting, getAllemailsetting, getemailsettingById, updateemailsetting, deleteemailsetting } from "../controllers/emailsetting.js"
 import
-    {
-        getAllhelpdesk,
-        gethelpdeskById,
-        deletehelpdesk,
-        createhelpdesk,
-        gethelpdeskByuserid,
-        updatehelp_desks,
-        getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment, sendemailAssign_to_helpdesk
-    } from "../controllers/help_desks.js"
+{
+    getAllhelpdesk,
+    gethelpdeskById,
+    deletehelpdesk,
+    createhelpdesk,
+    gethelpdeskByuserid,
+    updatehelp_desks,
+    getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment, sendemailAssign_to_helpdesk
+} from "../controllers/help_desks.js"
+import { translations, translations_table, translations_put, translations_post } from "../controllers/languages.js"
+
+
+router.get('/translations', translations);
+router.get('/translations_table', translations_table);
+router.put('/translations', translations_put);
+router.post('/translations', translations_post);
 // Routes for help_desks
 router.post('/createhelpdesk', upload([{
     name: 'document',
