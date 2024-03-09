@@ -180,6 +180,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
+      selectedLanguage: selectedLanguage,
     }
 
     const addGtin = {
