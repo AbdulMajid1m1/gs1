@@ -42,6 +42,7 @@ export const createRole = async (req, res, next) => {
 
         res.status(201).json(roleWithPermissions);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };
