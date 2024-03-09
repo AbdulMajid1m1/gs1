@@ -464,6 +464,24 @@ const AdminUpdateGTIN = () => {
         setSelectedDigitalInformationType(value);
     };
 
+    const computedEnglishValue = `${productNameEnglish} - ${size} - ${(selectedBrandNameEnglish || '')}`;
+    const computedArabicValue = `${productNameArabic} - ${size} - ${(selectedBrandNameArabic || '')}`;
+    useEffect(() => {
+      setDescriptionEnglish(computedEnglishValue);
+    }, [computedEnglishValue]);
+
+    useEffect(() => {
+      setDescriptionArabic(computedArabicValue);
+    }, [computedArabicValue]);
+    
+    const handleDescriptionChange = (e) => {
+      setDescriptionEnglish(e.target.value);
+    };
+
+    const handleDescriptionArabicChange = (e) => {
+      setDescriptionArabic(e.target.value);
+    };
+
 
     // Testing add
     // const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
@@ -1224,8 +1242,10 @@ const AdminUpdateGTIN = () => {
                                         <label htmlFor="field12" className="text-secondary">{t('Description')} {t('[English]')}</label>
                                         <textarea
                                             type="text"
-                                            onChange={(e) => setDescriptionEnglish(e.target.value)}
+                                            onChange={handleDescriptionChange}
                                             value={descriptionEnglish}
+                                            // onChange={(e) => setDescriptionEnglish(e.target.value)}
+                                            // value={descriptionEnglish}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                             id="field12"
                                         />
@@ -1235,8 +1255,10 @@ const AdminUpdateGTIN = () => {
                                         <label htmlFor="field13" className="text-secondary">{t('Description')} {t('[Arabic]')}</label>
                                         <textarea
                                             type="text"
-                                            onChange={(e) => setDescriptionArabic(e.target.value)}
+                                            onChange={handleDescriptionArabicChange}
                                             value={descriptionArabic}
+                                            // onChange={(e) => setDescriptionArabic(e.target.value)}
+                                            // value={descriptionArabic}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                                             id="field13"
                                         />

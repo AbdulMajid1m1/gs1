@@ -1265,22 +1265,18 @@ const MemmberRegisteration = () => {
                 <Autocomplete
                   id="GTIN"
                   disabled={!selectedCategories}
-                  // options={gtinNumber}
-                  //
-                  // options={selectedCategories ? gtinNumber : []}
-                  // total_no_of_barcodes
                   options={
-                    selectedCategories
-                      ? entityType.value === "organization"
-                        ? gtinNumber.filter(
+                    selectedCategories && entityType.value === "individual/family business"
+                      ? gtinNumber.filter(
+                          (option) => option?.member_category_description === "Category B - ( 100 Barcodes )"
+                        )
+                      : selectedCategories
+                      ? gtinNumber.filter(
                           (option) => option?.total_no_of_barcodes !== 10
                         )
-                        : gtinNumber
                       : []
                   }
                   value={selectedGtinNumber}
-                  // getOptionLabel={(option) => {option?.member_category_description;
-                  // }}
                   getOptionLabel={(option) => {
                     if (i18n.language === "ar") {
                       return option?.member_category_description_ar || "";
