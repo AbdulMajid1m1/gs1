@@ -154,7 +154,7 @@ const UpdateRoles = () => {
                 </div>
 
                 <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                  <label className='text-secondary font-semibold' htmlFor='SelectRoles'>   {t('Select Roles')}</label>
+                  <label className='text-secondary font-semibold' htmlFor='SelectRoles'>   {t('Select Permission')}</label>
                   <Autocomplete
 
                     multiple
@@ -170,8 +170,8 @@ const UpdateRoles = () => {
 
                         autoComplete="off"
                         {...params}
-                        label={`${t('Select Roles')}`}
-                        placeholder={`${t('Select Roles')}`}
+                        label={`${t('Select Permissions')}`}
+                        placeholder={`${t('Select Permissions')}`}
                         variant='outlined'
                       />
                     )}

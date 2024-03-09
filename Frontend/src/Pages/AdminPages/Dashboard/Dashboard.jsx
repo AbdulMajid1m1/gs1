@@ -171,6 +171,7 @@ const Dashboard = () => {
     setMemberRenevalLoader(true);
 
     try {
+      const adminData = JSON.parse(sessionStorage.getItem('adminData'));
       const response = await newRequest.get("/users/getByGcpExpiry");
 
       const data = response.data.map((item) => {
