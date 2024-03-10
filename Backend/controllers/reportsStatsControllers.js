@@ -24,16 +24,15 @@ export const getProductKpiReports = async (req, res, next) => {
 
         const { startDate, endDate } = req.body;
 
-        const dateRangeCondition = {
-            created_at: {
-                gte: new Date(startDate),
-                lte: new Date(endDate),
+        // Fetch approved subscriptions from gtin_subscription_histories table
+        const approvedGtinHistories = await prisma.gtin_subscription_histories.findMany({
+            where: {
+                approved_date: {
+                    gte: new Date(startDate),
+                    lte: new Date(endDate),
+                },
+                status: 'approved',
             },
-        };
-
-        // Fetch data from gtin_subscription_histories table
-        const gtinHistories = await prisma.gtin_subscription_histories.findMany({
-            where: dateRangeCondition,
             include: {
                 user: true,
                 gtin_product: true,
@@ -41,9 +40,31 @@ export const getProductKpiReports = async (req, res, next) => {
             },
         });
 
-        // Fetch data from other_products_subscription_histories table
-        const otherProductHistories = await prisma.other_products_subscription_histories.findMany({
-            where: dateRangeCondition,
+        // Fetch pending subscriptions from gtin_subscription_histories table using created_at
+        const pendingGtinHistories = await prisma.gtin_subscription_histories.findMany({
+            where: {
+                created_at: {
+                    gte: new Date(startDate),
+                    lte: new Date(endDate),
+                },
+                status: 'pending',
+            },
+            include: {
+                user: true,
+                gtin_product: true,
+                admin: true,
+            },
+        });
+
+        // Repeat for other_products_subscription_histories
+        const approvedOtherHistories = await prisma.other_products_subscription_histories.findMany({
+            where: {
+                approved_date: {
+                    gte: new Date(startDate),
+                    lte: new Date(endDate),
+                },
+                status: 'approved',
+            },
             include: {
                 user: true,
                 product: true,
@@ -51,18 +72,29 @@ export const getProductKpiReports = async (req, res, next) => {
             },
         });
 
-        // Merge and process the results
-        const combinedResults = gtinHistories.map(history => ({
-            ...history,
-            productName: history.gtin_product.member_category_description,
-        })).concat(
-            otherProductHistories.map(history => ({
-                ...history,
-                productName: history.product.product_name,
-            }))
-        );
+        const pendingOtherHistories = await prisma.other_products_subscription_histories.findMany({
+            where: {
+                created_at: {
+                    gte: new Date(startDate),
+                    lte: new Date(endDate),
+                },
+                status: 'pending',
+            },
+            include: {
+                user: true,
+                product: true,
+                admin: true,
+            },
+        });
 
-        // Calculate total amount for approved status
+        // Combine results from both tables
+        const combinedResults = [...approvedGtinHistories, ...pendingGtinHistories, ...approvedOtherHistories, ...pendingOtherHistories].map(history => ({
+            ...history,
+            productName: history.gtin_product ? history.gtin_product.member_category_description : history.product.product_name,
+            price: history.price || 0, // Ensure price is a number
+        }));
+
+        // Calculate total approved amount
         const approvedTotalAmount = combinedResults
             .filter(history => history.status === 'approved')
             .reduce((total, history) => total + history.price, 0);
@@ -77,12 +109,14 @@ export const getProductKpiReports = async (req, res, next) => {
         // Calculate new registrations
         const newRegistrations = combinedResults.filter(history => history.request_type !== 'renewal');
         const newRegistrationCount = newRegistrations.length;
-        const newRegistrationAmount = newRegistrations.reduce((total, history) => total + history.price, 0);
+        const newRegistrationAmount = newRegistrations
+            .reduce((total, history) => total + history.price, 0);
 
         // Calculate renewals
         const renewals = combinedResults.filter(history => history.request_type === 'renewal');
         const renewalCount = renewals.length;
-        const renewalAmount = renewals.reduce((total, history) => total + history.price, 0);
+        const renewalAmount = renewals
+            .reduce((total, history) => total + history.price, 0);
 
         // Prepare the response object
         const response = {
@@ -99,7 +133,7 @@ export const getProductKpiReports = async (req, res, next) => {
                 count: renewalCount,
                 amount: renewalAmount,
             },
-            combinedResults, // You might want to exclude this if not needed
+            combinedResults, // Consider excluding detailed results if not needed
         };
 
         // Return the response
