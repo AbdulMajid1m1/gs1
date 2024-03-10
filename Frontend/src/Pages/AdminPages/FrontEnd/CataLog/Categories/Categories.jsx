@@ -63,11 +63,11 @@ const Categories = () => {
                 megamenu_id: stateIdToNameMap[megnumenu.megamenu_id] || "Unknown State",
             }));
 
-            console.log('statesData', updatedCitiesData);
+            // console.log('statesData', updatedCitiesData);
             setData(updatedCitiesData);
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -136,7 +136,7 @@ const Categories = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -206,7 +206,7 @@ const Categories = () => {
 
             });
 
-            console.log(response.data);
+            // console.log(response.data);
 
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
@@ -220,7 +220,7 @@ const Categories = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -235,7 +235,7 @@ const Categories = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -257,7 +257,7 @@ const Categories = () => {
                         status: 1
                     })
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `Mega Menu categories has been created`,
@@ -266,7 +266,7 @@ const Categories = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some categories already exist`,

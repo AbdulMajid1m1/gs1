@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updatemengBlogCategories"));
-    console.log(updateBrandData)
+    // console.log(updateBrandData)
     const [name, setname] = useState(updateBrandData?.name || '');
     const [slug, setslug] = useState(updateBrandData?.slug || '');
     const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
                 theme: "light",
             });
 
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 
@@ -55,7 +55,7 @@ const Updatabloggcategories = ({ isVisible, setVisibility, refreshBrandData }) =
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
         finally {
             setLoading(false);

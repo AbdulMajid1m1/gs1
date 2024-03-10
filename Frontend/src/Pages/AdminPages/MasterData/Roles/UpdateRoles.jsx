@@ -21,7 +21,7 @@ const UpdateRoles = () => {
 
   const handleRolesTypesChange = (event, value) => {
     setSelectedRoles(value);
-    console.log(value);
+    // console.log(value);
     setSelectAll(false); // Uncheck "Select All" when individual options are selected/deselected
     filterRoles(value, allRoles);
   };
@@ -33,7 +33,7 @@ const UpdateRoles = () => {
     {
       const response = await newRequest.get(`/roles/${id}`);
       const responseAllPermissions = await newRequest.get('/permissions');
-      console.log(response.data);
+      // console.log(response.data);
       const data = responseAllPermissions.data;
       
       const roles = response.data.permissions.map((role) => ({
@@ -93,7 +93,7 @@ const UpdateRoles = () => {
         name: roleName,
         permissions: selectedRoles.map((role) => role.id),
       });
-      console.log(response?.data);
+      // console.log(response?.data);
       setIsLoading(false);
       toast.success(response?.data?.message || 'Role Updated Successfully');
       navigate(-1);

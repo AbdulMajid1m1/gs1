@@ -43,7 +43,7 @@ const Userguideveido = () => {
             setData(response?.data || []);
             setIsLoading(false)
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -117,7 +117,7 @@ const Userguideveido = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -171,7 +171,7 @@ const Userguideveido = () => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -184,7 +184,7 @@ const Userguideveido = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -198,7 +198,7 @@ const Userguideveido = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -216,7 +216,7 @@ const Userguideveido = () => {
                     formData.append('status', 1);
                     newRequest.post(`/creatboard_members`, formData)
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `User Guide Video has been created`,
@@ -225,7 +225,7 @@ const Userguideveido = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some User Guide Video already exist`,

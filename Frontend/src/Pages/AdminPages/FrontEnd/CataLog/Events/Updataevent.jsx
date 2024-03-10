@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateevent"));
-    console.log(updateBrandData)
+    // console.log(updateBrandData)
     const [Title, setTitle] = useState(updateBrandData?.title || '');
     const [titlear, settitlear] = useState(updateBrandData?.title_ar || '')
     const [Date, setDate] = useState(updateBrandData?.date || '');
@@ -31,7 +31,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -97,7 +97,7 @@ const Updataevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error);
+            // console.log(error);
         }
         finally {
             setLoading(false);

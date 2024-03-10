@@ -56,12 +56,12 @@ const RegisteredMembers = () => {
       // const response = await newRequest.get("/users?parent_memberID=0");
       const response = await newRequest.get("/users/allUser?parent_memberID=0");
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -93,12 +93,12 @@ const RegisteredMembers = () => {
   // };
 
   const handleEdit = (row) => {
-    console.log(row);
+    // console.log(row);
     // navigate("/upate-gtin-product/" + row?.id);
   };
 
   const handleOpen = (row) => {
-    console.log(row);
+    // console.log(row);
     // navigate("/view-gtin-product/" + row?.id);
   };
 
@@ -107,7 +107,7 @@ const RegisteredMembers = () => {
   // };
 
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
     // save this data in session storage
     sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
     navigate("view-registered-member/" + row?.id);
@@ -196,7 +196,7 @@ const RegisteredMembers = () => {
 
   const handleShowFinancePopup = (row) => {
     setFinancePopupVisibility(true);
-    console.log(row);
+    // console.log(row);
     // set this data in session storage
     sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
@@ -206,7 +206,7 @@ const RegisteredMembers = () => {
 
   const handleShowRenewPopup = (row) => {
     setIsRenewPopupVisible(true);
-    console.log(row);
+    // console.log(row);
     // set this data in session storage
     sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
@@ -217,7 +217,7 @@ const RegisteredMembers = () => {
 
   const handleShowUpgradePopup = (row) => {
     setIsUpgradePopupVisible(true);
-    console.log(row);
+    // console.log(row);
     // set this data in session storage
     sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
@@ -228,7 +228,7 @@ const RegisteredMembers = () => {
 
   const handleShowDowngradePopup = (row) => {
     setIsDowngradePopupVisible(true);
-    console.log(row);
+    // console.log(row);
     // set this data in session storage
     sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
@@ -240,7 +240,7 @@ const RegisteredMembers = () => {
 
   const handleAssignToPopUp = (row) => {
     setIsAssignToPopUpVisible(true);
-    console.log(row);
+    // console.log(row);
     setAssignUser(row);
     // set this data in session storage
     // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
@@ -271,7 +271,7 @@ const RegisteredMembers = () => {
       }
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
       // show the toast message
       toast.error(err?.response?.data?.message || `${t('Something went wrong')}`, {
         position: "top-right",

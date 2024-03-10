@@ -45,7 +45,7 @@ const Managesections = () => {
       setData(response?.data || []);
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
     }
   };
@@ -128,7 +128,7 @@ const Managesections = () => {
     });
   };
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
   };
   const handleAddCompany = async () => {
     const { value: formValues } = await Swal.fire({
@@ -184,7 +184,7 @@ const Managesections = () => {
           theme: "light",
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       toast.error(error?.response?.data?.error || "Error", {
         position: "top-right",
@@ -197,7 +197,7 @@ const Managesections = () => {
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
   };
   const handleRowClickInParent = (item) => {

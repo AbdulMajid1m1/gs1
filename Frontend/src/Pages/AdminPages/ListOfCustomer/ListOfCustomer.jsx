@@ -28,7 +28,7 @@ const ListOfCustomer = () => {
 
     const getVendorData = sessionStorage.getItem("vendorData");
     const parsedVendorData = JSON.parse(getVendorData);
-    console.log(parsedVendorData);
+    // console.log(parsedVendorData);
 
 
     const resetSnakeBarMessages = () => {
@@ -48,7 +48,7 @@ const ListOfCustomer = () => {
 
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -75,7 +75,7 @@ const ListOfCustomer = () => {
                 setFilteredData(response?.data ?? [])
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
                 // setError(error?.response?.data?.message ?? `${t('Something went wrong!')}`)
 
             }
@@ -88,10 +88,10 @@ const ListOfCustomer = () => {
         const deleteEmptyShipmentRequest = async () => {
             try {
                 const response = await newRequest.delete("/deleteEmptyShipmentRequestsForVendor?vendor_id=" + parsedVendorData?.user?.id)
-                console.log(response?.data)
+                // console.log(response?.data)
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
             }
             finally {
                 getAllShipments();
@@ -121,12 +121,12 @@ const ListOfCustomer = () => {
         try {
 
             const res = await newRequest.get("/getShipmentRequestByCustomerId?customer_id=" + item[0]?.id)
-            console.log(res?.data)
+            // console.log(res?.data)
             setFilteredData(res?.data ?? [])
         }
 
         catch (error) {
-            console.log(error);
+            // console.log(error);
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -148,7 +148,7 @@ const ListOfCustomer = () => {
 
     const handleShipmentRequest = async (row) => {
         setShipmentRequestLoader(true);
-        console.log(row?.id);
+        // console.log(row?.id);
         // store that row data in sesstion storage
         sessionStorage.setItem("customerRowData", JSON.stringify(row));
         try {
@@ -157,11 +157,11 @@ const ListOfCustomer = () => {
                 customer_id: row?.id,
             })
 
-            console.log(response?.data);
+            // console.log(response?.data);
 
 
-            console.log(response?.data)
-            console.log(response?.data?.insertedShipmentRequestData)
+            // console.log(response?.data)
+            // console.log(response?.data?.insertedShipmentRequestData)
 
             // save the api response in session storage
             sessionStorage.setItem("shipmentRequest", JSON.stringify(response?.data?.insertedShipmentRequestData));
@@ -171,7 +171,7 @@ const ListOfCustomer = () => {
 
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             openSnackbar(error?.response?.data?.message ?? `${t('Something went wrong!')}`, "error");
 
         }
@@ -232,7 +232,7 @@ const ListOfCustomer = () => {
             return;
         } catch (error) {
             const errorMessage = error?.response?.data?.message || 'Failed to update status!';
-            console.log(error);
+            // console.log(error);
             Swal.fire({
                 icon: 'error',
                 title: 'Failed to update Status',
@@ -261,8 +261,8 @@ const ListOfCustomer = () => {
                 try {
                     // convert row id to number
                     const shipment_id = Number(row.shipment_id);
-                    console.log(row);
-                    console.log(shipment_id);
+                    // console.log(row);
+                    // console.log(shipment_id);
                     await newRequest.delete("/deleteShipmentRequest?shipment_id=" + shipment_id);
 
 
@@ -277,7 +277,7 @@ const ListOfCustomer = () => {
                     });
                 }
                 catch (err) {
-                    console.log(err);
+                    // console.log(err);
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',

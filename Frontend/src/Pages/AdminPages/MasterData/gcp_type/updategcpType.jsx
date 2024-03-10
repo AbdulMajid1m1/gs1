@@ -12,7 +12,7 @@ const UpdategcpType = ({ isVisible, setVisibility, refreshBrandData }) =>
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [gcp_code, setgcp_code] = useState(updateBrandData?.gcp_code || '');
   const [gcp_description, setgcp_description] = useState(updateBrandData?.gcp_description || 0);
   const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ const UpdategcpType = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -64,7 +64,7 @@ const UpdategcpType = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const Updatevideo = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateUserGuidevideo"));
-    console.log(updateBrandData?.title)
+    // console.log(updateBrandData?.title)
     const [Title, setTitle] = useState(updateBrandData?.title || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
@@ -58,7 +58,7 @@ const Updatevideo = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error);
+            // console.log(error);
         }
         finally {
             setLoading(false);

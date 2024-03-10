@@ -44,7 +44,7 @@ const Gs1partners = () => {
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -118,7 +118,7 @@ const Gs1partners = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -169,7 +169,7 @@ const Gs1partners = () => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -182,7 +182,7 @@ const Gs1partners = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -196,7 +196,7 @@ const Gs1partners = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -211,7 +211,7 @@ const Gs1partners = () => {
                     formData.append('link', item.Page);
                     newRequest.post(`/creatpartners`, formData)
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `GS1 Partners has been created`,
@@ -220,7 +220,7 @@ const Gs1partners = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some GS1 Partners already exist`,

@@ -44,10 +44,10 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
     const getAllTransactionId = async () => {
       try {
         const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${gs1MemberData?.id}`);
-        console.log(response.data);
+        // console.log(response.data);
         setTransactionId(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -64,7 +64,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   //   };
 
   const handleSelectedTransactionId = (event, value) => {
-    console.log(value?.transaction_id);
+    // console.log(value?.transaction_id);
     setSelectedTransactionId(value);
   };
 
@@ -121,7 +121,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       setLoading(false);
       fetchMemberbankSlipData();
       refreshBrandData();
@@ -143,7 +143,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
       });
 
 
-      console.log(error);
+      // console.log(error);
     }
 
 
@@ -174,7 +174,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                       onInputChange={(event, value) => {
                         if (!value) {
                           // perform operation when input is cleared
-                          console.log("Input cleared");
+                          // console.log("Input cleared");
                         }
                       }}
                       renderInput={(params) => (

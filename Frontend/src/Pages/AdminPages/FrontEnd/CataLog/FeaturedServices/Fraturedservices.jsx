@@ -43,7 +43,7 @@ const Featuredservices = () => {
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -117,7 +117,7 @@ const Featuredservices = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -168,7 +168,7 @@ const Featuredservices = () => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -181,7 +181,7 @@ const Featuredservices = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -195,7 +195,7 @@ const Featuredservices = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -210,7 +210,7 @@ const Featuredservices = () => {
                     formData.append('status', 1);
                     newRequest.post(`/creatfeatured_services`, formData)
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `Featured Services has been created`,
@@ -219,7 +219,7 @@ const Featuredservices = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Featured Services already exist`,

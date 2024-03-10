@@ -27,7 +27,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         const getpagedatasdsd = async () =>
@@ -35,10 +35,10 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
             try {
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
-                console.log('getAllmega_menu_categories', nameEnArray);
+                // console.log('getAllmega_menu_categories', nameEnArray);
                 setCategoryleveldropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         getpagedatasdsd();
@@ -66,7 +66,7 @@ const Addfootermenu = ({ isVisible, setVisibility, refreshBrandData }) =>
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 

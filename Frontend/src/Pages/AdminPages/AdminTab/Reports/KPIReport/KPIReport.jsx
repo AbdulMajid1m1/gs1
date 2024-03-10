@@ -82,7 +82,7 @@ const KPIReport = () => {
       formattedStartDate.setHours(0, 0, 0, 0);
       const formattedEndDate = new Date(endDate);
       formattedEndDate.setHours(23, 59, 59, 999);
-      console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
+      // console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
 
       const res = await newRequest.post('/report/kpi', {
         startDate: formattedStartDate.toISOString(),
@@ -90,7 +90,7 @@ const KPIReport = () => {
       });
 
       // admin - username - email, user - companyID, companyNameE, productName
-      console.log(res?.data);
+      // console.log(res?.data);
       setStats(res?.data);
       setTotalAmount(res?.data?.totalApprovedAmount);
       setNewRegistraions(res?.data?.newRegistrations?.amount);
@@ -121,7 +121,7 @@ const KPIReport = () => {
       setMonthlyLoader(false);
     } catch (err) {
       setIsLoading(false);
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data || 'Error in fetching data');
 
       // Reset loaders after API call is complete

@@ -33,10 +33,10 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             statesData.forEach(state => {
                 stateIdToNameMap[state.id] = state.name_en;
             });
-            console.log('statesData', citiesData);
+            // console.log('statesData', citiesData);
             setMegaMenuCategories(citiesData)
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     };
     useEffect(() => {
@@ -50,7 +50,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setmegamenudropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         const getpagedata = async () => {
@@ -59,7 +59,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -99,7 +99,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 theme: "light",
             });
 
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 

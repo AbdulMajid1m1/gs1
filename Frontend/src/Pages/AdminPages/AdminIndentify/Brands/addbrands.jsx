@@ -63,7 +63,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
 
       toast.success(`${t('Brands')} ${companyName} ${('with Arabic name')} ${companyNameArabic} ${t('has been added successfully')}.`);
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData(createBrandData);
       handleCloseCreatePopup();
       setLoading(false);
@@ -73,7 +73,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
       toast.error(error?.response?.data?.error || 'Error');
 
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
 
 

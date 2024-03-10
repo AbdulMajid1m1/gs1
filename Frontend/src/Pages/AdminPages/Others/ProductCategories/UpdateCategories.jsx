@@ -35,7 +35,7 @@ const UpdateCategories = ({ isVisible, setVisibility, refreshCategories }) =>
       toast.success(`Products Categories ${name} ${t('has been Updated successfully') }`);
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshCategories();
       handleCloseCreatePopup();
       setLoading(false);
@@ -43,7 +43,7 @@ const UpdateCategories = ({ isVisible, setVisibility, refreshCategories }) =>
 
     } catch (error) {
       toast.error(error?.response?.data?.error || 'Error');
-      console.log(error);
+      // console.log(error);
       setLoading(false);
     }
 

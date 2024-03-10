@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const AddGLN = () => {
     const memberDataString = sessionStorage.getItem('memberData');
     const memberData = JSON.parse(memberDataString);
-    console.log(memberData);
+    // console.log(memberData);
     const [locationEnglish, setLocationEnglish] = React.useState('')
     const [locationArabic, setLocationArabic] = React.useState('')
     const [addressEnglish, setAddressEnglish] = React.useState('')
@@ -57,7 +57,7 @@ const AddGLN = () => {
     newRequest
       .post("/gln", formData)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
      
         setIsLoading(false);
         setTimeout(() => {
@@ -79,7 +79,7 @@ const AddGLN = () => {
         e.target.reset();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
 
         toast.error(err.response.data.error, {
@@ -139,11 +139,11 @@ const AddGLN = () => {
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
         (error) => {
-          console.log('Error getting current location:', error);
+          // console.log('Error getting current location:', error);
         }
       );
     } else {
-      console.log('Geolocation is not supported by this browser.');
+      // console.log('Geolocation is not supported by this browser.');
     }
   }, []);
 

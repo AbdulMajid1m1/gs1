@@ -7,16 +7,16 @@ const MemberProfileData = ({ children }) => {
     const [memberProfileDetails, setMemberProfileDetails] = useState([]);
     
     const fetchAllUserData = async (userId) => {
-        console.log("fetching user data", userId)
+        // console.log("fetching user data", userId)
         try {
           const response = await newRequest.get(`/users?id=${userId}`);
-          console.log(response.data[0]);
+        //   console.log(response.data[0]);
           setMemberProfileDetails(response?.data[0] || []);
             
         }
         catch (err)
         {
-          console.log(err);
+        //   console.log(err);
         }
     };
 

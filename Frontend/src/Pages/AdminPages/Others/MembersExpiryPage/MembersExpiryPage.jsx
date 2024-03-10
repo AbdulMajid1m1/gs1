@@ -18,7 +18,7 @@ const MembersExpiryPage = () => {
 
       newRequest.get("/users/getByGcpExpiry")
         .then(response => {
-          console.log("MemberReneval", response.data)
+          // console.log("MemberReneval", response.data)
           setMemberReneval(response.data)
           setMemberRenevalLoader(false);
         })
@@ -29,7 +29,7 @@ const MembersExpiryPage = () => {
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
 
     }
   };

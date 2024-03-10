@@ -11,7 +11,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [name, setname] = useState(updateBrandData?.name || '');
   const [name_ar, setname_ar] = useState(updateBrandData?.name_ar || "");
   const [state_id, setstate_id] = useState(updateBrandData?.state_id || 0);
@@ -33,10 +33,10 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
     {
       try {
         const response = await newRequest.get('/address/getAllStatesName');
-        console.log(response.data);
+        // console.log(response.data);
         setDocuments(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -46,11 +46,11 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
 
   const handleSelectedDocuments = (event, value) =>
   {
-    console.log(value?.id);
+    // console.log(value?.id);
     setSelectedDocuments(value);
   };
 
-  console.log(selectedDocuments);
+  // console.log(selectedDocuments);
 
   const handleUpdateBrand = async () =>
   {
@@ -74,7 +74,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -90,7 +90,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);
@@ -148,7 +148,7 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
                       {
                         if (!value) {
                           // perform operation when input is cleared
-                          console.log("Input cleared");
+                          // console.log("Input cleared");
                         }
                       }}
                       renderInput={(params) => (

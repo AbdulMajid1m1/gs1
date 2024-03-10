@@ -41,11 +41,11 @@ const MemberActivityReport = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
-    console.log(newInputValue);
+    // console.log(reason);
+    // console.log(newInputValue);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
-      console.log('clear');
+      // console.log('clear');
       // console.log(newInputValue);
       setMemberList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
@@ -62,7 +62,7 @@ const MemberActivityReport = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -75,7 +75,7 @@ const MemberActivityReport = () => {
       const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -95,7 +95,7 @@ const MemberActivityReport = () => {
       // fetchData();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setMemberList([]); // Clear the data list if an error occurs
       setOpen(false);
       setAutocompleteLoading(false);
@@ -124,7 +124,7 @@ const MemberActivityReport = () => {
       formattedStartDate.setHours(0, 0, 0, 0);
       const formattedEndDate = new Date(endDate);
       formattedEndDate.setHours(23, 59, 59, 999);
-      console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
+      // console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
       
       
       const res = await newRequest.post('/report/gs1member', {
@@ -133,7 +133,7 @@ const MemberActivityReport = () => {
         userId: selectedMember?.id,
       });
 
-      console.log(res?.data);
+      // console.log(res?.data);
 
       const responseAdminMainData = res?.data?.map(item => {
         return {
@@ -157,7 +157,7 @@ const MemberActivityReport = () => {
         };
       });
 
-      console.log(responseAdminMainData);
+      // console.log(responseAdminMainData);
 
       setData(responseAdminMainData);
 
@@ -168,7 +168,7 @@ const MemberActivityReport = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data || 'Error in fetching data');
 
     }

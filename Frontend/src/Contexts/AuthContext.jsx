@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     const fetchPermissions = () => {
         newRequest.get('/permissions')
             .then((response) => {
-                console.log("Fetched permissions:", response.data);
+                // console.log("Fetched permissions:", response.data);
                 const fetchedPermissions = response.data.map(permission => permission.name);
                 setAllPermissions(fetchedPermissions); // Now setting allPermissions
                 // Store all permissions under a distinct key to avoid confusion

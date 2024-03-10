@@ -74,7 +74,7 @@ const AdminGTINView = () => {
         const fetchProductDetails = async () => {
             try {
                 const response = await newRequest.get(`/products?id=${productId}`);
-                console.log(response.data[0]);
+                // console.log(response.data[0]);
 
                 const productData = response.data[0];
                 setProductNameEnglish(productData?.productnameenglish);
@@ -113,7 +113,7 @@ const AdminGTINView = () => {
                 setIsLoading(false);
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
                 setIsLoading(false);
 
             }
@@ -157,54 +157,54 @@ const AdminGTINView = () => {
 
 
     const handleUnitCodeChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedUnitCode(value);
     };
     // console.log(selectedUnitCode);
 
     const handleSelectRegion = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedRegion(value);
     };
 
     const handleAllCounrtyName = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedCountry(value);
     };
 
     const handleProductDiscription = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductDescription(value);
     };
 
     const handleProductType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductType(value);
     };
 
     const handlePackageType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedPackageType(value);
     };
 
     const handleBrandNameEnglish = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameEnglish(value);
     };
 
     const handleBrandNameArabic = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameArabic(value);
     };
 
     const handleGPCAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setGpc(value);
         setGpcCode(value);
     }
 
     const handleHsCodeAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setHsCode(value);
 
 
@@ -213,7 +213,7 @@ const AdminGTINView = () => {
 
 
     const handleDigitalInformationType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedDigitalInformationType(value);
     };
 
@@ -316,7 +316,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -358,7 +358,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -403,7 +403,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -465,7 +465,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -508,7 +508,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -555,7 +555,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -598,7 +598,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (
@@ -644,7 +644,7 @@ const AdminGTINView = () => {
                                         onInputChange={(event, value) => {
                                             if (!value) {
                                                 // perform operation when input is cleared
-                                                console.log("Input cleared");
+                                                // console.log("Input cleared");
                                             }
                                         }}
                                         renderInput={(params) => (

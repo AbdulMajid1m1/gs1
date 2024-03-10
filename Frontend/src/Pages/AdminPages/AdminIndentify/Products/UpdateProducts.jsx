@@ -285,38 +285,38 @@ const UpdateProducts = () => {
 
 
     const handleUnitCodeChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedUnitCode(value);
     };
     // console.log(selectedUnitCode);
 
     const handleSelectRegion = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedRegion(value);
     };
 
     const handleAllCounrtyName = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedCountry(value);
     };
 
     const handleProductDiscription = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductDescription(value);
     };
 
     const handleProductType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductType(value);
     };
 
     const handlePackageType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedPackageType(value);
     };
 
     const handleDigitalInformationType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedDigitalInformationType(value);
     };
 
@@ -390,7 +390,7 @@ const UpdateProducts = () => {
     // }
 
     const handleGPCAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setGpc(value);
         setGpcCode(value?.gpcCode);
     }
@@ -463,7 +463,7 @@ const UpdateProducts = () => {
     // }
 
     const handleHsCodeAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setHsCode(value);
 
 
@@ -590,7 +590,7 @@ const UpdateProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -650,7 +650,7 @@ const UpdateProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -692,7 +692,7 @@ const UpdateProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -738,7 +738,7 @@ const UpdateProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -780,7 +780,7 @@ const UpdateProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -825,7 +825,7 @@ const UpdateProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (

@@ -42,10 +42,10 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
     const getDocuments = async () => {
       try {
         const response = await newRequest.get('/getAlldocumentTypename');
-        console.log(response.data);
+        // console.log(response.data);
         setDocuments(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -54,10 +54,10 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       try {
         const response = await newRequest.get(`/memberDocuments/pendingInvoices?user_id=${gs1MemberData?.id}`);
 
-        console.log(response.data);
+        // console.log(response.data);
         setTransactionId(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -69,12 +69,12 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
 
   // Handle country selection
   const handleSelectedDocuments = (event, value) => {
-    console.log(value?.file_name);
+    // console.log(value?.file_name);
     setSelectedDocuments(value);
   };
 
   const handleSelectedTransactionId = (event, value) => {
-    console.log(value?.transaction_id);
+    // console.log(value?.transaction_id);
     setSelectedTransactionId(value);
   };
 
@@ -173,7 +173,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       setLoading(false);
       fetchMemberbankSlipData();
       refreshBrandData();
@@ -196,7 +196,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
       });
 
 
-      console.log(error);
+      // console.log(error);
     }
 
 
@@ -225,7 +225,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                       onInputChange={(event, value) => {
                         if (!value) {
                           // perform operation when input is cleared
-                          console.log("Input cleared");
+                          // console.log("Input cleared");
                         }
                       }}
                       renderInput={(params) => (
@@ -295,7 +295,7 @@ const AddMemberDocuments = ({ isVisible, setVisibility, refreshBrandData, fetchM
                         onInputChange={(event, value) => {
                           if (!value) {
                             // perform operation when input is cleared
-                            console.log("Input cleared");
+                            // console.log("Input cleared");
                           }
                         }}
                         renderInput={(params) => (

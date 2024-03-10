@@ -18,7 +18,7 @@ const ExpiredMember = () => {
 
       newRequest.get("/users/getExpirtedMembers")
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           setMemberReneval(response.data)
           setMemberRenevalLoader(false);
         })
@@ -29,7 +29,7 @@ const ExpiredMember = () => {
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
 
     }
   };

@@ -17,7 +17,7 @@ const AddGTINProducts = () => {
     // get the sessionRow data
     const selectedAddGtinData = sessionStorage.getItem('selectedAddGtinData');
     const SelectedData = JSON.parse(selectedAddGtinData);
-    console.log(SelectedData);
+    // console.log(SelectedData);
 
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -99,13 +99,13 @@ const AddGTINProducts = () => {
     const handleCountryOfSales = async () => {
         try {
             const response = await newRequest.get('/getAllcountryofsale');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const countryName = data.map((country) => country.country_name);
             setAllCountryName(countryName);
-            console.log(countryName);
+            // console.log(countryName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -113,12 +113,12 @@ const AddGTINProducts = () => {
     const handleUnitCode = async () => {
         try {
             const response = await newRequest.get('/getAllunit');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response?.data;
             const unitNameList = data.map((unitData) => unitData?.unit_name);
             setUnitCode(unitNameList);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -127,13 +127,13 @@ const AddGTINProducts = () => {
     const handleProductTypeData = async () => {
         try {
             const response = await newRequest.get('/productTypes');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
             setProductType(name);
             console.log(name);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -141,15 +141,15 @@ const AddGTINProducts = () => {
     const handleBrandNamesEnglishArabic = async () => {
         try {
             const response = await newRequest.get(`/brands?user_id=${SelectedData?.user_id}`);
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
             const name_ar = data.map((country) => country.name_ar);
             setBrandNameEnglish(name);
             setBrandNameArabic(name_ar);
-            console.log(name);
+            // console.log(name);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -157,13 +157,13 @@ const AddGTINProducts = () => {
     const handleProductDescriptionLanguages = async () => {
         try {
             const response = await newRequest.get('/getAllprod_desc_languages');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const productlanguage = data.map((country) => country.language_name);
             setProductDescriptionLanguage(productlanguage);
-            console.log(productlanguage);
+            // console.log(productlanguage);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };  
 
@@ -171,13 +171,13 @@ const AddGTINProducts = () => {
     const handleRegion = async () => {
         try {
             const response = await newRequest.get('/getAllcountryofsale');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const countryName = data.map((country) => country.country_name);
             setRegion(countryName);
-            console.log(countryName);
+            // console.log(countryName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -185,13 +185,13 @@ const AddGTINProducts = () => {
     const handleAllPackageType = async () => {
         try {
             const response = await newRequest.get('/getAllproductPackag');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const PackageName = data.map((country) => country.name);
             setPackageType(PackageName);
-            console.log(PackageName);
+            // console.log(PackageName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -295,7 +295,7 @@ const AddGTINProducts = () => {
                 formData
             );
 
-            console.log(response);
+            // console.log(response);
             // openSnackbar('Product Added Successfully', 'success');
             setSelectedImage(null);
             setSelectedBackImage(null);
@@ -332,7 +332,7 @@ const AddGTINProducts = () => {
 
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error(error?.response?.data?.error || "Error", {
                 position: "top-right",
                 autoClose: 3000,
@@ -350,48 +350,48 @@ const AddGTINProducts = () => {
 
 
     const handleUnitCodeChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedUnitCode(value);
     };
     // console.log(selectedUnitCode);
 
     const handleSelectRegion = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedRegion(value);
     };
 
     const handleAllCounrtyName = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedCountry(value);
     };
 
     const handleProductDiscription = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductDescription(value);
     };
 
     const handleProductType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductType(value);
     };
 
     const handlePackageType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedPackageType(value);
     };
 
     const handleBrandNameEnglish = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameEnglish(value);
     };
 
     const handleBrandNameArabic = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameArabic(value);
     };
 
     const handleDigitalInformationType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedDigitalInformationType(value);
     };
 
@@ -420,7 +420,7 @@ const AddGTINProducts = () => {
     // }
 
     const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        console.log(reason)
+        // console.log(reason)
         if (reason === 'reset' || reason === 'clear') {
             setGpcList([]); // Clear the data list if there is no input
             return; // Do not perform search if the input is cleared or an option is selected
@@ -440,9 +440,9 @@ const AddGTINProducts = () => {
         setOpen(true);
 
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         // setSearchText(newInputValue);
-        console.log("querying...")
+        // console.log("querying...")
         try {
 
             // Cancel any pending requests
@@ -457,7 +457,7 @@ const AddGTINProducts = () => {
                 signal: abortControllerRef.current.signal
             })
 
-            console.log(res);
+            // console.log(res);
             setGpcList(res?.data);
             setOpen(true);
             setAutocompleteLoading(false);
@@ -467,11 +467,11 @@ const AddGTINProducts = () => {
                 // Ignore abort errors
                 setGpcList([]); // Clear the data list if there is no input
                 setAutocompleteLoading(true);
-                console.log(error)
+                // console.log(error)
                 return;
             }
             console.error(error);
-            console.log(error)
+            // console.log(error)
             setGpcList([]); // Clear the data list if an error occurs
             setOpen(false);
             setAutocompleteLoading(false);
@@ -480,7 +480,7 @@ const AddGTINProducts = () => {
     }
 
     const handleGPCAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setGpc(value);
         setGpcCode(value);
     }
@@ -491,7 +491,7 @@ const AddGTINProducts = () => {
     // }
 
     const handleHsCodeAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        console.log(reason)
+        // console.log(reason)
         if (reason === 'reset' || reason === 'clear') {
             setHsCodeList([]); // Clear the data list if there is no input
             return; // Do not perform search if the input is cleared or an option is selected
@@ -511,7 +511,7 @@ const AddGTINProducts = () => {
         setHsLoaderOpen(true);
 
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         // setSearchText(newInputValue);
         try {
 
@@ -527,8 +527,8 @@ const AddGTINProducts = () => {
                 signal: abortControllerRef.current.signal
             })
 
-            console.log(res);
-            console.log(res?.data);
+            // console.log(res);
+            // console.log(res?.data);
             setHsCodeList(res?.data);
             setHsLoaderOpen(true);
             setAutocompleteLoadingForHsCode(false);
@@ -538,11 +538,11 @@ const AddGTINProducts = () => {
                 // Ignore abort errors
                 setHsCodeList([]); // Clear the data list if there is no input
                 setAutocompleteLoadingForHsCode(true);
-                console.log(error)
+                // console.log(error)
                 return;
             }
             console.error(error);
-            console.log(error)
+            // console.log(error)
             setHsCodeList([]); // Clear the data list if an error occurs
             setHsLoaderOpen(false);
             setAutocompleteLoadingForHsCode(false);
@@ -551,7 +551,7 @@ const AddGTINProducts = () => {
     }
 
     const handleHsCodeAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setHsCode(value);
 
 
@@ -655,7 +655,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -697,7 +697,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -741,7 +741,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -801,7 +801,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -843,7 +843,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -889,7 +889,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -931,7 +931,7 @@ const AddGTINProducts = () => {
                                 onInputChange={(event, value) => {
                                 if (!value) {
                                     // perform operation when input is cleared
-                                    console.log("Input cleared");
+                                    // console.log("Input cleared");
                                 }
                                 }}
                                 renderInput={(params) => (
@@ -977,7 +977,7 @@ const AddGTINProducts = () => {
                                     onInputChange={(event, value) => {
                                     if (!value) {
                                         // perform operation when input is cleared
-                                        console.log("Input cleared");
+                                        // console.log("Input cleared");
                                     }
                                     }}
                                     renderInput={(params) => (

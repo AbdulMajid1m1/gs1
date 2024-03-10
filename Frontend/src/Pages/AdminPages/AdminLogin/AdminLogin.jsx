@@ -35,7 +35,7 @@ const AdminLogin = () => {
         "password": password
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
 
           setIsLoading(false);
           login(res.data.adminData, res.data.permissions);
@@ -47,7 +47,7 @@ const AdminLogin = () => {
           // navigate('/admin/dashboard');
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           toast.error(err?.response?.data?.error || 'Invalid Credentials', {
             position: "top-right",
             autoClose: 2000,

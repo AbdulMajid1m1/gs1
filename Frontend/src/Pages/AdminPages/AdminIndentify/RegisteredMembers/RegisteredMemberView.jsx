@@ -33,10 +33,10 @@ import { useTranslation } from 'react-i18next';
 const RegisteredMembersView = () => {
   const { t, i18n } = useTranslation();
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-  console.log(gs1MemberData)
+  // console.log(gs1MemberData)
 
   const { Id } = useParams();
-  console.log(Id)
+  // console.log(Id)
   const [allUserData, setAllUserData] = useState([]);
   const [registeredProductsData, setRegisteredProductsData] = useState([]);
   const [membersDocuemtsData, setMembersDocumentsData] = useState([]);
@@ -72,7 +72,7 @@ const RegisteredMembersView = () => {
   const handleShowUpgradePopup = (row) => {
     setSubType("UPGRADE")
     setIsUpgradePopupVisible(true);
-    console.log(row);
+    // console.log(row);
     // set this data in session storage
     // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
@@ -80,14 +80,14 @@ const RegisteredMembersView = () => {
   const handleAddGtinClick = (row) => {
     setSubType("ADD GTIN")
     setIsUpgradePopupVisible(true);
-    console.log(row);
+    // console.log(row);
 
   };
   const handleAddGlnClick = (row) => {
     setSubType("ADD GLN")
     sessionStorage.setItem("selectedGlnRowData", JSON.stringify(row));
     setIsUpgradePopupVisible(true);
-    console.log(row);
+    // console.log(row);
   };
   // const filterDropdownOptions = (row, dropDownOptions) => {
   //   if (row.product_identity === 'gtin') {
@@ -98,7 +98,7 @@ const RegisteredMembersView = () => {
   //   return []; // No options available
   // };
   const filterDropdownOptions = (row, dropDownOptions) => {
-    console.log(allUserData);
+    // console.log(allUserData);
     if (allUserData?.status !== 'active') {
       // If product is not approved, disable all options
       return [];
@@ -117,7 +117,7 @@ const RegisteredMembersView = () => {
   const handleShowDowngradePopup = (row) => {
     setSubType("DOWNGRADE")
     setIsUpgradePopupVisible(true);
-    console.log(row);
+    // console.log(row);
     // set this data in session storage
     // sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
 
@@ -128,15 +128,15 @@ const RegisteredMembersView = () => {
   const fetchMemberHistoryData = async () => {
     setMemberHistoryLoader(true);
     try {
-      console.log(Id);
+      // console.log(Id);
       const response = await newRequest.get(`/logs/memberLogs/?user_id=${Id}`);
 
-      console.log(response.data);
+      // console.log(response.data);
       setMemberHistoryData(response?.data || []);
       setMemberHistoryLoader(false);
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setMemberHistoryLoader(false);
     }
   };
@@ -168,7 +168,7 @@ const RegisteredMembersView = () => {
   const fetchAllUserData = async () => {
     try {
       const response = await newRequest.get(`/users?id=${Id}`);
-      console.log(response.data[0]);
+      // console.log(response.data[0]);
       const data = response?.data[0] || [];
       setAllUserData(data);
 
@@ -195,7 +195,7 @@ const RegisteredMembersView = () => {
 
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -208,13 +208,13 @@ const RegisteredMembersView = () => {
       setMembersDocumentsData(response?.data || []);
       // Extract the gcp certificate path from the response to use it in the Member details section
       const gcpCertificatePath = response?.data?.find(item => item?.type === 'certificate')?.document;
-      console.log(gcpCertificatePath);
+      // console.log(gcpCertificatePath);
       setGcpCertificatePath(gcpCertificatePath);
       setMemberDocumentsLoader(false);
 
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
       setMemberDocumentsLoader(false);
     }
   };
@@ -230,7 +230,7 @@ const RegisteredMembersView = () => {
       setBrandsLoader(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setBrandsLoader(false)
     }
   };
@@ -242,12 +242,12 @@ const RegisteredMembersView = () => {
       // const response = await newRequest.get(`/memberDocuments/finance?user_id=${Id}`);
       const response = await newRequest.get(`/memberDocuments/invoices?user_id=${Id}`);
 
-      console.log(response.data);
+      // console.log(response.data);
       setMemberInovice(response?.data || []);
       setMemberInvoiceLoader(false);
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setMemberInvoiceLoader(false);
     }
   };
@@ -265,14 +265,14 @@ const RegisteredMembersView = () => {
       setMemberBankSlipLoader(false);
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setMemberBankSlipLoader(false);
     }
   };
 
 
   const fetchFilteredMemberDetails = async (row) => {
-    console.log(row);
+    // console.log(row);
     // set(true);
     try {
       // const response = await newRequest.get(`/memberDocuments?user_id=${Id}&type=bank_slip&transaction_id=2875842183`);
@@ -283,7 +283,7 @@ const RegisteredMembersView = () => {
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
 
@@ -298,13 +298,13 @@ const RegisteredMembersView = () => {
       const response = await newRequest.get(`/users?parent_memberID=${allUserData?.memberID}`);
 
       // console.log(response.data);
-      console.log(response?.data);
+      // console.log(response?.data);
       setSubMenusData(response?.data || []);
       setSubMembersLoader(false)
 
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
       setSubMembersLoader(false)
     }
   };
@@ -315,7 +315,7 @@ const RegisteredMembersView = () => {
     try {
       const response = await newRequest.get(`/gtinProducts/subcriptionsProducts?user_id=${Id}&isDeleted=false`);
 
-      console.log(response.data);
+      // console.log(response.data);
       // Extract gtinSubscriptions data and flatten the nested gtin_product
       const gtinSubscriptionsData = response?.data?.gtinSubscriptions?.map(item => ({
         ...item,
@@ -336,13 +336,13 @@ const RegisteredMembersView = () => {
 
       // Combine gtinSubscriptions and otherProductSubscriptions
       const combinedData = [...gtinSubscriptionsData, ...otherProductSubscriptionsData];
-      console.log(combinedData);
+      // console.log(combinedData);
       setRegisteredProductsData(combinedData);
       setRegisteredProductsLoader(false)
 
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
       setRegisteredProductsLoader(false)
     }
   };
@@ -364,11 +364,11 @@ const RegisteredMembersView = () => {
 
 
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleRowClickInParent = (item) => {
-    console.log(item);
+    // console.log(item);
     if (!item || item?.length === 0) {
       // setTableSelectedRows(data)
       // setFilteredData(data)
@@ -407,7 +407,7 @@ const RegisteredMembersView = () => {
         theme: "light",
       });
     } else {
-      console.log("rorr", row);
+      // console.log("rorr", row);
       // If status is not 'approved', proceed with showing the popup
       sessionStorage.setItem("memberInvoiceData", JSON.stringify(row));
       setIsMemberInvoicePopupVisible(true);

@@ -40,12 +40,12 @@ const Faqcategories = () => {
         try {
             const response = await newRequest.get("/getAllfaq_categories",);
 
-            console.log(response.data);
+            // console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -119,7 +119,7 @@ const Faqcategories = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -170,7 +170,7 @@ const Faqcategories = () => {
 
             });
 
-            console.log(response.data);
+            // console.log(response.data);
 
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
@@ -184,7 +184,7 @@ const Faqcategories = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -210,7 +210,7 @@ const Faqcategories = () => {
                         name: item.name.toString(),
                     })
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
 
                             Swal.fire(
                                 'Add!',
@@ -220,7 +220,7 @@ const Faqcategories = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Faq  Categoriess already exist`,

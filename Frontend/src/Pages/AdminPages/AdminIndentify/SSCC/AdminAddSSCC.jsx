@@ -13,7 +13,7 @@ const AdminAddSSCC = () => {
   // get the sessionRow data
   const selectedAddSSCCData = sessionStorage.getItem('selectedAddSSCCData');
   const SelectedData = JSON.parse(selectedAddSSCCData);
-  console.log(SelectedData);
+  // console.log(SelectedData);
 
   const { t, i18n } = useTranslation();
   const [palletForm, setShowPalletForm] = React.useState(false);
@@ -55,11 +55,11 @@ const AdminAddSSCC = () => {
     const handleCountryOfOrigin = async () => {
       try {
           const response = await newRequest.get('/getAllcountryofsale');
-          console.log(response.data);
+          // console.log(response.data);
           const data = response.data;
           setCountryOfOrigin(data);
       } catch (error) {
-          console.log(error);
+          // console.log(error);
       }
   };
 
@@ -71,8 +71,8 @@ const AdminAddSSCC = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-      console.log(digitExtension, ssccType, vendorID, vendorName, productID, productDesc, serialNo, itemCode, qty, useBy, batchNo, boxOf);
-      console.log(hsn, po, expireDate, vendorLabelID, cartonQty, shipTo, shipDate, vendorItem, description, shortQtyCode, countryOfOrigin, carton);
+      // console.log(digitExtension, ssccType, vendorID, vendorName, productID, productDesc, serialNo, itemCode, qty, useBy, batchNo, boxOf);
+      // console.log(hsn, po, expireDate, vendorLabelID, cartonQty, shipTo, shipDate, vendorItem, description, shortQtyCode, countryOfOrigin, carton);
 
       const apiRequestBody = {
           // preDigit: digitExtension,
@@ -111,14 +111,14 @@ const AdminAddSSCC = () => {
 
         };
 
-        console.log(apiRequestBody)
+        // console.log(apiRequestBody)
 
       if (ssccType === 'pallet') {
         newRequest
           .post('/sscc', apiRequestBody)
           .then((response) => {
             const data = response.data;
-            console.log('Pallet API Response:', data);
+            // console.log('Pallet API Response:', data);
             setIsLoading(false);
 
             toast.success(response?.data?.message || 'SSCC created successfully.', {
@@ -190,14 +190,14 @@ const AdminAddSSCC = () => {
 
         };
 
-        console.log(labelApiRequestBody)
+        // console.log(labelApiRequestBody)
 
         newRequest
           .post('/sscc', labelApiRequestBody)
           .then((response) => {
             // Handle success response from Label API
             const data = response.data;
-            console.log('Label API Response:', data);
+            // console.log('Label API Response:', data);
 
             toast.success(response?.data?.message || 'SSCC created successfully.', {
               position: 'top-right',

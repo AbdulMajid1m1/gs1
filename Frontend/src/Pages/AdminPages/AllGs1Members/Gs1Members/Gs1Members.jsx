@@ -27,12 +27,12 @@ const Gs1Members = () => {
       try {
         const response = await newRequest.get("/users",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -47,12 +47,12 @@ const Gs1Members = () => {
     try {
       const response = await newRequest.get("/users",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       Swal.fire(
         'Error!',
         err?.response?.data?.message || 'Something went wrong!.',
@@ -63,12 +63,12 @@ const Gs1Members = () => {
   };
 
   const handleEdit = (row) => {
-    console.log(row);
+    // console.log(row);
     // navigate("/upate-gtin-product/" + row?.id);
   };
 
   const handleOpen = (row) => {
-    console.log(row);
+    // console.log(row);
     // navigate("/view-gtin-product/" + row?.id);
   };
 
@@ -77,7 +77,7 @@ const Gs1Members = () => {
   // };
 
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
     // save this data in session storage
     sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
     navigate("/view-gs1-member/" + row?.id);
@@ -163,7 +163,7 @@ const Gs1Members = () => {
   const handleStatusChange = async (selectedUser) => {
     const statusOptions = ["active", "suspended", "inactive", "reject"];
     const initialStatus = selectedUser.status;
-    console.log(initialStatus);
+    // console.log(initialStatus);
 
     const { value: selectedStatus } = await Swal.fire({
       title: `<strong>Update Status for (${selectedUser.company_name_eng})</strong>`,

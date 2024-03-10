@@ -40,14 +40,14 @@ const GLN = () => {
     const fetchData = async () => {
       try {
         const response = await newRequest.get(`/gln?user_id=${memberData?.id}`);
-        console.log(response.data);
+        // console.log(response.data);
 
         setData(response?.data);
         setFilteredData(response?.data ?? [])
         setIsLoading(false)
       }
       catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -58,7 +58,7 @@ const GLN = () => {
 
 
   const handleEdit = (row) => {
-    console.log(row);
+    // console.log(row);
     navigate("/member/update-gln/" + row?.id)
     // save the response in session 
     sessionStorage.setItem('glnData', JSON.stringify(row));
@@ -68,7 +68,7 @@ const GLN = () => {
   const handleDelete = async (row) => {
     try {
       const deleteResponse = await newRequest.delete(`/gln/${row.id}`);
-      console.log(deleteResponse.data);
+      // console.log(deleteResponse.data);
 
       toast.success(deleteResponse?.data?.message || `${t('GLN')}  ${t('deleted successfully')}`, {
         position: 'top-right',
@@ -87,7 +87,7 @@ const GLN = () => {
 
     } 
     catch (err) {
-      console.log(err);
+      // console.log(err);
 
       toast.error(err?.response?.data?.error || 'Error', {
         position: 'top-right',
@@ -110,7 +110,7 @@ const GLN = () => {
     setFilteredData(item)
 
     const barcodes = item.map((row) => row.GLNBarcodeNumber);
-    console.log(barcodes); // This will log an array of barcodes
+    // console.log(barcodes); // This will log an array of barcodes
     // setSelectedRow(barcodes);
     setTableSelectedRows(barcodes);
   }

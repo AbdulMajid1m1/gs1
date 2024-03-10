@@ -47,8 +47,8 @@ const DashboardTable = ({
 
 
 
-    console.log("see the data");
-    console.log(data);
+    // console.log("see the data");
+    // console.log(data);
 
 
 
@@ -102,7 +102,7 @@ const DashboardTable = ({
                     },
 
                 );
-                console.log(itemData);
+                // console.log(itemData);
                 let itemName = itemData?.data[0]?.ItemDesc;
                 let itemDesc = itemData?.data[0]?.Classification;
                 rowData.ITEMNAME = itemName;
@@ -110,7 +110,7 @@ const DashboardTable = ({
                 updateData(rowData);
             }
             catch (err) {
-                console.log(err);
+                // console.log(err);
             }
             finally {
 

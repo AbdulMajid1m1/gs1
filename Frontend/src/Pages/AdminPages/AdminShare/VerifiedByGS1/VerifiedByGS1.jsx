@@ -130,7 +130,7 @@ const VerifiedByGS1 = () => {
       gtinValue = result.gtin; // Store gtin value here
       setSearchedData(result);
       sessionStorage.setItem("barcodeData", JSON.stringify(result));
-      console.log(result);
+      // console.log(result);
       //  mapDate, batch and serial are in result if needed".
       if (!result.gtin) {
         toast.error("Please enter GTIN");
@@ -143,12 +143,12 @@ const VerifiedByGS1 = () => {
         setData(null);
         return;
       }
-      console.log(response?.data);
+      // console.log(response?.data);
       setData(response?.data);
       sessionStorage.setItem("gtinData", JSON.stringify(response?.data));
       setGTIN(result.gtin);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error.response && error.response.status === 404) {
         Swal.fire({
           title: `${t('Product Not Found')}`,
@@ -163,12 +163,12 @@ const VerifiedByGS1 = () => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              console.log(gtinValue);
+              // console.log(gtinValue);
               const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${gtinValue}`);
-              console.log(globalResponse?.data);
+              // console.log(globalResponse?.data);
               setData(globalResponse?.data);
             } catch (globalError) {
-              console.log(globalError);
+              // console.log(globalError);
               toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
               setData([]);
             }
@@ -201,7 +201,7 @@ const VerifiedByGS1 = () => {
 
   const MapsResponseData = sessionStorage.getItem('mapsResponse');
   const parsedMappedData = JSON.parse(MapsResponseData);
-  console.log(parsedMappedData)
+  // console.log(parsedMappedData)
 
   const handleBatchChange = (e) => {
     if (e.target.value === "none") {

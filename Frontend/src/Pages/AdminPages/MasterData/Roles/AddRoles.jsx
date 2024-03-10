@@ -18,7 +18,7 @@ const AddRoles = () => {
   
   const handleRolesTypesChange = (event, value) => {
     setSelectedRoles(value);
-    console.log(value);
+    // console.log(value);
     setSelectAll(false); // Uncheck "Select All" when individual options are selected/deselected
 
   };
@@ -36,7 +36,7 @@ const AddRoles = () => {
                 id: roles.id,
                 name: roles.name,
             }));
-            console.log(data);
+            // console.log(data);
             setRolesTypes(rolesTypes);
         }
         catch (error) {
@@ -65,7 +65,7 @@ const AddRoles = () => {
         name: roleName,
         permissions: selectedRoles.map((role) => role.id),
       });
-      console.log(response?.data);
+      // console.log(response?.data);
       setIsLoading(false);
       toast.success(response?.data?.message || 'Role Created Successfully');
       navigate(-1);

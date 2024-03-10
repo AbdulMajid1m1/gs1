@@ -21,7 +21,7 @@ const AdminAddForeignGTIN = () => {
   const [addProductsLoader, setAddProductsLoader] = useState(false);
   const selectedAddGtinData = sessionStorage.getItem('selectedForeignGtinData');
   const SelectedData = JSON.parse(selectedAddGtinData);
-  console.log(SelectedData);
+  // console.log(SelectedData);
 
   const navigate = useNavigate();
 
@@ -36,12 +36,12 @@ const AdminAddForeignGTIN = () => {
     setIsLoading(true);
     try {
       const response = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromLocalDb?barcode=${userSearch}`);
-      console.log(response?.data);
+      // console.log(response?.data);
       setData(response?.data);
       setIsLoading(false);
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error.response && error.response.status === 404) {
         Swal.fire({
           title: `${t('Product Not Found')}`,
@@ -57,11 +57,11 @@ const AdminAddForeignGTIN = () => {
           if (result.isConfirmed) {
             try {
               const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${userSearch}`);
-              console.log(globalResponse?.data);
+              // console.log(globalResponse?.data);
               setData(globalResponse?.data);
             }
             catch (globalError) {
-              console.log(globalError);
+              // console.log(globalError);
               toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
               setData([]);
             }
@@ -117,7 +117,7 @@ const AdminAddForeignGTIN = () => {
         countrySale: data?.countryOfSaleCode,
         companyId: SelectedData?.companyID,
       });
-      console.log(response?.data);
+      // console.log(response?.data);
       toast.success(response?.data?.message || `${t('Product Added Successfully')}`);
       setAddProductsLoader(false);
 
@@ -127,7 +127,7 @@ const AdminAddForeignGTIN = () => {
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
       setAddProductsLoader(false);
     }

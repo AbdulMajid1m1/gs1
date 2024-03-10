@@ -27,7 +27,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
   const handleMemberInvoiceData = async () => {
     try {
       const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
-      console.log(res.data);
+      // console.log(res.data);
       setMemberInvoiceData(res.data);
 
       let total = 0;
@@ -38,7 +38,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
       setTotalPrice(total);
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
 
 
@@ -55,23 +55,23 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
         res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
 
       setGtinId(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
-      console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
+      // console.log(res.data?.gtinSubscriptions[0]?.gtin_product?.id);
 
 
       const filteredOptions = res2.data.filter(
         (option) => option.total_no_of_barcodes < firstApiTotalBarcodes
       );
 
-      console.log(res.data);
-      console.log(firstApiTotalBarcodes);
-      console.log(res2.data);
+      // console.log(res.data);
+      // console.log(firstApiTotalBarcodes);
+      // console.log(res2.data);
 
       // Set the filtered options in your state or use it directly
       // mmeber has two categotyes non_med_category and med_category selelct price based on category and setGtinBarcodes
       // member_registration_fee med_yearly_subscription_fee member_registration_fee gtin_yearly_subscription_fee
 
       // set price based on member category
-      console.log(filteredOptions);
+      // console.log(filteredOptions);
       filteredOptions.forEach((item) => {
         if (userData?.membership_category === "non_med_category") {
           item.price = item.member_registration_fee,
@@ -81,13 +81,13 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
             item.yearly_fee = item.med_yearly_subscription_fee
         }
       });
-      console.log(filteredOptions);
+      // console.log(filteredOptions);
 
 
       setGtinBarcodes(filteredOptions);
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 
@@ -99,7 +99,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
 
 
   const handleSelectedGtinBarcodes = (event, value) => {
-    console.log(value);
+    // console.log(value);
     setSelectedGtinBarcodes(value);
   };
 
@@ -117,7 +117,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
         "current_gtin_subscription_id": gtinId,
         selectedLanguage: selectedLanguage,
       });
-      console.log(res.data);
+      // console.log(res.data);
       {
         toast.success(res?.data?.message || "Upgrade request sent successfully!");
         setLoading(false);
@@ -125,7 +125,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
         handleCloseDowngradePopup();
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setLoading(false);
       toast.error(err.response?.data?.error || "Upgrade request failed!");
     }
@@ -153,7 +153,7 @@ const DowngradePopUp = ({ isVisible, setVisibility, userData
                     onInputChange={(event, value) => {
                       if (!value) {
                         // perform operation when input is cleared
-                        console.log("Input cleared");
+                        // console.log("Input cleared");
                       }
                     }}
                     renderInput={(params) => (

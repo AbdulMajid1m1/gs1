@@ -54,12 +54,12 @@ const Other_products = () =>
       try {
         const response = await newRequest.get("/getAllotherproduct",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -78,12 +78,12 @@ const Other_products = () =>
     try {
       const response = await newRequest.get("/getAllotherproduct",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -157,7 +157,7 @@ const Other_products = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleRowClickInParent = (item) =>
@@ -173,7 +173,7 @@ const Other_products = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -195,7 +195,7 @@ const Other_products = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -206,7 +206,7 @@ const Other_products = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some Other Product already exist`,
@@ -220,7 +220,7 @@ const Other_products = () =>
 
     }
   };
-  console.log(t('Other Products'));
+  // console.log(t('Other Products'));
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
