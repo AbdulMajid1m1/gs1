@@ -18,7 +18,7 @@ const dynamicTranslations = {
 // Function to fetch translations
 const fetchTranslations = async () => {
   try {
-    const response = await fetch(backendUrl + '/translations');
+    const response = await fetch(backendUrl + '/api/translations');
     const data = await response.json();
     if (data) {
       const dataArray = Object.entries(data);

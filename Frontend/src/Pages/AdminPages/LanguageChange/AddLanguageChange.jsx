@@ -17,7 +17,7 @@ const AddLanguageChange = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleAddCompany = async () => {
         try {
-            const response = await axios.post(backendUrl + '/translations', {
+            const response = await axios.post(backendUrl + '/api/translations', {
                 'key': category_name_en,
                 'value': category_name_ar,
             });
