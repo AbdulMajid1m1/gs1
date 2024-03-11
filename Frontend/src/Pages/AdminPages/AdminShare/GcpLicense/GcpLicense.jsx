@@ -20,12 +20,12 @@ const GcpLicense = () => {
     try {
       const response = await newRequest.get("/users/getLicenseRegisteryUser",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data?.error || err?.response?.data || "Something went wrong!");
       setIsLoading(false)
     }
@@ -37,11 +37,11 @@ const GcpLicense = () => {
 
 
   const handleRegenerate = (row) => {
-    console.log(row)
+    // console.log(row)
   };
 
   const handleEdit = (row) => {
-        console.log(row)
+        // console.log(row)
   };
 
 

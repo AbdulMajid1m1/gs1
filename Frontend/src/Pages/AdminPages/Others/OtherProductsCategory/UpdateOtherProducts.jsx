@@ -11,7 +11,7 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [product_name, setproduct_name] = useState(updateBrandData?.product_name || '');
   const [total_no_of_barcodes, settotal_no_of_barcodes] = useState(updateBrandData?.total_no_of_barcodes || '');
   const [product_subscription_fee, setproduct_subscription_fee] = useState(updateBrandData?.product_subscription_fee || '');
@@ -58,7 +58,7 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -74,7 +74,7 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

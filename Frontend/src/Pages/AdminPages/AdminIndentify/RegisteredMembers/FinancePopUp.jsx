@@ -17,28 +17,28 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
 
   // get the sesstion data
   const registeredMemberRowData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
-  console.log(registeredMemberRowData)
+  // console.log(registeredMemberRowData)
   // const [loading, setLoading] = useState(false);
 
   const [filteredMemberDetails, setFilteredMemberDetails] = useState([]);
   const fetchFilteredMemberDetails = async (row) => {
-    console.log(row);
+    // console.log(row);
     setIsLoading(true);
     try {
       // const response = await newRequest.get(`/memberDocuments?user_id=${gs1MemberData?.id}&type=bank_slip&transaction_id=2875842183`);
       const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=bank_slip&transaction_id=${row?.transaction_id}`);
 
 
-      console.log(response.data);
+      // console.log(response.data);
       setFilteredMemberDetails(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
 
-    console.log(gs1MemberData?.id)
+    // console.log(gs1MemberData?.id)
   }
 
 
@@ -50,13 +50,13 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
       const response = await newRequest.get(`/memberDocuments/invoices?user_id=${registeredMemberRowData?.id}`);
 
 
-      console.log(response.data);
+      // console.log(response.data);
       setMemberInovice(response?.data || []);
       setIsLoading(false)
 
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -67,13 +67,13 @@ const FinancePopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
       // const response = await newRequest.get(`/memberDocuments/finance?user_id=${gs1MemberData?.id}`);
       const response = await newRequest.get(`/memberDocuments?user_id=${registeredMemberRowData?.id}&type=bank_slip`);
 
-      console.log(response.data);
+      // console.log(response.data);
       setMemberBankSlip(response?.data || []);
       setFilteredMemberDetails(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };

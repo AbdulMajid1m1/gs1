@@ -12,7 +12,7 @@ const Updateunspcs = ({ isVisible, setVisibility, refreshBrandData }) =>
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [commodity, setcommodity] = useState(updateBrandData?.commodity || '');
   const [title, settitle] = useState(updateBrandData?.title || '');
   const [definition, setdefinition] = useState(updateBrandData?.definition || '');
@@ -54,7 +54,7 @@ const Updateunspcs = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -70,7 +70,7 @@ const Updateunspcs = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

@@ -12,7 +12,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
     const { t } = useTranslation();
 
     const updateBrandData = JSON.parse(sessionStorage.getItem("updatesilder"));
-    console.log(updateBrandData)
+    // console.log(updateBrandData)
     const [Title, setTitle] = useState(updateBrandData?.title || '');
     const [Caption, setCaption] = useState(updateBrandData?.caption || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
@@ -31,7 +31,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -56,7 +56,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
         formData.append('image', imageshowupload);
         formData.append('link', Page);
         formData.append('status', Number(status));
-        console.log(formData);
+        // console.log(formData);
         try {
             const response = await newRequest.put(`/updatesliders/${updateBrandData?.id}`, formData);
 
@@ -70,7 +70,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 
@@ -85,7 +85,7 @@ const Updatasilder = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error);
+            // console.log(error);
         }
         finally {
             setLoading(false);

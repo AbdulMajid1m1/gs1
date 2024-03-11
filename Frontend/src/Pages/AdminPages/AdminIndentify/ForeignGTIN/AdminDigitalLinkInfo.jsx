@@ -47,7 +47,7 @@ const AdminDigitalLinkInfo = () => {
   const selectedGtinData = JSON.parse(
     sessionStorage.getItem("selectedAdminProductData")
   );
-  console.log(selectedGtinData);
+  // console.log(selectedGtinData);
   const status = selectedGtinData?.status === 1 ? "Active" : "Inactive";
 
   const togglePopup = () => {
@@ -59,22 +59,22 @@ const AdminDigitalLinkInfo = () => {
     // Product Type Drop Down Api
     axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setData(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
 
     // // Safety Information Api
     gtrackRequest
       .get(`/getSafetyInformationByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setSafetyInformation(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
@@ -88,11 +88,11 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getSafetyInformationByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setSafetyInformation(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(
             //   err?.response?.data?.message ?? "something went wrong!",
             //   "error"
@@ -106,11 +106,11 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getPromotionalOffersByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPromotionalOffers(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setPromotionalOffers([]);
@@ -121,12 +121,12 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getProductContentByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
-            console.log("called");
+            // console.log(response.data);
+            // console.log("called");
             setProductContent(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setProductContent([]);
@@ -137,11 +137,11 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getProductLocationOriginByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductLocationofOrigin(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setProductLocationofOrigin([]);
@@ -152,11 +152,11 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getProductsRecallByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductRecall(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setProductRecall([]);
@@ -167,11 +167,11 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getRecipeDataByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setRecipe(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setRecipe([]);
@@ -184,11 +184,11 @@ const AdminDigitalLinkInfo = () => {
             `/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`
           )
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPackagingComposition(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
 
@@ -200,11 +200,11 @@ const AdminDigitalLinkInfo = () => {
         gtrackRequest
           .get(`/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}?companyId=${selectedGtinData?.companyId}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setElectronicLeaflets(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setElectronicLeaflets([]);
@@ -222,20 +222,20 @@ const AdminDigitalLinkInfo = () => {
     axios
       .delete(`http://gs1ksa.org:7000/api/${endpoint}/${ID}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // openSnackbar(response?.data?.message, "success");
         toast.success(response?.data?.message ?? `${t('deleted successfully')}`);
         handleOptionChange(selectedOption);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         // openSnackbar(err?.response?.data?.message, "error");
         toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
       });
   };
 
   const handleDelete = (row) => {
-    console.log(row);
+    // console.log(row);
 
     switch (selectedOption) {
       case "Safety Information":
@@ -277,7 +277,7 @@ const AdminDigitalLinkInfo = () => {
         break;
 
       default:
-        console.log("No option selected");
+        // console.log("No option selected");
         break;
     }
   };
@@ -358,7 +358,7 @@ const AdminDigitalLinkInfo = () => {
         );
 
       default:
-        console.log("No option selected");
+        // console.log("No option selected");
         return; // Return undefined to indicate no updates were performed
     }
   };

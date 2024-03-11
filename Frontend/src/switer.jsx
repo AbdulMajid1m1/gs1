@@ -19,7 +19,7 @@ const LanguageSwitcher = () => {
     const storedLanguage = sessionStorage.getItem('selectedLanguaged');
     const initialLanguage = storedLanguage || 'ar'; // Default to Arabic if no language is stored
     sessionStorage.setItem('selectedLanguaged', initialLanguage);
-    console.log('initialLanguage', initialLanguage);
+    // console.log('initialLanguage', initialLanguage);
 
     const [isActive, setIsActive] = useState(false);
     const [currentOption, setCurrentOption] = useState(initialLanguage);

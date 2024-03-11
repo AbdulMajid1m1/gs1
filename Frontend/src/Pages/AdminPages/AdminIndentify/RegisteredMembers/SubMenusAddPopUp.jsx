@@ -12,7 +12,7 @@ import { useLanguage } from '../../../../Contexts/LanguageContext';
 const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus, userData }) => {
   // get the sesstion data
   const gs1MemberData = userData
-  console.log(gs1MemberData)
+  // console.log(gs1MemberData)
   const { selectedLanguage } = useLanguage();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -33,7 +33,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus, userData 
     e.preventDefault();
     setLoading(true);
     try {
-      console.log(gs1MemberData?.memberID);
+      // console.log(gs1MemberData?.memberID);
       const response = await newRequest.post('/users/subuser', {
         "user_type": memberType,
         "password": password,
@@ -60,7 +60,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus, userData 
 
       setLoading(false);
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshSubMenus();
       handleCloseSubMenusPopup();
 
@@ -79,7 +79,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus, userData 
 
 
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
 
 

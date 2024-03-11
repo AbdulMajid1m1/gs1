@@ -31,7 +31,7 @@ const Brands = () => {
 
 
   const handleGPCAutoCompleteChange = (event, value) => {
-    console.log(value);
+    // console.log(value);
     setSelectedCr(value);
 
 
@@ -46,7 +46,7 @@ const Brands = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
+    // console.log(reason);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
       setBrandList([]); // Clear the data list if there is no input
@@ -64,7 +64,7 @@ const Brands = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -77,7 +77,7 @@ const Brands = () => {
       const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -113,7 +113,7 @@ const Brands = () => {
       // show toast error
 
       if (error.name === 'AbortError') {
-        console.log('Request Aborted');
+        // console.log('Request Aborted');
       } else {
         console.error(error);
         setBrandList([]); // Clear the data list if an error occurs
@@ -127,16 +127,16 @@ const Brands = () => {
 
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value);
-    console.log(value?.companyID);
+    // console.log(value);
+    // console.log(value?.companyID);
     try {
       const response = await newRequest.get(`/brands?user_id=${value?.id}`);
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -166,7 +166,7 @@ const Brands = () => {
 
 
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleDelete = async (row) => {

@@ -46,12 +46,12 @@ const OldInActiveMembers = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
-    console.log(newInputValue);
+    // console.log(reason);
+    // console.log(newInputValue);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
-      console.log('clear');
-      console.log(newInputValue);
+      // console.log('clear');
+      // console.log(newInputValue);
       setOldMemberList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
       return; // Do not perform search if the input is cleared or an option is selected
@@ -67,7 +67,7 @@ const OldInActiveMembers = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -80,7 +80,7 @@ const OldInActiveMembers = () => {
       const res = await newRequest.get(`/migration/user/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -104,7 +104,7 @@ const OldInActiveMembers = () => {
       // fetchData();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setOldMemberList([]); // Clear the data list if an error occurs
       setOpen(false);
       setAutocompleteLoading(false);
@@ -116,7 +116,7 @@ const OldInActiveMembers = () => {
 
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value);
+    // console.log(value);
     // setAllSearchMemberDetails(value);
     try {
       const response = await newRequest.get(`/migration/membershipHistory?MemberID=${value?.MemberID}`);
@@ -126,11 +126,11 @@ const OldInActiveMembers = () => {
       setAmount(response?.data?.yearlyAmount)
       setOldGtinProuductCount(response?.data?.oldGtinProuductCount)
       setOldGlnProuductCount(response?.data?.oldGlnProuductCount)
-      console.log(response.data);
+      // console.log(response.data);
 
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
     }
   };
@@ -156,7 +156,7 @@ const OldInActiveMembers = () => {
         "MemberID": selectedOldMember?.MemberID,
         selectedLanguage: selectedLanguage,
       });
-      console.log(res);
+      // console.log(res);
       toast.success(res?.data?.message || `${t('Member migrated successfully')}`);
       setMigrateButtonLoader(false);
     } catch (error) {

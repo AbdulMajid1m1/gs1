@@ -70,7 +70,7 @@ const AdminForeginGTIN = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
+    // console.log(reason);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
       setCrList([]); // Clear the data list if there is no input
@@ -88,7 +88,7 @@ const AdminForeginGTIN = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -101,7 +101,7 @@ const AdminForeginGTIN = () => {
       const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -138,15 +138,15 @@ const AdminForeginGTIN = () => {
 
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value);
+    // console.log(value);
     setAllSearchMemberDetails(value);
     try {
       const response = await newRequest.get(`/foreignGtin?companyId=${value?.companyID}`);
       const gtinResponse = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${value?.user_id}&isDeleted=false`);
       setData(response?.data || []);
       setTotalCategory(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
-      console.log(response.data);
-      console.log(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
+      // console.log(response.data);
+      // console.log(gtinResponse?.data?.gtinSubscriptions[0]?.gtin_product?.member_category_description);
       // console.log(totalCategory)
 
       if (response?.data?.length === 0) {
@@ -155,7 +155,7 @@ const AdminForeginGTIN = () => {
 
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
     }
   };
@@ -183,7 +183,7 @@ const AdminForeginGTIN = () => {
 
 
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
     navigate("/admin/admin-view-gtin/" + row?.id);
   };
 
@@ -204,7 +204,7 @@ const AdminForeginGTIN = () => {
   const handleDelete = async (row) => {
     try {
       const deleteResponse = await newRequest.delete(`/foreignGtin/${row?.id}`);
-      console.log(deleteResponse.data);
+      // console.log(deleteResponse.data);
       toast.success(`${t('The product has been deleted successfully')}`);
 
       // Update the datagrid Table after deletion
@@ -212,7 +212,7 @@ const AdminForeginGTIN = () => {
 
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data?.error || 'Error');
     }
   };
@@ -239,7 +239,7 @@ const AdminForeginGTIN = () => {
     saveAs(dataBlob, 'gtin_products.xlsx');
 
     // Print data of selected rows
-    console.log('Selected Rows Data:', tableSelectedExportRows);
+    // console.log('Selected Rows Data:', tableSelectedExportRows);
 
     setTableSelectedExportRows([]);
     setRowSelectionModel([]);
@@ -363,7 +363,7 @@ const AdminForeginGTIN = () => {
       newRequest.post('/products/bulkGtin?selectedLanguage=' + selectedLanguage, formData)
         .then((response) => {
           // Handle the successful response
-          console.log(response.data);
+          // console.log(response.data);
 
           if (response.data && response.data.errors && response.data.errors.length > 0) {
             // Display a generic error message
@@ -498,7 +498,7 @@ const AdminForeginGTIN = () => {
     }
 
     const barcodes = item.map((row) => row.barcode);
-    console.log(barcodes); // This will log an array of barcodes
+    // console.log(barcodes); // This will log an array of barcodes
     setTableSelectedRows(barcodes);
   }
 

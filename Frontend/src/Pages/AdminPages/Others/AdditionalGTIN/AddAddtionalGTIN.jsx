@@ -30,7 +30,7 @@ const AddAddtionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProducts }
       });
 
       toast.success(response?.data?.message || `${t('Additional Products Added Successfully')} `);
-      console.log(response.data);
+      // console.log(response.data);
       refreshAddtionalProducts();
       handleCloseCreatePopup();
       setLoading(false);
@@ -38,7 +38,7 @@ const AddAddtionalGTIN = ({ isVisible, setVisibility, refreshAddtionalProducts }
 
     } catch (error) {
       toast.error(error?.response?.data?.error || 'Error');
-      console.log(error);
+      // console.log(error);
       setLoading(false);
     }
 

@@ -130,7 +130,7 @@ const VerifiedByGS1 = () => {
       gtinValue = result.gtin; // Store gtin value here
       setSearchedData(result);
       sessionStorage.setItem("barcodeData", JSON.stringify(result));
-      console.log(result);
+      // console.log(result);
       //  mapDate, batch and serial are in result if needed".
       if (!result.gtin) {
         toast.error("Please enter GTIN");
@@ -143,12 +143,12 @@ const VerifiedByGS1 = () => {
         setData(null);
         return;
       }
-      console.log(response?.data);
+      // console.log(response?.data);
       setData(response?.data);
       sessionStorage.setItem("gtinData", JSON.stringify(response?.data));
       setGTIN(result.gtin);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error.response && error.response.status === 404) {
         Swal.fire({
           title: `${t('Product Not Found')}`,
@@ -163,12 +163,12 @@ const VerifiedByGS1 = () => {
         }).then(async (result) => {
           if (result.isConfirmed) {
             try {
-              console.log(gtinValue);
+              // console.log(gtinValue);
               const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${gtinValue}`);
-              console.log(globalResponse?.data);
+              // console.log(globalResponse?.data);
               setData(globalResponse?.data);
             } catch (globalError) {
-              console.log(globalError);
+              // console.log(globalError);
               toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
               setData([]);
             }
@@ -195,13 +195,22 @@ const VerifiedByGS1 = () => {
   ];
 
 
+  const companyInformation = [
+    { name: "GTIN", value: data?.gtinArr?.gtin },
+    { name: `${t('Company Name')}`, value: data?.gtinArr?.companyName },
+    { name: `${t('Country of sale')}`, value: data?.gtinArr?.countryOfSaleCode },
+    { name: `${t('Gcp GLNID')}`, value: data?.gtinArr?.gcpGLNID },
+    { name: `${t('Type')}`, value: data?.gtinArr?.type },
+
+  ]
+
 
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [selectedSerial, setSelectedSerial] = useState(null);
 
   const MapsResponseData = sessionStorage.getItem('mapsResponse');
   const parsedMappedData = JSON.parse(MapsResponseData);
-  console.log(parsedMappedData)
+  // console.log(parsedMappedData)
 
   const handleBatchChange = (e) => {
     if (e.target.value === "none") {
@@ -313,7 +322,8 @@ const VerifiedByGS1 = () => {
               <path d="M9 14H7A3 3 0 0 1 4 11v-1a3 3 0 0 1 3-3h2M15 14h2a3 3 0 0 0 3-3v-1a3 3 0 0 0-3-3h-2" />
               <path d="M12 19v1m0 0v-1m0 1a6 6 0 0 0 6-6v-4a6 6 0 0 0-12 0v4a6 6 0 0 0 6 6z" />
             </svg>
-            {t('EVENTS')}
+            {/* {t('EVENTS')} */}
+            {t("Company Information")}
           </button>
 
         </div>
@@ -326,6 +336,7 @@ const VerifiedByGS1 = () => {
             <div className="block">
               <input
                 type="text"
+                name='gtin'
                 className="w-full border h-10 rounded-md px-5 font-semibold text-black border-black"
                 placeholder={`${t('GTIN INFORMATION')}`}
                 value={gtin}
@@ -408,104 +419,129 @@ const VerifiedByGS1 = () => {
 
           {/* Third Tab Events Map */}
           {activeTab === 'profile2' && (
-            <div className="block">
-              <div className='h-auto'>
-                <div className='h-auto 2xl:h-44 xl:h-44 lg:h-44 w-full border-2 border-gray-200 rounded-md'>
-                  <div className='p-4 font-semibold flex flex-col gap-2'>
-                    <label className='text-black text-2xl'> {t('Filter By')}</label>
-                    <hr />
-                  </div>
-
-                  <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 mb-4'>
-                    <div className='px-4 flex flex-col gap-2'>
-                      <label> {t('Batches')}<span className='text-red-500'>*</span></label>
-                      <select
-                        type='text'
-                        className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200'
-                        onChange={handleBatchChange}
-                      >
-                        <option value="none">-{t('Select')}-</option>
-                        {searchedData?.batch && (
-                          <option value={searchedData?.batch}>{searchedData?.batch}</option>
-                        )}
-
-                      </select>
-                    </div>
-
-
-                    <div className='px-4 flex flex-col gap-2'>
-                      <label> {t('Serials')} </label>
-                      <select type='text'
-                        className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200'
-                        onChange={handleSerialChange}
-                      >
-                        <option value="none">- {t('Select')} -</option>
-                        {searchedData?.serial && (
-                          <option value={searchedData?.serial}>{searchedData?.serial}</option>
-                        )}
-                      </select>
-                    </div>
-
-                    <div className='px-4 flex flex-col gap-2'>
-                      <label> {t('Expiry Date')}</label>
-                      <input type='date' className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200' placeholder='Batch' />
-                    </div>
-
-                  </div>
-                </div>
-                <div>
-                  {/* <button className='bg-indigo-500 text-white rounded-sm px-4 py-2 mt-4'>View Grid</button> */}
-                  <button
-                    className='bg-primary text-white rounded-sm px-4 py-2 mt-4'
-                    // onClick={() => setIsTableVisible(!isTableVisible)}
-                    onClick={handleViewGridClick}
-                  >
-                    {t('View Grid')}
-                  </button>
-                </div>
-
-                {/* Gtin View TableData */}
-                {/* {isTableVisible && ( */}
-                {parsedMappedData && parsedMappedData.gtinInformation && isTableVisible && (
-                  <div className=''>
-                    <div className="Events-Grid-Data">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th> {t('EventID')}</th>
-                            <th> {t('Member ID')}</th>
-                            <th> {t('Ref Description')}</th>
-                            <th> {t('Date Created')}</th>
-                            <th> {t('Date LastUpdate')}</th>
-                            <th> {t('GLNID From')}</th>
-                            <th> {t('GLNID To')}</th>
+          <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-2/3">
+                <div className="container mx-auto mt-6 p-4">
+                  <div className="overflow-x-auto">
+                    <table className="table-auto min-w-max w-full">
+                      <tbody>
+                        {companyInformation.map((product, index) => (
+                          // {productInformation.map((product, index) => (
+                          <tr key={index}>
+                            <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
+                              {product.name}
+                            </td>
+                            <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
+                              {product.value}
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {parsedMappedData.gtinInformation.map(item => (
-                            <tr key={item.tblTrxHeaderSessionID}>
-                              <td>{item.TrxEventId}</td>
-                              <td>{item.MemberID}</td>
-                              <td>{item.TrxRefDescription}</td>
-                              <td>{item.TrxDateCreated}</td>
-                              <td>{item.TrxDateLastUpdate}</td>
-                              <td>{item.TrxGLNIDFrom}</td>
-                              <td>{item.TrxGLNIDTo}</td>
-                            </tr>
                           ))}
-                        </tbody>
-                      </table>
-                    </div>
+                      </tbody>
+                    </table>
                   </div>
-                )}
-
-                {/* Events Map */}
-                <EventsMap selectedSerial={selectedSerial}
-                  selectedBatch={selectedBatch}
-                />
-
+                </div>
               </div>
             </div>
+          </div>
+            // <div className="block">
+            //   <div className='h-auto'>
+            //     <div className='h-auto 2xl:h-44 xl:h-44 lg:h-44 w-full border-2 border-gray-200 rounded-md'>
+            //       <div className='p-4 font-semibold flex flex-col gap-2'>
+            //         <label className='text-black text-2xl'> {t('Filter By')}</label>
+            //         <hr />
+            //       </div>
+
+            //       <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 mb-4'>
+            //         <div className='px-4 flex flex-col gap-2'>
+            //           <label> {t('Batches')}<span className='text-red-500'>*</span></label>
+            //           <select
+            //             type='text'
+            //             className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200'
+            //             onChange={handleBatchChange}
+            //           >
+            //             <option value="none">-{t('Select')}-</option>
+            //             {searchedData?.batch && (
+            //               <option value={searchedData?.batch}>{searchedData?.batch}</option>
+            //             )}
+
+            //           </select>
+            //         </div>
+
+
+            //         <div className='px-4 flex flex-col gap-2'>
+            //           <label> {t('Serials')} </label>
+            //           <select type='text'
+            //             className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200'
+            //             onChange={handleSerialChange}
+            //           >
+            //             <option value="none">- {t('Select')} -</option>
+            //             {searchedData?.serial && (
+            //               <option value={searchedData?.serial}>{searchedData?.serial}</option>
+            //             )}
+            //           </select>
+            //         </div>
+
+            //         <div className='px-4 flex flex-col gap-2'>
+            //           <label> {t('Expiry Date')}</label>
+            //           <input type='date' className='w-full border h-10 rounded-md px-5 font-semibold border-gray-200' placeholder='Batch' />
+            //         </div>
+
+            //       </div>
+            //     </div>
+            //     <div>
+            //       {/* <button className='bg-indigo-500 text-white rounded-sm px-4 py-2 mt-4'>View Grid</button> */}
+            //       <button
+            //         className='bg-primary text-white rounded-sm px-4 py-2 mt-4'
+            //         // onClick={() => setIsTableVisible(!isTableVisible)}
+            //         onClick={handleViewGridClick}
+            //       >
+            //         {t('View Grid')}
+            //       </button>
+            //     </div>
+
+            //     {/* Gtin View TableData */}
+            //     {/* {isTableVisible && ( */}
+            //     {parsedMappedData && parsedMappedData.gtinInformation && isTableVisible && (
+            //       <div className=''>
+            //         <div className="Events-Grid-Data">
+            //           <table>
+            //             <thead>
+            //               <tr>
+            //                 <th> {t('EventID')}</th>
+            //                 <th> {t('Member ID')}</th>
+            //                 <th> {t('Ref Description')}</th>
+            //                 <th> {t('Date Created')}</th>
+            //                 <th> {t('Date LastUpdate')}</th>
+            //                 <th> {t('GLNID From')}</th>
+            //                 <th> {t('GLNID To')}</th>
+            //               </tr>
+            //             </thead>
+            //             <tbody>
+            //               {parsedMappedData.gtinInformation.map(item => (
+            //                 <tr key={item.tblTrxHeaderSessionID}>
+            //                   <td>{item.TrxEventId}</td>
+            //                   <td>{item.MemberID}</td>
+            //                   <td>{item.TrxRefDescription}</td>
+            //                   <td>{item.TrxDateCreated}</td>
+            //                   <td>{item.TrxDateLastUpdate}</td>
+            //                   <td>{item.TrxGLNIDFrom}</td>
+            //                   <td>{item.TrxGLNIDTo}</td>
+            //                 </tr>
+            //               ))}
+            //             </tbody>
+            //           </table>
+            //         </div>
+            //       </div>
+            //     )}
+
+            //     {/* Events Map */}
+            //     <EventsMap selectedSerial={selectedSerial}
+            //       selectedBatch={selectedBatch}
+            //     />
+
+            //   </div>
+            // </div>
           )}
         </div>
         </div>

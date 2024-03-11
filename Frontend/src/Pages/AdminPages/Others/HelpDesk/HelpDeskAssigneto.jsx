@@ -11,7 +11,7 @@ import imageLiveUrl from '../../../../utils/urlConverter/imageLiveUrl';
 const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateassigento"));
-    console.log(updateBrandData?.email);
+    // console.log(updateBrandData?.email);
     const [loading, setLoading] = useState(false);
     const [docuements, setDocuments] = React.useState([]);
     const [selectedDocuments, setSelectedDocuments] = useState({
@@ -35,7 +35,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const response = await newRequest.get("/getAllassignto");
                 setDocuments(response.data);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -44,12 +44,12 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
 
     const handleSelectedDocuments = (event, value) => {
         setSelectedDocuments(value);
-        console.log("-------", value.email);
+        // console.log("-------", value.email);
         setemailpost(value.email);
     };
     const image = imageLiveUrl(updateBrandData?.document) || "";
     const handleUpdateBrand = async () => {
-        console.log(image);
+        // console.log(image);
         setLoading(true);
         const formData = new FormData();
         formData.append("title", updateBrandData?.title);
@@ -60,7 +60,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatehelp_desks/${updateBrandData?.id}`, formData);
             const emaiilpostrec = await newRequest.post(`/sendemailAssign_to_helpdesk/${emailpost}`);
-            console.log("emaiilpostrec", emaiilpostrec);
+            // console.log("emaiilpostrec", emaiilpostrec);
             toast.success(
                 response?.data?.message ||
                 `${t("Ticket")} ${t("has been")} ${t("Updated Successfully")}.`,
@@ -79,7 +79,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
             refreshBrandData();
             handleCloseUpdatePopup();
         } catch (error) {
-            console.log(error.response.data);
+            // console.log(error.response.data);
             toast.error(
                 error?.response?.data?.error || `${t("Something went wrong")}`,
                 {
@@ -94,7 +94,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
                 }
             );
 
-            console.log(error);
+            // console.log(error);
         } finally {
             setLoading(false);
         }
@@ -122,7 +122,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
             setreplyshoww(false);
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error(
                 error?.response?.data?.error || `${t("Something went wrong")}`,
                 {
@@ -170,7 +170,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (

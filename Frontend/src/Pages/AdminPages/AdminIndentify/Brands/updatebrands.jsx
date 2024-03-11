@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [companyName, setCompanyName] = useState(updateBrandData?.name || "");
   const [companyNameArabic, setCompanyNameArabic] = useState(updateBrandData?.name_ar || "");
   const [status, setStatus] = useState(updateBrandData?.status || "");
@@ -58,7 +58,7 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
       });
 
       toast.success(`${t('Brands')} ${companyName} ${('with Arabic name')}" ${companyNameArabic}" ${t('has been')} ${t('Updated Successfully')}`);
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData(updateBrandData);
       handleCloseUpdatePopup();
       setLoading(false);
@@ -68,7 +68,7 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
       toast.error(error?.response?.data?.error || 'Error');
 
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
 
 

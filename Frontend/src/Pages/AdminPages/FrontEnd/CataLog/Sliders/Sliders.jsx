@@ -45,12 +45,12 @@ const Sliders = () => {
         try {
             const response = await newRequest.get("/getAllsliders",);
 
-            console.log(response.data);
+            // console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -122,7 +122,7 @@ const Sliders = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -180,7 +180,7 @@ const Sliders = () => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -193,7 +193,7 @@ const Sliders = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -207,7 +207,7 @@ const Sliders = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -225,7 +225,7 @@ const Sliders = () => {
                     formData.append('status', 1);
                     newRequest.post(`/updatesliders`, formData)
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `Sliders has been created`,
@@ -234,7 +234,7 @@ const Sliders = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Sliders already exist`,

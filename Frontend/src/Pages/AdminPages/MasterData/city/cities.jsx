@@ -61,7 +61,7 @@ const Cities = () =>
       setData(updatedCitiesData);
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
     }
   };
@@ -81,7 +81,7 @@ const Cities = () =>
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -149,7 +149,7 @@ const Cities = () =>
 
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleRowClickInParent = (item) =>
@@ -162,7 +162,7 @@ const Cities = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -179,7 +179,7 @@ const Cities = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -190,7 +190,7 @@ const Cities = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some City code already exist`,

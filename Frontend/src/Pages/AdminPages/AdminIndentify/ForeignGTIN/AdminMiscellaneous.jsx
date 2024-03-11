@@ -23,7 +23,7 @@ const AdminMiscellaneous = () => {
     // get that sesstion storage data
     const getGtinData = sessionStorage.getItem("productData");
     const gtinData = JSON.parse(getGtinData);
-    console.log(gtinData);
+    // console.log(gtinData);
 
   //Digital Link Tab
   const handleOptionChange = (option) => {

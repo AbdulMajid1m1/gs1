@@ -28,12 +28,12 @@ const ProductCategories = () => {
     try {
       const response = await newRequest.get("/productCategories",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };

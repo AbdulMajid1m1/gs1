@@ -37,7 +37,7 @@ const Addproduct = ({ isVisible, setVisibility, refreshBrandData }) =>
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseCreatePopup();
 
@@ -55,7 +55,7 @@ const Addproduct = ({ isVisible, setVisibility, refreshBrandData }) =>
       });
 
 
-      console.log(error);
+      // console.log(error);
     }
 
 

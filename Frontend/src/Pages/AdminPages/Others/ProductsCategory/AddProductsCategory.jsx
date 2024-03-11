@@ -58,7 +58,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
       toast.success(`${t('product name has been added successfully.')}`);
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshProductsCategory();
       handleCloseCreatePopup();
       setLoading(false);
@@ -66,7 +66,7 @@ const AddProductsCategory = ({ isVisible, setVisibility, refreshProductsCategory
 
     } catch (error) {
       toast.error(error?.response?.data?.error || 'Error');
-      console.log(error);
+      // console.log(error);
       setLoading(false);
     }
 

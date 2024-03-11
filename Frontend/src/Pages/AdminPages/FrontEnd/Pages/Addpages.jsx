@@ -70,7 +70,7 @@ const Addpages = () =>{
                 theme: 'light',
             });
             navigate('/admin/Pages')
-            console.log(response.data);
+            // console.log(response.data);
 
             handleCloseCreatePopup();
 
@@ -85,7 +85,7 @@ const Addpages = () =>{
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
+            // console.log(error);
         }
 
 
@@ -118,7 +118,7 @@ const Addpages = () =>{
         const updatedSections = [...draggedSections];
         updatedSections.splice(index, 1);
         setDraggedSections(updatedSections);
-        console.log(updatedSections);
+        // console.log(updatedSections);
         if (!updatedSections.includes('Custom Section')) {
             setCustomdatashow(false);
         }

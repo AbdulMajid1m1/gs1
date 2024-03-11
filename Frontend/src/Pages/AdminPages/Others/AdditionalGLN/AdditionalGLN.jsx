@@ -33,12 +33,12 @@ const AdditionalGLN = () =>
     try {
       const response = await newRequest.get("/additionalProducts/gln");
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -58,7 +58,7 @@ const AdditionalGLN = () =>
   };
   
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleDelete = async (row) => {

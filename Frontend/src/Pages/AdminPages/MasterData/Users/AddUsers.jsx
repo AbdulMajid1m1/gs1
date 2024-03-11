@@ -22,7 +22,7 @@ const AddUsers = () => {
 
     const handleRolesTypesChange = (event, value) => {
       setSelectedRoles(value);
-      console.log(value);
+      // console.log(value);
   
     };
     
@@ -58,7 +58,7 @@ const AddUsers = () => {
       e.preventDefault();
       setIsLoading(true);
       const selectRolesData = selectedRoles.map((role) => role.id);
-      console.log(selectRolesData);
+      // console.log(selectRolesData);
       try {
         const formData = new FormData();
         formData.append('email', email);
@@ -80,7 +80,7 @@ const AddUsers = () => {
 
 
         const response = await newRequest.post('/admin/addAdmin', formData);
-        console.log(response.data);
+        // console.log(response.data);
         setIsLoading(false);
          toast.success(response.data.message || 'User Added Successfully');
             setEmail('');
@@ -91,7 +91,7 @@ const AddUsers = () => {
             navigate(-1);
         } 
         catch (err) {
-          console.log(err);
+          // console.log(err);
           setIsLoading(false);
           toast.error(err.response?.data?.error || 'User not added');
         }

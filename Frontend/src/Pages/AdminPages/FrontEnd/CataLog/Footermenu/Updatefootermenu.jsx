@@ -14,7 +14,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
     const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
-    console.log(Categorylevel);
+    // console.log(Categorylevel);
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Pagedropdown, setPagedropdown] = useState([])
@@ -29,17 +29,17 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         const getpagedatasdsd = async () => {
             try {
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
-                console.log('getAllmega_menu_categories', nameEnArray);
+                // console.log('getAllmega_menu_categories', nameEnArray);
                 setCategoryleveldropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         getpagedatasdsd();
@@ -68,7 +68,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 theme: "light",
             });
 
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 

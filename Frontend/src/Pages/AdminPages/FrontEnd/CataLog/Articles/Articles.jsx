@@ -25,7 +25,7 @@ const Articles = () => {
     const handleShowCreatePopup = () => {
         setCreatePopupVisibility(true);
     };
-    console.log(data);
+    // console.log(data);
     const [isUpdatePopupVisible, setUpdatePopupVisibility] = useState(false);
 
     const handleShowUpdatePopup = (row) => {
@@ -44,7 +44,7 @@ const Articles = () => {
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -116,7 +116,7 @@ const Articles = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
 
     const handleAddCompany = async () => {
@@ -172,7 +172,7 @@ const Articles = () => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -185,7 +185,7 @@ const Articles = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -199,7 +199,7 @@ const Articles = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -218,7 +218,7 @@ const Articles = () => {
                     formData.append('image', item.imageshow);
                     newRequest.post(`/creatfeatured_articales`, formData)
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `Featured Articles has been created`,
@@ -227,7 +227,7 @@ const Articles = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Featured Articles already exist`,

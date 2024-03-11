@@ -13,7 +13,7 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("Viewassigento"));
   const [activeTab, setActiveTab] = useState("detail");
-  console.log(updateBrandData);
+  // console.log(updateBrandData);
   const [loading, setLoading] = useState(false);
   const [docuements, setDocuments] = React.useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState({
@@ -40,7 +40,7 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
         const response = await newRequest.get("/getAllassignto");
         setDocuments(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -49,9 +49,9 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
         const response = await newRequest.get(`/gethelpdeskById/${updateBrandData?.id}`);
         setTitle(response?.data?.title);
         setDescription(response?.data?.description);
-        console.log("----------", response);
+        // console.log("----------", response);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getbyid()
@@ -150,7 +150,7 @@ const ViewHelpdask = ({ isVisible, setVisibility, refreshBrandData }) => {
                         onInputChange={(event, value) => {
                           if (!value) {
                             // perform operation when input is cleared
-                            console.log("Input cleared");
+                            // console.log("Input cleared");
                           }
                         }}
                         renderInput={(params) => (

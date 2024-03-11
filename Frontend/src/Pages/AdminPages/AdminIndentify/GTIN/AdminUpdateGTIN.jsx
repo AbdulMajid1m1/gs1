@@ -77,7 +77,7 @@ const AdminUpdateGTIN = () => {
         const fetchProductDetails = async () => {
             try {
                 const response = await newRequest.get(`/products?id=${productId}`);
-                console.log(response.data[0]);
+                // console.log(response.data[0]);
 
                 const productData = response.data[0];
                 setProductNameEnglish(productData?.productnameenglish);
@@ -130,7 +130,7 @@ const AdminUpdateGTIN = () => {
                 setIsLoading(false);
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
                 setIsLoading(false);
 
             }
@@ -193,7 +193,7 @@ const AdminUpdateGTIN = () => {
             setAllCountryName(countryName);
             // console.log(countryName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -206,7 +206,7 @@ const AdminUpdateGTIN = () => {
             const unitNameList = data.map((unitData) => unitData?.unit_name);
             setUnitCode(unitNameList);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -221,7 +221,7 @@ const AdminUpdateGTIN = () => {
             setProductType(name);
             // console.log(name);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -237,7 +237,7 @@ const AdminUpdateGTIN = () => {
             setBrandNameArabic(name_ar);
             // console.log(name);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -251,7 +251,7 @@ const AdminUpdateGTIN = () => {
             setProductDescriptionLanguage(productlanguage);
             // console.log(productlanguage);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -259,13 +259,13 @@ const AdminUpdateGTIN = () => {
     const handleRegion = async () => {
         try {
             const response = await newRequest.get('/getAllcountryofsale');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const countryName = data.map((country) => country.country_name);
             setRegion(countryName);
-            console.log(countryName);
+            // console.log(countryName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -273,13 +273,13 @@ const AdminUpdateGTIN = () => {
     const handleAllPackageType = async () => {
         try {
             const response = await newRequest.get('/getAllproductPackag');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const PackageName = data.map((country) => country.name);
             setPackageType(PackageName);
-            console.log(PackageName);
+            // console.log(PackageName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -384,7 +384,7 @@ const AdminUpdateGTIN = () => {
                 formData
             );
 
-            console.log(response);
+            // console.log(response);
             setIsLoading(false);
             toast.success(response?.data?.message || 'Product Updated Successfully', {
                 position: "top-right",
@@ -401,7 +401,7 @@ const AdminUpdateGTIN = () => {
 
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error(error?.response?.data?.error || "Error", {
                 position: "top-right",
                 autoClose: 3000,
@@ -419,48 +419,48 @@ const AdminUpdateGTIN = () => {
 
 
     const handleUnitCodeChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedUnitCode(value);
     };
     // console.log(selectedUnitCode);
 
     const handleSelectRegion = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedRegion(value);
     };
 
     const handleAllCounrtyName = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedCountry(value);
     };
 
     const handleProductDiscription = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductDescription(value);
     };
 
     const handleProductType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductType(value);
     };
 
     const handlePackageType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedPackageType(value);
     };
 
     const handleBrandNameEnglish = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameEnglish(value);
     };
 
     const handleBrandNameArabic = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameArabic(value);
     };
 
     const handleDigitalInformationType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedDigitalInformationType(value);
     };
 
@@ -489,7 +489,7 @@ const AdminUpdateGTIN = () => {
     // }
 
     const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        console.log(reason)
+        // console.log(reason)
         if (reason === 'reset' || reason === 'clear') {
             setGpcList([]); // Clear the data list if there is no input
             return; // Do not perform search if the input is cleared or an option is selected
@@ -509,9 +509,9 @@ const AdminUpdateGTIN = () => {
         setOpen(true);
 
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         // setSearchText(newInputValue);
-        console.log("querying...")
+        // console.log("querying...")
         try {
 
             // Cancel any pending requests
@@ -526,7 +526,7 @@ const AdminUpdateGTIN = () => {
                     signal: abortControllerRef.current.signal
                 })
 
-            console.log(res);
+            // console.log(res);
             setGpcList(res?.data);
             setOpen(true);
             setAutocompleteLoading(false);
@@ -536,11 +536,11 @@ const AdminUpdateGTIN = () => {
                 // Ignore abort errors
                 setGpcList([]); // Clear the data list if there is no input
                 setAutocompleteLoading(true);
-                console.log(error)
+                // console.log(error)
                 return;
             }
             console.error(error);
-            console.log(error)
+            // console.log(error)
             setGpcList([]); // Clear the data list if an error occurs
             setOpen(false);
             setAutocompleteLoading(false);
@@ -549,7 +549,7 @@ const AdminUpdateGTIN = () => {
     }
 
     const handleGPCAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setGpc(value);
         setGpcCode(value);
     }
@@ -560,7 +560,7 @@ const AdminUpdateGTIN = () => {
     // }
 
     const handleHsCodeAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        console.log(reason)
+        // console.log(reason)
         if (reason === 'reset' || reason === 'clear') {
             setHsCodeList([]); // Clear the data list if there is no input
             return; // Do not perform search if the input is cleared or an option is selected
@@ -580,7 +580,7 @@ const AdminUpdateGTIN = () => {
         setHsLoaderOpen(true);
 
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         // setSearchText(newInputValue);
         try {
 
@@ -596,8 +596,8 @@ const AdminUpdateGTIN = () => {
                     signal: abortControllerRef.current.signal
                 })
 
-            console.log(res);
-            console.log(res?.data);
+            // console.log(res);
+            // console.log(res?.data);
             setHsCodeList(res?.data);
             setHsLoaderOpen(true);
             setAutocompleteLoadingForHsCode(false);
@@ -607,11 +607,11 @@ const AdminUpdateGTIN = () => {
                 // Ignore abort errors
                 setHsCodeList([]); // Clear the data list if there is no input
                 setAutocompleteLoadingForHsCode(true);
-                console.log(error)
+                // console.log(error)
                 return;
             }
             console.error(error);
-            console.log(error)
+            // console.log(error)
             setHsCodeList([]); // Clear the data list if an error occurs
             setHsLoaderOpen(false);
             setAutocompleteLoadingForHsCode(false);
@@ -620,7 +620,7 @@ const AdminUpdateGTIN = () => {
     }
 
     const handleHsCodeAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setHsCode(value);
 
 
@@ -738,7 +738,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -779,7 +779,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -823,7 +823,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -883,7 +883,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -925,7 +925,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -971,7 +971,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -1013,7 +1013,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -1058,7 +1058,7 @@ const AdminUpdateGTIN = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (

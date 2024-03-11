@@ -11,7 +11,7 @@ const Updatedocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [file_name, setfile_name] = useState(updateBrandData?.file_name || '');
   const [status, setstatus] = useState(updateBrandData?.status || 0);
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const Updatedocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -59,7 +59,7 @@ const Updatedocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

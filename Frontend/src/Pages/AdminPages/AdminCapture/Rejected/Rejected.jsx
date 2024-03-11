@@ -19,12 +19,12 @@ const Rejected = () => {
         try {
           const response = await newRequest.get(`/users/rejected`);
     
-          console.log(response.data);
+          // console.log(response.data);
           setCardsRejected(response?.data || []);
           setCardsRejectedLoader(false);
     
         } catch (err) {
-          console.log(err);
+          // console.log(err);
           setCardsRejectedLoader(false);
         }
       };

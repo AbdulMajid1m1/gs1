@@ -33,12 +33,12 @@ const AdditionalProducts = () =>
     try {
       const response = await newRequest.get("/gtinProductCategories",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };

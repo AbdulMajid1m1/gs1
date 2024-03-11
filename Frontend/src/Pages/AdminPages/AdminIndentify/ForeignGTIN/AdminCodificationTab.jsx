@@ -24,7 +24,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
   // const number = gs1ProductData.split("-")[0];
   // console.log(number);
 
-  console.log(gs1ProductData);
+  // console.log(gs1ProductData);
   const toggleOpen = () => {
     setOpen(!open);
   };
@@ -83,8 +83,8 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
   useEffect(() => {
     if (selectedRow) {
       sessionStorage.setItem('selectedRow', JSON.stringify(selectedRow));
-      console.log('Selected Row:', selectedRow);
-      console.log(selectedRow?.ItemEnglishName);
+      // console.log('Selected Row:', selectedRow);
+      // console.log(selectedRow?.ItemEnglishName);
     }
   }, [selectedRow]);
 
@@ -106,7 +106,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
         // TODO: convert harcoded value to dynamic value
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setGpcData(response.data);
         // i save the classCode of the first api call to use it in the second api call
         const classCode = response.data.data.ClassCode;
@@ -121,13 +121,13 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
             "class_code": classCode
           })
           .then((response) => {
-            console.log(response.data?.data);
+            // console.log(response.data?.data);
             setGpcBricks(response.data?.data);
             setIsLoading(false);
             // Handle the response data from the second API call as needed
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             toast.error(err?.response?.data?.message ?? "something went wrong with the second API call!");
             setIsLoading(false);
 
@@ -136,7 +136,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
 
       // Handle the response data from the first API call as needed
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         toast.error(err?.response?.data?.message ?? `${t('Something went wrong!')}`);
         setGpcData([]);
         setIsLoading(false);
@@ -151,12 +151,12 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       // "brick_title": "Baking" // this is a test
     })
       .then((response) => {
-        console.log(response?.data)
+        // console.log(response?.data)
         setHsCode(response?.data)
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         toast.error(error?.response?.data?.message ?? `${t('Something went wrong!')}`);
         setIsLoading(false);
       })
@@ -169,12 +169,12 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       // "brick_title": "Caramel/Toffee Apples" // this is a test
     })
       .then((response) => {
-        console.log(response?.data)
+        // console.log(response?.data)
         setUnspsc(response?.data)
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         toast.error(error?.response?.data?.message ?? `${t('Something went wrong!')}`);
         setIsLoading(false);
       })
@@ -208,12 +208,12 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
           // "hs_name": "Pineapples" // this is a test
         })
           .then((response) => {
-            console.log(response?.data)
+            // console.log(response?.data)
             setOthers(response?.data)
             setIsLoading(false);
           })
           .catch((error) => {
-            console.log(error);
+            // console.log(error);
             // openSnackbar(
             //   error?.response?.data?.message ??  `${t('Something went wrong!')}`,
             //   "error"

@@ -26,7 +26,7 @@ const UpdateUsers = () => {
 
     const handleRolesTypesChange = (event, value) => {
       setSelectedRoles(value);
-      console.log(value);
+      // console.log(value);
       // fetchRoleById();
       filterRoles(value, allRoles);
     };
@@ -37,7 +37,7 @@ const UpdateUsers = () => {
       try {
         const response = await newRequest.get(`/admin/getAdminById?adminId=${id}`);
         const responseAllRoles = await newRequest.get('/roles');
-        console.log(response.data);
+        // console.log(response.data);
         const data = responseAllRoles.data;
         
         const roles = response.data?.roles.map((role) => ({
@@ -93,7 +93,7 @@ const UpdateUsers = () => {
       e.preventDefault();
       setIsLoading(true);
       const selectRolesData = selectedRoles.map((role) => role.id);
-      console.log(selectRolesData);
+      // console.log(selectRolesData);
       try {
         const formData = new FormData();
         formData.append('email', email);
@@ -115,7 +115,7 @@ const UpdateUsers = () => {
         }
 
         const response = await newRequest.put(`/admin/updateAdmin/${id}`, formData);
-        console.log(response.data);
+        // console.log(response.data);
         setIsLoading(false);
         toast.success(response.data.message || 'User Updated Successfully');
         setEmail('');
@@ -125,7 +125,7 @@ const UpdateUsers = () => {
         setIsSuper('');
         navigate(-1);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
         toast.error(err.response?.data?.error || 'User not added');
       }

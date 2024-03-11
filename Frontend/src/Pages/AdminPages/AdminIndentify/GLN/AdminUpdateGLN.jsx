@@ -77,7 +77,7 @@ const AdminUpdateGLN = () => {
 
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
                 setIsLoading(false);
             }
         }
@@ -116,7 +116,7 @@ const AdminUpdateGLN = () => {
       newRequest
         .put(`/gln/${glnData?.id}`, formData)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
        
           setIsLoading(false);
           setTimeout(() => {
@@ -136,7 +136,7 @@ const AdminUpdateGLN = () => {
   
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setIsLoading(false);
   
           toast.error(err.response.data.error, {
@@ -198,11 +198,11 @@ const AdminUpdateGLN = () => {
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
         (error) => {
-          console.log('Error getting current location:', error);
+          // console.log('Error getting current location:', error);
         }
       );
     } else {
-      console.log('Geolocation is not supported by this browser.');
+      // console.log('Geolocation is not supported by this browser.');
     }
   }, []);
 

@@ -141,6 +141,7 @@ import AdminGtinReports from "./Pages/AdminPages/AdminTab/Reports/AdminGtinRepor
 import Managesections from "./Pages/AdminPages/FrontEnd/ManageSections/Managesections.jsx";
 import UserGuide from "./Pages/UserPages/UserGuide/UserGuide.jsx";
 import { LanguageProvider } from "./Contexts/LanguageContext.jsx";
+import SelectBusinessType from "./Pages/MemberPages/MemberRegistration/SelectBusinessType.jsx";
 
 const queryClient = new QueryClient()
 
@@ -207,6 +208,7 @@ const App = () => {
                     <Route path="/member-registration" element={<MemmberRegisteration />} />
                     <Route path="/email-address" element={<EmailAddress />} />
                     <Route path="/select-activity" element={<SelectActivity />} />
+                    <Route path="/select-business-type" element={<SelectBusinessType />} />
                     <Route path="/verify-code" element={<VerifyCode />} />
                     <Route path="/:id" element={<BlogPages />} />
 

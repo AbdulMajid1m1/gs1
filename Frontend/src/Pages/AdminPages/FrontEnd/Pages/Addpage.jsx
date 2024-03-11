@@ -46,7 +46,7 @@ const AddPageOrder = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 
@@ -61,7 +61,7 @@ const AddPageOrder = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
+            // console.log(error);
         }
 
 

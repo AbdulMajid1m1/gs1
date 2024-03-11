@@ -15,7 +15,7 @@ const AdminFormPopup = ({ data, showPopup, togglePopup, barcode }) => {
   };
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value.trim());
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
   const { openSnackbar } = useContext(SnackbarContext);
 
@@ -210,7 +210,7 @@ const AdminFormPopup = ({ data, showPopup, togglePopup, barcode }) => {
     const target = event.target;
     const value = target.type === "file" ? target.files[0] : target.value;
     if (target.type === "file") {
-      console.log(target.files[0]);
+      // console.log(target.files[0]);
     }
     const name = target.name;
     switch (option) {
@@ -265,7 +265,7 @@ const AdminFormPopup = ({ data, showPopup, togglePopup, barcode }) => {
         });
         break;
       default:
-        console.log("Invalid option");
+        // console.log("Invalid option");
         break;
     }
   };
@@ -321,13 +321,13 @@ const AdminFormPopup = ({ data, showPopup, togglePopup, barcode }) => {
 
     try {
       response = await newRequest.post(endpoints[selectedOption], dataToSend);
-      console.log(response.data);
+      // console.log(response.data);
       // openSnackbar(response.data.message, "success");
       toast.success(response.data.message, "success");
       resetState();
       event.target.reset();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       // openSnackbar(error?.response?.data?.message, "error");
       toast.error(error?.response?.data?.message, "error");
     }

@@ -17,7 +17,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -64,7 +64,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 
@@ -79,7 +79,7 @@ const Addboardmembers = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
+            // console.log(error);
         }
 
 

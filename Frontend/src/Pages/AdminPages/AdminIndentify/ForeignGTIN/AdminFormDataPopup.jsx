@@ -19,7 +19,7 @@ const AdminFormDataPopup = ({ data, showPopup, togglePopup, barcode, companyId }
   };
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value.trim());
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
   const { openSnackbar } = useContext(SnackbarContext);
 
@@ -230,7 +230,7 @@ const AdminFormDataPopup = ({ data, showPopup, togglePopup, barcode, companyId }
     const target = event.target;
     const value = target.type === "file" ? target.files[0] : target.value;
     if (target.type === "file") {
-      console.log(target.files[0]);
+      // console.log(target.files[0]);
     }
     const name = target.name;
     switch (option) {
@@ -285,7 +285,7 @@ const AdminFormDataPopup = ({ data, showPopup, togglePopup, barcode, companyId }
         });
         break;
       default:
-        console.log("Invalid option");
+        // console.log("Invalid option");
         break;
     }
   };
@@ -342,13 +342,13 @@ const AdminFormDataPopup = ({ data, showPopup, togglePopup, barcode, companyId }
 
     try {
       response = await newRequest.post(endpoints[selectedOption], dataToSend);
-      console.log(response.data);
+      // console.log(response.data);
       toast.success(response.data.message || "Data inserted successfully", "success");
       resetState();
       event.target.reset();
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error?.response?.data?.message || "Error inserting data", "error");
       setIsLoading(false);
     }

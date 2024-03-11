@@ -22,12 +22,12 @@ const AdminGtinReports = () => {
     setGtinReportsLoader(true);
     try {
       const response = await newRequest.get('/gtinHelperReports');
-      console.log(response.data);
+      // console.log(response.data);
       setGtinReports(response?.data || []);
       setGtinReportsLoader(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setGtinReportsLoader(false)
     }
   };
@@ -41,7 +41,7 @@ const AdminGtinReports = () => {
     const handleDelete = async (row) => {
         try {
           const deleteResponse = await newRequest.delete(`/gtinHelperReports/${row?.id}`);
-          console.log(deleteResponse.data);
+          // console.log(deleteResponse.data);
           toast.success(`${t('The GTIN Report has been deleted successfully')}`);
     
           // Update the datagrid Table after deletion
@@ -49,7 +49,7 @@ const AdminGtinReports = () => {
     
     
         } catch (err) {
-          console.log(err);
+          // console.log(err);
           toast.error(err?.response?.data?.error || 'Error');
         }
       };
@@ -59,7 +59,7 @@ const AdminGtinReports = () => {
     
     const handleAssignToPopUp = (row) => {
       setIsAssignToPopUpVisible(true);
-      console.log(row);
+      // console.log(row);
       setAssignUser(row);  
     };
     
@@ -96,7 +96,7 @@ const AdminGtinReports = () => {
     
     // Mark As complete function
     const handleStatusChanged = async (row) => {
-      console.log(row);
+      // console.log(row);
     
       // Determine the new status based on the current status
       const newStatus = row.report_status === 0 ? 1 : 0;
@@ -117,11 +117,11 @@ const AdminGtinReports = () => {
           },
         });
         toast.success('GTIN Report status change successfully.')
-        console.log(response.data);
+        // console.log(response.data);
         fetchData();
        
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         toast.error('Error on changing status');
       }
     }

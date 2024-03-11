@@ -33,7 +33,7 @@ const Addmegamenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 theme: 'light',
             });
 
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 

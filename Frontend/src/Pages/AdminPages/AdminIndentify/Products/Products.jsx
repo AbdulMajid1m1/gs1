@@ -45,7 +45,7 @@ const Products = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
+    // console.log(reason);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
       setCrList([]); // Clear the data list if there is no input
@@ -63,7 +63,7 @@ const Products = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -76,7 +76,7 @@ const Products = () => {
       const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -106,15 +106,15 @@ const Products = () => {
 
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value);
+    // console.log(value);
     try {
       const response = await newRequest.get(`/products?user_id=${value?.user_id}`);
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -122,7 +122,7 @@ const Products = () => {
 
 
   const handleEdit = (row) => {
-    console.log(row);
+    // console.log(row);
     navigate("edit-products/" + row?.id);
   }
 

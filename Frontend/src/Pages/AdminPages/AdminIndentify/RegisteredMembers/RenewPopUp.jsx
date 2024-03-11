@@ -15,7 +15,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
 }) => {
   const { selectedLanguage } = useLanguage();
   const gs1RegesteredMembersData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
-  console.log(gs1RegesteredMembersData);
+  // console.log(gs1RegesteredMembersData);
 
   const expiryDate = new Date(gs1RegesteredMembersData.gcp_expiry);
   const newExpiryDate = new Date(expiryDate);
@@ -38,7 +38,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
   const handleMemberInvoiceData = async () => {
     try {
       const res = await newRequest.get(`/users/cart?transaction_id=${gs1RegesteredMembersData?.transaction_id}`);
-      console.log(res.data);
+      // console.log(res.data);
       setMemberInvoiceData(res.data);
 
       let total = 0;
@@ -49,7 +49,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
       setTotalPrice(total);
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
 
 
@@ -69,7 +69,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
         "user_id": gs1RegesteredMembersData?.id,
         selectedLanguage: selectedLanguage,
       });
-      console.log(res.data);
+      // console.log(res.data);
       {
         toast.success(res?.data?.message || `${t('Renew request sent successfully!')}`);
         setLoading(false);
@@ -77,7 +77,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
         handleCloseRenewPopup();
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setLoading(false);
       toast.error(err.response?.data?.error || `${t('Renew request failed!')}`);
     }

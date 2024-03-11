@@ -74,7 +74,7 @@ const SideBar = () => {
       setAllUserData(data);
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -117,7 +117,7 @@ const SideBar = () => {
     try {
       const response = await newRequest.get(`/gtinProducts/getUserSubscribedProductsNames?userId=${memberData?.id}`);
       setApiResponse(response.data);
-      console.log(response.data)
+      // console.log(response.data)
     }
     catch (error) {
       console.error('Error fetching data:', error);

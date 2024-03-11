@@ -12,7 +12,7 @@ import * as XLSX from 'xlsx';
 import { CSVLink } from "react-csv";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
-import Addpage from './AddPage';
+import Addpage from './Addpages';
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 const Pages = () => {
@@ -43,12 +43,12 @@ const Pages = () => {
         try {
             const response = await newRequest.get("/getAllpages",);
 
-            console.log(response.data);
+            // console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -120,7 +120,7 @@ const Pages = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -176,7 +176,7 @@ const Pages = () => {
 
             });
 
-            console.log(response.data);
+            // console.log(response.data);
 
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
@@ -190,7 +190,7 @@ const Pages = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -204,7 +204,7 @@ const Pages = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -219,7 +219,7 @@ const Pages = () => {
                         status: 1
                     })
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
 
                             Swal.fire(
                                 'Add!',
@@ -229,7 +229,7 @@ const Pages = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Pages already exist`,

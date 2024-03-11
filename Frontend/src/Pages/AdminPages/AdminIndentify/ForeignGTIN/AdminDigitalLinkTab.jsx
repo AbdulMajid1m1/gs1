@@ -42,11 +42,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getSafetyInformationByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setSafetyInformation(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(
             //   err?.response?.data?.message ??  `${t('Something went wrong!')}`,
             //   "error"
@@ -60,11 +60,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getPromotionalOffersByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPromotionalOffers(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
             setPromotionalOffers([]);
@@ -75,12 +75,12 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getProductContentByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
-            console.log("called");
+            // console.log(response.data);
+            // console.log("called");
             setProductContent(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
             setProductContent([]);
@@ -91,11 +91,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getProductLocationOriginByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductLocationofOrigin(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
             setProductLocationofOrigin([]);
@@ -106,11 +106,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getProductsRecallByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductRecall(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
             setProductRecall([]);
@@ -121,11 +121,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getRecipeDataByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setRecipe(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
             setRecipe([]);
@@ -138,11 +138,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
             `/getAlltblPkgCompositionDataByGtin/${barcodeData}`
           )
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPackagingComposition(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
 
@@ -154,11 +154,11 @@ const AdminDigitalLinkTab = ({ barcodeData }) => {
         gtrackRequest
           .get(`/getProductLeafLetsDataByGtin/${barcodeData}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setElectronicLeaflets(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
             setElectronicLeaflets([]);

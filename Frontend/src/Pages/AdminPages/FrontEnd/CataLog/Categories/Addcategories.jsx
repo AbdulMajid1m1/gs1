@@ -23,7 +23,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setmegamenudropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -32,9 +32,9 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const response = await newRequest.get('/getAllpagesname');
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
-                console.log('--------', nameEnArray);
+                // console.log('--------', nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -73,7 +73,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                 theme: 'light',
             });
 
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 
