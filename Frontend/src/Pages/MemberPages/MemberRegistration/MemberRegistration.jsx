@@ -19,8 +19,6 @@ import CrActivityPopUp from './CrActivityPopUp';
 import CrNumberPopUp from './CrNumberPopUp';
 import TermsAndCondition from './TermsAndCondition';
 import { useLanguage } from '../../../Contexts/LanguageContext';
-
-
 const MemmberRegisteration = () => {
   // const sessionData = sessionStorage.getItem('saveCrNumberData');
   const selectedCr = JSON.parse(sessionStorage.getItem('selectedCr'));
@@ -72,127 +70,146 @@ const MemmberRegisteration = () => {
   const [mobileError, setMobileError] = useState("");
 
 
+  const fetchCategories = async () => {
+    try {
+      const response = await newRequest.get('/productCategories');
+      // only get name and id from the response
+      const data = response.data;
+      const categories = data.map((category) => ({
+        id: category.id,
+        name: category.name,
+        namesa: i18n.language === "ar" ? category.name_ar : category.name,
+
+      }));
+
+      setCategories(categories);
+      handleOptionChange(categories);
+      console.log("datadata", data);
+    }
+    catch (error) {
+      console.error('Error fetching on product Categories Api:', error);
+    }
+  };
+
+  // Search GPC Api
+  const fetchIndustryTypes = async () => {
+    try {
+      const response = await newRequest.get('/productTypes');
+      // only get name and id from the response
+      const data = response.data;
+      const industryTypes = data.map((industryType) => ({
+        id: industryType.id,
+        name: industryType.name,
+        name_ar_en: i18n.language === "ar" ? industryType.name_ar : industryType.name,
+      }));
+      setIndustryTypes(industryTypes);
+    }
+    catch (error) {
+      console.error('Error fetching on Search GPC Api:', error);
+    }
+  };
+
+  // Other Products Api (GLN, SSCC, UDI)
+  const handleOtherProductsData = async () => {
+    try {
+      const response = await newRequest.get('/otherProducts');
+      setOtherProductsOptions(response.data);
+      console.log("response.data", response.data);
+    }
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
+
+  // all Countries Api
+  const handleCountryAndState = async () => {
+    try {
+      const response = await newRequest.get('/address/getAllCountries');
+      const statesData = await newRequest.get(`/address/getAllStates`);
+      const getStatesdata = statesData.data;
+      const data = response.data;
+
+      const countries = data.map((country) => ({
+        id: country.id,
+        //   name: country.name_en,
+        name: i18n.language === "ar" ? country.name_ar : country.name_en,
+      }));
+
+      const states = getStatesdata.map((state) => ({
+        id: state.id,
+        name: i18n.language === "ar" ? state.name_ar : state.name,
+        country_id: state.country_id,
+      }));
+
+      setCountry(countries);
+      setState(states);
+      // setCountry(countries);
+      const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
+      setSelectedCountry(defaultCountry);
+      const filteredStates = states.filter((state) => state.country_id == defaultCountry?.id);
+      setFilteredStates(filteredStates);
+
+    }
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+
+  }
+
+
+  const handleGetAllCities = async () => {
+    try {
+      const response = await newRequest.get(`/address/getAllCities`);
+      const data = response.data;
+      //   setCity(data);
+
+      const Citydata = data.map((city) => ({
+        id: city.id,
+        name_ar: i18n.language === "ar" ? city.name_ar : city.name,
+        name: city.name,
+        state_id: city.state_id,
+      }));
+
+      console.log("Citydata", Citydata);
+      //  console.log("Citydata", data);
+      setCity(Citydata);
+
+    }
+    catch (error) {
+      console.error('Error fetching states:', error);
+    }
+  }
+
+
+
+  const selectedBusinessType = JSON.parse(sessionStorage.getItem('selectedBusinessType'));
+
+  // Function to handle option selection
+  const handleOptionChange = (categories) => {
+    // setEntityType(newValue);
+    console.log(selectedBusinessType.value)
+    if (selectedBusinessType.value === 'individual/family business') {
+      const nonMedicalCategory = categories.find(category => category.name === 'non-medical');
+      setSelectedCategories(nonMedicalCategory);
+      // Assuming 'Category 10' is a specific GTIN number or represents a condition to pre-fill the GTIN field
+      const category10Gtin = gtinNumber.find(gtin => gtin.total_no_of_barcodes === 10);
+      setSelectedGtinNumber(category10Gtin);
+      setSelectedOtherProducts([]); // Disabling the selection for OTHER PRODUCTS
+    } else {
+      setSelectedCategories(null);
+      setSelectedGtinNumber(null);
+    }
+  };
+
+
+
   useEffect(() => {
-
-    // Search GPC Api
-    const fetchIndustryTypes = async () => {
-      try {
-        const response = await newRequest.get('/productTypes');
-        // only get name and id from the response
-        const data = response.data;
-        const industryTypes = data.map((industryType) => ({
-          id: industryType.id,
-          name: industryType.name,
-          name_ar_en: i18n.language === "ar" ? industryType.name_ar : industryType.name,
-        }));
-        setIndustryTypes(industryTypes);
-      }
-      catch (error) {
-        console.error('Error fetching on Search GPC Api:', error);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        const response = await newRequest.get('/productCategories');
-        // only get name and id from the response
-        const data = response.data;
-        const categories = data.map((category) => ({
-          id: category.id,
-          name: category.name,
-          namesa: i18n.language === "ar" ? category.name_ar : category.name,
-
-        }));
-
-        setCategories(categories);
-        console.log("datadata", data);
-      }
-      catch (error) {
-        console.error('Error fetching on product Categories Api:', error);
-      }
-    };
-
-
-
-    // Other Products Api (GLN, SSCC, UDI)
-    const handleOtherProductsData = async () => {
-      try {
-        const response = await newRequest.get('/otherProducts');
-        setOtherProductsOptions(response.data);
-        console.log("response.data", response.data);
-      }
-      catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-
-    // all Countries Api
-    const handleCountryAndState = async () => {
-      try {
-        const response = await newRequest.get('/address/getAllCountries');
-        const statesData = await newRequest.get(`/address/getAllStates`);
-        const getStatesdata = statesData.data;
-        const data = response.data;
-
-        const countries = data.map((country) => ({
-          id: country.id,
-          //   name: country.name_en,
-          name: i18n.language === "ar" ? country.name_ar : country.name_en,
-        }));
-
-        const states = getStatesdata.map((state) => ({
-          id: state.id,
-          name: i18n.language === "ar" ? state.name_ar : state.name,
-          country_id: state.country_id,
-        }));
-
-        setCountry(countries);
-        setState(states);
-        // setCountry(countries);
-        const defaultCountry = countries.find(country => country.name == 'Saudi Arabia');
-        setSelectedCountry(defaultCountry);
-        const filteredStates = states.filter((state) => state.country_id == defaultCountry?.id);
-        setFilteredStates(filteredStates);
-
-      }
-      catch (error) {
-        console.error('Error fetching data:', error);
-      }
-
-
-    }
-
-
-    const handleGetAllCities = async () => {
-      try {
-        const response = await newRequest.get(`/address/getAllCities`);
-        const data = response.data;
-        //   setCity(data);
-
-        const Citydata = data.map((city) => ({
-          id: city.id,
-          name_ar: i18n.language === "ar" ? city.name_ar : city.name,
-          name: city.name,
-          state_id: city.state_id,
-        }));
-
-        console.log("Citydata", Citydata);
-        //  console.log("Citydata", data);
-        setCity(Citydata);
-
-      }
-      catch (error) {
-        console.error('Error fetching states:', error);
-      }
-    }
-
-
-    // handleGetAllActivities();
     fetchIndustryTypes();
     fetchCategories()
-    // handleGetAllCountries();
-    // handleGetAllStates();
+
     handleCountryAndState();
     handleGetAllCities();
     handleOtherProductsData();
@@ -644,28 +661,6 @@ const MemmberRegisteration = () => {
   };
 
 
-  const selectedBusinessType = JSON.parse(sessionStorage.getItem('selectedBusinessType'));
-
-  // Function to handle option selection
-  const handleOptionChange = (event, newValue) => {
-    // setEntityType(newValue);
-    if (selectedBusinessType.value === 'individual/family business') {
-      const nonMedicalCategory = categories.find(category => category.name === 'non-medical');
-      setSelectedCategories(nonMedicalCategory);
-      // Assuming 'Category 10' is a specific GTIN number or represents a condition to pre-fill the GTIN field
-      const category10Gtin = gtinNumber.find(gtin => gtin.total_no_of_barcodes === 10);
-      setSelectedGtinNumber(category10Gtin);
-      setSelectedOtherProducts([]); // Disabling the selection for OTHER PRODUCTS
-    } else {
-      setSelectedCategories(null);
-      setSelectedGtinNumber(null);
-    }
-  };
-  
-  useEffect(() => {
-    handleOptionChange();
-  }, []);
-
   // handleOptionChange 
   return (
     <div>
@@ -714,10 +709,10 @@ const MemmberRegisteration = () => {
           </div>
 
           <p className='text-red-500 text-lg font-body font-medium ml-3 pt-3'>
-          {selectedBusinessType?.value === "organization"
-                    ? "** Provide Your company Certificate of Registration **"
-                    : "** Provide Your Business License **"}            
-            </p>
+            {selectedBusinessType?.value === "organization"
+              ? "** Provide Your company Certificate of Registration **"
+              : "** Provide Your Business License **"}
+          </p>
         </div>
 
         <div className="h-auto w-full sm:w-2/3 p-6 shadow-xl border-l border-r border-b border-primary">
@@ -1269,13 +1264,13 @@ const MemmberRegisteration = () => {
                   options={
                     selectedCategories && selectedBusinessType.value === "individual/family business"
                       ? gtinNumber.filter(
-                          (option) => option?.member_category_description === "Category B - ( 100 Barcodes )"
-                        )
+                        (option) => option?.member_category_description === "Category B - ( 100 Barcodes )"
+                      )
                       : selectedCategories
-                      ? gtinNumber.filter(
+                        ? gtinNumber.filter(
                           (option) => option?.total_no_of_barcodes !== 10
                         )
-                      : []
+                        : []
                   }
                   value={selectedGtinNumber}
                   getOptionLabel={(option) => {
