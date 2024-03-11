@@ -25,7 +25,7 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
     // import { GoogleMap, StandaloneSearchBox, Marker, Polyline } from '@react-google-maps/api';
     const [locationsapi, setlocationsapi] = useState([]);
     const gtin = sessionStorage.getItem("gtin");
-    console.log(gtin);
+    // console.log(gtin);
 
     const [lineCoordinates, setLineCoordinates] = useState([]);
     const filterLocationsBySelection = (locations) => {
@@ -44,18 +44,18 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
         const bodyData = {
             gtin: barcodeData?.gtin,
         };
-        console.log(selectedBatch, selectedSerial)
+        // console.log(selectedBatch, selectedSerial)
         if (selectedBatch) bodyData.batch = selectedBatch;
         if (selectedSerial) bodyData.serial = selectedSerial;
 
 
-        console.log(bodyData)
+        // console.log(bodyData)
         try {
             const res = await axios.get(`https://gs1ksa.org/api/search/event/gtin/with/maps`, {
                 params: bodyData
             });
             const locations = res.data?.googleMap?.locations;
-            console.log(locations)
+            // console.log(locations)
 
             if (Array.isArray(locations)) {
                 const allLocations = locations
@@ -136,10 +136,10 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
 
                 sessionStorage.setItem("mapsResponse", JSON.stringify(res?.data));
             } else {
-                console.log('Invalid API response');
+                // console.log('Invalid API response');
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             toast.error(err?.response?.data?.message || "Something Went Wrong")
         }
     };
@@ -177,7 +177,7 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
     const [currentLocation, setCurrentLocation] = useState(null);
     useEffect(() => {
         const apiKey = 'AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU';
-        console.log(apiKey);
+        // console.log(apiKey);
         // Get the user's current location
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -186,11 +186,11 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
                     setCurrentLocation({ lat: latitude, lng: longitude });
                 },
                 (error) => {
-                    console.log('Error getting current location:', error);
+                    // console.log('Error getting current location:', error);
                 }
             );
         } else {
-            console.log('Geolocation is not supported by this browser.');
+            // console.log('Geolocation is not supported by this browser.');
         }
     }, []);
 
@@ -204,7 +204,7 @@ const EventsMap = ({ google, selectedBatch, selectedSerial }) => {
             if (status === "OK" && results[0]) {
                 const address = results[0].formatted_address;
                 setSelectedLocation({ latitude, longitude, address });
-                console.log(address, latitude, longitude);
+                // console.log(address, latitude, longitude);
                 setCurrentLocation(null);
             }
 

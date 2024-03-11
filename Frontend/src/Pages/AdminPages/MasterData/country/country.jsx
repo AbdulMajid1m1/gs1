@@ -47,12 +47,12 @@ const Country = () =>
       try {
         const response = await newRequest.get("/address/getAllCountries",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -65,12 +65,12 @@ const Country = () =>
     try {
       const response = await newRequest.get("/address/getAllCountries",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -143,7 +143,7 @@ const Country = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
   const handleRowClickInParent = (item) =>
   {
@@ -158,7 +158,7 @@ const Country = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -180,7 +180,7 @@ const Country = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -191,7 +191,7 @@ const Country = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some Countries already exist`,

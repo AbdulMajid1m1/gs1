@@ -10,7 +10,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [name, setname] = useState(updateBrandData?.name || '');
   const [name_ar, setname_ar] = useState(updateBrandData?.name_ar || "");
   const [country_id, setcountry_id] = useState(updateBrandData?.country_id || 0);
@@ -27,10 +27,10 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
     const getDocuments = async () => {
       try {
         const response = await newRequest.get('/address/getAllCountriesName');
-        console.log(response.data);
+        // console.log(response.data);
         setDocuments(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getDocuments();
@@ -38,7 +38,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
     
   }, []);
   const handleSelectedDocuments = (event, value) => {
-    console.log(value?.id);
+    // console.log(value?.id);
     setSelectedDocuments(value);
   };
 
@@ -64,7 +64,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -80,7 +80,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);
@@ -138,7 +138,7 @@ const Updatestate = ({ isVisible, setVisibility, refreshBrandData }) => {
                       onInputChange={(event, value) => {
                         if (!value) {
                           // perform operation when input is cleared
-                          console.log("Input cleared");
+                          // console.log("Input cleared");
                         }
                       }}
                       renderInput={(params) => (

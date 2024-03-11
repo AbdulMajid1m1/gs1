@@ -11,7 +11,7 @@ const AdminBulkPopUp = ({ isVisible, setVisibility, refreshSsccData }) => {
     // get the sessionRow data
     const selectedAddSSCCData = sessionStorage.getItem('selectedAddSSCCData');
     const SelectedData = JSON.parse(selectedAddSSCCData);
-    console.log(SelectedData);
+    // console.log(SelectedData);
     const [loading, setLoading] = useState(false);
   
     
@@ -23,7 +23,7 @@ const AdminBulkPopUp = ({ isVisible, setVisibility, refreshSsccData }) => {
 const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(extensionDigit, quantity)
+    // console.log(extensionDigit, quantity)
     try {
       const requestBody = {
         preDigit: extensionDigit,
@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
       };
 
       const response = await newRequest.post('/sscc/bulk', requestBody);
-        console.log(response.data);
+        // console.log(response.data);
 
         //  display message
         const successMessage = response.data.message;
@@ -46,7 +46,7 @@ const handleSubmit = async (e) => {
         e.target.reset();
 
       } catch (error) {
-          console.log(error);
+          // console.log(error);
           toast.error(error?.response?.data?.message || "The Bulk Barcode is not generated.");
           setLoading(false);
       }

@@ -55,22 +55,22 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
     axios
       .get("http://gs1ksa.org:7000/api/getAllProductTypes")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setData(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
 
     // // Safety Information Api
     axios
       .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${gtinData?.gtin}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setSafetyInformation(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
@@ -84,11 +84,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setSafetyInformation(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(
             //   err?.response?.data?.message ?? "something went wrong!",
             //   "error"
@@ -102,11 +102,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getPromotionalOffersByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPromotionalOffers(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
             setPromotionalOffers([]);
@@ -117,12 +117,12 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductContentByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
-            console.log("called");
+            // console.log(response.data);
+            // console.log("called");
             setProductContent(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
             setProductContent([]);
@@ -133,11 +133,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductLocationOriginByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductLocationofOrigin(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
             setProductLocationofOrigin([]);
@@ -148,11 +148,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductsRecallByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductRecall(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
             setProductRecall([]);
@@ -163,11 +163,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getRecipeDataByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setRecipe(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
             setRecipe([]);
@@ -180,11 +180,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
             `http://gs1ksa.org:7000/api/getAlltblPkgCompositionDataByGtin/${gtinData?.gtin}`
           )
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPackagingComposition(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
 
@@ -196,11 +196,11 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductLeafLetsDataByGtin/${gtinData?.gtin}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setElectronicLeaflets(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message || "error");
             setElectronicLeaflets([]);
@@ -214,24 +214,24 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
   };
 
   const deleteData = (ID, endpoint) => {
-    console.log(ID, selectedOption);
+    // console.log(ID, selectedOption);
     axios
       .delete(`http://gs1ksa.org:7000/api/${endpoint}/${ID}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // openSnackbar(response?.data?.message, "success");
         toast.success(response?.data?.message || "success");
         handleOptionChange(selectedOption);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         // openSnackbar(err?.response?.data?.message, "error");
         toast.error(err?.response?.data?.message || "error");
       });
   };
 
   const handleDelete = (row) => {
-    console.log(row);
+    // console.log(row);
 
     switch (selectedOption) {
       case "Safety Information":
@@ -273,7 +273,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         break;
 
       default:
-        console.log("No option selected");
+        // console.log("No option selected");
         break;
     }
   };
@@ -353,7 +353,7 @@ const DigitalUrlWithoutSidebar = ({ gtinData }) => {
         );
 
       default:
-        console.log("No option selected");
+        // console.log("No option selected");
         return; // Return undefined to indicate no updates were performed
     }
   };

@@ -77,7 +77,7 @@ const DataTable3 = ({
 
     // You can apply the filtering logic here and use the filtered rows for your other logic
     const filteredRows = applyFiltering(filteredData, newFilterModel);
-    console.log("Filtered rows:", filteredRows);
+    // console.log("Filtered rows:", filteredRows);
     setMuiFilteredData(filteredRows);
   };
 
@@ -129,7 +129,7 @@ const DataTable3 = ({
     'customerListId'
   ]
   const handleRowClick = (item) => {
-    console.log(item)
+    // console.log(item)
     // check if the uniqueId is in the ids array
     if (ids.includes(uniqueId)) {
       handleRowClickInParent(item);
@@ -177,12 +177,12 @@ const DataTable3 = ({
     e.target.name === "SHIPMENTID"
       ? setShipmentIdSearch(e.target.value)
       : setContainerIdSearch(e.target.value);
-    console.log(e.target.name, e.target.value);
-    console.log(shipmentIdSearch, containerIdSearch);
+    // console.log(e.target.name, e.target.value);
+    // console.log(shipmentIdSearch, containerIdSearch);
   };
   // Retrieve the value with the key "myKey" from localStorage getvalue
   const myValue = localStorage.getItem("userId");
-  console.log(myValue);
+  // console.log(myValue);
 
   // const handleDelete = async (id, rowdata) => {
   //     // if (window.confirm("Are you sure you want to delete this user?")) {
@@ -556,7 +556,7 @@ const DataTable3 = ({
           editMode="none" // set to row if need to edit row
           processRowUpdate={processRowUpdate ? processRowUpdate : null}
           onProcessRowUpdateError={(params, error) => {
-            console.log(error);
+            // console.log(error);
           }}
           slots={{ toolbar: GridToolbar }}
           rows={filteredData}
@@ -580,9 +580,9 @@ const DataTable3 = ({
           rowSelectionModel={rowSelectionModel}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel); // Set the state with selected row ids
-            console.log(newRowSelectionModel); // Logs the ids of selected rows
+            // console.log(newRowSelectionModel); // Logs the ids of selected rows
             const selectedRows = filteredData.filter((row) => newRowSelectionModel.includes(row.no));
-            console.log(selectedRows)
+            // console.log(selectedRows)
             setSelectedRow(selectedRows.map((item, index) => ({ data: item, index }))); // Set the state with selected row data objects
             setTableSelectedRows(selectedRows)
             handleRowClick(selectedRows);

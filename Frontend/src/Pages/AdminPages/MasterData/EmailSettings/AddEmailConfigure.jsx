@@ -21,7 +21,7 @@ const AddEmailConfigure = ({ isVisible, setVisibility, refreshBrandData }) => {
         const nameEnArray = response.data;
         setmegamenudropdown(nameEnArray);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -59,7 +59,7 @@ const AddEmailConfigure = ({ isVisible, setVisibility, refreshBrandData }) => {
         }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseCreatePopup();
     } catch (error) {

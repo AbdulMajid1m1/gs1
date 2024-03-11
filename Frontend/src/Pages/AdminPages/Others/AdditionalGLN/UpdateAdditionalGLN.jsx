@@ -9,7 +9,7 @@ const UpdateAdditionalGLN = ({ isVisible, setVisibility, refreshAddtionalProduct
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [totalNumberOfGln, setTotalNumberOfGln] = useState(updateBrandData?.total_no_of_gln || '');
   const [price, setPrice] = useState(updateBrandData?.price || 0);
   const [loading, setLoading] = useState(false);
@@ -36,14 +36,14 @@ const UpdateAdditionalGLN = ({ isVisible, setVisibility, refreshAddtionalProduct
 
       toast.success(response?.data?.message || `${t('Additional Gln Updated Successfully')}`);
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshAddtionalProducts();
       handleCloseUpdatePopup();
 
     } catch (error) {
       toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

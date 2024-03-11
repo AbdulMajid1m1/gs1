@@ -57,12 +57,12 @@ const Documents = () =>
       try {
         const response = await newRequest.get("/getAllcr_documents",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -76,18 +76,18 @@ const Documents = () =>
     try {
       const response = await newRequest.get("/getAllcr_documents",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
   const handleDelete = async (row) =>
   {
@@ -166,7 +166,7 @@ const Documents = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -183,7 +183,7 @@ const Documents = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
               // Handle success
               Swal.fire(
                 'Add!',
@@ -194,7 +194,7 @@ const Documents = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some document code already exist`,

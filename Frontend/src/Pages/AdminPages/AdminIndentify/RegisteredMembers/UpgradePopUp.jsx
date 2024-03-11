@@ -30,7 +30,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
     try {
       // const res = await newRequest.get(`/users/cart?transaction_id=${userData?.transaction_id}`);
       const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
-      console.log(res.data);
+      // console.log(res.data);
       setMemberInvoiceData(res.data);
 
       let total = 0;
@@ -49,11 +49,11 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
         // add price and other_products_subscription_total_price
         total += parseInt(item?.price || 0) + parseInt(item.other_products_subscription_total_price);
       });
-      console.log(total);
+      // console.log(total);
       setTotalPrice(total);
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
 
 
@@ -75,16 +75,16 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           (option) => subType === "UPGRADE" ? option.total_no_of_barcodes > firstApiTotalBarcodes : option.total_no_of_barcodes < firstApiTotalBarcodes
         );
 
-        console.log(res.data);
-        console.log(firstApiTotalBarcodes);
-        console.log(res2.data);
+        // console.log(res.data);
+        // console.log(firstApiTotalBarcodes);
+        // console.log(res2.data);
 
         // Set the filtered options in your state or use it directly
         // mmeber has two categotyes non_med_category and med_category selelct price based on category and setGtinBarcodes
         // member_registration_fee med_yearly_subscription_fee member_registration_fee gtin_yearly_subscription_fee
 
         // set price based on member category
-        console.log(filteredOptions);
+        // console.log(filteredOptions);
         filteredOptions.forEach((item) => {
           if (userData?.membership_category === "non_med_category") {
             item.price = item.member_registration_fee,
@@ -94,7 +94,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
               item.yearly_fee = item.med_yearly_subscription_fee
           }
         });
-        console.log(filteredOptions);
+        // console.log(filteredOptions);
 
 
         setGtinBarcodes(filteredOptions);
@@ -109,7 +109,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
             res.data?.gtinSubscriptions[0]?.gtin_product?.total_no_of_barcodes || 0;
 
           let filteredOptions = [];
-          console.log(firstApiTotalBarcodes)
+          // console.log(firstApiTotalBarcodes)
 
 
           if (firstApiTotalBarcodes === 100) {
@@ -137,14 +137,14 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           // Set the filtered options in your state or use it directly
           setGtinBarcodes(filteredOptions);
 
-          console.log(res.data);
-          console.log(firstApiTotalBarcodes);
-          console.log(res2.data);
-          console.log(filteredOptions);
+          // console.log(res.data);
+          // console.log(firstApiTotalBarcodes);
+          // console.log(res2.data);
+          // console.log(filteredOptions);
 
         }
         catch (err) {
-          console.log(err);
+          // console.log(err);
         }
       }
       if (subType === 'ADD GLN') {
@@ -160,21 +160,21 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           //   (option) => option.total_no_of_barcodes > firstApiTotalBarcodes
           // );
 
-          console.log(res.data);
-          console.log(firstApiTotalBarcodes);
-          console.log(res2.data);
+          // console.log(res.data);
+          // console.log(firstApiTotalBarcodes);
+          // console.log(res2.data);
 
           // Set the filtered options in your state or use it directly
           setGtinBarcodes(res2.data);
-          console.log(filteredOptions);
+          // console.log(filteredOptions);
         }
         catch (err) {
-          console.log(err);
+          // console.log(err);
         }
       }
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 
@@ -186,8 +186,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
 
   const handleSelectedGtinBarcodes = async (event, value) => {
-    console.log(value);
-    console.log(userData?.id);
+    // console.log(value);
+    // console.log(userData?.id);
     // calll the api
     setSelectedGtinBarcodes(value)
     if (subType === "UPGRADE" || subType === "DOWNGRADE") {
@@ -197,11 +197,11 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           "userId": userData?.id,
           "newSubscriptionId": value?.id,
         });
-        console.log(res.data);
+        // console.log(res.data);
         setNewSubscriptionDetails(res.data);
       }
       catch (err) {
-        console.log(err);
+        // console.log(err);
         toast.error(err.response?.data?.error || "Failed to get invoice details!");
       }
     }
@@ -223,7 +223,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           selectedLanguage: selectedLanguage,
 
         });
-        console.log(res.data);
+        // console.log(res.data);
         toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         // }
 
@@ -241,7 +241,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
 
         });
-        console.log(res.data);
+        // console.log(res.data);
         toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         // }
 
@@ -256,31 +256,31 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           "gtinUpgradeProductId": selectedGtinBarcodes?.id,
           selectedLanguage: selectedLanguage,
         });
-        console.log(res.data);
+        // console.log(res.data);
         toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         fetchMemberInvoiceData();
         handleCloseUpgradePopup();
       }
 
       if (subType === "ADD GLN") {
-        console.log(selectedGtinBarcodes?.id);
-        console.log(memberInoviceData?.otherProductSubscriptions);
+        // console.log(selectedGtinBarcodes?.id);
+        // console.log(memberInoviceData?.otherProductSubscriptions);
         const selectGLnRow = JSON.parse(sessionStorage.getItem('selectedGlnRowData'));
-        console.log("selectGLnRow", selectGLnRow);
+        // console.log("selectGLnRow", selectGLnRow);
         const res = await newRequest.post('/changeMembership/addAdditionalGlnRequest', {
           "userId": userData?.id,
           "additionalGlnId": selectedGtinBarcodes?.id,
           otherProductSubscriptionId: selectGLnRow?.id,
           selectedLanguage: selectedLanguage,
         });
-        console.log(res.data);
+        // console.log(res.data);
         toast.success(res?.data?.message || `${t('Upgrade request sent successfully!')}`);
         fetchMemberInvoiceData();
         handleCloseUpgradePopup();
       }
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err.response?.data?.error || "Upgrade request failed!");
     }
     finally {
@@ -321,7 +321,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                     onInputChange={(event, value) => {
                       if (!value) {
                         // perform operation when input is cleared
-                        console.log("Input cleared");
+                        // console.log("Input cleared");
                       }
                     }}
                     renderInput={(params) => (

@@ -14,7 +14,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
     // Now you can retrieve the data and parse it when needed
     const storedData = sessionStorage.getItem('adminData');
     const adminData = JSON.parse(storedData);
-    console.log(adminData);
+    // console.log(adminData);
     // console.log(assignUser);
 
     const closePopUp = () => {
@@ -34,7 +34,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
               "body": message
             });
 
-            console.log(res?.data);
+            // console.log(res?.data);
             toast.success(res?.data?.message ||`${t("Email Sent Successfully!")}`);
             setIsLoading(false);
             closePopUp();
@@ -42,7 +42,7 @@ const SendEmailPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => 
 
         } catch (err) {
             setIsLoading(false);
-            console.log(err);
+            // console.log(err);
             toast.error(err?.response?.data?.error || 'Error in data');
         }
     }

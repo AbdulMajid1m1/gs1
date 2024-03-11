@@ -50,7 +50,7 @@ const DigitalUrlInfo = () => {
   const selectedGtinData = JSON.parse(
     sessionStorage.getItem("selectedGtinData")
   );
-  console.log(selectedGtinData);
+  // console.log(selectedGtinData);
   const status = selectedGtinData?.status === 1 ? "Active" : "Inactive";
 
   const memberDataString = sessionStorage.getItem('memberData');
@@ -66,22 +66,22 @@ const DigitalUrlInfo = () => {
     // Product Type Drop Down Api
     axios.get("http://gs1ksa.org:7000/api/getAllProductTypes")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setData(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
 
     // // Safety Information Api
     axios
       .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${selectedGtinData?.barcode}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setSafetyInformation(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
@@ -95,11 +95,11 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getSafetyInformationByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setSafetyInformation(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(
             //   err?.response?.data?.message ?? "something went wrong!",
             //   "error"
@@ -113,11 +113,11 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getPromotionalOffersByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPromotionalOffers(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setPromotionalOffers([]);
@@ -128,12 +128,12 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductContentByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
-            console.log("called");
+            // console.log(response.data);
+            // console.log("called");
             setProductContent(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setProductContent([]);
@@ -144,11 +144,11 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductLocationOriginByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductLocationofOrigin(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setProductLocationofOrigin([]);
@@ -159,11 +159,11 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductsRecallByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setProductRecall(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setProductRecall([]);
@@ -174,11 +174,11 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getRecipeDataByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setRecipe(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setRecipe([]);
@@ -191,11 +191,11 @@ const DigitalUrlInfo = () => {
             `http://gs1ksa.org:7000/api/getAlltblPkgCompositionDataByGtin/${selectedGtinData?.barcode}`
           )
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setPackagingComposition(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
 
@@ -207,11 +207,11 @@ const DigitalUrlInfo = () => {
         axios
           .get(`http://gs1ksa.org:7000/api/getProductLeafLetsDataByGtin/${selectedGtinData?.barcode}`)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setElectronicLeaflets(response.data);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             // openSnackbar(err?.response?.data?.message, "error");
             toast.error(err?.response?.data?.message ?? "No Data!");
             setElectronicLeaflets([]);
@@ -225,24 +225,24 @@ const DigitalUrlInfo = () => {
   };
 
   const deleteData = (ID, endpoint) => {
-    console.log(ID, selectedOption);
+    // console.log(ID, selectedOption);
     axios
       .delete(`http://gs1ksa.org:7000/api/${endpoint}/${ID}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // openSnackbar(response?.data?.message, "success");
         toast.success(response?.data?.message ?? `${t('deleted successfully')}`);
         handleOptionChange(selectedOption);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         // openSnackbar(err?.response?.data?.message, "error");
         toast.error(err?.response?.data?.message ??  `${t('Something went wrong!')}`);
       });
   };
 
   const handleDelete = (row) => {
-    console.log(row);
+    // console.log(row);
 
     switch (selectedOption) {
       case "Safety Information":
@@ -284,7 +284,7 @@ const DigitalUrlInfo = () => {
         break;
 
       default:
-        console.log("No option selected");
+        // console.log("No option selected");
         break;
     }
   };
@@ -365,7 +365,7 @@ const DigitalUrlInfo = () => {
         );
 
       default:
-        console.log("No option selected");
+        // console.log("No option selected");
         return; // Return undefined to indicate no updates were performed
     }
   };

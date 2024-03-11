@@ -25,7 +25,7 @@ const AdminPaymentSlips = () => {
 
 
   const handleGPCAutoCompleteChange = (event, value) => {
-    console.log(value);
+    // console.log(value);
     setSelectedSlip(value);
 
 
@@ -40,7 +40,7 @@ const AdminPaymentSlips = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
+    // console.log(reason);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
       setPaymentList([]); // Clear the data list if there is no input
@@ -58,7 +58,7 @@ const AdminPaymentSlips = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -71,7 +71,7 @@ const AdminPaymentSlips = () => {
         const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -112,16 +112,16 @@ const AdminPaymentSlips = () => {
   
   const fetchData = async (value) => {
     setIsLoading(true);
-    console.log(value); 
-    console.log(value?.companyID);
+    // console.log(value); 
+    // console.log(value?.companyID);
     try {
       const response = await newRequest.get(`/memberDocuments?user_id=${value?.id}&type=bank_slip`);
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };

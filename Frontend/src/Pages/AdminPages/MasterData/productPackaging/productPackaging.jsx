@@ -44,12 +44,12 @@ const ProductPackaging = () =>
       try {
         const response = await newRequest.get("/getAllproductPackag",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -68,12 +68,12 @@ const ProductPackaging = () =>
     try {
       const response = await newRequest.get("/getAllproductPackag",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -88,7 +88,7 @@ const ProductPackaging = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleDelete = async (row) =>
@@ -171,7 +171,7 @@ const ProductPackaging = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -189,7 +189,7 @@ const ProductPackaging = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -200,7 +200,7 @@ const ProductPackaging = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some Product package already exist`,

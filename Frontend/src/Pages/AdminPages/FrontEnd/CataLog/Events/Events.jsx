@@ -40,12 +40,12 @@ const Events = () => {
         try {
             const response = await newRequest.get("/getAllupcoming_events",);
 
-            console.log(response.data);
+            // console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -118,7 +118,7 @@ const Events = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -174,7 +174,7 @@ const Events = () => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
                 position: "top-right",
@@ -187,7 +187,7 @@ const Events = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -201,7 +201,7 @@ const Events = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -221,7 +221,7 @@ const Events = () => {
                     formData.append('image', item.imageshow);
                     newRequest.post(`/creatupcoming_events`, formData)
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
                             Swal.fire(
                                 'Add!',
                                 `Featured Events has been created`,
@@ -230,7 +230,7 @@ const Events = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Featured Events already exist`,

@@ -14,7 +14,7 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         getpagedata();
@@ -58,12 +58,12 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error(error?.response?.data?.error || 'Error', {
                 position: 'top-right',
                 autoClose: 2000,
@@ -74,7 +74,7 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
+            // console.log(error);
         }
 
 

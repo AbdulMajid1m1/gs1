@@ -51,11 +51,11 @@ const AdminActivityReport = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
-    console.log(newInputValue);
+    // console.log(reason);
+    // console.log(newInputValue);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
-      console.log('clear');
+      // console.log('clear');
       // console.log(newInputValue);
       setAdminList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
@@ -72,7 +72,7 @@ const AdminActivityReport = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -85,7 +85,7 @@ const AdminActivityReport = () => {
       const res = await newRequest.get(`/admin/searchAdmins?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -105,7 +105,7 @@ const AdminActivityReport = () => {
       // fetchData();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setAdminList([]); // Clear the data list if an error occurs
       setOpen(false);
       setAutocompleteLoading(false);
@@ -134,7 +134,7 @@ const AdminActivityReport = () => {
       formattedStartDate.setHours(0, 0, 0, 0);
       const formattedEndDate = new Date(endDate);
       formattedEndDate.setHours(23, 59, 59, 999);
-      console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
+      // console.log(formattedStartDate?.toISOString(), formattedEndDate?.toISOString());
 
 
       const res = await newRequest.post('/report/gs1Admin', {
@@ -143,7 +143,7 @@ const AdminActivityReport = () => {
         admin_id: selectedAdmin?.id,
       });
 
-      console.log(res?.data);
+      // console.log(res?.data);
 
       const responseAdminMainData = res?.data?.map(item => {
         return {
@@ -156,7 +156,7 @@ const AdminActivityReport = () => {
         };
       });
 
-      console.log(responseAdminMainData);
+      // console.log(responseAdminMainData);
 
       setData(responseAdminMainData);
 
@@ -167,7 +167,7 @@ const AdminActivityReport = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data || 'Error in fetching data');
 
     }
@@ -187,7 +187,7 @@ const AdminActivityReport = () => {
       });
 
       const fetchedData = res?.data;
-      console.log(fetchedData);
+      // console.log(fetchedData);
       const processedData = fetchedData.reduce((acc, current) => {
         const adminName = current.admin.username;
         acc[adminName] = (acc[adminName] || 0) + 1;
@@ -197,7 +197,7 @@ const AdminActivityReport = () => {
       setChartData(Object.entries(processedData).map(([name, count]) => ({ name, count })));
     } catch (err) {
       // handle error
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data || 'Error in fetching data');
     }
   };
@@ -224,11 +224,11 @@ const AdminActivityReport = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteChartInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
-    console.log(newInputValue);
+    // console.log(reason);
+    // console.log(newInputValue);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
-      console.log('clear');
+      // console.log('clear');
       // console.log(newInputValue);
       setAdminChartList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
@@ -245,7 +245,7 @@ const AdminActivityReport = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -258,7 +258,7 @@ const AdminActivityReport = () => {
       const res = await newRequest.get(`/admin/searchAdmins?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -277,7 +277,7 @@ const AdminActivityReport = () => {
       // fetchData();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setAdminChartList([]); // Clear the data list if an error occurs
       setOpenChart(false);
       setAutocompleteChartLoading(false);

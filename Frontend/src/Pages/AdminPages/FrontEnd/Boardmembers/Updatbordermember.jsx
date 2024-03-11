@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const Updatbordermember = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateboardMember"));
-    console.log(updateBrandData)
+    // console.log(updateBrandData)
     const [Name, setName] = useState(updateBrandData?.name || '');
     const [job_title, setjob_title] = useState(updateBrandData?.job_title || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
@@ -26,7 +26,7 @@ const Updatbordermember = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -37,7 +37,7 @@ const Updatbordermember = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [imageshowupload, setimageshowupload] = useState(updateBrandData?.image)
 
 
-    console.log(updateBrandData?.image);
+    // console.log(updateBrandData?.image);
     function handleChangeback(e) {
         setSelectedFile(e.target.files[0]);
         setimageshow(e.target.files[0])
@@ -69,7 +69,7 @@ const Updatbordermember = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 
@@ -84,7 +84,7 @@ const Updatbordermember = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error);
+            // console.log(error);
         }
         finally {
             setLoading(false);

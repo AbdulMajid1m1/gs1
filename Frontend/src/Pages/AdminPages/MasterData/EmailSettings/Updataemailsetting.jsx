@@ -23,7 +23,7 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
         const nameEnArray = response.data;
         setmegamenudropdown(nameEnArray);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -46,7 +46,7 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
         smtp_port: SMTPPort,
         status: 1,
       });
-      console.log(response);
+      // console.log(response);
 
       toast.success(
         `${('Email Configure')} ${EmailSentFrom} ${('has been')} ${t('Updated Successfully')}..`,

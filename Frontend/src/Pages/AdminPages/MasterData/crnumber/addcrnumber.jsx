@@ -63,7 +63,7 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       // refreshBrandData();
       handleCloseCreatePopup();
 
@@ -79,7 +79,7 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
         progress: undefined,
         theme: 'light',
       });
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }

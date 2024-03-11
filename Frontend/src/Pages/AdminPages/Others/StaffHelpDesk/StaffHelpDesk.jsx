@@ -23,7 +23,7 @@ const StaffHelpDesk = () => {
   const handleGPCAutoCompleteChange = (event, value) => {
     setSelectedAdmin(value);
 
-    console.log(value);
+    // console.log(value);
     // Update the state variable when Autocomplete field is filled
     setIsAutocompleteFilled(value !== null && value !== '');
 
@@ -35,11 +35,11 @@ const StaffHelpDesk = () => {
 
   // Use debounce to wrap the handleAutoCompleteInputChange function
   const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-    console.log(reason);
-    console.log(newInputValue);
+    // console.log(reason);
+    // console.log(newInputValue);
     setIsSubmitClicked(false);
     if (reason === 'reset' || reason === 'clear') {
-      console.log('clear');
+      // console.log('clear');
       // console.log(newInputValue);
       setAdminList([]); // Clear the data list if there is no input
       // setSelectedCr(null);
@@ -56,7 +56,7 @@ const StaffHelpDesk = () => {
       return;
     }
 
-    console.log(newInputValue);
+    // console.log(newInputValue);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort(); // Abort previous request
     }
@@ -69,7 +69,7 @@ const StaffHelpDesk = () => {
       const res = await newRequest.get(`/admin/searchAdmins?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      console.log(res);
+      // console.log(res);
 
       const crs = res?.data?.map(item => {
         return {
@@ -88,7 +88,7 @@ const StaffHelpDesk = () => {
       // fetchData();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setAdminList([]); // Clear the data list if an error occurs
       setOpen(false);
       setAutocompleteLoading(false);
@@ -118,12 +118,12 @@ const StaffHelpDesk = () => {
     setIsLoading(true)
     try {
       const response = await newRequest.get(`/users/getUsersWithAssignTo${id ? `?id=${id}` : ''}`);
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err?.response?.data?.error || err?.response?.data || "Something went wrong!");
       setIsLoading(false)
     }
@@ -135,7 +135,7 @@ const StaffHelpDesk = () => {
 
 
   const handleView = (row) => {
-    console.log(row)
+    // console.log(row)
   };
 
   const handleRowClickInParent = (item) => {

@@ -17,7 +17,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
   //   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
   //   console.log(gs1MemberInvoiceData);
   const gs1MemberData = userData;
-  console.log(gs1MemberData)
+  // console.log(gs1MemberData)
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       // const res = await newRequest.get(`/users/cart?transaction_id=${gs1MemberData?.transaction_id}`);
       const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${gs1MemberData?.id}&isDeleted=false`);
 
-      console.log(res.data);
+      // console.log(res.data);
       setMemberInvoiceData(res.data);
       // let total = 0;
       // res.data?.gtinSubscriptions.forEach((item) => {
@@ -50,7 +50,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
     }
     catch (err) {
-      console.log(err);
+      // console.log(err);
     }
 
 
@@ -59,12 +59,12 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
   // const [cartItemsProducts, setCartItemsProducts] = useState([]);
 
   const handleDeleteRow = async (index, item) => {
-    console.log(item);
+    // console.log(item);
 
 
     try {
       const res = await newRequest.delete(`/gtinProducts/deleteotherProductsSubscriptionsFromAdmin?id=${item.id}&transaction_id=${gs1MemberData?.transaction_id}&product_id=${item?.product_id}`);
-      console.log(res.data);
+      // console.log(res.data);
       toast.success(res?.data?.message ?? `${('Cart item deleted successfully!')}`);
 
       // Remove the deleted item from the cart based on id  
@@ -95,7 +95,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       // console.log(cartItemsProducts);
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err.response?.data?.error || `${t('Something went wrong!')}`);
     }
   };
@@ -110,7 +110,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       // add price and other_products_subscription_total_price
       total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
     });
-    console.log(total);
+    // console.log(total);
     setTotalPrice(total);
   }, [memberInoviceData]);
 
@@ -151,7 +151,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
       fetchRegisteredProductsData();
       //   }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setLoading(false);
       toast.error(err.response?.data?.error || "Something went wrong!");
     }

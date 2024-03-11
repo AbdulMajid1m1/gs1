@@ -42,7 +42,7 @@ const EmailConfigure = () => {
       setData(response?.data || []);
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false);
     }
   };
@@ -129,7 +129,7 @@ const EmailConfigure = () => {
     });
   };
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
   };
   const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {

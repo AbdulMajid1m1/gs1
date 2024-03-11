@@ -50,11 +50,11 @@ const MapEvents = ({ locations = [] }) => {
                     setCurrentLocation({ lat: latitude, lng: longitude });
                 },
                 (error) => {
-                    console.log('Error getting current location:', error);
+                    // console.log('Error getting current location:', error);
                 }
             );
         } else {
-            console.log('Geolocation is not supported by this browser.');
+            // console.log('Geolocation is not supported by this browser.');
         }
     }, []);
     if (!isGoogleLoaded) {

@@ -13,12 +13,12 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 }) => {
   const { selectedLanguage } = useLanguage();
   const gs1MemberInvoiceData = JSON.parse(sessionStorage.getItem("memberInvoiceData"));
-  console.log(gs1MemberInvoiceData);
+  // console.log(gs1MemberInvoiceData);
   const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
   const { t } = useTranslation();
   // console.log(gs1MemberData)
   const gtinId = sessionStorage.getItem("gtinId");
-  console.log(gtinId);
+  // console.log(gtinId);
   //   const [status, setStatus] = useState("");
   const [rejected, setRejected] = useState("");
   const [selectedStatus, setSelectedStatus] = useState('approved'); // Default to "Approved"
@@ -60,7 +60,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
         // check invoice type
         // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
         const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${gs1MemberInvoiceData?.user_id}&isDeleted=false`);
-        console.log(res.data);
+        // console.log(res.data);
         setMemberInvoiceData(res.data);
 
         let total = 0;
@@ -72,22 +72,22 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
           // add price and other_products_subscription_total_price
           total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
         });
-        console.log(total);
+        // console.log(total);
         setTotalPrice(total);
       }
       catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
     if (gs1MemberInvoiceData?.type === "upgrade_invoice" || gs1MemberInvoiceData?.type === "downgrade_invoice" || gs1MemberInvoiceData?.type === "additional_gtin_invoice") {
       try {
         const res = await newRequest.get(`/changeMembership/upgradeMembershipCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
-        console.log(res.data);
+        // console.log(res.data);
         let data = res.data[0];
 
 
         let cart = JSON.parse(data?.cart);
-        console.log(cart);
+        // console.log(cart);
         setTypeOfPayment(cart?.typeOfPayment);
         let total = 0;
         const cartItems = cart?.cart_items?.map((item) => ({
@@ -98,12 +98,12 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
         }));
 
         total = cartItems?.reduce((acc, item) => acc + item?.registrationFee + item?.yearlyFee, 0);
-        console.log(total);
+        // console.log(total);
         setMemberInvoiceData(cartItems);
         setTotalPrice(total);
       }
       catch (err) {
-        console.log(err);
+        // console.log(err);
 
       }
     }
@@ -135,12 +135,12 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
     if (gs1MemberInvoiceData?.type === "additional_gln_invoice") {
       try {
         const res = await newRequest.get(`/changeMembership/addGlnCarts?transaction_id=${gs1MemberInvoiceData?.transaction_id}`);
-        console.log(res.data);
+        // console.log(res.data);
         let data = res.data[0];
 
 
         let cart = JSON.parse(data?.cart);
-        console.log(cart);
+        // console.log(cart);
         setTypeOfPayment(cart?.typeOfPayment)
         let total = 0;
         const cartItems = cart?.cart_items?.map((item) => ({
@@ -150,12 +150,12 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
         }));
 
         total = cartItems?.reduce((acc, item) => acc + item?.registrationFee + item?.yearlyFee, 0);
-        console.log(total)
+        // console.log(total)
         setMemberInvoiceData(cartItems)
         setTotalPrice(total);
       }
       catch (err) {
-        console.log(err);
+        // console.log(err);
 
       }
     }
@@ -172,7 +172,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(gs1MemberInvoiceData);
+    // console.log(gs1MemberInvoiceData);
 
 
     const approvedBody = {
@@ -284,7 +284,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
         handleCloseInvoicePopup();
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
 
       toast.error(err.response?.data?.error || `${t('Something went wrong')}`);
       setLoading(false);
@@ -539,7 +539,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 
 
                               {memberInoviceData?.otherProductSubscriptions?.filter(item => item.status === 'inactive').map((item, index) => {
-                                console.log(item);
+                                // console.log(item);
                                 const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
                                 return (
                                   <tr key={'other_products' + index}>

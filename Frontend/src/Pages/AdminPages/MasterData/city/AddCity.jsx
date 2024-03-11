@@ -23,10 +23,10 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
     {
       try {
         const response = await newRequest.get('/address/getAllStatesName');
-        console.log(response.data);
+        // console.log(response.data);
         setDocuments(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -37,7 +37,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
   }, []);
   const handleSelectedDocuments = (event, value) =>
   {
-    console.log(value?.id);
+    // console.log(value?.id);
     setSelectedCountryId(value?.id)
     setSelectedDocuments(value);
   };
@@ -63,7 +63,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseCreatePopup();
 
@@ -81,7 +81,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
       });
 
 
-      console.log(error);
+      // console.log(error);
     }
 
 
@@ -135,7 +135,7 @@ const AddCity = ({ isVisible, setVisibility, refreshBrandData }) =>
                       {
                         if (!value) {
                           // perform operation when input is cleared
-                          console.log("Input cleared");
+                          // console.log("Input cleared");
                         }
                       }}
                       renderInput={(params) => (

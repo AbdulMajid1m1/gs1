@@ -62,7 +62,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
       toast.success(response?.data?.message || 'Successfully Updated');
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshProductsCategory();
       handleCloseUpdatePopup();
       setLoading(false);
@@ -70,7 +70,7 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
 
     } catch (error) {
       toast.error(error?.response?.data?.error || 'Error');
-      console.log(error);
+      // console.log(error);
       setLoading(false);
     }
 

@@ -58,7 +58,7 @@ const AdminSSCC = () => {
   
     // Use debounce to wrap the handleAutoCompleteInputChange function
     const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-      console.log(reason);
+      // console.log(reason);
       setIsSubmitClicked(false);
       if (reason === 'reset' || reason === 'clear') {
         setCrList([]); // Clear the data list if there is no input
@@ -76,7 +76,7 @@ const AdminSSCC = () => {
         return;
       }
   
-      console.log(newInputValue);
+      // console.log(newInputValue);
       if (abortControllerRef.current) {
         abortControllerRef.current.abort(); // Abort previous request
       }
@@ -89,7 +89,7 @@ const AdminSSCC = () => {
         const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
           signal: abortControllerRef.current.signal
         });
-        console.log(res);
+        // console.log(res);
   
         const crs = res?.data?.map(item => {
           return {
@@ -123,16 +123,16 @@ const AdminSSCC = () => {
   
     const fetchData = async (value) => {
       setIsLoading(true);
-      console.log(value);
+      // console.log(value);
       setAllSearchMemberDetails(value);
       try {
         const response = await newRequest.get(`/sscc?user_id=${value?.user_id}`);
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
   
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -179,9 +179,9 @@ const AdminSSCC = () => {
     const handleDelete = async (row) => {
         try {
           const deleteResponse = await newRequest.delete(`/sscc/${row?.id}`);
-          console.log(deleteResponse.data);
+          // console.log(deleteResponse.data);
           const successMessage = deleteResponse.data.message;
-            console.log(successMessage);
+            // console.log(successMessage);
 
           toast.success(successMessage || `${t('SSCC')}  ${t('deleted successfully')}`, {
                 position: 'top-right',
@@ -200,7 +200,7 @@ const AdminSSCC = () => {
 
           // Handle the success message or update the data accordingly
         } catch (err) {
-          console.log(err);
+          // console.log(err);
 
             toast.error(err?.response?.data?.error || 'Error', {
                 position: 'top-right',
@@ -231,7 +231,7 @@ const AdminSSCC = () => {
       
       // Print Page
   const handlePrint = (row) => {
-    console.log(row);
+    // console.log(row);
     setUpdatedRows(row);
     if (row.length === 0) {
       openSnackbar('Please select a row to print.');
@@ -348,7 +348,7 @@ const handleRowClickInParent = (item) => {
   setFilteredData(item)
 
   const barcodes = item.map((row) => row.SSCCBarcodeNumber);
-    console.log(barcodes); // This will log an array of barcodes
+    // console.log(barcodes); // This will log an array of barcodes
     setTableSelectedRows(barcodes);
 }
 

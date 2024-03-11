@@ -6,7 +6,7 @@ import { TextField } from '@mui/material'
 const Gs1MembersView = () => {
     // get the sesstion data
     const gs1MemberData = JSON.parse(sessionStorage.getItem("gs1memberRecord"));
-    console.log(gs1MemberData)
+    // console.log(gs1MemberData)
 
     return (
         <div>

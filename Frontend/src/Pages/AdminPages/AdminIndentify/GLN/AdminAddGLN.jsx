@@ -14,7 +14,7 @@ const AdminAddGLN = () => {
   // get the sessionRow data
   const selectedAddGtinData = sessionStorage.getItem('selectedAddGlnData');
   const SelectedData = JSON.parse(selectedAddGtinData);
-  console.log(SelectedData);
+  // console.log(SelectedData);
   const [locationEnglish, setLocationEnglish] = React.useState('')
   const [locationArabic, setLocationArabic] = React.useState('')
   const [addressEnglish, setAddressEnglish] = React.useState('')
@@ -61,7 +61,7 @@ const AdminAddGLN = () => {
       newRequest
         .post("/gln", formData)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
 
           setIsLoading(false);
           setTimeout(() => {
@@ -83,7 +83,7 @@ const AdminAddGLN = () => {
           e.target.reset();
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setIsLoading(false);
 
           toast.error(err.response.data.error, {
@@ -143,11 +143,11 @@ const AdminAddGLN = () => {
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
         (error) => {
-          console.log('Error getting current location:', error);
+          // console.log('Error getting current location:', error);
         }
       );
     } else {
-      console.log('Geolocation is not supported by this browser.');
+      // console.log('Geolocation is not supported by this browser.');
     }
   }, []);
 

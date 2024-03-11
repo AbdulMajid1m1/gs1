@@ -12,7 +12,7 @@ const Updatecountryofsale = ({ isVisible, setVisibility, refreshBrandData }) =>
   const { t, i18n } = useTranslation();
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [Alpha2, setAlpha2] = useState(updateBrandData?.Alpha2 || '');
   const [Alpha3, setAlpha3] = useState(updateBrandData?.Alpha3 || '');
   const [country_code_numeric3, setcountry_code_numeric3] = useState(updateBrandData?.country_code_numeric3 || '');
@@ -54,7 +54,7 @@ const Updatecountryofsale = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -70,7 +70,7 @@ const Updatecountryofsale = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

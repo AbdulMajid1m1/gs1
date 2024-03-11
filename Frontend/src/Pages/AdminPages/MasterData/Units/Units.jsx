@@ -60,12 +60,12 @@ const Units = () =>
     try {
       const response = await newRequest.get("/getAllunit",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -143,7 +143,7 @@ const Units = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
   const handleAddCompany = async () =>
   {
@@ -203,7 +203,7 @@ const Units = () =>
 
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
     } catch (error) {
       toast.error(error?.response?.data?.error || 'Error', {
@@ -217,7 +217,7 @@ const Units = () =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
   };
   const handleRowClickInParent = (item) =>
@@ -233,7 +233,7 @@ const Units = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -251,7 +251,7 @@ const Units = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -262,7 +262,7 @@ const Units = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some Unit code already exist`,

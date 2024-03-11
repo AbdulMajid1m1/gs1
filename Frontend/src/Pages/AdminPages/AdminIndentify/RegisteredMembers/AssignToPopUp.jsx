@@ -22,7 +22,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
     // Now you can retrieve the data and parse it when needed
     const storedData = sessionStorage.getItem('adminData');
     const adminData = JSON.parse(storedData);
-    console.log(adminData);
+    // console.log(adminData);
     // console.log(assignUser);
 
     const handleGPCAutoCompleteChange = (event, value) => {
@@ -41,11 +41,11 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
 
     // Use debounce to wrap the handleAutoCompleteInputChange function
     const debouncedHandleAutoCompleteInputChange = debounce(async (event, newInputValue, reason) => {
-        console.log(reason);
-        console.log(newInputValue);
+        // console.log(reason);
+        // console.log(newInputValue);
         setIsSubmitClicked(false);
         if (reason === 'reset' || reason === 'clear') {
-            console.log('clear');
+            // console.log('clear');
             // console.log(newInputValue);
             setAdminList([]); // Clear the data list if there is no input
             // setSelectedCr(null);
@@ -62,7 +62,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
             return;
         }
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         if (abortControllerRef.current) {
             abortControllerRef.current.abort(); // Abort previous request
         }
@@ -75,7 +75,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
             const res = await newRequest.get(`/admin/searchAdmins?keyword=${newInputValue}`, {
                 signal: abortControllerRef.current.signal
             });
-            console.log(res);
+            // console.log(res);
 
             const crs = res?.data?.map(item => {
                 return {
@@ -95,7 +95,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
             // fetchData();
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             setAdminList([]); // Clear the data list if an error occurs
             setOpen(false);
             setAutocompleteLoading(false);
@@ -122,7 +122,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
                 selectedLanguage: selectedLanguage,
             });
 
-            console.log(res?.data);
+            // console.log(res?.data);
             toast.success(res?.data?.message || 'Assigned Successfully');
             setIsLoading(false);
             closePopUp();
@@ -130,7 +130,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
 
         } catch (err) {
             setIsLoading(false);
-            console.log(err);
+            // console.log(err);
             toast.error(err?.response?.data?.error || 'Error in data');
         }
     }

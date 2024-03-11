@@ -24,7 +24,7 @@ const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMembe
                 userId: userId,
                 selectedLanguage: selectedLanguage,
             });
-            console.log(response.data);
+            // console.log(response.data);
             toast.success(`${t('Certificate generated successfully')}`, {
                 position: "top-right",
                 autoClose: 2000,
@@ -40,7 +40,7 @@ const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMembe
             setVisibility(false);
             fetchMemberDocumentsData()
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setLoading(false);
             toast.error(err?.response?.data?.error || `${t('Something went wrong!')}`, {
                 position: "top-right",
@@ -59,7 +59,7 @@ const GenerateCertificatePopup = ({ isVisible, setVisibility, userId, fetchMembe
         <div>
             {/* create the post api popup */}
             {isVisible && (
-                <div className="popup-overlay">
+                <div className="popup-overlay z-50">
                     <div className="popup-container h-auto sm:w-[40%] w-full">
                         <div className="popup-form w-full">
                             <form className='w-full' onSubmit={handleGenerateCertificate}>

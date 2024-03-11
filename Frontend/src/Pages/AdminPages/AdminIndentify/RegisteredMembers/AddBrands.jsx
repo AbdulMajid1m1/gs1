@@ -85,7 +85,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData, userData }) => 
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseCreatePopup();
 
@@ -103,7 +103,7 @@ const AddBrands = ({ isVisible, setVisibility, refreshBrandData, userData }) => 
       });
 
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
 
 

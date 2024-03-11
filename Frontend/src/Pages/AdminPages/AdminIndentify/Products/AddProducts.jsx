@@ -142,13 +142,13 @@ const AddProducts = () => {
     const handleCountryOfSales = async () => {
         try {
             const response = await newRequest.get('/getAllcountryofsale');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const countryName = data.map((country) => country.country_name);
             setAllCountryName(countryName);
-            console.log(countryName);
+            // console.log(countryName);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -156,12 +156,12 @@ const AddProducts = () => {
     const handleUnitCode = async () => {
         try {
             const response = await newRequest.get('/getAllunit');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response?.data;
             const unitNameList = data.map((unitData) => unitData?.unit_name);
             setUnitCode(unitNameList);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -170,13 +170,13 @@ const AddProducts = () => {
     const handleProductTypeData = async () => {
         try {
             const response = await newRequest.get('/productTypes');
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
             setProductType(name);
-            console.log(name);
+            // console.log(name);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -184,15 +184,15 @@ const AddProducts = () => {
     const handleBrandNamesEnglishArabic = async () => {
         try {
             const response = await newRequest.get(`/brands?user_id=901`);
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             const name = data.map((country) => country.name);
             const name_ar = data.map((country) => country.name_ar);
             setBrandNameEnglish(name);
             setBrandNameArabic(name_ar);
-            console.log(name);
+            // console.log(name);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -292,7 +292,7 @@ const AddProducts = () => {
                 formData
             );
 
-            console.log(response);
+            // console.log(response);
             // openSnackbar('Product Added Successfully', 'success');
             // event reset form
             // event.target.reset();
@@ -329,7 +329,7 @@ const AddProducts = () => {
 
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             setIsLoading(false);
 
             toast.error(err?.response?.data?.error || "Error", {
@@ -348,48 +348,48 @@ const AddProducts = () => {
 
 
     const handleUnitCodeChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedUnitCode(value);
     };
     // console.log(selectedUnitCode);
 
     const handleSelectRegion = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedRegion(value);
     };
 
     const handleAllCounrtyName = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedCountry(value);
     };
 
     const handleProductDiscription = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductDescription(value);
     };
 
     const handleProductType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedProductType(value);
     };
 
     const handlePackageType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedPackageType(value);
     };
 
     const handleBrandNameEnglish = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameEnglish(value);
     };
 
     const handleBrandNameArabic = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedBrandNameArabic(value);
     };
 
     const handleDigitalInformationType = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setSelectedDigitalInformationType(value);
     };
 
@@ -400,7 +400,7 @@ const AddProducts = () => {
     // }
 
     const handleAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        console.log(reason)
+        // console.log(reason)
         if (reason === 'reset' || reason === 'clear') {
             setGpcList([]); // Clear the data list if there is no input
             return; // Do not perform search if the input is cleared or an option is selected
@@ -420,9 +420,9 @@ const AddProducts = () => {
         setOpen(true);
 
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         // setSearchText(newInputValue);
-        console.log("querying...")
+        // console.log("querying...")
         try {
 
             // Cancel any pending requests
@@ -437,7 +437,7 @@ const AddProducts = () => {
                     signal: abortControllerRef.current.signal
                 })
 
-            console.log(res);
+            // console.log(res);
             setGpcList(res?.data);
             setOpen(true);
             setAutocompleteLoading(false);
@@ -447,11 +447,11 @@ const AddProducts = () => {
                 // Ignore abort errors
                 setGpcList([]); // Clear the data list if there is no input
                 setAutocompleteLoading(true);
-                console.log(error)
+                // console.log(error)
                 return;
             }
             console.error(error);
-            console.log(error)
+            // console.log(error)
             setGpcList([]); // Clear the data list if an error occurs
             setOpen(false);
             setAutocompleteLoading(false);
@@ -460,7 +460,7 @@ const AddProducts = () => {
     }
 
     const handleGPCAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setGpc(value);
         setGpcCode(value);
     }
@@ -471,7 +471,7 @@ const AddProducts = () => {
     // }
 
     const handleHsCodeAutoCompleteInputChange = async (event, newInputValue, reason) => {
-        console.log(reason)
+        // console.log(reason)
         if (reason === 'reset' || reason === 'clear') {
             setHsCodeList([]); // Clear the data list if there is no input
             return; // Do not perform search if the input is cleared or an option is selected
@@ -491,7 +491,7 @@ const AddProducts = () => {
         setHsLoaderOpen(true);
 
 
-        console.log(newInputValue);
+        // console.log(newInputValue);
         // setSearchText(newInputValue);
         try {
 
@@ -507,8 +507,8 @@ const AddProducts = () => {
                     signal: abortControllerRef.current.signal
                 })
 
-            console.log(res);
-            console.log(res?.data);
+            // console.log(res);
+            // console.log(res?.data);
             setHsCodeList(res?.data);
             setHsLoaderOpen(true);
             setAutocompleteLoadingForHsCode(false);
@@ -518,11 +518,11 @@ const AddProducts = () => {
                 // Ignore abort errors
                 setHsCodeList([]); // Clear the data list if there is no input
                 setAutocompleteLoadingForHsCode(true);
-                console.log(error)
+                // console.log(error)
                 return;
             }
             console.error(error);
-            console.log(error)
+            // console.log(error)
             setHsCodeList([]); // Clear the data list if an error occurs
             setHsLoaderOpen(false);
             setAutocompleteLoadingForHsCode(false);
@@ -531,7 +531,7 @@ const AddProducts = () => {
     }
 
     const handleHsCodeAutoCompleteChange = (event, value) => {
-        console.log(value);
+        // console.log(value);
         setHsCode(value);
 
 
@@ -629,7 +629,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -670,7 +670,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -714,7 +714,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -774,7 +774,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -816,7 +816,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -862,7 +862,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -904,7 +904,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (
@@ -949,7 +949,7 @@ const AddProducts = () => {
                                             onInputChange={(event, value) => {
                                                 if (!value) {
                                                     // perform operation when input is cleared
-                                                    console.log("Input cleared");
+                                                    // console.log("Input cleared");
                                                 }
                                             }}
                                             renderInput={(params) => (

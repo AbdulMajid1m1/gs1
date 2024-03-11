@@ -40,12 +40,12 @@ const Blogcategories = () => {
         try {
             const response = await newRequest.get("/getAllblog_categories",);
 
-            console.log(response.data);
+            // console.log(response.data);
             setData(response?.data || []);
             setIsLoading(false)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -119,7 +119,7 @@ const Blogcategories = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -174,7 +174,7 @@ const Blogcategories = () => {
 
             });
 
-            console.log(response.data);
+            // console.log(response.data);
 
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
@@ -188,7 +188,7 @@ const Blogcategories = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -215,7 +215,7 @@ const Blogcategories = () => {
                         name: item.name.toString(),
                     })
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
 
                             Swal.fire(
                                 'Add!',
@@ -225,7 +225,7 @@ const Blogcategories = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Blog Categoriess already exist`,

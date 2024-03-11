@@ -100,8 +100,8 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
             const separatedArray = response.data.sections.split('\n');
            const sectionsArray = JSON.parse(response.data.sections);
         // const sectionsString = sectionsArray.join(', ');
-            console.log('sectionsArray', sectionsArray);
-            console.log(separatedArray);
+            // console.log('sectionsArray', sectionsArray);
+            // console.log(separatedArray);
             setname(response.data.name)
             setname_ar(response.data.name_ar)
             setSeoDescription(response.data.seo_description)
@@ -119,7 +119,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
             }
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     };
     
@@ -130,7 +130,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleAddCompanyapi = async () => {
         try {
             const formattedSections = sections.map(section => `"${section.content}"`).join(',');
-            console.log(`[${formattedSections}]`);
+            // console.log(`[${formattedSections}]`);
             const response = await newRequest.put(`/updatepages/${userId}`, {
                 name: name,
                 name_ar: name_ar,
@@ -143,7 +143,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                 custom_section_data_ar: customsectiondataarb,
                 status: 1,
             });
-            console.log(response);
+            // console.log(response);
             toast.success(`${t('Manage Pages')} ${name} ${t('has been')} ${t('Updated Successfully')}.`, {
                 position: 'top-right',
                 autoClose: 2000,
@@ -166,7 +166,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
+            // console.log(error);
         }
 
 
@@ -189,7 +189,7 @@ const Updatapage = ({ isVisible, setVisibility, refreshBrandData }) => {
         if (section == 'Custom') {
             setCustomdatashow(true)
         }
-        console.log(section);
+        // console.log(section);
     };
 
     const handleRemoveSection = (sectionIndex, itemIndex) => {

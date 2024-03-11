@@ -103,7 +103,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
                     <Button
                         style={{ position: 'absolute', top: '10px', right: '10px' }}
                         onClick={() => {
-                            console.log('Close button clicked');
+                            // console.log('Close button clicked');
                             toggleVisibility(false);
                         }}
                     >

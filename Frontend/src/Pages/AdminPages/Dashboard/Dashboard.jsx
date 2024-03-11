@@ -36,7 +36,7 @@ const Dashboard = () => {
 
       const response = await newRequest.get("/users/new")
 
-      console.log(response.data)
+      // console.log(response.data)
 
       let data = response.data.map((item) => {
         const isSuperAdmin = adminData?.is_super_admin === 1;
@@ -74,7 +74,7 @@ const Dashboard = () => {
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       setNewRegisteredMembersLoader(false);
 
     }
@@ -217,7 +217,7 @@ const Dashboard = () => {
 
       newRequest.get("/users/adminStatsCounts")
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           setAllCardData(response.data)
           setLoading(false);
         })
@@ -230,7 +230,7 @@ const Dashboard = () => {
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       setLoading(false);
     }
   };
@@ -288,7 +288,7 @@ const Dashboard = () => {
                       <p className='font-sans font-normal text-md text-gray-200'>{t('In Active Members')}</p>
                     </div>
                   </div>
-                </div>  
+                </div>
                 <div className='h-auto w-full bg-[#1CC085] rounded-md'>
                   <div>
                     <div className='flex justify-between items-center px-3 py-3'>

@@ -35,7 +35,7 @@ const Header = () => {
               <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2'>
                 <button
                   // onClick={() => navigate('/get-barcode')}
-                  onClick={() => navigate('/member-registration')}
+                  onClick={() => navigate('/select-business-type')}
                   className='bg-secondary text-white px-2 py-1 rounded-md transition-transform transform hover:scale-90'
                 >
                   {t('Get a Barcode')}

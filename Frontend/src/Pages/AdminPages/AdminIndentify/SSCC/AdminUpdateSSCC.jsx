@@ -11,7 +11,7 @@ const AdminUpdateSSCC = () => {
 
   const navigate = useNavigate();
   let { sscc_id } = useParams();
-  console.log(sscc_id)
+  // console.log(sscc_id)
   const { t, i18n } = useTranslation();
 
   // const [palletForm, setShowPalletForm] = React.useState(false);
@@ -52,11 +52,11 @@ const AdminUpdateSSCC = () => {
   const handleCountryOfOrigin = async () => {
     try {
         const response = await newRequest.get('/getAllcountryofsale');
-        console.log(response.data);
+        // console.log(response.data);
         const data = response.data;
         setCountryOfOrigin(data);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
   };
 
@@ -118,7 +118,7 @@ const AdminUpdateSSCC = () => {
         setIsLoading(false)
 
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setIsLoading(false)
       }
     }
@@ -131,8 +131,8 @@ const AdminUpdateSSCC = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log(digitExtension, ssccType, vendorID, vendorName, productID, productDesc, serialNo, itemCode, qty, useBy, batchNo, boxOf);
-    console.log(hsn, po, expireDate, vendorLabelID, cartonQty, shipTo, shipDate, vendorItem, description, shortQtyCode, countryOfOrigin, carton);
+    // console.log(digitExtension, ssccType, vendorID, vendorName, productID, productDesc, serialNo, itemCode, qty, useBy, batchNo, boxOf);
+    // console.log(hsn, po, expireDate, vendorLabelID, cartonQty, shipTo, shipDate, vendorItem, description, shortQtyCode, countryOfOrigin, carton);
 
     const apiRequestBody = {
       // preDigit: digitExtension,
@@ -171,14 +171,14 @@ const AdminUpdateSSCC = () => {
 
     };
 
-    console.log(apiRequestBody)
+    // console.log(apiRequestBody)
 
     if (ssccType === 'pallet') {
       newRequest
         .put(`/sscc/${sscc_id}`, apiRequestBody)
         .then((response) => {
           const data = response.data;
-          console.log('Pallet API Response:', data);
+          // console.log('Pallet API Response:', data);
           setIsLoading(false);
 
           toast.success(response?.data?.message || 'SSCC updated successfully.', {
@@ -250,14 +250,14 @@ const AdminUpdateSSCC = () => {
 
       };
 
-      console.log(labelApiRequestBody)
+      // console.log(labelApiRequestBody)
 
       newRequest
         .put(`/sscc/${sscc_id}`, labelApiRequestBody)
         .then((response) => {
           // Handle success response from Label API
           const data = response.data;
-          console.log('Label API Response:', data);
+          // console.log('Label API Response:', data);
 
           toast.success(response?.data?.message || 'SSCC updated successfully.', {
             position: 'top-right',

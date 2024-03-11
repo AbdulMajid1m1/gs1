@@ -22,7 +22,7 @@ const Addevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -82,7 +82,7 @@ const Addevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseCreatePopup();
 
@@ -97,7 +97,7 @@ const Addevent = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: 'light',
             });
-            console.log(error);
+            // console.log(error);
         }
 
 

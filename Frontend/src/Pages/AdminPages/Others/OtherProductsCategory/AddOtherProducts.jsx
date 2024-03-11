@@ -42,7 +42,7 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
       toast.success(`${t('Other Products Category')} ${product_name} ${t('has been added successfully') }`);
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseCreatePopup();
       setLoading(false);
@@ -50,7 +50,7 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
 
     } catch (error) {
       toast.error(error?.response?.data?.error || 'Error');
-      console.log(error);
+      // console.log(error);
       setLoading(false);
     }
 

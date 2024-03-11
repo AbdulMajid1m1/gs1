@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const UpdateBrands = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
     const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-    console.log(updateBrandData)
+    // console.log(updateBrandData)
     const [brandName, setBrandName] = useState(updateBrandData?.name || '');
     const [brandNameArabic, setBrandNameArabic] = useState(updateBrandData?.name_ar || '');
     const [brandStatus, setBrandStatus] = useState(updateBrandData?.status || '');
@@ -72,7 +72,7 @@ const handleUpdateBrand = async () => {
       theme: "light",
     });
 
-    console.log(response.data);
+    // console.log(response.data);
     refreshBrandData();
     handleCloseUpdatePopup();
 
@@ -88,7 +88,7 @@ const handleUpdateBrand = async () => {
       theme: "light",
     });
 
-    console.log(error);
+    // console.log(error);
   }
   finally {
     setLoading(false);

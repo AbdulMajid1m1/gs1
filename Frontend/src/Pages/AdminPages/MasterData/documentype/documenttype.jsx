@@ -54,12 +54,12 @@ const DocumentType = () =>
       try {
         const response = await newRequest.get("/getAlldocumentType",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -73,12 +73,12 @@ const DocumentType = () =>
     try {
       const response = await newRequest.get("/getAlldocumentType",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -159,7 +159,7 @@ const DocumentType = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
   const handleRowClickInParent = (item) =>
   {
@@ -174,7 +174,7 @@ const DocumentType = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -194,7 +194,7 @@ const DocumentType = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -205,7 +205,7 @@ const DocumentType = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some document Type already exist`,

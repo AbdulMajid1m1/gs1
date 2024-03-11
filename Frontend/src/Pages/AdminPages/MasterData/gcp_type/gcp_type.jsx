@@ -56,12 +56,12 @@ const Gcp_type = () =>
       try {
         const response = await newRequest.get("/getAllgpctype",);
 
-        console.log(response.data);
+        // console.log(response.data);
         setData(response?.data || []);
         setIsLoading(false)
 
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false)
       }
     };
@@ -80,12 +80,12 @@ const Gcp_type = () =>
     try {
       const response = await newRequest.get("/getAllgpctype",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -158,7 +158,7 @@ const Gcp_type = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
   const handleRowClickInParent = (item) =>
   {
@@ -173,7 +173,7 @@ const Gcp_type = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -190,7 +190,7 @@ const Gcp_type = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -201,7 +201,7 @@ const Gcp_type = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some Other Product already exist`,

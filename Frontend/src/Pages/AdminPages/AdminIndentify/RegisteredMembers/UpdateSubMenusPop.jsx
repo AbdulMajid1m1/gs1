@@ -12,7 +12,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
   // get the sesstion data
   const { selectedLanguage } = useLanguage();
   const subMenusMemberDetails = JSON.parse(sessionStorage.getItem("updateSubMenusData"));
-  console.log(subMenusMemberDetails)
+  // console.log(subMenusMemberDetails)
   const [firstName, setFirstName] = useState(subMenusMemberDetails?.fname);
   const [lastName, setLastName] = useState(subMenusMemberDetails?.lname);
   const [emailAddress, setEmailAddress] = useState(subMenusMemberDetails?.email);
@@ -59,7 +59,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
       setLoading(false);
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshSubMenus();
       handleCloseUpdateSubMenusPopup();
 
@@ -78,7 +78,7 @@ const UpdateSubMenusPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
 
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
 
 

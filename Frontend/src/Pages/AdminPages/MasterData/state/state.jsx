@@ -64,12 +64,12 @@ const State = () =>
         ...city,
         country_id: stateIdToNameMap[city.country_id] || "Unknown State",
       }));
-      console.log(updatedCitiesData);
+      // console.log(updatedCitiesData);
       setData(updatedCitiesData);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -90,12 +90,12 @@ const State = () =>
     try {
       const response = await newRequest.get("/address/getAllStates",);
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -168,7 +168,7 @@ const State = () =>
   };
   const handleView = (row) =>
   {
-    console.log(row);
+    // console.log(row);
   }
   const handleRowClickInParent = (item) =>
   {
@@ -183,7 +183,7 @@ const State = () =>
   {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.type);
+      // console.log(file.type);
       const reader = new FileReader();
       reader.onload = (e) =>
       {
@@ -201,7 +201,7 @@ const State = () =>
           })
             .then((res) =>
             {
-              console.log('Add', res.data);
+              // console.log('Add', res.data);
 
               Swal.fire(
                 'Add!',
@@ -212,7 +212,7 @@ const State = () =>
             })
             .catch((err) =>
             {
-              console.log(err);
+              // console.log(err);
               Swal.fire(
                 'Error!',
                 `Some States already exist`,

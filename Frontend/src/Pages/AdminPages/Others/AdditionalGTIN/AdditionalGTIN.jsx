@@ -33,12 +33,12 @@ const AdditionalGTIN = () =>
     try {
       const response = await newRequest.get("/additionalProducts/gtin");
 
-      console.log(response.data);
+      // console.log(response.data);
       setData(response?.data || []);
       setIsLoading(false)
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setIsLoading(false)
     }
   };
@@ -59,7 +59,7 @@ const AdditionalGTIN = () =>
   };
   
   const handleView = (row) => {
-    console.log(row);
+    // console.log(row);
   }
 
   const handleDelete = async (row) => {

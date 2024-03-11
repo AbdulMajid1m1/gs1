@@ -57,10 +57,10 @@ const Footermenu = () => {
                 parent_id: stateIdToNameMap[megnumenu.parent_id] || "Unknown Category",
             }));
             setData(updatedCitiesData);
-            console.log('getAllmega_menu_categories', updatedCitiesData);
+            // console.log('getAllmega_menu_categories', updatedCitiesData);
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false)
         }
     };
@@ -103,7 +103,7 @@ const Footermenu = () => {
         });
     };
     const handleView = (row) => {
-        console.log(row);
+        // console.log(row);
     }
     const handleAddCompany = async () => {
         const { value: formValues } = await Swal.fire({
@@ -168,7 +168,7 @@ const Footermenu = () => {
 
             });
 
-            console.log(response.data);
+            // console.log(response.data);
 
         } catch (error) {
             toast.error(error?.response?.data?.error || 'Error', {
@@ -182,7 +182,7 @@ const Footermenu = () => {
                 theme: "light",
             });
 
-            console.log(error);
+            // console.log(error);
         }
     };
     const handleRowClickInParent = (item) => {
@@ -196,7 +196,7 @@ const Footermenu = () => {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            console.log(file.type);
+            // console.log(file.type);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -213,7 +213,7 @@ const Footermenu = () => {
                         status: 1
                     })
                         .then((res) => {
-                            console.log('Add', res.data);
+                            // console.log('Add', res.data);
 
                             Swal.fire(
                                 'Add!',
@@ -223,7 +223,7 @@ const Footermenu = () => {
                             refreshcitiesData()
                         })
                         .catch((err) => {
-                            console.log(err);
+                            // console.log(err);
                             Swal.fire(
                                 'Error!',
                                 `Some Unit code already exist`,

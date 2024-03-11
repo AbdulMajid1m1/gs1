@@ -10,7 +10,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
 {
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
-  console.log(updateBrandData)
+  // console.log(updateBrandData)
   const [cr, setcr] = useState(updateBrandData?.cr || '');
   const [activity, setactivity] = useState(updateBrandData?.activity || '');
   const [status, setstatus] = useState(updateBrandData?.status || '');
@@ -65,7 +65,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseUpdatePopup();
 
@@ -81,7 +81,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
         theme: "light",
       });
 
-      console.log(error);
+      // console.log(error);
     }
     finally {
       setLoading(false);

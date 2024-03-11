@@ -10,13 +10,13 @@ import PhoneInput from 'react-phone-input-2';
 import { useParams } from 'react-router-dom';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { backendUrl } from '../../../../utils/config';
-import GenerateCertificatePopup from './generateCertificatePopup.jsx'
+import GenerateCertificatePopup from './GenerateCertificatePopup'
 import { useTranslation } from 'react-i18next';
 const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handleInputChange, gcpCertificatePath, fetchMemberDocumentsData, }) => {
-  console.log(gs1MemberData);
+  // console.log(gs1MemberData);
   const { Id } = useParams();
-  console.log(editableData)
-  console.log(Id);
+  // console.log(editableData)
+  // console.log(Id);
   const { t, i18n } = useTranslation();
   // Use state to manage editable values
   // const [editableData, setEditableData] = useState({
@@ -96,7 +96,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
     try {
       const response = await newRequest.put(`/users/${gs1MemberData?.id}`, formData);
-      console.log(response?.data);
+      // console.log(response?.data);
       setIsLoading(false);
 
       // add api message to toast
@@ -107,7 +107,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       setIsLoading(false);
 
       // add api message to toast
@@ -121,7 +121,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
   // Handle country selection
   const handleCountryName = (event, value) => {
     setSelectedCountry(value);
-    console.log(value)
+    // console.log(value)
 
     const filteredStates = state.filter((state) => state.country_id == value?.id);
     setFilteredStates(filteredStates);
@@ -141,7 +141,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
 
   const handleCity = (event, value) => {
     setSelectedCity(value);
-    console.log('Selected State ID:', value.id);
+    // console.log('Selected State ID:', value.id);
   };
 
 
@@ -308,7 +308,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
             onInputChange={(event, value) => {
               if (!value) {
                 // perform operation when input is cleared
-                console.log("Input cleared");
+                // console.log("Input cleared");
               }
             }}
             renderInput={(params) => (
@@ -363,7 +363,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
             onInputChange={(event, value) => {
               if (!value) {
                 // perform operation when input is cleared
-                console.log("Input cleared");
+                // console.log("Input cleared");
               }
             }}
             renderInput={(params) => (
@@ -420,7 +420,7 @@ const MembersDetails = ({ gs1MemberData, refreshAllUserData, editableData, handl
             onInputChange={(event, value) => {
               if (!value) {
                 // perform operation when input is cleared
-                console.log("Input cleared");
+                // console.log("Input cleared");
               }
             }}
             renderInput={(params) => (

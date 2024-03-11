@@ -22,7 +22,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
 
@@ -49,7 +49,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
         formData.append('image', imageshowupload);
         formData.append('link', Page);
         formData.append('status', Number(status));
-        console.log(formData);
+        // console.log(formData);
         try {
             const response = await newRequest.put(`/updatefeatured_services/${updateBrandData?.id}`, formData);
 
@@ -63,7 +63,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                 progress: undefined,
                 theme: "light",
             });
-            console.log(response.data);
+            // console.log(response.data);
             refreshBrandData();
             handleCloseUpdatePopup();
 
@@ -78,7 +78,7 @@ const Updatafeaturedservice = ({ isVisible, setVisibility, refreshBrandData }) =
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error);
+            // console.log(error);
         }
         finally {
             setLoading(false);

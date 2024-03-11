@@ -50,7 +50,7 @@ const fetchTranslations = async () => {
       i18n.addResourceBundle('en', 'translation', dynamicTranslations.en);
     }
     else{
-      console.log("Error fetching translations");
+      // console.log("Error fetching translations");
     }
   } catch (error) {
     console.error('Error fetching translations:', error);

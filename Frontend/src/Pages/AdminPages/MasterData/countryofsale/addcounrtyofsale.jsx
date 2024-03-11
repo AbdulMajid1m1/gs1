@@ -42,7 +42,7 @@ const Addcountryofsale = ({ isVisible, setVisibility, refreshBrandData }) =>
       });
 
 
-      console.log(response.data);
+      // console.log(response.data);
       refreshBrandData();
       handleCloseCreatePopup();
 
@@ -60,7 +60,7 @@ const Addcountryofsale = ({ isVisible, setVisibility, refreshBrandData }) =>
       });
 
 
-      console.log(error);
+      // console.log(error);
     }
 
 
