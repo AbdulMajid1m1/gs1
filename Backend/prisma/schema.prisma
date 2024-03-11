@@ -488,9 +488,7 @@ model families {
   family_definition String?   @db.NVarChar(Max)
   created_at        DateTime? @db.DateTime
   updated_at        DateTime? @db.DateTime
-  FamilyID          Int
-
-  @@ignore
+  FamilyID          Int       @id @default(autoincrement())
 }
 
 model faq_categories {
@@ -677,15 +675,13 @@ model gepir_items {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model gpc_classes {
-  id               Float?
+  id               Float
   class_code       String?   @db.NVarChar(Max)
   class_title      String?   @db.NVarChar(Max)
   class_definition String?   @db.NVarChar(Max)
   created_at       DateTime? @db.DateTime
   updated_at       DateTime? @db.DateTime
-  GpcClassID       Int
-
-  @@ignore
+  GpcClassID       Int       @id @default(autoincrement())
 }
 
 model group_modules {
@@ -1276,9 +1272,7 @@ model MemberDocumentOld {
   CreatedDate         DateTime
   UpdatedBy           Decimal?  @db.Decimal(10, 0)
   UpdatedDate         DateTime?
-  MemberDocumentOldID Int
-
-  @@ignore
+  MemberDocumentOldID Int       @id @default(autoincrement())
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -1818,9 +1812,7 @@ model segments {
   segment_definition String?   @db.NVarChar(Max)
   created_at         DateTime? @db.DateTime
   updated_at         DateTime? @db.DateTime
-  SegmentID          Int
-
-  @@ignore
+  SegmentID          Int       @id @default(autoincrement())
 }
 
 model services {
