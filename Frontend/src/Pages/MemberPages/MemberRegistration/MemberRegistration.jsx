@@ -380,7 +380,7 @@ const MemmberRegisteration = () => {
 
     // if entity selected is organization then make cr number and cr activity required
 
-    if (entityType?.value === 'organization') {
+    if (selectedBusinessType?.value === 'organization') {
       if (!addCrNumber) {
         setIsLoading(false);
         toast.error(`${t('Please enter Cr Number')}`, {
@@ -610,7 +610,7 @@ const MemmberRegisteration = () => {
   };
 
   const handleInputFocusCrActivity = () => {
-    if (entityType?.value === 'organization') {
+    if (selectedBusinessType?.value === 'organization') {
       setIsCrActivityPopUpVisible(true);
     }
   };
@@ -620,7 +620,7 @@ const MemmberRegisteration = () => {
   };
 
   const handleInputFocusCrNumber = () => {
-    if (entityType?.value === 'organization') {
+    if (selectedBusinessType?.value === 'organization') {
       setIsCrNumberPopUpVisible(true);
     }
   };
@@ -644,20 +644,12 @@ const MemmberRegisteration = () => {
   };
 
 
+  const selectedBusinessType = JSON.parse(sessionStorage.getItem('selectedBusinessType'));
 
-  // Static options for the Autocomplete component
-  const options = [
-    { label: `${t('Organization')}`, value: 'organization' },
-    { label: `${t('Individual/Family Business')}`, value: 'individual/family business' },
-
-  ];
-
-  // State to hold the selected option, defaulting to 'Organization'
-  const [entityType, setEntityType] = useState(options[0]);
   // Function to handle option selection
   const handleOptionChange = (event, newValue) => {
-    setEntityType(newValue);
-    if (newValue.value === 'individual/family business') {
+    // setEntityType(newValue);
+    if (selectedBusinessType.value === 'individual/family business') {
       const nonMedicalCategory = categories.find(category => category.name === 'non-medical');
       setSelectedCategories(nonMedicalCategory);
       // Assuming 'Category 10' is a specific GTIN number or represents a condition to pre-fill the GTIN field
@@ -667,9 +659,12 @@ const MemmberRegisteration = () => {
     } else {
       setSelectedCategories(null);
       setSelectedGtinNumber(null);
-
     }
   };
+  
+  useEffect(() => {
+    handleOptionChange();
+  }, []);
 
   // handleOptionChange 
   return (
@@ -717,11 +712,17 @@ const MemmberRegisteration = () => {
             </p>
             {/* <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p> */}
           </div>
+
+          <p className='text-red-500 text-lg font-body font-medium ml-3 pt-3'>
+          {selectedBusinessType?.value === "organization"
+                    ? "** Provide Your company Certificate of Registration **"
+                    : "** Provide Your Business License **"}            
+            </p>
         </div>
 
         <div className="h-auto w-full sm:w-2/3 p-6 shadow-xl border-l border-r border-b border-primary">
           <form onSubmit={handleSubmit}>
-            <div className="w-full font-body sm:text-base text-sm flex flex-col">
+            {/* <div className="w-full font-body sm:text-base text-sm flex flex-col">
               <label
                 className="text-secondary font-semibold"
                 htmlFor="entityType"
@@ -732,7 +733,7 @@ const MemmberRegisteration = () => {
               <Autocomplete
                 id="entityType"
                 options={options}
-                value={entityType}
+                value={selectedBusinessType}
                 getOptionLabel={(option) => option.label}
                 onChange={handleOptionChange}
                 renderInput={(params) => (
@@ -751,7 +752,7 @@ const MemmberRegisteration = () => {
                   />
                 )}
               />
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -759,7 +760,7 @@ const MemmberRegisteration = () => {
                   htmlFor="field1"
                   className="text-secondary font-semibold"
                 >
-                  {entityType?.value === "organization"
+                  {selectedBusinessType?.value === "organization"
                     ? t("Cr Number")
                     : t("License Ref. No")}
                   <span className="text-red-600"> *</span>
@@ -770,7 +771,7 @@ const MemmberRegisteration = () => {
                   value={addCrNumber}
                   onChange={handleInputChange}
                   placeholder={
-                    entityType?.value === "organization"
+                    selectedBusinessType?.value === "organization"
                       ? t("Enter Cr Number")
                       : t("Enter License Ref. No.")
                   }
@@ -786,7 +787,7 @@ const MemmberRegisteration = () => {
                   htmlFor="field2"
                   className="text-secondary font-semibold"
                 >
-                  {entityType?.value === "organization"
+                  {selectedBusinessType?.value === "organization"
                     ? t("Cr Activity")
                     : t("License Name")}
                   <span className="text-red-600"> *</span>
@@ -797,7 +798,7 @@ const MemmberRegisteration = () => {
                   //  value={addCrNumber}
                   onChange={(e) => setCrActivity(e.target.value)}
                   placeholder={
-                    entityType?.value === "organization"
+                    selectedBusinessType?.value === "organization"
                       ? t("Enter Cr Activity")
                       : t("Enter License Name")
                   }
@@ -1212,7 +1213,7 @@ const MemmberRegisteration = () => {
                   id="category"
                   options={categories}
                   // disable option selection if entity type is Individual/Family Business
-                  disabled={entityType.value === "individual/family business"}
+                  disabled={selectedBusinessType.value === "individual/family business"}
                   value={selectedCategories}
                   required
                   getOptionLabel={(option) => option.namesa || ""}
@@ -1266,7 +1267,7 @@ const MemmberRegisteration = () => {
                   id="GTIN"
                   disabled={!selectedCategories}
                   options={
-                    selectedCategories && entityType.value === "individual/family business"
+                    selectedCategories && selectedBusinessType.value === "individual/family business"
                       ? gtinNumber.filter(
                           (option) => option?.member_category_description === "Category B - ( 100 Barcodes )"
                         )
@@ -1334,7 +1335,7 @@ const MemmberRegisteration = () => {
                   disabled={
                     !selectedGtinNumber ||
                     selectedGtinNumber.length === 0 ||
-                    entityType.value === "individual/family business"
+                    selectedBusinessType.value === "individual/family business"
                   }
                   options={otherProductsOptions}
                   required
