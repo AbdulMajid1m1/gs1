@@ -36,7 +36,7 @@ const LaanguageChange = () => {
 
     const refreshcitiesData = async () => {
         try {
-            const response = await axios.get(backendUrl + "/translations_table");
+            const response = await axios.get(backendUrl + "/api/translations_table");
             // const dataArray = Object.entries(response.data);
             const resdata = response?.data;
             setData(resdata);
