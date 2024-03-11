@@ -483,6 +483,7 @@ const updateMemberDocumentStatusSchema = Joi.object({
     status: Joi.string().valid('approved', 'rejected').required(),
     reject_reason: Joi.string().optional(),
     selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+    approved_date: Joi.date().default(new Date()),
 });
 
 
@@ -723,7 +724,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 data: {
                     status: 'approved',
                     expiry_date: expiryDate,
-                    approved_date: new Date(),
+                    approved_date: value.approved_date,
                 }
             });
 
@@ -736,7 +737,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 data: {
                     status: 'approved',
                     expiry_date: expiryDate,
-                    approved_date: new Date(),
+                    approved_date: value.approved_date,
                 }
 
             });
@@ -1756,6 +1757,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+        approved_date: Joi.date().default(new Date()),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -1764,7 +1766,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
     }
 
 
-    const { transactionId, userId, selectedLanguage } = value;
+    const { transactionId, userId, selectedLanguage, approved_date } = value;
 
 
     try {
@@ -1837,7 +1839,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req.admin.adminId,
-                approved_date: new Date(),
+                approved_date: approved_date,
             }
         });
 
@@ -1996,6 +1998,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+        approved_date: Joi.date().default(new Date()),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -2088,7 +2091,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req.admin.adminId,
-                approved_date: new Date(),
+                approved_date: approved_date,
             }
 
         });
@@ -2237,6 +2240,7 @@ export const approveMembershipRequest = async (req, res, next) => {
         userId: Joi.string().required(),
         invoiceType: Joi.string().valid('upgrade_invoice', 'downgrade_invoice').required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+        approved_date: Joi.date().default(new Date()),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -2247,7 +2251,7 @@ export const approveMembershipRequest = async (req, res, next) => {
             throw createError(400, error.details[0].message);
         }
 
-        const { transactionId, userId, invoiceType, selectedLanguage } = value;
+        const { transactionId, userId, invoiceType, selectedLanguage, approved_date } = value;
 
         const bankSlipDocuments = await prisma.member_documents.findMany({
             where: {
@@ -2373,7 +2377,7 @@ export const approveMembershipRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req?.admin?.adminId,
-                approved_date: new Date(),
+                approved_date: approved_date,
 
             }
         });
@@ -2845,6 +2849,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+        approved_date: Joi.date().default(new Date()),
         // invoiceType: Joi.string().valid('upgrade_invoice', 'downgrade_invoice').required(),
     });
 
@@ -2854,7 +2859,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
             throw createError(400, error.details[0].message);
         }
 
-        const { transactionId, userId, selectedLanguage } = value;
+        const { transactionId, userId, selectedLanguage, approved_date } = value;
 
         // const bankSlipDocuments = await prisma.member_documents.findMany({
         //     where: {
@@ -2990,7 +2995,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
             data: {
                 status: 'approved',
                 admin_id: req?.admin?.adminId,
-                approved_date: new Date(),
+                approved_date: approved_date,
 
             }
         });
