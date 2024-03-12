@@ -852,7 +852,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             // Update the document status in the database
             // document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
 
-            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 },);
+            await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 }, value.reject_reason, value.selectedLanguage);
             await prisma.member_documents.update({
                 where: { id: documentId },
                 data: { status: value.status }
@@ -899,7 +899,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
             // Send email with optional reject reason
-            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason);
+            await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason, value.selectedLanguage);
         }
 
         // Delete all documents of type 'bank_slip'
@@ -945,7 +945,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '') => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '', selectedLanguage = 'ar') => {
     let subject, emailContent;
     let attachments = [];
     if (status === 'approved') {

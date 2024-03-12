@@ -391,6 +391,7 @@ const updateMemberDocumentStatusSchema = Joi.object({
     migration: Joi.boolean().default(false),
     checkBankSlip: Joi.boolean().default(true),
     selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+    approved_date: Joi.date().default(new Date()),
 });
 
 export const updateMemberDocumentStatus = async (req, res, next) => {
@@ -557,6 +558,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             status: 'approved',
                             expiry_date: item.expiry_date,
                             admin_id: req.admin.adminId,
+                            approved_date: value.approved_date,
                         }));
                         console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
@@ -570,6 +572,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             request_type: 'registration',
                             expiry_date: item.expiry_date,
                             admin_id: req?.admin?.adminId,
+                            approved_date: value.approved_date,
                         }));
 
 
