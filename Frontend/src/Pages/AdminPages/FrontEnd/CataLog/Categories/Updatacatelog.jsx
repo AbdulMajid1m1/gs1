@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 import Button from '@mui/material/Button';
@@ -17,8 +17,10 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [loading, setLoading] = useState(false);
     const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
     const [MegaMenuCategories, setMegaMenuCategories] = useState({
-      name_en: updateBrandData?.megamenu_id || "",
+        name_en: updateBrandData?.megamenu_id || "",
     });
+        const [categorydefualid, setcategorydefualid] = useState("");
+
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Description, setDescription] = useState(updateBrandData?.description || '')
     const [Title, setTitle] = useState(updateBrandData?.meta_title || '');
@@ -44,12 +46,17 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
         }
     };
     useEffect(() => {
-        refreshcitiesData() 
+        // refreshcitiesData() 
     }, []);
 
     useEffect(() => {
         const getDocuments = async () => {
             try {
+                const responsefotterget = await newRequest.get("/getAllmega_menu_categories",);
+                const citiesData = responsefotterget?.data || [];
+                const filteredData = citiesData.filter(item => item.category_name_en == updateBrandData?.category_name_en);
+                console.log(filteredData[0]?.megamenu_id);
+                setcategorydefualid(filteredData[0]?.megamenu_id);
                 const response = await newRequest.get('/getAllmega_menu');
                 const nameEnArray = response.data;
                 setmegamenudropdown(nameEnArray);
@@ -81,7 +88,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatemega_menu_categories/${updateBrandData?.id}`, {
                 parent_id: Categorylevel,
-                megamenu_id: MegaMenuCategories?.id,
+                megamenu_id: MegaMenuCategories?.id || categorydefualid,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: Description,
@@ -92,7 +99,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 status: Number(status),
             });
 
-            toast.success(response?.data?.message || `${t('Mega Menu')} ${('categorie')} ${('has been')} ${t('Updated Successfully')}.` , {
+            toast.success(response?.data?.message || `${t('Mega Menu')} ${('categorie')} ${('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -127,7 +134,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     };
 
     const handleSelectedDocuments = (event, value) => {
-      setMegaMenuCategories(value);
+        setMegaMenuCategories(value);
     };
 
     return (
@@ -183,7 +190,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             }
 
                                         </select> */}
-                                         <Autocomplete
+                                        <Autocomplete
                                             id="field1"
                                             options={megamenudropdown}
                                             value={MegaMenuCategories}
@@ -327,7 +334,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     >
                                         {t('Close')}
                                     </button>
-                                    
+
                                     <Button
                                         variant="contained"
                                         style={{ backgroundColor: '#021F69', color: '#ffffff' }}
