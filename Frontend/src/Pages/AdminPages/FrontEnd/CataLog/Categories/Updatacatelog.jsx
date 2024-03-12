@@ -14,8 +14,8 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_ar, setcategory_name_ar] = useState(updateBrandData?.category_name_ar || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
-    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.Categorylevel || '')
-    const [MegaMenuCategories, setMegaMenuCategories] = useState('')
+    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
+    const [MegaMenuCategories, setMegaMenuCategories] = useState(updateBrandData?.megamenu_id || '')
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Description, setDescription] = useState(updateBrandData?.description || '')
     const [Title, setTitle] = useState(updateBrandData?.meta_title || '');
@@ -33,14 +33,15 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             statesData.forEach(state => {
                 stateIdToNameMap[state.id] = state.name_en;
             });
-            // console.log('statesData', citiesData);
+            console.log('statesData', citiesData);
             setMegaMenuCategories(citiesData)
+            console.log(citiesData);
         } catch (err) {
             // console.log(err);
         }
     };
     useEffect(() => {
-        refreshcitiesData() // Calling the function within useEffect, not inside itself
+        refreshcitiesData() 
     }, []);
 
     useEffect(() => {
@@ -50,7 +51,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setmegamenudropdown(nameEnArray);
             } catch (error) {
-                // console.log(error);
+                console.log(error);
             }
         };
         const getpagedata = async () => {
@@ -59,7 +60,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                // console.log(error);
+                console.log(error);
             }
         };
 
@@ -77,7 +78,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatemega_menu_categories/${updateBrandData?.id}`, {
                 parent_id: Categorylevel,
-                megamenu_id: MegaMenuCategories,
+                megamenu_id: MegaMenuCategories || updateBrandData?.megamenu_id,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: Description,
@@ -104,7 +105,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
+            toast.error(error?.response?.data?.error || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -114,6 +115,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
+            console.log(error);
         }
         finally {
             setLoading(false);
