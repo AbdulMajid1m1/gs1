@@ -331,22 +331,22 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-4 bg-gradient-to-r from-[#C3E2DC]">
               {/* <!-- Social Traffic --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn(t)} title={t(`Newly Registered Members (${newRegisteredMembers?.length})`)} UniqueId="assetPrintingId" />
+                <DashboardTable data={newRegisteredMembers} loading={newRegisteredMembersLoader} secondaryColor="secondary" columnsName={newlyRegisteredMembersColumn(t)} title={t(`Newly Registered Members ${newRegisteredMembers.length > 0 ? `(${newRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50  w-full shadow-lg rounded">
-                <DashboardTable data={pendingApprovals} loading={pendingApprovalsLoader} secondaryColor="secondary" columnsName={pendingApprovalColumn(t)} title={t(`Pending Approvals (${pendingApprovals?.length})`)} UniqueId="assetPrintingId" />
+                <DashboardTable data={pendingApprovals} loading={pendingApprovalsLoader} secondaryColor="secondary" columnsName={pendingApprovalColumn(t)} title={t(`Pending Approvals ${pendingApprovals?.length > 0 ? `(${pendingApprovals.length})` : ''}`)} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members (${allRegisteredMembers?.length})`)} UniqueId="assetPrintingId" />
+                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${allRegisteredMembers?.length > 0 ? `(${allRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn(t)} title={t(`Members for Renewal (${memberReneval?.length})`)} UniqueId="assetPrintingId" />
+                <DashboardTable data={memberReneval} loading={memberRenevalLoader} secondaryColor="secondary" columnsName={memberForRenevalColumn(t)} title={t(`Members for Renewal ${memberReneval?.length > 0 ? `(${memberReneval.length})` : ''}`)} UniqueId="assetPrintingId" />
               </div>
 
             </div>
