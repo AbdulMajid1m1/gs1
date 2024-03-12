@@ -55,7 +55,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const responsefotterget = await newRequest.get("/getAllmega_menu_categories",);
                 const citiesData = responsefotterget?.data || [];
                 const filteredData = citiesData.filter(item => item.category_name_en == updateBrandData?.category_name_en);
-                console.log(filteredData[0]?.megamenu_id);
+               
                 setcategorydefualid(filteredData[0]?.megamenu_id);
                 const response = await newRequest.get('/getAllmega_menu');
                 const nameEnArray = response.data;
