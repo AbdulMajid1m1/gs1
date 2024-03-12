@@ -26,6 +26,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [typeOfPayment, setTypeOfPayment] = useState([])
   const [totalPrice, setTotalPrice] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
 
   const handleCloseInvoicePopup = () => {
     setVisibility(false);
@@ -164,8 +165,15 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
   }
 
 
+  // Default to today's date
+  const handleTodayLoader = () => {
+    const today = new Date();
+    setStartDate(today.toISOString().split('T')[0]);
+  };
+
   useEffect(() => {
     handleMemberInvoiceData();
+    handleTodayLoader();
   }, []);
 
 
@@ -174,21 +182,26 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
     setLoading(true);
     // console.log(gs1MemberInvoiceData);
 
+    const formattedStartDate = new Date(startDate);
+    formattedStartDate.setHours(0, 0, 0, 0);
 
     const approvedBody = {
       status: selectedStatus,
       selectedLanguage: selectedLanguage,
+      approved_date: formattedStartDate.toISOString(),
     };
     const migrationApprovedBody = {
       status: selectedStatus,
       migration: true,
-      ...(gs1MemberInvoiceData?.no_of_years === 0 && { checkBankSlip: false })
+      ...(gs1MemberInvoiceData?.no_of_years === 0 && { checkBankSlip: false }),
+      approved_date: formattedStartDate.toISOString(),
     };
 
     const rejectBody = {
       status: selectedStatus,
       reject_reason: rejected,
       selectedLanguage: selectedLanguage,
+      approved_date: formattedStartDate.toISOString(),
     };
 
     const changeGtinSub = {
@@ -196,11 +209,13 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       transactionId: gs1MemberInvoiceData?.transaction_id,
       invoiceType: gs1MemberInvoiceData?.type,
       selectedLanguage: selectedLanguage,
+      approved_date: formattedStartDate.toISOString(),
     }
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
+      approved_date: formattedStartDate.toISOString(),
     }
 
     const addGtin = {
@@ -208,11 +223,13 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       // pass selected row transaction id
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
+      approved_date: formattedStartDate.toISOString(),
     }
     const addGln = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
+      approved_date: formattedStartDate.toISOString(),
     }
 
     // console.log(upgrade_invoice);
@@ -619,6 +636,15 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 
                 </div>
 
+                <div className="flex justify-center items-center">
+                  <label className="font-body text-sm text-red-500 font-semibold text-center">Enter the Actual Bank Receipt Date</label>
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="border border-gray-300 p-2 rounded-lg"
+                    />
+                </div>
 
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                   <button
