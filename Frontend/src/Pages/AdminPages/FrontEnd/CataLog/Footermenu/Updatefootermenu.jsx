@@ -17,7 +17,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Categorylevel, setCategorylevel] = useState({
       category_name_en: updateBrandData?.parent_id || "",
     });
-    console.log(updateBrandData);
+    const [categorydefualid, setcategorydefualid] = useState('')
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Pagedropdown, setPagedropdown] = useState([])
@@ -37,9 +37,20 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
         };
         const getpagedatasdsd = async () => {
             try {
+                  const responsefotterget = await newRequest.get("/getAllfooter_menus");
+                  const citiesData = responsefotterget?.data || [];
+                  // Assuming updateBrandData?.category_name_en is the value to match against parent_id
+const filteredData = citiesData.filter(item => item.category_name_en == updateBrandData?.category_name_en);
+
+// filteredData now contains only the items with parent_id matching updateBrandData?.category_name_en
+console.log(filteredData[0].parent_id);
+setcategorydefualid(filteredData[0].parent_id);
+
+                //   console.log(citiesData);
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
                 setCategoryleveldropdown(nameEnArray);
+
             } catch (error) {
                 // console.log(error);
             }
@@ -52,7 +63,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
 
         try {
             const response = await newRequest.put(`/updatefooter_menus/${updateBrandData?.id}`, {
-                parent_id: Categorylevel?.id,
+                parent_id: Categorylevel?.id || categorydefualid,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 url: Page,
