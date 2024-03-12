@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
+import { Autocomplete, TextField } from '@mui/material';
 
 const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     // get this session data
@@ -13,8 +14,10 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_ar, setcategory_name_ar] = useState(updateBrandData?.category_name_ar || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
-    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
-    // console.log(Categorylevel);
+    const [Categorylevel, setCategorylevel] = useState({
+      category_name_en: updateBrandData?.parent_id || "",
+    });
+    console.log(updateBrandData);
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Categoryleveldropdown, setCategoryleveldropdown] = useState([])
     const [Pagedropdown, setPagedropdown] = useState([])
@@ -36,7 +39,6 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
             try {
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
-                // console.log('getAllmega_menu_categories', nameEnArray);
                 setCategoryleveldropdown(nameEnArray);
             } catch (error) {
                 // console.log(error);
@@ -50,7 +52,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
 
         try {
             const response = await newRequest.put(`/updatefooter_menus/${updateBrandData?.id}`, {
-                parent_id: Categorylevel,
+                parent_id: Categorylevel?.id,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 url: Page,
@@ -73,7 +75,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
+            toast.error(error?.response?.data?.error || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -87,12 +89,10 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
         finally {
             setLoading(false);
         }
-
-
-
-
     };
-
+const handleSelectedDocuments = (event, value) => {
+  setCategorylevel(value);
+};
 
     return (
         <div>
@@ -131,13 +131,13 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         <label htmlFor="status" className="text-secondary">
                                             {t('Parent Category')}
                                         </label>
-                                        <select
+                                        {/* <select
                                             id="status"
                                             value={Categorylevel}
                                             onChange={(e) => setCategorylevel(e.target.value)}
                                             className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
                                         >
-                                            <option value="0">{t('Category Level')}</option>
+                                            <option value={updateBrandData?.parent_id}>{t('Category Level')}</option>
                                             {
                                                 Categoryleveldropdown && Categoryleveldropdown.map((itme, index) => {
                                                     return (
@@ -145,7 +145,45 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                     )
                                                 })
                                             }
-                                        </select>
+                                        </select> */}
+                                         <Autocomplete
+                                            id="field1"
+                                            options={Categoryleveldropdown}
+                                            value={Categorylevel}
+                                            getOptionLabel={(option) => option?.category_name_en || ""}
+                                            onChange={handleSelectedDocuments}
+                                            onInputChange={(event, value) => {
+                                                if (!value) {
+                                                    // perform operation when input is cleared
+                                                    // console.log("Input cleared");
+                                                }
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    autoComplete="off"
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        className: "text-white",
+                                                    }}
+                                                    InputLabelProps={{
+                                                        ...params.InputLabelProps,
+                                                        style: { color: "white" },
+                                                    }}
+                                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                                    placeholder={`${t("Category Level")}`}
+                                                // required
+                                                />
+                                            )}
+                                            classes={{
+                                                endAdornment: "text-white",
+                                            }}
+                                            sx={{
+                                                "& .MuiAutocomplete-endAdornment": {
+                                                    color: "white",
+                                                },
+                                            }}
+                                        />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
+import { Autocomplete, TextField } from '@mui/material';
 
 const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const { t } = useTranslation();
@@ -15,7 +16,9 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
     const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
-    const [MegaMenuCategories, setMegaMenuCategories] = useState(updateBrandData?.megamenu_id || '')
+    const [MegaMenuCategories, setMegaMenuCategories] = useState({
+      name_en: updateBrandData?.megamenu_id || "",
+    });
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Description, setDescription] = useState(updateBrandData?.description || '')
     const [Title, setTitle] = useState(updateBrandData?.meta_title || '');
@@ -34,7 +37,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 stateIdToNameMap[state.id] = state.name_en;
             });
             console.log('statesData', citiesData);
-            setMegaMenuCategories(citiesData)
+            // setMegaMenuCategories(citiesData)
             console.log(citiesData);
         } catch (err) {
             // console.log(err);
@@ -78,7 +81,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatemega_menu_categories/${updateBrandData?.id}`, {
                 parent_id: Categorylevel,
-                megamenu_id: MegaMenuCategories,
+                megamenu_id: MegaMenuCategories?.id,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: Description,
@@ -121,11 +124,11 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             setLoading(false);
         }
 
-
-
-
     };
 
+    const handleSelectedDocuments = (event, value) => {
+      setMegaMenuCategories(value);
+    };
 
     return (
         <div>
@@ -164,7 +167,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         <label htmlFor="status" className="text-secondary">
                                             {t('Add')} {t('Menu')} {t('Categories')}
                                         </label>
-                                        <select
+                                        {/* <select
                                             id="status"
                                             value={MegaMenuCategories}
                                             onChange={(e) => setMegaMenuCategories(e.target.value)}
@@ -179,7 +182,45 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 })
                                             }
 
-                                        </select>
+                                        </select> */}
+                                         <Autocomplete
+                                            id="field1"
+                                            options={megamenudropdown}
+                                            value={MegaMenuCategories}
+                                            getOptionLabel={(option) => option?.name_en || ""}
+                                            onChange={handleSelectedDocuments}
+                                            onInputChange={(event, value) => {
+                                                if (!value) {
+                                                    // perform operation when input is cleared
+                                                    // console.log("Input cleared");
+                                                }
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    autoComplete="off"
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        className: "text-white",
+                                                    }}
+                                                    InputLabelProps={{
+                                                        ...params.InputLabelProps,
+                                                        style: { color: "white" },
+                                                    }}
+                                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                                    placeholder={`${t("Select")}`}
+                                                // required
+                                                />
+                                            )}
+                                            classes={{
+                                                endAdornment: "text-white",
+                                            }}
+                                            sx={{
+                                                "& .MuiAutocomplete-endAdornment": {
+                                                    color: "white",
+                                                },
+                                            }}
+                                        />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
