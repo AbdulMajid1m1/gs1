@@ -23,7 +23,6 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [startDate, setStartDate] = useState(new Date());
   const { t } = useTranslation();
 
   const handleClosePendingApprovedPopup = () => {
@@ -117,15 +116,10 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
 
-  // Default to today's date
-  const handleTodayLoader = () => {
-    const today = new Date();
-    setStartDate(today.toISOString().split('T')[0]);
-  };
+ 
 
   useEffect(() => {
     handleMemberInvoiceData();
-    handleTodayLoader();
   }, []);
 
 
@@ -133,14 +127,13 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
     e.preventDefault();
     setLoading(true);
 
-    const formattedStartDate = new Date(startDate);
-    formattedStartDate.setHours(0, 0, 0, 0);
+  
 
     const approvedBody = {
       "userId": gs1MemberData?.id,
       "status": selectedStatus, // or approved
       selectedLanguage: selectedLanguage,
-      approved_date: formattedStartDate.toISOString(),
+    
     };
     if (rejected) {
       approvedBody.reject_reason = rejected;
@@ -296,15 +289,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                   </table>
                 </div>
 
-                <div className="flex justify-center items-center">
-                  <label className="font-body text-sm text-red-500 font-semibold text-center">Enter the Actual Bank Receipt Date</label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-lg"
-                    />
-                </div>
+              
 
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                   <button
