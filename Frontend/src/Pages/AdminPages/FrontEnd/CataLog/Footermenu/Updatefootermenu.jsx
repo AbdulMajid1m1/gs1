@@ -15,7 +15,7 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
     const [Categorylevel, setCategorylevel] = useState({
-      category_name_en: updateBrandData?.parent_id || "",
+        category_name_en: updateBrandData?.parent_id || "",
     });
     const [categorydefualid, setcategorydefualid] = useState('')
     const [Page, setPage] = useState(updateBrandData?.url || '')
@@ -32,27 +32,20 @@ const Updatefootermenu = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                // console.log(error);
+                console.log(error);
             }
         };
         const getpagedatasdsd = async () => {
             try {
-                  const responsefotterget = await newRequest.get("/getAllfooter_menus");
-                  const citiesData = responsefotterget?.data || [];
-                  // Assuming updateBrandData?.category_name_en is the value to match against parent_id
-const filteredData = citiesData.filter(item => item.category_name_en == updateBrandData?.category_name_en);
-
-// filteredData now contains only the items with parent_id matching updateBrandData?.category_name_en
-console.log(filteredData[0].parent_id);
-setcategorydefualid(filteredData[0].parent_id);
-
-                //   console.log(citiesData);
+                const responsefotterget = await newRequest.get("/getAllfooter_menus");
+                const citiesData = responsefotterget?.data || [];
+                const filteredData = citiesData.filter(item => item.category_name_en == updateBrandData?.category_name_en);
+                setcategorydefualid(filteredData[0].parent_id);
                 const response = await newRequest.get('/getAllmega_menu_categories');
                 const nameEnArray = response.data;
                 setCategoryleveldropdown(nameEnArray);
-
             } catch (error) {
-                // console.log(error);
+                console.log(error);
             }
         };
         getpagedatasdsd();
@@ -101,9 +94,9 @@ setcategorydefualid(filteredData[0].parent_id);
             setLoading(false);
         }
     };
-const handleSelectedDocuments = (event, value) => {
-  setCategorylevel(value);
-};
+    const handleSelectedDocuments = (event, value) => {
+        setCategorylevel(value);
+    };
 
     return (
         <div>
@@ -157,7 +150,7 @@ const handleSelectedDocuments = (event, value) => {
                                                 })
                                             }
                                         </select> */}
-                                         <Autocomplete
+                                        <Autocomplete
                                             id="field1"
                                             options={Categoryleveldropdown}
                                             value={Categorylevel}
