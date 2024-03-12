@@ -51,7 +51,7 @@ const SelectBusinessType = () => {
               {/* show this in center */}
               <div className='flex justify-center items-center h-[80%]'>
                 <div className='w-full sm:w-[40%] sm:px-0 px-4'>    
-                 <h2 className='text-2xl text-secondary font-semibold text-start py-5 -mt-5'>Member Registration</h2>
+                 <h2 className='text-2xl text-secondary font-semibold text-start py-5 -mt-5'>{t('Member Registration')}</h2>
                   <div className='flex flex-col gap-1'>
                   <label
                         className="text-secondary font-bold"
@@ -87,7 +87,7 @@ const SelectBusinessType = () => {
                                 onClick={handleContinue}
                                 className='bg-secondary text-white font-medium w-full sm:h-12 h-10 sm:text-base text-sm rounded-sm mt-5 hover:bg-primary'
                             > 
-                                Continue
+                                {t("Continue")}
                             </button>
                         </div>
                     </div>

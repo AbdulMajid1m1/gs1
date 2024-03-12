@@ -715,8 +715,8 @@ const MemmberRegisteration = () => {
 
           <p className='text-red-500 text-lg font-body font-medium ml-3 pt-3'>
           {selectedBusinessType?.value === "organization"
-                    ? "** Provide Your company Certificate of Registration **"
-                    : "** Provide Your Business License **"}            
+                    ?  `** ${t("Provide Your company Certificate of Registration")} **`
+                    : `** ${t("Provide Your Business License")} **`}            
             </p>
         </div>
 
