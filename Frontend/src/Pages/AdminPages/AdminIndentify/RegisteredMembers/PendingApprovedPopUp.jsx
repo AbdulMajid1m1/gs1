@@ -116,15 +116,10 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
 
 
 
-  // Default to today's date
-  const handleTodayLoader = () => {
-    const today = new Date();
-    setStartDate(today.toISOString().split('T')[0]);
-  };
+ 
 
   useEffect(() => {
     handleMemberInvoiceData();
-    handleTodayLoader();
   }, []);
 
 

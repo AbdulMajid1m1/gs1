@@ -446,7 +446,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         }
 
         if (value.status === 'approved') {
-            let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
+            // let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
             await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
@@ -497,9 +497,38 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             }
                         });
 
-                        const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
-                            where: { transaction_id: currentDocument.transaction_id },
+                        await prisma.gtin_subscription_histories.updateMany({
+                            where: {
+                                transaction_id: currentDocument.transaction_id,
+                                user_id: userId,
+                                request_type: 'registration',
+
+                            },
+                            data: {
+                                status: 'approved',
+                                expiry_date: expiryDate,
+                                approved_date: value.approved_date,
+                            }
                         });
+
+                        await prisma.other_products_subscription_histories.updateMany({
+                            where: {
+                                transaction_id: currentDocument.transaction_id,
+                                user_id: userId,
+                                request_type: 'registration',
+                            },
+                            data: {
+                                status: 'approved',
+                                expiry_date: expiryDate,
+                                approved_date: value.approved_date,
+                            }
+
+                        });
+
+
+                        // const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+                        //     where: { transaction_id: currentDocument.transaction_id },
+                        // });
 
 
                         // Fetch the necessary data from other_products table  TODO: optiomzed it only call teh api for regiserted products of the user not all
@@ -511,7 +540,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 med_subscription_fee: true,
                             }
                         });
-                        let activatedOtherProducts = [];
+                        // let activatedOtherProducts = [];
                         // Update other_products_subcriptions table for each product
                         for (const product of products) {
                             console.log("product", product);
@@ -534,46 +563,46 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             });
                             // now get the updated records and push them to the array
 
-                            let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
-                                where: {
-                                    product_id: product.id,
-                                    isDeleted: false,
-                                    transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
-                                },
+                            // let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+                            //     where: {
+                            //         product_id: product.id,
+                            //         isDeleted: false,
+                            //         transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
+                            //     },
 
-                            });
-                            activatedOtherProducts.push(...activatedOtherProduct);
+                            // });
+                            // activatedOtherProducts.push(...activatedOtherProduct);
                         }
 
-                        console.log("activatedGtinProducts", activatedGtinProducts);
-                        console.log("activatedOtherProducts", activatedOtherProducts);
+                        // console.log("activatedGtinProducts", activatedGtinProducts);
+                        // console.log("activatedOtherProducts", activatedOtherProducts);
 
-                        gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
-                            ...(item.react_no && { react_no: item.react_no }),
-                            transaction_id: item.transaction_id,
-                            pkg_id: item.pkg_id,
-                            user_id: item.user_id,
-                            price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                            request_type: 'registration',
-                            status: 'approved',
-                            expiry_date: item.expiry_date,
-                            admin_id: req.admin.adminId,
-                            approved_date: value.approved_date,
-                        }));
-                        console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
+                        // gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
+                        //     ...(item.react_no && { react_no: item.react_no }),
+                        //     transaction_id: item.transaction_id,
+                        //     pkg_id: item.pkg_id,
+                        //     user_id: item.user_id,
+                        //     price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+                        //     request_type: 'registration',
+                        //     status: 'approved',
+                        //     expiry_date: item.expiry_date,
+                        //     admin_id: req.admin.adminId,
+                        //     approved_date: value.approved_date,
+                        // }));
+                        // console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
-                        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
-                            ...(item.react_no && { react_no: item.react_no }),
-                            transaction_id: item.transaction_id,
-                            product_id: item.product_id,
-                            user_id: item.user_id,
-                            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                            status: 'approved',
-                            request_type: 'registration',
-                            expiry_date: item.expiry_date,
-                            admin_id: req?.admin?.adminId,
-                            approved_date: value.approved_date,
-                        }));
+                        // otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
+                        //     ...(item.react_no && { react_no: item.react_no }),
+                        //     transaction_id: item.transaction_id,
+                        //     product_id: item.product_id,
+                        //     user_id: item.user_id,
+                        //     price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+                        //     status: 'approved',
+                        //     request_type: 'registration',
+                        //     expiry_date: item.expiry_date,
+                        //     admin_id: req?.admin?.adminId,
+                        //     approved_date: value.approved_date,
+                        // }));
 
 
 
@@ -682,9 +711,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             }, { timeout: 40000 });
 
 
-            await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+            // await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
-            await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+            // await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
             // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
             console.log("existingUser", currentDocument);
             let cartData = JSON.parse(cart.cart_items);
