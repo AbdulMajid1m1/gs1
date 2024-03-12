@@ -78,7 +78,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatemega_menu_categories/${updateBrandData?.id}`, {
                 parent_id: Categorylevel,
-                megamenu_id: MegaMenuCategories || updateBrandData?.megamenu_id,
+                megamenu_id: MegaMenuCategories,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: Description,
