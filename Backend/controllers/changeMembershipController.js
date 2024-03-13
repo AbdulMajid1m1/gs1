@@ -362,7 +362,7 @@ export const membershipRenewRequest = async (req, res, next) => {
                 user_id: existingUser.id,
                 doc_type: 'member_document',
                 status: 'pending',
-                ...(req.admin.adminId && { uploaded_by: req.admin.email }),
+                ...(req?.admin?.adminId && { uploaded_by: req.admin.email }),
 
             }
         });
@@ -466,8 +466,8 @@ export const membershipRenewRequest = async (req, res, next) => {
 
     }
     catch (error) {
-        console.error(error);
-        next(createError(500, 'Server error occurred'));
+        console.log(error);
+        next(createError(500, error.message));
 
     }
 
