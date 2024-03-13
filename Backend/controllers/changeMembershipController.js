@@ -362,11 +362,9 @@ export const membershipRenewRequest = async (req, res, next) => {
                 user_id: existingUser.id,
                 doc_type: 'member_document',
                 status: 'pending',
-                // TODO: take email form current admin token
-                // uploaded_by: req.admin.email, // Assuming the admin is logged in
-                uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
-            }
+                ...(req.admin.adminId && { uploaded_by: req.admin.email }),
 
+            }
         });
 
 
@@ -426,7 +424,8 @@ export const membershipRenewRequest = async (req, res, next) => {
             price: activatedGtinProducts.gtin_subscription_total_price, // add yearly subscription fee
             request_type: 'renewal',
             expiry_date: activatedGtinProducts.expiry_date,
-            admin_id: req.admin.adminId,
+            // admin_id: req.admin.adminId,
+            ...(req?.admin?.adminId && { admin_id: req.admin.adminId }),
 
         }
         ]
@@ -449,7 +448,8 @@ export const membershipRenewRequest = async (req, res, next) => {
             price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
             request_type: 'renewal',
             expiry_date: item.expiry_date,
-            admin_id: req?.admin?.adminId,
+            // admin_id: req?.admin?.adminId,
+            ...(req?.admin?.adminId && { admin_id: req.admin.adminId }),
         }));
 
 
@@ -472,11 +472,6 @@ export const membershipRenewRequest = async (req, res, next) => {
     }
 
 };
-
-
-
-
-
 
 
 const updateMemberDocumentStatusSchema = Joi.object({
@@ -3358,7 +3353,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
             }
         });
 
-        
+
 
         await prisma.member_documents.updateMany({
             where: {
