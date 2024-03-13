@@ -23,7 +23,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
 
         const newSocket = io(backendUrl, {
             path: '/socket.io',
-            transports: ['websocket'],
+            transports: ['polling'],
         });
 
         newSocket.on('connect', () => {

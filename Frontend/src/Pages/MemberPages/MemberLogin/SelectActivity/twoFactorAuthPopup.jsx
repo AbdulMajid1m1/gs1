@@ -26,7 +26,7 @@ const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
 
         const newSocket = io(backendUrl, {
             path: '/socket.io',
-            transports: ['websocket'],
+            transports: ['polling'],
         });
 
         newSocket.on('connect', () => {

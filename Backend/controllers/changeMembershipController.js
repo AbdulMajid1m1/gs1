@@ -466,8 +466,8 @@ export const membershipRenewRequest = async (req, res, next) => {
 
     }
     catch (error) {
-        console.error(error);
-        next(createError(500, 'Server error occurred'));
+        console.log(error);
+        next(createError(500, error.message));
 
     }
 
