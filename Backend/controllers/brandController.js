@@ -61,7 +61,7 @@ export const createBrand = async (req, res, next) => {
             // check and remove extra white spaces
             value.name = value.name.replace(/\s+/g, ' ').trim();
             value.name_ar = value.name_ar.replace(/\s+/g, ' ').trim();
-            
+
             // Create brand data
             let brandData = {
                 ...value,
