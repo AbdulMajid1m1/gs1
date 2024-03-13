@@ -939,9 +939,10 @@ export const getLicenseRegisteryUser = async (req, res) => {
     }
 };
 
+
+
 export const getUserDetails = async (req, res, next) => {
     try {
-        // Define allowable columns for filtering
         const allowedColumns = {
             id: Joi.string(),
             user_type: Joi.string(),
@@ -949,7 +950,7 @@ export const getUserDetails = async (req, res, next) => {
             email: Joi.string().email(),
             parent_memberID: Joi.string(),
             status: Joi.string().valid('active', 'inactive'),
-            // ... define validation for other allowed columns
+            // Extend with other necessary columns
         };
 
         // Create a dynamic schema based on the allowed columns
@@ -958,84 +959,73 @@ export const getUserDetails = async (req, res, next) => {
                 schema[column] = allowedColumns[column];
                 return schema;
             }, {})
-        ).unknown(false); // Disallows any keys that are not defined in the schema
+        ).unknown(false); // Disallows any keys not defined in the schema
 
         // Validate the request query
         const { error, value } = filterSchema.validate(req.query);
         if (error) {
-            return next(createError(400, `Invalid query parameter: ${error.details[0].message}`));
+            return res.status(400).send({ message: `Invalid query parameter: ${error.details[0].message}` });
         }
 
-        // Check if any filter conditions are provided
-        const hasFilterConditions = Object.keys(value).length > 0;
-
-        // Construct filter conditions for Prisma query
-        const filterConditions = hasFilterConditions
+        // Prepare filter conditions
+        const filterConditions = Object.keys(value).length > 0
             ? Object.keys(value).reduce((obj, key) => {
                 obj[key] = value[key];
                 return obj;
             }, {})
             : {};
 
-        // Start a transaction to fetch users and their carts
-        // if there is no filter conditions, fetch all users without carts
-        if (!hasFilterConditions) {
-            const users = await prisma.users.findMany({
-                where: filterConditions,
-                orderBy: { updated_at: 'desc' },
-            });
-
-            //sort the users by updated_at
+        const users = await prisma.users.findMany({
+            where: filterConditions,
+            orderBy: {
+                updated_at: 'desc',
+            },
+        });
 
 
+        if (users.length) {
+            const userIds = users.map(user => user.id);
 
+            // Function to chunk the userIds array
+            const chunkArray = (arr, size) =>
+                Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+                    arr.slice(i * size, i * size + size)
+                );
 
+            // Chunking the userIds to avoid exceeding SQL parameter limits
+            const userIdChunks = chunkArray(userIds, 2000); // Example: 2000 IDs per chunk
 
-            return res.json(users);
-        }
-        const [users, allCarts] = await prisma.$transaction(async (prisma) => {
-            // Fetch users based on filter conditions
-            const users = await prisma.users.findMany({
-                where: filterConditions,
-                orderBy: { updated_at: 'desc' },
-                // get top 10
-                // take: 10
-            });
+            // Initialize an array to collect carts from all chunks
+            let allCarts = [];
 
-            // If no users are found, return early
-            if (users.length === 0) {
-                return [users, []];
+            // Process each chunk
+            for (const chunk of userIdChunks) {
+                const carts = await prisma.carts.findMany({
+                    where: {
+                        user_id: {
+                            in: chunk,
+                        },
+                    },
+                });
+                allCarts = allCarts.concat(carts); // Aggregate results
             }
 
-            // Fetch all carts for these users in one query
-            const userIds = users.map(user => user.id);
-            const allCarts = await prisma.carts.findMany({
-                where: {
-                    user_id: { in: userIds }
-                }
-            });
-            // sort the users by updated_at
+            // Map carts back to users
+            const usersWithCarts = users.map(user => ({
+                ...user,
+                carts: allCarts.filter(cart => cart.user_id === user.id),
+            }));
 
-
-
-            return [users, allCarts];
-
-
-        }, { timeout: 50000 });
-
-        // Map carts to their respective users
-        const usersWithCarts = users.map(user => ({
-            ...user,
-            carts: allCarts.filter(cart => cart.user_id == user.id)
-        }));
-
-
-        return res.json(usersWithCarts);
+            return res.json(usersWithCarts);
+        } else {
+            return res.json([]);
+        }
     } catch (error) {
-        console.log(error);
-        next(error);
+        console.error(error);
+        return res.status(500).send({ message: error.message });
     }
 };
+
 
 
 export const getUsersWithAssignTo = async (req, res, next) => {
@@ -1127,7 +1117,7 @@ export const getRegisteredMembers = async (req, res, next) => {
             include: {
                 assign_to_admin: true
             },
-            take: 200
+            // take: 20
 
         });
 

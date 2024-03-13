@@ -3110,7 +3110,19 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
 
         await prisma.$transaction(
             resolvedSubscriptionEntries.map(entry => prisma.other_products_subcriptions.create({ data: entry }))
+
         );
+
+        let otherProductsSubscriptionHistoryData = resolvedSubscriptionEntries.map(sub => ({
+            transaction_id: transactionId,
+            product_id: sub.product_id,
+            user_id: userId,
+            price: sub.other_products_subscription_total_price,
+            status: 'pending',
+            request_type: 'upgrade',
+        }));
+        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+
 
         let cart = { cart_items: [] };
 
@@ -3215,6 +3227,8 @@ export const addMultipleOtherProductSubscriptionsAndGenerateInvoice = async (req
                 },
             ],
         });
+
+
         await updateUserPendingInvoiceStatus(userId);
 
         res.status(201).json({
@@ -3233,6 +3247,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         transactionId: Joi.string().required(),
         userId: Joi.string().required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
+        approved_date: Joi.date().default(new Date()),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -3291,7 +3306,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
                 med_subscription_fee: true,
             }
         });
-        let activatedOtherProducts = [];
+
         // Update other_products_subcriptions table for each product
         for (const product of products) {
             console.log("product", product);
@@ -3322,34 +3337,28 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
                 },
 
             });
-            activatedOtherProducts.push(...activatedOtherProduct);
+
         }
 
-        console.log("activatedOtherProducts", activatedOtherProducts);
-        otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
-            ...(item.react_no && { react_no: item.react_no }),
-            transaction_id: item.transaction_id,
-            product_id: item.product_id,
-            user_id: item.user_id,
-            price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-            status: 'approved',
-            request_type: 'registration',
-            expiry_date: item.expiry_date,
-            admin_id: req?.admin?.adminId,
-        }));
 
-        // await prisma.other_products_subcriptions.updateMany({
-        //     where: {
-        //         transaction_id: transactionId,
-        //         user_id: userId,
-        //     },
-        //     data: {
-        //         status: 'active',
-        //     },
-        // });
 
-        // update otherproductHistory table
-        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+        // update other_products_subscription_histories table and change status to approved
+        await prisma.other_products_subscription_histories.updateMany({
+            where: {
+                transaction_id: transactionId,
+                user_id: userId,
+                request_type: 'upgrade',
+            },
+            data: {
+                status: 'approved',
+                admin_id: req?.admin?.adminId,
+                approved_date: value.approved_date,
+                expiry_date: user.gcp_expiry,
+
+            }
+        });
+
+        
 
         await prisma.member_documents.updateMany({
             where: {
