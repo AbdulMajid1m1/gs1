@@ -463,6 +463,8 @@ export const bulkCreateProduct = async (req, res, next) => {
         // product_link_url: Joi.string().max(255).allow('', null),
         BrandNameAr: Joi.string().allow('', null),
         prod_lang: Joi.string().max(50),
+        unit: Joi.string().max(50).allow('', null),
+        size: Joi.string().max(50).allow('', null),
         // gtin field is optional as number or string
         GTIN: Joi.alternatives().try(Joi.string(), Joi.number().integer().max(99999999999999)),
         // digitalInfoType: Joi.number().integer().allow('', null),
@@ -577,6 +579,8 @@ export const bulkCreateProduct = async (req, res, next) => {
                     BrandNameAr: record.BrandNameAr,
                     prod_lang: record['Product Language Code'],
                     GTIN: record.GTIN?.toString(),
+                    unit: record.Unit,
+                    size: record?.Size?.toString() || '',
                     // Add other fields as necessary
                 };
 
