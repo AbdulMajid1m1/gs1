@@ -850,7 +850,7 @@ const AdminSideBar = () =>
                       className="main-inside-image bg-white rounded-full"
                       alt=""
                     />
-                    <p className="sidebar-text">GTIN Reports</p>
+                    <p className="sidebar-text">{t("GTIN Reports")}</p>
                   </div>
 
                 </div>
