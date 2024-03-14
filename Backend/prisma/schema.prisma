@@ -833,7 +833,7 @@ model gtin_subcriptions {
   react_no                      Int?
   transaction_id                String?
   pkg_id                        String
-  price                         Float?
+  price                         Float? // this is registration fee
   request_type                  String?       @db.NVarChar(Max)
   status                        String?       @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
   user_id                       String?

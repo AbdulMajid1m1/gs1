@@ -335,7 +335,7 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 transaction_id: cartValue.transaction_id,
                 pkg_id: activatedGtinProducts.pkg_id,
                 user_id: activatedGtinProducts.user_id,
-                price: activatedGtinProducts.gtin_subscription_total_price, // add yearly subscription fee
+                price: activatedGtinProducts.gtin_subscription_total_price + activatedGtinProducts.price, // add yearly subscription fee and price (registration fee)
                 request_type: 'registration',
                 // expiry_date: activatedGtinProducts.expiry_date,
                 admin_id: req.admin.adminId,
@@ -436,9 +436,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
                 }
                 await createAdminLogs(adminLog);
             }
-
-
-
 
             try {
                 await updateUserPendingInvoiceStatus(transaction.userUpdateResult.id);

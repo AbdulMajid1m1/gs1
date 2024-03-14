@@ -152,7 +152,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
                             if (socket) {
 
                                 socket.emit('verifyAdminNumber', { adminId, selectedNumber: number });
-                                setRandomNumber(randomNum);
+                                // setRandomNumber(randomNum);
                                 setTimer(duration);
                             }
                         }
