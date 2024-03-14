@@ -210,7 +210,7 @@ CREATE TABLE [dbo].[blog_comments] (
 
 -- CreateTable
 CREATE TABLE [dbo].[board_members] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(255) NOT NULL,
     [job_title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(max),
@@ -519,7 +519,7 @@ CREATE TABLE [dbo].[families] (
 
 -- CreateTable
 CREATE TABLE [dbo].[faq_categories] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [name] NVARCHAR(max),
     [created_at] DATETIME,
     [updated_at] DATETIME,
@@ -528,7 +528,7 @@ CREATE TABLE [dbo].[faq_categories] (
 
 -- CreateTable
 CREATE TABLE [dbo].[featured_articales] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [title] NVARCHAR(max),
     [title_ar] NVARCHAR(max),
     [image] NVARCHAR(max),
@@ -542,7 +542,7 @@ CREATE TABLE [dbo].[featured_articales] (
 
 -- CreateTable
 CREATE TABLE [dbo].[featured_services] (
-    [id] BIGINT NOT NULL IDENTITY(1,1),
+    [id] NVARCHAR(max) NOT NULL IDENTITY(1,1),
     [image] NVARCHAR(max),
     [link] NVARCHAR(max),
     [status] INT,
