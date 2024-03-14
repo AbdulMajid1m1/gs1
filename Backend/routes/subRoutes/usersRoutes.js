@@ -9,7 +9,7 @@ const userRouter = express.Router();
 // userRouter.post('/', createUser);
 userRouter.post('/', createUser);
 
-userRouter.get('/', generalAuth, getUserDetails);
+userRouter.get('/', getUserDetails);
 
 userRouter.get('/getUsersWithAssignTo', superAdminAuth, getUsersWithAssignTo);
 

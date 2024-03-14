@@ -10,7 +10,7 @@ import newRequest from '../../../utils/userRequest';
 import { QRCodeSVG } from "qrcode.react";
 
 const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) => {
-
+    const [number, setNumber] = useState(''); // Number input state
     const adminId = adminData?.id; // admin id from adminData for socket connection
     const navigate = useNavigate();
     const [randomNumber, setRandomNumber] = useState('');
@@ -23,7 +23,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
 
         const newSocket = io(backendUrl, {
             path: '/socket.io',
-            transports: ['websocket'],
+            transports: ['polling'],
         });
 
         newSocket.on('connect', () => {
@@ -111,39 +111,61 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
                     </Button>
 
                     <div className='flex flex-col md:flex-row justify-center items-center'>
-                      <div className='flex flex-col justify-center items-center gap-3 mt-6'>
-                        <QRCodeSVG value={"https://play.google.com/store/apps/details?id=com.adminauthenticator86"} width="105" height="90" />
-                        <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
-                            <i className="fab fa-android ml-1"></i>  for andriod
+                        <div className='flex flex-col justify-center items-center gap-3 mt-6'>
+                            <QRCodeSVG value={"https://play.google.com/store/apps/details?id=com.adminauthenticator86"} width="105" height="90" />
+                            <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
+                                <i className="fab fa-android ml-1"></i>  for andriod
+                            </button>
+                            <p className='text-sm text-center text-red-600 font-medium'>Install GS1 Authenticator</p>
+                        </div>
+
+                        <div>
+                            <div className="text-center mt-4 mb-2">
+                                <p className="text-lg sm:text-xl text-secondary font-medium">Tap the Number from your GS1 Authenticator App</p>
+                            </div>
+                            <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
+                                <h2 className="text-white text-4xl">{randomNumber}</h2>
+                            </div>
+
+                            <div className="text-center">
+                                <p className="text-secondary">{t('Number will regenerate in')} {timer} {t('seconds')}</p>
+                            </div>
+                        </div>
+
+                        <div className='flex flex-col justify-center items-center gap-3 mt-6'>
+                            <QRCodeSVG value={"https://play.google.com/store/apps/details?id=com.adminauthenticator86"} width="105" height="90" />
+                            <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
+                                <i className="fab fa-apple ml-1"></i> for IOS
+                            </button>
+                            <p className='text-sm text-center text-red-600 font-medium'>Install GS1 Authenticator</p>
+                        </div>
+
+                        <input type="number"
+                            onChange={(e) => {
+                                setNumber(e.target.value);
+                            }
+                            }
+                        />
+
+                        <button onClick={() => {
+                            // emit socket event
+                            if (socket) {
+
+                                socket.emit('verifyAdminNumber', { adminId, selectedNumber: number });
+                                // setRandomNumber(randomNum);
+                                setTimer(duration);
+                            }
+                        }
+                        } >{t('send Number')}
+
+
+
                         </button>
-                        <p className='text-sm text-center text-red-600 font-medium'>Install GS1 Authenticator</p>
-                      </div>
 
-                    <div>      
-                      <div className="text-center mt-4 mb-2">
-                        <p className="text-lg sm:text-xl text-secondary font-medium">Tap the Number from your GS1 Authenticator App</p>
-                      </div>
-                      <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
-                        <h2 className="text-white text-4xl">{randomNumber}</h2>
-                      </div>
-
-                      <div className="text-center">
-                        <p className="text-secondary">{t('Number will regenerate in')} {timer} {t('seconds')}</p>
-                      </div>
                     </div>
-
-                    <div className='flex flex-col justify-center items-center gap-3 mt-6'>
-                      <QRCodeSVG value={"https://play.google.com/store/apps/details?id=com.adminauthenticator86"} width="105" height="90" />
-                      <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
-                        <i className="fab fa-apple ml-1"></i> for IOS
-                      </button>
-                      <p className='text-sm text-center text-red-600 font-medium'>Install GS1 Authenticator</p>
-                    </div>
-
-                  </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 };
 

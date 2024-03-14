@@ -833,7 +833,7 @@ model gtin_subcriptions {
   react_no                      Int?
   transaction_id                String?
   pkg_id                        String
-  price                         Float?
+  price                         Float? // this is registration fee
   request_type                  String?       @db.NVarChar(Max)
   status                        String?       @default("inactive", map: "DF_gtin_subcriptions_status") @db.VarChar(10)
   user_id                       String?
@@ -850,22 +850,23 @@ model gtin_subcriptions {
 }
 
 model gtin_subscription_histories {
-  id                     String                @id @default(cuid())
-  react_no               Int?
-  transaction_id         String?
-  pkg_id                 String
-  pkg_date               DateTime?             @default(now()) @db.DateTime
-  user_id                String
-  price                  Float?
-  request_type           String?               @db.NVarChar(Max)
-  document               String?               @db.NVarChar(Max)
-  payment_type           String?               @db.NVarChar(Max)
-  status                 String?               @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
-  createdBy              Int?                  @default(0, map: "DF_gtin_subscription_histories_createdBy")
-  created_at             DateTime?             @default(now()) @db.DateTime
-  updated_at             DateTime?             @updatedAt
-  deleted_at             DateTime?             @db.DateTime
-  expiry_date            DateTime?             @db.DateTime
+  id             String    @id @default(cuid())
+  react_no       Int?
+  transaction_id String?
+  pkg_id         String
+  pkg_date       DateTime? @default(now()) @db.DateTime
+  user_id        String
+  price          Float?
+  request_type   String?   @db.NVarChar(Max)
+  document       String?   @db.NVarChar(Max)
+  payment_type   String?   @db.NVarChar(Max)
+  status         String?   @default("pending", map: "DF_gtin_subscription_histories_status") @db.VarChar(10)
+  createdBy      Int?      @default(0, map: "DF_gtin_subscription_histories_createdBy")
+  created_at     DateTime? @default(now()) @db.DateTime
+  updated_at     DateTime? @updatedAt
+  deleted_at     DateTime? @db.DateTime
+  expiry_date    DateTime? @db.DateTime
+
   approved_date          DateTime?             @db.DateTime
   admin_id               String?
   additional_products_id String?

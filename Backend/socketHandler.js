@@ -9,6 +9,8 @@ const socketHandler = (server) => {
             origin: "*", // Adjust this to match your client app's origin
             methods: ["GET", "POST"],
         },
+        // use pooling as a transport
+        transports: ['polling'],
     });
     // Define a Map to store random numbers for each user
     const randomNumbersMap = new Map();
@@ -25,7 +27,7 @@ const socketHandler = (server) => {
             if (randomNumber) {
                 io.to(roomName).emit('randomNumber', randomNumber);
             }
- 
+
         });
 
         // Send Random Number to Mobile Users
@@ -110,9 +112,9 @@ const socketHandler = (server) => {
         socket.on('verifyAdminNumber', async ({ adminId, selectedNumber }) => {
             // Retrieve the stored random number for the admin
             const randomNumber = randomNumbersMap.get(adminId);
+            console.log("randomNumber", randomNumber);
             let adminRoomName = `admin-${adminId}`;
             try {
-
 
                 // Compare the selected number with the stored random number
                 if (randomNumber === selectedNumber) {
