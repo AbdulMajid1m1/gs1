@@ -27,6 +27,7 @@ export const getProductKpiReports = async (req, res, next) => {
         // Fetch approved subscriptions from gtin_subscription_histories table
         const approvedGtinHistories = await prisma.gtin_subscription_histories.findMany({
             where: {
+
                 approved_date: {
                     gte: new Date(startDate),
                     lte: new Date(endDate),
@@ -140,7 +141,7 @@ export const getProductKpiReports = async (req, res, next) => {
         return res.json(response);
     } catch (error) {
         console.error(error);
-        next(createError(500, 'Server error occurred'));
+        next(error);
     }
 };
 
