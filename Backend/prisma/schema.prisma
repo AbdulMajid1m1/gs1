@@ -206,7 +206,7 @@ model blog_comments {
 }
 
 model board_members {
-  id          BigInt    @id(map: "PK__board_me__3213E83FCC16072D") @default(autoincrement())
+  id         String   @id @default(cuid())
   name        String    @db.NVarChar(255)
   job_title   String    @db.NVarChar(255)
   description String?   @db.NVarChar(Max)
@@ -492,14 +492,14 @@ model families {
 }
 
 model faq_categories {
-  id         BigInt    @id(map: "PK_faq_categories") @default(autoincrement())
+  id        String   @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
 }
 
 model featured_articales {
-  id         String    @id @default(cuid())
+  id         String   @id @default(cuid())
   title      String?   @db.NVarChar(Max)
   title_ar   String?   @db.NVarChar(Max)
   image      String?   @db.NVarChar(Max)
@@ -511,7 +511,7 @@ model featured_articales {
 }
 
 model featured_services {
-  id         String    @id @default(cuid())
+  id         BigInt    @id(map: "PK_featured_services") @default(autoincrement())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
