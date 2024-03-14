@@ -1,10 +1,11 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import newRequest from '../../../../../utils/userRequest';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
+import { Autocomplete, TextField } from '@mui/material';
 
 const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const { t } = useTranslation();
@@ -14,8 +15,12 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [category_name_ar, setcategory_name_ar] = useState(updateBrandData?.category_name_ar || '');
     const [status, setstatus] = useState(updateBrandData?.status || 0);
     const [loading, setLoading] = useState(false);
-    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.Categorylevel || '')
-    const [MegaMenuCategories, setMegaMenuCategories] = useState('')
+    const [Categorylevel, setCategorylevel] = useState(updateBrandData?.parent_id || '')
+    const [MegaMenuCategories, setMegaMenuCategories] = useState({
+        name_en: updateBrandData?.megamenu_id || "",
+    });
+        const [categorydefualid, setcategorydefualid] = useState("");
+
     const [Page, setPage] = useState(updateBrandData?.url || '')
     const [Description, setDescription] = useState(updateBrandData?.description || '')
     const [Title, setTitle] = useState(updateBrandData?.meta_title || '');
@@ -33,24 +38,30 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             statesData.forEach(state => {
                 stateIdToNameMap[state.id] = state.name_en;
             });
-            // console.log('statesData', citiesData);
-            setMegaMenuCategories(citiesData)
+            console.log('statesData', citiesData);
+            // setMegaMenuCategories(citiesData)
+            console.log(citiesData);
         } catch (err) {
             // console.log(err);
         }
     };
     useEffect(() => {
-        refreshcitiesData() // Calling the function within useEffect, not inside itself
+        // refreshcitiesData() 
     }, []);
 
     useEffect(() => {
         const getDocuments = async () => {
             try {
+                const responsefotterget = await newRequest.get("/getAllmega_menu_categories",);
+                const citiesData = responsefotterget?.data || [];
+                const filteredData = citiesData.filter(item => item.category_name_en == updateBrandData?.category_name_en);
+               
+                setcategorydefualid(filteredData[0]?.megamenu_id);
                 const response = await newRequest.get('/getAllmega_menu');
                 const nameEnArray = response.data;
                 setmegamenudropdown(nameEnArray);
             } catch (error) {
-                // console.log(error);
+                console.log(error);
             }
         };
         const getpagedata = async () => {
@@ -59,7 +70,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 const nameEnArray = response.data;
                 setPagedropdown(nameEnArray);
             } catch (error) {
-                // console.log(error);
+                console.log(error);
             }
         };
 
@@ -77,7 +88,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatemega_menu_categories/${updateBrandData?.id}`, {
                 parent_id: Categorylevel,
-                megamenu_id: MegaMenuCategories,
+                megamenu_id: MegaMenuCategories?.id || categorydefualid,
                 category_name_en: category_name_en,
                 category_name_ar: category_name_ar,
                 description: Description,
@@ -88,7 +99,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 status: Number(status),
             });
 
-            toast.success(response?.data?.message || `${t('Mega Menu')} ${('categorie')} ${('has been')} ${t('Updated Successfully')}.` , {
+            toast.success(response?.data?.message || `${t('Mega Menu')} ${('categorie')} ${('has been')} ${t('Updated Successfully')}.`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -104,7 +115,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
+            toast.error(error?.response?.data?.error || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -114,16 +125,17 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                 progress: undefined,
                 theme: "light",
             });
+            console.log(error);
         }
         finally {
             setLoading(false);
         }
 
-
-
-
     };
 
+    const handleSelectedDocuments = (event, value) => {
+        setMegaMenuCategories(value);
+    };
 
     return (
         <div>
@@ -162,7 +174,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                         <label htmlFor="status" className="text-secondary">
                                             {t('Add')} {t('Menu')} {t('Categories')}
                                         </label>
-                                        <select
+                                        {/* <select
                                             id="status"
                                             value={MegaMenuCategories}
                                             onChange={(e) => setMegaMenuCategories(e.target.value)}
@@ -177,7 +189,45 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                                 })
                                             }
 
-                                        </select>
+                                        </select> */}
+                                        <Autocomplete
+                                            id="field1"
+                                            options={megamenudropdown}
+                                            value={MegaMenuCategories}
+                                            getOptionLabel={(option) => option?.name_en || ""}
+                                            onChange={handleSelectedDocuments}
+                                            onInputChange={(event, value) => {
+                                                if (!value) {
+                                                    // perform operation when input is cleared
+                                                    // console.log("Input cleared");
+                                                }
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    autoComplete="off"
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        className: "text-white",
+                                                    }}
+                                                    InputLabelProps={{
+                                                        ...params.InputLabelProps,
+                                                        style: { color: "white" },
+                                                    }}
+                                                    className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                                    placeholder={`${t("Select")}`}
+                                                // required
+                                                />
+                                            )}
+                                            classes={{
+                                                endAdornment: "text-white",
+                                            }}
+                                            sx={{
+                                                "& .MuiAutocomplete-endAdornment": {
+                                                    color: "white",
+                                                },
+                                            }}
+                                        />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -284,7 +334,7 @@ const Updatacatelog = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     >
                                         {t('Close')}
                                     </button>
-                                    
+
                                     <Button
                                         variant="contained"
                                         style={{ backgroundColor: '#021F69', color: '#ffffff' }}
