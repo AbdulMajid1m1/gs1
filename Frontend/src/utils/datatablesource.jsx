@@ -7907,6 +7907,74 @@ export const licenceRegistryColumn = (t, i18n) => [
 ];
 
 
+export const AllProductsColumn= (t, i18n) => [
+ 
+  {
+    field: 'gcp_type',
+    headerName: t('Product Name [Eng]'),
+    width: 220,
+  },
+   {
+    field: "qrcode",
+    headerName: t('QR Code'),
+    renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
+    width: 180, // Adjust this width as needed
+  },
+  {
+    field: 'company_name_eng',
+    headerName: t('Brand Name'),
+    width: 200,
+  },
+  {
+    field: 'gln',
+    headerName: t('Barcode'),
+    width: 180,
+    renderCell: params => (
+      <div
+        style={{
+          padding: '5px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          borderRadius: '20px',
+          border: '2px solid',
+          backgroundColor: 'red',
+          borderColor: 'white',
+          color: 'white',
+        }}
+      >
+        {params.row.gln}
+      </div>
+    ),
+  },
+  {
+    field: 'additional_number',
+    headerName: t('Company'),
+    width: 200,
+  },
+  // {
+  //   field: 'status',
+  //   headerName: t('Status'),
+  //   width: 120,
+  //   renderCell: params => (
+  //     <div
+  //       style={{
+  //         padding: '5px',
+  //         paddingLeft: '10px',
+  //         paddingRight: '10px',
+  //         borderRadius: '20px',
+  //         border: '2px solid',
+  //         borderColor: params.row.status === 'active' ? 'green' : 'red',
+  //         color: params.row.status === 'active' ? 'green' : 'red',
+  //       }}
+  //     >
+  //       {params.row.status}
+  //     </div>
+  //   ),
+  // },
+
+];
+
+
 
 
 export const foreignGtinColumn = (t, i18n) => [

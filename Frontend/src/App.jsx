@@ -144,6 +144,8 @@ import { LanguageProvider } from "./Contexts/LanguageContext.jsx";
 import SelectBusinessType from "./Pages/MemberPages/MemberRegistration/SelectBusinessType.jsx";
 import CheckDigitCalculator from "./Pages/UserPages/CheckDigitCalculator/CheckDigitCalculator.jsx";
 import GEPIR from "./Pages/UserPages/GEPIR/GEPIR.jsx";
+import AllProducts from "./Pages/AdminPages/AdminShare/AllProducts/AllProducts.jsx";
+import UpdateallProducts from "./Pages/AdminPages/AdminShare/AllProducts/UpdateallProducts.jsx";
 
 const queryClient = new QueryClient()
 
@@ -412,6 +414,16 @@ const App = () => {
                               <Route path="gcp-license" element={
                                 <ProtectedRoute requiredPermission="gcp_licenses">
                                   <GcpLicense />
+                                </ProtectedRoute>
+                              } />
+                               <Route path="allProducts" element={
+                                <ProtectedRoute requiredPermission="allProducts">
+                                  <AllProducts />
+                                </ProtectedRoute>
+                              } />
+                               <Route path="UpdateProducts" element={
+                                <ProtectedRoute requiredPermission="UpdateallProducts">
+                                  <UpdateallProducts />
                                 </ProtectedRoute>
                               } />
                               {/* <Route path="gs1-registries" element={<GS1Registries />} /> */}
