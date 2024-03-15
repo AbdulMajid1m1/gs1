@@ -629,6 +629,21 @@ const AdminSideBar = () =>
                 <p className="sidebar-text">{t('GS1 Registries')}</p>
               </div>
 
+                <div
+                className={`main-images-container ${selectedItem === '/admin/gcp-license' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/gcp-license', event)}
+                onContextMenu={(event) =>
+                  handleContextMenu(event, '/admin/gcp-license')
+                }
+              >
+                <img
+                  src={gdsnproduct}
+                  className="main-inside-image bg-white rounded-full"
+                  alt=""
+                />
+                <p className="sidebar-text">{t('GTIN License')}</p>
+              </div>
+
             </div>
           )}
 
