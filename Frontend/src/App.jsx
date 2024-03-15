@@ -142,6 +142,8 @@ import Managesections from "./Pages/AdminPages/FrontEnd/ManageSections/Managesec
 import UserGuide from "./Pages/UserPages/UserGuide/UserGuide.jsx";
 import { LanguageProvider } from "./Contexts/LanguageContext.jsx";
 import SelectBusinessType from "./Pages/MemberPages/MemberRegistration/SelectBusinessType.jsx";
+import CheckDigitCalculator from "./Pages/UserPages/CheckDigitCalculator/CheckDigitCalculator.jsx";
+import GEPIR from "./Pages/UserPages/GEPIR/GEPIR.jsx";
 
 const queryClient = new QueryClient()
 
@@ -221,6 +223,8 @@ const App = () => {
                       }
                     />
                     <Route path="/gtin-reporter" element={<GTINReports />} />
+                    <Route path="/check-digit" element={<CheckDigitCalculator />} />
+                    <Route path="/gepir" element={<GEPIR />} />
                     <Route path="/user-guide" element={<UserGuide />} />
 
                     {/* <Route path="main-popup" element={<MainPopUp />} /> */}

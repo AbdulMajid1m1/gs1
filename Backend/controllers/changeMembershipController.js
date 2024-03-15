@@ -421,8 +421,7 @@ export const membershipRenewRequest = async (req, res, next) => {
             transaction_id: transactionId,
             pkg_id: activatedGtinProducts.pkg_id,
             user_id: activatedGtinProducts.user_id,
-            price: activatedGtinProducts.gtin_subscription_total_price + activatedGtinProducts.price, // add yearly subscription fee and price (registration fee)
-            request_type: 'renewal',
+            price: activatedGtinProducts.gtin_subscription_total_price,// add yearly subscription fee. registration fee is not required as it is one time fee
             expiry_date: activatedGtinProducts.expiry_date,
             // admin_id: req.admin.adminId,
             ...(req?.admin?.adminId && { admin_id: req.admin.adminId }),
