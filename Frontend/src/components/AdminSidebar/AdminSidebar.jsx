@@ -630,10 +630,10 @@ const AdminSideBar = () =>
               </div>
 
                 <div
-                className={`main-images-container ${selectedItem === '/admin/gcp-license' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
-                onClick={(event) => handleItemClick('/admin/gcp-license', event)}
+                className={`main-images-container ${selectedItem === '/admin/allProducts' ? 'selected-item' : ''} ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                onClick={(event) => handleItemClick('/admin/allProducts', event)}
                 onContextMenu={(event) =>
-                  handleContextMenu(event, '/admin/gcp-license')
+                  handleContextMenu(event, '/admin/allProducts')
                 }
               >
                 <img
