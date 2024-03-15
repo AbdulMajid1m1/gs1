@@ -7910,8 +7910,13 @@ export const licenceRegistryColumn = (t, i18n) => [
 export const AllProductsColumn= (t, i18n) => [
  
   {
-    field: 'gcp_type',
-    headerName: t('Product Name [Eng]'),
+    field: 'productnameenglish',
+    headerName: t('Product Name [English]'),
+    width: 220,
+  },
+   {
+    field: 'productnamearabic',
+    headerName: t('Product Name [Arabic]'),
     width: 220,
   },
    {
@@ -7921,12 +7926,12 @@ export const AllProductsColumn= (t, i18n) => [
     width: 180, // Adjust this width as needed
   },
   {
-    field: 'company_name_eng',
+    field: 'BrandName',
     headerName: t('Brand Name'),
     width: 200,
   },
   {
-    field: 'gln',
+    field: 'barcode',
     headerName: t('Barcode'),
     width: 180,
     renderCell: params => (
@@ -7942,7 +7947,7 @@ export const AllProductsColumn= (t, i18n) => [
           color: 'white',
         }}
       >
-        {params.row.gln}
+        {params.row.barcode}
       </div>
     ),
   },
