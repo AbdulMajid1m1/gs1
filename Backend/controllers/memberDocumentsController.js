@@ -16,6 +16,7 @@ import { createAdminLogs, createGtinSubscriptionHistory, createMemberLogs, creat
 import { convertEjsToPdf } from '../utils/functions/commonFunction.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
 import { oldGs1Prisma } from '../prismaMultiClinets.js';
+import { sendLicenceToGepir } from '../utils/functions/globalApisFunctions.js';
 export const createMemberDocument = async (req, res, next) => {
     // Validate body data
     const schema = Joi.object({
@@ -447,7 +448,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
         if (value.status === 'approved') {
             // let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
-            await prisma.$transaction(async (prisma) => {
+            const result = await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
                 const userId = currentDocument.user_id;
 
@@ -646,70 +647,77 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     }
 
                 }
-                const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-                let gcpGLNID = userUpdateResult?.gcpGLNID;
-                const CertificateData = {
-                    BACKEND_URL: BACKEND_URL,
-                    qrCodeDataURL: qrCodeDataURL,
-
-                    user: {
-                        company_name_eng: userUpdateResult?.company_name_eng,
-                    },
-                    general: {
-                        gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
-                            'Global Trade Item Number(GTIN)',
-                            'Serial Shipping Container Code (SSCC)',
-                            'Global Location Number (GLN)',
-                            'Global Document Type Identifier(GDTI)',
-                            'Global Service Relation Number(GSRN)'
-                        ] : [
-                            'رقم السلعة التجارية العالمي (GTIN)',
-                            'رمز الحاوية الشحن التسلسلي (SSCC)',
-                            'رقم الموقع العالمي (GLN)',
-                            'معرف نوع الوثيقة العالمي (GDTI)',
-                            'رقم علاقة الخدمة العالمي (GSRN)'
-                        ],
-                        gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
-                            'Global Individual Asset Identifier(GIAI)',
-                            'Global Returnable Asset Identifier(GRAI)',
-                            'Global Identification Number for Consignment(GSNC)',
-                            'Global Shipment Identification Number (GSIN)'
-                        ] : [
-                            // Arabic translations for the second list
-                            'معرف الأصل الفردي العالمي (GIAI)',
-                            'معرف الأصل القابل للعودة العالمي (GRAI)',
-                            'رقم التعريف العالمي للشحنة (GSNC)',
-                            'رقم تعريف الشحنة العالمي (GSIN)'
-                        ],
-                        gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
-                    },
-
-                    userData: {
-                        // add user data here
-                        gcpGLNID: gcpGLNID,
-                        gln: userUpdateResult?.gln,
-                        memberID: userUpdateResult?.memberID,
-                        gcp_expiry: userUpdateResult?.gcp_expiry,
-                    },
-                    // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-                    expiryDate: userUpdateResult?.gcp_expiry.toISOString().split('T')[0],
-                    explodeGPCCode: []
-                };
-
-                // Generate PDF from EJS template
-                const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
-                pdfFilename = `${userUpdateResult.company_name_eng}-Certificate.pdf`;
-                const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-                if (!fsSync.existsSync(pdfDirectory)) {
-                    fsSync.mkdirSync(pdfDirectory, { recursive: true });
-                }
-                let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath, true);
-                pdfBuffer = await fs1.readFile(Certificatepath);
+                return userUpdateResult;
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
 
+
+
+            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+            let gcpGLNID = result.userUpdateResult?.gcpGLNID;
+            const CertificateData = {
+                BACKEND_URL: BACKEND_URL,
+                qrCodeDataURL: qrCodeDataURL,
+
+                user: {
+                    company_name_eng: result.userUpdateResult?.company_name_eng,
+                },
+                general: {
+                    gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
+                        'Global Trade Item Number(GTIN)',
+                        'Serial Shipping Container Code (SSCC)',
+                        'Global Location Number (GLN)',
+                        'Global Document Type Identifier(GDTI)',
+                        'Global Service Relation Number(GSRN)'
+                    ] : [
+                        'رقم السلعة التجارية العالمي (GTIN)',
+                        'رمز الحاوية الشحن التسلسلي (SSCC)',
+                        'رقم الموقع العالمي (GLN)',
+                        'معرف نوع الوثيقة العالمي (GDTI)',
+                        'رقم علاقة الخدمة العالمي (GSRN)'
+                    ],
+                    gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
+                        'Global Individual Asset Identifier(GIAI)',
+                        'Global Returnable Asset Identifier(GRAI)',
+                        'Global Identification Number for Consignment(GSNC)',
+                        'Global Shipment Identification Number (GSIN)'
+                    ] : [
+                        // Arabic translations for the second list
+                        'معرف الأصل الفردي العالمي (GIAI)',
+                        'معرف الأصل القابل للعودة العالمي (GRAI)',
+                        'رقم التعريف العالمي للشحنة (GSNC)',
+                        'رقم تعريف الشحنة العالمي (GSIN)'
+                    ],
+                    gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
+                },
+
+                userData: {
+                    // add user data here
+                    gcpGLNID: gcpGLNID,
+                    gln: result.userUpdateResult?.gln,
+                    memberID: result.userUpdateResult?.memberID,
+                    gcp_expiry: result.userUpdateResult?.gcp_expiry,
+                },
+                // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+                expiryDate: result.userUpdateResult?.gcp_expiry.toISOString().split('T')[0],
+                explodeGPCCode: []
+            };
+
+            // Generate PDF from EJS template
+            const pdfDirectory1 = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
+            pdfFilename = `${result.userUpdateResult.company_name_eng}-Certificate.pdf`;
+            const pdfFilePath1 = path.join(pdfDirectory1, pdfFilename);
+            if (!fsSync.existsSync(pdfDirectory1)) {
+                fsSync.mkdirSync(pdfDirectory1, { recursive: true });
+            }
+            let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
+            const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath1, true);
+            pdfBuffer = await fs1.readFile(Certificatepath);
+
+
+            // Call sendLicenceToGepir function for the approved user
+            await sendLicenceToGepir([currentDocument.user_id]);
 
             // await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
 
@@ -718,7 +726,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             console.log("existingUser", currentDocument);
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
-            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
 
                 topHeading: value.selectedLanguage === 'en' ? "RECEIPT" : "إيصال",

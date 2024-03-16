@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSubUser, createUser, deleteUser, generateOtp, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getExpiredMembers, getLicenseRegisteryUser, getNewlyRegisteredUsers, getRegisteredMembers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithAssignTo, getUsersWithExpiringGcpThisYear, memberLogin, searchUsers, sendInvoiceToUser, setMemberCredentials, updateCartReceipt, updateUser, updateUserStatus, verifyOtp } from '../../controllers/usersController.js';
+import { createSubUser, createUser, deleteUser, generateOtp, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getExpiredMembers, getLicenseRegisteryUser, getNewlyRegisteredUsers, getRegisteredMembers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithAssignTo, getUsersWithExpiringGcpThisYear, memberLogin, postLicenceController, searchUsers, sendInvoiceToUser, setMemberCredentials, updateCartReceipt, updateUser, updateUserStatus, verifyOtp } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 import { adminAuth, checkPermission, generalAuth, superAdminAuth } from '../../middlewares/auth.js';
@@ -14,6 +14,8 @@ userRouter.get('/', getUserDetails);
 userRouter.get('/getUsersWithAssignTo', superAdminAuth, getUsersWithAssignTo);
 
 userRouter.get('/getLicenseRegisteryUser', superAdminAuth, getLicenseRegisteryUser);
+
+userRouter.post('/postGepirLicence', postLicenceController);
 
 userRouter.get('/allUser', adminAuth, checkPermission(["members"]), getRegisteredMembers);
 
