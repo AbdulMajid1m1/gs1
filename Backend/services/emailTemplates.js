@@ -14,7 +14,7 @@ async function fetchEmailSettings()
   const settings = await prisma.emailsetting.findFirst({
     where: { status: 1 }, // Example: fetch settings where status is active
   });
-  console.log('settings, ', settings)
+  // console.log('settings, ', settings)
   return {
     emailMethod: settings?.emailmethod,
     emailSentFrom: settings?.emailfrom,
@@ -30,7 +30,7 @@ async function fetchEmailSettings()
 async function createEmailTransporter()
 {
   const settings = await fetchEmailSettings();
-  console.log('settings 2, ', settings)
+  // console.log('settings 2, ', settings)
   return nodemailer.createTransport({
     host: settings.smtpHost,
     port: settings.smtpPort,

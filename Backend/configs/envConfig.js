@@ -10,5 +10,9 @@ export const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
 export const BACKEND_URL = process.env.BACKEND_URL;
 export const MEMBER_JWT_SECRET = process.env.MEMBER_JWT_SECRET;
 export const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET;
+export const GLOBAL_API_BASE_URL_DEV = process.env.GLOBAL_API_BASE_URL_DEV;
+export const GLOBAL_API_BASE_URL_PROD = process.env.GLOBAL_API_BASE_URL_PROD;
+export const GLOBAL_GEPIR_PROD_API_KEY = process.env.GLOBAL_GEPIR_PROD_API_KEY;
+export const GLOBAL_GEPIR_DEV_API_KEY = process.env.GLOBAL_GEPIR_DEV_API_KEY;
 
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL;

@@ -10,11 +10,14 @@ import fs from 'fs';
 import ejs from 'ejs';
 import QRCode from 'qrcode';
 import { generateProdcutGTIN, isValidGCPInBarcode } from '../utils/functions/barcodesGenerator.js';
-import { ADMIN_EMAIL } from '../configs/envConfig.js';
+import { ADMIN_EMAIL, GLOBAL_API_BASE_URL_DEV, GLOBAL_GEPIR_DEV_API_KEY } from '../configs/envConfig.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
 import { gs1dlPrisma } from '../prismaMultiClinets.js';
-import { checkGtinData, sendProductsToGepir } from '../utils/functions/globalApisFunctions.js';
+import { checkGtinData, checkMultipleGtinData, sendProductsToGepir } from '../utils/functions/globalApisFunctions.js';
+import axios from 'axios';
+import { imageLiveUrl } from '../utils/utils.js';
+import https from 'https';
 
 
 function checkExpiryDate(expiryDate) {
@@ -70,7 +73,6 @@ export const getProducts = async (req, res, next) => {
         next(error);
     }
 };
-
 
 export const searchMemberGtin = async (req, res, next) => {
     const { gtin } = req.body;
@@ -292,18 +294,12 @@ export const createProduct = async (req, res, next) => {
 
         if (!await checkGtinData(result.newProduct.barcode)) {
             console.log("entered")
-            await prisma.products.update({
-                where: { id: result.newProduct.id },
-                data: { readyForGepir: '1' }
-            });
+            // await prisma.products.update({
+            //     where: { id: result.newProduct.id },
+            //     data: { readyForGepir: '1' }
+            // });
 
             const response = await sendProductsToGepir({ ids: [result.newProduct.id] });
-            if (response) {
-                await prisma.products.update({
-                    where: { id: result.newProduct.id },
-                    data: { gepirPosted: 1 }
-                });
-            }
         }
 
 
@@ -569,15 +565,10 @@ export const bulkCreateProduct = async (req, res, next) => {
 
         // keep track of the number of products created
         let productsCount = gtinSubscriptions.gtin_subscription_counter;
+        let insertedBarcode = [];
         await prisma.$transaction(async (transaction) => {
             for (let record of records) {
                 console.log(record)
-                // Add GTIN handling
-                // record.GTIN = record.GTIN || null;
-                // console.log("Gtin", record.GTIN)
-                // Map Excel columns to schema fields
-                // convert Gtin to string
-
                 record = {
                     user_id: req.body.user_id, // Assuming user_id comes from somewhere else like req.body
                     productnameenglish: record.ProductNameEnglish,
@@ -616,6 +607,7 @@ export const bulkCreateProduct = async (req, res, next) => {
                             // Increment counter only if there's no error
                             productsCount++;
                             errorRecords.push({ ...record, error: "Processed Successfully" });
+                            insertedBarcode.push(result.barcode);
                         }
 
                         if (result.error) {
@@ -643,6 +635,12 @@ export const bulkCreateProduct = async (req, res, next) => {
 
         }, { timeout: 40000 });
 
+
+        // After processing the chunk, check GTIN data and update GEPIR for ready products
+        const readyBarcodes = await checkMultipleGtinData(insertedBarcode);
+        if (readyBarcodes.length > 0) {
+            await sendProductsToGepir({ ids: readyBarcodes });
+        }
 
         // Write errors to Excel file if any
         if (errorRecords.length > 0) {
@@ -805,6 +803,13 @@ export const updateProduct = async (req, res, next) => {
             where: { id: productId },
             data: value
         });
+
+        if (!await checkGtinData(updatedProduct.barcode)) {
+            console.log("entered")
+
+            const response = await sendProductsToGepir({ ids: [updatedProduct.id] });
+        }
+
 
 
         if (req?.admin?.adminId) {
@@ -1016,5 +1021,103 @@ export const generateGtinCertificate = async (req, res, next) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: 500, message: 'Internal server error' });
+    }
+};
+
+
+
+// create controlelr which take the product id and call checkGtinData and sendProductsToGepir function use Joi to validate the id
+
+
+
+// if (!await checkGtinData(updatedProduct.barcode)) {
+//     console.log("entered")
+
+//     const response = await sendProductsToGepir({ ids: [updatedProduct.id] });
+//     if (response) {
+//         await prisma.products.update({
+//             where: { id: updatedProduct.id },
+//             data: { gepirPosted: 1 }
+//         });
+//     }
+// }
+
+
+export const checkGtinDataAndSendToGepir = async (req, res, next) => {
+    const schema = Joi.object({
+        ids: Joi.array().items(Joi.string()).required()
+    });
+
+    const { error, value } = schema.validate(req.body); // Assuming IDs are sent in the body
+    if (error) {
+        return res.status(400).json({ message: `Validation error: ${error.details[0].message}` });
+    }
+
+    const productIDs = value.ids;
+
+    try {
+        // Fetch products and corresponding users
+        const products = await prisma.products.findMany({
+            where: { id: { in: productIDs } },
+            include: {
+                user: true
+            }
+        });
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'No products found' });
+        }
+        for (const product of products) {
+            // Construct the body for GEPIR posting
+            const body = {
+                gtin: '0' + product.barcode,
+                gtinStatus: product.status === '0' ? 'INACTIVE' : 'ACTIVE',
+                gpcCategoryCode: product.gpc_code,
+                licenceKey: product.user.gcpGLNID,
+                licenceType: product.user.gcp_type || 'GCP',
+                brandName: [{ language: product.prod_lang, value: product.BrandName }],
+                productDescription: [{ language: product.prod_lang, value: product.productnameenglish }],
+                productImageUrl: [{ language: product.prod_lang, value: `${imageLiveUrl(product.front_image) || 'No Value'}` }],
+                netContent: [{ unitCode: product.unit, value: product.size }],
+                countryOfSaleCode: [product.countrySale],
+            };
+
+            try {
+                // Posting to GEPIR
+                // TODO: update the URL to prod
+                const response = await axios.post(`${GLOBAL_API_BASE_URL_DEV}/gtins`, [body], {
+                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+
+                const globalGepir = response.data;
+                const feedbackResponse = await axios.get(`${GLOBAL_API_BASE_URL_DEV}/feedback/${globalGepir}`, {
+                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                const feedbackGepir = feedbackResponse.data;
+
+                if (feedbackGepir[0] && feedbackGepir[0].validationErrors) {
+                    console.log(feedbackGepir[0].validationErrors?.forEach(error => {
+                        console.error('Property:', error.property);
+                        console.error('Errors:', error.errors);
+                    }));
+                } else {
+                    await prisma.products.update({
+                        where: { barcode: row.barcode },
+                        data: { gepirPosted: 1 },
+                    });
+
+
+                }
+            } catch (error) {
+                console.error(`Failed to post product ${product.id} to GEPIR: ${error.message}`);
+                return res.status(500).json({ message: `Failed to post product ${product.id} to GEPIR` });
+            }
+        }
+
+        return res.status(200).json({ message: 'Processed products for GEPIR successfully.' });
+    } catch (err) {
+        console.error(err);
+        next(err);
     }
 };

@@ -2,6 +2,49 @@ import axios from "axios";
 import prisma from "../../prismaClient.js";
 import { imageLiveUrl } from "../utils.js";
 import https from 'https';
+import { GLOBAL_API_BASE_URL_DEV, GLOBAL_GEPIR_DEV_API_KEY, GLOBAL_GEPIR_PROD_API_KEY } from "../../configs/envConfig.js";
+
+
+export async function checkMultipleGtinData(barcodeList) {
+    // Retrieve all products with barcodes in the barcodeList
+    const products = await prisma.products.findMany({
+        where: {
+            barcode: { in: barcodeList }
+        },
+        select: {
+            barcode: true,
+            front_image: true,
+            back_image: true,
+            BrandName: true,
+            BrandNameAr: true,
+            size: true,
+            Origin: true,
+            countrySale: true,
+            ProductType: true,
+            gpc_code: true,
+            details_page: true,
+            details_page_ar: true,
+        }
+    });
+
+    // Initialize a Set of ready barcodes
+    const readyBarcodes = new Set(barcodeList);
+
+    // Loop through each product and remove its barcode from readyBarcodes if any column is missing
+    products.forEach(product => {
+        for (const [key, value] of Object.entries(product)) {
+            if (!value || value === '') {
+                readyBarcodes.delete(product.barcode);
+                break; // No need to check further fields for this product
+            }
+        }
+    });
+
+    // Convert the Set back to an array
+    return Array.from(readyBarcodes);
+}
+
+
 
 export async function checkGtinData(barcode) {
     const columns = [
@@ -34,7 +77,7 @@ export async function checkGtinData(barcode) {
     // If all fields are complete, return true; otherwise, return false.
     return allFieldsComplete;
 }
-
+//  TODO: change api key to production key
 export async function sendProductsToGepir(request) {
     const currentDate = new Date().toISOString();
     const productIDs = request.ids; // Assuming this is how you're receiving the IDs
@@ -69,18 +112,18 @@ export async function sendProductsToGepir(request) {
 
             try {
                 // const response = await axios.post('https://grp.gs1.org/grp/v3/gtins', [body], {
-                const response = await axios.post('https://grp.gs1.org/grp-st/v3.1/gtins', [body], {
+                const response = await axios.post(`${GLOBAL_API_BASE_URL_DEV}/gtins`, [body], {
                     // headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' },
-                    headers: { 'APIKey': 'e2a3e8fe582a447784c4f831ca4bc287' },
+                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 const globalGepir = response.data;
                 console.log("globalGepir", globalGepir);
 
                 // const feedbackResponse = await axios.get(`https://grp.gs1.org/grp/v3/feedback/${globalGepir}`, {
-                const feedbackResponse = await axios.get(`https://grp.gs1.org/grp-st/v3.1/feedback/${globalGepir}`, {
+                const feedbackResponse = await axios.get(`${GLOBAL_API_BASE_URL_DEV}/feedback/${globalGepir}`, {
                     // headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' },
-                    headers: { 'APIKey': 'e2a3e8fe582a447784c4f831ca4bc287' },
+                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 const feedbackGepir = feedbackResponse.data;
@@ -113,8 +156,7 @@ function chunkArray(array, size) {
 
 
 export async function sendLicenceToGepir(userIds) {
-    console.log("userIds", userIds);
-    // Example userIds = ['cuid1', 'cuid2', 'cuid3']; Adjust according to how you receive the request
+   
 
     const users = await prisma.users.findMany({
         where: {
@@ -170,15 +212,15 @@ export async function sendLicenceToGepir(userIds) {
 
             try {
                 // const response = await axios.post('https://grp.gs1.org/grp/v3/licences', body, {
-                const response = await axios.post('https://grp.gs1.org/grp-st/v3.1/licences', [body], {
+                const response = await axios.post(`${GLOBAL_API_BASE_URL_DEV}/licences`, [body], {
                     // headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' },
-                    headers: { 'APIKey': 'e2a3e8fe582a447784c4f831ca4bc287' },
+                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Not recommended for production
                 });
                 console.log('Licence posted:', response.data);
-                const feedbackResponse = await axios.get(`https://grp.gs1.org/grp-st/v3.1/feedback/${response.data}`, {
-                    // headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' }, production key
-                    headers: { 'APIKey': 'e2a3e8fe582a447784c4f831ca4bc287' }, // dev key
+                const feedbackResponse = await axios.get(`${GLOBAL_API_BASE_URL_DEV}/feedback/${response.data}`, {
+                    // headers: { 'APIKey': GLOBAL_GEPIR_PROD_API_KEY },
+                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Not recommended for production
                 });
 
