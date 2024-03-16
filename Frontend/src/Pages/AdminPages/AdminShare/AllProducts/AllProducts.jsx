@@ -218,7 +218,7 @@ const AllProducts = () => {
           }`}
       >
         <div>
-          <AdminDashboardRightHeader title={"All Products"} />
+          <AdminDashboardRightHeader title={t("All Products")} />
         </div>
 
         <div className="flex justify-center items-center">
@@ -305,7 +305,7 @@ const AllProducts = () => {
               <div style={{ marginLeft: "-11px", marginRight: "-11px" }}>
                 <DataTable
                   data={data}
-                  title={"All Products"}
+                  title={t("All Products")}
                   columnsName={AllProductsColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -315,7 +315,7 @@ const AllProducts = () => {
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
                     {
-                      label: "Post to GEPIR",
+                      label: `${t('Post to GEPIR')}`,
                       icon: (
                         <IosShareIcon
                           fontSize="small"
