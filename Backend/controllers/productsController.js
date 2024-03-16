@@ -157,8 +157,8 @@ const productSchema = Joi.object({
     size: Joi.string().max(50).allow('', null),
     childProduct: Joi.string().max(255).allow('', null),
     quantity: Joi.string().max(10).allow('', null),
-    gpc: Joi.string().max(255).allow('', null),
-    gpc_code: Joi.alternatives().try(Joi.string().max(50).allow('', null), Joi.number().allow('', null)),
+    gpc: Joi.string().required(),
+    gpc_code: Joi.string().required(),
     countrySale: Joi.string().max(50).allow('', null),
     HSCODES: Joi.string().allow('', null),
     HsDescription: Joi.string().allow('', null),
@@ -733,8 +733,8 @@ export const updateProduct = async (req, res, next) => {
         size: Joi.string().max(50).allow('', null),
         childProduct: Joi.string().max(255).allow('', null),
         quantity: Joi.string().max(10).allow('', null),
-        gpc: Joi.string().max(255).allow('', null),
-        gpc_code: Joi.string().max(50).allow('', null),
+        gpc: Joi.string().required(),
+        gpc_code: Joi.string().required(),
         countrySale: Joi.string().max(50).allow('', null),
         HSCODES: Joi.string().allow('', null),
         HsDescription: Joi.string().allow('', null),
@@ -1042,10 +1042,9 @@ export const generateGtinCertificate = async (req, res, next) => {
 //     }
 // }
 
-
 export const checkGtinDataAndSendToGepir = async (req, res, next) => {
     const schema = Joi.object({
-        ids: Joi.array().items(Joi.string()).required()
+        ids: Joi.array().items(Joi.string()).required(),
     });
 
     const { error, value } = schema.validate(req.body); // Assuming IDs are sent in the body
@@ -1056,68 +1055,105 @@ export const checkGtinDataAndSendToGepir = async (req, res, next) => {
     const productIDs = value.ids;
 
     try {
-        // Fetch products and corresponding users
         const products = await prisma.products.findMany({
             where: { id: { in: productIDs } },
-            include: {
-                user: true
-            }
+            include: { user: true },
         });
+
         if (products.length === 0) {
-            return res.status(404).json({ message: 'No products found' });
+            return res.status(404).json({ message: 'No products found for the provided IDs' });
         }
-        for (const product of products) {
-            // Construct the body for GEPIR posting
-            const body = {
-                gtin: '0' + product.barcode,
-                gtinStatus: product.status === '0' ? 'INACTIVE' : 'ACTIVE',
-                gpcCategoryCode: product.gpc_code,
-                licenceKey: product.user.gcpGLNID,
-                licenceType: product.user.gcp_type || 'GCP',
-                brandName: [{ language: product.prod_lang, value: product.BrandName }],
-                productDescription: [{ language: product.prod_lang, value: product.productnameenglish }],
-                productImageUrl: [{ language: product.prod_lang, value: `${imageLiveUrl(product.front_image) || 'No Value'}` }],
-                netContent: [{ unitCode: product.unit, value: product.size }],
-                countryOfSaleCode: [product.countrySale],
-            };
 
-            try {
-                // Posting to GEPIR
-                // TODO: update the URL to prod
-                const response = await axios.post(`${GLOBAL_API_BASE_URL_DEV}/gtins`, [body], {
-                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+        const errors = [];
+        const successfulPosts = [];
+
+        let insertedBarcode = products.map(product => product.barcode);
+
+        const readyBarcodes = await checkMultipleGtinData(insertedBarcode);
+        if (readyBarcodes.length > 0) {
+            // filter products based on readyBarcodes and other product which are not ready add tehm in error array
+            // will apply loop on filter products and send them to gepir
+            const readyProducts = products.filter(product => readyBarcodes.includes(product.barcode));
+            const notReadyProducts = products.filter(product => !readyBarcodes.includes(product.barcode));
+            if (notReadyProducts.length > 0) {
+                notReadyProducts.forEach(product => {
+                    errors.push({ productId: product.id, error: 'Product is not ready for GEPIR' });
                 });
+            }
 
-                const globalGepir = response.data;
-                const feedbackResponse = await axios.get(`${GLOBAL_API_BASE_URL_DEV}/feedback/${globalGepir}`, {
-                    headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                });
-                const feedbackGepir = feedbackResponse.data;
+            if (readyProducts.length > 0) {
 
-                if (feedbackGepir[0] && feedbackGepir[0].validationErrors) {
-                    console.log(feedbackGepir[0].validationErrors?.forEach(error => {
-                        console.error('Property:', error.property);
-                        console.error('Errors:', error.errors);
-                    }));
-                } else {
-                    await prisma.products.update({
-                        where: { barcode: row.barcode },
-                        data: { gepirPosted: 1 },
-                    });
+                for (const product of readyProducts) {
+                    console.log("entered")
+                    console.log(product)
+                    const body = {
+                        gtin: '0' + product.barcode,
+                        gtinStatus: product.status === '0' ? 'INACTIVE' : 'ACTIVE',
+                        gpcCategoryCode: product.gpc_code,
+                        // gpcCategoryCode:"50193800",
+                        licenceKey: product.user.gcpGLNID,
+                        licenceType: product.user.gcp_type || 'GCP',
+                        brandName: [{ language: product.prod_lang, value: product.BrandName }],
+                        productDescription: [{ language: product.prod_lang, value: product.productnameenglish }],
+                        productImageUrl: [{ language: product.prod_lang, value: `${imageLiveUrl(product.front_image) || 'No Value'}` }],
+                        netContent: [{ unitCode: 'GRM', value: 411 }],
+                        countryOfSaleCode: [product.countrySale],
+                    };
 
+                    try {
+                        const response = await axios.post(`${GLOBAL_API_BASE_URL_DEV}/gtins`, [body], {
+                            headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
+                            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                        });
 
+                        // Fetch GEPIR feedback to handle validation errors
+                        const globalGepir = response.data;
+                        const feedbackResponse = await axios.get(`${GLOBAL_API_BASE_URL_DEV}/feedback/${globalGepir}`, {
+                            headers: { 'APIKey': GLOBAL_GEPIR_DEV_API_KEY },
+                            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                        });
+                        const feedbackGepir = feedbackResponse.data;
+
+                        if (feedbackGepir[0] && feedbackGepir[0].validationErrors) {
+                            const validationErrors = feedbackGepir[0].validationErrors.map(error => `${error.property}: ${error.errors.join(", ")}`).join("; ");
+                            errors.push({ productId: product.id, error: `Validation errors: ${validationErrors}` });
+                            // feedbackResponse.data[0].validationErrors.forEach(error => {
+                            //     console.error('Property:', error.property);
+                            //     console.error('Errors:', error.errors);
+                            console.log('Validation errors:', feedbackGepir[0].validationErrors.forEach(error => {
+                                console.error('Property:', error.property);
+                                console.error('Errors:', error.errors);
+                            }));
+                        } else {
+                            successfulPosts.push({ productId: product.id, gepirResponse: feedbackGepir });
+                            await prisma.products.update({
+                                where: { id: product.id },
+                                data: { gepirPosted: 1 },
+                            });
+                        }
+                    } catch (error) {
+                        errors.push({ productId: product.id, error: `Failed to post to GEPIR: ${error.message}` });
+                    }
                 }
-            } catch (error) {
-                console.error(`Failed to post product ${product.id} to GEPIR: ${error.message}`);
-                return res.status(500).json({ message: `Failed to post product ${product.id} to GEPIR` });
             }
         }
+        else {
+            products.forEach(product => {
+                errors.push({ productId: product.id, error: 'Product is not ready for GEPIR' });
+            });
+        }
 
-        return res.status(200).json({ message: 'Processed products for GEPIR successfully.' });
+        if (errors.length > 0) {
+            return res.status(500).json({
+                message: 'Some products failed to be processed for GEPIR.',
+                successfulPosts,
+                errors,
+            });
+        } else {
+            return res.status(200).json({ message: 'All products processed for GEPIR successfully.', successfulPosts });
+        }
     } catch (err) {
         console.error(err);
-        next(err);
+        return res.status(500).json({ message: 'Internal server error while processing products for GEPIR.' });
     }
 };

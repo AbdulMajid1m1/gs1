@@ -13,17 +13,17 @@ export async function checkMultipleGtinData(barcodeList) {
         },
         select: {
             barcode: true,
-            front_image: true,
-            back_image: true,
-            BrandName: true,
-            BrandNameAr: true,
-            size: true,
-            Origin: true,
-            countrySale: true,
-            ProductType: true,
-            gpc_code: true,
-            details_page: true,
-            details_page_ar: true,
+            // front_image: true,
+            // back_image: true,
+            // BrandName: true,
+            // BrandNameAr: true,
+            // size: true,
+            // Origin: true,
+            // countrySale: true,
+            // ProductType: true,
+            // gpc_code: true,
+            // details_page: true,
+            // details_page_ar: true,
         }
     });
 
@@ -39,7 +39,7 @@ export async function checkMultipleGtinData(barcodeList) {
             }
         }
     });
-
+    console.log("readyBarcodes", readyBarcodes);
     // Convert the Set back to an array
     return Array.from(readyBarcodes);
 }

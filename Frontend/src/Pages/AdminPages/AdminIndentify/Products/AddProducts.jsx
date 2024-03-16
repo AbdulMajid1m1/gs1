@@ -160,6 +160,7 @@ const AddProducts = () => {
             const data = response?.data;
             const unitNameList = data.map((unitData) => unitData?.unit_name);
             setUnitCode(unitNameList);
+            
         } catch (error) {
             // console.log(error);
         }
