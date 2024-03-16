@@ -1,3 +1,5 @@
+import { BACKEND_URL } from "../configs/envConfig.js";
+
 // utility function to serialize BigInt values as strings
 export const serializeBigInt = (obj) => {
     if (typeof obj === 'bigint') {
@@ -20,3 +22,20 @@ export const generateRandomTransactionId = (length) => {
 
     return transactionId;
 };
+
+
+export function imageLiveUrl(documentPath) {
+    if (typeof documentPath !== 'string' || !documentPath) return null;
+
+    // Replace all backslashes with forward slashes
+    let cleanedPath = documentPath.replace(/\\/g, '/');
+
+    // Remove any leading or trailing slashes from the cleaned path
+    cleanedPath = cleanedPath.replace(/^\/+|\/+$/g, '');
+
+    // Ensure there's only one slash between the backendUrl and cleanedPath
+    const liveUrl = `${BACKEND_URL.replace(/\/+$/, '')}/${cleanedPath}`;
+
+    return liveUrl;
+}
+

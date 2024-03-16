@@ -14,6 +14,7 @@ import { ADMIN_EMAIL } from '../configs/envConfig.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import { createAdminLogs, createMemberLogs } from '../utils/functions/historyLogs.js';
 import { gs1dlPrisma } from '../prismaMultiClinets.js';
+import { checkGtinData, sendProductsToGepir } from '../utils/functions/globalApisFunctions.js';
 
 
 function checkExpiryDate(expiryDate) {
@@ -249,7 +250,7 @@ export const createProduct = async (req, res, next) => {
                 throw createError(404, `No active GTIN subscription found for the user ${user?.company_name_eng}`);
             }
 
-            console.log(gtinSubscriptions)
+            // console.log(gtinSubscriptions)
             // /check      expiry_date: { gte: new Date() }
 
             checkExpiryDate(gtinSubscriptions.expiry_date);
@@ -261,11 +262,11 @@ export const createProduct = async (req, res, next) => {
 
             }
             const productsCount = gtinSubscriptions?.gtin_subscription_counter;
-            console.log(productsCount)
+            // console.log(productsCount)
 
 
             const gtin = await generateProdcutGTIN(user.gcpGLNID, productsCount);
-            console.log(gtin)
+            // console.log(gtin)
             value.user_id = user.id;
             const productData = {
                 ...value,
@@ -288,7 +289,25 @@ export const createProduct = async (req, res, next) => {
 
             return { newProduct, updatedGtinSubscription };
         });
-        console.log(result)
+
+        if (!await checkGtinData(result.newProduct.barcode)) {
+            console.log("entered")
+            await prisma.products.update({
+                where: { id: result.newProduct.id },
+                data: { readyForGepir: '1' }
+            });
+
+            const response = await sendProductsToGepir({ ids: [result.newProduct.id] });
+            if (response) {
+                await prisma.products.update({
+                    where: { id: result.newProduct.id },
+                    data: { gepirPosted: '1' }
+                });
+            }
+        }
+
+
+        // console.log(result)
         if (req?.admin?.adminId) {
 
             const adminLog = {
