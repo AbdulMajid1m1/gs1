@@ -94,7 +94,7 @@ export async function sendProductsToGepir(request) {
                         data: { gepirPosted: 1 },
                     });
 
-               
+
                 }
             } catch (error) {
                 console.error(error);
@@ -118,7 +118,8 @@ export async function sendLicenceToGepir(userIds) {
     const users = await prisma.users.findMany({
         where: {
             id: {
-                in: userIds,
+                // in: userIds,
+                in: ['cltiybxtt0001y4rkl0zdl8nf'],
             },
         },
     });

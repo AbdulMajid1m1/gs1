@@ -43,11 +43,16 @@ const GcpLicense = () => {
       });
       console.log(response?.data);
       toast.success(response?.data?.message || "Licence Uploaded Successfully");
-      
-      // filter the datagrid state if the response is true
-      setData(prevData => prevData.filter(item => item.id!== row?.id));
 
-    } 
+      // response.data.updatedUser has updated record. Replace the record in the data array with the updated record
+      const updatedData = data.map(item => {
+        if (item.id === response.data.updatedUser.id) {
+          return response.data.updatedUser;
+        }
+        return item;
+      });
+
+    }
     catch (err) {
       console.log(err);
       toast.error(err?.response?.data?.message || "Something went wrong!");
@@ -94,16 +99,15 @@ const GcpLicense = () => {
     saveAs(dataBlob, 'licenceRegistry.xlsx');
   };
 
-   
-  const handleRowClickInParent = (item) =>
-  {
+
+  const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
       // setTableSelectedRows(data)
       return
     }
 
   }
- 
+
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
@@ -126,7 +130,7 @@ const GcpLicense = () => {
               </div>
 
               {/* DataGrid */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px'}}>
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
                   title={'Gcp Licence'}
