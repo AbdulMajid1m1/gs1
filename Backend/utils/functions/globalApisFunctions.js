@@ -130,12 +130,12 @@ export async function sendLicenceToGepir(userIds) {
         for (const user of chunk) {
 
             // based on user.country code, get the country code from the countries table
-            const country = await prisma.country_of_sales.findFirst({
-                where: {
-                    country_name: user.country
-                }
-            });
-            console.log("country", country);
+            // const country = await prisma.country_of_sales.findFirst({
+            //     where: {
+            //         country_name: user.country
+            //     }
+            // });
+            // console.log("country", country);
 
             // Assuming 'status', 'companyName', and 'licenseeGln' fields are correctly represented in the users table or somehow derived
             const body = {

@@ -252,7 +252,7 @@ const AddProducts = () => {
         formData.append('BrandNameAr', 'علامة تجارية عينة');
         formData.append('digitalInfoType', '1');
         formData.append('readyForGepir', '1');
-        formData.append('gepirPosted', '1');
+        formData.append('gepirPosted', 1);
 
         // Append back image file
         const backImageInput = document.querySelector('#backImageInput');

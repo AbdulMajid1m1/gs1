@@ -174,7 +174,7 @@ const productSchema = Joi.object({
     BrandNameAr: Joi.string().allow('', null),
     digitalInfoType: Joi.number().integer().allow('', null),
     readyForGepir: Joi.string().max(10).allow('', null),
-    gepirPosted: Joi.string().max(10).allow('', null),
+    gepirPosted: Joi.number().default(0),
 });
 
 
@@ -301,7 +301,7 @@ export const createProduct = async (req, res, next) => {
             if (response) {
                 await prisma.products.update({
                     where: { id: result.newProduct.id },
-                    data: { gepirPosted: '1' }
+                    data: { gepirPosted: 1 }
                 });
             }
         }
@@ -754,7 +754,7 @@ export const updateProduct = async (req, res, next) => {
         BrandNameAr: Joi.string().allow('', null),
         digitalInfoType: Joi.number().integer().allow('', null),
         readyForGepir: Joi.string().max(10).allow('', null),
-        gepirPosted: Joi.string().max(10).allow('', null),
+        gepirPosted: Joi.number().default(0),
 
     });
 
