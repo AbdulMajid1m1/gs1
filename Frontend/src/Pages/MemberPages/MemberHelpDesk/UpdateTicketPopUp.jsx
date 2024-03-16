@@ -7,6 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import './TicketPopUp.css'
 import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
+import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 
 const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   const { t } = useTranslation();
@@ -16,8 +17,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Description, setDescription] = useState(gs1MemberData?.description || '');
     // console.log(gs1MemberData)
     const [loading, setLoading] = useState(false);
-  const [selecteddocument, setSelecteddocument] = useState(gs1MemberData?.document || null);
-
+  const [selecteddocument, setSelecteddocument] = useState(imageLiveUrl(gs1MemberData?.document) || null);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelecteddocument(file);
@@ -56,7 +56,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
             handleCloseUpdatePopup();
 
         } catch (error) {
-            toast.error(error?.response?.data?.message || `${t('Something went wrong')}`, {
+            toast.error(error?.response?.data?.error || `${t('Something went wrong')}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
