@@ -203,8 +203,9 @@ const AdminUpdateGTIN = () => {
             const response = await newRequest.get('/getAllunit');
             // console.log(response.data);
             const data = response?.data;
-            const unitNameList = data.map((unitData) => unitData?.unit_name);
-            setUnitCode(unitNameList);
+            setUnitCode(data);
+            // const unitNameList = data.map((unitData) => unitData?.unit_name);
+            // setUnitCode(unitNameList);
         } catch (error) {
             // console.log(error);
         }
@@ -320,13 +321,13 @@ const AdminUpdateGTIN = () => {
         // formData.append('MnfCode', 'MNF123');
         // formData.append('MnfGLN', 'GLN123');
         formData.append('ProvGLN', barcode);
-        formData.append('unit', selectedUnitCode);
+        formData.append('unit', selectedUnitCode?.unit_code);
         formData.append('size', size);
         // formData.append('childProduct', 'childProd123');
         // formData.append('quantity', '10');
         // formData.append('barcode', '0123456789012');
         formData.append('gpc', gpc?.value);
-        // formData.append('gpc_code', 'GPC456');
+        formData.append('gpc_code', gpcCode?.gpcCode);
         formData.append('countrySale', selectedCountry);
         formData.append('HSCODES', hsCode?.value);
         formData.append('HsDescription', descriptionEnglish);
@@ -817,7 +818,7 @@ const AdminUpdateGTIN = () => {
                                         <Autocomplete
                                             id="field3"
                                             options={unitCode}
-                                            getOptionLabel={(option) => option}
+                                            getOptionLabel={(option) => option?.unit_name || ""}
                                             onChange={handleUnitCodeChange}
                                             value={selectedUnitCode}
                                             onInputChange={(event, value) => {
