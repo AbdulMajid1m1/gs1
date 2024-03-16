@@ -152,9 +152,9 @@ export async function sendLicenceToGepir(userIds) {
                     addressLocality: { language: "en", value: user.city },
                     countryCode: user.country,
                     postalName: { language: "en", value: user.district },
-                    streetAddressLine2: { language: "en", value: '' }, // Assuming a value or handling its absence
+                    // streetAddressLine2: { language: "en", value: '' }, 
                     postOfficeBoxNumber: user.po_box,
-                    crossStreet: { language: "en", value: '' }, // Assuming a value or handling its absence
+                    // crossStreet: { language: "en", value: '' }, // Assuming a value or handling its absence
                     addressSuburb: { language: "en", value: user.district },
                     addressRegion: { language: "en", value: user.state },
                     postalCode: user.zip_code,
@@ -162,30 +162,45 @@ export async function sendLicenceToGepir(userIds) {
             };
 
             try {
-                const response = await axios.post('https://grp.gs1.org/grp/v3/licences', body, {
-                    headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' },
+                // const response = await axios.post('https://grp.gs1.org/grp/v3/licences', body, {
+                const response = await axios.post('https://grp.gs1.org/grp-st/v3.1/licences', [body], {
+                    // headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' },
+                    headers: { 'APIKey': 'e2a3e8fe582a447784c4f831ca4bc287' },
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Not recommended for production
                 });
-
-                const feedbackResponse = await axios.get(`https://grp.gs1.org/grp/v3/feedback/${response.data}`, {
-                    headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' },
+                console.log('Licence posted:', response.data);
+                const feedbackResponse = await axios.get(`https://grp.gs1.org/grp-st/v3.1/feedback/${response.data}`, {
+                    // headers: { 'APIKey': 'a54f5b6535994ffeb88b575198faac11' }, production key
+                    headers: { 'APIKey': 'e2a3e8fe582a447784c4f831ca4bc287' }, // dev key
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Not recommended for production
                 });
 
                 if (feedbackResponse.data[0] && feedbackResponse.data[0].validationErrors) {
-                    console.error('Validation errors:', feedbackResponse.data[0].validationErrors);
+                    // Validation errors: [
+                    //     { property: 'address.countryCode', errors: [ [Object] ] },
+                    //     { property: 'address.postalName.value', errors: [ [Object] ] },
+                    //     { property: 'address.streetAddress.value', errors: [ [Object] ] },
+                    //     { property: 'address.addressSuburb.value', errors: [ [Object] ] }
+                    //   ]
+                    // console.error('Validation errors:', feedbackResponse.data[0].validationErrors);
+                    // loop through the feedbackResponse.data[0].validationErrors and console.error the errors
+                    console.error('Validation errors:');
+                    feedbackResponse.data[0].validationErrors.forEach(error => {
+                        console.error('Property:', error.property);
+                        console.error('Errors:', error.errors);
+                    });
+                    return { success: false, error: feedbackResponse.data[0].validationErrors };
                 } else {
-                    // Here, instead of updating 'gCPInformation', you might mark a user as having been posted to GEPIR.
-                    // For example, you could add and update a 'gepirPosted' field in the 'users' table.
-                    // This part of the logic would depend on your application's specific requirements.
-                    // update user table with gepirPosted = 1
-                    await prisma.users.update({
+
+                    const updatedUser = await prisma.users.update({
                         where: { id: user.id },
                         data: { gepirPosted: '1' },
                     });
+                    return { success: true, updatedUser };
                 }
             } catch (error) {
                 console.error('Error posting licence or fetching feedback:', error.message);
+                return { success: false, error: error.message };
             }
         }
     }

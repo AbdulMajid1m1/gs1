@@ -19,6 +19,7 @@ import { cookieOptions } from '../utils/authUtilities.js';
 import { generateGTIN13 } from '../utils/functions/barcodesGenerator.js';
 import { createAdminLogs, createGtinSubscriptionHistory, createMemberLogs, createOtherProductsSubscriptionHistory } from '../utils/functions/historyLogs.js';
 import { updateUserPendingInvoiceStatus } from '../utils/functions/apisFunctions.js';
+import { sendLicenceToGepir } from '../utils/functions/globalApisFunctions.js';
 
 // Define the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -938,6 +939,29 @@ export const getLicenseRegisteryUser = async (req, res) => {
     }
 };
 
+const licenceRequestSchema = Joi.object({
+    userId: Joi.string().required(),
+});
+
+export const postLicenceController = async (req, res, next) => {
+    const { error, value } = licenceRequestSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+    }
+
+    try {
+        const result = await sendLicenceToGepir([value.userId]);
+        if (result.success) {
+            return res.status(200).json({ success: true, message: 'Licence uploaded successfully', updatedUser: result.updatedUser });
+        } else {
+            return res.status(500).json({ success: false, message: 'Failed to upload licence' });
+        }
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 
 export const getUserDetails = async (req, res, next) => {
