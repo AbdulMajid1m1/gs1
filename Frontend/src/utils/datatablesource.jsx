@@ -7926,8 +7926,8 @@ export const AllProductsColumn= (t, i18n) => [
     headerName: t('QR Code'),
     renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
     width: 180, // Adjust this width as needed
-  },
-  {
+   },
+   {
     field: 'BrandName',
     headerName: t('Brand Name'),
     width: 200,
@@ -7944,7 +7944,7 @@ export const AllProductsColumn= (t, i18n) => [
           paddingRight: '10px',
           borderRadius: '20px',
           border: '2px solid',
-          backgroundColor: params.row.readyForGepir === '1' ? 'red' : 'green',
+          backgroundColor: params.row.gepirPosted === 1 ? 'green' : 'red',
           borderColor: 'white',
           color: 'white',
         }}
