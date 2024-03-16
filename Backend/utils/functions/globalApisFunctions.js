@@ -91,17 +91,10 @@ export async function sendProductsToGepir(request) {
                 } else {
                     await prisma.products.update({
                         where: { barcode: row.barcode },
-                        data: { gepirPosted: '1' },
+                        data: { gepirPosted: 1 },
                     });
 
-                    // await prisma.gepirItem.create({
-                    //     data: {
-                    //         barcode: row.barcode,
-                    //         gcpGLNID: user.gcpGLNID,
-                    //         dateTimePost: currentDate,
-                    //         addedBy: request.user.id, // Adjust based on your authentication method
-                    //     },
-                    // });
+               
                 }
             } catch (error) {
                 console.error(error);
@@ -204,7 +197,7 @@ export async function sendLicenceToGepir(userIds) {
 
                     const updatedUser = await prisma.users.update({
                         where: { id: user.id },
-                        data: { gepirPosted: "1" },
+                        data: { gepirPosted: 1 },
                     });
                     return { success: true, updatedUser };
                 }
