@@ -36,12 +36,23 @@ const GcpLicense = () => {
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-  const handleRegenerate = (row) => {
-    // console.log(row)
-  };
+  const handleRegenerate = async (row) => {
+    try {
+      const response = await newRequest.post("/users/postGepirLicence", {
+        userId: row?.id,
+      });
+      console.log(response?.data);
+      toast.success(response?.data?.message || "Licence Uploaded Successfully");
+      
+      // filter the datagrid state if the response is true
+      setData(prevData => prevData.filter(item => item.id!== row?.id));
 
-  const handleEdit = (row) => {
-        // console.log(row)
+    } 
+    catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.message || "Something went wrong!");
+      setIsLoading(false)
+    }
   };
 
 
@@ -124,23 +135,23 @@ const GcpLicense = () => {
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}
                   globalSearch={true}
-                  actionColumnVisibility={false}
+                  // actionColumnVisibility={false}
                   handleRowClickInParent={handleRowClickInParent}
 
                   dropDownOptions={[
+                    // {
+                    //   label: "Update Data",
+                    //   icon: (
+                    //     <EditIcon
+                    //       fontSize="small"
+                    //       color="action"
+                    //       style={{ color: "rgb(37 99 235)" }}
+                    //     />
+                    //   ),
+                    //   action: handleEdit,
+                    // },
                     {
-                      label: "Update Data",
-                      icon: (
-                        <EditIcon
-                          fontSize="small"
-                          color="action"
-                          style={{ color: "rgb(37 99 235)" }}
-                        />
-                      ),
-                      action: handleEdit,
-                    },
-                    {
-                      label: "Regenerate GCP",
+                      label: "Posted GEPIR",
                       icon: (
                         <RestorePageIcon
                           fontSize="small"

@@ -68,6 +68,7 @@ import productcategories from "../../Images/productcategories.png"
 import gtinreports from "../../Images/gtinreports.png"
 import { I18nextProvider, useTranslation } from "react-i18next";
 import emailicons from "../../Images/email.png"
+import allproducts from "../../Images/allproducts.png"
 import i18ns from "../../i18n";
 import LanguageSwitcher from "../../switer";
 
@@ -637,7 +638,7 @@ const AdminSideBar = () =>
                 }
               >
                 <img
-                  src={gdsnproduct}
+                  src={allproducts}
                   className="main-inside-image bg-white rounded-full"
                   alt=""
                 />

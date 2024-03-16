@@ -7835,7 +7835,8 @@ export const licenceRegistryColumn = (t, i18n) => [
           paddingRight: '10px',
           borderRadius: '20px',
           border: '2px solid',
-          backgroundColor: 'red',
+          // backgroundColor: 'red',
+          backgroundColor: params.row.gepirPosted === 1 ? 'green' : 'red',
           borderColor: 'white',
           color: 'white',
         }}
@@ -7866,7 +7867,8 @@ export const licenceRegistryColumn = (t, i18n) => [
           paddingRight: '10px',
           borderRadius: '20px',
           border: '2px solid',
-          backgroundColor: 'red',
+          // backgroundColor: 'red',
+          backgroundColor: params.row.gepirPosted === 1 ? 'green' : 'red',
           borderColor: 'white',
           color: 'white',
         }}
@@ -7942,7 +7944,7 @@ export const AllProductsColumn= (t, i18n) => [
           paddingRight: '10px',
           borderRadius: '20px',
           border: '2px solid',
-          backgroundColor: 'red',
+          backgroundColor: params.row.readyForGepir === '1' ? 'red' : 'green',
           borderColor: 'white',
           color: 'white',
         }}
