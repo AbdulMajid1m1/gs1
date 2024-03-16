@@ -85,6 +85,9 @@ export const adminLogin = async (req, res, next) => {
             token,
             permissions,
         };
+        // return res.cookie("adminToken", token, cookieOptions()).status(200).json({
+        //     response
+        // });
         return res.status(200).json(response);
 
     } catch (error) {
