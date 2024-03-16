@@ -1093,11 +1093,12 @@ export const checkGtinDataAndSendToGepir = async (req, res, next) => {
                         // gpcCategoryCode:"50193800",
                         licenceKey: product.user.gcpGLNID,
                         licenceType: product.user.gcp_type || 'GCP',
-                        brandName: [{ language: product.prod_lang, value: product.BrandName }],
-                        productDescription: [{ language: product.prod_lang, value: product.productnameenglish }],
-                        productImageUrl: [{ language: product.prod_lang, value: `${imageLiveUrl(product.front_image) || 'No Value'}` }],
-                        netContent: [{ unitCode: 'GRM', value: 411 }],
-                        countryOfSaleCode: [product.countrySale],
+                        // brandName: [{ language: product.prod_lang, value: product.BrandName }],
+                        brandName: [{ language: 'en', value: product.BrandName }],
+                        productDescription: [{ language: 'en', value: product.productnameenglish }],
+                        productImageUrl: [{ language: 'en', value: `${imageLiveUrl(product.front_image) || 'No Value'}` }],
+                        netContent: [{ unitCode: product.unit, value: product.size }],
+                        // countryOfSaleCode: [product.countrySale],
                     };
 
                     try {
