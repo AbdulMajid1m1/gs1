@@ -571,7 +571,7 @@ model g_c_p_information {
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
   deleted_at     DateTime? @db.DateTime
-  gepirPosted    String?   @default("0", map: "DF_g_c_p_information_gepirPosted") @db.NChar(10)
+  gepirPosted    Int?      @default(0, map: "DF_g_c_p_information_gepirPosted")
   updateable     String?   @default("0", map: "DF_g_c_p_information_updateable") @db.NChar(1)
 }
 
@@ -1722,7 +1722,7 @@ model products {
   BrandNameAr        String?   @db.NVarChar(Max)
   digitalInfoType    Int?
   readyForGepir      String?   @default("0", map: "DF_products_readyForGepir") @db.NChar(10)
-  gepirPosted        String?   @default("0", map: "DF_products_gepirPosted") @db.NChar(10)
+  gepirPosted        Int?      @default(0, map: "DF_products_gepirPosted") @db.TinyInt
   image_1            String?   @db.VarChar(255)
   image_2            String?   @db.VarChar(255)
   image_3            String?   @db.VarChar(255)
@@ -2149,7 +2149,7 @@ model users {
   other_products_subscription_histories other_products_subscription_histories[]
   admin_history_logs                    admin_history_logs[]
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  gepirPosted                           String?                                 @default("0", map: "DF_users_gepirPosted") @db.NChar(10)
+  gepirPosted                           Int?                                    @default(0, map: "DF_users_gepirPosted")
   member_documents                      member_documents[]
   foreign_gtins                         foreign_gtins[]
   products                              products[]
