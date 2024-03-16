@@ -326,7 +326,7 @@ const AllProducts = () => {
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
                     {
-                      label: "Posted GEPIR",
+                      label: "Post to GEPIR",
                       icon: (
                         <IosShareIcon
                           fontSize="small"

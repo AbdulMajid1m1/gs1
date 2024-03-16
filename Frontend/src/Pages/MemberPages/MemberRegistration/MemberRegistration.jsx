@@ -460,7 +460,7 @@ const MemmberRegisteration = () => {
         console.log(response.data);
         setIsLoading(false);
         setTimeout(() => {
-          // navigate('/');
+          navigate('/');
         }, 1500);
 
         toast.success(`${t('Member Registered Successfully')}`, {
