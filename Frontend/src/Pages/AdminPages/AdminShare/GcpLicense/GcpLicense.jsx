@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { I18nextProvider, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import DataTable from '../../../../components/Datatable/Datatable';
 import { licenceRegistryColumn } from '../../../../utils/datatablesource';
-import EditIcon from "@mui/icons-material/Edit";
 import RestorePageIcon from '@mui/icons-material/RestorePage';
 import newRequest from '../../../../utils/userRequest';
 import * as XLSX from "xlsx";
@@ -51,6 +50,7 @@ const GcpLicense = () => {
         }
         return item;
       });
+      setData(updatedData);
 
     }
     catch (err) {
