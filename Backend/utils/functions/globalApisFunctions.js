@@ -113,13 +113,13 @@ function chunkArray(array, size) {
 
 
 export async function sendLicenceToGepir(userIds) {
+    console.log("userIds", userIds);
     // Example userIds = ['cuid1', 'cuid2', 'cuid3']; Adjust according to how you receive the request
 
     const users = await prisma.users.findMany({
         where: {
             id: {
-                // in: userIds,
-                in: ['cltiybxtt0001y4rkl0zdl8nf'],
+                in: userIds,
             },
         },
     });
@@ -152,15 +152,18 @@ export async function sendLicenceToGepir(userIds) {
                 }],
                 address: {
                     // streetAddress: { language: "en", value: user.location_uk },
-                    addressLocality: { language: "en", value: user.city },
-                    // countryCode: country.country_code_numeric3,
-                    countryCode: '364',
+                    // addressLocality: { language: "en", value: user.city },
+                    ...(user.city && { addressLocality: { language: "en", value: user.city } }),
+                    ...(user.state && { addressRegion: { language: "en", value: user.state } }),                    // countryCode: country.country_code_numeric3,
+                    // countryCode: '364',
                     // postalName: { language: "en", value: user.district },
                     // streetAddressLine2: { language: "en", value: '' }, 
-                    postOfficeBoxNumber: user.po_box,
+                    // postOfficeBoxNumber: user.po_box,
                     // crossStreet: { language: "en", value: '' }, // Assuming a value or handling its absence
                     // addressSuburb: { language: "en", value: user.district },
-                    addressRegion: { language: "en", value: user.state },
+                    //     if(user.state)
+                    //     addressRegion: { language: "en", value: user.state }
+                    // },
                     postalCode: user.zip_code,
                 },
             };
@@ -180,14 +183,7 @@ export async function sendLicenceToGepir(userIds) {
                 });
 
                 if (feedbackResponse.data[0] && feedbackResponse.data[0].validationErrors) {
-                    // Validation errors: [
-                    //     { property: 'address.countryCode', errors: [ [Object] ] },
-                    //     { property: 'address.postalName.value', errors: [ [Object] ] },
-                    //     { property: 'address.streetAddress.value', errors: [ [Object] ] },
-                    //     { property: 'address.addressSuburb.value', errors: [ [Object] ] }
-                    //   ]
-                    // console.error('Validation errors:', feedbackResponse.data[0].validationErrors);
-                    // loop through the feedbackResponse.data[0].validationErrors and console.error the errors
+
                     console.error('Validation errors:');
                     feedbackResponse.data[0].validationErrors.forEach(error => {
                         console.error('Property:', error.property);
