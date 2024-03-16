@@ -36,12 +36,28 @@ const GcpLicense = () => {
   }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
 
-  const handleRegenerate = (row) => {
-    // console.log(row)
-  };
+  const handleRegenerate = async (row) => {
+    try {
+      const response = await newRequest.post("/users/postGepirLicence", {
+        userId: row?.id,
+      });
+      console.log(response?.data);
+      toast.success(response?.data?.message || "Licence Uploaded Successfully");
 
-  const handleEdit = (row) => {
-        // console.log(row)
+      // response.data.updatedUser has updated record. Replace the record in the data array with the updated record
+      const updatedData = data.map(item => {
+        if (item.id === response.data.updatedUser.id) {
+          return response.data.updatedUser;
+        }
+        return item;
+      });
+
+    }
+    catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.message || "Something went wrong!");
+      setIsLoading(false)
+    }
   };
 
 
@@ -83,16 +99,15 @@ const GcpLicense = () => {
     saveAs(dataBlob, 'licenceRegistry.xlsx');
   };
 
-   
-  const handleRowClickInParent = (item) =>
-  {
+
+  const handleRowClickInParent = (item) => {
     if (!item || item?.length === 0) {
       // setTableSelectedRows(data)
       return
     }
 
   }
- 
+
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
@@ -115,7 +130,7 @@ const GcpLicense = () => {
               </div>
 
               {/* DataGrid */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px'}}>
+              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
 
                 <DataTable data={data}
                   title={'Gcp Licence'}
@@ -124,23 +139,23 @@ const GcpLicense = () => {
                   secondaryColor="secondary"
                   checkboxSelection={'disabled'}
                   globalSearch={true}
-                  actionColumnVisibility={false}
+                  // actionColumnVisibility={false}
                   handleRowClickInParent={handleRowClickInParent}
 
                   dropDownOptions={[
+                    // {
+                    //   label: "Update Data",
+                    //   icon: (
+                    //     <EditIcon
+                    //       fontSize="small"
+                    //       color="action"
+                    //       style={{ color: "rgb(37 99 235)" }}
+                    //     />
+                    //   ),
+                    //   action: handleEdit,
+                    // },
                     {
-                      label: "Update Data",
-                      icon: (
-                        <EditIcon
-                          fontSize="small"
-                          color="action"
-                          style={{ color: "rgb(37 99 235)" }}
-                        />
-                      ),
-                      action: handleEdit,
-                    },
-                    {
-                      label: "Regenerate GCP",
+                      label: "Posted GEPIR",
                       icon: (
                         <RestorePageIcon
                           fontSize="small"
