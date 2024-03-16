@@ -2149,10 +2149,10 @@ model users {
   other_products_subscription_histories other_products_subscription_histories[]
   admin_history_logs                    admin_history_logs[]
   assign_to_admin                       admins?                                 @relation(fields: [assign_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  member_documents member_documents[]
-  foreign_gtins    foreign_gtins[]
-  products         products[]
+  gepirPosted                           String?                                 @default("0", map: "DF_users_gepirPosted") @db.NChar(10)
+  member_documents                      member_documents[]
+  foreign_gtins                         foreign_gtins[]
+  products                              products[]
 }
 
 model rejected_users {
