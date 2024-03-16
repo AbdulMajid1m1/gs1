@@ -135,6 +135,15 @@ export async function sendLicenceToGepir(userIds) {
 
     for (const chunk of userChunks) {
         for (const user of chunk) {
+
+            // based on user.country code, get the country code from the countries table
+            const country = await prisma.country_of_sales.findFirst({
+                where: {
+                    country_name: user.country
+                }
+            });
+            console.log("country", country);
+
             // Assuming 'status', 'companyName', and 'licenseeGln' fields are correctly represented in the users table or somehow derived
             const body = {
                 licenceKey: user.gcpGLNID,
@@ -148,14 +157,15 @@ export async function sendLicenceToGepir(userIds) {
                     website: user.website,
                 }],
                 address: {
-                    streetAddress: { language: "en", value: user.location_uk },
+                    // streetAddress: { language: "en", value: user.location_uk },
                     addressLocality: { language: "en", value: user.city },
-                    countryCode: user.country,
-                    postalName: { language: "en", value: user.district },
+                    // countryCode: country.country_code_numeric3,
+                    countryCode: '364',
+                    // postalName: { language: "en", value: user.district },
                     // streetAddressLine2: { language: "en", value: '' }, 
                     postOfficeBoxNumber: user.po_box,
                     // crossStreet: { language: "en", value: '' }, // Assuming a value or handling its absence
-                    addressSuburb: { language: "en", value: user.district },
+                    // addressSuburb: { language: "en", value: user.district },
                     addressRegion: { language: "en", value: user.state },
                     postalCode: user.zip_code,
                 },
@@ -194,7 +204,7 @@ export async function sendLicenceToGepir(userIds) {
 
                     const updatedUser = await prisma.users.update({
                         where: { id: user.id },
-                        data: { gepirPosted: '1' },
+                        data: { gepirPosted: "1" },
                     });
                     return { success: true, updatedUser };
                 }
