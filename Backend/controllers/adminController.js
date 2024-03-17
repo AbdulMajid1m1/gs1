@@ -424,7 +424,7 @@ const updateAdminSchema = Joi.object({
     mobile: Joi.string().optional(),
     isSuperAdmin: Joi.boolean().optional(),
     password: Joi.string().min(6).optional(),
-    roleIds: Joi.array().items(Joi.string()).optional(), // New field for role IDs
+    roleIds: Joi.array().items(Joi.string()).optional().default([]),
 });
 export const updateAdmin = async (req, res, next) => {
     try {
@@ -439,6 +439,7 @@ export const updateAdmin = async (req, res, next) => {
 
         const { email, username, mobile, isSuperAdmin, password, roleIds } = value;
         // Check if the admin user exists
+        console.log("roleIds", roleIds)
         const existingAdmin = await prisma.admins.findUnique({
             where: { id: adminId },
         });
