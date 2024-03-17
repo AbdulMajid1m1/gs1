@@ -12,7 +12,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
   const { t } = useTranslation();
   const [title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
-  const [selecteddocument, setSelecteddocument] = useState(null);
+  const [selecteddocument, setSelecteddocument] = useState();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -34,7 +34,10 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", Description);
-    formData.append("document", selecteddocument);
+    // formData.append("document", selecteddocument);
+    if (selecteddocument) {
+      formData.append("document", selecteddocument);
+    }
     formData.append("email", emailget);
     formData.append("user_id", useriddata);
     // formData.append("assignedTo", "");
