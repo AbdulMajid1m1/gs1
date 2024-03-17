@@ -315,22 +315,7 @@ const AllProducts = () => {
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
                     {
-<<<<<<< HEAD
-                      label: "Edit",
-                      icon: (
-                        <EditIcon
-                          fontSize="small"
-                          color="action"
-                          style={{ color: "rgb(37 99 235)" }}
-                        />
-                      ),
-                      action: handleEdit,
-                    },
-                    {
-                      label: "Post to GEPIR",
-=======
                       label: `${t('Post to GEPIR')}`,
->>>>>>> f2fe4ab3df82e49ffaa9cb171c3c6f2a4e9a8b61
                       icon: (
                         <IosShareIcon
                           fontSize="small"
