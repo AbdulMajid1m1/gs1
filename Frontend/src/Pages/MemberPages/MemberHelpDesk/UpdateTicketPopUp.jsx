@@ -34,7 +34,10 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
         const formData = new FormData();
         formData.append("title", Title);
         formData.append("description", Description);
-        formData.append("document", selecteddocument);
+        // formData.append("document", selecteddocument);
+        if (selecteddocument) {
+          formData.append("document", selecteddocument);
+        }
         // formData.append("assignedTo", 1);
         formData.append("status", 0);
         // formData.append('status', Number(status));
