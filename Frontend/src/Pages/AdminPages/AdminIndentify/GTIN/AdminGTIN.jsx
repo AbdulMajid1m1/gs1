@@ -99,7 +99,8 @@ const Gtin = () => {
       setAutocompleteLoading(true);
       setOpen(true);
 
-      const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+      // const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+        const res = await newRequest.get(`/users/searchUsersWithGtinSubscriptions?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
       // console.log(res);

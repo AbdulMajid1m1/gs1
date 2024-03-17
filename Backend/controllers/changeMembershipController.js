@@ -2827,7 +2827,7 @@ export const downgradeMemberSubscriptionRequest = async (req, res, next) => {
 
         await updateUserPendingInvoiceStatus(result.user.id);
 
-        res.status(200).json({ message: `Downgrade Subscription invoice created + (result?.user?.email ? '& sent to ' + result?.user?.email : '')` });
+        res.status(200).json({ message: `Downgrade Subscription invoice created successfully and sent to user email.` });
 
     } catch (error) {
         console.error(error);

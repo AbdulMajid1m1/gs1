@@ -83,7 +83,8 @@ const Gln = () => {
       setAutocompleteLoading(true);
       setOpen(true);
 
-      const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+      // const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+        const res = await newRequest.get(`/users/searchOtherProudctUsers?keyword=${newInputValue}&productName=gln`, {
         signal: abortControllerRef.current.signal
       });
       // console.log(res);

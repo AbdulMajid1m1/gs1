@@ -227,7 +227,7 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                         <th>{t('PRODUCT')}</th>
                         <th>{t('REGISTRATION FEE')}</th>
                         <th>{t('YEARLY FEE ')}</th>
-                        <th> {t('EXPIRY DATE')}</th>
+                        {/* <th> {t('EXPIRY DATE')}</th> */}
                         <th>{t('PRICE')}</th>
                         <th> {t('DELETE')}</th>
                       </tr>
@@ -249,28 +249,28 @@ const PendingApprovedPopUp = ({ isVisible, setVisibility, fetchAllUserData, fetc
                         ));
                       })} */}
                       {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
-                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                        // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
                         return (
                           <tr key={'gtin_product' + index}>
                             <td>{item?.gtin_product?.member_category_description}</td>
                             <td>{item?.price}</td>
                             <td>{item?.gtin_subscription_total_price}</td>
-                            <td>{expiryDate}</td>
+                            {/* <td>{expiryDate}</td> */}
                             <td>{item?.gtin_subscription_total_price + item?.price}</td>
-                            <td className='hover:text-gray-500 cursor-pointer text-gray-500 cursor-not-allowed' >
+                            <td className='hover:text-gray-500 cursor-pointer text-gray-500' >
                               <DeleteSweepIcon style={{ color: "gray-500" }} />
                             </td>
                           </tr>
                         );
                       })}
                       {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
-                        const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                        // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
                         return (
                           <tr key={'other_products' + index}>
                             <td>{item?.product?.product_name}</td>
                             <td>{item?.price}</td>
                             <td>{item?.other_products_subscription_total_price}</td>
-                            <td>{expiryDate}</td>
+                            {/* <td>{expiryDate}</td> */}
                             <td>{item?.other_products_subscription_total_price + item?.price}</td>
                             <td className='hover:text-red-500 cursor-pointer' onClick={() => handleDeleteRow(index, item)}>
                               <DeleteSweepIcon />

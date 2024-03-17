@@ -26,7 +26,7 @@ import AssignToPopUp from './AssignToPopUp';
 const RegisteredMembers = () => {
   const { t, i18n } = useTranslation();
   const [IsLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   // const [gridData, setGridData] = useState([]);
   const navigate = useNavigate();
 
@@ -34,11 +34,14 @@ const RegisteredMembers = () => {
     tableSelectedRows, setTableSelectedRows } = useContext(DataTableContext);
   const [filteredData, setFilteredData] = useState([]);
 
-  // const { isLoading, error, data, isFetching } = useQuery("fatchMembers", async () => {
-  //   const response = await newRequest.get("/users",);
-  //   return response?.data || [];
+  const { isLoading, error, data, refetch } = useQuery("fatchMembers", async () => {
+    const response = await newRequest.get("/users/allUser?parent_memberID=0",);
+    return response?.data || [];
 
-  // });
+  });
+  const handleFetchData = () => {
+    refetch();
+  };
 
   // useEffect(() => {
   //   if (data) {
@@ -49,66 +52,30 @@ const RegisteredMembers = () => {
   // }, [data]);
 
 
-  const fetchData = async () => {
-    setIsLoading(true)
-    try {
-      // /users/allUser
-      // const response = await newRequest.get("/users?parent_memberID=0");
-      const response = await newRequest.get("/users/allUser?parent_memberID=0");
-
-      // console.log(response.data);
-      setData(response?.data || []);
-      setIsLoading(false)
-
-    } catch (err) {
-      // console.log(err);
-      setIsLoading(false)
-    }
-  };
-
-  useEffect(() => {
-    fetchData(); // Calling the function within useEffect, not inside itself
-  }, []); // Empty array dependency ensures this useEffect runs once on component mount
-
-
-
-  // const refreshData = async () => {
-  //   setIsLoading(true);
+  // const fetchData = async () => {
+  //   setIsLoading(true)
   //   try {
-  //       const response = await newRequest.get("/users",);
+  //     // /users/allUser
+  //     // const response = await newRequest.get("/users?parent_memberID=0");
+  //     const response = await newRequest.get("/users/allUser?parent_memberID=0");
 
-  //       console.log(response.data);
-  //       setData(response?.data || []);
-  //       setIsLoading(false)
+  //     // console.log(response.data);
+  //     setData(response?.data || []);
+  //     setIsLoading(false)
 
   //   } catch (err) {
-  //     console.log(err);
-  //     Swal.fire(
-  //       'Error!',
-  //         err?.response?.data?.message || 'Something went wrong!.',
-  //       'error'
-  //     )
-
+  //     // console.log(err);
+  //     setIsLoading(false)
   //   }
   // };
 
-  const handleEdit = (row) => {
-    // console.log(row);
-    // navigate("/upate-gtin-product/" + row?.id);
-  };
+  // useEffect(() => {
+  //   fetchData(); // Calling the function within useEffect, not inside itself
+  // }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
-  const handleOpen = (row) => {
-    // console.log(row);
-    // navigate("/view-gtin-product/" + row?.id);
-  };
-
-  // const handleDelete = async (row) => {
-  //     console.log(row);
-  // };
 
   const handleView = (row) => {
     // console.log(row);
-    // save this data in session storage
     sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
     navigate("view-registered-member/" + row?.id);
   };
@@ -316,9 +283,10 @@ const RegisteredMembers = () => {
         // Filter out 'Renew' option if the status is not 'active'
         if (row.status !== 'active') {
           return dropDownOptions.filter(option => option.label !== 'Renew');
+          
         }
-
-        return dropDownOptions; // Enable all options for the admin who is assigned to the user
+        // filter Assign To option
+        return dropDownOptions.filter(option => option.label !== 'Assign To');
       }
     }
 
@@ -332,7 +300,7 @@ const RegisteredMembers = () => {
         <div>
           <AdminDashboardRightHeader
             title={`${t('Registered Members')}`}
-            fetchData={fetchData}
+            fetchData={handleFetchData}
             showIcon={true}
           />
         </div>
@@ -342,7 +310,7 @@ const RegisteredMembers = () => {
           <DataTable data={data}
             title={`${t('Registered Members')}`}
             columnsName={Gs1AllMembers(t)}
-            loading={IsLoading}
+            loading={isLoading}
             checkboxSelection="disabled"
             secondaryColor="secondary"
             globalSearch={true}
@@ -439,7 +407,7 @@ const RegisteredMembers = () => {
         {/* AssignTo component with handleShowDowngradePopup prop */}
         {isAssignToPopUpVisible && (
           <AssignToPopUp isVisible={isAssignToPopUpVisible} setVisibility={setIsAssignToPopUpVisible} assignUser={assignUser}
-            fetchData={fetchData}
+            fetchData={handleFetchData}
           />
         )}
 

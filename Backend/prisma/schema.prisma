@@ -206,7 +206,7 @@ model blog_comments {
 }
 
 model board_members {
-  id         String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String    @db.NVarChar(255)
   job_title   String    @db.NVarChar(255)
   description String?   @db.NVarChar(Max)
@@ -492,14 +492,14 @@ model families {
 }
 
 model faq_categories {
-  id        String   @id @default(cuid())
+  id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
 }
 
 model featured_articales {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   title      String?   @db.NVarChar(Max)
   title_ar   String?   @db.NVarChar(Max)
   image      String?   @db.NVarChar(Max)
@@ -847,6 +847,8 @@ model gtin_subcriptions {
   gtin_subscription_total_price Float         @default(0)
   isDeleted                     Boolean?      @default(false)
   gtin_product                  gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
+  // make optioanl realtion with user
+  user                          users?        @relation(fields: [user_id], references: [id], onDelete: SetNull)
 }
 
 model gtin_subscription_histories {
@@ -1544,7 +1546,7 @@ model other_products_subcriptions {
   product_id                              String
   price                                   Float?
   status                                  String?        @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
-  user_id                                 String?        @db.NVarChar(255)
+  user_id                                 String?
   createdBy                               String?        @db.NVarChar(255)
   created_at                              DateTime       @default(now())
   updated_at                              DateTime       @updatedAt
@@ -1557,6 +1559,7 @@ model other_products_subcriptions {
   isDeleted                               Boolean?       @default(false)
   gln_cart                                add_gln_cart[]
   product                                 other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user                                    users?         @relation(fields: [user_id], references: [id], onDelete: SetNull)
 }
 
 model other_products_subscription_histories {
@@ -2153,6 +2156,11 @@ model users {
   member_documents                      member_documents[]
   foreign_gtins                         foreign_gtins[]
   products                              products[]
+  other_products_subcriptions           other_products_subcriptions[]
+  gtin_subcriptions                     gtin_subcriptions[]
+
+  @@index([assign_to], map: "users_assign_to_index")
+  @@index([parent_memberID], map: "users_parent_memberID_index")
 }
 
 model rejected_users {

@@ -89,15 +89,18 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
           if (userData?.membership_category === "non_med_category") {
             item.price = item.member_registration_fee,
               item.yearly_fee = item.gtin_yearly_subscription_fee
+            console.log(item.yearly_fee);
           } else if (userData?.membership_category === "med_category") {
             item.price = item.med_registration_fee,
               item.yearly_fee = item.med_yearly_subscription_fee
+            console.log(item.yearly_fee);
           }
         });
         // console.log(filteredOptions);
 
 
         setGtinBarcodes(filteredOptions);
+
       }
       if (subType === 'ADD GTIN') {
         try {
@@ -313,7 +316,8 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                         // Assuming you have appropriate fields for GLN
                         return `GLN: ${option?.total_no_of_gln || ""} - Price: ${option?.price}`;
                       } else {
-                        return `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yearly_fee: ${option?.yearly_fee} - Registration_Fee: ${option?.price}`;
+                        console.log(option);
+                        return `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yearly_fee: ${option?.yearly_fee || ''} - Registration_Fee: ${option?.price || ""}`;
                       }
                     }}
 

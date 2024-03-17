@@ -362,31 +362,31 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                               <th> {t('PRODUCT')}</th>
                               <th> {t('REGISTRATION FEE')}</th>
                               <th> {t('YEARLY FEE')}</th>
-                              <th> {t('EXPIRY DATE')}</th>
+                              {/* <th> {t('EXPIRY DATE')}</th> */}
                               <th> {t('PRICE')}</th>
                             </tr>
                           </thead>
                           <tbody>
                             {memberInoviceData?.gtinSubscriptions?.map((item, index) => {
-                              const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                              // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
                               return (
                                 <tr key={'gtin_product' + index}>
                                   <td>{item?.gtin_product?.member_category_description}</td>
                                   <td>{item?.price}</td>
                                   <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.gtin_subscription_total_price : 0}</td>
-                                  <td>{expiryDate}</td>
+                                  {/* <td>{expiryDate}</td> */}
                                   <td>{item?.gtin_subscription_total_price + item?.price}</td>
                                 </tr>
                               );
                             })}
                             {memberInoviceData?.otherProductSubscriptions?.map((item, index) => {
-                              const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                              // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
                               return (
                                 <tr key={'other_products' + index}>
                                   <td>{item?.product?.product_name}</td>
                                   <td>{item?.price}</td>
                                   <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
-                                  <td>{expiryDate}</td>
+                                  {/* <td>{expiryDate}</td> */}
                                   <td>{item?.other_products_subscription_total_price + item?.price}</td>
                                 </tr>
                               );
@@ -420,7 +420,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                                 <th> {t('PRODUCT')}</th>
                                 <th> {t('REGISTRATION FEE')}</th>
                                 <th> {t('YEARLY FEE')}</th>
-                                <th> {t('EXPIRY DATE')}</th>
+                                {/* <th> {t('EXPIRY DATE')}</th> */}
                                 <th> {t('PRICE')}</th>
                               </tr>
                             </thead>
@@ -429,13 +429,13 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
                               {memberInoviceData?.otherProductSubscriptions?.filter(item => item.status === 'inactive').map((item, index) => {
                                 // console.log(item);
-                                const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                                // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
                                 return (
                                   <tr key={'other_products' + index}>
                                     <td>{item?.product?.product_name}</td>
                                     <td>0</td>
                                     <td>{gs1MemberInvoiceData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
-                                    <td>{expiryDate}</td>
+                                    {/* <td>{expiryDate}</td> */}
                                     <td>{item?.other_products_subscription_total_price + item?.price}</td>
                                   </tr>
                                 );

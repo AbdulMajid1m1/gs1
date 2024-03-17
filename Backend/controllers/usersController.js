@@ -1139,12 +1139,8 @@ export const getRegisteredMembers = async (req, res, next) => {
             include: {
                 assign_to_admin: true
             },
-            // take: 20
 
         });
-
-
-
 
         return res.json(users);
 
@@ -1395,6 +1391,140 @@ export const getExpiredMembers = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
+
+export const searchOtherProductUsers = async (req, res, next) => {
+    try {
+        const { keyword, productName } = req.query; // Get the search keyword and product name from the query parameters
+        if (!keyword || !productName) {
+            return res.status(400).json({ error: 'Keyword and product name are required' });
+        }
+        // Define the searchable columns for users
+        const searchableColumns = [
+            'email',
+            'cr_number',
+            'cr_activity',
+            'company_name_eng',
+            'transaction_id',
+            'gcpGLNID',
+            'gln',
+            'companyID',
+            'gpc',
+            'memberID'
+        ];
+
+        // Fetch users subscribed to products with product_name containing the provided productName
+        const users = await prisma.users.findMany({
+            where: {
+                other_products_subcriptions: {
+                    some: {
+                        product: {
+                            product_name: {
+                                contains: productName // Filter by product_name containing the provided productName
+                            }
+                        },
+                        isDeleted: false
+                    }
+                }
+            },
+            include: {
+                other_products_subcriptions: { // Include to provide detailed subscription info for the product
+                    where: {
+                        product: {
+                            product_name: {
+                                contains: productName // Filter subscriptions by product_name containing the provided productName
+                            }
+                        }
+                    },
+                    select: {
+                        product: {
+                            select: {
+                                product_name: true // Select only the product_name
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: {
+                created_at: 'desc'
+            },
+            take: 30,
+        });
+
+        // Filter the fetched users based on the search keyword within specified user fields
+        const filteredUsers = users.filter(user =>
+            searchableColumns.some(column =>
+                user[column]?.toLowerCase().includes(keyword.toLowerCase())
+            )
+        );
+
+        return res.json(filteredUsers);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+export const searchUsersWithGtinSubscriptions = async (req, res, next) => {
+    try {
+        const { keyword } = req.query; // Get the search keyword from the query parameters
+        if (!keyword) {
+            return res.status(400).json({ error: 'Keyword is required' });
+        }
+
+        // Define the searchable columns for users
+        const searchableColumns = [
+            'email',
+            'cr_number',
+            'cr_activity',
+            'company_name_eng',
+            'transaction_id',
+            'gcpGLNID',
+            'gln',
+            'companyID',
+            'gpc',
+            'memberID'
+        ];
+
+        // Fetch users with at least one non-deleted gtin_subscription and filter them based on the search keyword
+        const usersWithGtinSubscriptions = await prisma.users.findMany({
+            where: {
+                AND: [
+                    {
+                        gtin_subcriptions: {
+                            some: {
+                                isDeleted: false // Ensure at least one non-deleted gtin_subscription
+                            }
+                        }
+                    },
+                    {
+                        OR: searchableColumns.map(column => ({
+                            [column]: {
+                                contains: keyword.toLowerCase() // Filter by keyword in searchable columns
+                            }
+                        }))
+                    }
+                ]
+            },
+            include: {
+                gtin_subcriptions: true // Include all gtin_subscriptions
+            },
+            orderBy: {
+                created_at: 'desc' // Assuming you still want to sort by creation date
+            },
+            take: 30 // Assuming you want to limit the results to the top 30
+        });
+
+        return res.json(usersWithGtinSubscriptions);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
 
 
 export const searchUsers = async (req, res, next) => {
