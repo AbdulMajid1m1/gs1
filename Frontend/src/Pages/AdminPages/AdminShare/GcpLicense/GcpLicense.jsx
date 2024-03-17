@@ -110,38 +110,46 @@ const GcpLicense = () => {
 
   return (
     <div>
-      <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
+      <div
+        className={`p-0 h-full ${
+          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+        }`}
+      >
         <div>
-          <AdminDashboardRightHeader
-            title={'Post to GEPIR'}
-          />
+          <AdminDashboardRightHeader title={t("Post to GEPIR")} />
         </div>
 
-        <div className='flex justify-center items-center'>
+        <div className="flex justify-center items-center">
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
-
-              <div className={`flex sm:justify-start items-center flex-wrap gap-2 py-4 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+              <div
+                className={`flex sm:justify-start items-center flex-wrap gap-2 py-4 px-3 ${
+                  i18n.language === "ar"
+                    ? "flex-row-reverse justify-start"
+                    : "flex-row justify-start"
+                }`}
+              >
                 <button
                   onClick={handleExportProductsTemplate}
-                  className="rounded-full bg-green-500 font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary">
-                  <i className="fas fa-file-excel mr-2"></i>{t('EXCEL')}
+                  className="rounded-full bg-green-500 font-body px-5 py-1 text-sm text-white transition duration-200 hover:bg-primary"
+                >
+                  <i className="fas fa-file-excel mr-2"></i>
+                  {t("EXCEL")}
                 </button>
               </div>
 
               {/* DataGrid */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px' }}>
-
-                <DataTable data={data}
-                  title={'Gcp Licence'}
+              <div style={{ marginLeft: "-11px", marginRight: "-11px" }}>
+                <DataTable
+                  data={data}
+                  title={"Gcp Licence"}
                   columnsName={licenceRegistryColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
-                  checkboxSelection={'disabled'}
+                  checkboxSelection={"disabled"}
                   globalSearch={true}
                   // actionColumnVisibility={false}
                   handleRowClickInParent={handleRowClickInParent}
-
                   dropDownOptions={[
                     // {
                     //   label: "Update Data",
@@ -155,7 +163,7 @@ const GcpLicense = () => {
                     //   action: handleEdit,
                     // },
                     {
-                      label: "Post to GEPIR",
+                      label: `${t("Post to GEPIR")}`,
                       icon: (
                         <RestorePageIcon
                           fontSize="small"
@@ -165,20 +173,16 @@ const GcpLicense = () => {
                       ),
                       action: handleRegenerate,
                     },
-
                   ]}
                   uniqueId="gtinMainTableId"
-
                 />
               </div>
-
             </div>
           </div>
         </div>
-
       </div>
     </div>
-  )
+  );
 }
 
 export default GcpLicense

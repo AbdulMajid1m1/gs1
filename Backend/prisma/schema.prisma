@@ -206,7 +206,7 @@ model blog_comments {
 }
 
 model board_members {
-  id         String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String    @db.NVarChar(255)
   job_title   String    @db.NVarChar(255)
   description String?   @db.NVarChar(Max)
@@ -492,14 +492,14 @@ model families {
 }
 
 model faq_categories {
-  id        String   @id @default(cuid())
+  id         String    @id @default(cuid())
   name       String?   @db.NVarChar(Max)
   created_at DateTime? @db.DateTime
   updated_at DateTime? @db.DateTime
 }
 
 model featured_articales {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   title      String?   @db.NVarChar(Max)
   title_ar   String?   @db.NVarChar(Max)
   image      String?   @db.NVarChar(Max)
@@ -1544,7 +1544,7 @@ model other_products_subcriptions {
   product_id                              String
   price                                   Float?
   status                                  String?        @default("inactive", map: "DF_other_products_subcriptions_status") @db.VarChar(10)
-  user_id                                 String?        @db.NVarChar(255)
+  user_id                                 String?
   createdBy                               String?        @db.NVarChar(255)
   created_at                              DateTime       @default(now())
   updated_at                              DateTime       @updatedAt
@@ -1557,6 +1557,7 @@ model other_products_subcriptions {
   isDeleted                               Boolean?       @default(false)
   gln_cart                                add_gln_cart[]
   product                                 other_products @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user                                    users?         @relation(fields: [user_id], references: [id], onDelete: SetNull)
 }
 
 model other_products_subscription_histories {
@@ -2153,6 +2154,10 @@ model users {
   member_documents                      member_documents[]
   foreign_gtins                         foreign_gtins[]
   products                              products[]
+  other_products_subcriptions           other_products_subcriptions[]
+
+  @@index([assign_to], map: "users_assign_to_index")
+  @@index([parent_memberID], map: "users_parent_memberID_index")
 }
 
 model rejected_users {

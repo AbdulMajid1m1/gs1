@@ -1,5 +1,5 @@
 import express from 'express';
-import { bulkCreateProduct, createProduct, deleteProduct, generateGtinCertificate, getProducts, searchMemberGtin, updateProduct } from '../../controllers/productsController.js';
+import { bulkCreateProduct, checkGtinDataAndSendToGepir, createProduct, deleteProduct, generateGtinCertificate, getProducts, searchMemberGtin, updateProduct } from '../../controllers/productsController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generalAuth } from '../../middlewares/auth.js';
 
@@ -35,4 +35,8 @@ router.delete('/gtin/:id', generalAuth, deleteProduct);
 
 router.get('/getGtinCertificate/:productId', generateGtinCertificate);
 
+router.post('/checkGtinDataAndSendToGepir', checkGtinDataAndSendToGepir);
+
 export default router;
+
+

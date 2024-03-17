@@ -647,13 +647,13 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                     }
 
                 }
-                return userUpdateResult;
+                return { userUpdateResult };
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
 
 
-
+            console.log("result", result);
             const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             let gcpGLNID = result.userUpdateResult?.gcpGLNID;
             const CertificateData = {

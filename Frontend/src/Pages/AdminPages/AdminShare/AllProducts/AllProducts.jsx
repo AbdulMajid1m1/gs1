@@ -99,7 +99,7 @@ const AllProducts = () => {
         setOpen(true);
         setAutocompleteLoading(false);
 
-        // fetchData();
+
       } catch (error) {
         console.error(error);
         setCrList([]); // Clear the data list if an error occurs
@@ -128,9 +128,6 @@ const AllProducts = () => {
   };
 
 
-  useEffect(() => {
-    fetchData(); // Calling the function within useEffect, not inside itself
-  }, []); // Empty array dependency ensures this useEffect runs once on component mount
 
   const handleExportProductsTemplate = () => {
     if (data.length === 0) {
@@ -197,20 +194,13 @@ const AllProducts = () => {
 
   const handleRegenerate = async (row) => {
     try {
-      const response = await newRequest.post("/users/postGepirLicence", {
-        userId: row?.id,
+      const response = await newRequest.post("/products/checkGtinDataAndSendToGepir", {
+        "ids": [row.id]
       });
       console.log(response?.data);
       toast.success(response?.data?.message || "Licence Uploaded Successfully");
 
-      // response.data.updatedUser has updated record. Replace the record in the data array with the updated record
-      const updatedData = data.map(item => {
-        if (item.id === response.data.updatedUser.id) {
-          return response.data.updatedUser;
-        }
-        return item;
-      });
-      setData(updatedData);
+      fetchData(selectedCr);
 
     }
     catch (err) {
@@ -224,12 +214,11 @@ const AllProducts = () => {
   return (
     <div>
       <div
-        className={`p-0 h-full ${
-          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
-        }`}
+        className={`p-0 h-full ${i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+          }`}
       >
         <div>
-          <AdminDashboardRightHeader title={"All Products"} />
+          <AdminDashboardRightHeader title={t("All Products")} />
         </div>
 
         <div className="flex justify-center items-center">
@@ -316,7 +305,7 @@ const AllProducts = () => {
               <div style={{ marginLeft: "-11px", marginRight: "-11px" }}>
                 <DataTable
                   data={data}
-                  title={"All Products"}
+                  title={t("All Products")}
                   columnsName={AllProductsColumn(t)}
                   loading={isLoading}
                   secondaryColor="secondary"
@@ -326,6 +315,7 @@ const AllProducts = () => {
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
                     {
+<<<<<<< HEAD
                       label: "Edit",
                       icon: (
                         <EditIcon
@@ -338,6 +328,9 @@ const AllProducts = () => {
                     },
                     {
                       label: "Post to GEPIR",
+=======
+                      label: `${t('Post to GEPIR')}`,
+>>>>>>> f2fe4ab3df82e49ffaa9cb171c3c6f2a4e9a8b61
                       icon: (
                         <IosShareIcon
                           fontSize="small"
