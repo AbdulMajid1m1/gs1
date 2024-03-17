@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LanguageSwitcher from "../../../switer";
 import PersonIcon from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom'
+import { useQuery } from 'react-query'
 const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const [newRegisteredMembers, setNewRegisteredMembers] = useState([]);
@@ -123,49 +124,92 @@ const Dashboard = () => {
     }
   };
 
-  const getAllRegisteredMembers = async () => {
-    setAllRegisteredMembersLoader(true);
 
+  const { isLoading, error, data, refetch } = useQuery("fatchActiveUsers", async () => {
     try {
-      const adminData = JSON.parse(sessionStorage.getItem('adminData'));
-      const response = await newRequest.get("/users?status=active");
+        const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+        const response = await newRequest.get("/users?status=active");
 
-      const data = response.data.map((item) => {
-        const isSuperAdmin = adminData?.is_super_admin === 1;
-        const isAdminAssigned = item.assign_to === adminData?.id;
+        const modifiedData = response.data.map(item => {
+            const isSuperAdmin = adminData?.is_super_admin === 1;
+            const isAdminAssigned = item.assign_to === adminData?.id;
 
-        const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
-        const buttonClass = isButtonDisabled
-          ? 'text-gray-400 cursor-not-allowed'
-          : 'text-secondary hover:text-red-500 cursor-pointer';
+            const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
+            const buttonClass = isButtonDisabled
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-secondary hover:text-red-500 cursor-pointer';
 
-        return {
-          ...item,
-          profile: (
-            isButtonDisabled ? (
-              <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
-                <PersonIcon />
-              </span>
+            const profile = isButtonDisabled ? (
+                <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
+                    <PersonIcon />
+                </span>
             ) : (
-              <Link
-                className={buttonClass}
-                to={`/admin/registered-members/view-registered-member/${item.id}`}
-                style={{ width: '30px', height: '30px' }}
-              >
-                <PersonIcon />
-              </Link>
-            )
-          ),
-        };
-      });
+                <Link
+                    className={buttonClass}
+                    to={`/admin/registered-members/view-registered-member/${item.id}`}
+                    style={{ width: '30px', height: '30px' }}
+                >
+                    <PersonIcon />
+                </Link>
+            );
 
-      setAllRegisteredMembers(data);
-      setAllRegisteredMembersLoader(false);
+            return {
+                ...item,
+                profile
+            };
+        });
+
+        return modifiedData;
     } catch (error) {
-      console.error(error);
-      setAllRegisteredMembersLoader(false);
+        console.error(error);
+        throw new Error('Failed to fetch active users.');
     }
-  };
+});
+
+
+  // const getAllRegisteredMembers = async () => {
+  //   setAllRegisteredMembersLoader(true);
+
+  //   try {
+  //     const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+  //     const response = await newRequest.get("/users?status=active");
+
+  //     const data = response.data.map((item) => {
+  //       const isSuperAdmin = adminData?.is_super_admin === 1;
+  //       const isAdminAssigned = item.assign_to === adminData?.id;
+
+  //       const isButtonDisabled = !isSuperAdmin && !isAdminAssigned;
+  //       const buttonClass = isButtonDisabled
+  //         ? 'text-gray-400 cursor-not-allowed'
+  //         : 'text-secondary hover:text-red-500 cursor-pointer';
+
+  //       return {
+  //         ...item,
+  //         profile: (
+  //           isButtonDisabled ? (
+  //             <span className={buttonClass} style={{ width: '30px', height: '30px' }}>
+  //               <PersonIcon />
+  //             </span>
+  //           ) : (
+  //             <Link
+  //               className={buttonClass}
+  //               to={`/admin/registered-members/view-registered-member/${item.id}`}
+  //               style={{ width: '30px', height: '30px' }}
+  //             >
+  //               <PersonIcon />
+  //             </Link>
+  //           )
+  //         ),
+  //       };
+  //     });
+
+  //     setAllRegisteredMembers(data);
+  //     setAllRegisteredMembersLoader(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setAllRegisteredMembersLoader(false);
+  //   }
+  // };
 
   const getNewTransferOrder = async () => {
     setMemberRenevalLoader(true);
@@ -239,7 +283,7 @@ const Dashboard = () => {
     getAllCardsData();
     getAllNewlyRegisteredMembers();
     getAllPendingApprovals();
-    getAllRegisteredMembers();
+    // getAllRegisteredMembers();
     getNewTransferOrder();
   }, [])
   return (
@@ -341,7 +385,8 @@ const Dashboard = () => {
 
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
-                <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${allRegisteredMembers?.length > 0 ? `(${allRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" />
+                {/* <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${allRegisteredMembers?.length > 0 ? `(${allRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" /> */}
+                <DashboardTable data={data} loading={isLoading} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${allRegisteredMembers?.length > 0 ? `(${allRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}

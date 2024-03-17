@@ -191,9 +191,9 @@ const AllProducts = () => {
     }
   };
 
-  // const handleEdit = (row) => {
-  //   navigate("/admin/UpdateProducts/");
-  // };
+  const handleEdit = (row) => {
+    navigate("/admin/UpdateProducts/" + row?.id);
+  };
 
   const handleRegenerate = async (row) => {
     try {
@@ -325,6 +325,17 @@ const AllProducts = () => {
                   actionColumnVisibility={true}
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
+                    {
+                      label: "Edit",
+                      icon: (
+                        <EditIcon
+                          fontSize="small"
+                          color="action"
+                          style={{ color: "rgb(37 99 235)" }}
+                        />
+                      ),
+                      action: handleEdit,
+                    },
                     {
                       label: "Post to GEPIR",
                       icon: (

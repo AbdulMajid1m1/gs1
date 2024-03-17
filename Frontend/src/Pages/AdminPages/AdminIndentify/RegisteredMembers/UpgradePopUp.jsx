@@ -98,6 +98,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
 
         setGtinBarcodes(filteredOptions);
+
       }
       if (subType === 'ADD GTIN') {
         try {
@@ -136,7 +137,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
           // Set the filtered options in your state or use it directly
           setGtinBarcodes(filteredOptions);
-
+          
           // console.log(res.data);
           // console.log(firstApiTotalBarcodes);
           // console.log(res2.data);
@@ -313,7 +314,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
                         // Assuming you have appropriate fields for GLN
                         return `GLN: ${option?.total_no_of_gln || ""} - Price: ${option?.price}`;
                       } else {
-                        return `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yearly_fee: ${option?.yearly_fee} - Registration_Fee: ${option?.price}`;
+                        return `${option?.member_category_description} - Barcodes: ${option?.total_no_of_barcodes || ""} - Yearly_fee: ${option?.yearly_fee || ""} - Registration_Fee: ${option?.price || ""}`;
                       }
                     }}
 
