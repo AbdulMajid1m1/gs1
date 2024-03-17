@@ -112,7 +112,10 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         const formData = new FormData();
         formData.append("helpDeskID", updateBrandData?.id);
         formData.append("comment", Comments);
-        formData.append("document", selecteddocument);
+        // formData.append("document", selecteddocument);
+         if (selecteddocument) {
+           formData.append("document", selecteddocument);
+         }
         formData.append("commentByAdmin", "commentByAdmin");
         formData.append("commentByUser", "commentByUser");
         try {
