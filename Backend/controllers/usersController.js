@@ -1139,7 +1139,7 @@ export const getRegisteredMembers = async (req, res, next) => {
             include: {
                 assign_to_admin: true
             },
-            take: 20
+            // take: 20
 
         });
 
