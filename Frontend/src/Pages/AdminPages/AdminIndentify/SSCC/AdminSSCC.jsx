@@ -86,7 +86,8 @@ const AdminSSCC = () => {
         setAutocompleteLoading(true);
         setOpen(true);
   
-        const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+        // const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+          const res = await newRequest.get(`/users/searchOtherProudctUsers?keyword=${newInputValue}&productName=sscc`, {
           signal: abortControllerRef.current.signal
         });
         // console.log(res);
@@ -137,27 +138,6 @@ const AdminSSCC = () => {
       }
     };
   
-
-    // const fetchData = async () => {
-    //   try {
-    //       // /member/sscc/list
-    //     const response = await newRequest.get(`/sscc?user_id=${memberData?.id}`)
-    //     console.log(response.data);
-    //     setData(response?.data);
-
-    //     setFilteredData(response?.data)
-    //     setIsLoading(false)
-    //   } 
-    //   catch (err) {
-    //     console.log(err);
-    //     setIsLoading(false)
-    //   }
-    // };
-    
-    // useEffect(() => {
-    //   fetchData(); // Calling the function within useEffect, not inside itself
-    // }, []); // Empty array dependency ensures this useEffect runs once on component mount
-
 
     
     const handleEdit = (row) => {
