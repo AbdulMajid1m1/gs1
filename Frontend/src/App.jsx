@@ -145,7 +145,7 @@ import SelectBusinessType from "./Pages/MemberPages/MemberRegistration/SelectBus
 import CheckDigitCalculator from "./Pages/UserPages/CheckDigitCalculator/CheckDigitCalculator.jsx";
 import GEPIR from "./Pages/UserPages/GEPIR/GEPIR.jsx";
 import AllProducts from "./Pages/AdminPages/AdminShare/AllProducts/AllProducts.jsx";
-import UpdateallProducts from "./Pages/AdminPages/AdminShare/AllProducts/UpdateallProducts.jsx";
+import UpdateallProducts from "./Pages/AdminPages/AdminShare/AllProducts/UpdateAllProducts.jsx";
 
 const queryClient = new QueryClient()
 
@@ -421,7 +421,7 @@ const App = () => {
                                   <AllProducts />
                                 </ProtectedRoute>
                               } />
-                               <Route path="UpdateProducts" element={
+                               <Route path="UpdateProducts/:Id" element={
                                 <ProtectedRoute requiredPermission="UpdateallProducts">
                                   <UpdateallProducts />
                                 </ProtectedRoute>

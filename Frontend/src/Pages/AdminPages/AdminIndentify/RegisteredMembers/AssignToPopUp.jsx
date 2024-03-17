@@ -122,7 +122,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
                 selectedLanguage: selectedLanguage,
             });
 
-            // console.log(res?.data);
+            console.log(res?.data);
             toast.success(res?.data?.message || 'Assigned Successfully');
             setIsLoading(false);
             closePopUp();
@@ -130,7 +130,7 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
 
         } catch (err) {
             setIsLoading(false);
-            // console.log(err);
+            console.log(err);
             toast.error(err?.response?.data?.error || 'Error in data');
         }
     }
