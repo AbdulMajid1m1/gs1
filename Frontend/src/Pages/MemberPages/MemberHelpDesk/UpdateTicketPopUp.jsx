@@ -17,7 +17,7 @@ const UpdateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Description, setDescription] = useState(gs1MemberData?.description || '');
     // console.log(gs1MemberData)
     const [loading, setLoading] = useState(false);
-  const [selecteddocument, setSelecteddocument] = useState(imageLiveUrl(gs1MemberData?.document) || null);
+  const [selecteddocument, setSelecteddocument] = useState();
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelecteddocument(file);
