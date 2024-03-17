@@ -72,9 +72,8 @@ const AllProducts = () => {
         setAutocompleteLoading(true);
         setOpen(true);
 
-        const res = await newRequest.get(
-          `/users/search?keyword=${newInputValue}`,
-          {
+        // const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
+          const res = await newRequest.get(`/users/searchUsersWithGtinSubscriptions?keyword=${newInputValue}`, {
             signal: abortControllerRef.current.signal,
           }
         );
@@ -315,7 +314,6 @@ const AllProducts = () => {
                   handleRowClickInParent={handleRowClickInParent}
                   dropDownOptions={[
                     {
-<<<<<<< HEAD
                       label: "Edit",
                       icon: (
                         <EditIcon
@@ -328,9 +326,6 @@ const AllProducts = () => {
                     },
                     {
                       label: "Post to GEPIR",
-=======
-                      label: `${t('Post to GEPIR')}`,
->>>>>>> f2fe4ab3df82e49ffaa9cb171c3c6f2a4e9a8b61
                       icon: (
                         <IosShareIcon
                           fontSize="small"
