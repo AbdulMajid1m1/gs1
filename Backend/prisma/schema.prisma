@@ -847,6 +847,8 @@ model gtin_subcriptions {
   gtin_subscription_total_price Float         @default(0)
   isDeleted                     Boolean?      @default(false)
   gtin_product                  gtin_products @relation(fields: [pkg_id], references: [id], onDelete: Cascade)
+  // make optioanl realtion with user
+  user                          users?        @relation(fields: [user_id], references: [id], onDelete: SetNull)
 }
 
 model gtin_subscription_histories {
@@ -2155,6 +2157,7 @@ model users {
   foreign_gtins                         foreign_gtins[]
   products                              products[]
   other_products_subcriptions           other_products_subcriptions[]
+  gtin_subcriptions                     gtin_subcriptions[]
 
   @@index([assign_to], map: "users_assign_to_index")
   @@index([parent_memberID], map: "users_parent_memberID_index")

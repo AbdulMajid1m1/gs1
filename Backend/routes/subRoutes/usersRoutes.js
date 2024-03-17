@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSubUser, createUser, deleteUser, generateOtp, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getExpiredMembers, getLicenseRegisteryUser, getNewlyRegisteredUsers, getRegisteredMembers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithAssignTo, getUsersWithExpiringGcpThisYear, memberLogin, postLicenceController, searchOtherProductUsers, searchUsers, sendInvoiceToUser, setMemberCredentials, updateCartReceipt, updateUser, updateUserStatus, verifyOtp } from '../../controllers/usersController.js';
+import { createSubUser, createUser, deleteUser, generateOtp, getAdminStatsCounts, getCarts, getCartsDetails, getCrInfo, getExpiredMembers, getLicenseRegisteryUser, getNewlyRegisteredUsers, getRegisteredMembers, getRejectedUserDetails, getUserDetails, getUsersTempDetails, getUsersWithAssignTo, getUsersWithExpiringGcpThisYear, memberLogin, postLicenceController, searchOtherProductUsers, searchUsers, searchUsersWithGtinSubscriptions, sendInvoiceToUser, setMemberCredentials, updateCartReceipt, updateUser, updateUserStatus, verifyOtp } from '../../controllers/usersController.js';
 import { upload } from '../../configs/multerConfig.js';
 import { generateGTIN13 } from '../../utils/functions/barcodesGenerator.js';
 import { adminAuth, checkPermission, generalAuth, superAdminAuth } from '../../middlewares/auth.js';
@@ -36,6 +36,8 @@ userRouter.get('/getExpirtedMembers', adminAuth, checkPermission(["members"]), g
 userRouter.get('/search', generalAuth, checkPermission(["members"]), searchUsers);
 
 userRouter.get('/searchOtherProudctUsers', generalAuth, checkPermission(["members"]), searchOtherProductUsers);
+
+userRouter.get('/searchUsersWithGtinSubscriptions', generalAuth, checkPermission(["members"]), searchUsersWithGtinSubscriptions);
 
 userRouter.post('/subuser', generalAuth, createSubUser);
 
