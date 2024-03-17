@@ -35,7 +35,7 @@ export const createGtinSubscriptionHistory = async (data) => {
             data
         });
     } catch (error) {
-        // Handle the error gracefully
+      
         console.error('Error creating GTIN Subscription History:', error);
     }
 }
