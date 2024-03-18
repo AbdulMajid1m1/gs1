@@ -693,23 +693,23 @@ const GTINUpdateProducts = () => {
                         <form onSubmit={handleFormSubmit}>
                             <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                    <label htmlFor="fields1" className="text-secondary">{t('Product')} {t('Name[English]')}</label>
+                                    <label htmlFor="fields1"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Product')} {t('Name[English]')}</label>
                                     <input
                                         type="text"
                                         id="fields1"
                                         onChange={(e) => setProductNameEnglish(e.target.value)}
                                         value={productNameEnglish}
-                                        className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                        className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                         placeholder={`${t('Enter')} ${t('Product')} ${t('Name[English]')}`}
                                     />
                                 </div>
 
                                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                    <label htmlFor="fields2" className="text-secondary">{t('Product')} {t('Name[Arabic]')}</label>
+                                    <label htmlFor="fields2"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Product')} {t('Name[Arabic]')}</label>
                                     <input
                                         type="text"
                                         id="fields2"
-                                        className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                        className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                         value={productNameArabic}
                                         onChange={(e) => setProductNameArabic(e.target.value)}
                                         placeholder={`${t('Enter')} ${t('Product')} ${t('Name[Arabic]')}`}
@@ -722,7 +722,7 @@ const GTINUpdateProducts = () => {
                             <div className="">
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mb-3">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field1" className="text-secondary">{t('Brands')} {t('Name[English]')}  </label>
+                                        <label htmlFor="field1"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Brands')} {t('Name[English]')}  </label>
                                         <Autocomplete
                                             id="field1"
                                             options={brandNameEnglish}
@@ -763,7 +763,7 @@ const GTINUpdateProducts = () => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')} </label>
+                                        <label htmlFor="field2"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Brands')} {t('Name[Arabic]')} </label>
                                         <Autocomplete
                                             id="field2"
                                             options={brandNameArabic}
@@ -807,7 +807,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field3" className="text-secondary">{t('Unit Code')}</label>
+                                        <label htmlFor="field3"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Unit Code')}</label>
                                         <Autocomplete
                                             id="field3"
                                             options={unitCode}
@@ -850,13 +850,13 @@ const GTINUpdateProducts = () => {
 
                                     {/* <div className="form-row"> */}
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field4" className="text-secondary">{t('Size')}</label>
+                                        <label htmlFor="field4"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Size')}</label>
                                         <input
                                             type="text"
                                             id="field4"
                                             onChange={(e) => setSize(e.target.value)}
                                             value={size}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                             placeholder={`${t('Enter')} ${t('Size')}`}
                                         />
                                     </div>
@@ -866,7 +866,7 @@ const GTINUpdateProducts = () => {
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
 
-                                        <label htmlFor="field5" className="text-secondary"> {t('Region')}</label>
+                                        <label htmlFor="field5"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Region')}</label>
                                         <Autocomplete
                                             id="field5"
                                             options={region}
@@ -909,7 +909,7 @@ const GTINUpdateProducts = () => {
 
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field6" className="text-secondary">{t('Country of Sale')}</label>
+                                        <label htmlFor="field6"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Country of Sale')}</label>
                                         <Autocomplete
                                             id="field6"
                                             options={allCountryName}
@@ -953,7 +953,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field7" className="text-secondary">
+                                        <label htmlFor="field7"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                                             {t('Product Description Language')}
                                         </label>
                                         <Autocomplete
@@ -997,7 +997,7 @@ const GTINUpdateProducts = () => {
 
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field8" className="text-secondary">{t('Product Type')}</label>
+                                        <label htmlFor="field8"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Product Type')}</label>
                                         <Autocomplete
                                             id="field8"
                                             options={productType}
@@ -1042,7 +1042,7 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field9" className="text-secondary">{t('Package Type')}</label>
+                                        <label htmlFor="field9"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Package Type')}</label>
                                         <Autocomplete
                                             id="field9"
                                             options={packageType}
@@ -1084,7 +1084,7 @@ const GTINUpdateProducts = () => {
 
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field10" className="text-secondary">GPC</label>
+                                        <label htmlFor="field10"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>GPC</label>
                                         <Autocomplete
                                             id="field10"
                                             required
@@ -1152,13 +1152,13 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="sm:w-[48%] w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field11" className="text-secondary">{t('HS-Code')}</label>
+                                        <label htmlFor="field11"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('HS-Code')}</label>
                                         {/* <input
                                 type="text"
                                 id="field11"
                                 onChange={(e) => setHsCode(e.target.value)}
                                 value={hsCode}
-                                className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                 placeholder="HS-Code"
                                 /> */}
                                         <Autocomplete
@@ -1233,27 +1233,27 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field12" className="text-secondary">{t('Description')} {t('[English]')}  </label>
+                                        <label htmlFor="field12"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Description')} {t('[English]')}  </label>
                                         <textarea
                                             type="text"
                                             onChange={handleDescriptionChange}
                                             value={descriptionEnglish}
                                             // onChange={(e) => setDescriptionEnglish(e.target.value)}
                                             // value={descriptionEnglish}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                             id="field12"
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field13" className="text-secondary">{t('Description')} {t('[Arabic]')} </label>
+                                        <label htmlFor="field13"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Description')} {t('[Arabic]')} </label>
                                         <textarea
                                             type="text"
                                             onChange={handleDescriptionArabicChange}
                                             value={descriptionArabic}
                                             // onChange={(e) => setDescriptionArabic(e.target.value)}
                                             // value={descriptionArabic}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                             id="field13"
                                         />
                                     </div>
@@ -1261,13 +1261,13 @@ const GTINUpdateProducts = () => {
 
                                 <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                                     <div className="w-full sm:w-[49%] font-body sm:text-base text-sm flex flex-col gap-0">
-                                        <label htmlFor="field14" className="text-secondary">{t('Product URL')}</label>
+                                        <label htmlFor="field14"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Product URL')}</label>
                                         <input
                                             type="text"
                                             id="field14"
                                             onChange={(e) => setProductUrl(e.target.value)}
                                             value={productUrl}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                             placeholder={`${t('Product URL')}`}
                                         />
                                     </div>

@@ -62,7 +62,7 @@ const Viewmemberhelpdesk = ({ isVisible, setVisibility, refreshBrandData }) => {
             <div className="popup-form w-full max-h-screen overflow-y-auto">
               <div className="w-full">
                 <div className="flex justify-between">
-                  <h2 className="text-secondary font-sans font-semibold text-2xl">
+                  <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>
                     {t("Ticket Details")}
                   </h2>
                   <p className="text-secondary font-sans font-semibold ">
