@@ -234,7 +234,7 @@ const MemberActivityReport = () => {
 
                     <div className='sm:flex p-4 gap-2 w-full'>
                       <div className="flex flex-col w-full">
-                  <label className="font-body text-sm"> {t('Members')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Members')}</label>
                         {/* <select
                           type="text"
                           className="border border-gray-300 p-2 rounded-lg"
@@ -310,7 +310,7 @@ const MemberActivityReport = () => {
 
                       </div>
                       <div className="flex flex-col w-full">
-                          <label className="font-body text-sm">{t('Start Date')}</label>
+                          <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Start Date')}</label>
                           <input
                               onChange={(e) => setStartDate(e.target.value)}
                               value={startDate}
@@ -319,7 +319,7 @@ const MemberActivityReport = () => {
                           />
                       </div>
                       <div className="flex flex-col w-full">
-                          <label className="font-body text-sm">{t('End Date')}</label>
+                          <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('End Date')}</label>
                           <input
                               onChange={(e) => setEndDate(e.target.value)}
                               value={endDate}

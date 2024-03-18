@@ -91,26 +91,26 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
             
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field1" className="text-secondary">  {t('Category Description English')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Category Description English')}</label>
                     <input
                       type="text"
                       id="field1"
                       value={memberCategoryDescriptionE}
                         onChange={(e) => setMemberCategoryDescriptionE(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Category Description English')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field1" className="text-secondary">  {t('Category Description Arabic')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Category Description Arabic')}</label>
                     <input
                       type="text"
                       id="field1"
                       value={memberCategoryDescriptionAr}
                         onChange={(e) => setMemberCategoryDescriptionAr(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Category Description Arabic')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
@@ -118,52 +118,52 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
                  
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field2" className="text-secondary">  {t('Total No Of Barcodes')}</label>
+                    <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Total No Of Barcodes')}</label>
                     <input
                       type="number"
                       id="field2"
                       value={total_no_of_barcodes}
                         onChange={(e) => settotal_no_of_barcodes(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Total No Of Barcodes')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field3" className="text-secondary">  {t('Member Registration Fee')}</label>
+                    <label htmlFor="field3" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Member Registration Fee')}</label>
                     <input
                       type="number"
                       id="field3"
                       value={memberRegistrationFee}
                         onChange={(e) => setMemberRegistrationFee(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Member Registration Fee')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
 
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field4" className="text-secondary">  {t('GTIN Yearly Subscription Fee')}</label>
+                    <label htmlFor="field4" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('GTIN Yearly Subscription Fee')}</label>
                     <input
                       type="number"
                       id="field4"
                       value={gtinYearlySubscriptionFee}
                         onChange={(e) => setGtinYearlySubscription(e.target.value)}
                         placeholder={`${t('Enter')} ${t('GTIN Yearly Subscription Fee')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field9" className="text-secondary">  {t('Allow Other Products')}</label>
+                    <label htmlFor="field9" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Allow Other Products')}</label>
                     <input
                       type="text"
                       id="field9"
                       value={allowOtherProducts}
                         onChange={(e) => setAllowOtherProducts(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Allow Other Products')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
@@ -172,37 +172,37 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
 
                 <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field5" className="text-secondary">  {t('Type')}</label>
+                    <label htmlFor="field5" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Type')}</label>
                     <input
                       type="text"
                       id="field5"
                       value={type}
                         onChange={(e) => setType(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Type')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                   <label htmlFor="field6" className="text-secondary">  {t('Gcp Start Range')}</label>
+                   <label htmlFor="field6" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Gcp Start Range')}</label>
                     <input
                       type="text"
                       id="field6"
                       value={gcpStartRange}
                         onChange={(e) => setGcpStartRange(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Gcp Start Range')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                  </div>
 
                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field7" className="text-secondary">{t('Status')}</label>
+                    <label htmlFor="field7" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Status')}</label>
                     <select
                       type="text"
                       id="field7"
                       value={status}
                       onChange={(e) => setstatus(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                         <option value="">-{t('Status')}-</option>
                         <option value="1">{t('Active')}</option>
@@ -221,38 +221,38 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
 
                 <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                      <label htmlFor="field8" className="text-secondary">  {t('Quotation')}</label>
+                      <label htmlFor="field8" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Quotation')}</label>
                     <input
                       type="text"
                       id="field8"
                       value={quotation}
                         onChange={(e) => setQuotation(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Quotation')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field10" className="text-secondary">  {t('Gcp Type')}</label>
+                    <label htmlFor="field10" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Gcp Type')}</label>
                     <input
                       type="text"
                       id="field10"
                       value={gcpType}
                         onChange={(e) => setGcpType(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Gcp Type')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field11" className="text-secondary">  {t('Gcp Order')}</label>
+                    <label htmlFor="field11" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Gcp Order')}</label>
                     <input
                       type="text"
                       id="field11"
                       value={gcpOrder}
                         onChange={(e) => setGcpOrder(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Gcp Order')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>
@@ -260,26 +260,26 @@ const UpdateProductsCategory = ({ isVisible, setVisibility, refreshProductsCateg
 
                 <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field12" className="text-secondary">  {t('Med Subscription Fee')}</label>
+                    <label htmlFor="field12" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Med Subscription Fee')}</label>
                     <input
                       type="text"
                       id="field12"
                       value={med_subscription_fee}
                         onChange={(e) => setmed_subscription_fee(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Med Subscription Fee')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                      <label htmlFor="field13" className="text-secondary">  {t('Member Yearly Subscription Fee')}</label>
+                      <label htmlFor="field13" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Member Yearly Subscription Fee')}</label>
                     <input
                       type="text"
                       id="field13"
                       value={memberYearlySubscriptionFee}
                         onChange={(e) => setMemberYearlySubscriptionFee(e.target.value)}
                         placeholder={`${t('Enter')} ${t('Member Yearly Subscription Fee')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>
