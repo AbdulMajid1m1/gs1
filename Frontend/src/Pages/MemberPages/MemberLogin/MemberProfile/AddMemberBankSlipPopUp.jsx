@@ -21,7 +21,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
   const [uploadDocument, setUploadDocument] = useState("");
   const [error, setError] = useState('');
   const memberDataString = sessionStorage.getItem('memberData');
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const memberData = JSON.parse(memberDataString);
   // console.log(memberData);
   const [loading, setLoading] = useState(false);
@@ -190,16 +190,16 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Member Bank Slip')} </h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Member Bank Slip')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   {/* <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">Select Documents</label> */}
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>Select Documents</label> */}
                   {/* <select
                                    type="text"
                                    id="field1"
                                    value={selectDocument}
                                    onChange={(e) => setSelectDocument(e.target.value)}
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                   className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                  >
                                       <option value="1">Document 1</option>
                                       <option value="2">Document 2</option>
@@ -247,13 +247,13 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                   {/* </div> */}
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">{t('Transaction Id')}  </label>
+                    <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Transaction Id')}  </label>
                     {/* <select
                                    type="text"
                                    id="field2"
                                     onChange={(e) => setTransactionId(e.target.value)}
                                    placeholder="Transaction Id"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                   className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                   >
                                       <option value="">Select Transaction Id</option>
                                       {transactionId?.map((item, index) => (
@@ -286,7 +286,7 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                             style: { color: "white" },
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder="Select Transaction Id"
+                          placeholder={t("Select Transaction Id")}
                         // required
                         />
                       )}
@@ -302,12 +302,12 @@ const AddMemberBankSlipPopUp = ({ isVisible, setVisibility, refreshBrandData, fe
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field3" className="text-secondary">{t('Upload Documents')}</label>
+                    <label htmlFor="field3" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Upload Documents')}</label>
                     <input
                       type="file"
                       id="field3"
                       onChange={handleFileChange}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                     {error && <p className="text-red-500">{error}</p>}
                   </div>

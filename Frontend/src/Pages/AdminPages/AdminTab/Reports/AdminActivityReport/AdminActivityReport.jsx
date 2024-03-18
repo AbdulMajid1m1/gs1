@@ -390,7 +390,7 @@ const AdminActivityReport = () => {
 
               <div className='sm:flex p-4 gap-2 w-full'>
                 <div className="flex flex-col w-full mt-2 sm:mt-0">
-                  <label className="font-body text-sm">{t('Start Date')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Start Date')}</label>
                   <input
                     onChange={(e) => setStartDateChart(e.target.value)}
                     value={startDateChart}
@@ -399,7 +399,7 @@ const AdminActivityReport = () => {
                   />
                 </div>
                 <div className="flex flex-col w-full mt-2 sm:mt-0">
-                  <label className="font-body text-sm">{t('End Date')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('End Date')}</label>
                   <input
                     onChange={(e) => setEndDateChart(e.target.value)}
                     value={endDateChart}
@@ -432,7 +432,7 @@ const AdminActivityReport = () => {
 
               <div className='sm:flex p-4 gap-2 w-full'>
                 <div className="flex flex-col w-full">
-                  <label className="font-body text-sm">{t('Admins')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Admins')}</label>
 
                   <Autocomplete
                     id="companyName"
@@ -501,7 +501,7 @@ const AdminActivityReport = () => {
 
                 </div>
                 <div className="flex flex-col w-full mt-2 sm:mt-0">
-                  <label className="font-body text-sm">{t('Start Date')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Start Date')}</label>
                   <input
                     onChange={(e) => setStartDate(e.target.value)}
                     value={startDate}
@@ -510,7 +510,7 @@ const AdminActivityReport = () => {
                   />
                 </div>
                 <div className="flex flex-col w-full mt-2 sm:mt-0">
-                  <label className="font-body text-sm">{t('End Date')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('End Date')}</label>
                   <input
                     onChange={(e) => setEndDate(e.target.value)}
                     value={endDate}

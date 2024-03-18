@@ -344,7 +344,7 @@ const AdminAddSSCC = () => {
                 <div>
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                      <label htmlFor='vendorid'> {t('VendorID')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='vendorid' > {t('VendorID')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setVendorID(e.target.value)}
                         id='vendorid'

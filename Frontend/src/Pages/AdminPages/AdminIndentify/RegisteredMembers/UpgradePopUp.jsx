@@ -21,7 +21,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
   const [selectedGtinBarcodes, setSelectedGtinBarcodes] = useState("");
   const [compareGtinBarcodes, setCompareGtinBarcodes] = React.useState([]);
   const [newSubscriptionDetails, setNewSubscriptionDetails] = useState([]);
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const handleCloseUpgradePopup = () => {
     setVisibility(false);
   };
@@ -300,9 +300,9 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{subType}  {t('Subscription')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{subType}  {t('Subscription')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                  <label htmlFor="field1" className="text-secondary"> {t('Select new subscription')}</label>
+                  <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Select new subscription')}</label>
                   <Autocomplete
                     id="field1"
                     options={gtinBarcodes}

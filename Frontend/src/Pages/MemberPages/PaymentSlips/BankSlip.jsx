@@ -194,7 +194,7 @@ const BankSlip = () => {
 
                             <form onSubmit={handleSubmit}>
                                 <div className="w-full font-sans sm:text-base text-sm flex flex-col gap-2 px-4">
-                                    <label htmlFor="translate">
+                                    <label htmlFor="translate" className={`${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                                         {t('Transaction ID')}<span className="text-red-600"> {t('(TransactionID is Invoice#)')} </span>
                                     </label>
                                     {/* <input
@@ -232,7 +232,7 @@ const BankSlip = () => {
                                                     style: { color: "white" },
                                                 }}
                                                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                                                placeholder="-select-"
+                                                placeholder={t("select")}
                                             // required
                                             />
                                         )}
@@ -251,8 +251,8 @@ const BankSlip = () => {
 
 
                                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-10 px-4">
-                                    <div className="w-full font-body sm:text-base text-sm text-secondary">
-                                        <label htmlFor="upload">
+                                    <div className={`w-full font-body sm:text-base text-sm text-secondary ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
+                                        <label htmlFor="upload" >
                                             {t('Upload Document')}<span className="text-red-600">*</span>
                                         </label>
                                         <input
@@ -267,7 +267,8 @@ const BankSlip = () => {
                                         {error && <p className="text-red-600">{error}</p>}
                                     </div>
 
-                                    <div className="w-full font-sans text-secondary sm:text-base text-sm">
+                                    <div
+                                    className={`w-full font-sans text-secondary sm:text-base text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                                         <label htmlFor="desc">
                                             {t('Description [Optional]')}
                                         </label>
@@ -276,7 +277,7 @@ const BankSlip = () => {
                                             type="text"
                                             placeholder={`${t('Enter')} ${t('Description')}`}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            className="border-1 w-full rounded-sm p-2 mb-3"
+                                             className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                         />
                                     </div>
                                 </div>
