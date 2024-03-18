@@ -97,6 +97,7 @@ const MemmberRegisteration = () => {
       const response = await newRequest.get('/productTypes');
       // only get name and id from the response
       const data = response.data;
+      console.log('aaaaaa',data);
       const industryTypes = data.map((industryType) => ({
         id: industryType.id,
         name: industryType.name,
@@ -699,8 +700,9 @@ const MemmberRegisteration = () => {
           <div className="h-5 w-full bg-primary rounded-t-md"></div>
           <div className="h-auto w-full flex justify-between items-center px-5 py-2">
             <p
-              className={`sm:text-2xl w-full font-semibold text-sm text-secondary ${i18n.language === "ar" ? "text-end" : "text-start"
-                }`}
+              className={`sm:text-2xl w-full font-semibold text-sm text-secondary ${
+                i18n.language === "ar" ? "text-end" : "text-start"
+              }`}
             >
               {" "}
               {t("Member Registration")}{" "}
@@ -708,10 +710,14 @@ const MemmberRegisteration = () => {
             {/* <p className='w-full text-right font-semibold text-sm text-secondary'>{selectedCr?.activity} - {selectedCr?.cr}</p> */}
           </div>
 
-          <p className='text-red-500 text-lg font-body font-medium ml-3 pt-3'>
+          <p
+            className={`text-red-500 text-lg font-body font-medium ml-3 pt-3 ${
+              i18n.language === "ar" ? "text-end" : "text-start"
+            }`}
+          >
             {selectedBusinessType?.value === "organization"
-              ? "** Provide Your company Certificate of Registration **"
-              : "** Provide Your Business License **"}
+              ? `** ${t("Provide Your company Certificate of Registration")} **`
+              : `** ${t("Provide Your Business License")} **`}
           </p>
         </div>
 
@@ -719,7 +725,9 @@ const MemmberRegisteration = () => {
           <form onSubmit={handleSubmit}>
             {/* <div className="w-full font-body sm:text-base text-sm flex flex-col">
               <label
-                className="text-secondary font-semibold"
+                className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                 htmlFor="entityType"
               >
                 {t("Business Type")}
@@ -753,7 +761,9 @@ const MemmberRegisteration = () => {
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                 <label
                   htmlFor="field1"
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                 >
                   {selectedBusinessType?.value === "organization"
                     ? t("Cr Number")
@@ -772,7 +782,9 @@ const MemmberRegisteration = () => {
                   }
                   onFocus={handleInputFocusCrNumber}
                   onBlur={handleInputBlurCrNumber}
-                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                  className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${
+                    i18n.language === "ar" ? "text-right" : "text-start"
+                  }`}
                 />
                 {error && <p className="text-red-500 text-xs">{error}</p>}
               </div>
@@ -780,7 +792,9 @@ const MemmberRegisteration = () => {
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                 <label
                   htmlFor="field2"
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                 >
                   {selectedBusinessType?.value === "organization"
                     ? t("Cr Activity")
@@ -799,7 +813,9 @@ const MemmberRegisteration = () => {
                   }
                   onFocus={handleInputFocusCrActivity}
                   onBlur={handleInputBlurCrActivity}
-                  className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                  className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${
+                    i18n.language === "ar" ? "text-right" : "text-start"
+                  }`}
                 />
               </div>
             </div>
@@ -807,7 +823,9 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
               <div className="w-full sm:w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="email"
                 >
                   {" "}
@@ -820,13 +838,17 @@ const MemmberRegisteration = () => {
                   placeholder={`${t("Enter")} ${t("Email")}`}
                   required
                   type="text"
-                  className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  className={`border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3 ${
+                    i18n.language === "ar" ? "text-right" : "text-start"
+                  }`}
                 />
               </div>
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="contactperson"
                 >
                   {" "}
@@ -839,7 +861,9 @@ const MemmberRegisteration = () => {
                   placeholder={`${t("Enter")} ${t("Contact Person")}`}
                   required
                   type="text"
-                  className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  className={`border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3 ${
+                    i18n.language === "ar" ? "text-right" : "text-start"
+                  }`}
                 />
               </div>
             </div>
@@ -847,7 +871,9 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="companyEnglish"
                 >
                   {t("Company Name [English]")}
@@ -861,13 +887,17 @@ const MemmberRegisteration = () => {
                   onFocus={handleInputFocus}
                   onBlur={handleInputBlur}
                   type="text"
-                  className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  className={`border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3 ${
+                    i18n.language === "ar" ? "text-right" : "text-start"
+                  }`}
                 />
               </div>
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="companyArabic"
                 >
                   {" "}
@@ -890,7 +920,9 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="mobile"
                 >
                   {" "}
@@ -934,7 +966,7 @@ const MemmberRegisteration = () => {
                       borderRadius: "0px",
                       border: "none",
                     }}
-                  // required
+                    // required
                   />
                 </div>
                 {companyLandlineError && (
@@ -944,7 +976,9 @@ const MemmberRegisteration = () => {
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="mobile"
                 >
                   {" "}
@@ -986,7 +1020,9 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-3">
               <div className="w-full font-body sm:text-base text-sm flex flex-col">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="country"
                 >
                   {" "}
@@ -1013,6 +1049,7 @@ const MemmberRegisteration = () => {
                       InputProps={{
                         ...params.InputProps,
                         className: "text-white",
+                        dir: i18n.language === "ar" ? "rtl" : "ltr",
                       }}
                       InputLabelProps={{
                         ...params.InputLabelProps,
@@ -1020,7 +1057,7 @@ const MemmberRegisteration = () => {
                       }}
                       className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                       placeholder={`${t("Enter")} ${t("Country")}`}
-                    // required
+                      // required
                     />
                   )}
                   classes={{
@@ -1036,7 +1073,9 @@ const MemmberRegisteration = () => {
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="state"
                 >
                   {" "}
@@ -1063,6 +1102,7 @@ const MemmberRegisteration = () => {
                       InputProps={{
                         ...params.InputProps,
                         className: "text-white",
+                        dir: i18n.language === "ar" ? "rtl" : "ltr",
                       }}
                       InputLabelProps={{
                         ...params.InputLabelProps,
@@ -1070,7 +1110,7 @@ const MemmberRegisteration = () => {
                       }}
                       className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                       placeholder={`${t("Enter")} ${t("State")}`}
-                    // required
+                      // required
                     />
                   )}
                   classes={{
@@ -1088,7 +1128,9 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
               <div className="w-full font-body sm:text-base text-sm flex flex-col">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="city"
                 >
                   {" "}
@@ -1115,14 +1157,18 @@ const MemmberRegisteration = () => {
                       InputProps={{
                         ...params.InputProps,
                         className: "text-white",
+                        dir: i18n.language === "ar" ? "rtl" : "ltr",
                       }}
                       InputLabelProps={{
                         ...params.InputLabelProps,
-                        style: { color: "white" },
+                        style: {
+                          color: "white",
+                          textAlign: i18n.language === "ar" ? "end" : "left",
+                        },
                       }}
                       className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                       placeholder={`${t("Enter")} ${t("City")}`}
-                    // required
+                      // required
                     />
                   )}
                   classes={{
@@ -1138,7 +1184,9 @@ const MemmberRegisteration = () => {
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="zipcode"
                 >
                   {" "}
@@ -1150,7 +1198,9 @@ const MemmberRegisteration = () => {
                   placeholder={`${t("Enter")} ${t("Zip Code")}`}
                   // required
                   type="text"
-                  className="border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3"
+                  className={`border-1 border-[#8E9CAB] w-full rounded-sm p-2 mb-3 ${
+                    i18n.language === "ar" ? "text-right" : "text-start"
+                  }`}
                 />
               </div>
             </div>
@@ -1167,7 +1217,9 @@ const MemmberRegisteration = () => {
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="industriesTypes"
                 >
                   {" "}
@@ -1187,8 +1239,12 @@ const MemmberRegisteration = () => {
                       autoComplete="off"
                       {...params}
                       label={`${t("Select matching industries")}`}
-                      placeholder="select industries types"
+                      placeholder={`${t("select industries types")}`}
                       variant="outlined"
+                      InputProps={{
+                        ...params.InputProps,
+                        dir: i18n.language === "ar" ? "rtl" : "ltr", // Set direction based on language
+                      }}
                     />
                   )}
                   required
@@ -1197,7 +1253,9 @@ const MemmberRegisteration = () => {
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col mt-0">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="category"
                 >
                   {" "}
@@ -1208,7 +1266,9 @@ const MemmberRegisteration = () => {
                   id="category"
                   options={categories}
                   // disable option selection if entity type is Individual/Family Business
-                  disabled={selectedBusinessType.value === "individual/family business"}
+                  disabled={
+                    selectedBusinessType.value === "individual/family business"
+                  }
                   value={selectedCategories}
                   required
                   getOptionLabel={(option) => option.namesa || ""}
@@ -1226,6 +1286,7 @@ const MemmberRegisteration = () => {
                       InputProps={{
                         ...params.InputProps,
                         className: "text-white",
+                        dir: i18n.language === "ar" ? "rtl" : "ltr",
                       }}
                       InputLabelProps={{
                         ...params.InputLabelProps,
@@ -1250,7 +1311,9 @@ const MemmberRegisteration = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-start mt-6">
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-3">
                 <label
-                  className="flex justify-start items-center text-secondary font-semibold -mt-5"
+                  className={`flex items-center text-secondary font-semibold -mt-5 ${
+                    i18n.language === "ar" ? "justify-end" : "justify-start"
+                  }`}
                   htmlFor="GTIN"
                 >
                   GTIN {t("Barcode")}
@@ -1262,15 +1325,18 @@ const MemmberRegisteration = () => {
                   id="GTIN"
                   disabled={!selectedCategories}
                   options={
-                    selectedCategories && selectedBusinessType.value === "individual/family business"
+                    selectedCategories &&
+                    selectedBusinessType.value === "individual/family business"
                       ? gtinNumber.filter(
-                        (option) => option?.member_category_description === "Category B - ( 100 Barcodes )"
-                      )
+                          (option) =>
+                            option?.member_category_description ===
+                            "Category B - ( 100 Barcodes )"
+                        )
                       : selectedCategories
-                        ? gtinNumber.filter(
+                      ? gtinNumber.filter(
                           (option) => option?.total_no_of_barcodes !== 10
                         )
-                        : []
+                      : []
                   }
                   value={selectedGtinNumber}
                   getOptionLabel={(option) => {
@@ -1293,6 +1359,7 @@ const MemmberRegisteration = () => {
                       InputProps={{
                         ...params.InputProps,
                         className: "text-white",
+                        dir: i18n.language === "ar" ? "rtl" : "ltr",
                       }}
                       InputLabelProps={{
                         ...params.InputLabelProps,
@@ -1316,7 +1383,9 @@ const MemmberRegisteration = () => {
 
               <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-1">
                 <label
-                  className="text-secondary font-semibold"
+                  className={`text-secondary font-semibold ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
                   htmlFor="other"
                 >
                   {" "}
@@ -1360,8 +1429,9 @@ const MemmberRegisteration = () => {
             </div>
 
             <div
-              className={`mt-2 ${i18n.language === "ar" ? "text-right" : "text-start"
-                }`}
+              className={`mt-2 ${
+                i18n.language === "ar" ? "text-right" : "text-start"
+              }`}
             >
               {i18n.language === "ar" ? (
                 <>
@@ -1420,7 +1490,11 @@ const MemmberRegisteration = () => {
               )}
             </div>
 
-            <div>
+            <div
+              className={` ${
+                i18n.language === "ar" ? "text-end" : "text-start"
+              }`}
+            >
               <div className="mt-6">
                 <label className="text-secondary text-3xl font-sans font-bold">
                   {" "}
@@ -1474,9 +1548,19 @@ const MemmberRegisteration = () => {
             </div>
 
             {/* add one radio button */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:justify-start mt-6">
+            <div
+              className={`flex flex-col gap-3  mt-6 ${
+                i18n.language === "ar"
+                  ? "sm:flex-row sm:justify-end"
+                  : "sm:flex-row sm:justify-start"
+              }`}
+            >
               <div className="w-full sm:w-[18%] font-body sm:text-base text-sm flex flex-col gap-1">
-                <div className="flex items-center gap-3">
+                <div
+                  className={`flex items-center gap-3 ${
+                    i18n.language === "ar" ? "row-reverse" : "row"
+                  }`}
+                >
                   <input
                     // onChange={(e) => setLocationArabic(e.target.value)}
                     id="radio"
@@ -1485,7 +1569,11 @@ const MemmberRegisteration = () => {
                     type="radio"
                     className="border-1 border-[#8E9CAB] w-5 h-5 rounded-sm p-2 mb-3"
                   />
-                  <p className="text-secondary font-semibold">
+                  <p
+                    className={`text-secondary font-semibold ${
+                      i18n.language === "ar" ? "text-end" : "text-start"
+                    }`}
+                  >
                     {t("Bank Transfer")}
                   </p>
                 </div>
@@ -1494,7 +1582,9 @@ const MemmberRegisteration = () => {
 
             <button
               type="submit"
-              className="sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200"
+              className={`sm:w-[30%] w-full rounded bg-primary hover:bg-secondary font-sans px-8 py-3 text-sm mb-0 mt-6 text-white transition duration-200 ${
+                i18n.language === "ar" ? "float-right" : "float-left"
+              }`}
             >
               <i className="fas fa-check-circle mr-1"></i> {t("Submit")}
             </button>
