@@ -24,7 +24,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
   // const number = gs1ProductData.split("-")[0];
   // console.log(number);
 
-  // console.log(gs1ProductData);
+  console.log(gs1ProductData);
   const toggleOpen = () => {
     setOpen(!open);
   };
@@ -103,7 +103,6 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
       .post('https://gs1ksa.org/api/GROUTE/gpc/search', {
         // "gpc": number
         "gpc": gs1ProductData
-        // TODO: convert harcoded value to dynamic value
       })
       .then((response) => {
         // console.log(response.data);
@@ -128,7 +127,7 @@ const AdminCodificationTab = ({ gs1ProductData }) => {
           })
           .catch((err) => {
             // console.log(err);
-            toast.error(err?.response?.data?.message ?? "something went wrong with the second API call!");
+            toast.error(err?.response?.data?.message ?? "something went wrong!");
             setIsLoading(false);
 
           });

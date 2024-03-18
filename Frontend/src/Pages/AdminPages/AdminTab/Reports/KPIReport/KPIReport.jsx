@@ -362,7 +362,7 @@ const KPIReport = () => {
                       type='button'
                       onClick={handleSearchTimeAndDate}
                       className="rounded-full bg-primary font-body px-5 py-2 text-sm mb-1 text-white transition duration-200 hover:bg-secondary">
-                      {t('Search')}
+                      {t('Apply')}
                     </button>
                   </div>
                 </div>
