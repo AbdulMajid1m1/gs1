@@ -97,6 +97,9 @@ const RegisteredMembers = () => {
         try {
           const isDeleted = await newRequest.delete("/users/" + row?.id);
           if (isDeleted) {
+
+            await refetch();
+          
             toast.success(`${t('User')} ${t('has been deleted')} ${t('successfully')}!`, {
               position: "top-right",
               autoClose: 2000,
@@ -107,11 +110,10 @@ const RegisteredMembers = () => {
               progress: undefined,
               theme: "light",
             });
-
-
+            
             // filter out the deleted user from the data
-            const filteredData = data.filter((item) => item?.id !== row?.id);
-            setData(filteredData);
+            // const filteredData = data.filter((item) => item?.id !== row?.id);
+            // setData(filteredData);
             // setGridData(filteredData);
 
           } else {
