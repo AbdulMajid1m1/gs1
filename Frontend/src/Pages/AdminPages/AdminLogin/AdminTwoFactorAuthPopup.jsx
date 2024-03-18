@@ -116,12 +116,12 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
                             <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
                                 <i className="fab fa-android ml-1"></i>  for andriod
                             </button>
-                            <p className='text-sm text-center text-red-600 font-medium'>Install GS1 Authenticator</p>
+                            <p className='text-sm text-center text-red-600 font-medium'>{t("Install GS1 Authenticator")}</p>
                         </div>
 
                         <div>
                             <div className="text-center mt-4 mb-2">
-                                <p className="text-lg sm:text-xl text-secondary font-medium">Tap the Number from your GS1 Authenticator App</p>
+                                <p className="text-lg sm:text-xl text-secondary font-medium">{t("Tap the Number from your GS1 Authenticator App")}</p>
                             </div>
                             <div className="flex justify-center items-center h-14 w-14 bg-orange-400 rounded-full m-auto">
                                 <h2 className="text-white text-4xl">{randomNumber}</h2>
@@ -137,7 +137,7 @@ const TwoFactorAuthPopupForAdmin = ({ isVisible, toggleVisibility, adminData }) 
                             <button className="rounded-full bg-secondary font-body px-4 py-1 text-xs text-white transition duration-200 hover:bg-primary">
                                 <i className="fab fa-apple ml-1"></i> for IOS
                             </button>
-                            <p className='text-sm text-center text-red-600 font-medium'>Install GS1 Authenticator</p>
+                            <p className='text-sm text-center text-red-600 font-medium'>{t("Install GS1 Authenticator")}</p>
                         </div>
 
                         <input type="number"

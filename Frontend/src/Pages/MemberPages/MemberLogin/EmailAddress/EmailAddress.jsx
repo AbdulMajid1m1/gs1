@@ -45,64 +45,87 @@ const EmailAddress = () => {
 
   return (
     <div>
-        {isLoading &&
-
-            <div className='loading-spinner-background'
-                style={{
-                    zIndex: 9999, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed'
-
-
-                }}
-            >
-                <DotLoader
-                    size={45}
-                    color={"#FF693A"}
-                    // height={4}
-                    loading={isLoading}
-                />
-            </div>
-            }
-        <div className='sticky top-0 z-50 bg-white'>
-             <Header />
+      {isLoading && (
+        <div
+          className="loading-spinner-background"
+          style={{
+            zIndex: 9999,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "fixed",
+          }}
+        >
+          <DotLoader
+            size={45}
+            color={"#FF693A"}
+            // height={4}
+            loading={isLoading}
+          />
         </div>
+      )}
+      <div className="sticky top-0 z-50 bg-white">
+        <Header />
+      </div>
 
-        <div>
-            <DropDownSelection />
-        </div>
+      <div>
+        <DropDownSelection />
+      </div>
 
-        <div className='flex justify-center items-center mt-5 mb-10'>
-            <div className='sm:h-[460px] h-72 w-[85%] border-l border-r border-b border-primary rounded-md shadow-xl'>
-                <div className='h-5 w-full bg-primary rounded-t-md'></div>
+      <div className="flex justify-center items-center mt-5 mb-10">
+        <div className="sm:h-[460px] h-72 w-[85%] border-l border-r border-b border-primary rounded-md shadow-xl">
+          <div className="h-5 w-full bg-primary rounded-t-md"></div>
 
-                {/* show this in center */}
-                <div className='flex justify-center items-center h-[80%]'>
-                    <div className='w-full sm:w-[40%] sm:px-0 px-4'>
-                        <form onSubmit={handleSubmit}>
-                              <label className='sm:text-2xl text-secondary text-lg font-sans font-bold' htmlFor='email'>{t('Email Address')}<span className='text-red-500'>*</span></label>
-                        <div className='flex flex-col gap-3'>
-                                <input 
-                                    id='email'
-                                    type='email' 
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className='w-full sm:h-12 h-10 border border-[#8E9CAB] rounded-sm p-3 sm:text-lg text-sm font-sans font-normal mt-2'
-                                    placeholder={`${t('Enter')} ${t('Email Address')}`}
-                                    required
-                                />
-                                <button 
-                                      type='submit' className='bg-secondary text-white font-medium w-full sm:h-12 h-10 sm:text-base text-sm rounded-sm mt-5 hover:bg-primary'> {t('Login Now')}</button>
-                            </div>
-                        </form>
-                    </div>
+          {/* show this in center */}
+          <div className="flex justify-center items-center h-[80%]">
+            <div className="w-full sm:w-[40%] sm:px-0 px-4">
+              <form
+                onSubmit={handleSubmit}
+                className={` ${ i18n.language === "ar" ? "text-right" : "text-start"
+                }`}
+              >
+                <label
+                  className="sm:text-2xl text-secondary text-lg font-sans font-bold"
+                  htmlFor="email"
+                >
+                  {t("Email Address")}
+                  <span className="text-red-500">*</span>
+                </label>
+                <div className="flex flex-col gap-3">
+                  <input
+                    id="email"
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={`w-full sm:h-12 h-10 border border-[#8E9CAB] rounded-sm p-3 sm:text-lg text-sm font-sans font-normal mt-2 ${
+                      i18n.language === "ar" ? "text-right" : "text-start"
+                    }`}
+                    placeholder={`${t("Enter")} ${t("Email Address")}`}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="bg-secondary text-white font-medium w-full sm:h-12 h-10 sm:text-base text-sm rounded-sm mt-5 hover:bg-primary"
+                  >
+                    {" "}
+                    {t("Login Now")}
+                  </button>
                 </div>
-
+              </form>
             </div>
+          </div>
         </div>
+      </div>
 
-        {/* Footer */}
-            <Footer />
+      {/* Footer */}
+      <Footer />
     </div>
-  )
+  );
 }
 
 export default EmailAddress

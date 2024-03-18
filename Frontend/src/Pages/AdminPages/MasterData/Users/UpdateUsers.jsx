@@ -165,7 +165,7 @@ const UpdateUsers = () => {
             {/* <form> */}
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">{t('Email')}</label>
+                  <label htmlFor="fields1" className={`text-secondary font-semibold  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Email')}</label>
                   <input
                     type="email"
                     id="fields1"
@@ -173,13 +173,13 @@ const UpdateUsers = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                       placeholder={`${t('Email')}`}
                   />
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold"> {t('User Name')}</label>
+                  <label htmlFor="fields1" className={`text-secondary font-semibold  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('User Name')}</label>
                   <input
                     type="text"
                     id="fields1"
@@ -187,7 +187,7 @@ const UpdateUsers = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                    placeholder={`${t('User Name')}`}
                   />
                 </div>
@@ -196,7 +196,7 @@ const UpdateUsers = () => {
 
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">{t('Password')}</label>
+                  <label htmlFor="fields1" className={`text-secondary font-semibold  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Password')}</label>
                   <input
                     type="password"
                     id="fields1"
@@ -204,13 +204,13 @@ const UpdateUsers = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     // required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     placeholder={`${t('Password')}`}
                   />
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">{t('Mobile')}</label>
+                  <label htmlFor="fields1" className={`text-secondary font-semibold  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Mobile')}</label>
                   <input
                     type="text"
                     id="fields1"
@@ -218,7 +218,7 @@ const UpdateUsers = () => {
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
                     required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                    placeholder={`${t('Mobile')}`}
                   />
                 </div>
@@ -227,14 +227,14 @@ const UpdateUsers = () => {
 
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">{t('Is Super')}</label>
+                  <label htmlFor="fields1" className={`text-secondary font-semibold  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Is Super')}</label>
                   <select
                     id="fields1"
                     name='is_super_admin'
                     value={isSuper}
                     onChange={(e) => setIsSuper(e.target.value)}
                     required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                   >
                     <option value="">-{t('select')}-</option>
                     <option value="true">Super Admin</option>
@@ -244,7 +244,7 @@ const UpdateUsers = () => {
 
 
                 <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                  <label className='text-secondary font-semibold' htmlFor='SelectRoles'> {t('Select Roles')}</label>
+                  <label className={`text-secondary font-semibold  ${i18n.language === "ar" ? "text-end" : "text-start" }`} htmlFor='SelectRoles'> {t('Select Roles')}</label>
                   <Autocomplete
 
                     multiple

@@ -73,50 +73,59 @@ const Addcountry = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Country')} </h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}>{t('Add')} {t('Country')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Country name')} {t('Name[English]')} </label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Country name')} {t('Name[English]')} </label>
                     <input
                       type="text"
                       id="name_en"
                       value={name_en}
                       onChange={(e) => setname_en(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Country name')} ${t('Name[English]')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Country name')} {t('Name[Arabic]')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Country name')} {t('Name[Arabic]')}</label>
                     <input
                       type="text"
                       id="name_ar"
                       value={name_ar}
                       onChange={(e) => setname_ar(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Country name')} ${t('Name[Arabic]')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary"> {t('Country Code')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}> {t('Country Code')}</label>
                     <input
                       type="text"
                       id="country_code"
                       value={country_code}
                       onChange={(e) => setcountry_code(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Country Code')} `}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Country short name')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Country short name')}</label>
                     <input
                       type="text"
                       id="country_shortName"
                       value={country_shortName}
                       onChange={(e) => setcountry_shortName(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Country short name')} `}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
 

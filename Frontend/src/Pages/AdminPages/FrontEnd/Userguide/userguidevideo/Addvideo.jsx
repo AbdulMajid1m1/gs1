@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 const Addvideo = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Title, setTitle] = useState("");
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -86,32 +86,37 @@ const Addvideo = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Video File')}</h2>
+                                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                                    }`}>{t('Add')} {t('Video File')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Title')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Title')} `}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
-                                        <label htmlFor="Image" className="text-secondary">
-                                            {t('Upload File Only video')} 
+                                        <label htmlFor="Image" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
+                                            {t('Upload File Only video')}
                                         </label>
                                         <input
                                             id="file-Video"
                                             type="file"
                                             accept="video/*"
                                             onChange={handleFileChange}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
 
                                         />
 

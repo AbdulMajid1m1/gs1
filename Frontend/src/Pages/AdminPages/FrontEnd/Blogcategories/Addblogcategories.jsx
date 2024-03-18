@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const Addblogcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [name, setname] = useState("");
     const [slug, setslug] = useState("");
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const handleCloseCreatePopup = () => {
         setVisibility(false);
@@ -60,29 +60,34 @@ const Addblogcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Blog Categories')}</h2>
+                                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                                    }`}>{t('Add')} {t('Blog Categories')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Category')}{t('Name')} </label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Category')}{t('Name')} </label>
                                         <input
                                             type="text"
                                             id="name"
                                             value={name}
                                             onChange={(e) => setname(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Category')} ${t('Name')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Category')} {t('Slug')} </label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Category')} {t('Slug')} </label>
                                         <input
                                             type="text"
                                             id="slug"
                                             value={slug}
                                             onChange={(e) => setslug(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Category')} ${t('Slug')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
                                 </div>
