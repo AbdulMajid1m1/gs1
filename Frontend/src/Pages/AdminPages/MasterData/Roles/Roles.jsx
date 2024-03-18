@@ -132,7 +132,7 @@ useEffect(() => {
     
                     }, 
                     {
-                      label: 'Delete',
+                      label:`${t('Delete')}`,
                     icon: (
                       <DeleteIcon
                         fontSize="small"

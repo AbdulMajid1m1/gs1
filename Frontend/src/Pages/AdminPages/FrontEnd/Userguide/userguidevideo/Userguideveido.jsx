@@ -21,7 +21,7 @@ const Userguideveido = () => {
     const [data, setData] = useState([]);
     const [isCreatePopupVisible, setCreatePopupVisibility] = useState(false);
     const [brandsData, setBrandsData] = useState([]);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const handleShowCreatePopup = () => {
         setCreatePopupVisibility(true);
     };

@@ -3,22 +3,18 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
-{
+const AddState = ({ isVisible, setVisibility, refreshBrandData }) => {
   const [name, setName] = useState("");
   const [name_ar, setname_ar] = useState("");
   const [docuements, setDocuments] = React.useState([])
   const [selectedDocuments, setSelectedDocuments] = useState("");
   const [SelectedCountryId, setSelectedCountryId] = useState("");
-  const handleCloseCreatePopup = () =>
-  {
+  const handleCloseCreatePopup = () => {
     setVisibility(false);
   };
   const { t, i18n } = useTranslation();
-  useEffect(() =>
-  {
-    const getDocuments = async () =>
-    {
+  useEffect(() => {
+    const getDocuments = async () => {
       try {
         const response = await newRequest.get('/address/getAllCountriesName');
         // console.log(response.data);
@@ -33,14 +29,12 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
     getDocuments();
 
   }, []);
-  const handleSelectedDocuments = (event, value) =>
-  {
+  const handleSelectedDocuments = (event, value) => {
     // console.log(value?.id);
     setSelectedCountryId(value?.id)
     setSelectedDocuments(value);
   };
-  const handleAddCompany = async () =>
-  {
+  const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
       const response = await newRequest.post("/address/createStates/", {
@@ -93,35 +87,68 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
         <div className="popup-overlay">
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
-              <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('State')} </h2>
+              <form className="w-full">
+                <h2
+                  className={`text-secondary font-sans font-semibold text-2xl ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
+                >
+                  {t("Add")} {t("State")}{" "}
+                </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('State')} {t('Name [English]')}</label>
+                    <label
+                      htmlFor="field1"
+                      className={`text-secondary  ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
+                    >
+                      {t("State")} {t("Name [English]")}
+                    </label>
                     <input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder={`${t('Enter')} ${t('Name [English]')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      placeholder={`${t("Enter")} ${t("Name [English]")}`}
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
                     />
                   </div>
 
-                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('State')} {t('Name Arabic')}</label>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label
+                      htmlFor="field1"
+                      className={`text-secondary  ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
+                    >
+                      {t("State")} {t("Name Arabic")}
+                    </label>
                     <input
                       type="text"
                       id="name"
                       value={name_ar}
                       onChange={(e) => setname_ar(e.target.value)}
-                      placeholder={`${t('Enter')} ${t('State')} ${t('Name Arabic')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      placeholder={`${t("Enter")} ${t("State")} ${t(
+                        "Name Arabic"
+                      )}`}
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Select Country')}</label>
+                    <label
+                      htmlFor="field1"
+                      className={`text-secondary  ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
+                    >
+                      {t("Select Country")}
+                    </label>
 
                     <Autocomplete
                       id="field1"
@@ -129,8 +156,7 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
                       value={selectedDocuments}
                       getOptionLabel={(option) => option?.name_en || ""}
                       onChange={handleSelectedDocuments}
-                      onInputChange={(event, value) =>
-                      {
+                      onInputChange={(event, value) => {
                         if (!value) {
                           // perform operation when input is cleared
                           // console.log("Input cleared");
@@ -143,14 +169,15 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
                           InputProps={{
                             ...params.InputProps,
                             className: "text-white",
+                            dir: i18n.language === "ar" ? "rtl" : "ltr",
                           }}
                           InputLabelProps={{
                             ...params.InputLabelProps,
                             style: { color: "white" },
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder={`${t('Select Country')}`}
-                        // required
+                          placeholder={`${t("Select Country")}`}
+                          // required
                         />
                       )}
                       classes={{
@@ -171,14 +198,14 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseCreatePopup}
                   >
-                     {t('Close')}
+                    {t("Close")}
                   </button>
                   <button
                     type="button"
                     onClick={handleAddCompany}
                     className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                   >
-                    {t('Add')} {t('State')}
+                    {t("Add")} {t("State")}
                   </button>
                 </div>
               </form>
@@ -186,9 +213,8 @@ const AddState = ({ isVisible, setVisibility, refreshBrandData }) =>
           </div>
         </div>
       )}
-
     </div>
-  )
+  );
 }
 
 export default AddState

@@ -15,7 +15,7 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
   const [SMTPUsername, setSMTPUsername] = useState(updateBrandData?.smtp_username || '');
   const [SMTPPort, setSMTPPort] = useState(updateBrandData?.smtp_port || "");
 
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   useEffect(() => {
     const getDocuments = async () => {
       try {
@@ -85,12 +85,12 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full max-h-screen overflow-y-auto">
               <form className="w-full">
-                <h2 className="text-secondary font-sans font-semibold text-2xl">
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>
                   {t("Edit")} {t("Email Configure")}
                 </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("Email Sent From")}
                     </label>
                     <input
@@ -99,19 +99,19 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={EmailSentFrom}
                       onChange={(e) => setEmailSentFrom(e.target.value)}
                       placeholder={`${t("Enter")} ${t("Email Sent From")}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="status" className="text-secondary">
+                    <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("Email Method")}
                     </label>
                     <select
                       id="status"
                       value={EmailMethod}
                       onChange={(e) => setEmailMethod(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                       <option value="PHP">{t("PHP Mail")}</option>
                       <option value="SMTP">{t("SMTP Mail")}</option>
@@ -119,7 +119,7 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("SMTP HOST")}
                     </label>
                     <input
@@ -128,12 +128,12 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={SMTPHOST}
                       onChange={(e) => setSMTPHOST(e.target.value)}
                       placeholder={`${t("Enter")} ${t("SMTP HOST")}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="SMTPUsername" className="text-secondary">
+                    <label htmlFor="SMTPUsername" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("SMTP Username")}
                     </label>
                     <input
@@ -142,12 +142,12 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={SMTPUsername}
                       onChange={(e) => setSMTPUsername(e.target.value)}
                       placeholder={`${t("Enter")} ${t("SMTP Username")}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("SMTP Password")}
                     </label>
                     <input
@@ -156,12 +156,12 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={SMTPpassword}
                       onChange={(e) => setSMTPpassword(e.target.value)}
                       placeholder={`${t("Enter")} ${t("SMTP Password")}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="SMTPPort" className="text-secondary">
+                    <label htmlFor="SMTPPort" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("SMTP Port")}
                     </label>
                     <input
@@ -170,19 +170,19 @@ const Updataemailsetting = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={SMTPPort}
                       onChange={(e) => setSMTPPort(e.target.value)}
                       placeholder={`${t("Enter")} ${t("SMTP Port")}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="status" className="text-secondary">
+                    <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("SMTP Encryption")}
                     </label>
                     <select
                       id="status"
                       value={SMTPEncryption}
                       onChange={(e) => setSMTPEncryption(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                       <option value="TSL">TSL</option>
                       <option value="SSL">SSL</option>

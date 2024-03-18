@@ -4,20 +4,17 @@ import newRequest from '../../../../utils/userRequest';
 import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "../../../../i18n";
 import LanguageSwitcher from "../../../../switer";
-const AdddcpType = ({ isVisible, setVisibility, refreshBrandData }) =>
-{
+const AdddcpType = ({ isVisible, setVisibility, refreshBrandData }) => {
   const { t, i18n } = useTranslation();
   const [gcp_code, setgcp_code] = useState("");
   const [gcp_description, setgcp_description] = useState("");
 
-  const handleCloseCreatePopup = () =>
-  {
+  const handleCloseCreatePopup = () => {
     setVisibility(false);
   };
 
 
-  const handleAddCompany = async () =>
-  {
+  const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
       const response = await newRequest.post('/creategpctype', {
@@ -70,29 +67,34 @@ const AdddcpType = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add GCP Type')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}>{t('Add GCP Type')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('GCP Code')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('GCP Code')}</label>
                     <input
                       type="text"
                       id="gcp_code"
                       value={gcp_code}
                       onChange={(e) => setgcp_code(e.target.value)}
                       placeholder={t('Enter gcp_code')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('gcp description')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('gcp description')}</label>
                     <input
                       type="text"
                       id="gcp_description"
                       value={gcp_description}
                       onChange={(e) => setgcp_description(e.target.value)}
                       placeholder={t('Enter gcp description')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
                 </div>
@@ -110,7 +112,7 @@ const AdddcpType = ({ isVisible, setVisibility, refreshBrandData }) =>
                     onClick={handleAddCompany}
                     className="px-5 py-2 rounded-sm w-[70%] bg-secondary text-white font-body text-sm ml-2"
                   >
-                    {t('Add gcp')}  
+                    {t('Add gcp')}
                   </button>
                 </div>
               </form>

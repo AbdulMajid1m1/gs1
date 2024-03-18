@@ -15,7 +15,7 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Title, setTitle] = useState("");
     const [MetaDescription, setMetaDescription] = useState('')
 
-    const { t } = useTranslation();
+    const { t,i18n } = useTranslation();
     useEffect(() => {
         const getDocuments = async () => {
             try {
@@ -102,41 +102,48 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full max-h-screen overflow-y-auto">
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Mega Menu')} {t('Categories')}</h2>
+                                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                                    }`}>{t('Add')} {t('Mega Menu')} {t('Categories')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Categories')} {t('Name[English]')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Categories')} {t('Name[English]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_en"
                                             value={category_name_en}
                                             onChange={(e) => setcategory_name_en(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Categories')}${t('Name[English]')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Categories')} {t('Name[Arabic]')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Categories')} {t('Name[Arabic]')}</label>
                                         <input
                                             type="text"
                                             id="category_name_ar"
                                             value={category_name_ar}
                                             onChange={(e) => setcategory_name_ar(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Categories')}${t('Name[Arabic]')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Add')} {t('Menu')} {t('Categories')}
                                         </label>
                                         <select
                                             id="status"
                                             value={MegaMenuCategories}
                                             onChange={(e) => setMegaMenuCategories(e.target.value)}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         >
                                             <option value="0">-- {t('Select')}  --</option>
                                             {
@@ -151,14 +158,16 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                          {t('Select Category Level')}
                                         </label>
                                         <select
                                             id="status"
                                             value={Categorylevel}
                                             onChange={(e) => setCategorylevel(e.target.value)}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         >
                                             <option value="Category Level">Category Level</option>
                                             <option value="Main Category">Main Category</option>
@@ -166,14 +175,16 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                           {t('Set Page')} 
                                         </label>
                                         <select
                                             id="status"
                                             value={Page}
                                             onChange={(e) => setPage(e.target.value)}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         >
                                             <option value="0">-- {t('Select')} --</option>
                                             {
@@ -187,7 +198,8 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Description')}
                                         </label>
                                         <textarea
@@ -196,26 +208,30 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Description')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
 
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Meta')}  {t('Title')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Meta')}  {t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Meta')}${t('Title')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Meta')}  {t('Description')}
                                         </label>
                                         <textarea
@@ -224,7 +240,8 @@ const Addcategories = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             value={MetaDescription}
                                             onChange={(e) => setMetaDescription(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Meta')}${t('Description')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
 
                                     </div>
