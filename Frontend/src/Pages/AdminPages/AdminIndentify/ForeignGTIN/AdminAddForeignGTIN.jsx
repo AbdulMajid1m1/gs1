@@ -87,17 +87,17 @@ const AdminAddForeignGTIN = () => {
     setAddProductsLoader(true);
     try {
       const response = await newRequest.post('/foreignGtin', {
-        BrandName: data?.brandName,
-        productnameenglish: data?.productName,
-        moName: data?.moName,
-        barcode: data?.gtin,
+        BrandName: data?.brandName || data?.globalGepirArr?.brandName,
+        productnameenglish: data?.productName || data?.globalGepirArr?.productName,
+        moName: data?.moName || data?.globalGepirArr?.moName,
+        barcode: data?.gtin || data?.globalGepirArr?.gtin,
         // details_page: data?.details_page,
-        unit: data?.unitCode,
+        unit: data?.unitCode || data?.globalGepirArr?.unitCode,
         // front_image: data?.front_image,
-        gpc: data?.gcpGLNID,
-        gpc_code: data?.gpcCategoryCode,
+        gpc: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID,
+        gpc_code: data?.gpcCategoryCode || data?.globalGepirArr?.gpcCategoryCode,
         // size: data?.size,
-        countrySale: data?.countryOfSaleCode,
+        countrySale: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode,
         companyId: SelectedData?.companyID,
       });
       // console.log(response?.data);
