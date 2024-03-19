@@ -22,7 +22,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
   newExpiryDate.setFullYear(newExpiryDate.getFullYear() + 1);
   const formattedExpiryDate = expiryDate.toLocaleDateString();
   const formattedNewExpiryDate = newExpiryDate.toLocaleDateString();
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   //   const [status, setStatus] = useState("");
   //   const [rejected, setRejected] = useState("");
@@ -92,7 +92,7 @@ const RenewPopUp = ({ isVisible, setVisibility,
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Renew Invoice')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Renew Invoice')}</h2>
                 {/* <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
