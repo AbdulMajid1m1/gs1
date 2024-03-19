@@ -9,10 +9,10 @@ import { useTranslation } from 'react-i18next';
 import newRequest from '../../../utils/userRequest';
 
 const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
-  const { t } = useTranslation();
+  const { t ,i18n} = useTranslation();
   const [title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
-  const [selecteddocument, setSelecteddocument] = useState(null);
+  const [selecteddocument, setSelecteddocument] = useState();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -34,7 +34,10 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", Description);
-    formData.append("document", selecteddocument);
+    // formData.append("document", selecteddocument);
+    if (selecteddocument) {
+      formData.append("document", selecteddocument);
+    }
     formData.append("email", emailget);
     formData.append("user_id", useriddata);
     // formData.append("assignedTo", "");
@@ -87,12 +90,12 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className="w-full">
-                <h2 className="text-secondary font-sans font-semibold text-2xl">
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>
                   {t("Create Ticket")}
                 </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-1">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("Title")}
                       <span className="text-red-600"> *</span>
                     </label>
@@ -102,12 +105,12 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder={`${t("Enter")} ${t("Title")}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 -mt-3">
-                    <label htmlFor="field2" className="text-secondary">
+                    <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("Description")}
                       <span className="text-red-600"> *</span>{" "}
                     </label>
@@ -117,14 +120,14 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                       value={Description}
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder={`${t("Enter")}${t("Description")}`}
-                      className="border-1 w-full h-28 rounded-sm border-[#8E9CAB] p-2 mb-3"
+                     className={`border-1 w-full rounded-sm h-28 border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:gap-3 gap-3">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field3" className="text-secondary">
+                    <label htmlFor="field3" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t("Documents/Screenshot")}
                       <span className="text-red-600"> *</span>
                     </label>
@@ -135,7 +138,7 @@ const CreateTicketPopUp = ({ isVisible, setVisibility, refreshBrandData }) => {
                       //  onChange={(e) => setTitle(e.target.value)}
                       //  placeholder="Enter Title"
                       onChange={handleFileChange}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>

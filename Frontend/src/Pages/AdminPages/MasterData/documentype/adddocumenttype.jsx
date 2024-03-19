@@ -3,20 +3,17 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../../utils/userRequest';
 import { useTranslation } from 'react-i18next';
 
-const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
-{
+const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) => {
   const { t, i18n } = useTranslation();
   const [file_name, setfile_name] = useState("");
   const [status, setstatus] = useState("");
 
-  const handleCloseCreatePopup = () =>
-  {
+  const handleCloseCreatePopup = () => {
     setVisibility(false);
   };
 
 
-  const handleAddCompany = async () =>
-  {
+  const handleAddCompany = async () => {
     //  integrate the post api in try catch blcck
     try {
       const response = await newRequest.post('/createdocumentType/', {
@@ -69,17 +66,20 @@ const Adddocumenttype = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('document Type')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}>{t('Add')} {t('document Type')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Document name')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Document name')}</label>
                     <input
                       type="text"
                       id="file_name"
                       value={file_name}
                       onChange={(e) => setfile_name(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Document name')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
 

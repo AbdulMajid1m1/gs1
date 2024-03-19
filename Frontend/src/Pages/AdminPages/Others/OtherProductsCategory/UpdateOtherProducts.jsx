@@ -93,12 +93,12 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleUpdateBrand} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update')}{t('Other Products Category')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{t('Update')}{t('Other Products Category')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('product name')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('product name')}</label>
                     <input
                       type="text"
                       id="product_name"
@@ -106,12 +106,12 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setproduct_name(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter product name')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('total no of barcodes')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('total no of barcodes')}</label>
                     <input
                       type="number"
                       id="total_no_of_barcodes"
@@ -119,14 +119,14 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => settotal_no_of_barcodes(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter total no of barcodes')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
 
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('product subscription fee')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('product subscription fee')}</label>
                     <input
                       type="number"
                       id="product_subscription_fee"
@@ -134,12 +134,12 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setproduct_subscription_fee(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter product subscription fee')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('code')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('code')}</label>
                     <input
                       type="text"
                       id="code"
@@ -147,14 +147,14 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setcode(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter code')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
 
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('med subscription fee')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('med subscription fee')}</label>
                     <input
                       type="number"
                       id="med_subscription_fee"
@@ -162,11 +162,11 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setmed_subscription_fee(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter med subscription fee')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('variant')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('variant')}</label>
                     <input
                       type="text"
                       id="variant"
@@ -174,21 +174,21 @@ const UpdateOtherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setvariant(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter variant')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
 
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="status" className="text-secondary">
+                    <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t('Status')} 
                     </label>
                     <select
                       id="status"
                       value={status}
                       onChange={(e) => setstatus(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                       <option value="0">{t('inactive')}</option>
                       <option value="1">{t('active')}</option>

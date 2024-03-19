@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Page, setPage] = useState('')
     const [Pagedropdown, setPagedropdown] = useState([])
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     useEffect(() => {
         const getpagedata = async () => {
             try {
@@ -88,11 +88,13 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('GS1 Partners')}</h2>
+                                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                                    }`}>{t('Add')} {t('GS1 Partners')}</h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="page" className="text-secondary">
+                                        <label htmlFor="page" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Link')}
                                         </label>
                                         <input
@@ -101,14 +103,16 @@ const Addgs1partners = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             value={Page}
                                             onChange={(e) => setPage(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Link')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                       
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
-                                        <label htmlFor="Image" className="text-secondary">
+                                        <label htmlFor="Image" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Image')}
                                         </label>
                                         <div className="imgesection">

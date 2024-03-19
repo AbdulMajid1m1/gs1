@@ -7,20 +7,17 @@ import './AddCrNumber.css'
 import newRequest from '../../../../utils/userRequest';
 import { useTranslation } from 'react-i18next';
 
-const Addcrnumber = ({ isVisible, setVisibility }) =>
-{
+const Addcrnumber = ({ isVisible, setVisibility }) => {
   const [addCrNumber, setAddCrNumber] = useState("");
   const [crActivity, setCrActivity] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { t, i18n } = useTranslation();
-  const handleCloseCreatePopup = () =>
-  {
+  const handleCloseCreatePopup = () => {
     setVisibility(false);
   };
 
-  const handleInputChange = (e) =>
-  {
+  const handleInputChange = (e) => {
     const inputValue = e.target.value;
     if (inputValue.length > 10) {
       setError("Cr Number should be 10 digits");
@@ -32,8 +29,7 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
 
 
   //
-  const handleSubmit = async (e) =>
-  {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // show the error meesage if the cr number is not 10 digits
     if (addCrNumber.length !== 10) {
@@ -95,10 +91,12 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full' onSubmit={handleSubmit}>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Add')} {t('Cr Number')} </h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}> {t('Add')} {t('Cr Number')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-1">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Cr Number')}<span className='text-red-600'> *</span></label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Cr Number')}<span className='text-red-600'> *</span></label>
                     <input
                       type="number"
                       id="field1"
@@ -106,20 +104,23 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
                       onChange={handleInputChange}
                       //    onChange={(e) => setAddCrNumber(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Cr Number')} `}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                     {error && <p className="text-red-500 text-xs">{error}</p>}
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">{t('Cr Activity')}<span className='text-red-600'> *</span></label>
+                    <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Cr Activity')}<span className='text-red-600'> *</span></label>
                     <input
                       type="text"
                       id="field2"
                       //  value={addCrNumber}
                       onChange={(e) => setCrActivity(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Cr Activity')} `}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                   </div>
                 </div>
@@ -132,7 +133,7 @@ const Addcrnumber = ({ isVisible, setVisibility }) =>
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseCreatePopup}
                   >
-                     {t('Close')}
+                    {t('Close')}
                   </Button>
                   <Button
                     type='submit'

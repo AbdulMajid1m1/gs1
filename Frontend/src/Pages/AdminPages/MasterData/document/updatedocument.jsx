@@ -83,10 +83,10 @@ const Updatedocument = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Update Document')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{t('Update Document')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Document name')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Document name')}</label>
                     <input
                       type="text"
                       id="name"
@@ -94,19 +94,19 @@ const Updatedocument = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setname(e.target.value)}
                       //   readOnly
                       placeholder={t('Enter document Name')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="status" className="text-secondary">
+                    <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
                       {t('Status')} 
                     </label>
                     <select
                       id="status"
                       value={status}
                       onChange={(e) => setstatus(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                       <option value="0">{t('inactive')}</option>
                       <option value="1">{t('active')}</option>
