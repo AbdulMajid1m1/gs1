@@ -109,6 +109,7 @@ const KPIReport = () => {
           company_name_eng: item?.user?.company_name_eng,
           productName: item?.productName,
           created_at: item?.created_at,
+          approved_date: item?.approved_date,
         };
       });
 
