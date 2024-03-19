@@ -55,11 +55,13 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
       const res = await newRequest.get(
         `/gtinProducts/subcriptionsProducts?&user_id=${gs1RegesteredMembersData?.id}&isDeleted=false`
       );
+
+
       // console.log(res.data);
       let data = res.data;
-
+      data.gtinSubscriptions[0].price = 0;
       setMemberInvoiceData(data);
-
+      console.log(data);
       let total = 0;
       res.data?.gtinSubscriptions.forEach((item) => {
         total +=
@@ -157,7 +159,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
                             <tr key={index}>
                               <td>{item?.gtin_product?.member_category_description}</td>
                               <td>{item?.price}</td>
-                              <td>{gs1RegesteredMembersData?.no_of_years > 0 ? item?.gtin_subscription_total_price: 0}</td>
+                              <td>{item?.gtin_subscription_total_price}</td>
                               {/* <td>{expiryDate}</td> */}
                               <td>{item?.gtin_subscription_total_price + item?.price}</td>
                             </tr>
@@ -171,7 +173,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
                             <tr key={"other_products" + index}>
                               <td>{item?.product?.product_name}</td>
                               <td>{item?.price}</td>
-                              <td>{gs1RegesteredMembersData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
+                              <td>{item?.other_products_subscription_total_price}</td>
                               {/* <td>{expiryDate}</td> */}
                               <td>{item?.other_products_subscription_total_price + item?.price}</td>
                             </tr>
