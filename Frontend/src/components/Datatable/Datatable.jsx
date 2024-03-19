@@ -529,12 +529,12 @@ const DataTable = ({
           xtraSmallHeightTableScreens.includes(uniqueId)
             ? { height: "350px" }
             : smallHeightTableScreens.includes(uniqueId)
-            ? { height: "450px" }
-            : mediumHeightTableScreens.includes(uniqueId)
-              ? { height: "600px" }
-              : largeHeightTableScreens.includes(uniqueId)
-                ? { height: "700px" }
-                : { height: "500px" }
+              ? { height: "450px" }
+              : mediumHeightTableScreens.includes(uniqueId)
+                ? { height: "600px" }
+                : largeHeightTableScreens.includes(uniqueId)
+                  ? { height: "700px" }
+                  : { height: "500px" }
 
         }
       >
@@ -548,7 +548,7 @@ const DataTable = ({
                   type="text"
                   placeholder={`${t('SEARCH MEMBERS')}`}
                   name="SHIPMENTID"
-                  className="searchInput w-[75%]"
+                  className={` searchInput w-[75%] ${i18n.language === "ar" ? "text-end" : "text-start"}`}
                   onChange={handleGlobalSearch}
                 />
               </span>
@@ -561,7 +561,7 @@ const DataTable = ({
                   type="text"
                   placeholder={`${t('SEARCH BY SHIPMENT ID')}`}
                   name="SHIPMENTID"
-                  className="searchInput"
+                   className={` searchInput ${i18n.language === "ar" ? "text-end" : "text-start"}`}
                   onChange={handleSearch}
                 />
               </span>
@@ -573,7 +573,7 @@ const DataTable = ({
                   type="text"
                   name="CONTAINERID"
                   placeholder={`${t('SEARCH BY CONTAINER ID')}`}
-                  className="searchInput"
+                 className={` searchInput ${i18n.language === "ar" ? "text-end" : "text-start"}`}
                   onChange={handleSearch}
                 />
               </span>

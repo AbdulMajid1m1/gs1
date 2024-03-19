@@ -166,8 +166,8 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
                                 </button>
                             </div>
                             <form className='w-full'>
-                                <div>
-                                    <label className="font-body text-sm text-secondary"> {t('GS1 Staff')} <span className='text-red-500'>*</span></label>
+                                <div  className={` ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
+                                    <label className={`font-body text-sm text-secondary ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('GS1 Staff')} <span className='text-red-500'>*</span></label>
                                     <Autocomplete
                                         id="companyName"
                                         required
@@ -234,11 +234,12 @@ const AssignToPopUp = ({ isVisible, setVisibility, assignUser, fetchData }) => {
                                     />
                                 </div>
 
-                                <div className='mt-6'>
-                                    <label className="font-body text-sm text-secondary"> {t('Note')}</label>
+                                <div className={`mt-6 ${i18n.language === "ar" ? "text-end" : "text-start" }`}>
+                                    <label
+                                    className={`font-body text-sm text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Note')}</label>
                                     <textarea
                                         onChange={(e) => setOptionalMessage(e.target.value)}
-                                        className="w-full h-20 mt-1 border border-gray-300 rounded outline-none px-3 py-2"
+                                          className={`w-full h-20 mt-1 border border-gray-300 rounded outline-none px-3 py-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                         placeholder={`${t('Enter your message here...')}`}
                                     // required
                                     ></textarea>
