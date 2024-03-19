@@ -10,7 +10,7 @@ import fs from 'fs/promises';
 import QRCode from 'qrcode';
 import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import fsSync from 'fs';
-import { createMemberLogs } from '../utils/functions/historyLogs.js';
+import { createGtinSubscriptionHistory, createMemberLogs, createOtherProductsSubscriptionHistory } from '../utils/functions/historyLogs.js';
 import { sendEmail } from '../services/emailTemplates.js';
 import XLSX from 'xlsx';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -396,6 +396,53 @@ export const migrateUser = async (req, res, next) => {
 
         };
 
+
+
+        // let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+        //     where: { user_id: userUpdateResult.id, isDeleted: false },
+        // });
+        // console.log("activatedGtinProducts", activatedGtinProducts)
+        // activatedGtinProducts = activatedGtinProducts[0];
+
+        // let gtinSubscriptionHistoryData = [{
+        //     transaction_id: cartValue.transaction_id,
+        //     pkg_id: activatedGtinProducts.pkg_id,
+        //     user_id: activatedGtinProducts.user_id,
+        //     price: activatedGtinProducts.gtin_subscription_total_price + activatedGtinProducts.price, // add yearly subscription fee and price (registration fee)
+        //     request_type: 'registration',
+        //     // expiry_date: activatedGtinProducts.expiry_date,
+        //     admin_id: req.admin.adminId,
+
+        // }
+
+
+        // console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
+
+        // let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+        //     where: {
+        //         user_id: userUpdateResult.id,
+        //         isDeleted: false
+        //     },
+
+        // });
+
+        // let otherProductsSubscriptionHistoryData = activatedOtherProduct.map(item => ({
+        //     ...(item.react_no && { react_no: item.react_no }),
+        //     transaction_id: cartValue.transaction_id,
+        //     product_id: item.product_id,
+        //     user_id: item.user_id,
+        //     price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
+        //     request_type: 'registration',
+        //     // expiry_date: item.expiry_date,
+        //     admin_id: req?.admin?.adminId,
+        // }));
+
+
+        // await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+
+        // await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+
+
         const newGtinSubscription = await prisma.gtin_subcriptions.create({
             data: gtinSubscriptionData
         });
@@ -422,6 +469,30 @@ export const migrateUser = async (req, res, next) => {
 
         // Construct response
         response.OtherProductsSubscriptions = otherProductsSubscriptions;
+
+        // create history logs
+        let gtinSubscriptionHistoryData = [{
+            transaction_id: transactionId,
+            pkg_id: newGtinSubscription.pkg_id,
+            user_id: newGtinSubscription.user_id,
+            price: (newGtinSubscription.gtin_subscription_total_price + newGtinSubscription.price) * yearsToPay, // multiply by the number of years to pay
+            request_type: 'registration',
+            admin_id: req?.admin?.adminId,
+
+        }];
+        await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
+        console.log("otherProductsSubscriptions", otherProductsSubscriptions);
+        let otherProductsSubscriptionHistoryData = otherProductsSubscriptions.map(item => ({
+            transaction_id: transactionId,
+            product_id: item.product_id,
+            user_id: item.user_id,
+            price: (item.other_products_subscription_total_price + item.price) * yearsToPay, // multiply with the number of years to pay
+            request_type: 'registration',
+            admin_id: req?.admin?.adminId,
+        }));
+
+        await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
+
 
         // Construct invoice data
 

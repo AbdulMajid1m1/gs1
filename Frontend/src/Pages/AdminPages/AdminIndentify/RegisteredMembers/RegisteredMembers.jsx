@@ -285,9 +285,10 @@ const RegisteredMembers = () => {
         // Filter out 'Renew' option if the status is not 'active'
         if (row.status !== 'active') {
           return dropDownOptions.filter(option => option.label !== 'Renew');
+          
         }
-
-        return dropDownOptions; // Enable all options for the admin who is assigned to the user
+        // filter Assign To option
+        return dropDownOptions.filter(option => option.label !== 'Assign To');
       }
     }
 

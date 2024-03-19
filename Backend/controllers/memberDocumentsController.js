@@ -527,9 +527,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         });
 
 
-                        // const activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
-                        //     where: { transaction_id: currentDocument.transaction_id },
-                        // });
 
 
                         // Fetch the necessary data from other_products table  TODO: optiomzed it only call teh api for regiserted products of the user not all
@@ -562,48 +559,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                     expiry_date: expiryDate // Update the expiry date
                                 }
                             });
-                            // now get the updated records and push them to the array
 
-                            // let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
-                            //     where: {
-                            //         product_id: product.id,
-                            //         isDeleted: false,
-                            //         transaction_id: currentDocument.transaction_id // if you want to update only those records that match the transaction_id
-                            //     },
-
-                            // });
-                            // activatedOtherProducts.push(...activatedOtherProduct);
                         }
 
-                        // console.log("activatedGtinProducts", activatedGtinProducts);
-                        // console.log("activatedOtherProducts", activatedOtherProducts);
-
-                        // gtinSubscriptionHistoryData = activatedGtinProducts.map(item => ({
-                        //     ...(item.react_no && { react_no: item.react_no }),
-                        //     transaction_id: item.transaction_id,
-                        //     pkg_id: item.pkg_id,
-                        //     user_id: item.user_id,
-                        //     price: item.gtin_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                        //     request_type: 'registration',
-                        //     status: 'approved',
-                        //     expiry_date: item.expiry_date,
-                        //     admin_id: req.admin.adminId,
-                        //     approved_date: value.approved_date,
-                        // }));
-                        // console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
-
-                        // otherProductsSubscriptionHistoryData = activatedOtherProducts.map(item => ({
-                        //     ...(item.react_no && { react_no: item.react_no }),
-                        //     transaction_id: item.transaction_id,
-                        //     product_id: item.product_id,
-                        //     user_id: item.user_id,
-                        //     price: item.other_products_subscription_total_price + item.price, // add yearly subscription fee and price (registration fee)
-                        //     status: 'approved',
-                        //     request_type: 'registration',
-                        //     expiry_date: item.expiry_date,
-                        //     admin_id: req?.admin?.adminId,
-                        //     approved_date: value.approved_date,
-                        // }));
 
 
 
@@ -718,11 +676,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
             // Call sendLicenceToGepir function for the approved user
             await sendLicenceToGepir([currentDocument.user_id]);
-
-            // await createGtinSubscriptionHistory(gtinSubscriptionHistoryData);
-
-            // await createOtherProductsSubscriptionHistory(otherProductsSubscriptionHistoryData);
-            // \\uploads\\documents\\MemberRegDocs\\document-1703059737286.pdf
+            // value.migration === true
             console.log("existingUser", currentDocument);
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
@@ -733,6 +687,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 memberData: {
                     qrCodeDataURL: qrCodeDataURL,
                     registeration: value.selectedLanguage === 'en' ? "New Registration" : "تسجيل جديد",
+                    yearsToPay: currentDocument.no_of_years, // for old migration invoices
                     // Assuming $addMember->id is already known
                     company_name_eng: existingUser.company_name_eng,
                     mobile: existingUser.mobile,
@@ -782,8 +737,10 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 fsSync.mkdirSync(pdfDirectory, { recursive: true });
             }
             let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+            let migrationEjs = value.selectedLanguage === 'en' ? 'oldMembersCustomInvoice.ejs' : 'oldMembersCustomInvoice_Ar.ejs';
 
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), data1, pdfFilePath);
+            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', value.migration ? migrationEjs : ejsFile
+            ), data1, pdfFilePath);
 
 
             // read the file into a buffer
@@ -801,9 +758,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
                         status: 'approved',
-                        // TODO: take email form current admin token
-                        // uploaded_by: req.admin.email, // Assuming the admin is logged in
-                        uploaded_by: 'admin@gs1sa.link',
+                        ...(req.admin.adminId && { uploaded_by: req.admin.email })
                     },
                     {
                         type: 'receipt',
@@ -812,9 +767,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         user_id: currentDocument.user_id,
                         doc_type: 'member_document',
                         status: 'approved',
-                        // TODO: take email form current admin token
-                        // uploaded_by: req.admin.email, // Assuming the admin is logged in
-                        uploaded_by: 'admin@gs1sa.link', // Assuming the admin is logged in
+                        ...(req.admin.adminId && { uploaded_by: req.admin.email })
                     }
                 ]
             });
