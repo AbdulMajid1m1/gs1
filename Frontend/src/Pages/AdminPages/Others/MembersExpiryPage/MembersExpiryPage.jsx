@@ -6,11 +6,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader'
 import { useTranslation } from 'react-i18next';
+import RenewPopUp from '../../AdminIndentify/RegisteredMembers/RenewPopUp';
+import { useNavigate } from 'react-router-dom';
 
 const MembersExpiryPage = () => {
   const [memberReneval, setMemberReneval] = useState([]);
   const [memberRenevalLoader, setMemberRenevalLoader] = useState(false);
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const getNewTransferOrder = async () => {
     setMemberRenevalLoader(true);
@@ -38,6 +41,22 @@ const MembersExpiryPage = () => {
     getNewTransferOrder()
   }
     , [])
+
+  const [isRenewPopupVisible, setIsRenewPopupVisible] = useState(false);
+
+  const handleShowRenewPopup = (row) => {
+    setIsRenewPopupVisible(true);
+    sessionStorage.setItem("registeredMemberRowData", JSON.stringify(row));
+
+  };
+
+
+  const handleView = (row) => {
+    // console.log(row);
+    sessionStorage.setItem("gs1memberRecord", JSON.stringify(row));
+    navigate("view-registered-member/" + row?.id);
+  };
+  
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
@@ -62,14 +81,14 @@ const MembersExpiryPage = () => {
                 label: `${t('Send Invoice')}`,
                 icon: <SwapHorizIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
-                // action: fetchMemberInvoiceData,
+                action: handleShowRenewPopup,
 
               },
               {
                 label: `${t('Open Profile')}`,
                 icon: <EditIcon fontSize="small" color="action" style={{ color: "rgb(37 99 235)" }} />
                 ,
-                // action: handleOpen,
+                action: handleView,
 
               },
 
@@ -81,8 +100,16 @@ const MembersExpiryPage = () => {
           />
         </div>
 
+        {/* Renew component with handleShowRenewPopup prop */}
+        {isRenewPopupVisible && (
+          <RenewPopUp isVisible={isRenewPopupVisible} setVisibility={setIsRenewPopupVisible} />
+        )}
+
+
       </div>
     </div>
+
+
   )
 }
 

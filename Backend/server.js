@@ -24,6 +24,7 @@ const app = express();
 dotenv.config();
 
 const allowedOrigins = [
+<<<<<<< HEAD
   "http://localhost:3092",
   "http://gs1ksa.org:3092",
   "https://gs1ksa.org:3093",
@@ -34,6 +35,14 @@ const allowedOrigins = [
   "http://gs1ksa.org:83",
   "https://gs1ksa.org:82",
   "https://gs1ksa.org:83",
+=======
+    "http://localhost:3092",
+    "http://localhost:3091",
+    "http://localhost:3081",
+    "http://gs1ksa.org:3092"
+
+
+>>>>>>> 850a9c8954118cbfe773321e1390fd5dcfa41f66
 ];
 
 app.use(

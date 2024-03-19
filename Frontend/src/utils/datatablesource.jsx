@@ -7061,6 +7061,17 @@ export const KpiReportColumn = (t, i18n) => [
     width: 120,
   },
   {
+    field: 'approved_date',
+    headerName: t('Approved Date'),
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
     field: 'created_at',
     headerName: t('Date Created'),
     width: 180,
@@ -7068,7 +7079,7 @@ export const KpiReportColumn = (t, i18n) => [
     type: 'dateTime',
     valueGetter: (params) => {
       // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
+      return params.value ? new Date(params.value) : 'N/A';
     }
   },
   // {
