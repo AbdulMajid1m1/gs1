@@ -103,6 +103,9 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
         const response = await axios.post(apiUrl, [updatedGTIN], { headers });
 
         const globalGepir = response.data;
+        if (globalGepir.length === 0) {
+            throw createError(404, 'Product not found');
+        }
         console.log(globalGepir);
         console.log(globalGepir);
         console.log(globalGepir[0].countryOfSaleCode);

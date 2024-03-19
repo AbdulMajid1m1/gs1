@@ -256,11 +256,47 @@ export const membershipRenewRequest = async (req, res, next) => {
 
         console.log(existingUser);
 
+        let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+            where: { user_id: existingUser.id, isDeleted: false },
+            include: {
+                gtin_product: true,
+            },
+        });
 
-        let cart = existingUser.carts[0];
-        let cartData = JSON.parse(cart.cart_items);
-        cartData[0].registration_fee = 0;
-        cart.cart_items = cartData // set gtin product registration fee to 0
+
+        let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+            where: {
+                user_id: existingUser.id,
+                isDeleted: false
+            },
+            include: {
+                product: true,
+            },
+
+        });
+     
+        let gtinYearlySubscriptionFee = activatedGtinProducts[0].gtin_subscription_total_price;
+        let cart = { cart_items: [] };
+
+        cart.cart_items.push({
+            productName: activatedGtinProducts[0].gtin_product.member_category_description,
+            registration_fee: 0, // for renewal registration fee is 0
+            yearly_fee: gtinYearlySubscriptionFee,
+        });
+
+        // Add other products to the cart
+        for (let i = 0; i < activatedOtherProduct.length; i++) {
+            cart.cart_items.push({
+                productName: activatedOtherProduct[i].product.product_name,
+                registration_fee: 0, // for renewal registration fee is 0
+                yearly_fee: activatedOtherProduct[i].other_products_subscription_total_price,
+            });
+        }
+
+        let cartData = cart.cart_items;
+
+
+
         cart.transaction_id = transactionId;
 
 
@@ -411,9 +447,7 @@ export const membershipRenewRequest = async (req, res, next) => {
             await createMemberLogs(userLog);
         }
 
-        let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
-            where: { user_id: existingUser.id, isDeleted: false },
-        });
+
         console.log("activatedGtinProducts", activatedGtinProducts)
         activatedGtinProducts = activatedGtinProducts[0];
 
@@ -431,13 +465,6 @@ export const membershipRenewRequest = async (req, res, next) => {
 
         console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
-        let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
-            where: {
-                user_id: existingUser.id,
-                isDeleted: false
-            },
-
-        });
 
         let otherProductsSubscriptionHistoryData = activatedOtherProduct.map(item => ({
             ...(item.react_no && { react_no: item.react_no }),
@@ -531,6 +558,46 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
             return next(createError(400, `No bank slip documents found for this ${currentDocument?.type} with transaction ID: ${currentDocument.transaction_id}`));
         }
 
+        let activatedGtinProducts = await prisma.gtin_subcriptions.findMany({
+            where: { user_id: existingUser.id, isDeleted: false },
+            include: {
+                gtin_product: true,
+            },
+        });
+
+
+        let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
+            where: {
+                user_id: existingUser.id,
+                isDeleted: false
+            },
+            include: {
+                product: true,
+            },
+
+        });
+
+        let gtinYearlySubscriptionFee = activatedGtinProducts[0].gtin_subscription_total_price;
+        cart = { cart_items: [] };
+
+        cart.cart_items.push({
+            productName: activatedGtinProducts[0].gtin_product.member_category_description,
+            registration_fee: 0, // for renewal registration fee is 0
+            yearly_fee: gtinYearlySubscriptionFee,
+        });
+
+        // Add other products to the cart
+        for (let i = 0; i < activatedOtherProduct.length; i++) {
+            cart.cart_items.push({
+                productName: activatedOtherProduct[i].product.product_name,
+                registration_fee: 0, // for renewal registration fee is 0
+                yearly_fee: activatedOtherProduct[i].other_products_subscription_total_price,
+            });
+        }
+
+        cart.transaction_id = currentDocument.transaction_id;
+
+
 
         if (value.status === 'approved') {
             await prisma.$transaction(async (prisma) => {
@@ -538,172 +605,172 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
                 const userId = currentDocument.user_id;
 
 
-                // Perform the updateUserStatus logic
-                cart = await prisma.carts.findFirst({ where: { user_id: userId } });
-                console.log("cartss", cart);
-                if (cart && cart.cart_items) {
-                    const cartItems = JSON.parse(cart.cart_items);
-                    const firstCartItem = cartItems[0];
-                    const product = await prisma.gtin_products.findUnique({
-                        where: { id: firstCartItem.productID }
+
+
+                const product = await prisma.gtin_products.findUnique({
+                    where: { id: activatedGtinProducts[0].gtin_product.id },
+                });
+
+                if (product) {
+                    // Update user with new information
+                    // get existingUser.gcp_expiry and add 1 year to it
+                    expiryDate = new Date(existingUser.gcp_expiry);
+
+                    // Add one year
+                    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+                    // Check if the original date was February 29th on a leap year
+                    if (existingUser.gcp_expiry.getMonth() === 1 && existingUser.gcp_expiry.getDate() === 29) {
+                        // Check if the new year is not a leap year
+                        if ((expiryDate.getFullYear() % 4 !== 0) ||
+                            (expiryDate.getFullYear() % 100 === 0 && expiryDate.getFullYear() % 400 !== 0)) {
+                            // Adjust the date to February 28th
+                            expiryDate.setDate(28);
+                        }
+                    }
+
+                    console.log("expiryDate");
+                    console.log(expiryDate);
+                    // Update user with new information
+                    userUpdateResult = await prisma.users.update({
+                        where: { id: userId },
+                        data: {
+                            gcp_expiry: expiryDate,
+                            remarks: 'Registered',
+                            payment_status: 1,
+                            status: 'active'
+                        }
                     });
 
-                    if (product) {
+                    // Update GTIN subscriptions for the user
+                    await prisma.gtin_subcriptions.updateMany({
+                        // update based on the transaction ID
+                        where: { user_id: userId, isDeleted: false },
+                        data: {
+                            status: 'active',
+                            expiry_date: expiryDate,
 
-
-                        // Update user with new information
-                        // get existingUser.gcp_expiry and add 1 year to it
-                        expiryDate = new Date(existingUser.gcp_expiry);
-
-                        // Add one year
-                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
-                        // Check if the original date was February 29th on a leap year
-                        if (existingUser.gcp_expiry.getMonth() === 1 && existingUser.gcp_expiry.getDate() === 29) {
-                            // Check if the new year is not a leap year
-                            if ((expiryDate.getFullYear() % 4 !== 0) ||
-                                (expiryDate.getFullYear() % 100 === 0 && expiryDate.getFullYear() % 400 !== 0)) {
-                                // Adjust the date to February 28th
-                                expiryDate.setDate(28);
-                            }
-                        }
-
-                        console.log("expiryDate");
-                        console.log(expiryDate);
-                        // Update user with new information
-                        userUpdateResult = await prisma.users.update({
-                            where: { id: userId },
-                            data: {
-                                gcp_expiry: expiryDate,
-                                remarks: 'Registered',
-                                payment_status: 1,
-                                status: 'active'
-                            }
-                        });
-
-                        // Update GTIN subscriptions for the user
-                        await prisma.gtin_subcriptions.updateMany({
-                            // update based on the transaction ID
-                            where: { user_id: userId, isDeleted: false },
-                            data: {
-                                status: 'active',
-                                expiry_date: expiryDate,
-
-                                // gtin_subscription_limit: product.total_no_of_barcodes,
-                                // gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
-
-                            }
-                        });
-
-
-
-
-                        // Fetch the necessary data from other_products table
-                        const products = await prisma.other_products.findMany({
-                            select: {
-                                id: true,
-                                total_no_of_barcodes: true,
-                                product_subscription_fee: true,
-                                med_subscription_fee: true,
-                            }
-                        });
-
-                        // Update other_products_subcriptions table for each product
-                        for (const product of products) {
-                            console.log("product", product);
-                            let subscriptionFee = userUpdateResult.membership_category === 'non_med_category'
-                                ? product.product_subscription_fee
-                                : product.med_subscription_fee;
-
-                            await prisma.other_products_subcriptions.updateMany({
-                                where: {
-                                    product_id: product.id,
-                                    user_id: userId,
-                                    isDeleted: false
-                                },
-                                data: {
-                                    // other_products_subscription_limit: product.total_no_of_barcodes,
-                                    // other_products_subscription_total_price: subscriptionFee,
-                                    status: 'active',  // Update the status
-                                    expiry_date: expiryDate // Update the expiry date
-                                }
-                            });
-
+                            // gtin_subscription_limit: product.total_no_of_barcodes,
+                            // gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
 
                         }
+                    });
+                    // Fetch the necessary data from other_products table
+                    const products = await prisma.other_products.findMany({
+                        select: {
+                            id: true,
+                            total_no_of_barcodes: true,
+                            product_subscription_fee: true,
+                            med_subscription_fee: true,
+                        }
+                    });
 
+                    // Update other_products_subcriptions table for each product
+                    for (const product of products) {
+                        console.log("product", product);
+                        let subscriptionFee = userUpdateResult.membership_category === 'non_med_category'
+                            ? product.product_subscription_fee
+                            : product.med_subscription_fee;
 
+                        await prisma.other_products_subcriptions.updateMany({
+                            where: {
+                                product_id: product.id,
+                                user_id: userId,
+                                isDeleted: false
+                            },
+                            data: {
+                                // other_products_subscription_limit: product.total_no_of_barcodes,
+                                // other_products_subscription_total_price: subscriptionFee,
+                                status: 'active',  // Update the status
+                                expiry_date: expiryDate // Update the expiry date
+                            }
+                        });
 
 
                     }
+
+
+
+
                 }
-                const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-                let gcpGLNID = existingUser?.gcpGLNID;
-                const CertificateData = {
-                    BACKEND_URL: BACKEND_URL,
-                    qrCodeDataURL: qrCodeDataURL,
-                    user: {
-                        company_name_eng: existingUser?.company_name_eng,
-                    },
-                    general: {
-                        gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
-                            'Global Trade Item Number(GTIN)',
-                            'Serial Shipping Container Code (SSCC)',
-                            'Global Location Number (GLN)',
-                            'Global Document Type Identifier(GDTI)',
-                            'Global Service Relation Number(GSRN)'
-                        ] : [
-                            'رقم السلعة التجارية العالمي (GTIN)',
-                            'رمز الحاوية الشحن التسلسلي (SSCC)',
-                            'رقم الموقع العالمي (GLN)',
-                            'معرف نوع الوثيقة العالمي (GDTI)',
-                            'رقم علاقة الخدمة العالمي (GSRN)'
-                        ],
-                        gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
-                            'Global Individual Asset Identifier(GIAI)',
-                            'Global Returnable Asset Identifier(GRAI)',
-                            'Global Identification Number for Consignment(GSNC)',
-                            'Global Shipment Identification Number (GSIN)'
-                        ] : [
-                            // Arabic translations for the second list
-                            'معرف الأصل الفردي العالمي (GIAI)',
-                            'معرف الأصل القابل للعودة العالمي (GRAI)',
-                            'رقم التعريف العالمي للشحنة (GSNC)',
-                            'رقم تعريف الشحنة العالمي (GSIN)'
-                        ],
-                        gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
-                    },
 
-                    userData: {
-                        // add user data here
-                        gcpGLNID: gcpGLNID,
-                        gln: existingUser?.gln,
-                        memberID: existingUser?.memberID,
-                        // gcp_expiry:
-                        // use updated expiry date used above
-                        expiryDate: expiryDate,
-                    },
-                    // userUpdateResult.gcp_expiry, update this to add only date adn remove time
-                    expiryDate: expiryDate?.toISOString()?.split('T')[0],
-                    explodeGPCCode: []
-                };
-
-
-
-                // Generate PDF from EJS template
-                const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
-                // use current date time to generate unique file name
-                pdfFilename = `${existingUser.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-                const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-                if (!fsSync.existsSync(pdfDirectory)) {
-                    fsSync.mkdirSync(pdfDirectory, { recursive: true });
-                }
-                let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
-                const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath, true);
-                pdfBuffer = await fs1.readFile(Certificatepath);
 
                 // Send an email based on the updated status
             }, { timeout: 40000 });
+
+            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+            let gcpGLNID = existingUser?.gcpGLNID;
+            const CertificateData = {
+                BACKEND_URL: BACKEND_URL,
+                qrCodeDataURL: qrCodeDataURL,
+                user: {
+                    company_name_eng: existingUser?.company_name_eng,
+                },
+                general: {
+                    gcp_certificate_detail1: value.selectedLanguage === 'en' ? [
+                        'Global Trade Item Number(GTIN)',
+                        'Serial Shipping Container Code (SSCC)',
+                        'Global Location Number (GLN)',
+                        'Global Document Type Identifier(GDTI)',
+                        'Global Service Relation Number(GSRN)'
+                    ] : [
+                        'رقم السلعة التجارية العالمي (GTIN)',
+                        'رمز الحاوية الشحن التسلسلي (SSCC)',
+                        'رقم الموقع العالمي (GLN)',
+                        'معرف نوع الوثيقة العالمي (GDTI)',
+                        'رقم علاقة الخدمة العالمي (GSRN)'
+                    ],
+                    gcp_certificate_detail2: value.selectedLanguage === 'en' ? [
+                        'Global Individual Asset Identifier(GIAI)',
+                        'Global Returnable Asset Identifier(GRAI)',
+                        'Global Identification Number for Consignment(GSNC)',
+                        'Global Shipment Identification Number (GSIN)'
+                    ] : [
+                        // Arabic translations for the second list
+                        'معرف الأصل الفردي العالمي (GIAI)',
+                        'معرف الأصل القابل للعودة العالمي (GRAI)',
+                        'رقم التعريف العالمي للشحنة (GSNC)',
+                        'رقم تعريف الشحنة العالمي (GSIN)'
+                    ],
+                    gcp_legal_detail: value.selectedLanguage === 'en' ? 'Legal Detail' : 'تفاصيل قانونية',
+                },
+
+                userData: {
+                    // add user data here
+                    gcpGLNID: gcpGLNID,
+                    gln: existingUser?.gln,
+                    memberID: existingUser?.memberID,
+                    // gcp_expiry:
+                    // use updated expiry date used above
+                    expiryDate: expiryDate,
+                },
+                // userUpdateResult.gcp_expiry, update this to add only date adn remove time
+                expiryDate: expiryDate?.toISOString()?.split('T')[0],
+                explodeGPCCode: []
+            };
+
+
+
+            // Generate PDF from EJS template
+            const pdfDirectory1 = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberCertificates');
+            // use current date time to generate unique file name
+            pdfFilename = `${existingUser.company_name_eng}-Renewed_Certificate-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+            const pdfFilePath1 = path.join(pdfDirectory1, pdfFilename);
+            if (!fsSync.existsSync(pdfDirectory1)) {
+                fsSync.mkdirSync(pdfDirectory1, { recursive: true });
+            }
+            let certificateEjs = value.selectedLanguage === 'en' ? 'certificate.ejs' : 'certificate_Ar.ejs';
+            const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, pdfFilePath1, true);
+            pdfBuffer = await fs1.readFile(Certificatepath);
+
+
+
+
+
+
+
+
+
 
             // based on transaction id update gtin_subscription_histories table and other_products_subscription_histories table
 
@@ -741,10 +808,8 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
             const renewalYear = expiryDate.getFullYear(); //
 
-            let cartData = JSON.parse(cart.cart_items);
-            cart.cart_items = cartData
+            let cartData = cart.cart_items; 
 
-            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
             const data1 = {
 
                 // do condition for language
