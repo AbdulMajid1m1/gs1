@@ -364,6 +364,10 @@ const App = () => {
                                 path="registered-members/view-registered-member/:Id"
                                 element={<RegisteredMembersView />}
                               />
+                              <Route
+                                path="member-expiry-page/view-registered-member/:Id"
+                                element={<RegisteredMembersView />}
+                              />
 
                               <Route
                                 path="view-gs1-member/:Id"
