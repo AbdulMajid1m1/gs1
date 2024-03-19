@@ -926,7 +926,7 @@ export const getLicenseRegisteryUser = async (req, res) => {
         const activeUsers = await prisma.users.findMany({
             where: {
                 status: 'active',
-                gpc: { not: null },
+                // gpc: { not: null },
                 parent_memberID: '0',
                 gcp_expiry: { gt: new Date() }
             }
@@ -1140,6 +1140,7 @@ export const getRegisteredMembers = async (req, res, next) => {
             include: {
                 assign_to_admin: true
             },
+            take: 100
 
         });
 

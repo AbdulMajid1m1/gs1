@@ -10,12 +10,11 @@ import { useLanguage } from '../../../../Contexts/LanguageContext';
 
 
 
-// const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData, fetchAllUserData, MemberbankSlip }) => {
 const RenewPopUp = ({ isVisible, setVisibility,
 }) => {
   const { selectedLanguage } = useLanguage();
   const gs1RegesteredMembersData = JSON.parse(sessionStorage.getItem("registeredMemberRowData"));
-  // console.log(gs1RegesteredMembersData);
+  console.log(gs1RegesteredMembersData);
 
   const expiryDate = new Date(gs1RegesteredMembersData.gcp_expiry);
   const newExpiryDate = new Date(expiryDate);
@@ -38,13 +37,16 @@ const RenewPopUp = ({ isVisible, setVisibility,
   const handleMemberInvoiceData = async () => {
     try {
       const res = await newRequest.get(`/users/cart?transaction_id=${gs1RegesteredMembersData?.transaction_id}`);
-      // console.log(res.data);
+      console.log(res.data);
+      
       setMemberInvoiceData(res.data);
 
       let total = 0;
-      const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-      cartItems.forEach((item) => {
-        total += parseInt(item.price); // Make sure to parse the price as an integer
+      const cartItems = JSON.parse(res.data[0]?.cart_items); // Parse the cart_items string
+      console.log(cartItems);
+
+      cartItems?.forEach((item) => {
+        total += parseInt(item?.price); // Make sure to parse the price as an integer
       });
       setTotalPrice(total);
     }

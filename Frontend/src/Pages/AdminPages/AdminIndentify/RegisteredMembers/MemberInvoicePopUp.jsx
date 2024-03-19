@@ -25,7 +25,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   const [typeOfPayment, setTypeOfPayment] = useState([])
   const [totalPrice, setTotalPrice] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const handleCloseInvoicePopup = () => {
     setVisibility(false);
   };
@@ -41,7 +41,12 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
         // const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?status=active&user_id=${userData?.id}&isDeleted=false`);
         const res = await newRequest.get(`/gtinProducts/subcriptionsProducts?&user_id=${userData?.id}&isDeleted=false`);
         // console.log(res.data);
-        setMemberInvoiceData(res.data);
+        let data = res.data;
+        if (gs1MemberInvoiceData?.type === "renewal_invoice") {
+          data.gtinSubscriptions[0].price = 0;
+        }
+        console.log(data);
+        setMemberInvoiceData(data);
 
         let total = 0;
         res.data?.gtinSubscriptions.forEach((item) => {
@@ -148,7 +153,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     const today = new Date();
     setStartDate(today.toISOString().split('T')[0]);
   };
- 
+
 
   useEffect(() => {
     handleMemberInvoiceData();
@@ -511,12 +516,12 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
                 <div className="flex justify-center items-center">
                   <label className="font-body text-sm text-red-500 font-semibold text-center">Enter the Actual Bank Receipt Date</label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-lg"
-                    />
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="border border-gray-300 p-2 rounded-lg"
+                  />
                 </div>
 
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
