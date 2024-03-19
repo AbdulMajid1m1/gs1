@@ -47,7 +47,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
   const [userPassword, setUserPassword] = React.useState('');
   const [error, setError] = useState(false);
   const [generateCertificatePopupVisibility, setGenerateCertificatePopupVisibility] = useState(false);
-  
+
   // const handleUpdate = () => {
   //   // Handle the update logic here, e.g., dispatch an action to update data
   //   console.log('Updated data:', editableData);
@@ -108,7 +108,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
       refreshAllUserData();
 
     }
-    catch (error) {    
+    catch (error) {
       console.log(error);
       setIsLoading(false);
 
@@ -193,16 +193,16 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
 
     setUserPassword(editableData?.password || '');
   }
-  , []);
-  
+    , []);
+
   useEffect(() => {
     if (editableData) {
-    setMobileNumber(gs1MemberData?.companyLandLine || '');
-    setUserPassword(editableData.password || '');
-  }
+      setMobileNumber(gs1MemberData?.companyLandLine || '');
+      setUserPassword(editableData.password || '');
+    }
   }, [editableData]);
 
-  
+
   const handlePassword = (e) => {
     const value = e.target.value;
     if (value.length <= 6) {
@@ -211,14 +211,19 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
     } else {
       setError(true);
     }
-  } 
+  }
 
   return (
     <div>
-      <MemberGenerateCertificatePopup setVisibility={setGenerateCertificatePopupVisibility} isVisible={generateCertificatePopupVisibility} userId={memberData?.id} fetchMemberDocumentsData={fetchMemberDocumentsData} />
+      <MemberGenerateCertificatePopup
+        setVisibility={setGenerateCertificatePopupVisibility}
+        isVisible={generateCertificatePopupVisibility}
+        userId={memberData?.id}
+        fetchMemberDocumentsData={fetchMemberDocumentsData}
+      />
 
       {/* Update button */}
-      <div className='flex justify-end'>
+      <div className="flex justify-end">
         {/* <button
                   type='button'
                   onClick={handleUpdate}
@@ -227,13 +232,15 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                 </button> */}
         <Button
           variant="contained"
-          style={{ borderRadius: '20px', width: '100px', height: '40px' }}
+          style={{ borderRadius: "20px", width: "100px", height: "40px" }}
           onClick={handleUpdate}
           disabled={IsLoading}
           className="bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600"
-          endIcon={IsLoading ? <CircularProgress size={24} color="inherit" /> : null}
+          endIcon={
+            IsLoading ? <CircularProgress size={24} color="inherit" /> : null
+          }
         >
-          {t('Update')}
+          {t("Update")}
         </Button>
       </div>
 
@@ -251,20 +258,44 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                   /> */}
           <TextField
             id="companyNameEnglish"
-            label={`${t('Company Name English')}`}
+            label={`${t("Company Name English")}`}
             variant="outlined"
             value={editableData.companyNameEnglish}
-            onChange={(e) => handleInputChange('companyNameEnglish', e.target.value)}
+            onChange={(e) =>
+              handleInputChange("companyNameEnglish", e.target.value)
+            }
+            InputLabelProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
+            inputProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
           />
         </div>
 
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
           <TextField
             id="companyNameArabic"
-            label={`${t('Company Name Arabic')}`}
+            label={`${t("Company Name Arabic")}`}
             variant="outlined"
             value={editableData.companyNameArabic}
-            onChange={(e) => handleInputChange('companyNameArabic', e.target.value)}
+            onChange={(e) =>
+              handleInputChange("companyNameArabic", e.target.value)
+            }
+            InputLabelProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
+            inputProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
           />
         </div>
 
@@ -278,15 +309,25 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                     /> */}
           <TextField
             id="CountryShortName"
-            label={`${t('Country Short Name')}`}
+            label={`${t("Country Short Name")}`}
             variant="outlined"
             value={editableData.countryShortName}
-            onChange={(e) => handleInputChange('countryShortName', e.target.value)}
+            onChange={(e) =>
+              handleInputChange("countryShortName", e.target.value)
+            }
+            InputLabelProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
+            inputProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
           />
-
         </div>
       </div>
-
 
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-4">
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -314,7 +355,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                   style: { color: "white" },
                 }}
                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5"
-                placeholder={gs1MemberData?.country || `${t('Country')}`}
+                placeholder={gs1MemberData?.country || `${t("Country")}`}
                 required
               />
             )}
@@ -363,8 +404,8 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                   style: { color: "white" },
                 }}
                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                placeholder={gs1MemberData?.state || `${t('State')}`}
-              // required
+                placeholder={gs1MemberData?.state || `${t("State")}`}
+                // required
               />
             )}
             classes={{
@@ -376,7 +417,6 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
               },
             }}
           />
-
         </div>
 
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -413,9 +453,9 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                   style: { color: "white" },
                 }}
                 className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                placeholder={gs1MemberData?.city || `${t('City')}`}
+                placeholder={gs1MemberData?.city || `${t("City")}`}
                 value={gs1MemberData.city}
-              // required
+                // required
               />
             )}
             classes={{
@@ -429,7 +469,6 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           />
         </div>
       </div>
-
 
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-4">
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
@@ -448,19 +487,29 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
             label="Zip Code"
             variant="outlined"
             value={editableData.zipCode}
-            onChange={(e) => handleInputChange('zipCode', e.target.value)}
+            onChange={(e) => handleInputChange("zipCode", e.target.value)}
+            InputLabelProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
+            inputProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left",
+              },
+            }}
           />
         </div>
 
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-          <div className='relative w-full'>
+          <div className="relative w-full">
             <label
-              htmlFor='mobile'
-              className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
+              htmlFor="mobile"
+              className="absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1"
             >
-              {t('Landline Number')}
+              {t("Landline Number")}
             </label>
-            <div className='flex items-center border-2 w-full h-14 rounded-md'>
+            <div className="flex items-center border-2 w-full h-14 rounded-md">
               {/* <PhoneInput
                 international
                 country={'sa'}
@@ -479,23 +528,22 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                 required
               /> */}
               <PhoneInput
-                    international
-                    country={'sa'}
-                    defaultCountry={'sa'}
-                    value={mobileNumber}
-                    inputProps={{
-                      id: 'mobile',
-                      placeholder: 'Mobile Number',
-                    }}
-                    inputStyle={{
-                      width: '100%',
-                      borderRadius: '0px',
-                      border: 'none',
-                    }}
-                    required
-                    onChange={(value) => setMobileNumber(value)}
-                  />
-
+                international
+                country={"sa"}
+                defaultCountry={"sa"}
+                value={mobileNumber}
+                inputProps={{
+                  id: "mobile",
+                  placeholder: "Mobile Number",
+                }}
+                inputStyle={{
+                  width: "100%",
+                  borderRadius: "0px",
+                  border: "none",
+                }}
+                required
+                onChange={(value) => setMobileNumber(value)}
+              />
             </div>
           </div>
         </div>
@@ -503,21 +551,30 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
           <TextField
             id="Email"
-            label={`${t('Email')}`}
+            label={`${t("Email")}`}
             variant="outlined"
             value={gs1MemberData?.email}
             InputLabelProps={{
               shrink: Boolean(gs1MemberData?.email),
-              style: { fontSize: gs1MemberData?.email ? '16px' : '16px', zIndex: '0' },
+              style: {
+                fontSize: gs1MemberData?.email ? "16px" : "16px",
+                zIndex: "0",
+              },
+            }}
+            inputProps={{
+              style: {
+                textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+              },
             }}
           />
         </div>
       </div>
 
-
-      <div className='h-auto w-full mt-8 px-1'>
-        <div className='flex justify-between'>
-          <p className='text-blue-500 font-sans font-semibold'>{t('GS1 Member Details')}</p>
+      <div className="h-auto w-full mt-8 px-1">
+        <div className="flex justify-between">
+          <p className="text-blue-500 font-sans font-semibold">
+            {t("GS1 Member Details")}
+          </p>
           {/* <button className='bg-blue-500  font-sans font-normal text-sm px-4 py-1 text-white rounded-full hover:bg-blue-600'>Change Membership</button> */}
         </div>
 
@@ -525,12 +582,20 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="crNumber"
-              label={`${t('Cr Number')}`}
+              label={`${t("Cr Number")}`}
               variant="outlined"
               value={gs1MemberData?.cr_number}
               InputLabelProps={{
                 shrink: Boolean(gs1MemberData?.cr_number),
-                style: { fontSize: gs1MemberData?.cr_number ? '16px' : '16px', zIndex: '0' },
+                style: {
+                  fontSize: gs1MemberData?.cr_number ? "16px" : "16px",
+                  zIndex: "0",
+                },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
@@ -538,12 +603,20 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="crActivity"
-              label={`${t('Cr Activity')}`}
+              label={`${t("Cr Activity")}`}
               variant="outlined"
               value={gs1MemberData?.cr_activity}
               InputLabelProps={{
                 shrink: Boolean(gs1MemberData?.cr_activity),
-                style: { fontSize: gs1MemberData?.cr_activity ? '16px' : '16px', zIndex: '0' },
+                style: {
+                  fontSize: gs1MemberData?.cr_activity ? "16px" : "16px",
+                  zIndex: "0",
+                },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
@@ -551,29 +624,45 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyNameEnglish"
-              label={`${t('Company Name English')}`}
+              label={`${t("Company Name English")}`}
               variant="outlined"
               value={gs1MemberData?.company_name_eng}
               InputLabelProps={{
                 shrink: Boolean(gs1MemberData?.company_name_eng),
-                style: { fontSize: gs1MemberData?.company_name_eng ? '16px' : '16px', zIndex: '0' },
+                style: {
+                  fontSize: gs1MemberData?.company_name_eng ? "16px" : "16px",
+                  zIndex: "0",
+                },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
         </div>
 
-
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyNameArabic"
-              label={`${t('Company Name Arabic')}`}
+              label={`${t("Company Name Arabic")}`}
               variant="outlined"
               value={gs1MemberData?.company_name_arabic}
               InputLabelProps={{
                 shrink: Boolean(gs1MemberData?.company_name_arabic),
-                style: { fontSize: gs1MemberData?.company_name_arabic ? '16px' : '16px', zIndex: '0' },
+                style: {
+                  fontSize: gs1MemberData?.company_name_arabic
+                    ? "16px"
+                    : "16px",
+                  zIndex: "0",
+                },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
@@ -592,26 +681,45 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
             /> */}
             <TextField
               id="companyGCP"
-              label={`${t('Company GCP')}`}
+              label={`${t("Company GCP")}`}
               variant="outlined"
               value={gs1MemberData?.gcpGLNID}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                style: { fontSize: "16px", paddingTop: "8px", zIndex: "0" },
               }}
               InputProps={{
                 endAdornment: (
-                  <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
-                    <div className='flex gap-1 cursor-pointer'>
-                      {gcpCertificatePath && <div onClick={() => window.open(backendUrl + gcpCertificatePath, '_blank')}>
-                        <VisibilityIcon className='cursor-pointer hover:text-primary text-secondary' />
-                      </div>
-                      }
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                  >
+                    <div className="flex gap-1 cursor-pointer">
+                      {gcpCertificatePath && (
+                        <div
+                          onClick={() =>
+                            window.open(
+                              backendUrl + gcpCertificatePath,
+                              "_blank"
+                            )
+                          }
+                        >
+                          <VisibilityIcon className="cursor-pointer hover:text-primary text-secondary" />
+                        </div>
+                      )}
                       {/* check if gcpcode  */}
                       {gs1MemberData?.gcpGLNID && (
-                        <div className='cursor-pointer' onClick={() => setGenerateCertificatePopupVisibility(true)}>
-                          <AutorenewIcon className='cursor-pointer hover:text-primary text-secondary' />
-
+                        <div
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setGenerateCertificatePopupVisibility(true)
+                          }
+                        >
+                          <AutorenewIcon className="cursor-pointer hover:text-primary text-secondary" />
                         </div>
                       )}
                     </div>
@@ -634,27 +742,41 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                     /> */}
             <TextField
               id="contactPerson"
-              label={`${t('Contact Person')}`}
+              label={`${t("Contact Person")}`}
               variant="outlined"
               value={editableData.contactPerson}
-              onChange={(e) => handleInputChange('contactPerson', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("contactPerson", e.target.value)
+              }
+              InputLabelProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left",
+                },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left",
+                },
+              }}
             />
           </div>
-
         </div>
 
-
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
-
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyId"
-              label={`${t('Company ID')}`}
+              label={`${t("Company ID")}`}
               variant="outlined"
               value={gs1MemberData?.companyID}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                style: { fontSize: "16px", paddingTop: "8px", zIndex: "0" },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
@@ -670,33 +792,31 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
                         style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
                       }}
                     /> */}
-            <div className='relative w-full'>
+            <div className="relative w-full">
               <label
-                htmlFor='mobile'
-                className='absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1'
+                htmlFor="mobile"
+                className="absolute -top-2 left-3 bg-white text-gray-400 font-thin text-sm px-1"
               >
-                {t('Mobile No (omit zero)')}
+                {t("Mobile No (omit zero)")}
               </label>
-              <div className='flex items-center border-2 w-full h-14 rounded-md'>
+              <div className="flex items-center border-2 w-full h-14 rounded-md">
                 <PhoneInput
                   international
-                  country={'sa'}
-                  defaultCountry={'sa'}
-                  value={gs1MemberData?.mobile || ''}
+                  country={"sa"}
+                  defaultCountry={"sa"}
+                  value={gs1MemberData?.mobile || ""}
                   // onChange={setMobileNumber}
                   // onChange={(e) => setCompanyLandLine(e)}
                   disabled
                   inputProps={{
-                    id: 'mobileomit',
-                    placeholder: 'Mobile Number',
+                    id: "mobileomit",
+                    placeholder: "Mobile Number",
                   }}
-
                   inputStyle={{
-                    width: '100%',
-                    borderRadius: '0px',
-                    border: 'none',
+                    width: "100%",
+                    borderRadius: "0px",
+                    border: "none",
                   }}
-
                 />
               </div>
             </div>
@@ -705,29 +825,37 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="memberID"
-              label={`${t('Member ID')}`}
+              label={`${t("Member ID")}`}
               variant="outlined"
               value={gs1MemberData?.memberID}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                style: { fontSize: "16px", paddingTop: "8px", zIndex: "0" },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
-
         </div>
-
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-between mt-6">
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="companyLandline"
-              label={`${t('Company Landline')}`}
+              label={`${t("Company Landline")}`}
               variant="outlined"
               value={gs1MemberData?.companyLandLine}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                style: { fontSize: "16px", paddingTop: "8px", zIndex: "0" },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
@@ -735,27 +863,41 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="password"
-              label={`${t('Password')}`}
+              label={`${t("Password")}`}
               variant="outlined"
               value={userPassword}
               onChange={handlePassword}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                style: { fontSize: "16px", paddingTop: "8px", zIndex: "0" },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
-            {error && <p className='text-red-500 text-xs'>{t('Password must be 6 digit')}</p>}
+            {error && (
+              <p className="text-red-500 text-xs">
+                {t("Password must be 6 digit")}
+              </p>
+            )}
           </div>
 
           <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
             <TextField
               id="membershipType"
-              label={`${t('Membership Type')}`}
+              label={`${t("Membership Type")}`}
               variant="outlined"
               value={gs1MemberData?.membership_category}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: '16px', paddingTop: '8px', zIndex: '0' },
+                style: { fontSize: "16px", paddingTop: "8px", zIndex: "0" },
+              }}
+              inputProps={{
+                style: {
+                  textAlign: i18n.language === "ar" ? "right" : "left", // Align input text to the right for Arabic language
+                },
               }}
             />
           </div>
@@ -765,7 +907,7 @@ const MemberProfileDetails = ({ gs1MemberData, refreshAllUserData, editableData,
     //      </div>
     //     </div>
     // </div>
-  )
+  );
 }
 
 export default MemberProfileDetails
