@@ -43,59 +43,42 @@ const AdminAddForeignGTIN = () => {
     catch (error) {
       // console.log(error);
       if (error.response && error.response.status === 404) {
-        Swal.fire({
-          title: `${t('Product Not Found')}`,
-          text: `${t('Do you want to query in Global Database (GEPIR)?')}`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: `${t('Yes Search')}`,
-          cancelButtonText: `${t('Close')}`,
-          // changes the color of the confirm button to red
-          confirmButtonColor: '#021F69',
-          cancelButtonColor: '#FF693A',
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${userSearch}`);
-              // console.log(globalResponse?.data);
-              setData(globalResponse?.data);
-            }
-            catch (globalError) {
-              // console.log(globalError);
-              toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
-              setData([]);
-            }
-          }
-        });
+        try {
+          const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${userSearch}`);
+          console.log(globalResponse?.data);
+          setData(globalResponse?.data);
+        }
+        catch (globalError) {
+          // console.log(globalError);
+          toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
+          setData([]);
+        }
       } else {
         toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
         setData([]);
       }
       setIsLoading(false);
-
     }
   };
 
 
   const products = [
-    { name: `${t('GTIN')}`, value: data?.gtin },
-    { name: `${t('Brand Name')}`, value: data?.brandName },
-    { name: `${t('Product Description')}`, value: data?.productDescription },
-    { name: `${t('Product Image Url')}`, value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
-    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode },
-    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID },
-    { name: `${t('Type')}`, value: data?.type },
-
+    { name: `${t('GTIN')}`, value: data?.gtin || data?.globalGepirArr?.gtin },
+    { name: `${t('Brand Name')}`, value: data?.brandName || data?.globalGepirArr?.brandName },
+    { name: `${t('Product Description')}`, value: data?.productDescription || data?.globalGepirArr?.productDescription },
+    { name: `${t('Product Image Url')}`, value: data?.productImageUrl ? <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> : <a href={data?.globalGepirArr?.productImageUrl} target="_blank">{data?.globalGepirArr?.productImageUrl}</a> },
+    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode },
+    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: `${t('Type')}`, value: data?.type || data?.globalGepirArr?.type },
   ]
 
 
   const companyInformation = [
-    { name: "GTIN", value: data?.gtin },
-    { name: `${t('Company Name')}`, value: data?.companyName },
-    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode },
-    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID },
-    { name: `${t('Type')}`, value: data?.type },
-
+    { name: "GTIN", value: data?.gtin || data?.globalGepirArr?.gtin },
+    { name: `${t('Company Name')}`, value: data?.companyName || data?.globalGepirArr?.companyName },
+    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode },
+    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: `${t('Type')}`, value: data?.type || data?.globalGepirArr?.type },
   ]
 
 
@@ -104,17 +87,17 @@ const AdminAddForeignGTIN = () => {
     setAddProductsLoader(true);
     try {
       const response = await newRequest.post('/foreignGtin', {
-        BrandName: data?.brandName,
-        productnameenglish: data?.productName,
-        moName: data?.moName,
-        barcode: data?.gtin,
+        BrandName: data?.brandName || data?.globalGepirArr?.brandName,
+        productnameenglish: data?.productName || data?.globalGepirArr?.productName,
+        moName: data?.moName || data?.globalGepirArr?.moName,
+        barcode: data?.gtin || data?.globalGepirArr?.gtin,
         // details_page: data?.details_page,
-        unit: data?.unitCode,
+        unit: data?.unitCode || data?.globalGepirArr?.unitCode,
         // front_image: data?.front_image,
-        gpc: data?.gcpGLNID,
-        gpc_code: data?.gpcCategoryCode,
+        gpc: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID,
+        gpc_code: data?.gpcCategoryCode || data?.globalGepirArr?.gpcCategoryCode,
         // size: data?.size,
-        countrySale: data?.countryOfSaleCode,
+        countrySale: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode,
         companyId: SelectedData?.companyID,
       });
       // console.log(response?.data);
@@ -182,6 +165,7 @@ const AdminAddForeignGTIN = () => {
                   <input
                     type="text"
                     id="fields1"
+                    name='userSearch'
                     value={userSearch}
                     onChange={(e) => setUserSearch(e.target.value)}
                     className="border-1 w-full rounded-sm border-secondary p-2"
@@ -271,15 +255,11 @@ const AdminAddForeignGTIN = () => {
               {activeTab === "product-Infomation" && (
                 <div className="flex flex-col md:flex-row mt-6 border-[0.7px] shadow-lg border-primary mb-6">
                   <div className="w-full md:w-1/3 flex justify-center items-center p-4 ">
-                    {/* Add your image element here */}
-                    {data?.productImageUrl && (
                       <img
-                        src={data?.productImageUrl}
+                        src={data?.productImageUrl || data?.globalGepirArr?.productImageUrl}
                         alt="Product"
                         className="w-1/2 object-contain"
                       />
-                    )}
-                    {/* <img src={second} className='' alt='' /> */}
                   </div>
 
                   <div className="w-full md:w-2/3">
@@ -337,7 +317,7 @@ const AdminAddForeignGTIN = () => {
               {/* third Tab */}
               {activeTab === "digital-link" && (
                 <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
-                  <AdminDigitalLinkTab barcodeData={data?.gtin} />
+                  <AdminDigitalLinkTab barcodeData={data?.gtin || data?.globalGepirArr?.gtin} />
                 </div>
               )}
 
@@ -345,7 +325,7 @@ const AdminAddForeignGTIN = () => {
               {activeTab === "Codification" && (
                 <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                   <div className="mt-2 border border-gray-300">
-                    <AdminCodificationTab gs1ProductData={data?.gcpGLNID} />
+                    <AdminCodificationTab gs1ProductData={data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID} />
                   </div>
                 </div>
               )}

@@ -109,6 +109,7 @@ const KPIReport = () => {
           company_name_eng: item?.user?.company_name_eng,
           productName: item?.productName,
           created_at: item?.created_at,
+          approved_date: item?.approved_date,
         };
       });
 
@@ -362,7 +363,7 @@ const KPIReport = () => {
                       type='button'
                       onClick={handleSearchTimeAndDate}
                       className="rounded-full bg-primary font-body px-5 py-2 text-sm mb-1 text-white transition duration-200 hover:bg-secondary">
-                      {t('Search')}
+                      {t('Apply')}
                     </button>
                   </div>
                 </div>

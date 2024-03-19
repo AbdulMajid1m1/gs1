@@ -705,11 +705,14 @@ function mapMembershipTypeToCategory(membershipName) {
 
 function mapMemberToNewUser(member) {
 
-    // Function to remove dashes (-) and spaces from a phone number
+    // Function to remove dashes (-), spaces, and plus sign from a phone number
+    // and prepend '966'
     const cleanPhoneNumber = (phoneNumber) => {
-        return phoneNumber.replace(/[-\s]/g, '');
+        // Remove dashes, spaces, and plus signs
+        let cleanedNumber = phoneNumber.replace(/[-\s+]/g, '');
+        // Prepend '966'
+        return `966${cleanedNumber}`;
     };
-
     let newUser = {
         // Direct mappings from Member to users
         // email: member.Email || '', 
