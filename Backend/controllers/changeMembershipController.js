@@ -274,7 +274,7 @@ export const membershipRenewRequest = async (req, res, next) => {
             },
 
         });
-     
+
         let gtinYearlySubscriptionFee = activatedGtinProducts[0].gtin_subscription_total_price;
         let cart = { cart_items: [] };
 
@@ -808,7 +808,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
             const renewalYear = expiryDate.getFullYear(); //
 
-            let cartData = cart.cart_items; 
+            let cartData = cart.cart_items;
 
             const data1 = {
 
@@ -1101,9 +1101,6 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
         if (!subscribedProductDetails) {
             throw createError(404, 'New GTIN subscription not found');
         }
-
-
-
 
         let registeration_fee;
         let yearly_fee;
@@ -2386,6 +2383,10 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         //  use calculateSubscriptionPrice function to calculate the price
         const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
+
+
+        let registeration_fee = fetchPrice.newRegistrationFee;
+        let yearly_fee = fetchPrice.finalPrice - fetchPrice.newRegistrationFee;
         //    insert new record in gtin_subcriptions table with new subscription
         const updateResponse = await prisma.gtin_subcriptions.updateMany({
             // update based on the transaction ID
@@ -2413,7 +2414,7 @@ export const approveMembershipRequest = async (req, res, next) => {
                 transaction_id: upgradeCart.registered_product_transaction_id,
                 gtin_subscription_limit: totalBarcodesToAdd,
                 gtin_subscription_counter: 0,
-                //     registration_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.member_registration_fee : subscribedProductDetails.med_registration_fee,
+                // registration_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.member_registration_fee : subscribedProductDetails.med_registration_fee,
                 // yearly_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.gtin_yearly_subscription_fee : subscribedProductDetails.med_yearly_subscription_fee,
                 gtin_subscription_total_price: fetchPrice.finalPrice - fetchPrice.newRegistrationFee,
                 price: fetchPrice.newRegistrationFee,
@@ -2460,8 +2461,8 @@ export const approveMembershipRequest = async (req, res, next) => {
 
         cart.cart_items.push({
             // check user category and add price accordingly
-            registration_fee: user.membership_category === "non_med_category" ? gtinProduct.member_registration_fee : gtinProduct.med_registration_fee,
-            yearly_fee: user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee,
+            registration_fee: registeration_fee,
+            yearly_fee: yearly_fee,
             productName: gtinProduct.member_category_description,
 
         });
