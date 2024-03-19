@@ -118,10 +118,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className="w-full">
-                <h2 className="text-secondary font-sans font-semibold text-2xl">
-                  {" "}
-                  {t("Renew Invoice")}
-                </h2>
+               <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Renew Invoice')}</h2>
 
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
