@@ -64,7 +64,8 @@ const DropDownSelection = () => {
                     &nbsp;
                      <i className="fa fa-angle-down"></i>
                   </Link>
-                  <div className="sub-menu mega-menu mega-menu-column-4 text-blue-600">
+                  <div
+                  className={`sub-menu mega-menu mega-menu-column-4 text-blue-600 ${i18n.language === 'ar' ? 'justify-end text-end' : 'justify-start text-start'}`}>
                     {section.mega_menu_categories.map((category, catIndex) => (
                       <div key={catIndex} className="list-item">
                         {/* <Link to={category.url} style={{ textDecoration: 'none' }}> */}

@@ -155,10 +155,14 @@ const MemberVerifiedByGS1 = () => {
   
   return (
     <div>
-        <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
+      <div
+        className={`p-0 h-full ${
+          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+        }`}
+      >
         {/* <div className="p-3 h-full "> */}
         <div>
-          <DashboardRightHeader title={`${t('Verified By GS1')}`} />
+          <DashboardRightHeader title={`${t("Verified By GS1")}`} />
         </div>
 
         {/* Head  */}
@@ -171,9 +175,12 @@ const MemberVerifiedByGS1 = () => {
 
         <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 p-5">
           <button
-            className={`p-4 rounded ${activeTab === 'home' ? 'bg-primary text-white' : 'bg-white text-primary'
-              } shadow-md flex items-center justify-center`}
-            onClick={() => handleTabClick('home')}
+            className={`p-4 rounded ${
+              activeTab === "home"
+                ? "bg-primary text-white"
+                : "bg-white text-primary"
+            } shadow-md flex items-center justify-center`}
+            onClick={() => handleTabClick("home")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +196,7 @@ const MemberVerifiedByGS1 = () => {
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
               />
             </svg>
-          {t('GTIN INFORMATION')}
+            {t("GTIN INFORMATION")}
           </button>
 
           {/* <button
@@ -221,9 +228,12 @@ const MemberVerifiedByGS1 = () => {
           </button> */}
 
           <button
-            className={`p-4 rounded ${activeTab === 'profile2' ? 'bg-primary text-white' : 'bg-white text-primary'
-              } shadow-md flex items-center justify-center`}
-            onClick={() => handleTabClick('profile2')}
+            className={`p-4 rounded ${
+              activeTab === "profile2"
+                ? "bg-primary text-white"
+                : "bg-white text-primary"
+            } shadow-md flex items-center justify-center`}
+            onClick={() => handleTabClick("profile2")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -241,20 +251,17 @@ const MemberVerifiedByGS1 = () => {
             {/* {t('EVENTS')} */}
             {t("Company Information")}
           </button>
-
         </div>
 
         <div className="shadow-xl border border-gray-100 font-light px-5 py-8 rounded text-gray-500 bg-white mt-6">
-
-
           {/*First Tab Gtin Information only change this tab*/}
-          {activeTab === 'home' && (
+          {activeTab === "home" && (
             <div className="block">
               <input
                 type="text"
-                name='gtin'
-                className="w-full border h-10 rounded-md px-5 font-semibold text-black border-black"
-                placeholder={`${t('GTIN INFORMATION')}`}
+                name="gtin"
+                 className={`w-full border h-10 rounded-md px-5 font-semibold text-black border-black ${i18n.language === "ar" ? "text-end" : "text-start" }`}
+                placeholder={`${t("GTIN INFORMATION")}`}
                 value={gtin}
                 onChange={(event) => setGTIN(event.target.value)}
                 onBlur={handleSearch}
@@ -264,8 +271,11 @@ const MemberVerifiedByGS1 = () => {
                 <div className="w-full md:w-1/3 flex justify-center items-center p-4">
                   {/* Add your image element here */}
                   {data?.gtinArr?.productImageUrl && (
-                    <img src={data.gtinArr.productImageUrl} alt="Product" className="w-1/2" />
-
+                    <img
+                      src={data.gtinArr.productImageUrl}
+                      alt="Product"
+                      className="w-1/2"
+                    />
                   )}
                 </div>
 
@@ -276,8 +286,12 @@ const MemberVerifiedByGS1 = () => {
                         <tbody>
                           {products.map((product, index) => (
                             <tr key={index}>
-                              <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">{product.name}</td>
-                              <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">{product.value}</td>
+                              <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
+                                {product.name}
+                              </td>
+                              <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
+                                {product.value}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -287,41 +301,39 @@ const MemberVerifiedByGS1 = () => {
                 </div>
               </div>
 
-
-              <div className=''>
+              <div className="">
                 <div className="Gtin-Information-table">
                   <table>
                     <thead>
                       <tr>
-                        <th> {t('Allergen Info')}</th>
-                        <th> {t('Nutrients Info')}</th>
-                        <th> {t('Batch')}</th>
-                        <th> {t('Expiry')}</th>
-                        <th> {t('Serial')}</th>
-                        <th> {t('Manufacturing Date')}</th>
-                        <th> {t('Best Before')}</th>
+                        <th> {t("Allergen Info")}</th>
+                        <th> {t("Nutrients Info")}</th>
+                        <th> {t("Batch")}</th>
+                        <th> {t("Expiry")}</th>
+                        <th> {t("Serial")}</th>
+                        <th> {t("Manufacturing Date")}</th>
+                        <th> {t("Best Before")}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data && data.productContents.map(item => (
-                        <tr key={item.ID}>
-                          <td>{item.ProductAllergenInformation}</td>
-                          <td>{item.ProductNutrientsInformation}</td>
-                          <td>{item.Batch}</td>
-                          <td>{item.Expiry}</td>
-                          <td>{item.Serial}</td>
-                          <td>{item.ManufacturingDate}</td>
-                          <td>{item.bestBeforeDate}</td>
-                        </tr>
-                      ))}
+                      {data &&
+                        data.productContents.map((item) => (
+                          <tr key={item.ID}>
+                            <td>{item.ProductAllergenInformation}</td>
+                            <td>{item.ProductNutrientsInformation}</td>
+                            <td>{item.Batch}</td>
+                            <td>{item.Expiry}</td>
+                            <td>{item.Serial}</td>
+                            <td>{item.ManufacturingDate}</td>
+                            <td>{item.bestBeforeDate}</td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-
           )}
-
 
           {/* Second Tab Digital Link */}
           {/* {activeTab === 'profile' && (
@@ -332,34 +344,33 @@ const MemberVerifiedByGS1 = () => {
             </div>
           )} */}
 
-
           {/* Third Tab Events Map */}
-          {activeTab === 'profile2' && (
-           <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
-            <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-2/3">
-                <div className="container mx-auto mt-6 p-4">
-                  <div className="overflow-x-auto">
-                    <table className="table-auto min-w-max w-full">
-                      <tbody>
-                        {companyInformation.map((product, index) => (
-                          // {productInformation.map((product, index) => (
-                          <tr key={index}>
-                            <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
-                              {product.name}
-                            </td>
-                            <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
-                              {product.value}
-                            </td>
-                          </tr>
+          {activeTab === "profile2" && (
+            <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+              <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-2/3">
+                  <div className="container mx-auto mt-6 p-4">
+                    <div className="overflow-x-auto">
+                      <table className="table-auto min-w-max w-full">
+                        <tbody>
+                          {companyInformation.map((product, index) => (
+                            // {productInformation.map((product, index) => (
+                            <tr key={index}>
+                              <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
+                                {product.name}
+                              </td>
+                              <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
+                                {product.value}
+                              </td>
+                            </tr>
                           ))}
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
             // <div className="block">
             //   <div className='h-auto'>
             //     <div className='h-auto 2xl:h-44 xl:h-44 lg:h-44 w-full border-2 border-gray-200 rounded-md'>
@@ -383,7 +394,6 @@ const MemberVerifiedByGS1 = () => {
 
             //           </select>
             //         </div>
-
 
             //         <div className='px-4 flex flex-col gap-2'>
             //           <label> {t('Serials')} </label>
@@ -449,9 +459,9 @@ const MemberVerifiedByGS1 = () => {
             //           </table>
             //         </div>
             //       </div>
-                // )}
+            // )}
 
-                // {/* Events Map */}
+            // {/* Events Map */}
             //     <EventsMap selectedSerial={selectedSerial}
             //       selectedBatch={selectedBatch}
             //     />
@@ -460,9 +470,9 @@ const MemberVerifiedByGS1 = () => {
             // </div>
           )}
         </div>
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default MemberVerifiedByGS1

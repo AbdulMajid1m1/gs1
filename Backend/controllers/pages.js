@@ -6,17 +6,17 @@ import slugify from 'slugify';
 
 
 const pages = Joi.object({
-    name: Joi.string().max(255).required(),
-    name_ar: Joi.string().max(255).required(),
-    slug: Joi.string().max(255).trim().lowercase().custom((value, helpers) =>
+    name: Joi.string().required(),
+    name_ar: Joi.string().required(),
+    slug: Joi.string().trim().lowercase().custom((value, helpers) =>
     {
         return slugify(value);
     }).required(),
     page_order: Joi.number(),
-    sections: Joi.string().max(255).required(),
+    sections: Joi.string().required(),
     custom_section_data: Joi.string(),
     custom_section_data_ar: Joi.string(),
-    seo_description: Joi.string().max(255).required(),
+    seo_description: Joi.string().required(),
     is_dropdown: Joi.number(),
 
     status: Joi.number().valid(0, 1).required(),

@@ -1171,7 +1171,7 @@ const GTINAddProducts = () => {
                           <TextField
                             // required
                             {...params}
-                            label="Search HS-Code here"
+                            label={t("Search HS-Code here")}
                             InputProps={{
                               ...params.InputProps,
                               endAdornment: (

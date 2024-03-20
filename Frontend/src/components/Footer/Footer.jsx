@@ -20,35 +20,36 @@ const Footer = () => {
                <h2 className='text-white text-xl font-semibold text-center relative'>
               {t('Standards')}
                </h2>
-               <div className='text-gray-300 flex flex-col gap-1 pt-10'>
+               <div className={`text-gray-300 flex flex-col gap-1 pt-10 ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('Need a GS1 barcode')}</p>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('GS1 General Specifications')}</p>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('GS1 Standards')}</p>
                </div>
-               <div className='absolute top-14 left-0 w-full sm:w-[90%] h-[0.5px] bg-primary'></div>
+               <div  className={`absolute top-14  w-full sm:w-[90%] h-[0.5px] bg-primary ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}></div>
              </div>
 
-             <div className='h-auto w-full flex flex-col gap-8 relative'>
+             <div className={`h-auto w-full flex flex-col gap-8 relative `}>
                <h2 className='text-white text-xl font-semibold text-center relative'>
                  {t('News & Events')}
                </h2>
-               <div className='text-gray-300 flex flex-col gap-1 pt-10'>
+               <div className={`text-gray-300 flex flex-col gap-1 pt-10 ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}
+               >
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('News')}</p>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'>{t('Events')}</p>
                </div>
-               <div className='absolute top-14 left-0 w-full sm:w-[90%] h-[0.5px] bg-primary'></div>
+               <div  className={`absolute top-14  w-full sm:w-[90%] h-[0.5px] bg-primary ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}></div>
              </div>  
 
           <div className={`h-auto w-full flex flex-col gap-8 relative ${i18n.language === 'ar' ? 'order-first' : 'order-last'}`}>
                <h2 className='text-white text-xl font-semibold text-center relative'>
               {t('About GS1')}
                </h2>
-               <div className='text-gray-300 flex flex-col gap-1 pt-10'>
+               <div className={`text-gray-300 flex flex-col gap-1 pt-10 ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('What we do')}</p>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('Our story')}</p>
                  <p className='transition-colors duration-300 hover:text-primary cursor-pointer'> {t('Careers')}</p>
                </div>
-               <div className='absolute top-14 left-0 w-full sm:w-[90%] h-[0.5px] bg-primary'></div>
+               <div  className={`absolute top-14  w-full sm:w-[90%] h-[0.5px] bg-primary ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}></div>
              </div>
 
          </div>
