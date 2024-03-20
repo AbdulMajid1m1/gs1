@@ -1,5 +1,5 @@
 import React from 'react'
-import gs1v2logo from "../../Images/logo.png"
+import gs1logowhite from "../../Images/gs1logowhite.png"
 import { useNavigate } from 'react-router-dom'
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import LanguageSwitcher from "../../switer"
@@ -17,7 +17,7 @@ const Header = () => {
         <div className={`h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4  ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
           {/* Logo and Text */}
           <div className='flex items-center flex-wrap mb-4 sm:mb-0'>
-            <img onClick={() => navigate('/')} src={gs1v2logo} className='h-14 w-auto cursor-pointer' alt='' />
+            <img onClick={() => navigate('/')} src={gs1logowhite} className='h-14 w-auto cursor-pointer' alt='' />
             <div className='text-center px-2'>
               <p className='text-secondary font-semibold'>{t('GS1 Saudia Arabia')}</p>
               <p className='text-secondary'>{t('The Global Language of Business')}</p>
