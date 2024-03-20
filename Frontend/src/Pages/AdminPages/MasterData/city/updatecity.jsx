@@ -7,8 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
-{
+const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) => {
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   // console.log(updateBrandData)
@@ -22,15 +21,12 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
     name: updateBrandData?.state_name || "",
   });
   const { t, i18n } = useTranslation();
-  const handleCloseUpdatePopup = () =>
-  {
+  const handleCloseUpdatePopup = () => {
     setVisibility(false);
   };
 
-  useEffect(() =>
-  {
-    const getDocuments = async () =>
-    {
+  useEffect(() => {
+    const getDocuments = async () => {
       try {
         const response = await newRequest.get('/address/getAllStatesName');
         // console.log(response.data);
@@ -44,16 +40,14 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
 
   }, []);
 
-  const handleSelectedDocuments = (event, value) =>
-  {
+  const handleSelectedDocuments = (event, value) => {
     // console.log(value?.id);
     setSelectedDocuments(value);
   };
 
   // console.log(selectedDocuments);
 
-  const handleUpdateBrand = async () =>
-  {
+  const handleUpdateBrand = async () => {
     setLoading(true);
 
     try {
@@ -108,44 +102,78 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
         <div className="popup-overlay">
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
-              <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Edit')} {t('city')}</h2>
+              <form className="w-full">
+                <h2
+                  className={`text-secondary font-sans font-semibold text-2xl ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
+                >
+                  {t("Edit")} {t("city")}
+                </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('City')} {t('Name [English]')}</label>
+                    <label
+                      htmlFor="field1"
+                      className={`text-secondary  ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
+                    >
+                      {t("City")} {t("Name [English]")}
+                    </label>
                     <input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setname(e.target.value)}
                       //   readOnly
-                      placeholder={`${t('Enter')} ${t('city')} ${t('Name [English]')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      placeholder={`${t("Enter")} ${t("city")} ${t(
+                        "Name [English]"
+                      )}`}
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
                     />
                   </div>
 
-                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('city')} {t('Name Arabic')}</label>
+                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
+                    <label
+                      htmlFor="field1"
+                      className={`text-secondary  ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
+                    >
+                      {t("city")} {t("Name Arabic")}
+                    </label>
                     <input
                       type="text"
                       id="name"
                       value={name_ar}
                       onChange={(e) => setname_ar(e.target.value)}
-                      placeholder={`${t('Enter')} ${t('City')} ${t('Name Arabic')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      placeholder={`${t("Enter")} ${t("City")} ${t(
+                        "Name Arabic"
+                      )}`}
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Select State')}</label>
+                    <label
+                      htmlFor="field1"
+                      className={`text-secondary  ${
+                        i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}
+                    >
+                      {t("Select State")}
+                    </label>
                     <Autocomplete
                       id="field1"
                       options={docuements}
                       value={selectedDocuments}
                       getOptionLabel={(option) => option?.name || ""}
                       onChange={handleSelectedDocuments}
-                      onInputChange={(event, value) =>
-                      {
+                      onInputChange={(event, value) => {
                         if (!value) {
                           // perform operation when input is cleared
                           // console.log("Input cleared");
@@ -158,14 +186,15 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
                           InputProps={{
                             ...params.InputProps,
                             className: "text-white",
+                            dir: i18n.language === "ar" ? "rtl" : "ltr",
                           }}
                           InputLabelProps={{
                             ...params.InputLabelProps,
                             style: { color: "white" },
                           }}
                           className="bg-gray-50 border border-gray-300 text-white text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                          placeholder={`${t('Select State')}`}
-                        // required
+                          placeholder={`${t("Select State")}`}
+                          // required
                         />
                       )}
                       classes={{
@@ -180,26 +209,30 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
                   </div>
                 </div>
 
-
-
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                   <button
                     type="button"
                     className="px-5 py-2 w-[30%] rounded-sm bg-primary text-white font-body text-sm"
                     onClick={handleCloseUpdatePopup}
                   >
-                    {t('Close')}
+                    {t("Close")}
                   </button>
 
                   <Button
                     variant="contained"
-                    style={{ backgroundColor: '#021F69', color: '#ffffff' }}
+                    style={{ backgroundColor: "#021F69", color: "#ffffff" }}
                     onClick={handleUpdateBrand}
                     disabled={loading}
                     className="w-[70%] ml-2"
-                    endIcon={loading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
+                    endIcon={
+                      loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        <SendIcon />
+                      )
+                    }
                   >
-                    {t('Update')} {t('city')}
+                    {t("Update")} {t("city")}
                   </Button>
                 </div>
               </form>
@@ -207,9 +240,8 @@ const Updatecity = ({ isVisible, setVisibility, refreshBrandData }) =>
           </div>
         </div>
       )}
-
     </div>
-  )
+  );
 }
 
 export default Updatecity

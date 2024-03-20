@@ -66,30 +66,30 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')}{t('Other Products Category')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{t('Add')}{t('Other Products Category')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                  
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field1" className="text-secondary">{t('product name')}  </label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('product name')}  </label>
                     <input
                       type="text"
                       id="field1"
                       value={product_name}
                       onChange={(e) => setproduct_name(e.target.value)}
                       placeholder={t('Enter product name')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field2" className="text-secondary">{t('total no of barcodes')}</label>
+                    <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('total no of barcodes')}</label>
                     <input
                       type="number"
                       id="field2"
                       value={total_no_of_barcodes}
                       onChange={(e) => settotal_no_of_barcodes(e.target.value)}
                       placeholder={t('Enter total no of barcodes')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
@@ -97,64 +97,64 @@ const AddotherProducts = ({ isVisible, setVisibility, refreshBrandData }) =>
                  
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field3" className="text-secondary">{t('product subscription fee')}</label>
+                    <label htmlFor="field3" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('product subscription fee')}</label>
                     <input
                       type="number"
                       id="field3"
                       value={product_subscription_fee}
                       onChange={(e) => setproduct_subscription_fee(e.target.value)}
                       placeholder={t('Enter product subscription fee')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field4" className="text-secondary">{t('med subscription fee')}</label>
+                    <label htmlFor="field4" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('med subscription fee')}</label>
                     <input
                       type="number"
                       id="field4"
                       value={med_subscription_fee}
                       onChange={(e) => setmed_subscription_fee(e.target.value)}
                       placeholder={t('Enter med subscription fee')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
 
                  <div className="flex flex-col sm:gap-3 gap-3 sm:flex-row sm:justify-between">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field5" className="text-secondary">{t('code')}</label>
+                    <label htmlFor="field5" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('code')}</label>
                     <input
                       type="text"
                       id="field5"
                       value={code}
                       onChange={(e) => setcode(e.target.value)}
                       placeholder={t('Enter code')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field6" className="text-secondary">{t('variant')}</label>
+                    <label htmlFor="field6" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('variant')}</label>
                     <input
                       type="text"
                       id="field6"
                       value={variant}
                       onChange={(e) => setvariant(e.target.value)}
                       placeholder={t('Enter variant')}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                  </div>
 
 
                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field7" className="text-secondary">{t('Status')}</label>
+                    <label htmlFor="field7" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Status')}</label>
                     <select
                       type="text"
                       id="field7"
                       value={status}
                       onChange={(e) => setstatus(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                        <option value="">-{t('Status')}-</option>
                       <option value="1">{t('active')}</option>

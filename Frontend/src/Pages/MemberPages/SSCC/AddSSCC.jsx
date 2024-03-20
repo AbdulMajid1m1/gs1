@@ -310,12 +310,12 @@ const AddSSCC = () => {
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                  <label htmlFor='extension'>  {t('Extension Digit')}<span className='text-red-600'>*</span></label>
+                  <label htmlFor='extension' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Extension Digit')}<span className='text-red-600'>*</span></label>
                   <select
                     id='extension'
                     type='text'
                     onChange={(e) => setDigitExtension(e.target.value)}
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                   >
                     <option value=''>-{t('Select')}-</option>
                     <option value='0'>0</option>
@@ -329,7 +329,7 @@ const AddSSCC = () => {
 
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                  <label htmlFor='sscctype'>{t('SSCC Type')}<span className='text-red-600'>*</span></label>
+                  <label htmlFor='sscctype' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('SSCC Type')}<span className='text-red-600'>*</span></label>
                   <select
                     onChange={(e) => {
                       setSSCCType(e.target.value);
@@ -338,7 +338,7 @@ const AddSSCC = () => {
                     }}
                     id='sscctype'
                     type='text'
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                   >
                     <option value=''>-{t('Select')}-</option>
                     <option value='pallet'>Pallet</option>
@@ -352,105 +352,105 @@ const AddSSCC = () => {
                 <div>
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                      <label htmlFor='vendorid'> {t('VendorID')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='vendorid' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('VendorID')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setVendorID(e.target.value)}
                         id='vendorid'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='addressArabic'>{t('Vendor Name')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='addressArabic' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Vendor Name')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setVendorName(e.target.value)}
                         id='vendorname'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='productid'>{t('ProductID')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='productid' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('ProductID')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setProductID(e.target.value)}
                         id='productid'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='produvtdesc'>{t('Product Description')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='produvtdesc' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Product Description')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setProductDesc(e.target.value)}
                         id='produvtdesc'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='serialno'> {t('Serial Number')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='serialno' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Serial Number')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setSerialNo(e.target.value)}
                         id='serialno'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='itemcode'>{t('Item Code')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='itemcode' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Item Code')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setItemCode(e.target.value)}
                         id='itemcode'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='qty'>{t('Qty')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='qty' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Qty')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setQty(e.target.value)}
                         id='qty'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='useby'>{t('UseBy')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='useby' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('UseBy')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setUseBy(e.target.value)}
                         id='useby'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='batch'>{t('BatchNo')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='batch' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('BatchNo')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setBatchNo(e.target.value)}
                         id='batch'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='boxof'>{t('Boxof')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='boxof' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Boxof')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setBoxOf(e.target.value)}
                         id='boxof'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
                 </div>
@@ -461,47 +461,47 @@ const AddSSCC = () => {
                 <div>
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='hsn'>{t('HSN SKU Number')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='hsn' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('HSN SKU Number')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setHSN(e.target.value)}
                         id='hsn'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='po'>{t('P.O No')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='po' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('P.O No')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setPO(e.target.value)}
                         id='po'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='expire'>{t('Expiration Date')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='expire' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Expiration Date')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setExpireDate(e.target.value)}
                         id='expire'
                         required
-                        type='date' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='date' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 `} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='vendorlabelID'> {t('VendorID')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='vendorlabelID' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('VendorID')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setVendorLabelID(e.target.value)}
                         id='vendorlabelID'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='carton'>{t('Carton Quantity')}<span className='text-red-600'>*</span></label>
+                      <label htmlFor='carton' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Carton Quantity')}<span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setCartonQty(e.target.value)}
                         id='carton'
@@ -510,63 +510,63 @@ const AddSSCC = () => {
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='shipto'>{t('Ship TO')}  <span className='text-red-600'>*</span></label>
+                      <label htmlFor='shipto' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Ship TO')}  <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setShipTo(e.target.value)}
                         id='shipto'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='shipdate'> {t('Ship Date')}  <span className='text-red-600'>*</span></label>
+                      <label htmlFor='shipdate' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Ship Date')}  <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setShipDate(e.target.value)}
                         id='shipdate'
                         required
-                        type='date' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='date' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 `} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='vendorItem'>{t('Vendor Item No')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='vendorItem' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Vendor Item No')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setVendorItem(e.target.value)}
                         id='vendorItem'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='description'>{t('Description')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='description' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Description')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setDescription(e.target.value)}
                         id='description'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='showcode'>{t('Short Qty Code')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='showcode' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Short Qty Code')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setShortQtyCode(e.target.value)}
                         id='showcode'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='country'>{t('Country Of Origin')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='country' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Country Of Origin')} <span className='text-red-600'>*</span></label>
                       <select
                         onChange={(e) => setSelectedCountryOfOrigin(e.target.value)}
                         value={selectedCountryOfOrigin}  
                         id='country'
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                       >
                         <option>-{t('select')}-</option>
                         {/* <option value='1'>1</option>
@@ -579,12 +579,12 @@ const AddSSCC = () => {
                     </div>
 
                     <div className='w-full font-body sm:text-base text-sm flex flex-col gap-0'>
-                      <label htmlFor='carton'>{t('Carton')} <span className='text-red-600'>*</span></label>
+                      <label htmlFor='carton' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Carton')} <span className='text-red-600'>*</span></label>
                       <input
                         onChange={(e) => setCarton(e.target.value)}
                         id='carton'
                         required
-                        type='text' className="border-1 w-full rounded-sm border-[#8E9CAB] p-2" />
+                        type='text' className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`} />
                     </div>
                   </div>
                 </div>

@@ -11,7 +11,7 @@ import { useLanguage } from '../../../../Contexts/LanguageContext';
 const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const { selectedLanguage } = useLanguage();
   // console.log(memberData);  
   const [firstName, setFirstName] = useState('');
@@ -93,11 +93,11 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full' onSubmit={handleAddSubMenus}>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add Sub Member')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{t('Add Sub Member')}</h2>
 
                 <div className="flex justify-center items-center sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field1" className="text-secondary">{t('First Name')} <span className='text-red-500'>*</span></label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('First Name')} <span className='text-red-500'>*</span></label>
                     <input
                       type="text"
                       id="field1"
@@ -105,12 +105,12 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder={`${t('First Name')}`}
                       required
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field2" className="text-secondary">{t('Last Name')} <span className='text-red-500'>*</span></label>
+                    <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Last Name')} <span className='text-red-500'>*</span></label>
                     <input
                       type="text"
                       id="field2"
@@ -118,14 +118,14 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                       onChange={(e) => setLastName(e.target.value)}
                       required
                       placeholder={`${t('Last Name')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>
 
                 <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field3" className="text-secondary">{t('Email')} <span className='text-red-500'>*</span></label>
+                    <label htmlFor="field3" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Email')} <span className='text-red-500'>*</span></label>
                     <input
                       type="text"
                       id="field3"
@@ -133,19 +133,19 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                       onChange={(e) => setEmailAddress(e.target.value)}
                       required
                       placeholder={`${t('Email')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field4" className="text-secondary">{t('Mobile (must omit 0)')} <span className='text-red-500'>*</span></label>
+                    <label htmlFor="field4" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Mobile (must omit 0)')} <span className='text-red-500'>*</span></label>
                     {/* <input
                                    type="number"
                                    id="field4"
                                         value={mobileNumber}
                                         onChange={(e) => setMobileNumber(e.target.value)}
                                    placeholder="Last Name"
-                                   className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                   className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                                  /> */}
                     <div className='border-1 border-t border-r border-b border-l w-full rounded-sm border-[#8E9CAB] mb-3'>
                       <PhoneInput
@@ -174,7 +174,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
 
                 <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field5" className="text-secondary">{t('Member Type')}</label>
+                    <label htmlFor="field5" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Member Type')}</label>
                     <select
                       type="text"
                       id="field5"
@@ -182,7 +182,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                       onChange={(e) => setMemberType(e.target.value)}
                       required
                       placeholder={`${t('Member Type')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                       <option value="">-Select MemberType-</option>
                       <option value="operator">Operator</option>
@@ -191,7 +191,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field6" className="text-secondary">{t('Password')}</label>
+                    <label htmlFor="field6" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Password')}</label>
                     <input
                       type="text"
                       id="field6"
@@ -199,14 +199,14 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder={`${t('Password')}`}
                       required
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>
 
                 <div className="flex justify-center items-center sm:gap-3 gap-3 mt-1">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
-                    <label htmlFor="field7" className="text-secondary">{t('Member Status')}</label>
+                    <label htmlFor="field7" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Member Status')}</label>
                     <select
                       type="text"
                       id="field7"
@@ -214,7 +214,7 @@ const SubMenusAddPopUp = ({ isVisible, setVisibility, refreshSubMenus }) => {
                       onChange={(e) => setMemberStatus(e.target.value)}
                       required
                       placeholder={`${t('Member Status')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     >
                       <option value="">-{t('Status')}-</option>
                       <option value="active">{t('Active')}</option>

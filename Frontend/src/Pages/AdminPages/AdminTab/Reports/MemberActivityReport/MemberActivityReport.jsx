@@ -75,12 +75,13 @@ const MemberActivityReport = () => {
       const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      // console.log(res);
+      // console.log(res); 
 
       const crs = res?.data?.map(item => {
         return {
           id: item?.id,
           memberID: item?.memberID,
+          contactPerson: item?.contactPerson,
           email: item?.email,
           
         };
@@ -234,7 +235,7 @@ const MemberActivityReport = () => {
 
                     <div className='sm:flex p-4 gap-2 w-full'>
                       <div className="flex flex-col w-full">
-                  <label className="font-body text-sm"> {t('Members')}</label>
+                  <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Members')}</label>
                         {/* <select
                           type="text"
                           className="border border-gray-300 p-2 rounded-lg"
@@ -251,7 +252,7 @@ const MemberActivityReport = () => {
                             // memberID: item?.memberID,
                             // email: item?.email,
                             // getOptionLabel={(option) => (option && option.IntID) ? `${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : 'no'}
-                            getOptionLabel={(option) => (option && option.memberID) ? `${option?.memberID} - ${option?.email} ` : ''}
+                            getOptionLabel={(option) => (option && option.memberID) ? `${option?.memberID} - ${option?.contactPerson} - ${option?.email} ` : ''}
                             onChange={handleGPCAutoCompleteChange}
                             value={selectedMember}
                             onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -266,7 +267,7 @@ const MemberActivityReport = () => {
                             }}
                             renderOption={(props, option) => (
                               <li key={option.memberID} {...props}>
-                                {option ? `${option.memberID} - ${option.email} ` : 'No options'}
+                                {option ? `${option.memberID} - ${option.contactPerson ? option.contactPerson : ''} - ${option.email} ` : 'No options'}
                               </li>
                             )}
 
@@ -310,7 +311,7 @@ const MemberActivityReport = () => {
 
                       </div>
                       <div className="flex flex-col w-full">
-                          <label className="font-body text-sm">{t('Start Date')}</label>
+                          <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Start Date')}</label>
                           <input
                               onChange={(e) => setStartDate(e.target.value)}
                               value={startDate}
@@ -319,7 +320,7 @@ const MemberActivityReport = () => {
                           />
                       </div>
                       <div className="flex flex-col w-full">
-                          <label className="font-body text-sm">{t('End Date')}</label>
+                          <label className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('End Date')}</label>
                           <input
                               onChange={(e) => setEndDate(e.target.value)}
                               value={endDate}

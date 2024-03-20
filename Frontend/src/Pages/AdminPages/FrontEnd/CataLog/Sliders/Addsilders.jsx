@@ -14,7 +14,7 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
     const handleCloseCreatePopup = () => {
         setVisibility(false);
     };
-    const { t } = useTranslation();
+    const { t ,i18n} = useTranslation();
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageshow, setimageshow] = useState('')
@@ -95,29 +95,34 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Sliders')} </h2>
+                                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                                    }`}>{t('Add')} {t('Sliders')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Title')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Title')}</label>
                                         <input
                                             type="text"
                                             id="Title"
                                             value={Title}
                                             onChange={(e) => setTitle(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Title')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Set Page')}
                                         </label>
                                         <select
                                             id="status"
                                             value={Page}
                                             onChange={(e) => setPage(e.target.value)}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         >
                                             <option value="Select">-- {t('Select')} --</option>
                                             {
@@ -131,19 +136,22 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t(Caption)}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t(Caption)}</label>
                                         <input
                                             type="text"
                                             id="Caption"
                                             value={Caption}
                                             onChange={(e) => setCaption(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Caption')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Description')}
                                         </label>
                                         <textarea
@@ -152,14 +160,16 @@ const Addsilders = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
                                             placeholder={`${t('Enter')}${t('Description')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                            className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                        
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
-                                        <label htmlFor="Image" className="text-secondary">
+                                        <label htmlFor="Image" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Image')}
                                         </label>
                                             <div className="imgesection">

@@ -9,7 +9,7 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
     const [Description, setDescription] = useState('')
     const [Page, setPage] = useState('')
     const [Pagedropdown, setPagedropdown] = useState([])
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         const getpagedata = async () => {
@@ -95,34 +95,40 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                     <div className="popup-container h-auto sm:w-[45%] w-full">
                         <div className="popup-form w-full " style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                             <form className='w-full'>
-                                <h2 className='text-secondary font-sans font-semibold text-2xl'>{t('Add')} {t('Team Member')} </h2>
+                                <h2  className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                                    }`}>{t('Add')} {t('Team Member')} </h2>
                                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Name')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Name')}</label>
                                         <input
                                             type="text"
                                             id="Name"
                                             value={Name}
                                             onChange={(e) => setName(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Name')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                             className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="field1" className="text-secondary">{t('Job Title')}</label>
+                                        <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>{t('Job Title')}</label>
                                         <input
                                             type="text"
                                             id="JobTitle"
                                             value={JobTitle}
                                             onChange={(e) => setJobTitle(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Job Title')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                             className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
                                     </div>
 
                                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                        <label htmlFor="status" className="text-secondary">
+                                        <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Description')}
                                         </label>
                                         <textarea
@@ -131,14 +137,16 @@ const Addmanageteam = ({ isVisible, setVisibility, refreshBrandData }) => {
                                             value={Description}
                                             onChange={(e) => setDescription(e.target.value)}
                                             placeholder={`${t('Enter')} ${t('Description')}`}
-                                            className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                             className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                }`}
                                         />
 
                                     </div>
 
                                     <div className="printerPic font-body sm:text-base text-sm flex flex-col gap-2">
                                         {/* <center> */}
-                                        <label htmlFor="Image" className="text-secondary">
+                                        <label htmlFor="Image" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                            }`}>
                                             {t('Image')}
                                         </label>
                                         <div className="imgesection">
