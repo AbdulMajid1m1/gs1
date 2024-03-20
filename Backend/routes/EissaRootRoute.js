@@ -38,7 +38,7 @@ import
     createhelpdesk,
     gethelpdeskByuserid,
     updatehelp_desks,
-    getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment, sendemailAssign_to_helpdesk
+    getAllassignto, gethelpdesk_commentByuserid, createhelpdesk_comment, sendemailAssign_to_helpdesk, sendemailstatus_closed
 } from "../controllers/help_desks.js"
 import { translations, translations_table, translations_put, translations_post } from "../controllers/languages.js"
 
@@ -58,6 +58,7 @@ router.get('/gethelpdeskById/:id', gethelpdeskById);
 router.get('/gethelpdeskByuserid/:user_id', gethelpdeskByuserid);
 router.get('/gethelpdesk_commentByuserid/:helpDeskID', gethelpdesk_commentByuserid);
 router.post('/sendemailAssign_to_helpdesk/:email', sendemailAssign_to_helpdesk);
+router.post('/sendemailstatus_closed/:email', sendemailstatus_closed);
 router.post('/createhelpdesk_comment', upload([{
     name: 'document',
     path: 'public/uploads/help_desks_DOC',
