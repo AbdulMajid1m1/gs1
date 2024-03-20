@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import * as XLSX from "xlsx";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import Chart from "react-apexcharts";
 
 const KPIReport = () => {
   const { t, i18n } = useTranslation();
@@ -26,6 +27,35 @@ const KPIReport = () => {
   const [stats, setStats] = useState({});
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
+  // State for the chart data
+  const [chartState, setChartState] = useState({
+    options: {
+      chart: {
+        id: "basic-bar"
+      },
+      xaxis: {
+        categories: ['APPROVED', 'NEW REGISTRATION', 'RENEWALS', 'PENDING'],
+        reversed: true
+      },
+      yaxis: {
+        reversed: false,
+        labels: {
+          show: false // Hide x-axis labels
+        }
+      },
+      // dataLabels: {
+      //   enabled: false // Hide data labels
+      // }
+    },
+    series: [
+      {
+        name: "series-1",
+        data: [] // Initialize with empty data
+      }
+    ]
+  });
+
 
 
   useEffect(() => {
@@ -92,6 +122,38 @@ const KPIReport = () => {
       // admin - username - email, user - companyID, companyNameE, productName
       // console.log(res?.data);
       setStats(res?.data);
+
+
+      // Update the chart data with the received stats
+      const seriesData = [
+        {
+          x: 'APPROVED',
+          y: res.data.totalApprovedAmount || '',
+          fillColor: '#021F69',
+        },
+        {
+          x: 'NEW',
+          y: res.data.newRegistrations?.amount || '',
+          fillColor: '#FF693A',
+          strokeColor: '#C23829'
+        },
+        {
+          x: 'RENEWALS',
+          y: res.data.renewals?.amount || '',
+          fillColor: '#F98E1A',
+        },
+        {
+          x: 'PENDING',
+          y: res.data.pendingAmount?.amount || '',
+          fillColor: '#A9A9A9',
+        }
+      ];
+
+      setChartState(prevState => ({
+        ...prevState,
+        series: [{ ...prevState.series[0], data: seriesData }]
+      }));
+
       setTotalAmount(res?.data?.totalApprovedAmount);
       setNewRegistraions(res?.data?.newRegistrations?.amount);
       setRenewals(res?.data?.renewals?.amount);
@@ -218,9 +280,6 @@ const KPIReport = () => {
   };
 
 
-
-
-
   return (
     <div>
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
@@ -277,7 +336,7 @@ const KPIReport = () => {
                   </button>
                 </div>
 
-                <div className={`flex justify-between items-center flex-wrap gap-2 w-full  ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
+                <div className={`flex justify-between items-center flex-wrap gap-2 w-full sm:-mt-14 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
                   <div className='mt-2 flex flex-col justify-start items-start'>
                     <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
                       <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
@@ -338,7 +397,17 @@ const KPIReport = () => {
                     </div>
                   </div>
 
-                  <div className='flex justify-end items-end flex-wrap gap-2'>
+                    <div className='flex justify-center items-center mt-20'>
+                      <Chart
+                          options={chartState.options}
+                          series={chartState.series}
+                          type="bar"
+                          width="400"
+                          height="250"
+                        />
+                    </div>
+
+                  <div className='flex justify-end flex-col items-end flex-wrap gap-2'>
                     <div className="flex flex-col">
                       <label className="font-body text-sm">{t('From')}</label>
                       <input
@@ -357,7 +426,7 @@ const KPIReport = () => {
                         className="border border-gray-300 p-2 rounded-lg w-full"
                       />
                     </div>
-
+                            
                     <button
                       type='button'
                       onClick={handleSearchTimeAndDate}
@@ -371,7 +440,7 @@ const KPIReport = () => {
 
 
               {/* DataGrid */}
-              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-15px' }}>
+              <div style={{ marginLeft: '-11px', marginRight: '-11px', marginTop: '-35px' }}>
 
                 <DataTable data={data}
                   title={t('KPI Report')}

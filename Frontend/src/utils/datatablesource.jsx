@@ -8021,11 +8021,11 @@ export const foreignGtinColumn = (t, i18n) => [
     headerName: t('Product Name English'),
     width: 180,
   },
-  {
-    field: "size",
-    headerName: t('Size'),
-    width: 180,
-  },
+  // {
+  //   field: "size",
+  //   headerName: t('Size'),
+  //   width: 180,
+  // },
   {
     field: "unit",
     headerName: t('Unit'),

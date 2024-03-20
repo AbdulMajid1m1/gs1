@@ -75,14 +75,14 @@ const MemberActivityReport = () => {
       const res = await newRequest.get(`/users/search?keyword=${newInputValue}`, {
         signal: abortControllerRef.current.signal
       });
-      // console.log(res); 
+      console.log(res); 
 
       const crs = res?.data?.map(item => {
         return {
           id: item?.id,
           memberID: item?.memberID,
-          contactPerson: item?.contactPerson,
           email: item?.email,
+          company_name_eng: item?.company_name_eng,
           
         };
       });
@@ -252,7 +252,7 @@ const MemberActivityReport = () => {
                             // memberID: item?.memberID,
                             // email: item?.email,
                             // getOptionLabel={(option) => (option && option.IntID) ? `${option?.Phone1} - ${option?.MemberNameE} - ${option?.MemberNameA} - ${option?.Email} - ${option?.GLNID}` : 'no'}
-                            getOptionLabel={(option) => (option && option.memberID) ? `${option?.memberID} - ${option?.contactPerson} - ${option?.email} ` : ''}
+                            getOptionLabel={(option) => (option && option.memberID) ? `${option?.memberID} - ${option?.email} - ${option?.company_name_eng} ` : ''}
                             onChange={handleGPCAutoCompleteChange}
                             value={selectedMember}
                             onInputChange={(event, newInputValue, params) => debouncedHandleAutoCompleteInputChange(event, newInputValue, params)}
@@ -267,7 +267,7 @@ const MemberActivityReport = () => {
                             }}
                             renderOption={(props, option) => (
                               <li key={option.memberID} {...props}>
-                                {option ? `${option.memberID} - ${option.contactPerson ? option.contactPerson : ''} - ${option.email} ` : 'No options'}
+                                {option ? `${option.memberID} - ${option.email} - ${option.company_name_eng ? option.company_name_eng : ''} ` : 'No options'}
                               </li>
                             )}
 
