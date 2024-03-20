@@ -61,7 +61,7 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
             const response = await newRequest.put(`/updatehelp_desks/${updateBrandData?.id}`, formData);
             const emaiilpostrec = await newRequest.post(`/sendemailAssign_to_helpdesk/${emailpost}`);
             if (Number(status)===1) {
-                const emaiilpostrec = await newRequest.post(`/sendemailstatus_closed/${emailpost}`);
+                const emaiilpostrec = await newRequest.post(`/sendemailstatus_closed/${updateBrandData?.email}`);
             }
             console.log("response.data", Number(status));
             // console.log("emaiilpostrec", emaiilpostrec);
