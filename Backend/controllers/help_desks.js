@@ -378,3 +378,47 @@ export const sendemailAssign_to_helpdesk = async (req, res, next) =>
         next(error);
     }
 };
+export const sendemailstatus_closed = async (req, res, next) =>
+{
+    try {
+        const schema = Joi.object({
+            email: Joi.string().required(),
+        });
+
+        const {
+            error
+        } = schema.validate(req.params);
+        if (error) {
+            throw createError(400, error.details[0].message);
+        }
+
+        const {
+            email
+        } = req.params;
+
+        const helpDesk = await prisma.admins.findMany({
+            where: {
+                email: email
+            },
+        });
+        const settings = await prisma.emailsetting.findMany();
+        console.log(settings);
+        if (!helpDesk) {
+            throw createError(404, 'admin not found');
+        }
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: email,
+            subject: "HELP DESK ",
+
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">HelpDesk Has Been Closed Successfully</div>`,
+
+
+        });
+        return res.json(helpDesk);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
