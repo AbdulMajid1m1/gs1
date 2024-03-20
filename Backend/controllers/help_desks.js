@@ -368,7 +368,7 @@ export const sendemailAssign_to_helpdesk = async (req, res, next) =>
             toEmail: email,
             subject: "HELP DESK ",
 
-            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Kindly check your member portal. The ticket you created has been closed.</div>`,
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Kindly check your email for helpdesk task</div>`,
 
 
         });
@@ -412,7 +412,7 @@ export const sendemailstatus_closed = async (req, res, next) =>
             toEmail: email,
             subject: "HELP DESK ",
 
-            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">HelpDesk Has Been Closed Successfully</div>`,
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">Kindly check your member portal. The ticket you created has been closed.</div>`,
 
 
         });
