@@ -251,7 +251,10 @@ export const getMemberActivityReport = async (req, res, next) => {
             created_at: {
                 gte: new Date(startDate),
                 lte: new Date(endDate),
+
             },
+            user_id: value.userId,
+
         };
 
         // Fetch data from both tables
