@@ -74,13 +74,13 @@ const BlogPages = () => {
             <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
           )} */}
         {/* {i18n.language === 'ar' ? pageData?.name_ar : section?.name_en} */}
-        {i18n.language === 'ar' && pageData.name_ar && <h1 className='text-secondary font-semibold'>{pageData.name_ar} </h1>}
+        {/* {i18n.language === 'ar' && pageData.name_ar && <h1 className='text-secondary font-semibold'>{pageData.name_ar} </h1>} */}
         {i18n.language === 'ar' && pageData.custom_section_data_ar && (
           <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data_ar }} />
           
         )}
 
-        {i18n.language !== 'ar' && pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>}
+        {/* {i18n.language !== 'ar' && pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>} */}
         {i18n.language !== 'ar' && pageData.custom_section_data && (
           <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
         )}
