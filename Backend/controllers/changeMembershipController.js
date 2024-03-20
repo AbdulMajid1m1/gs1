@@ -458,6 +458,7 @@ export const membershipRenewRequest = async (req, res, next) => {
             price: activatedGtinProducts.gtin_subscription_total_price,// add yearly subscription fee. registration fee is not required as it is one time fee
             expiry_date: activatedGtinProducts.expiry_date,
             // admin_id: req.admin.adminId,
+            request_type: 'renewal',
             ...(req?.admin?.adminId && { admin_id: req.admin.adminId }),
 
         }
@@ -1076,12 +1077,14 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
 
     try {
         let fetchPrice;
+        let cart = { cart_items: [] };
+        let typeOfPayment, pdfDirectory, pdfFilename, pdfFilePath;
         if (value.subType === "UPGRADE") {
-            fetchPrice = await calculateSubscriptionPrice(value.user_id, value.new_subscription_product_Id);
-            console.log("fetchPrice", fetchPrice);
-            if (fetchPrice.finalPrice < 0) {
-                return next(createError(400, 'Invalid subscription upgrade request'));
-            }
+            // fetchPrice = await calculateSubscriptionPrice(value.user_id, value.new_subscription_product_Id);
+            // console.log("fetchPrice", fetchPrice);
+            // if (fetchPrice.finalPrice < 0) {
+            //     return next(createError(400, 'Invalid subscription upgrade request'));
+            // }
         }
         const transactionId = generateRandomTransactionId(10);
 
@@ -1102,21 +1105,18 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             throw createError(404, 'New GTIN subscription not found');
         }
 
-        let registeration_fee;
-        let yearly_fee;
-        if (value.subType === "UPGRADE") {
-            registeration_fee = fetchPrice.newRegistrationFee;
-            yearly_fee = fetchPrice.finalPrice - fetchPrice.newRegistrationFee;
-        }
-        else {
-            registeration_fee = user.membership_category === "non_med_category" ?
-                subscribedProductDetails.member_registration_fee :
-                subscribedProductDetails.med_registration_fee;
 
-            yearly_fee = user.membership_category === "non_med_category" ?
-                subscribedProductDetails.gtin_yearly_subscription_fee :
-                subscribedProductDetails.med_yearly_subscription_fee;
-        }
+
+        // let registeration_fee = user.membership_category === "non_med_category" ?
+        //     subscribedProductDetails.member_registration_fee :
+        //     subscribedProductDetails.med_registration_fee;
+
+        let registeration_fee = 0;
+
+        let yearly_fee = user.membership_category === "non_med_category" ?
+            subscribedProductDetails.gtin_yearly_subscription_fee :
+            subscribedProductDetails.med_yearly_subscription_fee;
+
 
 
 
@@ -1132,13 +1132,14 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             throw createError(404, 'Old GTIN subscription not found');
         }
 
+
         // Start a transaction
         const result = await prisma.$transaction(async (prisma) => {
 
             const totalBarcodes = gtinSubscriptions.gtin_subscription_limit +
                 gtinSubscriptions.gtin_subscription_counter +
                 subscribedProductDetails.total_no_of_barcodes;
-            let cart = { cart_items: [] };
+
             // if subType is UPGRADE then in registration fee add final price and in yearly fee add final - registration fee
 
             cart.cart_items.push({
@@ -1147,69 +1148,14 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                 productName: subscribedProductDetails.member_category_description,
             });
 
+            pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
+            pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
+            pdfFilePath = path.join(pdfDirectory, pdfFilename);
+
             cart.transaction_id = transactionId;
             // do condition for language
-            let typeOfPayment = value.selectedLanguage === 'en' ? `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}` : `${value.subType === "UPGRADE" ? "فاتورة ترقية الاشتراك ل" : "فاتورة تخفيض الاشتراك ل"} ${subscribedProductDetails.member_category_description}`;
-            const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
-            const invoiceData = {
-                // render condition for language
-                topHeading: value.selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
-                secondHeading: value.selectedLanguage === 'en' ? `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR` : `${value.subType === "UPGRADE" ? "فاتورة ترقية الاشتراك ل" : "فاتورة تخفيض الاشتراك ل"}`,
-                memberData: {
-                    qrCodeDataURL: qrCodeDataURL,
-                    registeration: typeOfPayment,
-                    // Assuming $addMember->id is already known
-                    company_name_eng: user.company_name_eng,
-                    mobile: user.mobile,
-                    address: {
-                        zip: user.zip_code,
-                        countryName: user.country,
-                        stateName: user.state,
-                        cityName: user.city,
-                    },
-                    companyID: user.companyID,
-                    membership_otherCategory: user.membership_category,
-                    gtin_subscription: {
-                        products: {
-                            member_category_description: subscribedProductDetails.member_category_description,
-                        },
-                    },
-                },
+            typeOfPayment = value.selectedLanguage === 'en' ? `${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription invoice for ${subscribedProductDetails.member_category_description}` : `${value.subType === "UPGRADE" ? "فاتورة ترقية الاشتراك ل" : "فاتورة تخفيض الاشتراك ل"} ${subscribedProductDetails.member_category_description}`;
 
-
-                cart: cart,
-
-                currentDate: {
-                    day: new Date().getDate(),
-                    month: new Date().getMonth() + 1, // getMonth() returns 0-11
-                    year: new Date().getFullYear(),
-                },
-
-
-
-
-                company_details: {
-                    title: 'Federation of Saudi Chambers',
-                    account_no: '25350612000200',
-                    iban_no: 'SA90 1000 0025 3506 1200 0200',
-                    bank_name: 'Saudi National Bank - SNB',
-                    bank_swift_code: 'NCBKSAJE',
-                },
-                BACKEND_URL: BACKEND_URL,
-            };
-
-            const pdfDirectory = path.join(__dirname, '..', 'public', 'uploads', 'documents', 'MemberRegInvoice');
-            const pdfFilename = `Receipt-${user.company_name_eng}-${transactionId}-${new Date().toLocaleString().replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
-            const pdfFilePath = path.join(pdfDirectory, pdfFilename);
-
-            if (!fsSync.existsSync(pdfDirectory)) {
-                fsSync.mkdirSync(pdfDirectory, { recursive: true });
-            }
-            let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
-
-            const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
-
-            const pdfBuffer = await fs1.readFile(pdfFilePath);
             cart.typeOfPayment = typeOfPayment;
             await prisma.upgrade_member_ship_cart.create({
                 data: {
@@ -1234,29 +1180,93 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
                 }
             });
 
-            // Send email with invoice
-            // const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
-            const subject = value.selectedLanguage === 'en' ? `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request` : `طلب ${value.subType === "UPGRADE" ? "ترقية" : "تخفيض"} اشتراك GS1 السعودية`;
-            const emailContent = value.selectedLanguage === 'en' ? `This is an automated invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة آلية لاشتراكك في ${value.subType === "UPGRADE" ? "ترقية" : "تخفيض"} . يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
-            const attachments = [
-                {
-                    filename: pdfFilename,
-                    content: pdfBuffer,
-                    contentType: 'application/pdf',
-                },
-            ];
-
-            await sendEmail({
-                fromEmail: ADMIN_EMAIL,
-                toEmail: user.email,
-                subject: subject,
-
-                htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
-                attachments: attachments
-            });
 
             return { email: user.email, user: user };
         }, { timeout: 40000 });
+
+        const qrCodeDataURL = await QRCode.toDataURL('http://www.gs1.org.sa');
+        const invoiceData = {
+            // render condition for language
+            topHeading: value.selectedLanguage === 'en' ? "INVOICE" : "فاتورة",
+            secondHeading: value.selectedLanguage === 'en' ? `${value.subType === "UPGRADE" ? "UPGRADE" : "DOWNGRADE"} SUBSCRIPTION INVOICE FOR` : `${value.subType === "UPGRADE" ? "فاتورة ترقية الاشتراك ل" : "فاتورة تخفيض الاشتراك ل"}`,
+            memberData: {
+                qrCodeDataURL: qrCodeDataURL,
+                registeration: typeOfPayment,
+                // Assuming $addMember->id is already known
+                company_name_eng: result.user.company_name_eng,
+                mobile: result.user.mobile,
+                address: {
+                    zip: result.user.zip_code,
+                    countryName: result.user.country,
+                    stateName: result.user.state,
+                    cityName: result.user.city,
+                },
+                companyID: result.user.companyID,
+                membership_otherCategory: result.user.membership_category,
+                gtin_subscription: {
+                    products: {
+                        member_category_description: subscribedProductDetails.member_category_description,
+                    },
+                },
+            },
+
+
+            cart: cart,
+
+            currentDate: {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // getMonth() returns 0-11
+                year: new Date().getFullYear(),
+            },
+
+
+
+
+            company_details: {
+                title: 'Federation of Saudi Chambers',
+                account_no: '25350612000200',
+                iban_no: 'SA90 1000 0025 3506 1200 0200',
+                bank_name: 'Saudi National Bank - SNB',
+                bank_swift_code: 'NCBKSAJE',
+            },
+            BACKEND_URL: BACKEND_URL,
+        };
+
+
+
+        if (!fsSync.existsSync(pdfDirectory)) {
+            fsSync.mkdirSync(pdfDirectory, { recursive: true });
+        }
+        let ejsFile = value.selectedLanguage === 'en' ? 'customInvoice.ejs' : 'customInvoice_Ar.ejs';
+
+        const Receiptpath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', ejsFile), invoiceData, pdfFilePath);
+
+        const pdfBuffer = await fs1.readFile(pdfFilePath);
+
+        // Send email with invoice
+        // const subject = `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request`;
+        const subject = value.selectedLanguage === 'en' ? `GS1 Saudi Arabia ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription Request` : `طلب ${value.subType === "UPGRADE" ? "ترقية" : "تخفيض"} اشتراك GS1 السعودية`;
+        const emailContent = value.selectedLanguage === 'en' ? `This is an automated invoice of your ${value.subType === "UPGRADE" ? "Upgrade" : "Downgrade"} Subscription. Please find the attached invoice for your reference. <br><br> Thank you for your continued support. <br><br> Regards, <br> GS1 Saudi Arabia` : `هذه فاتورة آلية لاشتراكك في ${value.subType === "UPGRADE" ? "ترقية" : "تخفيض"} . يرجى العثور على الفاتورة المرفقة للرجوع إليها. <br><br> شكرا لدعمك المستمر. <br><br> تحياتي, <br> GS1 السعودية`;
+        const attachments = [
+            {
+                filename: pdfFilename,
+                content: pdfBuffer,
+                contentType: 'application/pdf',
+            },
+        ];
+
+        await sendEmail({
+            fromEmail: ADMIN_EMAIL,
+            toEmail: result.user.email,
+            subject: subject,
+
+            htmlContent: `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${emailContent}</div>`,
+            attachments: attachments
+        });
+
+
+
+
 
 
         if (req?.admin?.adminId) {
@@ -1283,7 +1293,7 @@ export const upgradeMemberSubscriptionRequest = async (req, res, next) => {
             transaction_id: transactionId,
             pkg_id: value.new_subscription_product_Id,
             user_id: value.user_id,
-            price: registeration_fee + yearly_fee,
+            price: yearly_fee,
             request_type: 'upgrade',
         }
         ]
@@ -2382,11 +2392,12 @@ export const approveMembershipRequest = async (req, res, next) => {
 
 
         //  use calculateSubscriptionPrice function to calculate the price
-        const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
+        // const fetchPrice = await calculateSubscriptionPrice(user.id, gtinProduct.id)
 
 
-        let registeration_fee = fetchPrice.newRegistrationFee;
-        let yearly_fee = fetchPrice.finalPrice - fetchPrice.newRegistrationFee;
+        // let registeration_fee = fetchPrice.newRegistrationFee;
+        let registeration_fee = 0; //registeration_fee for the upgrade subscription is 0
+        let yearly_fee = user.membership_category === "non_med_category" ? gtinProduct.gtin_yearly_subscription_fee : gtinProduct.med_yearly_subscription_fee;
         //    insert new record in gtin_subcriptions table with new subscription
         const updateResponse = await prisma.gtin_subcriptions.updateMany({
             // update based on the transaction ID
@@ -2416,8 +2427,8 @@ export const approveMembershipRequest = async (req, res, next) => {
                 gtin_subscription_counter: 0,
                 // registration_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.member_registration_fee : subscribedProductDetails.med_registration_fee,
                 // yearly_fee: user.membership_category === "non_med_category" ? subscribedProductDetails.gtin_yearly_subscription_fee : subscribedProductDetails.med_yearly_subscription_fee,
-                gtin_subscription_total_price: fetchPrice.finalPrice - fetchPrice.newRegistrationFee,
-                price: fetchPrice.newRegistrationFee,
+                gtin_subscription_total_price: yearly_fee,
+                price: registeration_fee, //registeration_fee for the upgrade subscription is 0
                 status: 'active',
                 expiry_date: user.gcp_expiry,
                 request_type: 'upgrade',

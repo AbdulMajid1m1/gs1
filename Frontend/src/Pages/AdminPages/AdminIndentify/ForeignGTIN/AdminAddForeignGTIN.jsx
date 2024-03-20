@@ -36,7 +36,7 @@ const AdminAddForeignGTIN = () => {
     setIsLoading(true);
     try {
       const response = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromLocalDb?barcode=${userSearch}`);
-      // console.log(response?.data);
+      console.log(response?.data);
       setData(response?.data);
       setIsLoading(false);
     }
@@ -66,19 +66,20 @@ const AdminAddForeignGTIN = () => {
     { name: `${t('GTIN')}`, value: data?.gtin || data?.globalGepirArr?.gtin },
     { name: `${t('Brand Name')}`, value: data?.brandName || data?.globalGepirArr?.brandName },
     { name: `${t('Product Description')}`, value: data?.productDescription || data?.globalGepirArr?.productDescription },
-    { name: `${t('Product Image Url')}`, value: data?.productImageUrl ? <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> : <a href={data?.globalGepirArr?.productImageUrl} target="_blank">{data?.globalGepirArr?.productImageUrl}</a> },
-    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode },
+    { name: `${t('Product Image Url')}`, value: data?.productImageUrl ? <a style={{color: '#a8e0f4'}} href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> : <a style={{color: '#a8e0f4'}} href={data?.globalGepirArr?.productImageUrl} target="_blank">{data?.globalGepirArr?.productImageUrl}</a> },
     { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
-    { name: `${t('Type')}`, value: data?.type || data?.globalGepirArr?.type },
+    { name: 'Net Content', value: data?.unitValue || `${data?.globalGepirArr?.unitValue} ${data?.globalGepirArr?.unitCode}` },
+    { name: `${t('Country of sale')}`, value: data?.countryOfSaleName || data?.globalGepirArr?.countryOfSaleName },
   ]
 
 
   const companyInformation = [
-    { name: "GTIN", value: data?.gtin || data?.globalGepirArr?.gtin },
     { name: `${t('Company Name')}`, value: data?.companyName || data?.globalGepirArr?.companyName },
-    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode },
-    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
-    { name: `${t('Type')}`, value: data?.type || data?.globalGepirArr?.type },
+    { name: "Website", value: <p style={{color: 'gray'}}>Unknown</p> }, 
+    { name: "Licence Key", value: data?.licenceKey || data?.globalGepirArr?.licenceKey },
+    { name: "Licence Type", value: data?.licenceType || data?.globalGepirArr?.licenceType },
+    { name: 'Global Location Number (GLN)', value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: 'Licensing GS1 Member Organisation', value: data?.moName || data?.globalGepirArr?.moName },
   ]
 
 
@@ -92,12 +93,12 @@ const AdminAddForeignGTIN = () => {
         moName: data?.moName || data?.globalGepirArr?.moName,
         barcode: data?.gtin || data?.globalGepirArr?.gtin,
         // details_page: data?.details_page,
-        unit: data?.unitCode || data?.globalGepirArr?.unitCode,
+        unit: data?.unitValue || `${data?.globalGepirArr?.unitValue} ${data?.globalGepirArr?.unitCode}`,
         // front_image: data?.front_image,
         gpc: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID,
         gpc_code: data?.gpcCategoryCode || data?.globalGepirArr?.gpcCategoryCode,
         // size: data?.size,
-        countrySale: data?.countryOfSaleCode || data?.globalGepirArr?.countryOfSaleCode,
+        countrySale: data?.countryOfSaleName || data?.globalGepirArr?.countryOfSaleName,
         companyId: SelectedData?.companyID,
       });
       // console.log(response?.data);
@@ -194,10 +195,11 @@ const AdminAddForeignGTIN = () => {
               <div className="w-full h-[2px] bg-red-400 mt-6"></div>
 
               {/* Tabs Button */}
-              <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
+              <div className="grid 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
                 <button
                   className={`p-4 truncate rounded ${activeTab === "product-Infomation"
                       ? "bg-primary text-white"
+                      // ? "border-4 border-primary border-t border-l border-r text-primary"
                       : "bg-white text-primary"
                     } shadow-md flex items-center justify-center`}
                   onClick={() => handleTabClick("product-Infomation")}
@@ -228,7 +230,7 @@ const AdminAddForeignGTIN = () => {
                   {t("Digital Link")}
                 </button>
 
-                <button
+                {/* <button
                   className={`p-4 rounded ${activeTab === "Codification"
                       ? "bg-primary text-white"
                       : "bg-white text-primary"
@@ -248,7 +250,7 @@ const AdminAddForeignGTIN = () => {
                   type="button"
                 >
                   {t("Miscellaneous")}
-                </button>
+                </button> */}
               </div>
 
               {/* Tabs Content */}
@@ -288,14 +290,14 @@ const AdminAddForeignGTIN = () => {
               {/* Second Tab */}
               {activeTab === "company-information" && (
                 <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                  <h2 className='text-2xl text-secondary font-body text-center mt-2'>Information about the company that licenced this GTIN</h2>
                   <div className="flex flex-col md:flex-row">
-                    <div className="w-full md:w-2/3">
+                    <div className="w-full">
                       <div className="container mx-auto mt-6 p-4">
                         <div className="overflow-x-auto">
                           <table className="table-auto min-w-max w-full">
                             <tbody>
                               {companyInformation.map((product, index) => (
-                                // {productInformation.map((product, index) => (
                                 <tr key={index}>
                                   <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
                                     {product.name}
@@ -322,22 +324,22 @@ const AdminAddForeignGTIN = () => {
               )}
 
               {/* Fourth Tab */}
-              {activeTab === "Codification" && (
+              {/* {activeTab === "Codification" && (
                 <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                   <div className="mt-2 border border-gray-300">
                     <AdminCodificationTab gs1ProductData={data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID} />
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* Fifth Tab */}
-              {activeTab === "Miscellaneous" && (
+              {/* {activeTab === "Miscellaneous" && (
                 <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                   <div className="mt-2 border border-gray-300">
                     <AdminMiscellaneous />
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="flex justify-between flex-wrap mb-20">
                 <button

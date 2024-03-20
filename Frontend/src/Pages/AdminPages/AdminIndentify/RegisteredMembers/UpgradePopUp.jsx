@@ -21,7 +21,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
   const [selectedGtinBarcodes, setSelectedGtinBarcodes] = useState("");
   const [compareGtinBarcodes, setCompareGtinBarcodes] = React.useState([]);
   const [newSubscriptionDetails, setNewSubscriptionDetails] = useState([]);
-  const { t,i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const handleCloseUpgradePopup = () => {
     setVisibility(false);
   };
@@ -193,21 +193,21 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
     // console.log(userData?.id);
     // calll the api
     setSelectedGtinBarcodes(value)
-    if (subType === "UPGRADE" || subType === "DOWNGRADE") {
+    // if (subType === "UPGRADE" || subType === "DOWNGRADE") {
 
-      try {
-        const res = await newRequest.post('/changeMembership/getInvoiceDetailsForUpgradeSubscription', {
-          "userId": userData?.id,
-          "newSubscriptionId": value?.id,
-        });
-        // console.log(res.data);
-        setNewSubscriptionDetails(res.data);
-      }
-      catch (err) {
-        // console.log(err);
-        toast.error(err.response?.data?.error || "Failed to get invoice details!");
-      }
-    }
+    //   try {
+    //     const res = await newRequest.post('/changeMembership/getInvoiceDetailsForUpgradeSubscription', {
+    //       "userId": userData?.id,
+    //       "newSubscriptionId": value?.id,
+    //     });
+    //     // console.log(res.data);
+    //     setNewSubscriptionDetails(res.data);
+    //   }
+    //   catch (err) {
+    //     // console.log(err);
+    //     toast.error(err.response?.data?.error || "Failed to get invoice details!");
+    //   }
+    // }
 
   };
 
@@ -302,7 +302,7 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
               <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{subType}  {t('Subscription')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                  <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Select new subscription')}</label>
+                  <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Select new subscription')}</label>
                   <Autocomplete
                     id="field1"
                     options={gtinBarcodes}
@@ -444,75 +444,6 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
 
                 )}
 
-
-                {selectedGtinBarcodes !== "" && subType === "UPGRADE" && (
-                  <span>
-
-
-                    <h1 className="text-secondary font-sans font-semibold text  px-4 pt-2"> {t('New Subscription Invoice Detail')}</h1>
-
-                    <div className='mt-2'>
-                      <div className='border border-secondary rounded-sm px-4 py-3'>
-                        <p className='text-secondary text-xs font-sans font-medium py-1'
-                        >
-                          {t('REMAINING MONTHS FROM CURRENT SUBSCRITION')}: <span className='font-bold'>{newSubscriptionDetails?.remainingMonths}</span>
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1'
-                        >
-                          {t('REMAINING MONTHS FEE')} : <span className='font-bold'>{newSubscriptionDetails?.remainingMonthsFee}</span>
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1'
-                        >
-                          {t('NEW SUBSCRIPTION YEARLY FEE')} : <span className='font-bold'>{newSubscriptionDetails?.newSubscriptionYearlyFee}</span>
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1'
-                        >
-                          {t('REMAINING YEALY FEE')} : <span className='font-bold'>{newSubscriptionDetails?.remainingYearlyFee}</span>
-                        </p>
-                        <p className='text-secondary text-xs font-sans font-medium py-1'
-                        >
-                          {t('FINAL PRICE')} : <span className='font-bold'>{newSubscriptionDetails?.finalPrice}</span>
-                        </p>
-                      </div>
-                    </div>
-                    {/* <div className="table-member-inoive px-4 pt-1">
-                      <div className="flex justify-between items-center">
-
-                      </div>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>REMAINING MONTHS FROM CURRENT SUBSCRITION</th>
-                            <th>REMAINING MONTHS FEE</th>
-                            <th>NEW SUBSCRIPTION YEARLY FEE</th>
-                            <th>REMAINING YEALY FEE</th>
-                            <th>FINAL PRICE</th>
-
-                          </tr>
-                        </thead>
-                        <tbody>
-
-
-                          <tr>
-                            <td>{newSubscriptionDetails?.remainingMonths}</td>
-                            <td>{newSubscriptionDetails?.remainingMonthsFee}</td>
-                            <td>{newSubscriptionDetails?.newSubscriptionYearlyFee}</td>
-                            <td>{newSubscriptionDetails?.remainingYearlyFee}</td>
-                            <td>{newSubscriptionDetails?.finalPrice}</td>
-                          </tr>
-
-
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <td colSpan="4" className="text-right font-bold">Total:</td>
-                            <td>{newSubscriptionDetails?.finalPrice}</td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div> */}
-                  </span>
-                )}
                 <div className="w-full flex justify-center items-center gap-8 mt-5">
                   <button
                     type="button"
@@ -536,8 +467,9 @@ const UpgradePopUp = ({ isVisible, setVisibility, userData, subType, fetchMember
             </div>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

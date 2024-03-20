@@ -38,96 +38,81 @@ const AddForeignGtin = () => {
         console.log(response?.data);
         setData(response?.data);
         setIsLoading(false);
-      } 
+      }
       catch (error) {
-        console.log(error);
+        // console.log(error);
         if (error.response && error.response.status === 404) {
-          Swal.fire({
-            title: 'Product Not Found',
-            text: 'Do you want to query in Global Database (GEPIR)?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes Search',
-            cancelButtonText: 'Close',
-            // changes the color of the confirm button to red
-            confirmButtonColor: '#021F69',
-            cancelButtonColor: '#FF693A',
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${userSearch}`);
-                console.log(globalResponse?.data);
-                setData(globalResponse?.data);
-              } 
-              catch (globalError) {
-                console.log(globalError);
-                toast.error(globalError?.response?.data?.error || 'Something went wrong');
-                setData([]);
-              }
-            }
-          });
+          try {
+            const globalResponse = await newRequest.get(`/foreignGtin/getGtinProductDetailsFromGlobalDb?barcode=${userSearch}`);
+            console.log(globalResponse?.data);
+            setData(globalResponse?.data);
+          }
+          catch (globalError) {
+            // console.log(globalError);
+            toast.error(globalError?.response?.data?.error || globalError?.response?.data?.message || `${t('Something went wrong!')}`);
+            setData([]);
+          }
         } else {
-          toast.error(error?.response?.data?.error || 'Something went wrong');
+          toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
           setData([]);
         }
         setIsLoading(false);
-
       }
     };
     
 
     
     const products = [
-        { name: "GTIN", value: data?.gtin },
-        { name: "Brand Name", value: data?.brandName },
-        { name: "Product Description", value: data?.productDescription },
-        { name: "productImageUrl", value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
-        { name: "Country of sale", value: data?.countryOfSaleName },
-        { name: "Gcp GLNID", value: data?.gcpGLNID },
-        { name: "type", value: data?.type },
-    
+      { name: `${t('GTIN')}`, value: data?.gtin || data?.globalGepirArr?.gtin },
+      { name: `${t('Brand Name')}`, value: data?.brandName || data?.globalGepirArr?.brandName },
+      { name: `${t('Product Description')}`, value: data?.productDescription || data?.globalGepirArr?.productDescription },
+      { name: `${t('Product Image Url')}`, value: data?.productImageUrl ? <a style={{color: '#a8e0f4'}} href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> : <a style={{color: '#a8e0f4'}} href={data?.globalGepirArr?.productImageUrl} target="_blank">{data?.globalGepirArr?.productImageUrl}</a> },
+      { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+      { name: 'Net Content', value: data?.unitValue || `${data?.globalGepirArr?.unitValue} ${data?.globalGepirArr?.unitCode}` },
+      { name: `${t('Country of sale')}`, value: data?.countryOfSaleName || data?.globalGepirArr?.countryOfSaleName },
     ]
-
-
+  
+  
     const companyInformation = [
-        { name: "GTIN", value: data?.gtin },
-        { name: "Company Name", value: data?.companyName },
-        { name: "Country of sale", value: data?.countryOfSaleName },
-        { name: "Gcp GLNID", value: data?.gcpGLNID },
-        { name: "type", value: data?.type },
-
+      { name: `${t('Company Name')}`, value: data?.companyName || data?.globalGepirArr?.companyName },
+      { name: "Website", value: <p style={{color: 'gray'}}>Unknown</p> }, 
+      { name: "Licence Key", value: data?.licenceKey || data?.globalGepirArr?.licenceKey },
+      { name: "Licence Type", value: data?.licenceType || data?.globalGepirArr?.licenceType },
+      { name: 'Global Location Number (GLN)', value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+      { name: 'Licensing GS1 Member Organisation', value: data?.moName || data?.globalGepirArr?.moName },
     ]
-
+  
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       setAddProductsLoader(true);
       try {
         const response = await newRequest.post('/foreignGtin', {
-          BrandName: data?.brandName,
-          productnameenglish: data?.productName,
-          moName: data?.moName,
-          barcode: data?.gtin,
+          BrandName: data?.brandName || data?.globalGepirArr?.brandName,
+          productnameenglish: data?.productName || data?.globalGepirArr?.productName,
+          moName: data?.moName || data?.globalGepirArr?.moName,
+          barcode: data?.gtin || data?.globalGepirArr?.gtin,
           // details_page: data?.details_page,
-          unit: data?.unitCode,
+          unit: data?.unitValue || `${data?.globalGepirArr?.unitValue} ${data?.globalGepirArr?.unitCode}`,
           // front_image: data?.front_image,
-          gpc: data?.gcpGLNID,
-          gpc_code: data?.gpcCategoryCode,
+          gpc: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID,
+          gpc_code: data?.gpcCategoryCode || data?.globalGepirArr?.gpcCategoryCode,
           // size: data?.size,
-          countrySale: data?.countryOfSaleCode,
+          countrySale: data?.countryOfSaleName || data?.globalGepirArr?.countryOfSaleName,
+          companyId: memberData?.companyID,
         });
-        console.log(response?.data);
-        toast.success(response?.data?.message || 'Product Added Successfully');
+        // console.log(response?.data);
+        toast.success(response?.data?.message || `${t('Product Added Successfully')}`);
         setAddProductsLoader(false);
-
+  
         setTimeout(() => {
-        navigate(-1);
+          navigate(-1);
         }, 500);
-
-      } 
+  
+      }
       catch (error) {
-        console.log(error);
-        toast.error(error?.response?.data?.error || 'Something went wrong');
+        // console.log(error);
+        toast.error(error?.response?.data?.error || `${t('Something went wrong!')}`);
         setAddProductsLoader(false);
       }
     };
@@ -166,7 +151,8 @@ const AddForeignGtin = () => {
                       <input
                           type="text"
                           id="fields1"
-                            value={userSearch}
+                          value={userSearch}
+                          name="userSearch"
                           onChange={(e) => setUserSearch(e.target.value)}
                           className="border-1 w-full rounded-sm border-secondary p-2"
                           placeholder='Search'
@@ -191,7 +177,7 @@ const AddForeignGtin = () => {
 
 
             {/* Tabs Button */}
-              <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
+              <div className="grid 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-6">
                 <button
                   className={`p-4 truncate rounded ${activeTab === 'product-Infomation' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
@@ -219,7 +205,7 @@ const AddForeignGtin = () => {
                   Digital Link
                 </button>
 
-                <button
+                {/* <button
                   className={`p-4 rounded ${activeTab === 'Codification' ? 'bg-primary text-white' : 'bg-white text-primary'
                     } shadow-md flex items-center justify-center`}
                   onClick={() => handleTabClick('Codification')}
@@ -235,65 +221,72 @@ const AddForeignGtin = () => {
                   type='button'
                 >
                   Miscellaneous
-                </button>
+                </button> */}
               </div>
 
 
                 {/* Tabs Content */}
-                {activeTab === 'product-Infomation' && (
-                 <div className="flex flex-col md:flex-row mt-6 border-[0.7px] shadow-lg border-primary mb-6">
-                  <div className="w-full md:w-1/3 flex justify-center items-center p-4 ">
-                    {/* Add your image element here */}
-                     {data?.productImageUrl && ( 
-                         <img src={data?.productImageUrl} alt="Product" className="w-1/2 object-contain" /> 
-
-                       )} 
-                        {/* <img src={second} className='' alt='' /> */}
+                {activeTab === "product-Infomation" && (
+                  <div className="flex flex-col md:flex-row mt-6 border-[0.7px] shadow-lg border-primary mb-6">
+                    <div className="w-full md:w-1/3 flex justify-center items-center p-4 ">
+                        <img
+                          src={data?.productImageUrl || data?.globalGepirArr?.productImageUrl}
+                          alt="Product"
+                          className="w-1/2 object-contain"
+                        />
                     </div>
 
-                   <div className="w-full md:w-2/3">
-                    <div className="container mx-auto mt-6 p-4">
+                    <div className="w-full md:w-2/3">
+                      <div className="container mx-auto mt-6 p-4">
                         <div className="overflow-x-auto">
-                        <table className="table-auto min-w-max w-full">
-                          <tbody>
-                            {products.map((product, index) => (
+                          <table className="table-auto min-w-max w-full">
+                            <tbody>
+                              {products.map((product, index) => (
                                 <tr key={index}>
-                                <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">{product.name}</td>
-                                <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">{product.value}</td>
+                                  <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
+                                    {product.name}
+                                  </td>
+                                  <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
+                                    {product.value}
+                                  </td>
                                 </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                        </div>
-                    </div>
-                 </div>
-                </div>
-                )}
-
-                {/* Second Tab */}
-                {activeTab === 'company-information' && (
-                  <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
-                    <div className="flex flex-col md:flex-row">
-                      <div className="w-full md:w-2/3">
-                        <div className="container mx-auto mt-6 p-4">
-                          <div className="overflow-x-auto">
-                            <table className="table-auto min-w-max w-full">
-                              <tbody>
-                              {companyInformation.map((product, index) => (
-                                // {productInformation.map((product, index) => (
-                                  <tr key={index}>
-                                    <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">{product.name}</td>
-                                    <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">{product.value}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
                   </div>
                 )}
+
+                {/* Second Tab */}
+                {activeTab === "company-information" && (
+                <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
+                  <h2 className='text-2xl text-secondary font-body text-center mt-2'>Information about the company that licenced this GTIN</h2>
+                  <div className="flex flex-col md:flex-row">
+                    <div className="w-full">
+                      <div className="container mx-auto mt-6 p-4">
+                        <div className="overflow-x-auto">
+                          <table className="table-auto min-w-max w-full">
+                            <tbody>
+                              {companyInformation.map((product, index) => (
+                                <tr key={index}>
+                                  <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
+                                    {product.name}
+                                  </td>
+                                  <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
+                                    {product.value}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
 
                 {/* third Tab */}
@@ -305,23 +298,23 @@ const AddForeignGtin = () => {
 
 
                 {/* Fourth Tab */}
-                {activeTab === 'Codification' && (
+                {/* {activeTab === 'Codification' && (
                   <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                     <div className='mt-2 border border-gray-300'>
                       <CodificationTab gs1ProductData={data?.gcpGLNID}/>
                     </div>
                   </div>
-                )}
+                )} */}
 
 
                 {/* Fifth Tab */}
-                {activeTab === 'Miscellaneous' && (
+                {/* {activeTab === 'Miscellaneous' && (
                   <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                     <div className='mt-2 border border-gray-300'>
                       <Miscellaneous />
                     </div>
                   </div>
-                )}
+                )} */}
 
                 
 
