@@ -36,7 +36,12 @@ const KPIReport = () => {
       },
       xaxis: {
         categories: ['APPROVED', 'NEW REGISTRATION', 'RENEWALS', 'PENDING'],
-        reversed: true
+        reversed: true,
+        labels: {
+          style: {
+            fontSize: '9px' // Set the desired font size
+          }
+        }
       },
       yaxis: {
         reversed: false,
@@ -44,9 +49,9 @@ const KPIReport = () => {
           show: false // Hide x-axis labels
         }
       },
-      // dataLabels: {
-      //   enabled: false // Hide data labels
-      // }
+      dataLabels: {
+        enabled: false // Hide data labels
+      },
     },
     series: [
       {

@@ -386,7 +386,7 @@ const Dashboard = () => {
               {/* <!-- Social Traffic2 --> */}
               <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 w-full shadow-lg rounded">
                 {/* <DashboardTable data={allRegisteredMembers} loading={allRegisteredMembersLoader} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${allRegisteredMembers?.length > 0 ? `(${allRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" /> */}
-                <DashboardTable data={data} loading={isLoading} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${allRegisteredMembers?.length > 0 ? `(${allRegisteredMembers.length})` : ''}`)} UniqueId="assetPrintingId" />
+                <DashboardTable data={data} loading={isLoading} secondaryColor="secondary" columnsName={registerdMemberColumn(t)} title={t(`Registered Members ${data?.length > 0 ? `(${data.length})` : ''}`)} UniqueId="assetPrintingId" />
               </div>
 
               {/* <!-- Social Traffic2 --> */}

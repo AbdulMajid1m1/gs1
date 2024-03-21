@@ -134,7 +134,7 @@ const AdminPaymentSlips = () => {
       <div className={`p-0 h-full ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`} >
         <div>
           <AdminDashboardRightHeader
-            title={`${t('Payment Slips')}`}
+            title={`${t('Pending Payment Slips')}`}
           />
         </div>
 
@@ -210,7 +210,7 @@ const AdminPaymentSlips = () => {
 
           <div style={{ marginLeft: '-0px', marginRight: '-0px' }}>
 
-            <DataTable data={data} title={`${t('Payment Slips')}`} columnsName={paymentSlipColumn(t)}
+            <DataTable data={data} title={`${t('Pending Payment Slips')}`} columnsName={paymentSlipColumn(t)}
               loading={IsLoading}
               checkboxSelection="disabled"
               secondaryColor="secondary"
