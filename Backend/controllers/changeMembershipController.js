@@ -2634,7 +2634,41 @@ export const approveMembershipRequest = async (req, res, next) => {
             const Certificatepath = await convertEjsToPdf(path.join(__dirname, '..', 'views', 'pdf', certificateEjs), CertificateData, certPdfFilePath, true);
             const certificatepdfBuffer = await fs1.readFile(Certificatepath);
 
+            // update certificate path in user table and delete the old certificate
 
+
+            // find the member document with type certificate
+            const currentDocument = await prisma.member_documents.findFirst({
+                where: {
+                    user_id: existingUser.id,
+                    type: 'certificate',
+                }
+            });
+
+
+            const deletingDocumentPath = path.join(__dirname, '..', 'public', currentDocument.document.replace(/\\/g, '/'));
+            console.log("deletingDocumentPath");
+            console.log(deletingDocumentPath);
+            try {
+                if (fsSync.existsSync(deletingDocumentPath)) {
+                    fsSync.unlinkSync(deletingDocumentPath);
+                    console.log(`File deleted: ${deletingDocumentPath}`);
+                } else {
+                    console.log(`File not found: ${deletingDocumentPath}`);
+                }
+            } catch (err) {
+                console.error(`Error deleting file: ${deletingDocumentPath}`, err);
+            }
+
+
+            const updatedDocument = await prisma.member_documents.update({
+                where: { id: currentDocument.id },
+                data: {
+                    document: `/uploads/documents/MemberCertificates/${certificatePdfFilename}`,
+                }
+
+            });
+            console.log("updatedDocument", updatedDocument);
 
 
             // Send email with receipt
