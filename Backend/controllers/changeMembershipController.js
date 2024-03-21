@@ -2346,11 +2346,12 @@ export const approveMembershipRequest = async (req, res, next) => {
     });
 
     const { error, value } = schema.validate(req.body);
-
+    let upgradeCart;
     try {
         if (error) {
             throw createError(400, error.details[0].message);
         }
+
 
         const { transactionId, userId, invoiceType, selectedLanguage, approved_date } = value;
         if (value.status === 'approved') {
@@ -2366,7 +2367,7 @@ export const approveMembershipRequest = async (req, res, next) => {
             }
 
             // Fetch upgrade cart
-            const upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
+            upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
                 where: {
                     transaction_id: transactionId,
                     user_id: userId,
@@ -2998,6 +2999,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
     });
 
     const { error, value } = schema.validate(req.body);
+    let upgradeCart;
     try {
         if (error) {
             throw createError(400, error.details[0].message);
@@ -3006,7 +3008,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         const { transactionId, userId, selectedLanguage, approved_date } = value;
 
         // Fetch upgrade cart
-        const upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
+        upgradeCart = await prisma.upgrade_member_ship_cart.findFirst({
             where: {
                 transaction_id: transactionId,
                 user_id: userId,
