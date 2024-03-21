@@ -1019,7 +1019,7 @@ export const updateMemberRenewalDocumentStatus = async (req, res, next) => {
 
 
 // Function to send status update email
-const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, rejectReason = '', selectedLanguage = 'ar') => {
+const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, reject_reason = '', selectedLanguage = 'ar') => {
     let subject, emailContent;
     let attachments = [];
     if (status === 'approved') {
@@ -1046,7 +1046,7 @@ const sendStatusUpdateEmail = async (userEmail, status, pdfBuffer, pdfBuffer2, r
             break;
         case 'rejected':
             subject = selectedLanguage === 'en' ? 'Your Gs1Ksa member Account has been Rejected' : 'تم رفض طلب عضويتك في Gs1Ksa';
-            let rejectionMessage = rejectReason ? selectedLanguage === 'en' ? `<p>Reason for rejection: ${rejectReason}</p>` : `<p>سبب الرفض: ${rejectReason}</p>` : '';
+            let rejectionMessage = reject_reason ? selectedLanguage === 'en' ? `<p>Reason for rejection: ${reject_reason}</p>` : `<p>سبب الرفض: ${reject_reason}</p>` : '';
             emailContent = selectedLanguage === 'en' ? `Your account status has been updated to: ${status}.` : `تم تحديث حالة حسابك إلى: ${status}.`;
 
             break;
@@ -1839,7 +1839,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        rejectReason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
 
     });
 
@@ -2093,7 +2093,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        rejectReason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -2337,7 +2337,7 @@ export const approveMembershipRequest = async (req, res, next) => {
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        rejectReason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
         userId: Joi.string().required(),
         invoiceType: Joi.string().valid('upgrade_invoice', 'downgrade_invoice').required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
@@ -2681,7 +2681,7 @@ export const approveMembershipRequest = async (req, res, next) => {
                 },
                 data: {
                     status: 'rejected',
-                    reject_reason: value.rejectReason,
+                    reject_reason: value.reject_reason,
                 },
 
             });
@@ -2995,7 +2995,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        rejectReason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -3185,7 +3185,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
 
         let rejectSubject = selectedLanguage === 'en' ? 'GS1 Saudi Arabia Membership Downgrade Request Rejection' : 'رفض طلب تخفيض عضوية GS1 السعودية';
         let emailContent = selectedLanguage === 'en' ? `Your request for changing membership has been approved.` : `تمت الموافقة على طلبك لتغيير العضوية.`;
-        let rejectEmailContent = selectedLanguage === 'en' ? `Your request for changing membership has been rejected. Reason: ${value.rejectReason}` : `تم رفض طلبك لتغيير العضوية. السبب: ${value.rejectReason}`;
+        let rejectEmailContent = selectedLanguage === 'en' ? `Your request for changing membership has been rejected. Reason: ${value.reject_reason}` : `تم رفض طلبك لتغيير العضوية. السبب: ${value.reject_reason}`;
         // Send email with receipt
         await sendEmail({
             fromEmail: ADMIN_EMAIL, // Replace with your admin email
@@ -3395,7 +3395,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        rejectReason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -3624,7 +3624,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
 
         let approveSubject = selectedLanguage === 'en' ? 'GS1 Saudi Arabia Additional Other Products Subscription Request Approval' : 'موافقة طلب اشتراك منتجات أخرى إضافية GS1 السعودية';
         let rejectSubject = selectedLanguage === 'en' ? 'GS1 Saudi Arabia Additional Other Products Subscription Request Rejection' : 'رفض طلب اشتراك منتجات أخرى إضافية GS1 السعودية';
-        let rejectEmailContent = selectedLanguage === 'en' ? `Your request for additional other products subscription has been rejected. Reason: ${value.rejectReason}` : `تم رفض طلبك لاشتراك منتجات أخرى إضافية. السبب: ${value.rejectReason}`;
+        let rejectEmailContent = selectedLanguage === 'en' ? `Your request for additional other products subscription has been rejected. Reason: ${value.reject_reason}` : `تم رفض طلبك لاشتراك منتجات أخرى إضافية. السبب: ${value.reject_reason}`;
         let emailContent = selectedLanguage === 'en' ? `Your request for additional other products subscription has been approved.` : `تمت الموافقة على طلبك لاشتراك منتجات أخرى إضافية.`;
         await sendEmail({
             fromEmail: ADMIN_EMAIL,
