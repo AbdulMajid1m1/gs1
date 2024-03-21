@@ -2640,7 +2640,7 @@ export const approveMembershipRequest = async (req, res, next) => {
             // find the member document with type certificate
             const currentDocument = await prisma.member_documents.findFirst({
                 where: {
-                    user_id: existingUser.id,
+                    user_id: userId,
                     type: 'certificate',
                 }
             });
