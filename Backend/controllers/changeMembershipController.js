@@ -1839,7 +1839,7 @@ export const approveAdditionalProductsRequest = async (req, res, next) => {
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().optional(),
 
     });
 
@@ -2093,7 +2093,7 @@ export const approveAdditionalGlnRequest = async (req, res, next) => {
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().optional(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -2337,7 +2337,8 @@ export const approveMembershipRequest = async (req, res, next) => {
     const schema = Joi.object({
         transactionId: Joi.string().required(),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().optional(),
+
         userId: Joi.string().required(),
         invoiceType: Joi.string().valid('upgrade_invoice', 'downgrade_invoice').required(),
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
@@ -2995,7 +2996,7 @@ export const approveDowngradeMembershipRequest = async (req, res, next) => {
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().optional(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -3395,7 +3396,7 @@ export const approveAdditionalOtherProductsSubscriptionRequest = async (req, res
         selectedLanguage: Joi.string().valid('en', 'ar').default('ar'),
         approved_date: Joi.date().default(new Date()),
         status: Joi.string().valid('approved', 'rejected').default('approved'),
-        reject_reason: Joi.string().when('status', { is: 'rejected', then: Joi.required() }),
+        reject_reason: Joi.string().optional(),
     });
 
     const { error, value } = schema.validate(req.body);
