@@ -2237,6 +2237,8 @@ model rejected_users {
   registration_type        String?          @db.NChar(10)
   city                     String?          @db.NVarChar(Max)
   country                  String?          @db.NVarChar(Max)
+  gepirPosted              Int?
+  member_type              String?
   state                    String?          @db.NVarChar(Max)
   zip_code                 String?          @db.VarChar(50)
   old_member_recheck       Int?             @default(0, map: "DF_rejected_users_old_member_recheck")

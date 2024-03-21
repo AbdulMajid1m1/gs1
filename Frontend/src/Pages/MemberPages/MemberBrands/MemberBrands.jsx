@@ -51,9 +51,26 @@ const MemberBrands = () => {
   const abortControllerRef = React.useRef(null);
 
   const navigate = useNavigate()
+  const [allUserData, setAllUserData] = useState([]);
+
+  const fetchAllUserData = async () => {
+    try {
+      const response = await newRequest.get(`/users?id=${memberData?.id}`);
+      // console.log(response.data[0]);
+      const data = response?.data[0] || [];
+      setAllUserData(data);
+      // console.log(data);
+    }
+    catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.error || 'Something Went Wrong')
+    }
+  };
+
 
   useEffect(() => {
     fetchData();
+    fetchAllUserData()
   }, []);
 
   const handleGPCAutoCompleteChange = (event, value) => {
@@ -358,11 +375,15 @@ const MemberBrands = () => {
         </div>
         {/* Addbrands component with handleShowCreatePopup prop */}
         {isCreatePopupVisible && (
-          <Addbrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData} />
+          <Addbrands isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={fetchData}
+            allUserData={allUserData}
+          />
         )}
         {/* Updatebrands component with handleShowUpdatePopup prop */}
         {isUpdatePopupVisible && (
-          <Updatebrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={fetchData} />
+          <Updatebrands isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={fetchData}
+            allUserData={allUserData}
+          />
         )}
       </div>
     </div>
