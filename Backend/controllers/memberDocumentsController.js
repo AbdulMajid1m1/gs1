@@ -197,7 +197,8 @@ export const getMemberDocuments = async (req, res, next) => {
                         companyID: true,
                     }
                 }
-            }
+            },
+            orderBy: { updated_at: 'desc' }
         });
         res.json(documents);
     } catch (error) {
