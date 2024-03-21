@@ -344,7 +344,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
             }
             ]
 
-            console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
             let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
                 where: {

@@ -16,7 +16,7 @@ router.post('/renewRequest', generalAuth, membershipRenewRequest);
 
 router.post('/getInvoiceDetailsForUpgradeSubscription', getInvoiceDetailsForUpgradeSubscription);
 
-router.put('/changeRenewStatus/:id', adminAuth, updateMemberRenewalDocumentStatus);
+router.put('/changeRenewStatus/:id', adminAuth, updateMemberRenewalDocumentStatus); //done
 
 router.put('/upgradeMembershipRequest', generalAuth, upgradeMemberSubscriptionRequest);
 
@@ -24,21 +24,21 @@ router.post('/addAdditionalProductsRequest', generalAuth, addAdditionalProductsR
 
 router.post('/addAdditionalGlnRequest', generalAuth, addAdditionalGlnRequest);
 
-router.put('/approveAdditionalGlnRequest', adminAuth, approveAdditionalGlnRequest);
+router.put('/approveAdditionalGlnRequest', adminAuth, approveAdditionalGlnRequest); //done
 
-router.put('/approveAdditionalProductsRequest', adminAuth, approveAdditionalProductsRequest);
+router.put('/approveAdditionalProductsRequest', adminAuth, approveAdditionalProductsRequest); //done
 
-router.put('/approveMembershipRequest', adminAuth, approveMembershipRequest);
+router.put('/approveMembershipRequest', adminAuth, approveMembershipRequest); //done
 
 router.put('/downgradeMemberSubscriptionRequest', generalAuth, downgradeMemberSubscriptionRequest);
 
-router.put('/approveDowngradeMembershipRequest', adminAuth, approveDowngradeMembershipRequest);
+router.put('/approveDowngradeMembershipRequest', adminAuth, approveDowngradeMembershipRequest); //done
 
 
 router.post('/addMultipleOtherProductSubscriptionsAndGenerateInvoice', addMultipleOtherProductSubscriptionsAndGenerateInvoice);
 
 
-router.put("/approveAdditionalOtherProductsSubscriptionRequest", approveAdditionalOtherProductsSubscriptionRequest);
+router.put("/approveAdditionalOtherProductsSubscriptionRequest", approveAdditionalOtherProductsSubscriptionRequest); //done
 
 
 export default router;
