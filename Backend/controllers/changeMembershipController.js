@@ -2347,7 +2347,7 @@ export const approveMembershipRequest = async (req, res, next) => {
     });
 
     const { error, value } = schema.validate(req.body);
-    let upgradeCart;
+    let upgradeCart, user;
     try {
         if (error) {
             throw createError(400, error.details[0].message);
@@ -2390,7 +2390,7 @@ export const approveMembershipRequest = async (req, res, next) => {
 
 
             // Fetch user data
-            const user = await prisma.users.findUnique({
+            user = await prisma.users.findUnique({
                 where: { id: userId },
                 include: {
                     carts: true,
