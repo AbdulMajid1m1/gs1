@@ -199,7 +199,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 
     const rejectBody = {
       status: selectedStatus,
-      reject_reason: rejected,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
     };
@@ -211,7 +211,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
       status: selectedStatus,
-      reject_reason: rejected,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
@@ -227,7 +227,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
       status: selectedStatus,
-      reject_reason: rejected,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
     const addGln = {
       userId: gs1MemberInvoiceData?.user_id,
@@ -235,7 +235,8 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
       status: selectedStatus,
-      reject_reason: rejected,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
+
     }
 
     // console.log(upgrade_invoice);
