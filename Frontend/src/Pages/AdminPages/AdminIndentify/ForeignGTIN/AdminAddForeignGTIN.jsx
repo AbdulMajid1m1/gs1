@@ -255,6 +255,8 @@ const AdminAddForeignGTIN = () => {
 
               {/* Tabs Content */}
               {activeTab === "product-Infomation" && (
+               <div className=''>
+                <h2 className='text-2xl text-secondary font-body mt-4'>{data?.productDescription || data?.globalGepirArr?.productDescription}</h2>
                 <div className="flex flex-col md:flex-row mt-6 border-[0.7px] shadow-lg border-primary mb-6">
                   <div className="w-full md:w-1/3 flex justify-center items-center p-4 ">
                       <img
@@ -285,12 +287,13 @@ const AdminAddForeignGTIN = () => {
                     </div>
                   </div>
                 </div>
+                </div>
               )}
 
               {/* Second Tab */}
               {activeTab === "company-information" && (
                 <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
-                  <h2 className='text-2xl text-secondary font-body text-center mt-2'>Information about the company that licenced this GTIN</h2>
+                  <h2 className='text-2xl text-secondary font-body mt-2 ml-2'>Information about the company that licenced this GTIN</h2>
                   <div className="flex flex-col md:flex-row">
                     <div className="w-full">
                       <div className="container mx-auto mt-6 p-4">

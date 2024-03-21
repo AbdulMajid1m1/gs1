@@ -32,21 +32,36 @@ const KPIReport = () => {
   const [chartState, setChartState] = useState({
     options: {
       chart: {
-        id: "basic-bar"
+        id: "basic-bar",
+        type: "bar",
       },
-      xaxis: {
-        categories: ['APPROVED', 'NEW REGISTRATION', 'RENEWALS', 'PENDING'],
-        reversed: true
-      },
-      yaxis: {
-        reversed: false,
-        labels: {
-          show: false // Hide x-axis labels
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          // borderRadius: 4
         }
       },
-      // dataLabels: {
-      //   enabled: false // Hide data labels
-      // }
+      dataLabels: {
+        enabled: true // Hide data labels
+      },
+      xaxis: {
+        labels: {
+          style: {
+            fontSize: '7px' // Set the desired font size
+          }
+        }
+      },
+      yaxis: {
+        categories: ['APPROVED', 'NEW REGISTRATION', 'RENEWALS', 'PENDING'],
+        labels: {
+          show: true // Hide y-axis labels
+        },
+        labels: {
+          style: {
+            fontSize: '8px' // Set the desired font size
+          }
+        }
+      },
     },
     series: [
       {
@@ -55,6 +70,7 @@ const KPIReport = () => {
       }
     ]
   });
+  
 
 
 
@@ -337,7 +353,7 @@ const KPIReport = () => {
                   </button>
                 </div>
 
-                <div className={`flex justify-between items-center flex-wrap gap-2 w-full sm:-mt-14 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
+                <div className={`flex justify-between items-center flex-wrap gap-2 w-full sm:-mt-10 ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}>
                   <div className='mt-2 flex flex-col justify-start items-start'>
                     <div className='bg-[#C3E2DC] rounded-md px-4 py-3'>
                       <p className='text-secondary text-xs font-sans font-medium py-1 flex justify-between items-center'>
@@ -398,13 +414,13 @@ const KPIReport = () => {
                     </div>
                   </div>
 
-                    <div className='flex justify-center items-center mt-20'>
+                    <div className='flex justify-center items-center mt-10'>
                       <Chart
                           options={chartState.options}
                           series={chartState.series}
                           type="bar"
                           width="400"
-                          height="250"
+                          height="200"
                         />
                     </div>
 

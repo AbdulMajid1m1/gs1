@@ -37,25 +37,55 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
     setVisibility(false);
   };
 
+  // const handleMemberInvoiceData = async () => {
+  //   try {
+  //     const res = await newRequest.get(`/users/cart?transaction_id=${memberData?.transaction_id}`);
+  //     console.log(res.data);
+  //     setMemberInvoiceData(res.data);
+
+  //     let total = 0;
+  //     const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
+  //     cartItems.forEach((item) => {
+  //       total += parseInt(item.price); // Make sure to parse the price as an integer
+  //     });
+  //     setTotalPrice(total);
+  //   }
+  //   catch (err) {
+  //     console.log(err);
+  //   }
+
+
+  // }
+
+
   const handleMemberInvoiceData = async () => {
     try {
-      const res = await newRequest.get(`/users/cart?transaction_id=${memberData?.transaction_id}`);
-      console.log(res.data);
-      setMemberInvoiceData(res.data);
+      const res = await newRequest.get(
+        `/gtinProducts/subcriptionsProducts?&user_id=${memberData?.id}&isDeleted=false`
+      );
+      // console.log(res.data);
+      let data = res.data;
+
+      setMemberInvoiceData(data);
 
       let total = 0;
-      const cartItems = JSON.parse(res.data[0].cart_items); // Parse the cart_items string
-      cartItems.forEach((item) => {
-        total += parseInt(item.price); // Make sure to parse the price as an integer
+      res.data?.gtinSubscriptions.forEach((item) => {
+        total +=
+          parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
       });
+
+      res.data?.otherProductSubscriptions.forEach((item) => {
+        // add price and other_products_subscription_total_price
+        total +=
+          parseInt(item.price) +
+          parseInt(item.other_products_subscription_total_price);
+      });
+      // console.log(total);
       setTotalPrice(total);
+    } catch (err) {
+      // console.log(err);
     }
-    catch (err) {
-      console.log(err);
-    }
-
-
-  }
+  };
 
   useEffect(() => {
     handleMemberInvoiceData();
@@ -95,53 +125,6 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className='w-full'>
                 <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Renew Invoice')}</h2>
-                {/* <div className="flex flex-col sm:gap-3 gap-3 mt-5">
-                  <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <div className="flex flex-row gap-2">
-                      <label htmlFor="approvedRadio" className="text-secondary">Invoice Status </label>
-                      <div className="flex flex-row gap-2">
-                        <input
-                          type="radio"
-                          id="approvedRadio"
-                          name="invoiceStatus"
-                          value="approved"
-                          className="border-1 w-4 h-4 border-[#8E9CAB] p-2 mb-3"
-                          checked={selectedStatus === "approved"}
-                          onChange={() => setSelectedStatus("approved")}
-                        />
-                        <label htmlFor="approvedRadio" className="text-secondary -mt-[3px]">Approved</label>
-                      </div>
-                      <div className="flex flex-row gap-2">
-                        <input
-                          type="radio"
-                          id="rejectedRadio"
-                          name="invoiceStatus"
-                          value="rejected"
-                          className="border-1 w-4 h-4 border-[#8E9CAB] p-2 mb-3"
-                          checked={selectedStatus === "rejected"}
-                          onChange={() => setSelectedStatus("rejected")}
-                        />
-                        <label htmlFor="rejectedRadio" className="text-secondary -mt-[3px]">Rejected</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {selectedStatus === "rejected" && (
-                    <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                      <label htmlFor="field2" className="text-secondary">Reason for Rejection</label>
-                      <input
-                        type="text"
-                        id="field2"
-                        onChange={(e) => setRejected(e.target.value)}
-                        placeholder="Enter reason for rejection"
-                        required
-                        className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
-                      />
-                    </div>
-                  )}
-
-                </div> */}
-
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
                   <div className="flex justify-between items-center">
@@ -161,17 +144,34 @@ const MemberRenewPopUp = ({ isVisible, setVisibility,
                       </tr>
                     </thead>
                     <tbody>
-                      {memberInoviceData.map((item, index) => {
-                        const cartItems = JSON.parse(item.cart_items);
-                        return cartItems.map((cartItem, cartIndex) => (
-                          <tr key={cartIndex}>
-                            <td>{cartItem.productName}</td>
-                            <td>{cartItem.registration_fee}</td>
-                            <td>{cartItem.yearly_fee}</td>
-                            <td>{cartItem.price}</td>
-                          </tr>
-                        ));
-                      })}
+                      {memberInoviceData?.gtinSubscriptions?.map(
+                          (item, index) => {
+                            // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                            return (
+                              <tr key={index}>
+                                <td>{item?.gtin_product?.member_category_description}</td>
+                                <td>{item?.price}</td>
+                                <td>{memberData?.no_of_years > 0 ? item?.gtin_subscription_total_price: 0}</td>
+                                {/* <td>{expiryDate}</td> */}
+                                <td>{item?.gtin_subscription_total_price + item?.price}</td>
+                              </tr>
+                            );
+                          }
+                        )}
+                        {memberInoviceData?.otherProductSubscriptions?.map(
+                          (item, index) => {
+                            // const expiryDate = new Date(item?.expiry_date).toLocaleDateString();
+                            return (
+                              <tr key={"other_products" + index}>
+                                <td>{item?.product?.product_name}</td>
+                                <td>{item?.price}</td>
+                                <td>{memberData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
+                                {/* <td>{expiryDate}</td> */}
+                                <td>{item?.other_products_subscription_total_price + item?.price}</td>
+                              </tr>
+                            );
+                          }
+                        )}
                     </tbody>
                     <tfoot>
                       <tr>

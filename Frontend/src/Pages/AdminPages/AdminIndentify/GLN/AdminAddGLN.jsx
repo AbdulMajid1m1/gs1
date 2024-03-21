@@ -7,6 +7,7 @@ import { DotLoader } from 'react-spinners'
 import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 import { useTranslation } from 'react-i18next';
 import { Autocomplete, TextField } from '@mui/material';
+import SubTypeGLNPopUp from './SubTypeGLNPopUp';
 
 const AdminAddGLN = () => {
   // const memberDataString = sessionStorage.getItem('memberData');
@@ -201,11 +202,22 @@ const AdminAddGLN = () => {
     
   ];
   
-  // State to hold the selected option, defaulting to 'Organization'
-  const [entityType, setEntityType] = useState(options[0]);
+  const [entityType, setEntityType] = useState([]);
   // Function to handle option selection
   const handleOptionChange = (event, newValue) => {
       setEntityType(newValue);
+      handleSubTypePopUp();
+  };
+
+
+  const [isSubTypePopUpVisible, setIsSubTypePopUpVisible] = useState(false);
+  const handleSubTypePopUp = () => {
+    setIsSubTypePopUpVisible(true);
+  }
+
+  const handleSelectImage = (imageName) => {
+    console.log('Selected image:', imageName);
+    // You can set it to state or perform any other action as needed
   };
   
   return (
@@ -275,7 +287,11 @@ const AdminAddGLN = () => {
                 )}
               </button>
             </div>
+            
 
+            {isSubTypePopUpVisible && (
+            <SubTypeGLNPopUp isVisible={isSubTypePopUpVisible} setVisibility={setIsSubTypePopUpVisible} onSelectImage={handleSelectImage}/>
+            )}
 
             {/* <form onSubmit={handleSubmit}> */}
             <form>
@@ -286,7 +302,7 @@ const AdminAddGLN = () => {
                   id="entityType"
                   options={options}
                   value={entityType}
-                  getOptionLabel={(option) => option.label}
+                  getOptionLabel={(option) => option.label || ''}
                   onChange={handleOptionChange}
                   renderInput={(params) => (
                   <TextField
@@ -301,6 +317,7 @@ const AdminAddGLN = () => {
                     ...params.InputLabelProps,
                     style: { color: "black" },
                     }}
+                    required
                   />
                   )}
                 />
