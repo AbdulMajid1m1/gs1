@@ -1,16 +1,15 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import newRequest from '../utils/userRequest';
 
 export const MemberProfileDataContext = createContext();
 
 const MemberProfileData = ({ children }) => {
     const [memberProfileDetails, setMemberProfileDetails] = useState([]);
-    const memberDataString = sessionStorage.getItem('memberData');
-    const memberData = JSON.parse(memberDataString);
-   
-    const fetchAllUserData = async () => {
+    
+    const fetchAllUserData = async (userId) => {
+        // console.log("fetching user data", userId)
         try {
-          const response = await newRequest.get(`/users?id=${memberData?.id}`);
+          const response = await newRequest.get(`/users?id=${userId}`);
         //   console.log(response.data[0]);
           setMemberProfileDetails(response?.data[0] || []);
             
@@ -20,11 +19,6 @@ const MemberProfileData = ({ children }) => {
         //   console.log(err);
         }
     };
-
-   
-    useEffect(() => {
-        fetchAllUserData();
-    }, []);
 
     return (
         <MemberProfileDataContext.Provider value={{

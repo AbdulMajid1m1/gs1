@@ -18,7 +18,6 @@ import bwipjs from "bwip-js";
 import { useTranslation } from 'react-i18next';
 import DashboardRightHeader from "../../../components/DashboardRightHeader/DashboardRightHeader";
 import { useLanguage } from "../../../Contexts/LanguageContext";
-import { MemberProfileDataContext } from "../../../Contexts/MemberProfileData";
 
 const Gtin = () => {
   const [data, setData] = useState([]);
@@ -26,13 +25,11 @@ const Gtin = () => {
   const { selectedLanguage } = useLanguage();
   const memberDataString = sessionStorage.getItem('memberData');
   const memberData = JSON.parse(memberDataString);
-  // console.log(memberData);
-  
+  console.log(memberData);
+  const cartItemData = JSON.parse(memberData?.carts[0]?.cart_items);
+  console.log(cartItemData);
   const { rowSelectionModel, setRowSelectionModel,
     tableSelectedRows, setTableSelectedRows, tableSelectedExportRows, setTableSelectedExportRows } = useContext(DataTableContext);
-
-  const { memberProfileDetails } = useContext(MemberProfileDataContext);
-  // console.log(memberProfileDetails)
 
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]); // for the map markers
@@ -206,6 +203,67 @@ const Gtin = () => {
     saveAs(dataBlob, 'gtin_products_template.xlsx');
   };
 
+
+
+  // // file Import
+  // const [selectedFile, setSelectedFile] = useState(null);
+
+  // const fileInputRef = useRef(null);
+
+  // const handleImportClick = () => {
+  //   fileInputRef.current.click();
+  // };
+
+  //   const handleFileInputChange = (event) => {
+  //     const selectedFile = event.target.files[0];
+  //     setIsLoading(true);
+
+
+  //     if (selectedFile) {
+  //       const formData = new FormData();
+  //       formData.append('file', selectedFile);
+  //       formData.append('user_id', memberData?.id);
+  //       formData.append('email', memberData?.email);
+
+  //       newRequest.post('/products/bulkGtin', formData)
+  //         .then((response) => {
+  //           // Handle the successful response
+  //           console.log(response.data);
+
+  //           toast.success('The data has been imported successfully.', {
+  //             position: 'top-right',
+  //             autoClose: 2000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             theme: 'light',
+  //           });
+
+  //           setIsLoading(false)
+
+  //         })
+  //         .catch((error) => {
+  //           // Handle the error
+  //           console.error(error);
+
+  //           toast.error('Something is Wrong', {
+  //             position: 'top-right',
+  //             autoClose: 2000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             theme: 'light',
+  //           });
+
+  //           setIsLoading(false)
+
+  //         });
+  //     }
+  //   };
+
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileInputChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -432,6 +490,22 @@ const Gtin = () => {
                   )}
                 </button>
 
+
+                {/* <div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+              onChange={handleFileInputChange}
+              />
+              <button
+                className="rounded-full bg-primary font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-secondary"
+                onClick={handleImportClick}
+              >
+                <i className="fas fa-file-import mr-1"></i> Import
+              </button>
+            </div> */}
+
                 <div>
                   <input
                     type="file"
@@ -468,15 +542,20 @@ const Gtin = () => {
                   )}
                 </button>
 
+                {/* <button
+              onClick={handleExportProducts}
+              className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
+              <i className="fas fa-download mr-1"></i> Download
+            </button> */}
               </div>
 
 
 
               <div className={`flex justify-center sm:justify-start items-center flex-wrap gap-2 py-3 px-3 ${i18n.language === 'ar' ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
-                {memberProfileDetails?.gcpGLNID && (
+                {memberData?.gcpGLNID && (
                   <button
                     className="rounded-full bg-[#1E3B8B] font-body px-5 py-1 text-sm mb-3 text-white transition duration-200 hover:bg-primary">
-                    GCP {memberProfileDetails?.gcpGLNID}
+                    GCP {memberData.gcpGLNID}
                   </button>
                 )}
                 {totalCategory && (
