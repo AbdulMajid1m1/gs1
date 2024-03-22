@@ -445,7 +445,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let userUpdateResult;
         let pdfFilename;
         let cart;
-        let bankSlipDocuments;
+        let bankSlipDocuments, userId
         if (value.checkBankSlip) {
             bankSlipDocuments = await prisma.member_documents.findMany({
                 where: {
@@ -463,7 +463,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             // let gtinSubscriptionHistoryData, otherProductsSubscriptionHistoryData;
             const result = await prisma.$transaction(async (prisma) => {
                 // Fetch the user ID from the member_documents table
-                const userId = currentDocument.user_id;
+                userId = currentDocument.user_id;
 
 
                 // Perform the updateUserStatus logic
