@@ -76,29 +76,25 @@ const GEPIR = () => {
   };
 
   const products = [
-    { name: `${t("GTIN")}`, value: data?.gtin },
-    { name: `${t("Brand Name")}`, value: data?.brandName },
-    { name: `${t("Product Description")}`, value: data?.productDescription },
-    {
-      name: `${t("Product Image Url")}`,
-      value: (
-        <a href={data?.productImageUrl} target="_blank">
-          {data?.productImageUrl}
-        </a>
-      ),
-    },
-    { name: `${t("Country of sale")}`, value: data?.countryOfSaleCode },
-    { name: `${t("Gcp GLNID")}`, value: data?.gcpGLNID },
-    { name: `${t("Type")}`, value: data?.type },
-  ];
+    { name: `${t('GTIN')}`, value: data?.gtin || data?.globalGepirArr?.gtin },
+    { name: `${t('Brand Name')}`, value: data?.brandName || data?.globalGepirArr?.brandName },
+    { name: `${t('Product Description')}`, value: data?.productDescription || data?.globalGepirArr?.productDescription },
+    { name: `${t('Product Image Url')}`, value: data?.productImageUrl ? <a style={{color: '#a8e0f4'}} href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> : <a style={{color: '#a8e0f4'}} href={data?.globalGepirArr?.productImageUrl} target="_blank">{data?.globalGepirArr?.productImageUrl}</a> },
+    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: 'Net Content', value: data?.unitValue || `${data?.globalGepirArr?.unitValue} ${data?.globalGepirArr?.unitCode}` },
+    { name: `${t('Country of sale')}`, value: data?.countryOfSaleName || data?.globalGepirArr?.countryOfSaleName },
+  ]
+
 
   const companyInformation = [
-    { name: "GTIN", value: data?.gtin },
-    { name: `${t("Company Name")}`, value: data?.companyName },
-    { name: `${t("Country of sale")}`, value: data?.countryOfSaleName },
-    { name: `${t("Gcp GLNID")}`, value: data?.gcpGLNID },
-    { name: `${t("Type")}`, value: data?.type },
-  ];
+    { name: `${t('Company Name')}`, value: data?.companyName || data?.globalGepirArr?.companyName },
+    // { name: "Website", value: <p style={{color: 'gray'}}>Unknown</p> }, 
+    { name: "Licence Key", value: data?.licenceKey || data?.globalGepirArr?.licenceKey },
+    { name: "Licence Type", value: data?.licenceType || data?.globalGepirArr?.licenceType },
+    // { name: 'Global Location Number (GLN)', value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: 'Licensing GS1 Member Organisation', value: data?.moName || data?.globalGepirArr?.moName },
+  ]
+
 
   return (
     <div>
@@ -157,10 +153,10 @@ const GEPIR = () => {
               <div className="flex justify-end sm:px-40 px-10 py-10">
                 <div style={{ height: "120px" }}>
                   <GtinDataMatrixGenerator
-                    text={`${data?.gtin} - ${data?.brandName}`}
+                    text={`${data?.gtin || data?.globalGepirArr?.gtin} - ${data?.brandName || data?.globalGepirArr?.brandName}`}
                   />
-                  <p className="text-sm text-secondary">{data?.gtin}</p>
-                  <p className="text-sm text-secondary">{data?.brandName}</p>
+                  <p className="text-sm text-secondary">{data?.gtin || data?.globalGepirArr?.gtin}</p>
+                  <p className="text-sm text-secondary">{data?.brandName || data?.globalGepirArr?.brandName}</p>
                 </div>
               </div>
 
@@ -174,14 +170,14 @@ const GEPIR = () => {
                     <p className="font-semibold"> {t("Complete Data")}</p>
                     <p>
                       {t("This number is registered to company")}: :{" "}
-                      <span className="font-semibold">{data?.companyName}</span>
+                      <span className="font-semibold">{data?.companyName || data?.globalGepirArr?.companyName}</span>
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="text-center text-2xl font-medium text-secondary mb-2">
-                <p>{data?.productDescription}</p>
+                <p>{data?.productDescription || data?.globalGepirArr?.productDescription}</p>
               </div>
 
               <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 p-5">
@@ -242,13 +238,11 @@ const GEPIR = () => {
                   <div className="block">
                     <div className="flex flex-col md:flex-row">
                       <div className="w-full md:w-1/3 flex justify-center items-center p-4">
-                        {data?.gtinArr?.productImageUrl && (
-                          <img
-                            src={data.gtinArr.productImageUrl}
-                            alt="Product"
-                            className="w-1/2"
-                          />
-                        )}
+                        <img
+                          src={data?.productImageUrl || data?.globalGepirArr?.productImageUrl}
+                          alt="Product"
+                          className="w-1/2 object-contain"
+                        />
                       </div>
 
                       <div className="w-full md:w-2/3">
@@ -279,7 +273,7 @@ const GEPIR = () => {
                 {activeTab === "profile2" && (
                   <div className="shadow-lg border-[0.7px] mt-6 border-primary mb-6">
                     <div className="flex flex-col md:flex-row">
-                      <div className="w-full md:w-2/3">
+                      <div className="w-full">
                         <div className="container mx-auto mt-6 p-4">
                           <div className="overflow-x-auto">
                             <table className="table-auto min-w-max w-full">
