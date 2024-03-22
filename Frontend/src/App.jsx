@@ -146,6 +146,7 @@ import CheckDigitCalculator from "./Pages/UserPages/CheckDigitCalculator/CheckDi
 import GEPIR from "./Pages/UserPages/GEPIR/GEPIR.jsx";
 import AllProducts from "./Pages/AdminPages/AdminShare/AllProducts/AllProducts.jsx";
 import UpdateallProducts from "./Pages/AdminPages/AdminShare/AllProducts/UpdateAllProducts.jsx";
+import SearchGPC from "./Pages/UserPages/SearchGPC/SearchGPC.jsx";
 
 const queryClient = new QueryClient()
 
@@ -228,6 +229,7 @@ const App = () => {
                     <Route path="/check-digit" element={<CheckDigitCalculator />} />
                     <Route path="/gepir" element={<GEPIR />} />
                     <Route path="/user-guide" element={<UserGuide />} />
+                    <Route path="/search-gpc" element={<SearchGPC />} />
 
                     {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
