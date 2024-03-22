@@ -20,7 +20,11 @@ const SearchGPC = () => {
 
       <div className="mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96">
         <div className="">
-          <div className="flex flex-col gap-2">
+          <div
+            className={`flex flex-col gap-2 ${
+              i18n.language === "ar" ? "items-end" : "items-start"
+            }`}
+          >
             <label
               htmlFor="checkdigit"
               className="text-secondary sm:text-2xl font-body text-lg"
