@@ -28,7 +28,7 @@ const Header = () => {
           <div className='flex flex-wrap justify-center'>
             <div className=''>
               <div className='flex justify-end items-end px-1 gap-3 font-sans font-semibold'>
-                <p className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>{t('Verified By GS1')}</p>
+                <p onClick={() => navigate('/gepir')} className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>{t('Verified By GS1')}</p>
                 |
                 <span onClick={() => navigate('/admin-login')} className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>{t('Staff Login')}</span>
               </div>
