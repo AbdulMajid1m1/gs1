@@ -52,7 +52,7 @@ const ValueAddedCard = () =>
             })}
             
 
-             <div 
+             {/* <div 
               className='flex justify-end items-end h-40 w-full border border-gray-300 rounded-md shadow-lg cursor-pointer transition-transform transform hover:scale-110'
               onClick={() => navigate("/productinformation")}
             >
@@ -61,7 +61,7 @@ const ValueAddedCard = () =>
                 alt=""
                 className='w-[95%] h-40 p-1 object-contain'
               />
-            </div>
+            </div> */}
 
             {/*
             <div 

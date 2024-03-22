@@ -511,7 +511,7 @@ model featured_articales {
 }
 
 model featured_services {
-  id         BigInt    @id(map: "PK_featured_services") @default(autoincrement())
+  id          String    @id @default(cuid())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
