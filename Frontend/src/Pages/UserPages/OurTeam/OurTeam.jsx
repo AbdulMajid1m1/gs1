@@ -24,55 +24,58 @@ const OurTeam = () => {
 
 
     return (
-        <div>
-            {/* Nav */}
-            <div className="sticky top-0 z-50 bg-white">
-                <Header />
-            </div>
-
-            <div>
-                <DropDownSelection />
-            </div>
-
-            <div className="mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96">
-                {data &&
-                    data.map((item, index) => {
-                        const isEven = index % 2 === 0;
-                        return (
-                          <div
-                            className={`flex mt-20 ${
-                              isEven ? "" : "flex-row-reverse"
-                            }`}
-                            key={index}
-                          >
-                            <div className="w-full md:w-1/2">
-                              <img
-                                src={imageLiveUrl(item?.image)}
-                                width={"200px"}
-                                alt="Image"
-                              />
-                            </div>
-                            <div
-                              className={` my-auto ${isEven ? "ms-10" : "me-10"}`}
-                            >
-                              <h6 className="text-orange-500 text-lg font-medium font-sans">
-                                {item?.job_title}
-                              </h6>
-                              <p className="font-bold text-blue-900 font-medium font-sans mt-5">
-                                {item?.name}
-                              </p>
-                              <p className="text-base leading-loose font-light text-gray-700 mt-10 mb-20">
-                                {item?.description}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                    })}
-            </div>
-
-            {/* Footer */}
-            <Footer />
+      <div>
+        {/* Nav */}
+        <div className="sticky top-0 z-50 bg-white">
+          <Header />
         </div>
+
+        <div>
+          <DropDownSelection />
+        </div>
+
+        <div className="mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96">
+          <div
+            className={`${i18n.language === "ar" ? "text-end" : "text-start"}`}
+          >
+            <p className="font-bold text-blue-900 font-medium font-sans mt-5">
+              {t("Our Teams")}
+            </p>
+          </div>
+          {data &&
+            data.map((item, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <div
+                  className={`flex mt-20 ${isEven ? "" : "flex-row-reverse"}`}
+                  key={index}
+                >
+                  <div className="w-full md:w-1/2">
+                    <img
+                      src={imageLiveUrl(item?.image)}
+                      width={"200px"}
+                      alt="Image"
+                    />
+                  </div>
+                  <div className={` my-auto ${isEven ? "ms-10" : "me-10"}`}>
+                    <h6 className="text-orange-500 text-lg font-medium font-sans">
+                      {item?.job_title}
+                    </h6>
+                    <p className="font-bold text-blue-900 font-medium font-sans mt-5">
+                      {item?.name}
+                    </p>
+                    <p className="text-base leading-loose font-light text-gray-700 mt-10 mb-20">
+                      {item?.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+
+        {/* Footer */}
+        <Footer />
+      </div>
     );
 };
 

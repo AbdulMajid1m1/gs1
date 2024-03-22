@@ -148,6 +148,7 @@ import AllProducts from "./Pages/AdminPages/AdminShare/AllProducts/AllProducts.j
 import UpdateallProducts from "./Pages/AdminPages/AdminShare/AllProducts/UpdateAllProducts.jsx";
 import SearchGPC from "./Pages/UserPages/SearchGPC/SearchGPC.jsx";
 import OurTeam from "./Pages/UserPages/OurTeam/OurTeam.jsx";
+import BoardMember from "./Pages/UserPages/BoardSection/BoardMember.jsx";
 
 const queryClient = new QueryClient()
 
@@ -249,6 +250,7 @@ const App = () => {
                     <Route path="/user-guide" element={<UserGuide />} />
                     <Route path="/search-gpc" element={<SearchGPC />} />
                     <Route path="/our-team" element={<OurTeam />} />
+                    <Route path="/board-member" element={<BoardMember />} />
 
                     {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
