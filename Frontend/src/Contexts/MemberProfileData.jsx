@@ -24,7 +24,7 @@ const MemberProfileData = ({ children }) => {
    
     useEffect(() => {
         fetchAllUserData();
-    }, [])
+    }, []);
 
     return (
         <MemberProfileDataContext.Provider value={{
