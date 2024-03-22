@@ -8,7 +8,6 @@ import { fileURLToPath } from 'url'; // Import the fileURLToPath function
 import path from 'path';
 import fs from 'fs/promises';
 import fs1 from 'fs';
-
 import jwt from 'jsonwebtoken';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
