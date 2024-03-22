@@ -18,7 +18,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
   newExpiryDate.setFullYear(newExpiryDate.getFullYear() + 1);
   const formattedExpiryDate = expiryDate.toLocaleDateString();
   const formattedNewExpiryDate = newExpiryDate.toLocaleDateString();
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
@@ -55,11 +55,13 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
       const res = await newRequest.get(
         `/gtinProducts/subcriptionsProducts?&user_id=${gs1RegesteredMembersData?.id}&isDeleted=false`
       );
+
+
       // console.log(res.data);
       let data = res.data;
-
+      data.gtinSubscriptions[0].price = 0;
       setMemberInvoiceData(data);
-
+      console.log(data);
       let total = 0;
       res.data?.gtinSubscriptions.forEach((item) => {
         total +=
@@ -116,10 +118,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
             <div className="member-popup-form w-full">
               {/* <form className='w-full'> */}
               <form onSubmit={handleSubmit} className="w-full">
-                <h2 className="text-secondary font-sans font-semibold text-2xl">
-                  {" "}
-                  {t("Renew Invoice")}
-                </h2>
+               <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Renew Invoice')}</h2>
 
                 <div className="table-member-inoive px-4">
                   {/* show the transaction_id in very small  */}
@@ -157,7 +156,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
                             <tr key={index}>
                               <td>{item?.gtin_product?.member_category_description}</td>
                               <td>{item?.price}</td>
-                              <td>{gs1RegesteredMembersData?.no_of_years > 0 ? item?.gtin_subscription_total_price: 0}</td>
+                              <td>{item?.gtin_subscription_total_price}</td>
                               {/* <td>{expiryDate}</td> */}
                               <td>{item?.gtin_subscription_total_price + item?.price}</td>
                             </tr>
@@ -171,7 +170,7 @@ const RenewPopUp = ({ isVisible, setVisibility }) => {
                             <tr key={"other_products" + index}>
                               <td>{item?.product?.product_name}</td>
                               <td>{item?.price}</td>
-                              <td>{gs1RegesteredMembersData?.no_of_years > 0 ? item?.other_products_subscription_total_price : 0}</td>
+                              <td>{item?.other_products_subscription_total_price}</td>
                               {/* <td>{expiryDate}</td> */}
                               <td>{item?.other_products_subscription_total_price + item?.price}</td>
                             </tr>

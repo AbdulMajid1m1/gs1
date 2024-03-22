@@ -53,29 +53,29 @@ const AddAddtionalGLN = ({ isVisible, setVisibility, refreshAddtionalProducts })
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Add Additional GLN')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Add Additional GLN')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary"> {t('Total No Of GLN')}</label>
+                    <label htmlFor="field1"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Total No Of GLN')}</label>
                     <input
                       type="text"
                       id="name"
                       value={totalNumberOfGln}
                       onChange={(e) => setTotalNumberOfGln(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Total No Of GLN')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary"> {t('Price')}</label>
+                    <label htmlFor="field2"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Price')}</label>
                     <input
                       type="number"
                       id="field2"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Price')}`}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                       className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>

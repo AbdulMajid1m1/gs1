@@ -2460,6 +2460,24 @@ export const paymentSlipColumn = (t, i18n) => [
   //   headerName: "Documents",
   //   width: 180,
   // },
+  // show user.company_name_eng in the column
+  {
+    field: 'company_name_eng',
+    headerName: t('Company Name English'),
+    width: 180,
+    valueGetter: (params) => {
+      return params.row.user ? params.row.user.company_name_eng : '';
+    },
+  },
+  {
+    field: 'companyID',
+    headerName: t('Company Name English'),
+    width: 180,
+    valueGetter: (params) => {
+      return params.row.user ? params.row.user.companyID : '';
+    },
+  },
+
   {
     field: 'transaction_id',
     headerName: t('Transaction ID'),
@@ -3696,7 +3714,7 @@ export const Commentcolumdata = (t) => [
     field: 'comment',
     headerName: t('Comment'),
     width: 250,
-     renderCell: (params) => (
+    renderCell: (params) => (
       <div
         style={{
           overflowX: 'auto',
@@ -7061,6 +7079,17 @@ export const KpiReportColumn = (t, i18n) => [
     width: 120,
   },
   {
+    field: 'approved_date',
+    headerName: t('Approved Date'),
+    width: 180,
+
+    type: 'dateTime',
+    valueGetter: (params) => {
+      // Convert the string date to a Date object
+      return params.value ? new Date(params.value) : null;
+    }
+  },
+  {
     field: 'created_at',
     headerName: t('Date Created'),
     width: 180,
@@ -7068,7 +7097,7 @@ export const KpiReportColumn = (t, i18n) => [
     type: 'dateTime',
     valueGetter: (params) => {
       // Convert the string date to a Date object
-      return params.value ? new Date(params.value) : null;
+      return params.value ? new Date(params.value) : 'N/A';
     }
   },
   // {
@@ -7909,25 +7938,25 @@ export const licenceRegistryColumn = (t, i18n) => [
 ];
 
 
-export const AllProductsColumn= (t, i18n) => [
- 
+export const AllProductsColumn = (t, i18n) => [
+
   {
     field: 'productnameenglish',
     headerName: t('Product Name [English]'),
     width: 220,
   },
-   {
+  {
     field: 'productnamearabic',
     headerName: t('Product Name [Arabic]'),
     width: 220,
   },
-   {
+  {
     field: "qrcode",
     headerName: t('QR Code'),
     renderCell: (params) => <QRCodeCell value={params.row.barcode} />,
     width: 180, // Adjust this width as needed
-   },
-   {
+  },
+  {
     field: 'BrandName',
     headerName: t('Brand Name'),
     width: 200,

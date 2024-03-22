@@ -10,7 +10,7 @@ import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
 import { useTranslation } from 'react-i18next';
 
-const Addpages = () =>{
+const Addpages = () => {
 
     const navigate = useNavigate();
     const [name, setname] = useState("");
@@ -25,23 +25,19 @@ const Addpages = () =>{
     const [Customdatashow, setCustomdatashow] = useState(false)
     const { t, i18n } = useTranslation();
 
-    const handleChangeeng = (value) =>
-    {
+    const handleChangeeng = (value) => {
         setcustomsectiondataeng(value);
     };
 
-    const handleChangearb = (value) =>
-    {
+    const handleChangearb = (value) => {
         setcustomsectiondataarb(value);
     };
 
-    const handleCloseCreatePopup = () =>
-    {
+    const handleCloseCreatePopup = () => {
 
     };
 
-    const handleAddCompany = async () =>
-    {
+    const handleAddCompany = async () => {
 
         try {
             const formattedSections = sections.map(section => `"${section}"`).join(',');
@@ -91,13 +87,11 @@ const Addpages = () =>{
 
     };
 
-    const handleDragStart = (e, section) =>
-    {
+    const handleDragStart = (e, section) => {
         e.dataTransfer.setData('text/plain', section);
     };
 
-    const handleDrop = (e) =>
-    {
+    const handleDrop = (e) => {
         e.preventDefault();
         const section = e.dataTransfer.getData('text/plain');
         setsections([...sections, section]);
@@ -108,13 +102,11 @@ const Addpages = () =>{
 
 
     };
-    const handleDragOver = (e) =>
-    {
+    const handleDragOver = (e) => {
         e.preventDefault();
     };
 
-    const handleRemoveSection = (index) =>
-    {
+    const handleRemoveSection = (index) => {
         const updatedSections = [...draggedSections];
         updatedSections.splice(index, 1);
         setDraggedSections(updatedSections);
@@ -124,8 +116,7 @@ const Addpages = () =>{
         }
     };
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         // Register the ImageResize module when the component mounts
         Quill.register('modules/imageResize', ImageResize);
     }, []);
@@ -153,7 +144,7 @@ const Addpages = () =>{
         imageResize: {
             modules: ['Resize', 'DisplaySize']
         },
-       
+
     };
 
     const formats = [
@@ -193,10 +184,12 @@ const Addpages = () =>{
                                     <form className='w-full'>
                                         <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="AddSections" className="text-secondary">
+                                                <label htmlFor="AddSections" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}>
                                                     {t('Add Sections')}
                                                 </label>
-                                                <label htmlFor="AddSections" className="text-secondary">
+                                                <label htmlFor="AddSections" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}>
                                                     {t('Drag Here sections you want to add')}
                                                 </label>
                                                 <div
@@ -238,31 +231,36 @@ const Addpages = () =>{
                                             </div>
 
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="field1" className="text-secondary"> {t('Page Name[English]')}</label>
+                                                <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}> {t('Page Name[English]')}</label>
                                                 <input
                                                     type="text"
                                                     id="name"
                                                     value={name}
                                                     onChange={(e) => setname(e.target.value)}
-                                            placeholder={`${t('Enter')} ${t('Page Name[English]')}`}
-                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    placeholder={`${t('Enter')} ${t('Page Name[English]')}`}
+                                                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                        }`}
                                                 />
                                             </div>
 
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="field1" className="text-secondary">{t('Page Name[Arabic]')}</label>
+                                                <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}>{t('Page Name[Arabic]')}</label>
                                                 <input
                                                     type="text"
                                                     id="name_ar"
                                                     value={name_ar}
                                                     onChange={(e) => setname_ar(e.target.value)}
                                                     placeholder={`${t('Enter')} ${t('Page Name[Arabic]')}`}
-                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                        }`}
                                                 />
                                             </div>
 
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="status" className="text-secondary">
+                                                <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}>
                                                     {t('Page Order')}
                                                 </label>
 
@@ -272,12 +270,14 @@ const Addpages = () =>{
                                                     value={PageOrder}
                                                     onChange={(e) => setPageOrder(e.target.value)}
                                                     placeholder={`${t('Enter')} ${t('Page Order')}`}
-                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                        }`}
                                                 />
                                             </div>
 
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="status" className="text-secondary">
+                                                <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}>
                                                     {t('Page Slug')}
                                                 </label>
 
@@ -287,12 +287,14 @@ const Addpages = () =>{
                                                     value={PageSlug}
                                                     onChange={(e) => setPageSlug(e.target.value)}
                                                     placeholder={`${t('Enter')} ${t('Page Slug')}`}
-                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                        }`}
                                                 />
                                             </div>
 
                                             <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                                                <label htmlFor="status" className="text-secondary">
+                                                <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                    }`}>
                                                     {t('Seo Description')}
                                                 </label>
                                                 <textarea
@@ -301,7 +303,8 @@ const Addpages = () =>{
                                                     value={SeoDescription}
                                                     onChange={(e) => setSeoDescription(e.target.value)}
                                                     placeholder={`${t('Enter')} ${t('Seo Description')}`}
-                                                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                                                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                                                        }`}
                                                 />
 
                                             </div>
@@ -323,7 +326,7 @@ const Addpages = () =>{
                                                             {t('Custom Data[Arabic]')}
                                                         </label>
                                                         <ReactQuill theme="snow" modules={modules}
-                                                            formats={formats} className=' h-40'
+                                                            formats={formats} className=' h-40 '
                                                             value={customsectiondataarb}
                                                             onChange={handleChangearb} />
                                                     </div>

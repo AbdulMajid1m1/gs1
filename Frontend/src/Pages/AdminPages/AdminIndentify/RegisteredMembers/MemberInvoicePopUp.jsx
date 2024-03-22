@@ -30,8 +30,6 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
     setVisibility(false);
   };
 
-
-
   const handleMemberInvoiceData = async () => {
     if (gs1MemberInvoiceData?.type === "invoice" || gs1MemberInvoiceData?.type === "renewal_invoice" || gs1MemberInvoiceData?.type === "migration_invoice"
       || gs1MemberInvoiceData?.type === "additional_other_products_invoice") {
@@ -50,12 +48,16 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
         let total = 0;
         res.data?.gtinSubscriptions.forEach((item) => {
+          console.log(item.price);
+          console.log(item.gtin_subscription_total_price);
           total += parseInt(item.price) + parseInt(item.gtin_subscription_total_price);
         });
 
         res.data?.otherProductSubscriptions.forEach((item) => {
           // add price and other_products_subscription_total_price
-          total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+          console.log(item.price);
+          console.log(item.other_products_subscription_total_price);
+          total += parseInt(item.price || 0) + parseInt(item.other_products_subscription_total_price);
         });
         // console.log(total);
         setTotalPrice(total);
@@ -183,7 +185,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
     const rejectBody = {
       status: selectedStatus,
-      reject_reason: rejected,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate,
     };
@@ -194,6 +196,8 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       invoiceType: gs1MemberInvoiceData?.type,
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate,
+      status: selectedStatus,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
@@ -208,12 +212,16 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate,
+      status: selectedStatus,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
     const addGln = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate,
+      status: selectedStatus,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
 
     // console.log(upgrade_invoice);

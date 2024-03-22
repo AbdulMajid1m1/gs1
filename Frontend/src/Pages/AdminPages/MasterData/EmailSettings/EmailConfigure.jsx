@@ -141,9 +141,8 @@ const EmailConfigure = () => {
   return (
     <div>
       <div
-        className={`p-0 h-full ${
-          i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
-        }`}
+        className={`p-0 h-full ${i18n.language === "ar" ? "sm:mr-72" : "sm:ml-72"
+          }`}
       >
         <div>
           <DashboardRightHeader title={`${t("Email Configure")}`} />
@@ -153,11 +152,10 @@ const EmailConfigure = () => {
           <div className="h-auto w-[97%] px-0 pt-4">
             <div className="h-auto w-full p-0 bg-white shadow-xl rounded-md">
               <div
-                className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${
-                  i18n.language === "ar"
+                className={`flex  sm:justify-start items-center flex-wrap gap-2 py-7 px-3 ${i18n.language === "ar"
                     ? "flex-row-reverse justify-start"
                     : "flex-row justify-start"
-                }`}
+                  }`}
               >
                 <button
                   onClick={handleShowCreatePopup}
@@ -218,11 +216,11 @@ const EmailConfigure = () => {
           </div>
         </div>
         {isCreatePopupVisible && (
-                    <AddEmailConfigure isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
-                )}
-                {isUpdatePopupVisible && (
-                    <Updataemailsetting isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
-                )}
+          <AddEmailConfigure isVisible={isCreatePopupVisible} setVisibility={setCreatePopupVisibility} refreshBrandData={refreshcitiesData} />
+        )}
+        {isUpdatePopupVisible && (
+          <Updataemailsetting isVisible={isUpdatePopupVisible} setVisibility={setUpdatePopupVisibility} refreshBrandData={refreshcitiesData} />
+        )}
       </div>
     </div>
   );

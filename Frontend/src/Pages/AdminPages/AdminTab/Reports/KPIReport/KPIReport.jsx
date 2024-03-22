@@ -187,6 +187,7 @@ const KPIReport = () => {
           company_name_eng: item?.user?.company_name_eng,
           productName: item?.productName,
           created_at: item?.created_at,
+          approved_date: item?.approved_date,
         };
       });
 
@@ -425,7 +426,7 @@ const KPIReport = () => {
 
                   <div className='flex justify-end flex-col items-end flex-wrap gap-2'>
                     <div className="flex flex-col">
-                      <label className="font-body text-sm">{t('From')}</label>
+                      <label className={`font-body text-sm  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('From')}</label>
                       <input
                         type="date"
                         value={startDate}
@@ -434,7 +435,7 @@ const KPIReport = () => {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="font-body text-sm">{t('To')}</label>
+                      <label  className={`font-body text-sm ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('To')}</label>
                       <input
                         type="date"
                         value={endDate}

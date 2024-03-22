@@ -6,8 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import { useTranslation } from 'react-i18next';
 
-const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
-{
+const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) => {
   // get this session data
   const updateBrandData = JSON.parse(sessionStorage.getItem("updateBrandData"));
   // console.log(updateBrandData)
@@ -19,15 +18,13 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
   const { t, i18n } = useTranslation();
 
 
-  const handleCloseUpdatePopup = () =>
-  {
+  const handleCloseUpdatePopup = () => {
     setVisibility(false);
   };
 
 
 
-  const handleInputChange = (e) =>
-  {
+  const handleInputChange = (e) => {
     const inputValue = e.target.value;
     if (inputValue.length > 10) {
       setError("Cr Number should be 10 digits");
@@ -36,8 +33,7 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
     }
     setcr(inputValue.slice(0, 10));  // Limit input to 10 characters
   };
-  const handleUpdateBrand = async (e) =>
-  {
+  const handleUpdateBrand = async (e) => {
     e.preventDefault();
     // show the error meesage if the cr number is not 10 digits
     if (cr.length !== 10) {
@@ -100,10 +96,12 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Update')} {t('Cr Number')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}> {t('Update')} {t('Cr Number')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Cr Number')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Cr Number')}</label>
                     <input
                       type="text"
                       id="cr"
@@ -111,13 +109,15 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={handleInputChange}
                       //   readOnly
                       placeholder={`${t('Enter')} ${t('Cr Number')} `}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
                     {error && <p className="text-red-500 text-xs">{error}</p>}
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Cr Activity')}</label>
+                    <label htmlFor="field1" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>{t('Cr Activity')}</label>
                     <input
                       type="text"
                       id="activity"
@@ -125,19 +125,22 @@ const Updatecrnumber = ({ isVisible, setVisibility, refreshBrandData }) =>
                       onChange={(e) => setactivity(e.target.value)}
                       //   readOnly
                       placeholder={`${t('Enter')} ${t('Cr Activity')} `}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     />
 
                   </div>
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="status" className="text-secondary">
+                    <label htmlFor="status" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"
+                      }`}>
                       {t('Status')}
                     </label>
                     <select
                       id="status"
                       value={status}
                       onChange={(e) => setstatus(e.target.value)}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start"
+                        }`}
                     >
                       <option value="0">{t('Inactive')}</option>
                       <option value="1">{t('Active')}</option>

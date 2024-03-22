@@ -344,7 +344,6 @@ export const sendInvoiceToUser = async (req, res, next) => {
             }
             ]
 
-            console.log("gtinSubscriptionHistoryData", gtinSubscriptionHistoryData);
 
             let activatedOtherProduct = await prisma.other_products_subcriptions.findMany({
                 where: {
@@ -929,7 +928,12 @@ export const getLicenseRegisteryUser = async (req, res) => {
                 // gpc: { not: null },
                 parent_memberID: '0',
                 gcp_expiry: { gt: new Date() }
+            },
+            // sort by updated_at in descending order
+            orderBy: {
+                updated_at: 'desc'
             }
+
         });
 
         res.status(200).json({ success: true, data: activeUsers });

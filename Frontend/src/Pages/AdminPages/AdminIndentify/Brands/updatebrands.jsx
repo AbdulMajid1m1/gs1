@@ -16,7 +16,7 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
   const [brandCertificate, setBrandCertificate] = useState("");
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   const handleCloseUpdatePopup = () => {
     setVisibility(false);
@@ -83,11 +83,11 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
           <div className="popup-container h-auto sm:w-[45%] w-full">
             <div className="popup-form w-full">
               <form onSubmit={handleAddCompany} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'> {t('Edit')} {t('Brands')}</h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}> {t('Edit')} {t('Brands')}</h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field1" className="text-secondary">{t('Brands')} {t('Name[English]')}</label>
+                    <label htmlFor="field1"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Brands')} {t('Name[English]')}</label>
                     <input
                       type="text"
                       id="field1"
@@ -95,12 +95,12 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[English]')}`}
                       required
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-0"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-0 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
 
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                    <label htmlFor="field2" className="text-secondary">{t('Brands')} {t('Name[Arabic]')}</label>
+                    <label htmlFor="field2"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Brands')} {t('Name[Arabic]')}</label>
                     <input
                       type="text"
                       id="field2"
@@ -108,20 +108,20 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
                       onChange={(e) => setCompanyNameArabic(e.target.value)}
                       placeholder={`${t('Enter')} ${t('Brands')} ${t('Name[Arabic]')}`}
                       required
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                      className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                     />
                   </div>
                 </div>
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                  <label htmlFor="field2" className="text-secondary"> {t('Status')}</label>
+                  <label htmlFor="field2"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}> {t('Status')}</label>
                   <select
                     type="text"
                     id="field2"
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                     required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                   >
                     <option value="0">{t('Inactive')}</option>
                     <option value="1">{t('Active')}</option>
@@ -130,13 +130,13 @@ const Updatebrands = ({ isVisible, setVisibility, refreshBrandData }) => {
 
 
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2 mt-2">
-                  <label htmlFor="field3" className="text-secondary">{t('Upload Documents')} </label>
+                  <label htmlFor="field3"  className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Upload Documents')} </label>
                   <input
                     type="file"
                     id="field3"
                     onChange={handleFileChange}
                     required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3"
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                   />
                   {error && <p className="text-red-500">{error}</p>}
                 </div>

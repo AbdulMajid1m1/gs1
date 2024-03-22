@@ -186,7 +186,20 @@ export const getMemberDocuments = async (req, res, next) => {
             }, {})
             : {};
 
-        const documents = await prisma.member_documents.findMany({ where: filterConditions });
+        const documents = await prisma.member_documents.findMany({
+            where: filterConditions,
+            include: {
+                // only incude user's company name english and email
+                user: {
+                    select: {
+                        company_name_eng: true,
+                        email: true,
+                        companyID: true,
+                    }
+                }
+            },
+            orderBy: { updated_at: 'desc' }
+        });
         res.json(documents);
     } catch (error) {
         next(error);
@@ -402,7 +415,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
     if (error) {
         return next(createError(400, error.details[0].message));
     }
-    console.log("checkBankSlip", value.checkBankSlip)
+
     try {
 
         const documentId = req.params.id;
@@ -478,7 +491,9 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             data: {
                                 gcpGLNID: gcpGLNID,
                                 gln: gln,
-                                gcp_expiry: expiryDate,
+                                // gcp_expiry: expiryDate,
+                                //  if migration is true then set expiry to 31st dec 2023
+                                gcp_expiry: value.migration ? new Date('2023-12-31') : expiryDate,
                                 remarks: 'Registered',
                                 payment_status: 1,
                                 status: 'active'
@@ -496,34 +511,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                                 gtin_subscription_total_price: product.gtin_yearly_subscription_fee,
 
                             }
-                        });
-
-                        await prisma.gtin_subscription_histories.updateMany({
-                            where: {
-                                transaction_id: currentDocument.transaction_id,
-                                user_id: userId,
-                                request_type: 'registration',
-
-                            },
-                            data: {
-                                status: 'approved',
-                                expiry_date: expiryDate,
-                                approved_date: value.approved_date,
-                            }
-                        });
-
-                        await prisma.other_products_subscription_histories.updateMany({
-                            where: {
-                                transaction_id: currentDocument.transaction_id,
-                                user_id: userId,
-                                request_type: 'registration',
-                            },
-                            data: {
-                                status: 'approved',
-                                expiry_date: expiryDate,
-                                approved_date: value.approved_date,
-                            }
-
                         });
 
 
@@ -561,10 +548,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                             });
 
                         }
-
-
-
-
 
                         // update isRegistered in crs to 1 by  cr_number and cr_activity
                         await prisma.crs.updateMany({
@@ -677,7 +660,6 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             // Call sendLicenceToGepir function for the approved user
             await sendLicenceToGepir([currentDocument.user_id]);
             // value.migration === true
-            console.log("existingUser", currentDocument);
             let cartData = JSON.parse(cart.cart_items);
             cart.cart_items = cartData
             const data1 = {
@@ -780,20 +762,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
             // document: `/uploads/documents/MemberCertificates/${pdfFilename}`,
 
             await sendStatusUpdateEmail(existingUser.email, value.status, value.status === 'approved' ? { pdfBuffer, pdfFilename } : null, { pdfBuffer2, pdfFilename1 }, null, value.selectedLanguage);
-            await prisma.member_documents.update({
-                where: { id: documentId },
-                data: { status: value.status }
-            });
 
-            if (req?.admin?.adminId) {
-                const adminLog = {
-                    subject: `Member Account Approved by ${req?.admin?.email}`,
-                    admin_id: req.admin.adminId,
-                    user_id: userUpdateResult.id,
-
-                }
-                await createAdminLogs(adminLog);
-            }
 
 
             // create brand using Company Name and Company Name Arabic
@@ -914,16 +883,54 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
 
 
         if (value.status === 'rejected') {
-            // Set the document status to pending
-            await prisma.member_documents.update({
-                where: { id: documentId },
-                data: { status: 'pending' }
-            });
-
             // Send email with optional reject reason
             await sendStatusUpdateEmail(existingUser.email, value.status, null, null, value.reject_reason, value.selectedLanguage);
         }
 
+        await prisma.member_documents.update({
+            where: { id: documentId },
+            data: { status: value.status }
+        });
+
+        if (req?.admin?.adminId) {
+            const adminLog = {
+                subject: `${value.status === 'approved' ? 'Approved' : 'Rejected'} ${currentDocument.type} Document by ${req?.admin?.email}`,
+                admin_id: req.admin.adminId,
+                user_id: currentDocument.user_id,
+
+            }
+            await createAdminLogs(adminLog);
+        }
+
+        await prisma.gtin_subscription_histories.updateMany({
+            where: {
+                transaction_id: currentDocument.transaction_id,
+                user_id: userId,
+                request_type: 'registration',
+
+            },
+            data: {
+                // change satatus based on the value.status
+                status: value.status,
+                expiry_date: expiryDate,
+                // if status is approved then update approved date 
+                ...(value.status === 'approved' && { approved_date: value.approved_date }),
+            }
+        });
+
+        await prisma.other_products_subscription_histories.updateMany({
+            where: {
+                transaction_id: currentDocument.transaction_id,
+                user_id: userId,
+                request_type: 'registration',
+            },
+            data: {
+                status: value.status,
+                expiry_date: expiryDate,
+                ...(value.status === 'approved' && { approved_date: value.approved_date }),
+            }
+
+        });
 
 
 
@@ -942,7 +949,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                 }
             }
 
-            const deletedResult = await prisma.member_documents.deleteMany({
+            await prisma.member_documents.deleteMany({
                 where: {
                     user_id: currentDocument.user_id,
                     transaction_id: currentDocument.transaction_id,

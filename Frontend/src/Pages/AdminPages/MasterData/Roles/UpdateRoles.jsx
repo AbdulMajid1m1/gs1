@@ -141,20 +141,20 @@ const UpdateRoles = () => {
             {/* <form> */}
               <div className="flex flex-col gap-8 sm:flex-row sm:justify-between sm:mt-0 mt-4">
                 <div className="sm:w-[40%] h-20 w-full font-body sm:text-base text-sm flex flex-col gap-1">
-                  <label htmlFor="fields1" className="text-secondary font-semibold">  {t('Role Name')}</label>
+                  <label htmlFor="fields1" className={`text-secondary font-semibold ${i18n.language === "ar" ? "text-end" : "text-start" }`}>  {t('Role Name')}</label>
                   <input
                     type="text"
                     id="fields1"
                     value={roleName}
                     onChange={(e) => setRoleName(e.target.value)}
                     required
-                    className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                    placeholder={'Role Name'}
+                    className={`border-1 w-full rounded-sm border-[#8E9CAB] p-2 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
+                     placeholder={t('Role Name')}
                   />
                 </div>
 
                 <div className='w-full font-body sm:text-base text-sm flex flex-col gap-1'>
-                  <label className='text-secondary font-semibold' htmlFor='SelectRoles'>   {t('Select Permission')}</label>
+                  <label className={`text-secondary font-semibold ${i18n.language === "ar" ? "text-end" : "text-start" }`} htmlFor='SelectRoles'>   {t('Select Permission')}</label>
                   <Autocomplete
 
                     multiple
@@ -166,8 +166,6 @@ const UpdateRoles = () => {
                     filterSelectedOptions
                     renderInput={(params) => (
                       <TextField
-
-
                         autoComplete="off"
                         {...params}
                         label={`${t('Select Permissions')}`}

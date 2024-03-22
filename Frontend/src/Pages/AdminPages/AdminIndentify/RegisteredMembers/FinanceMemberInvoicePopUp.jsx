@@ -71,7 +71,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 
         res.data?.otherProductSubscriptions.forEach((item) => {
           // add price and other_products_subscription_total_price
-          total += parseInt(item.price) + parseInt(item.other_products_subscription_total_price);
+          total += parseInt(item.price || 0) + parseInt(item.other_products_subscription_total_price);
         });
         // console.log(total);
         setTotalPrice(total);
@@ -199,7 +199,7 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 
     const rejectBody = {
       status: selectedStatus,
-      reject_reason: rejected,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
     };
@@ -210,6 +210,8 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       invoiceType: gs1MemberInvoiceData?.type,
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
+      status: selectedStatus,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
     const downgradeInvoiceBody = {
       userId: gs1MemberInvoiceData?.user_id,
@@ -224,12 +226,17 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
+      status: selectedStatus,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
     }
     const addGln = {
       userId: gs1MemberInvoiceData?.user_id,
       transactionId: gs1MemberInvoiceData?.transaction_id,
       selectedLanguage: selectedLanguage,
       approved_date: formattedStartDate.toISOString(),
+      status: selectedStatus,
+      ...(selectedStatus === "rejected" && { reject_reason: rejected }),
+
     }
 
     // console.log(upgrade_invoice);
@@ -638,12 +645,12 @@ const FinanceMemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInov
 
                 <div className="flex justify-center items-center">
                   <label className="font-body text-sm text-red-500 font-semibold text-center">Enter the Actual Bank Receipt Date</label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-lg"
-                    />
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="border border-gray-300 p-2 rounded-lg"
+                  />
                 </div>
 
                 <div className="w-full flex justify-center items-center gap-8 mt-5">

@@ -60,6 +60,10 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         try {
             const response = await newRequest.put(`/updatehelp_desks/${updateBrandData?.id}`, formData);
             const emaiilpostrec = await newRequest.post(`/sendemailAssign_to_helpdesk/${emailpost}`);
+            if (Number(status)===1) {
+                const emaiilpostrec = await newRequest.post(`/sendemailstatus_closed/${updateBrandData?.email}`);
+                console.log("emaiilpostrec", emaiilpostrec);
+            }
             // console.log("emaiilpostrec", emaiilpostrec);
             toast.success(
                 response?.data?.message ||
@@ -112,7 +116,10 @@ const HelpDeskAssigneto = ({ isVisible, setVisibility, refreshBrandData }) => {
         const formData = new FormData();
         formData.append("helpDeskID", updateBrandData?.id);
         formData.append("comment", Comments);
-        formData.append("document", selecteddocument);
+        // formData.append("document", selecteddocument);
+         if (selecteddocument) {
+           formData.append("document", selecteddocument);
+         }
         formData.append("commentByAdmin", "commentByAdmin");
         formData.append("commentByUser", "commentByUser");
         try {

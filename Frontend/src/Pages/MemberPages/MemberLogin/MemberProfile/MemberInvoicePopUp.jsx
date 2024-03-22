@@ -18,7 +18,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
   const [loading, setLoading] = useState(false);
   const [memberInoviceData, setMemberInvoiceData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   const handleCloseInvoicePopup = () => {
     setVisibility(false);
@@ -106,18 +106,18 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
           <div className="member-popup-container h-auto sm:w-[45%] w-full">
             <div className="member-popup-form w-full">
               <form onSubmit={handleSubmit} className='w-full'>
-                <h2 className='text-secondary font-sans font-semibold text-2xl'>  {t('Update Member Invoice Details')} </h2>
+                <h2 className={`text-secondary font-sans font-semibold text-2xl ${i18n.language === "ar" ? "text-end" : "text-start"}`}>  {t('Update Member Invoice Details')} </h2>
                 <div className="flex flex-col sm:gap-3 gap-3 mt-5">
                   <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
                     <div className="flex flex-row gap-2">
-                      <label htmlFor="approvedRadio" className="text-secondary">{t('Invoice Status')} </label>
+                      <label htmlFor="approvedRadio" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Invoice Status')} </label>
                       <div className="flex flex-row gap-2">
                         <input
                           type="radio"
                           id="approvedRadio"
                           name="invoiceStatus"
                           value="approved"
-                          className="border-1 w-4 h-4 border-[#8E9CAB] p-2 mb-3"
+                           className={`border-1 w-full w-4 h-4 rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                           checked={selectedStatus === "approved"}
                           onChange={() => setSelectedStatus("approved")}
                         />
@@ -129,7 +129,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
                           id="rejectedRadio"
                           name="invoiceStatus"
                           value="rejected"
-                          className="border-1 w-4 h-4 border-[#8E9CAB] p-2 mb-3"
+                           className={`border-1 w-full w-4 h-4 rounded-sm border-[#8E9CAB] p-2 mb-3 ${i18n.language === "ar" ? "text-end" : "text-start" }`}
                           checked={selectedStatus === "rejected"}
                           onChange={() => setSelectedStatus("rejected")}
                         />
@@ -140,7 +140,7 @@ const MemberInvoicePopUp = ({ isVisible, setVisibility, refreshMemberInoviceData
 
                   {selectedStatus === "rejected" && (
                     <div className="w-full font-body sm:text-base text-sm flex flex-col gap-2">
-                      <label htmlFor="field2" className="text-secondary">{t('Reason for Rejection')}</label>
+                      <label htmlFor="field2" className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start" }`}>{t('Reason for Rejection')}</label>
                       <input
                         type="text"
                         id="field2"
