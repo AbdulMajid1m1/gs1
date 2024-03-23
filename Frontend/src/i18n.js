@@ -7,8 +7,8 @@ import enTranslation from './english.json';
 import arTranslation from './arabic.json';
 import { backendUrl } from './utils/config';
 
-const storedLanguage = sessionStorage.getItem('selectedLanguaged');
-const initialLanguage = storedLanguage || 'ar';
+const storedLanguage = sessionStorage.getItem("selectedLanguaged");
+const initialLanguage = storedLanguage || "ar";
 
 const dynamicTranslations = {
   ar: {},
@@ -34,9 +34,9 @@ const fetchTranslations = async () => {
         .use(initReactI18next) // Move initReactI18next here
         .init({
           dynamicTranslations: {},
-          fallbackLng: ['ar', 'en'],
+          fallbackLng: ["ar", "en"],
           detection: {
-            order: ['navigator'],
+            order: ["navigator"],
           },
           interpolation: {
             escapeValue: false,
@@ -46,14 +46,14 @@ const fetchTranslations = async () => {
         });
 
       // Add resource bundles after initializing i18n
-      i18n.addResourceBundle('ar', 'translation', dynamicTranslations.ar);
-      i18n.addResourceBundle('en', 'translation', dynamicTranslations.en);
+      i18n.addResourceBundle("ar", "translation", dynamicTranslations.ar);
+      i18n.addResourceBundle("en", "translation", dynamicTranslations.en);
     }
     else{
       // console.log("Error fetching translations");
     }
   } catch (error) {
-    console.error('Error fetching translations:', error);
+    // console.error('Error fetching translations:', error);
       i18n
         .use(LanguageDetector)
         .use(initReactI18next) // Move initReactI18next here
