@@ -1177,7 +1177,7 @@ const App = () => {
 
                  <Routes>
                    <Route
-                      path="/*"
+                      path=""
                       element={
                         <UserLayout>
                           <Routes>
