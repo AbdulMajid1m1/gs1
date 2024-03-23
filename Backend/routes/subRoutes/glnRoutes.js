@@ -7,7 +7,7 @@ import { generalAuth } from '../../middlewares/auth.js';
 
 
 const router = express.Router();
-// Routes
+
 
 
 router.post('/', generalAuth, upload([

@@ -44,6 +44,8 @@ model add_member_gln_products {
   gcpGLNID                       String?   @db.NChar(20)
   deleted_at                     DateTime? @db.DateTime
   admin_id                       String?   @default("0", map: "DF_add_member_gln_products_admin_id") @db.VarChar(10)
+  gln_idenfication               String?
+  physical_location              String?
 }
 
 model add_member_sscc_products {
@@ -511,7 +513,7 @@ model featured_articales {
 }
 
 model featured_services {
-  id          String    @id @default(cuid())
+  id         String    @id @default(cuid())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
