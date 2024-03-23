@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { DataMatrixGenerator } from "../../../utils/Barcodes/Barcodes";
 import Header from "../../../components/Header/Header";
 import DropDownSelection from "../DropDownSelection/DropDownSelection";
 import Footer from "../../../components/Footer/Footer";
 import { toast } from "react-toastify";
-import axios from "axios";
 import newRequest from "../../../utils/userRequest";
 import Swal from "sweetalert2";
 import { GtinDataMatrixGenerator } from "../../../utils/Barcodes/GtinReportsDataMatrix";
@@ -99,9 +97,9 @@ const GEPIR = () => {
   return (
     <div>
       {/* Nav */}
-      <div className="sticky top-0 z-50 bg-white">
+      {/* <div className="sticky top-0 z-50 bg-white">
         <Header />
-      </div>
+      </div> */}
 
       <div>
         <DropDownSelection />
