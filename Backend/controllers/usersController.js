@@ -506,9 +506,9 @@ export const sendInvoiceToUser = async (req, res, next) => {
 
                 // Delete the original user
                 await prisma.users.delete({ where: { id: userData.id } });
-            });
+            }, { timeout: 30000 });
 
-            const emailSubject = selectedLanguage === 'en' ? `Invoice Rejected` : `تم رفض الفاتورة`;
+            let emailSubject = selectedLanguage === 'en' ? `Invoice Rejected` : `تم رفض الفاتورة`;
             const emailContent = `
                 <h1>${selectedLanguage === 'en' ? 'Invoice Rejected' : 'تم رفض الفاتورة'}</h1>
                 <p>${selectedLanguage === 'en' ? 'Your Invoice against transaction id:' : 'فاتورتك ضد رقم المعاملة:'} <strong>${cartValue.transaction_id}</strong> ${selectedLanguage === 'en' ? 'is rejected by the admin' : 'تم رفضها من قبل المشرف'}</p>
