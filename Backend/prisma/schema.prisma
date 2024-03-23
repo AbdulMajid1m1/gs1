@@ -44,6 +44,8 @@ model add_member_gln_products {
   gcpGLNID                       String?   @db.NChar(20)
   deleted_at                     DateTime? @db.DateTime
   admin_id                       String?   @default("0", map: "DF_add_member_gln_products_admin_id") @db.VarChar(10)
+  gln_idenfication               String?
+  physical_location              String?
 }
 
 model add_member_sscc_products {
@@ -511,7 +513,7 @@ model featured_articales {
 }
 
 model featured_services {
-  id          String    @id @default(cuid())
+  id         String    @id @default(cuid())
   image      String?   @db.NVarChar(Max)
   link       String?   @db.NVarChar(Max)
   status     Int?
@@ -2225,7 +2227,7 @@ model rejected_users {
   memberID                 String?          @db.NVarChar(Max)
   user_id                  String?          @db.NVarChar(Max)
   remarks                  String?          @default("Pending Invoice", map: "DF_rejected_users_remarks") @db.NVarChar(Max)
-  assign_to                Int?             @default(0, map: "DF_rejected_users_to")
+  assign_to                String?
   membership_category      String?          @db.NVarChar(50)
   membership_category_id   String?
   upgradation_disc         Int?             @default(0, map: "DF_rejected_rejected_users_disc")

@@ -691,10 +691,9 @@ const MemmberRegisteration = () => {
         </div>
       )}
 
-      <div className="sticky top-0 z-50 bg-white">
-        {/* Headers */}
+      {/* <div className="sticky top-0 z-50 bg-white">
         <Header />
-      </div>
+      </div> */}
       <div className="flex flex-col justify-center items-center">
         <div className="h-auto w-full sm:w-2/3 border-l border-r border-primary">
           <div className="h-5 w-full bg-primary rounded-t-md"></div>
@@ -1630,9 +1629,9 @@ const MemmberRegisteration = () => {
       </div>
 
       {/* Footer */}
-      <div div className="mt-6">
+      {/* <div div className="mt-6">
         <Footer />
-      </div>
+      </div> */}
       {/* End Footer */}
     </div>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Dashboard from "./Pages/AdminPages/Dashboard/Dashboard";
 import UpdateVendor from "./Pages/MemberPages/UpdateVendor/UpdateVendor";
@@ -173,15 +173,17 @@ const App = () => {
     );
   };
 
-  const UserLayout = ({ children }) => {
+  const UserLayout = () => {
     return (
       <div>
         <div className='sticky top-0 z-50 bg-white'>
           <Header />
         </div>
-        <main className="mx-auto flex max-w-[1760px] flex-col justify-center">
-          {children}
-        </main>
+        <QueryClientProvider client={queryClient}>
+          <main className="mx-auto flex max-w-[1760px] flex-col justify-center">
+            <Outlet /> {/* Nested routes will render here */}
+          </main>
+        </QueryClientProvider>
         <Footer />
       </div>
     );
@@ -195,65 +197,8 @@ const App = () => {
             <SnackbarProvider>
               <div>
                 <BrowserRouter>
+                  
                   <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        <UserLayout>
-                          <Routes>
-                            {/* <Route path="/" element={<HomePage />} /> */}
-                            <Route index element={<HomePage />} />
-                          </Routes>
-                        </UserLayout>
-                      }
-                    />
-                    <Route
-                      path="/admin-login"
-                      element={
-                        <AuthProvider>
-                          <AdminLogin />
-                        </AuthProvider>
-                      }
-                    />
-
-                    <Route path="/get-barcode" element={<GetBarcode />} />
-                    <Route
-                      path="/member-registration"
-                      element={<MemmberRegisteration />}
-                    />
-                    <Route path="/email-address" element={<EmailAddress />} />
-                    <Route
-                      path="/select-activity"
-                      element={<SelectActivity />}
-                    />
-                    <Route
-                      path="/select-business-type"
-                      element={<SelectBusinessType />}
-                    />
-                    <Route path="/verify-code" element={<VerifyCode />} />
-                    <Route path="/:id" element={<BlogPages />} />
-
-                    <Route
-                      path="productinformation"
-                      element={
-                        <MapProvider>
-                          <ProductInformation />
-                        </MapProvider>
-                      }
-                    />
-                    <Route path="/gtin-reporter" element={<GTINReports />} />
-                    <Route
-                      path="/check-digit"
-                      element={<CheckDigitCalculator />}
-                    />
-                    <Route path="/gepir" element={<GEPIR />} />
-                    <Route path="/user-guide" element={<UserGuide />} />
-                    <Route path="/search-gpc" element={<SearchGPC />} />
-                    <Route path="/our-team" element={<OurTeam />} />
-                    <Route path="/board-member" element={<BoardMember />} />
-
-                    {/* <Route path="main-popup" element={<MainPopUp />} /> */}
-
                     {/* Member Routes */}
                     <Route
                       path="/member/*"
@@ -261,7 +206,6 @@ const App = () => {
                         <MainLayout>
                           <QueryClientProvider client={queryClient}>
                             <Routes>
-                              {/* <Route path="dashboard" element={<MemberDashboard />} /> */}
                               <Route
                                 path="dashboard"
                                 element={
@@ -274,7 +218,6 @@ const App = () => {
                                 path="update-vendor"
                                 element={<UpdateVendor />}
                               />
-                              {/* <Route path="customer-list" element={<ListOfCustomer />} /> */}
                               <Route
                                 path="customer-list"
                                 element={
@@ -283,7 +226,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="member-brands" element={<MemberBrands />} /> */}
                               <Route
                                 path="member-brands"
                                 element={
@@ -292,14 +234,12 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="gtin" element={<GTIN />} /> */}
                               <Route
                                 path="gtin"
                                 element={
                                   <MemberProtectedRoute Component={GTIN} />
                                 }
                               />
-                              {/* <Route path="addproducts" element={<GTINAddProducts />} /> */}
                               <Route
                                 path="addproducts"
                                 element={
@@ -308,10 +248,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route
-                                path="upate-gtin-product/:productId"
-                                element={<GTINUpdateProducts />}
-                              /> */}
                               <Route
                                 path="upate-gtin-product/:productId"
                                 element={
@@ -321,21 +257,18 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route path="front-end" element={<Frontend />} /> */}
                               <Route
                                 path="front-end"
                                 element={
                                   <MemberProtectedRoute Component={Frontend} />
                                 }
                               />
-                              {/* <Route path="settings" element={<Settings />} /> */}
                               <Route
                                 path="settings"
                                 element={
                                   <MemberProtectedRoute Component={Settings} />
                                 }
                               />
-                              {/* <Route path="master-data" element={<MasterData />} /> */}
                               <Route
                                 path="master-data"
                                 element={
@@ -344,17 +277,12 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="reports" element={<Reports />} /> */}
                               <Route
                                 path="reports"
                                 element={
                                   <MemberProtectedRoute Component={Reports} />
                                 }
                               />
-                              {/* <Route
-                                path="view-gtin-product/:productId"
-                                element={<GTINViewProduct />}
-                              /> */}
                               <Route
                                 path="view-gtin-product/:productId"
                                 element={
@@ -363,7 +291,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="digitalurl" element={<DigitalUrlInfo />} /> */}
                               <Route
                                 path="digitalurl"
                                 element={
@@ -373,21 +300,18 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route path="gln" element={<GLN />} /> */}
                               <Route
                                 path="gln"
                                 element={
                                   <MemberProtectedRoute Component={GLN} />
                                 }
                               />
-                              {/* <Route path="add-gln" element={<AddGLN />} /> */}
                               <Route
                                 path="add-gln"
                                 element={
                                   <MemberProtectedRoute Component={AddGLN} />
                                 }
                               />
-                              {/* <Route path="update-gln/:Id" element={<UpdateGLN />} /> */}
                               <Route
                                 path="update-gln/:Id"
                                 element={
@@ -395,21 +319,18 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route path="sscc" element={<SSCC />} /> */}
                               <Route
                                 path="sscc"
                                 element={
                                   <MemberProtectedRoute Component={SSCC} />
                                 }
                               />
-                              {/* <Route path="addsscc" element={<AddSSCC />} /> */}
                               <Route
                                 path="addsscc"
                                 element={
                                   <MemberProtectedRoute Component={AddSSCC} />
                                 }
                               />
-                              {/* <Route path="update-sscc/:sscc_id" element={<UpdateSSCC />} /> */}
                               <Route
                                 path="update-sscc/:sscc_id"
                                 element={
@@ -419,7 +340,6 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route path="member-foregin-gtin" element={<ForeginGtin />} /> */}
                               <Route
                                 path="member-foregin-gtin"
                                 element={
@@ -428,7 +348,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="foreign-digital-link" element={<DigitalLinkInfo />} /> */}
                               <Route
                                 path="foreign-digital-link"
                                 element={
@@ -437,7 +356,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="member-add-foreign" element={<AddForeignGtin />} /> */}
                               <Route
                                 path="member-add-foreign"
                                 element={
@@ -447,7 +365,6 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route path="gs1-members" element={<Gs1Members />} /> */}
                               <Route
                                 path="gs1-members"
                                 element={
@@ -456,7 +373,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="member-profile" element={<MemberProfile />} /> */}
                               <Route
                                 path="member-profile"
                                 element={
@@ -466,12 +382,6 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route
-                            path="view-gs1-member/:Id"
-                            element={<Gs1MembersView />}
-                          /> */}
-
-                              {/* <Route path="payment-slips" element={<PaymentSlips />} /> */}
                               <Route
                                 path="payment-slips"
                                 element={
@@ -480,14 +390,12 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="bank-slip" element={<BankSlip />} /> */}
                               <Route
                                 path="bank-slip"
                                 element={
                                   <MemberProtectedRoute Component={BankSlip} />
                                 }
                               />
-                              {/* <Route path="member-verified-by-gs1" element={<MemberVerifiedByGS1 />} /> */}
                               <Route
                                 path="member-verified-by-gs1"
                                 element={
@@ -496,7 +404,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="transaction-history" element={<TransactionHistory />} /> */}
                               <Route
                                 path="transaction-history"
                                 element={
@@ -505,7 +412,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
                               <Route
                                 path="member-helpdesk"
                                 element={
@@ -514,7 +420,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="subscribed-gtin" element={<SubscribedGTIN />} /> */}
                               <Route
                                 path="subscribed-gtin"
                                 element={
@@ -524,17 +429,12 @@ const App = () => {
                                 }
                               />
 
-                              {/* <Route path="udi" element={<UDI />} /> */}
                               <Route
                                 path="udi"
                                 element={
                                   <MemberProtectedRoute Component={UDI} />
                                 }
                               />
-                              {/* <Route path="member-helpdesk" element={<MemberHelpDesk />} /> */}
-
-                              {/* <Route path="member-data" element={<MemberData />} /> */}
-                              {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
                               <Route
                                 path="member-crnumber"
                                 element={
@@ -543,7 +443,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="member-data" element={<MemberData />} /> */}
                               <Route
                                 path="member-data"
                                 element={
@@ -552,7 +451,6 @@ const App = () => {
                                   />
                                 }
                               />
-                              {/* <Route path="member-crnumber" element={<MemberCrNumber />} /> */}
                               <Route
                                 path="member-crnumber"
                                 element={
@@ -569,8 +467,6 @@ const App = () => {
                   </Routes>
 
                   <Routes>
-                    {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
-
                     {/* Admin Routes */}
                     <Route
                       path="/admin/*"
@@ -1232,6 +1128,28 @@ const App = () => {
                       }
                     />
                   </Routes>
+                  <Routes>
+                    <Route element={<UserLayout />}>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="get-barcode" element={<GetBarcode />} />
+                      <Route path="member-registration" element={<MemmberRegisteration />} />
+                      <Route path="email-address" element={<EmailAddress />} />
+                      <Route path="select-activity" element={<SelectActivity />} />
+                      <Route path="select-business-type" element={<SelectBusinessType />} />
+                      <Route path="verify-code" element={<VerifyCode />} />
+                      <Route path=":id" element={<BlogPages />} />
+                      <Route path="productinformation" element={<MapProvider><ProductInformation /></MapProvider>} />
+                      <Route path="gtin-reporter" element={<GTINReports />} />
+                      <Route path="check-digit" element={<CheckDigitCalculator />} />
+                      <Route path="gepir" element={<GEPIR />} />
+                      <Route path="user-guide" element={<UserGuide />} />
+                      <Route path="search-gpc" element={<SearchGPC />} />
+                    </Route>
+
+                    {/* Define other non-user layout routes outside */}
+                    <Route path="/admin-login" element={<AuthProvider><AdminLogin /></AuthProvider>} />
+                  </Routes>
+
                 </BrowserRouter>
               </div>
             </SnackbarProvider>

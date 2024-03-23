@@ -58,6 +58,8 @@ const AdminAddGLN = () => {
       formData.append('latitude', latitude);
       // formData.append('user_id', currentUser?.user?.id);
       formData.append('status', status);
+      formData.append('gln_idenfication', entityType?.value);
+      formData.append('physical_location', selectedImageName);
       formData.append('gln_image', imageFile);
 
       newRequest
@@ -195,29 +197,29 @@ const AdminAddGLN = () => {
   
   // Static options for the Autocomplete component
   const options = [
-    { label: 'Legal entity', value: 'legal-Entity' },
-    { label: 'Function', value: 'function' },
-    { label: 'Physical location', value: 'physical-location' },
-    { label: 'Digital location', value: 'digital-location' },
+    { label: 'Legal entity', value: 'Legal Entity' },
+    { label: 'Function', value: 'Function' },
+    { label: 'Physical location', value: 'Physical location' },
+    { label: 'Digital location', value: 'Digital location' },
     
   ];
   
   const [entityType, setEntityType] = useState([]);
   // Function to handle option selection
   const handleOptionChange = (event, newValue) => {
-      setEntityType(newValue);
-      handleSubTypePopUp();
-  };
-
-
+    setEntityType(newValue);
+    handleSubTypePopUp();
+  }; 
+  
   const [isSubTypePopUpVisible, setIsSubTypePopUpVisible] = useState(false);
   const handleSubTypePopUp = () => {
     setIsSubTypePopUpVisible(true);
   }
-
+  
+  const [selectedImageName, setSelectedImageName] = useState('');
   const handleSelectImage = (imageName) => {
-    console.log('Selected image:', imageName);
-    // You can set it to state or perform any other action as needed
+    // console.log('Selected image:', imageName);
+    setSelectedImageName(imageName);
   };
   
   return (

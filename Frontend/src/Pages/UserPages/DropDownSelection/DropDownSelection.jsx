@@ -3,6 +3,7 @@ import './DropDownSelection.css';
 import newRequest from '../../../utils/userRequest';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 const DropDownSelection = () => {
   const { t, i18n } = useTranslation();
@@ -14,24 +15,35 @@ const DropDownSelection = () => {
   };
 
 
-  const getAllRegisteredMembers = async () => {
-    try {
-      const res = await newRequest.get("/mega_menu_categories_frontSide")
-      console.log('Menu',res.data);
-      setMegaMenu(res.data);
+  // const getAllRegisteredMembers = async () => {
+  //   try {
+  //     const res = await newRequest.get("/mega_menu_categories_frontSide")
+  //     console.log('Menu',res.data);
+  //     setMegaMenu(res.data);
         
-    }
-    catch (error) {
+  //   }
+  //   catch (error) {
+  //     console.log(error);
+
+  //   }
+  // };
+
+  const { isLoading, data, error } = useQuery("fetchAllMegaMenus", async () => {
+    try {
+      const response = await newRequest.get("/mega_menu_categories_frontSide");
+      // console.log('Menu', response.data);
+      return response?.data || [];
+    } catch (error) {
       console.log(error);
-
+      throw error;
     }
-  };
+  });
 
 
-  useEffect(() => {
-    getAllRegisteredMembers();
-  }
-    , []);
+  // useEffect(() => {
+  //   getAllRegisteredMembers();
+  // }
+  //   , []);
 
   return (
     <header className="header">
@@ -56,7 +68,7 @@ const DropDownSelection = () => {
               <div className="mobile-menu-close" onClick={toggleMobileMenu}>&times;</div>
             </div>
               <ul className={`menu-main ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'} 2xl:flex xl:flex lg:flex 3xl:flex 3xl:justify-center 3xl:items-center 2xl:justify-center xl:justify-center lg:justify-center 2xl:items-center xl:items-center lg:items-center sm:gap-10`}>
-              {megaMenu?.map((section, index) => (
+              {data?.map((section, index) => (
                 <li key={index} className="menu-item-has-children">
                   <Link to="javascript:void(0)" style={{ textDecoration: 'none'  }}>
                     {/* {section.name_en} */}

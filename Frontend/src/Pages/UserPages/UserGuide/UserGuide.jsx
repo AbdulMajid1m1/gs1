@@ -55,9 +55,9 @@ const UserGuide = () => {
   return (
     <div>
       {/* Nav */}
-      <div className="sticky top-0 z-50 bg-white">
+      {/* <div className="sticky top-0 z-50 bg-white">
         <Header />
-      </div>
+      </div> */}
 
       <div>
         <DropDownSelection />
@@ -149,7 +149,7 @@ const UserGuide = () => {
         </div>
       </div>
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

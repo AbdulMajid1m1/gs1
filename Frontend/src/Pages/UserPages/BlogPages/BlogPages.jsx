@@ -57,30 +57,20 @@ const BlogPages = () => {
           }
 
        {/* Nav */}
-       <div className='sticky top-0 z-50 bg-white'>
+       {/* <div className='sticky top-0 z-50 bg-white'>
           <Header />
-       </div>
+       </div> */}
 
        <div>
          <DropDownSelection />
        </div>
 
-       {/* <div className='mt-10 mb-10'>
-          Blog Pages
-       </div> */}
         <div className='mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
-           {/* {pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>}
-              {pageData.custom_section_data && (
-            <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
-          )} */}
-        {/* {i18n.language === 'ar' ? pageData?.name_ar : section?.name_en} */}
-        {/* {i18n.language === 'ar' && pageData.name_ar && <h1 className='text-secondary font-semibold'>{pageData.name_ar} </h1>} */}
-        {i18n.language === 'ar' && pageData.custom_section_data_ar && (
+            {i18n.language === 'ar' && pageData.custom_section_data_ar && (
           <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data_ar }} />
           
         )}
 
-        {/* {i18n.language !== 'ar' && pageData.name && <h1 className='text-secondary font-semibold'>{pageData.name}</h1>} */}
         {i18n.language !== 'ar' && pageData.custom_section_data && (
           <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data }} />
         )}
@@ -89,7 +79,7 @@ const BlogPages = () => {
 
   
         {/* Footer */}
-          <Footer />
+          {/* <Footer /> */}
     </div>
   )
 }

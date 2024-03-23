@@ -710,8 +710,11 @@ function mapMemberToNewUser(member) {
     const cleanPhoneNumber = (phoneNumber) => {
         // Remove dashes, spaces, and plus signs
         let cleanedNumber = phoneNumber.replace(/[-\s+]/g, '');
-        // Prepend '966'
-        return `966${cleanedNumber}`;
+        // Prepend '966' if the number doesn't already start with '966'
+        if (!cleanedNumber.startsWith('966')) {
+            cleanedNumber = `966${cleanedNumber}`;
+        }
+        return cleanedNumber;
     };
     let newUser = {
         // Direct mappings from Member to users

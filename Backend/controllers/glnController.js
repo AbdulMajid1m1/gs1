@@ -33,6 +33,8 @@ const glnSchema = Joi.object({
     longitude: Joi.string().required(),
     latitude: Joi.string().required(),
     status: Joi.string().valid('active', 'inactive').required(),
+    gln_idenfication: Joi.string(),
+    physical_location: Joi.string(),
 });
 
 
@@ -138,6 +140,8 @@ export const createGLN = async (req, res, next) => {
                     status: value.status,
                     GLNBarcodeNumber: gln,
                     image: images.gln_image,
+                    gln_idenfication: value.gln_idenfication,
+                    physical_location: value.physical_location,
                 },
             });
 
@@ -261,7 +265,8 @@ export const updateGLN = async (req, res, next) => {
         longitude: Joi.string(),
         latitude: Joi.string(),
         status: Joi.string().valid('active', 'inactive'),
-        // ... define validation for other GLN fields
+        gln_idenfication: Joi.string(),
+        physical_location: Joi.string(),
     });
 
     // Validate request body

@@ -153,9 +153,9 @@ const ProductInformation = () => {
   return (
     <div>
       {/* <SideBar /> */}
-        <div className='sticky top-0 z-50 bg-white'>
+        {/* <div className='sticky top-0 z-50 bg-white'>
           <Header />  
-        </div>
+        </div> */}
         <div>
           <DropDownSelection />
         </div>
@@ -436,9 +436,9 @@ const ProductInformation = () => {
         </div>
 
 
-        <div>
+        {/* <div>
           <Footer />
-        </div>
+        </div> */}
       </div>
     </div>
   )
