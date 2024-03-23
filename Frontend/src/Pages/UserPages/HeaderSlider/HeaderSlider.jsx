@@ -10,32 +10,20 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
+import { useQuery } from 'react-query';
 
 
 const HeaderSlider = () => {
 
   const { t, i18n } = useTranslation();
-  const [data, setData] = useState([]); 
-    const fetchHeaderSliderData = async () => {
-      try {
-          const response = await newRequest.get("/getAllsliders",);
 
-          console.log('Silder section',response.data);
+  const { isLoading, error, data: slidersData } = useQuery("fetchAllSliders", fetchFeaturesData);
 
-        const filteredData = response.data.filter(item => item.status === 1);
-        setData(filteredData || []);
-          // setIsLoading(false)
-
-      } catch (err) {
-          console.log(err);
-          // setIsLoading(false)
-      }
-  };
+  async function fetchFeaturesData() {
+    const response = await newRequest.get("/getAllsliders");
+    return response?.data.filter(item => item.status === 1) || [];
+  }
   
-  useEffect(() => {
-
-    fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
-  }, []);
   return (
     <div>
          <div className='h-auto w-full bg-white border-b mt-4'>
@@ -58,21 +46,14 @@ const HeaderSlider = () => {
                   modules={[Autoplay, Pagination, Navigation]}
                   className="mySwiper"
                 >
-                  {/* <SwiperSlide>
-                    <div className='w-full flex flex-col lg:flex-row justify-between items-center px-5'>
-                      <div className='w-full flex flex-col gap-2 sm:px-10 px-4 sm:pt-0 pt-5'>
-                        <h2 className='sm:text-3xl text-xl text-white font-semibold'>Verified by GS1</h2>
-                        <p className='text-lg text-white font-medium'>Discover how businesses around the world are implementing by Getting started with Verified by GS1</p>
-                        <button className=' bg-primary sm:w-[50%] w-full text-white font-medium sm:text-xl text-xs px-4 py-1'>Read the Sucess Stories</button>
-                      </div>
 
-                      <div className='w-full sm:px-10 px-4'>
-                          <img src={firstslider} className='sm:h-60 h-auto w-full py-5 object-contain' alt='' />
-                      </div>
-                    </div>
-                  </SwiperSlide> */}
-                  
-                  {data.map((item) => (
+                  {/* {data.map((item) => ( */}
+                  {isLoading ? (
+                      <div>Loading...</div>
+                    ) : error ? (
+                      ""
+                    ) : (
+                      slidersData.map((item) => (
                     <SwiperSlide>
                       <div className={`w-full flex flex-col  justify-between items-center px-5 ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`} >
                           <div className='w-full flex flex-col gap-2 sm:px-10 px-4 sm:pt-0 pt-5'>
@@ -88,7 +69,9 @@ const HeaderSlider = () => {
                           </div>
                         </div>
                     </SwiperSlide>
-                  ))}
+                      ))
+                    )}
+                  {/* // ))} */}
 
                   </Swiper>
                   <div

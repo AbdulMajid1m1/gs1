@@ -58,6 +58,8 @@ const AdminAddGLN = () => {
       formData.append('latitude', latitude);
       // formData.append('user_id', currentUser?.user?.id);
       formData.append('status', status);
+      formData.append('gln_idenfication', entityType?.value);
+      formData.append('physical_location', selectedImageName);
       formData.append('gln_image', imageFile);
 
       newRequest
@@ -205,19 +207,20 @@ const AdminAddGLN = () => {
   const [entityType, setEntityType] = useState([]);
   // Function to handle option selection
   const handleOptionChange = (event, newValue) => {
-      setEntityType(newValue);
-      handleSubTypePopUp();
-  };
-
-
+    setEntityType(newValue);
+    handleSubTypePopUp();
+  }; 
+  
   const [isSubTypePopUpVisible, setIsSubTypePopUpVisible] = useState(false);
   const handleSubTypePopUp = () => {
     setIsSubTypePopUpVisible(true);
   }
-
+  
+  const [selectedImageName, setSelectedImageName] = useState('');
   const handleSelectImage = (imageName) => {
-    console.log('Selected image:', imageName);
+    // console.log('Selected image:', imageName);
     // You can set it to state or perform any other action as needed
+    setSelectedImageName(imageName);
   };
   
   return (
