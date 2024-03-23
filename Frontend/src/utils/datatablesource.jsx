@@ -1517,6 +1517,19 @@ export const GlnColumn = (t, i18n) => {
         </div>
       )
     },
+    {
+      field: 'gln_idenfication',
+      headerName: 'Gln Identification',
+      width: 180,
+    },
+    {
+      field: 'physical_location',
+      headerName: 'Physical Location',
+      width: 180,
+    },
+
+
+
   ];
 
   if (i18n && i18n.language === 'ar') {

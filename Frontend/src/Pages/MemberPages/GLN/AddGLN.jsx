@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import newRequest from '../../../utils/userRequest';
 import { DotLoader } from 'react-spinners'
 import { useTranslation } from 'react-i18next';
+import SubTypeGLNPopUp from './SubTypeGLNPopUp';
+import { Autocomplete, TextField } from '@mui/material';
 
 const AddGLN = () => {
   const memberDataString = sessionStorage.getItem('memberData');
@@ -52,6 +54,8 @@ const AddGLN = () => {
     formData.append('latitude', latitude);
     // formData.append('user_id', currentUser?.user?.id);
     formData.append('status', status);
+    formData.append('gln_idenfication', entityType?.value);
+    formData.append('physical_location', selectedImageName);
     formData.append('gln_image', imageFile);
 
     newRequest
@@ -186,6 +190,35 @@ const AddGLN = () => {
   };
 
 
+  // Static options for the Autocomplete component
+  const options = [
+    { label: 'Legal entity', value: 'Legal Entity' },
+    { label: 'Function', value: 'Function' },
+    { label: 'Physical location', value: 'Physical location' },
+    { label: 'Digital location', value: 'Digital location' },
+    
+  ];
+  
+  const [entityType, setEntityType] = useState([]);
+  // Function to handle option selection
+  const handleOptionChange = (event, newValue) => {
+    setEntityType(newValue);
+    handleSubTypePopUp();
+  }; 
+  
+  const [isSubTypePopUpVisible, setIsSubTypePopUpVisible] = useState(false);
+  const handleSubTypePopUp = () => {
+    setIsSubTypePopUpVisible(true);
+  }
+  
+  const [selectedImageName, setSelectedImageName] = useState('');
+  const handleSelectImage = (imageName) => {
+    // console.log('Selected image:', imageName);
+    setSelectedImageName(imageName);
+  };
+  
+
+
   return (
     <div>
 
@@ -254,8 +287,42 @@ const AddGLN = () => {
               </button>
             </div>
 
+
+            {isSubTypePopUpVisible && (
+            <SubTypeGLNPopUp isVisible={isSubTypePopUpVisible} setVisibility={setIsSubTypePopUpVisible} onSelectImage={handleSelectImage}/>
+            )}
+
+
             {/* <form onSubmit={handleSubmit}> */}
             <form>
+              <div className='flex flex-col gap-1 mt-3'>
+                <label className="text-secondary font-bold" htmlFor="entityType">What does a GLN identify? <span className="text-red-600">*</span>
+                </label>
+                <Autocomplete
+                  id="entityType"
+                  options={options}
+                  value={entityType}
+                  getOptionLabel={(option) => option.label || ''}
+                  onChange={handleOptionChange}
+                  renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    className="bg-gray-50 border border-gray-300 text-black text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                    placeholder="What does a GLN identify"
+                    InputProps={{
+                    ...params.InputProps,
+                    className: "text-black",
+                    }}
+                    InputLabelProps={{
+                    ...params.InputLabelProps,
+                    style: { color: "black" },
+                    }}
+                    required
+                  />
+                  )}
+                />
+              </div>
+
               <div className={` flex flex-col sm:gap-8 gap-3  sm:justify-between mt-4 ${i18n.language === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'}`}>
                 <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                   <label htmlFor='locationEnglish' className={`text-secondary  ${i18n.language === "ar" ? "text-end" : "text-start"}`}>{t('Locations')} {t('Name[English]')}<span className='text-red-600'>*</span></label>

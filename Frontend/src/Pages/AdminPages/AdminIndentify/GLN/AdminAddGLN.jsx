@@ -197,10 +197,10 @@ const AdminAddGLN = () => {
   
   // Static options for the Autocomplete component
   const options = [
-    { label: 'Legal entity', value: 'legal-Entity' },
-    { label: 'Function', value: 'function' },
-    { label: 'Physical location', value: 'physical-location' },
-    { label: 'Digital location', value: 'digital-location' },
+    { label: 'Legal entity', value: 'Legal Entity' },
+    { label: 'Function', value: 'Function' },
+    { label: 'Physical location', value: 'Physical location' },
+    { label: 'Digital location', value: 'Digital location' },
     
   ];
   
@@ -219,7 +219,6 @@ const AdminAddGLN = () => {
   const [selectedImageName, setSelectedImageName] = useState('');
   const handleSelectImage = (imageName) => {
     // console.log('Selected image:', imageName);
-    // You can set it to state or perform any other action as needed
     setSelectedImageName(imageName);
   };
   
