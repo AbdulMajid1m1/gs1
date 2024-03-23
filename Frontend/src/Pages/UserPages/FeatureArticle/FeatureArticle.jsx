@@ -3,25 +3,33 @@ import newRequest from '../../../utils/userRequest'
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 const FeatureArticle = () => {
 
   const { t, i18n } = useTranslation();
-  const [data, setData] = useState([]);
-  const fetchHeaderSliderData = async () => {
-    try {
-      const response = await newRequest.get("/getAllfeatured_articales");
-      const filteredData = response.data.filter(item => item.status === 1);
-      setData(filteredData || []);
-      console.log('------------',response);
-    } catch (err) {
-      console.log('err',err);
-    }
-  };
+  // const [data, setData] = useState([]);
+  // const fetchHeaderSliderData = async () => {
+  //   try {
+  //     const response = await newRequest.get("/getAllfeatured_articales");
+  //     const filteredData = response.data.filter(item => item.status === 1);
+  //     setData(filteredData || []);
+  //     console.log('------------',response);
+  //   } catch (err) {
+  //     console.log('err',err);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
-  }, []);
+  const { isLoading, error, data: featuresData } = useQuery("fetchAllFeatures", fetchFeaturesData);
+
+  async function fetchFeaturesData() {
+    const response = await newRequest.get("/getAllfeatured_articales");
+    return response?.data.filter(item => item.status === 1) || [];
+  }
+
+  // useEffect(() => {
+  //   fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
+  // }, []);
   return (
     <div>
         {/* Featured Articles */}
@@ -29,11 +37,16 @@ const FeatureArticle = () => {
         <h2 className='sm:text-3xl text-lg font-medium text-secondary font-body'>{t('Featured Articles')}</h2>
         </div>
         <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 gap-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 px-5 mb-4'>
-            {/* first Card */}
-        {data.map((item, index) => {
-          return (
+        {/* first Card */}
+        {/* {data.map((item, index) => { */}
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          ""
+        ) : (
+          featuresData.map((item) => (
             <div 
-              className='h-96 w-full border border-gray-300 rounded-md shadow-lg transition-transform transform hover:scale-110 bg-white' key={index} 
+              className='h-96 w-full border border-gray-300 rounded-md shadow-lg transition-transform transform hover:scale-110 bg-white' 
             >
               <img 
                 src={imageLiveUrl(item?.image)}
@@ -49,8 +62,10 @@ const FeatureArticle = () => {
               </div>
 
             </div>
-          );
-        })}
+             ))
+          )}
+        {/* //   );
+        // })} */}
 
         </div>
 

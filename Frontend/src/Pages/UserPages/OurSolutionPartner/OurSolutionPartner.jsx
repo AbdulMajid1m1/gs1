@@ -7,24 +7,33 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import newRequest from '../../../utils/userRequest'
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 const OurSolutionPartner = () => {
   const { t } = useTranslation();
-  const [data, setData] = useState([]);
-  const fetchHeaderSliderData = async () => {
-    try {
-      const response = await newRequest.get("/getAllpartners");
-      const filteredData = response.data.filter(item => item.status === 1);
-      setData(filteredData || []);
-      console.log('------------', response);
-    } catch (err) {
-      console.log('err', err);
-    }
-  };
+  // const [data, setData] = useState([]);
+  // const fetchHeaderSliderData = async () => {
+  //   try {
+  //     const response = await newRequest.get("/getAllpartners");
+  //     const filteredData = response.data.filter(item => item.status === 1);
+  //     setData(filteredData || []);
+  //     console.log('------------', response);
+  //   } catch (err) {
+  //     console.log('err', err);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
-  }, []);
+
+  const { isLoading, error, data: partnersData } = useQuery("fetchAllPartnersSolutions", fetchPartnerSolutionsData);
+
+  async function fetchPartnerSolutionsData() {
+    const response = await newRequest.get("/getAllpartners");
+    return response?.data.filter(item => item.status === 1) || [];
+  }
+
+  // useEffect(() => {
+  //   fetchHeaderSliderData() // Calling the function within useEffect, not inside itself
+  // }, []);
 
 
   const scrollToTop = () => {
@@ -70,10 +79,16 @@ const OurSolutionPartner = () => {
         className="mySwiper"
       >
       <div className='grid 2xl:grid-cols-4 xl:grid-cols-5 gap-0 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 px-5'>
-            {data.map((item, index) => {
-              return (
+            {/* {data.map((item, index) => {
+              return ( */}
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          ""
+        ) : (
+          partnersData.map((item) => (
         <SwiperSlide>
-            <div key={index}
+            <div
               className='flex justify-center items-center h-32 w-full border rounded-sm shadow-lg transition-transform transform hover:border-blue-500 hover:border-2'
             >
               <img 
@@ -83,8 +98,10 @@ const OurSolutionPartner = () => {
               />
             </div>
         </SwiperSlide>
-              );
-            })}
+           ))
+          )}
+            {/* //   );
+            // })} */}
        
       </div>
       </Swiper>
