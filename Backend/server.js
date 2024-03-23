@@ -14,6 +14,7 @@ import { BACKEND_URL } from "./configs/envConfig.js";
 import cron from "node-cron";
 import { createServer } from "http";
 // Other imports remain the same
+import bodyParser from  'body-parser';
 
 import socketHandler from "./socketHandler.js"; // Import the socket handler
 
@@ -23,6 +24,8 @@ const app = express();
 
 dotenv.config();
 
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 const allowedOrigins = [
   "http://localhost:3092",
   "http://gs1ksa.org:3092",
