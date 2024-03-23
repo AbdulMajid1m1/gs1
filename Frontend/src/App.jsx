@@ -179,9 +179,11 @@ const App = () => {
         <div className='sticky top-0 z-50 bg-white'>
           <Header />
         </div>
+        <QueryClientProvider client={queryClient}>
         <main className="mx-auto flex max-w-[1760px] flex-col justify-center">
           {children}
         </main>
+        </QueryClientProvider>
         <Footer />
       </div>
     );
@@ -196,6 +198,7 @@ const App = () => {
               <div>
                 <BrowserRouter>
                   <Routes>
+<<<<<<< HEAD
                     <Route
                       path="/"
                       element={
@@ -254,6 +257,8 @@ const App = () => {
 
                     {/* <Route path="main-popup" element={<MainPopUp />} /> */}
 
+=======
+>>>>>>> 2900b263c20e1a06747aee703422ad590f7b7b48
                     {/* Member Routes */}
                     <Route
                       path="/member/*"
@@ -568,9 +573,11 @@ const App = () => {
                     />
                   </Routes>
 
-                  <Routes>
-                    {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2900b263c20e1a06747aee703422ad590f7b7b48
+                  <Routes>
                     {/* Admin Routes */}
                     <Route
                       path="/admin/*"
@@ -1232,6 +1239,46 @@ const App = () => {
                       }
                     />
                   </Routes>
+
+                 <Routes>
+                   <Route
+                      path="/*"
+                      element={
+                        <UserLayout>
+                          <Routes>
+                            {/* <Route path="/" element={<HomePage />} /> */}
+                            <Route index element={<HomePage />} />
+
+                            <Route path="/get-barcode" element={<GetBarcode />} />
+                            <Route path="/member-registration" element={<MemmberRegisteration />} />
+                            <Route path="/email-address" element={<EmailAddress />} />
+                            <Route path="/select-activity" element={<SelectActivity />} />
+                            <Route path="/select-business-type" element={<SelectBusinessType />} />
+                            <Route path="/verify-code" element={<VerifyCode />} />
+                            <Route path="/:id" element={<BlogPages />} />
+
+                            <Route
+                              path="productinformation"
+                              element={
+                                <MapProvider>
+                                  <ProductInformation />
+                                </MapProvider>
+                              }
+                            />
+                            <Route path="/gtin-reporter" element={<GTINReports />} />
+                            <Route path="/check-digit" element={<CheckDigitCalculator />} />
+                            <Route path="/gepir" element={<GEPIR />} />
+                            <Route path="/user-guide" element={<UserGuide />} />
+                            <Route path="/search-gpc" element={<SearchGPC />} />
+
+                          </Routes>
+                        </UserLayout>
+                      }
+                    />
+                   
+                    <Route path="/admin-login" element={<AuthProvider><AdminLogin /></AuthProvider>} />
+                  </Routes>
+
                 </BrowserRouter>
               </div>
             </SnackbarProvider>

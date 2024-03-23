@@ -9,10 +9,10 @@ const SearchGPC = () => {
 
   return (
     <div>
-      {/* Nav */}
-      <div className="sticky top-0 z-50 bg-white">
-        <Header />
-      </div>
+       {/* Nav */}
+       {/* <div className='sticky top-0 z-50 bg-white'>
+          <Header />
+       </div> */}
 
       <div>
         <DropDownSelection />
@@ -47,9 +47,9 @@ const SearchGPC = () => {
       </div>
 
       {/* Footer */}
-      <Footer />
-    </div>
-  );
+      {/* <Footer /> */}
+  </div>
+);
 
 }
 
