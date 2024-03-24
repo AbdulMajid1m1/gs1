@@ -1,6 +1,6 @@
 
 
-export const backendUrl = 'http://localhost:3091';
+export const backendUrl = 'https://gs1ksa.org:3093';
 export const baseUrl = backendUrl + '/api';
 export const phpUrl = 'https://gs1ksa.org/api';
 // export const backendUrl = 'http://gs1ksa.org:3091';

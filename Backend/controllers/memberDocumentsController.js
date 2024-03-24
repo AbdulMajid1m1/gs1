@@ -445,7 +445,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
         let userUpdateResult;
         let pdfFilename;
         let cart;
-        let bankSlipDocuments, userId
+        let bankSlipDocuments, userId, expiryDate
         if (value.checkBankSlip) {
             bankSlipDocuments = await prisma.member_documents.findMany({
                 where: {
@@ -482,7 +482,7 @@ export const updateMemberDocumentStatus = async (req, res, next) => {
                         const gln = generateGTIN13(gcpGLNID);
 
                         // Calculate expiry date (1 year from now)
-                        let expiryDate = new Date();
+                         expiryDate = new Date();
                         expiryDate = new Date(expiryDate.getFullYear() + 1, expiryDate.getMonth(), expiryDate.getDate());
                         console.log(expiryDate);
                         // Update user with new information
