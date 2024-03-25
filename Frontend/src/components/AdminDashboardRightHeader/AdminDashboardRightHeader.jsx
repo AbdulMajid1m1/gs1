@@ -1,6 +1,7 @@
 import React from 'react'
 import visitFrontend from "../../Images/visitFrontend.png"
 import profileICon from "../../Images/profileICon.png"
+import gs1logowhite from '../../Images/gs1logowhite.png'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import CachedIcon from '@mui/icons-material/Cached';
@@ -35,7 +36,7 @@ const AdminDashboardRightHeader = ({ title, member, gcp, showIcon, fetchData }) 
         <div className='flex justify-center items-center'
         //   onClick={() => navigate("/member/member-profile")} 
         >
-          <img src={profileICon} alt='logo' className='h-9 w-9 transition transform hover:scale-125 object-contain cursor-pointer text-white mr-5' />
+          <img src={gs1logowhite} alt='logo' className='h-9 w-9 bg-white rounded-full transition transform hover:scale-125 object-contain cursor-pointer text-white mr-5' />
         </div>
       </div>
 
