@@ -146,52 +146,39 @@ const GTINReports = () => {
         <DropDownSelection />
       </div>
 
-      <div className="mt-10 mb-20 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96">
-        <div className="">
-          <div>
-            <div
-              className={`flex flex-col gap-2 ${
+       <div className='mt-10 mb-20 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
+           <div className="">
+           <div>
+              <div  className={`flex flex-col gap-2 ${
                 i18n.language === "ar" ? "items-end" : "items-start"
-              }`}
-            >
-              <label
-                htmlFor="barcode"
-                className="text-secondary sm:text-2xl text-lg font-body"
-              >
-                {t("Enter a barcode number/GTIN")}
-              </label>
-              <div className="flex sm:w-[60%] w-full">
-                <input
-                  id="barcode"
-                  type="text"
-                  className={`sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200 ${
-                    i18n.language === "ar" ? " text-right" : "text-left"
-                  }`}
-                  placeholder={t("Search")}
-                  value={userSearch}
-                  onChange={(event) => setUserSearch(event.target.value)}
-                />
-                <Button
-                  variant="contained"
-                  style={{ backgroundColor: "#cd3c0d", color: "#ffffff" }}
-                  // type='submit'
-                  onClick={handleUserSearch}
-                  disabled={isLoading}
-                  className="ml-2"
-                  endIcon={
-                    isLoading ? (
-                      <CircularProgress size={24} color="inherit" />
-                    ) : null
-                  }
-                >
-                  {t("Search")}
-                </Button>
+              }`}>
+                <label htmlFor='barcode' className='text-secondary sm:text-2xl text-lg font-body'>{t("Enter a barcode number/GTIN")}</label>
+                <div className='flex sm:w-[60%] w-full'>
+                  <input
+                    id="barcode"
+                    type="text"
+                    className={`sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200 ${
+                      i18n.language === "ar" ? " text-right" : "text-left"
+                    }`}
+                    placeholder={t("Search")}
+                    value={userSearch}
+                    onChange={(event) => setUserSearch(event.target.value)}
+                  />
+                  <Button
+                    variant="contained"
+                    style={{ backgroundColor: '#cd3c0d', color: '#ffffff' }}
+                    // type='submit'
+                    onClick={handleUserSearch}
+                    disabled={isLoading}
+                    className="ml-2"
+                    endIcon={isLoading ? <CircularProgress size={24} color="inherit" /> : null}
+                  >
+                     {t("Search")}
+                  </Button>
+                </div>
+                <p className='text-secondary text-base'>{t("Example search")}: 628000000000</p>
               </div>
-              <p className="text-secondary text-base">
-                {t("Example search")}: 628000000000
-              </p>
             </div>
-          </div>
 
           {data && (
             <div>
@@ -260,23 +247,12 @@ const GTINReports = () => {
 
               {/* Email Feild */}
               <form onSubmit={handleSubmit}>
-                <div
-                  className={`w-full font-body sm:text-base text-sm mt-4 ${
-                    i18n.language === "ar" ? "text-end" : "text-start"
-                  }`}
-                >
-                  <label
-                    htmlFor="email"
-                    className={` text-secondary ${
-                      i18n.language === "ar" ? "text-end" : "text-start"
-                    }`}
-                  >
-                    {t("Email")} <span className="text-red-500">*</span>
-                  </label>
+              <div className="w-full font-body sm:text-base text-sm mt-4">
+                <label htmlFor="email" className="text-secondary">Email <span className='text-red-500'>*</span></label>
                   <input
                     type="email"
                     id="email"
-                    placeholder={t("Email")}
+                    placeholder='Email'
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     required
@@ -286,72 +262,45 @@ const GTINReports = () => {
                   />
                 </div>
 
-                <div
-                  className={`flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4 ${
-                    i18n.language === "ar" ? "text-end" : "text-start"
-                  }`}
-                >
+              <div className="flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4">
                   <div className="w-full sm:h-28 font-body sm:text-base text-sm">
-                    <label htmlFor="fields1" className="text-secondary">
-                      {t("Write your comment here")}{" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      type="text"
-                      id="fields1"
-                      onChange={(e) => setTypeComment(e.target.value)}
-                      value={typeComment}
-                      required
-                      className={`border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2 ${
-                        i18n.language === "ar" ? " text-right" : "text-left"
-                      }`}
-                    />
+                    <label htmlFor="fields1" className="text-secondary">Write your comment here <span className='text-red-500'>*</span></label>
+                      <textarea
+                          type="text"
+                          id="fields1"
+                          onChange={(e) => setTypeComment(e.target.value)}
+                          value={typeComment}
+                          required
+                          className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
+                          />
                   </div>
 
                   <div className="w-full h-16 font-body">
-                    <label htmlFor="fields2" className="text-secondary">
-                      {t("Select you action")}{" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      type="text"
-                      id="fields2"
-                      onChange={(e) => setGtinselection(e.target.value)}
-                      value={gtinselection}
-                      className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
-                      required
-                    >
-                      <option>-{t("select")}-</option>
-                      <option value="Product Photo is not correct">
-                        Product Photo is not correct
-                      </option>
-                      <option value="Product Description is not correct">
-                        Product Description is not correct
-                      </option>
-                      <option value="GPC Code is not correct">
-                        GPC Code is not correct
-                      </option>
-                      <option value="Net Contents is not correct">
-                        Net Contents is not correct
-                      </option>
-                      <option value="Brand Name is not correct">
-                        Brand Name is not correct
-                      </option>
-                      <option value="GTIN is not correct">
-                        GTIN is not correct
-                      </option>
-                    </select>
+                    <label htmlFor="fields2" className="text-secondary">Select you action <span className='text-red-500'>*</span></label>
+                      <select
+                          type="text"
+                          id="fields2"
+                          onChange={(e) => setGtinselection(e.target.value)}
+                          value={gtinselection}
+                          className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
+                          required
+                          >
+                          <option>-select-</option>
+                          <option value="Product Photo is not correct">Product Photo is not correct</option>
+                          <option value="Product Description is not correct">Product Description is not correct</option>
+                          <option value="GPC Code is not correct">GPC Code is not correct</option>
+                          <option value="Net Contents is not correct">Net Contents is not correct</option>
+                          <option value="Brand Name is not correct">Brand Name is not correct</option>
+                          <option value="GTIN is not correct">GTIN is not correct</option>
+                      </select>
                   </div>
                 </div>
 
                 <div className="flex flex-col justify-between">
                   <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
-                      <label
-                        htmlFor="imageInput"
-                        className="cursor-pointer whitespace-nowrap"
-                      >
-                        {t("Take Photo of Item")}
+                      <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
+                        Take Photo of Item
                         <input
                           type="file"
                           id="imageInput"
@@ -388,13 +337,9 @@ const GTINReports = () => {
                       type="submit"
                       disabled={addProductLoader}
                       className="ml-2"
-                      endIcon={
-                        addProductLoader ? (
-                          <CircularProgress size={24} color="inherit" />
-                        ) : null
-                      }
-                    >
-                      {t("Add Gtin")}
+                      endIcon={addProductLoader ? <CircularProgress size={24} color="inherit" /> : null}
+                      >
+                      Add Gtin
                     </Button>
                   </div>
                 </div>
