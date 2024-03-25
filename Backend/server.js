@@ -25,6 +25,7 @@ dotenv.config();
 
 const allowedOrigins = [
   "http://localhost:3092",
+  "http://localhost:3081",
   "http://gs1ksa.org:3092",
   "https://gs1ksa.org:3093",
   "http://gs1ksa.org:3091",
