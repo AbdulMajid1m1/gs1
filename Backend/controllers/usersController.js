@@ -1143,7 +1143,7 @@ export const getRegisteredMembers = async (req, res, next) => {
             include: {
                 assign_to_admin: true
             },
-            take: 100
+            take: 1000
 
         });
 
@@ -1195,6 +1195,10 @@ export const getRejectedUserDetails = async (req, res, next) => {
         const [rejectedUsers, rejectedCarts] = await prisma.$transaction(async (prisma) => {
             const rejectedUsers = await prisma.rejected_users.findMany({
                 where: filterConditions,
+                // sort by updated_at in descending order
+                orderBy: {
+                    updated_at: 'desc'
+                }
             });
 
             // if (rejectedUsers.length === 0) {

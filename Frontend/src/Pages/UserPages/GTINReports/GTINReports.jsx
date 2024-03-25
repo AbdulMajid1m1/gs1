@@ -149,14 +149,18 @@ const GTINReports = () => {
        <div className='mt-10 mb-20 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
            <div className="">
            <div>
-              <div className='flex flex-col gap-2'>
-                <label htmlFor='barcode' className='text-secondary sm:text-2xl text-lg font-body'>Enter a barcode number/GTIN</label>
+              <div  className={`flex flex-col gap-2 ${
+                i18n.language === "ar" ? "items-end" : "items-start"
+              }`}>
+                <label htmlFor='barcode' className='text-secondary sm:text-2xl text-lg font-body'>{t("Enter a barcode number/GTIN")}</label>
                 <div className='flex sm:w-[60%] w-full'>
                   <input
                     id="barcode"
                     type="text"
-                    className="sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200"
-                    placeholder='Search'
+                    className={`sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200 ${
+                      i18n.language === "ar" ? " text-right" : "text-left"
+                    }`}
+                    placeholder={t("Search")}
                     value={userSearch}
                     onChange={(event) => setUserSearch(event.target.value)}
                   />
@@ -169,10 +173,10 @@ const GTINReports = () => {
                     className="ml-2"
                     endIcon={isLoading ? <CircularProgress size={24} color="inherit" /> : null}
                   >
-                    Search
+                     {t("Search")}
                   </Button>
                 </div>
-                <p className='text-secondary text-base'>Example search: 628000000000</p>
+                <p className='text-secondary text-base'>{t("Example search")}: 628000000000</p>
               </div>
             </div>
 
@@ -232,34 +236,42 @@ const GTINReports = () => {
               
               {/* Email Feild */}
               <form onSubmit={handleSubmit}>
-              <div className="w-full font-body sm:text-base text-sm mt-4">
-                <label htmlFor="email" className="text-secondary">Email <span className='text-red-500'>*</span></label>
+              <div  className={`w-full font-body sm:text-base text-sm mt-4 ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}>
+                <label htmlFor="email" className="text-secondary">{t("Email")} <span className='text-red-500'>*</span></label>
                   <input
                     type="email"
                     id="email"
-                    placeholder='Email'
+                    placeholder={t('Email')}
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     required
-                    className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
+                    className={`border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2 ${
+                      i18n.language === "ar" ? " text-right" : "text-left"
+                    }`}
                   />
               </div>
 
-              <div className="flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4">
+              <div  className={`flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4 ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}>
                   <div className="w-full sm:h-28 font-body sm:text-base text-sm">
-                    <label htmlFor="fields1" className="text-secondary">Write your comment here <span className='text-red-500'>*</span></label>
+                    <label htmlFor="fields1" className="text-secondary">{t("Write your comment here")} <span className='text-red-500'>*</span></label>
                       <textarea
                           type="text"
                           id="fields1"
                           onChange={(e) => setTypeComment(e.target.value)}
                           value={typeComment}
                           required
-                          className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
+                          className={`border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2 ${
+                            i18n.language === "ar" ? " text-right" : "text-left"
+                          }`}
                           />
                   </div>
 
                   <div className="w-full h-16 font-body">
-                    <label htmlFor="fields2" className="text-secondary">Select you action <span className='text-red-500'>*</span></label>
+                    <label htmlFor="fields2" className="text-secondary">{t("Select you action")} <span className='text-red-500'>*</span></label>
                       <select
                           type="text"
                           id="fields2"
@@ -268,7 +280,7 @@ const GTINReports = () => {
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                           required
                           >
-                          <option>-select-</option>
+                          <option>-{t("select")}-</option>
                           <option value="Product Photo is not correct">Product Photo is not correct</option>
                           <option value="Product Description is not correct">Product Description is not correct</option>
                           <option value="GPC Code is not correct">GPC Code is not correct</option>
@@ -284,7 +296,7 @@ const GTINReports = () => {
                   <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                       <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
-                        Take Photo of Item
+                        {t("Take Photo of Item")}
                         <input
                           type="file"
                           id="imageInput"
@@ -316,7 +328,7 @@ const GTINReports = () => {
                       className="ml-2"
                       endIcon={addProductLoader ? <CircularProgress size={24} color="inherit" /> : null}
                       >
-                      Add Gtin
+                      {t("Add Gtin")}
                     </Button>
                   </div>
                 </div>

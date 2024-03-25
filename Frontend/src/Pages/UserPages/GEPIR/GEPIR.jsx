@@ -113,14 +113,16 @@ const GEPIR = () => {
                 htmlFor="barcode"
                 className="text-secondary sm:text-2xl text-lg font-body"
               >
-                Enter a barcode number/GTIN
+               {t("Enter a barcode number/GTIN")}
               </label>
               <div className="flex sm:w-[60%] w-full">
                 <input
                   id="barcode"
                   type="text"
-                  className="sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200"
-                  placeholder="Search"
+                  className={`sm:w-[50%] w-full border h-10 rounded-sm px-5 font-medium text-black border-gray-200 ${
+                    i18n.language === "ar" ? " text-right" : "text-left"
+                  }`}
+                  placeholder={t("Search")}
                   value={userSearch}
                   onChange={(event) => setUserSearch(event.target.value)}
                 />
@@ -137,11 +139,11 @@ const GEPIR = () => {
                     ) : null
                   }
                 >
-                  Search
+                  {t("Search")}
                 </Button>
               </div>
               <p className="text-secondary text-base">
-                Example search: 628000000000
+                {t("Example search")}: 628000000000
               </p>
             </div>
           </div>

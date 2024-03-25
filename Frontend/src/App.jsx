@@ -197,7 +197,6 @@ const App = () => {
             <SnackbarProvider>
               <div>
                 <BrowserRouter>
-                  
                   <Routes>
                     {/* Member Routes */}
                     <Route
@@ -1132,24 +1131,51 @@ const App = () => {
                     <Route element={<UserLayout />}>
                       <Route path="/" element={<HomePage />} />
                       <Route path="get-barcode" element={<GetBarcode />} />
-                      <Route path="member-registration" element={<MemmberRegisteration />} />
+                      <Route
+                        path="member-registration"
+                        element={<MemmberRegisteration />}
+                      />
                       <Route path="email-address" element={<EmailAddress />} />
-                      <Route path="select-activity" element={<SelectActivity />} />
-                      <Route path="select-business-type" element={<SelectBusinessType />} />
+                      <Route
+                        path="select-activity"
+                        element={<SelectActivity />}
+                      />
+                      <Route
+                        path="select-business-type"
+                        element={<SelectBusinessType />}
+                      />
                       <Route path="verify-code" element={<VerifyCode />} />
                       <Route path=":id" element={<BlogPages />} />
-                      <Route path="productinformation" element={<MapProvider><ProductInformation /></MapProvider>} />
+                      <Route
+                        path="productinformation"
+                        element={
+                          <MapProvider>
+                            <ProductInformation />
+                          </MapProvider>
+                        }
+                      />
                       <Route path="gtin-reporter" element={<GTINReports />} />
-                      <Route path="check-digit" element={<CheckDigitCalculator />} />
+                      <Route
+                        path="check-digit"
+                        element={<CheckDigitCalculator />}
+                      />
                       <Route path="gepir" element={<GEPIR />} />
                       <Route path="user-guide" element={<UserGuide />} />
                       <Route path="search-gpc" element={<SearchGPC />} />
+                      <Route path="our-team" element={<OurTeam />} />
+                      <Route path="board-member" element={<BoardMember />} />
                     </Route>
 
                     {/* Define other non-user layout routes outside */}
-                    <Route path="/admin-login" element={<AuthProvider><AdminLogin /></AuthProvider>} />
+                    <Route
+                      path="/admin-login"
+                      element={
+                        <AuthProvider>
+                          <AdminLogin />
+                        </AuthProvider>
+                      }
+                    />
                   </Routes>
-
                 </BrowserRouter>
               </div>
             </SnackbarProvider>

@@ -2227,7 +2227,7 @@ model rejected_users {
   memberID                 String?          @db.NVarChar(Max)
   user_id                  String?          @db.NVarChar(Max)
   remarks                  String?          @default("Pending Invoice", map: "DF_rejected_users_remarks") @db.NVarChar(Max)
-  assign_to                Int?             @default(0, map: "DF_rejected_users_to")
+  assign_to                String?
   membership_category      String?          @db.NVarChar(50)
   membership_category_id   String?
   upgradation_disc         Int?             @default(0, map: "DF_rejected_rejected_users_disc")
