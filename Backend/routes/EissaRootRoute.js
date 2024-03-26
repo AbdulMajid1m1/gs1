@@ -9,7 +9,7 @@ import { createcountryofsale, getAllcountryofsale, getcountryof_saleById, update
 import { createHsCode, getAllHsCode, getHsCodeById, updateHsCode, deleteHsCode } from '../controllers/hscodes.js';
 import { createUNSPSC, getAllUNSPSC, getUNSPSCById, updateUNSPSC, deleteUNSPSC } from '../controllers/UNSPSC.js';
 import { getAllprod_desc_languages } from "../controllers/productsController.js"
-import { upload } from '../configs/multerConfig.js';
+import { upload, video } from '../configs/multerConfig.js';
 import { getAlluser_guide_pdfs, creatuser_guide_pdfs, getuser_guide_pdfsById, updateuser_guide_pdfs, deleteuser_guide_pdfs, getAlluser_guide_videos, creatuser_guide_videos, getuser_guide_videosById, updateuser_guide_videos, deleteuser_guide_videos } from "../controllers/user_guid.js"
 import
 {
@@ -316,14 +316,14 @@ router.delete('/deleteuser_guide_pdfs/:id', deleteuser_guide_pdfs);
 
 // Routes for user_guide_videos
 router.get('/getAlluser_guide_videos', getAlluser_guide_videos);
-router.post('/creatuser_guide_videos', adminAuth, checkPermission(["user_guide"]), upload([
+router.post('/creatuser_guide_videos', adminAuth, checkPermission(["user_guide"]), video([
     {
         name: 'video',
         path: 'public/uploads/adminImg',
     }
 ]), creatuser_guide_videos);
 router.get('/getuser_guide_videosById/:id', getuser_guide_videosById);
-router.put('/updateuser_guide_videos/:id', adminAuth, checkPermission(["user_guide"]), upload([
+router.put('/updateuser_guide_videos/:id', adminAuth, checkPermission(["user_guide"]), video([
     {
         name: 'video',
         path: 'public/uploads/adminImg',

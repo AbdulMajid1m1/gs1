@@ -38,3 +38,12 @@ export const upload = (fields) => {
         limits: { fileSize: 1024 * 1024 * 5 } // 5MB file size limit
     }).fields(multerFields);
 };
+export const video = (fields) =>
+{
+    const multerFields = fields.map(field => ({ name: field.name, maxCount: 1 }));
+    return multer({
+        storage: createStorage(fields),
+        fileFilter: fileFilter,
+        limits: { fileSize: 1024 * 1024 * 500 } // 5MB file size limit
+    }).fields(multerFields);
+};
