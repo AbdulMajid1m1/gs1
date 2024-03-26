@@ -67,7 +67,7 @@ const BlogPages = () => {
 
         <div className='mt-10 mb-10 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
             {i18n.language === 'ar' && pageData.custom_section_data_ar && (
-          <div dangerouslySetInnerHTML={{ __html: pageData.custom_section_data_ar }} />
+          <div className="text-right" style={{direction:'rtl'}}   dangerouslySetInnerHTML={{ __html: pageData.custom_section_data_ar }} />
           
         )}
 
