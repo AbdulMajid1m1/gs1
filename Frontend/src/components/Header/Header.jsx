@@ -26,7 +26,9 @@ const Header = () => {
           </div>
 
           {/* Buttons */}
-          <div className='flex flex-wrap justify-center'>
+          <div 
+          className={`flex flex-wrap justify-center ${i18n.language === 'ar' ? 'flex-row-reverse' : 'flex-row'}`}
+          >
             <div className=''>
               <div className='flex justify-end items-end px-1 gap-3 font-sans font-semibold'>
                 <p onClick={() => navigate('/gepir')} className='text-blue-500 transition-transform transform hover:scale-125 cursor-pointer'>{t('Verified By GS1')}</p>
