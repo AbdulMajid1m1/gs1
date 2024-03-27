@@ -16,7 +16,8 @@ const Header = () => {
       <div className='sticky top-0 z-50 bg-white p-2'>
         <div className={`h-auto w-full bg-gray-100 flex flex-col sm:flex-row justify-between items-center px-4 py-4  ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
           {/* Logo and Text */}
-          <div className='flex items-center flex-wrap mb-4 sm:mb-0'>
+          <div
+          className={`flex items-center flex-wrap mb-4 sm:mb-0 ${i18n.language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
             <img onClick={() => navigate('/')} src={gs1logowhite} className='h-14 w-auto cursor-pointer' alt='' />
             <div className='text-center px-2'>
               <p className='text-secondary font-semibold'>{t('GS1 Saudia Arabia')}</p>
