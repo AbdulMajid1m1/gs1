@@ -86,10 +86,10 @@ const GEPIR = () => {
 
   const companyInformation = [
     { name: `${t('Company Name')}`, value: data?.companyName || data?.globalGepirArr?.companyName },
-    // { name: "Website", value: <p style={{color: 'gray'}}>Unknown</p> }, 
+    { name: "Website", value: <p style={{color: 'gray'}}>Unknown</p> }, 
     { name: "Licence Key", value: data?.licenceKey || data?.globalGepirArr?.licenceKey },
     { name: "Licence Type", value: data?.licenceType || data?.globalGepirArr?.licenceType },
-    // { name: 'Global Location Number (GLN)', value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: 'Global Location Number (GLN)', value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
     { name: 'Licensing GS1 Member Organisation', value: data?.moName || data?.globalGepirArr?.moName },
   ]
 
