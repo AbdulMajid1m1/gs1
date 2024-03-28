@@ -69,16 +69,14 @@ const GTINReports = () => {
   
 
   const products = [
-    { name: `${t('GTIN')}`, value: data?.gtin },
-    { name: `${t('Brand Name')}`, value: data?.brandName },
-    { name: `${t('Product Description')}`, value: data?.productDescription },
-    { name:`${t('Product Image Url')}`, value: <a href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> },
-    { name: `${t('Country of sale')}`, value: data?.countryOfSaleCode },
-    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID },
-  { name: `${t('Type')}`, value: data?.type },
-
-]
-
+    { name: `${t('GTIN')}`, value: data?.gtin || data?.globalGepirArr?.gtin },
+    { name: `${t('Brand Name')}`, value: data?.brandName || data?.globalGepirArr?.brandName },
+    { name: `${t('Product Description')}`, value: data?.productDescription || data?.globalGepirArr?.productDescription },
+    { name: `${t('Product Image Url')}`, value: data?.productImageUrl ? <a style={{color: '#a8e0f4'}} href={data?.productImageUrl} target="_blank">{data?.productImageUrl}</a> : <a style={{color: '#a8e0f4'}} href={data?.globalGepirArr?.productImageUrl} target="_blank">{data?.globalGepirArr?.productImageUrl}</a> },
+    { name: `${t('Gcp GLNID')}`, value: data?.gcpGLNID || data?.globalGepirArr?.gcpGLNID },
+    { name: 'Net Content', value: data?.unitValue || `${data?.globalGepirArr?.unitValue} ${data?.globalGepirArr?.unitCode}` },
+    { name: `${t('Country of sale')}`, value: data?.countryOfSaleName || data?.globalGepirArr?.countryOfSaleName },
+  ]
 
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -99,7 +97,7 @@ const GTINReports = () => {
     console.log( email, typeComment, gtinselection, selectedImage)
 
     const formData = new FormData();
-    formData.append('report_barcode', data?.gtin);
+    formData.append('report_barcode', data?.gtin || data?.globalGepirArr?.gtin);
     formData.append('report_comment', typeComment);
     formData.append('report_action', gtinselection);
     formData.append('report_status', 0);
@@ -185,10 +183,10 @@ const GTINReports = () => {
                   <div className='flex justify-end sm:px-40 px-10 py-10'>
                     <div style={{ height: "120px"}}>
                       <GtinDataMatrixGenerator
-                        text={`${data?.gtin} - ${data?.brandName}`} 
+                        text={`${data?.gtin || data?.globalGepirArr?.gtin} - ${data?.brandName || data?.globalGepirArr?.brandName}`} 
                         />
-                      <p className='text-sm text-secondary'>{data?.gtin}</p>
-                      <p className='text-sm text-secondary'>{data?.brandName}</p>
+                      <p className='text-sm text-secondary'>{data?.gtin || data?.globalGepirArr?.gtin}</p>
+                      <p className='text-sm text-secondary'>{data?.brandName || data?.globalGepirArr?.brandName}</p>
                     </div>
                   </div>
 
@@ -210,9 +208,11 @@ const GTINReports = () => {
                  
                   <div className="flex flex-col md:flex-row border-[0.9px] border-gray-300">
                     <div className="w-full md:w-1/3 flex justify-center items-center p-4">
-                      {data?.productImageUrl && (
-                        <img src={data?.productImageUrl} alt="Product" className="w-1/2" />
-                      )}
+                      <img
+                        src={data?.productImageUrl || data?.globalGepirArr?.productImageUrl}
+                        alt="Product"
+                        className="w-1/2 object-contain"
+                      />
                     </div>
 
                     <div className="w-full md:w-2/3">
