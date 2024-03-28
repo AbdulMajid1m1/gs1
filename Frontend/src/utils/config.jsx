@@ -1,9 +1,10 @@
 
 
-export const backendUrl = 'http://localhost:3091';
-export const baseUrl = backendUrl + '/api';
+export const backendUrl = 'https://gs1ksa.org:3093';
+// export const baseUrl = backendUrl + '/api';
 export const phpUrl = 'https://gs1ksa.org/api';
 // export const backendUrl = 'http://gs1ksa.org:3091';
+export const baseUrl = 'http://localhost:3091/api';
 
 export const gtrackUrl = 'https://gs1ksa.org:83/gtrackbackend/api';
 // export const gtrackUrl = 'http://localhost:7000/api';

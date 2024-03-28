@@ -4,27 +4,36 @@ import newRequest from '../../../utils/userRequest'
 import imageLiveUrl from '../../../utils/urlConverter/imageLiveUrl'
 import second from '../../../Images/second.png'
 import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 const ValueAddedCard = () =>
 {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const fetechAllCardData = async () => {
-    try {
-        const response = await newRequest.get("/getAllfeatured_services",);
-        const filteredData = response.data.filter(item => item.status === 1);
-      setData(filteredData || []);
+  // const [data, setData] = useState([]);
+  // const fetechAllCardData = async () => {
+  //   try {
+  //       const response = await newRequest.get("/getAllfeatured_services",);
+  //       const filteredData = response.data.filter(item => item.status === 1);
+  //     setData(filteredData || []);
 
-    } catch (err) {
-        console.log(err);
-        // setIsLoading(false)
-    }
-  };
+  //   } catch (err) {
+  //       console.log(err);
+  //       // setIsLoading(false)
+  //   }
+  // };
 
-  useEffect(() => {
-      fetechAllCardData() // Calling the function within useEffect, not inside itself
-  }, []);
+  const { isLoading, error, data: featuredServicesData } = useQuery("fetchAllFeaturedServices", fetchFeaturedServicesData);
+
+  async function fetchFeaturedServicesData() {
+    const response = await newRequest.get("/getAllfeatured_services");
+    return response?.data.filter(item => item.status === 1) || [];
+  }
+
+
+  // useEffect(() => {
+  //     fetechAllCardData() // Calling the function within useEffect, not inside itself
+  // }, []);
 
   return (
     <div>
@@ -34,11 +43,15 @@ const ValueAddedCard = () =>
         </div>
        
         <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 gap-7 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 px-5'>
-            {data.map((item, index) => {
-              return (
+            {/* {data.map((item, index) => { */}
+            {isLoading ? (
+             <div>Loading...</div>
+              ) : error ? (
+                ""
+              ) : (
+              featuredServicesData.map((item) => (
                 <div 
                   className='flex justify-end items-end h-40 w-full border border-gray-300 rounded-md shadow-lg transition-transform transform hover:scale-110'
-                  key={index}
                 >
                   <Link to={`/${item?.link}`}>
                     <img 
@@ -48,8 +61,10 @@ const ValueAddedCard = () =>
                     />
                   </Link>
                 </div>
-              );
-            })}
+                ))
+              )}
+            {/* //   );
+            // })} */}
             
 
              {/* <div 

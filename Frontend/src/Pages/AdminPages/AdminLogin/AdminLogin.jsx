@@ -16,6 +16,8 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const [showImage, setShowImage] = useState(false);
+  const date = new Date();
+  const hour = date.getHours();
 
   const [isVisible, setVisibility] = useState(false);
   const toggleVisibility = (value) => {
@@ -64,7 +66,6 @@ const AdminLogin = () => {
 
 
 
-
     return (
       <>
         {isLoading && <div className='loading-spinner-background'
@@ -90,7 +91,7 @@ const AdminLogin = () => {
               <div className="flex-1">
                 <div className="flex flex-col gap-6 items-start">
                   <img src={gs1logoWhite} className='h-16 w-auto px-4 object-contain' alt='' />
-                  <h2 className="text-2xl font-medium font-sans px-5">Welcome To<span className='font-sans font-bold'>GS1 Saudia Arabia</span></h2>
+                  <h2 className="text-2xl font-medium font-sans px-5">Welcome To<span className='font-sans font-bold'> GS1 Saudia Arabia</span></h2>
                 </div>
                 <div className="mt-3 px-5">
                   <form onSubmit={handleSubmit}>
@@ -137,7 +138,7 @@ const AdminLogin = () => {
               style={{ backgroundImage: 'url(https://www.gs1.org.sa/backend/images/login/613f2a06120da1631529478.jpg)' }}>
               <div className="flex items-center h-full px-14 bg-gray-900 bg-opacity-10">
                 <div>
-                  <h2 className="text-6xl pt-40 font-semibold font-sans text-white">Good Morning</h2>
+                  <h2 className="text-6xl pt-40 font-semibold font-sans text-white">{hour >= 12 ? hour >= 16 ? <span>Good Evening</span> : <span>Good Afternoon</span> : <span>Good Morning</span>}</h2>
                 </div>
               </div>
             </div>

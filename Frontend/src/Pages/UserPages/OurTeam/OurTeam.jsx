@@ -26,9 +26,9 @@ const OurTeam = () => {
     return (
       <div>
         {/* Nav */}
-        <div className="sticky top-0 z-50 bg-white">
+        {/* <div className="sticky top-0 z-50 bg-white">
           <Header />
-        </div>
+        </div> */}
 
         <div>
           <DropDownSelection />

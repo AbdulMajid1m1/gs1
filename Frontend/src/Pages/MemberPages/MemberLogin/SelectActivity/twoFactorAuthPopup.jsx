@@ -146,26 +146,30 @@ const TwoFactorAuthPopup = ({ isVisible, setIsvisible }) => {
                             </button>
                             <p className='text-sm text-center text-red-600 font-medium'>{t("Install GS1 Authenticator")}</p>
                         </div>
-                        <input type="number"
-                            onChange={(e) => {
-                                setNumber(e.target.value);
-                            }
-                            }
-                        />
 
-                        <button onClick={() => {
-                            // emit socket event
-                            if (socket) {
-
-                                socket.emit('verifyNumber', { userId, selectedNumber: number });
-                            }
-                        }
-                        } >{t('send Number')}
-
-
-
-                        </button>
                     </div>
+                      
+                        <div className='flex flex-col justify-center items-center gap-3 mt-6'>
+                            <input type="number"
+                                onChange={(e) => {
+                                    setNumber(e.target.value);
+                                }
+                                }
+                            />
+
+                            <button className='text-white bg-secondary hover:bg-primary px-3 py-1 rounded-md' onClick={() => {
+                                // emit socket event
+                                if (socket) {
+
+                                    socket.emit('verifyNumber', { userId, selectedNumber: number });
+                                }
+                            }
+                            } >{t('send Number')}
+
+
+
+                            </button>
+                      </div>
                 </div>
             </div>
         </div>

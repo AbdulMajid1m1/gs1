@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { GoogleMap, Marker, StandaloneSearchBox } from '@react-google-maps/api';
 import { DotLoader, RiseLoader } from 'react-spinners';
 import { useParams } from 'react-router-dom';
-import DashboardRightHeader from '../../../../components/DashboardRightHeader/DashboardRightHeader';
-import newRequest from '../../../../utils/userRequest';
+  import newRequest from '../../../../utils/userRequest';
 import imageLiveUrl from '../../../../utils/urlConverter/imageLiveUrl';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import SubTypeGLNPopUp from './SubTypeGLNPopUp';
+import { Autocomplete, TextField } from '@mui/material';
+import AdminDashboardRightHeader from '../../../../components/AdminDashboardRightHeader/AdminDashboardRightHeader';
 
 
 
@@ -69,6 +71,8 @@ const AdminUpdateGLN = () => {
                 setLatitude(productData?.latitude);
                 setLongitude(productData?.longitude);
                 setNationalAddress(productData?.nationalAddress);
+                setEntityType(productData?.gln_idenfication);
+                setSelectedImageName(productData?.physical_location);
                 // const frontImg = imagePath + "/" + productData?.image
                 // setSelectedImage(frontImg);
                 setSelectedImage(imageLiveUrl(productData?.image));
@@ -89,6 +93,7 @@ const AdminUpdateGLN = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
       setIsLoading(true);
+      console.log(entityType)
     
       const longitude = document.getElementById('longitude').value;
       const latitude = document.getElementById('Latitude').value;
@@ -108,6 +113,8 @@ const AdminUpdateGLN = () => {
       formData.append('longitude', longitude);
       formData.append('latitude', latitude);
       formData.append('status', status);
+      formData.append('gln_idenfication', entityType);
+      formData.append('physical_location', selectedImageName);
       const imageOptional1Input = document.querySelector('#imageInput');
       if (imageOptional1Input.files && imageOptional1Input.files[0]) {
         formData.append('gln_image', imageFile);
@@ -273,7 +280,33 @@ const AdminUpdateGLN = () => {
   }
 
 
-
+  // Static options for the Autocomplete component
+  const options = [
+    { label: 'Legal entity', value: 'Legal Entity' },
+    { label: 'Function', value: 'Function' },
+    { label: 'Physical location', value: 'Physical location' },
+    { label: 'Digital location', value: 'Digital location' },
+    
+  ];
+  
+  const [entityType, setEntityType] = useState('');
+  // Function to handle option selection
+  const handleOptionChange = (event, newValue) => {
+    setEntityType(newValue?.value);
+    handleSubTypePopUp();
+  }; 
+  
+  
+  const [isSubTypePopUpVisible, setIsSubTypePopUpVisible] = useState(false);
+  const handleSubTypePopUp = () => {
+    setIsSubTypePopUpVisible(true);
+  }
+  
+  const [selectedImageName, setSelectedImageName] = useState('');
+  const handleSelectImage = (imageName) => {
+    // console.log('Selected image:', imageName);
+    setSelectedImageName(imageName);
+  };
 
   return (
     <div>
@@ -299,7 +332,7 @@ const AdminUpdateGLN = () => {
 
       <div className={`p-0 h-full bg-slate-100 ${i18n.language === 'ar' ? 'sm:mr-72' : 'sm:ml-72'}`}>
         <div>
-            <DashboardRightHeader title={`${t('Update GLN')}`}/>
+            <AdminDashboardRightHeader title={`${t('Update GLN')}`}/>
         </div>
 
         <div className="flex flex-col justify-center items-center p-4">
@@ -342,10 +375,43 @@ const AdminUpdateGLN = () => {
                   </>
                 )}
                 </button>
-</div>
+            </div>
+
+
+            {isSubTypePopUpVisible && (
+            <SubTypeGLNPopUp isVisible={isSubTypePopUpVisible} setVisibility={setIsSubTypePopUpVisible} onSelectImage={handleSelectImage}/>
+            )}
 
                 {/* <form onSubmit={handleSubmit}> */}
                 <form>
+                  <div className='flex flex-col gap-1 mt-3'>
+                    <label className="text-secondary font-bold" htmlFor="entityType">What does a GLN identify? <span className="text-red-600">*</span>
+                    </label>
+                    <Autocomplete
+                      id="entityType"
+                      options={options}
+                      value={entityType}
+                      // getOptionLabel={(option) => option.label || ''}
+                      onChange={handleOptionChange}
+                      renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        className="bg-gray-50 border border-gray-300 text-black text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                        placeholder="What does a GLN identify"
+                        InputProps={{
+                        ...params.InputProps,
+                        className: "text-black",
+                        }}
+                        InputLabelProps={{
+                        ...params.InputLabelProps,
+                        style: { color: "black" },
+                        }}
+                        required
+                      />
+                      )}
+                    />
+                  </div>
+
                     <div className="flex flex-col sm:gap-8 gap-3 sm:flex-row sm:justify-between mt-4">
                         <div className="w-full font-body sm:text-base text-sm flex flex-col gap-0">
                             <label htmlFor='locationEnglish' className='text-secondary'>{t('Locations')} {t('Name[English]')}<span className='text-red-600'>*</span></label>
