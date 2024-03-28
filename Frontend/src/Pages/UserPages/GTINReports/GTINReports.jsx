@@ -137,14 +137,14 @@ const GTINReports = () => {
 
   return (
     <div>
-       {/* Nav */}
-       {/* <div className='sticky top-0 z-50 bg-white'>
+      {/* Nav */}
+      {/* <div className='sticky top-0 z-50 bg-white'>
           <Header />
        </div> */}
 
-       <div>
-         <DropDownSelection />
-       </div>
+      <div>
+        <DropDownSelection />
+      </div>
 
        <div className='mt-10 mb-20 px-4 md:px-10 lg:px-10 xl:px-36 2xl:px-[270px] 3xl:px-96'>
            <div className="">
@@ -180,70 +180,79 @@ const GTINReports = () => {
               </div>
             </div>
 
-              {data && (
-                <div>
-                  <div className='flex justify-end sm:px-40 px-10 py-10'>
-                    <div style={{ height: "120px"}}>
-                      <GtinDataMatrixGenerator
-                        text={`${data?.gtin} - ${data?.brandName}`} 
-                        />
-                      <p className='text-sm text-secondary'>{data?.gtin}</p>
-                      <p className='text-sm text-secondary'>{data?.brandName}</p>
+          {data && (
+            <div>
+              <div className="flex justify-end sm:px-40 px-10 py-10">
+                <div style={{ height: "120px" }}>
+                  <GtinDataMatrixGenerator
+                    text={`${data?.gtin} - ${data?.brandName}`}
+                  />
+                  <p className="text-sm text-secondary">{data?.gtin}</p>
+                  <p className="text-sm text-secondary">{data?.brandName}</p>
+                </div>
+              </div>
+
+              <div className="">
+                <div
+                  className={`w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5 ${
+                    i18n.language === "ar" ? "text-end" : "text-start"
+                  }`}
+                >
+                  <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
+                    <p className="font-semibold"> {t("Complete Data")}</p>
+                    <p>
+                      {t("This number is registered to company")}: :{" "}
+                      <span className="font-semibold">{data?.companyName}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center text-2xl font-medium text-secondary mb-2">
+                <p>{data?.productDescription}</p>
+              </div>
+
+              <div className="flex flex-col md:flex-row border-[0.9px] border-gray-300">
+                <div className="w-full md:w-1/3 flex justify-center items-center p-4">
+                  {data?.productImageUrl && (
+                    <img
+                      src={data?.productImageUrl}
+                      alt="Product"
+                      className="w-1/2"
+                    />
+                  )}
+                </div>
+
+                <div className="w-full md:w-2/3">
+                  <div className="container mx-auto mt-6 p-4">
+                    <div className="overflow-x-auto">
+                      <table className="table-auto min-w-max w-full">
+                        <tbody>
+                          {products.map((product, index) => (
+                            <tr key={index}>
+                              <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
+                                {product.name}
+                              </td>
+                              <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
+                                {product.value}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  <div className="">
-                    <div className={`w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5 ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}>
-                      <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                        <p className="font-semibold"> {t('Complete Data')}</p>
-                          <p>
-                            {t('This number is registered to company')}: :{" "}
-                            <span className="font-semibold">{data?.companyName}</span>
-                          </p>
-                      </div>
-                    </div>
-                  </div>
-
-                 <div className='text-center text-2xl font-medium text-secondary mb-2'>
-                    <p>{data?.productDescription}</p>
-                 </div>
-                 
-                  <div className="flex flex-col md:flex-row border-[0.9px] border-gray-300">
-                    <div className="w-full md:w-1/3 flex justify-center items-center p-4">
-                      {data?.productImageUrl && (
-                        <img src={data?.productImageUrl} alt="Product" className="w-1/2" />
-                      )}
-                    </div>
-
-                    <div className="w-full md:w-2/3">
-                      <div className="container mx-auto mt-6 p-4">
-                        <div className="overflow-x-auto">
-                          <table className="table-auto min-w-max w-full">
-                            <tbody>
-                              {products.map((product, index) => (
-                                <tr key={index}>
-                                  <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">{product.name}</td>
-                                  <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">{product.value}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-              
               {/* Email Feild */}
               <form onSubmit={handleSubmit}>
-              <div  className={`w-full font-body sm:text-base text-sm mt-4 ${
-                    i18n.language === "ar" ? "text-end" : "text-start"
-                  }`}>
-                <label htmlFor="email" className="text-secondary">{t("Email")} <span className='text-red-500'>*</span></label>
+              <div className="w-full font-body sm:text-base text-sm mt-4">
+                <label htmlFor="email" className="text-secondary">Email <span className='text-red-500'>*</span></label>
                   <input
                     type="email"
                     id="email"
-                    placeholder={t('Email')}
+                    placeholder='Email'
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     required
@@ -251,27 +260,23 @@ const GTINReports = () => {
                       i18n.language === "ar" ? " text-right" : "text-left"
                     }`}
                   />
-              </div>
+                </div>
 
-              <div  className={`flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4 ${
-                    i18n.language === "ar" ? "text-end" : "text-start"
-                  }`}>
+              <div className="flex flex-col sm:gap-8 sm:flex-row sm:justify-between mt-4">
                   <div className="w-full sm:h-28 font-body sm:text-base text-sm">
-                    <label htmlFor="fields1" className="text-secondary">{t("Write your comment here")} <span className='text-red-500'>*</span></label>
+                    <label htmlFor="fields1" className="text-secondary">Write your comment here <span className='text-red-500'>*</span></label>
                       <textarea
                           type="text"
                           id="fields1"
                           onChange={(e) => setTypeComment(e.target.value)}
                           value={typeComment}
                           required
-                          className={`border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2 ${
-                            i18n.language === "ar" ? " text-right" : "text-left"
-                          }`}
+                          className="border-1 h-auto w-full rounded-sm border-[#8E9CAB] p-2"
                           />
                   </div>
 
                   <div className="w-full h-16 font-body">
-                    <label htmlFor="fields2" className="text-secondary">{t("Select you action")} <span className='text-red-500'>*</span></label>
+                    <label htmlFor="fields2" className="text-secondary">Select you action <span className='text-red-500'>*</span></label>
                       <select
                           type="text"
                           id="fields2"
@@ -280,7 +285,7 @@ const GTINReports = () => {
                           className="border-1 w-full rounded-sm border-[#8E9CAB] p-2"
                           required
                           >
-                          <option>-{t("select")}-</option>
+                          <option>-select-</option>
                           <option value="Product Photo is not correct">Product Photo is not correct</option>
                           <option value="Product Description is not correct">Product Description is not correct</option>
                           <option value="GPC Code is not correct">GPC Code is not correct</option>
@@ -289,62 +294,65 @@ const GTINReports = () => {
                           <option value="GTIN is not correct">GTIN is not correct</option>
                       </select>
                   </div>
-              </div>
+                </div>
 
-            
-              <div className='flex flex-col justify-between'>
+                <div className="flex flex-col justify-between">
                   <div className="border-2 border-dashed h-56 w-56 relative flex justify-center">
                     <div className="absolute -bottom-4 flex justify-center items-center h-10 w-3/4 bg-secondary text-white font-body">
                       <label htmlFor="imageInput" className="cursor-pointer whitespace-nowrap">
-                        {t("Take Photo of Item")}
+                        Take Photo of Item
                         <input
                           type="file"
                           id="imageInput"
                           // accept="image/*"
                           onChange={handleImageChange}
-                          style={{ display: 'none' }}
+                          style={{ display: "none" }}
                         />
                       </label>
-                      </div>
-                        {selectedImage && (
-                          <div className='h-56 flex justify-center items-center object-contain w-auto'>
-                            <div className="absolute top-2 right-2">
-                              <button onClick={handleRemoveImage} className="text-red-500 text-2xl px-1 hover:bg-red-200 hover:rounded-md">
-                                  &times;
-                              </button>
-                           </div>
-                            <img src={selectedImage} className='h-56 w-56' alt="Selected Image" />
-                          </div>
-                        )}
                     </div>
+                    {selectedImage && (
+                      <div className="h-56 flex justify-center items-center object-contain w-auto">
+                        <div className="absolute top-2 right-2">
+                          <button
+                            onClick={handleRemoveImage}
+                            className="text-red-500 text-2xl px-1 hover:bg-red-200 hover:rounded-md"
+                          >
+                            &times;
+                          </button>
+                        </div>
+                        <img
+                          src={selectedImage}
+                          className="h-56 w-56"
+                          alt="Selected Image"
+                        />
+                      </div>
+                    )}
+                  </div>
 
-                  <div className='flex justify-end'> 
+                  <div className="flex justify-end">
                     <Button
                       variant="contained"
-                      style={{ backgroundColor: '#cd3c0d', color: '#ffffff' }}
+                      style={{ backgroundColor: "#cd3c0d", color: "#ffffff" }}
                       // onClick={handleSubmit}
-                      type='submit'
+                      type="submit"
                       disabled={addProductLoader}
                       className="ml-2"
                       endIcon={addProductLoader ? <CircularProgress size={24} color="inherit" /> : null}
                       >
-                      {t("Add Gtin")}
+                      Add Gtin
                     </Button>
                   </div>
                 </div>
-              </form>        
-
-            
-
+              </form>
             </div>
-            )}
-          </div>
+          )}
+        </div>
       </div>
 
       {/* Footer */}
       {/* <Footer /> */}
-  </div>
-);
+    </div>
+  );
 
 }
 
