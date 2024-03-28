@@ -178,68 +178,6 @@ const GTINReports = () => {
               </div>
             </div>
 
-<<<<<<< HEAD
-          {data && (
-            <div>
-              <div className="flex justify-end sm:px-40 px-10 py-10">
-                <div style={{ height: "120px" }}>
-                  <GtinDataMatrixGenerator
-                    text={`${data?.gtin} - ${data?.brandName}`}
-                  />
-                  <p className="text-sm text-secondary">{data?.gtin}</p>
-                  <p className="text-sm text-secondary">{data?.brandName}</p>
-                </div>
-              </div>
-
-              <div className="">
-                <div
-                  className={`w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5 ${
-                    i18n.language === "ar" ? "text-end" : "text-start"
-                  }`}
-                >
-                  <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
-                    <p className="font-semibold"> {t("Complete Data")}</p>
-                    <p>
-                      {t("This number is registered to company")}: :{" "}
-                      <span className="font-semibold">{data?.companyName}</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-center text-2xl font-medium text-secondary mb-2">
-                <p>{data?.productDescription}</p>
-              </div>
-
-              <div className="flex flex-col md:flex-row border-[0.9px] border-gray-300">
-                <div className="w-full md:w-1/3 flex justify-center items-center p-4">
-                  {data?.productImageUrl && (
-                    <img
-                      src={data?.productImageUrl}
-                      alt="Product"
-                      className="w-1/2"
-                    />
-                  )}
-                </div>
-
-                <div className="w-full md:w-2/3">
-                  <div className="container mx-auto mt-6 p-4">
-                    <div className="overflow-x-auto">
-                      <table className="table-auto min-w-max w-full">
-                        <tbody>
-                          {products.map((product, index) => (
-                            <tr key={index}>
-                              <td className="border px-4 py-2 sm:text-sm md:text-base font-semibold text-xs">
-                                {product.name}
-                              </td>
-                              <td className="border font-body px-4 py-2 sm:text-sm font-bold text-black md:text-base text-xs">
-                                {product.value}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-=======
               {data && (
                 <div>
                   <div className='flex justify-end sm:px-40 px-10 py-10'>
@@ -249,14 +187,11 @@ const GTINReports = () => {
                         />
                       <p className='text-sm text-secondary'>{data?.gtin || data?.globalGepirArr?.gtin}</p>
                       <p className='text-sm text-secondary'>{data?.brandName || data?.globalGepirArr?.brandName}</p>
->>>>>>> 257d2756163d285f652bc3463aaad6b93d5cafbf
                     </div>
                   </div>
                 </div>
               </div>
 
-<<<<<<< HEAD
-=======
                   <div className="">
                     <div className={`w-full font-body p-6 shadow-xl rounded-md text-black bg-[#C3E2DC] text-xl mb:2 md:mb-5 ${i18n.language === 'ar' ? 'text-end' : 'text-start'}`}>
                       <div className="flex justify-start flex-col gap-2 text-xs sm:text-sm">
@@ -301,7 +236,6 @@ const GTINReports = () => {
                   </div>
 
               
->>>>>>> 257d2756163d285f652bc3463aaad6b93d5cafbf
               {/* Email Feild */}
               <form onSubmit={handleSubmit}>
               <div className="w-full font-body sm:text-base text-sm mt-4">
