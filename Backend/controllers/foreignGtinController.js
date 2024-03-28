@@ -4,6 +4,7 @@ import { createError } from '../utils/createError.js';
 import axios from 'axios';
 import { gs1dlPrisma, wtracePrisma } from '../prismaMultiClinets.js';
 import { brandOwnerMarkers, ifBatch, ifSerial, normalSearch } from '../utils/functions/foreignGtinFunctions.js';
+import { GLOBAL_API_BASE_URL_PROD, GLOBAL_GEPIR_PROD_API_KEY } from '../configs/envConfig.js';
 
 
 export const getGtinProductDetailsFromLocalDb = async (req, res, next) => {
@@ -93,11 +94,11 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
 
         // Setup the request headers and body as needed
         const headers = {
-            'APIKey': 'a54f5b6535994ffeb88b575198faac11',
+            'APIKey': GLOBAL_GEPIR_PROD_API_KEY,
         };
 
         // Define the URL for the global database API
-        const apiUrl = 'https://grp.gs1.org/grp/v3/gtins/verified';
+        const apiUrl = GLOBAL_API_BASE_URL_PROD + '/gtins/verified';
 
         // Making the POST request to the global DB API
         const response = await axios.post(apiUrl, [updatedGTIN], { headers });
@@ -107,7 +108,23 @@ export const getGtinProductDetailsFromGlobalDb = async (req, res, next) => {
             throw createError(404, 'Product not found');
         }
         console.log(globalGepir);
-        console.log(globalGepir);
+        console.log(globalGepir[0].brandName)
+        console.log(globalGepir[0].productDescription)
+        console.log(globalGepir[0].netContent)
+        console.log("gs1Licence")
+
+        console.log("licensingMO")
+
+        console.log(globalGepir[0].gs1Licence.licensingMO)
+
+        console.log("contactPoint")
+        console.log(globalGepir[0].gs1Licence.contactPoint)
+        console.log("address")
+        console.log(globalGepir[0].gs1Licence.address)
+        
+
+
+
         console.log(globalGepir[0].countryOfSaleCode);
         console.log(globalGepir[0].countryOfSaleCode?.numeric);
         // if globalGepir[0].countryOfSaleCode?.numeric exist then user it to fecht name from country_of_sales
